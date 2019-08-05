@@ -1,0 +1,1685 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TCP/IP 详解卷一笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">TCP/IP 详解卷一笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org26a6938">第一章 概述</a>
+<ul>
+<li><a href="#orgd1ceb3f">1.2 分层</a></li>
+<li><a href="#orgc820e95">1.3 TCP/IP 的分层</a></li>
+<li><a href="#org337170e">1.4 互联网的地址</a></li>
+<li><a href="#orgc674677">1.5 域名系统</a></li>
+<li><a href="#org0878575">1.6 封装</a></li>
+<li><a href="#org0f76d2d">1.7 分用</a></li>
+<li><a href="#org4d4178d">1.8 客户服务器模型</a></li>
+<li><a href="#orgbc87301">1.9 端口号</a></li>
+</ul>
+</li>
+<li><a href="#orgb6a643b">第二章 链路层</a>
+<ul>
+<li><a href="#org5731b73">2.1 引言</a></li>
+<li><a href="#orgd21c3d6">2.2 以太网和 IEEE 802 封装</a></li>
+<li><a href="#org21b9250">2.7 还回端口</a></li>
+<li><a href="#orgc72e7ce">2.8 最大传输单元 MTU</a>
+<ul>
+<li><a href="#org756a73e">为什么要设置 MTU</a></li>
+</ul>
+</li>
+<li><a href="#org54b0290">2.9 路径 MTU</a></li>
+</ul>
+</li>
+<li><a href="#orgc0d06c8">第三章 IP：网际协议</a>
+<ul>
+<li><a href="#org9fab709">3.1 引言</a></li>
+<li><a href="#org3b1cb54">3.2 IP 首部</a></li>
+<li><a href="#orgd2da8b9">3.3 IP 路由选择</a></li>
+<li><a href="#org28e2b66">3.4 子网寻址</a></li>
+<li><a href="#org39657c5">3.5 子网掩码</a></li>
+<li><a href="#org1d49231">3.6 特殊情况的 IP 地址</a></li>
+<li><a href="#orgaec69a1">3.8 iconfig 命令</a></li>
+<li><a href="#org9f84f20">3.9 netstat 命令</a></li>
+</ul>
+</li>
+<li><a href="#org6f173f7">第四章 ARP：地址解析协议</a>
+<ul>
+<li><a href="#org58a645a">4.2 一个例子</a></li>
+<li><a href="#org8ec4899">4.3 ARP 高速缓存</a></li>
+<li><a href="#org9cd795e">4.4 ARP 分组格式</a></li>
+<li><a href="#orgf020e6c">4.5 ARP 举例</a></li>
+<li><a href="#orgcfd8315">4.6 ARP 代理</a></li>
+<li><a href="#org91cb0f4">4.7 免费 ARP</a></li>
+<li><a href="#orgb8468aa">4.8 arp 命令</a></li>
+</ul>
+</li>
+<li><a href="#orgcd87490">第五章 RARP：逆地址解析协议</a></li>
+<li><a href="#orgbfb3100">第六章 ICMP：internet 控制报文协议</a>
+<ul>
+<li><a href="#org11b8766">6.1 引言</a></li>
+<li><a href="#org98a0ff3">6.2 ICMP 报文的类型</a></li>
+<li><a href="#org34b1928">6.3 ICMP 地址掩码请求与应答</a></li>
+<li><a href="#org2991e3f">6.4 ICMP 时间戳请求与应答</a></li>
+<li><a href="#org47d5837">6.5 ICMP 端口不可达差错</a></li>
+</ul>
+</li>
+<li><a href="#org3cc9b05">第七章 Ping 程序</a></li>
+<li><a href="#org4cca8e0">第八章 Tracerrout 程序</a>
+<ul>
+<li><a href="#org3dda07b">8.2 Traceroute 程序的操作</a></li>
+<li><a href="#org8cad96f">8.3</a></li>
+</ul>
+</li>
+<li><a href="#org93f2e77">第九章 IP 选路</a>
+<ul>
+<li><a href="#orgf8ff37f">9.1 引言</a></li>
+<li><a href="#org884b477">9.2 选路的原理</a></li>
+<li><a href="#org544ba37">9.5 ICMP 重定向</a></li>
+<li><a href="#org8ab8934">9.6 ICMP 路由发现报文</a></li>
+</ul>
+</li>
+<li><a href="#org8501fb8">第十章 动态选路协议</a>
+<ul>
+<li><a href="#org586757e">10.2 动态选路</a></li>
+<li><a href="#org7d68b72">10.3 Unix 选路守护程序</a></li>
+<li><a href="#orge92b712">10.4 RIP 选路信息协议</a></li>
+<li><a href="#org7e34b29">10.5 RIP 版本 2</a></li>
+<li><a href="#org62db787">10.6 OSPF 开放最短路径优先</a></li>
+<li><a href="#org85836d9">10.7 BGP 边界网关</a></li>
+<li><a href="#org1620a17">10.8 CIDR</a></li>
+</ul>
+</li>
+<li><a href="#org7af82fa">第十一章 UDP：用户数据报协议</a>
+<ul>
+<li><a href="#org5c748e8">11.1 引言</a></li>
+<li><a href="#orgbe432f8">11.2 UDP 首部</a></li>
+<li><a href="#org6dcf9a6">11.3 UDP 检验和</a></li>
+<li><a href="#org2422bbb">11.4</a></li>
+<li><a href="#org9e59cf2">11.5 IP 分片</a></li>
+<li><a href="#org95af83b">11.6 ICMP 不可达差错</a></li>
+<li><a href="#org92ee148">11.11 ICMP 源站抑制差错</a></li>
+</ul>
+</li>
+<li><a href="#orgc3ddb43">第十二章 广播和多播</a></li>
+<li><a href="#org4878247">第十三章 IGMP：internet 组管理协议</a></li>
+<li><a href="#orgb49f537">第十四章 DNS：域名系统</a></li>
+<li><a href="#org86d35ab">第十五章 TFTP：简单文件传送协议</a></li>
+<li><a href="#orge2b2055">第十六章 BOOTP：引导程序协议</a></li>
+<li><a href="#org42a941c">第十七章 TCP：传输控制协议</a>
+<ul>
+<li><a href="#org5068359">17.2 TCP 服务</a></li>
+<li><a href="#orga8a9b32">17.3 TCP 首部</a></li>
+</ul>
+</li>
+<li><a href="#org3985263">第十八章 TCP 连接的建立和终止</a>
+<ul>
+<li><a href="#orgd61d2af">18.2 连接的建立和终止</a></li>
+<li><a href="#org3d18381">18.4 最大报文长度</a></li>
+<li><a href="#orgf485c28">18.6 TCP 状态变迁图</a></li>
+<li><a href="#orgb9cf9c5">18.7 复位报文段</a></li>
+<li><a href="#orge10408c">18.8 同时打开</a></li>
+</ul>
+</li>
+<li><a href="#org21433c6">第十九章 TCP 的交互数据流</a></li>
+<li><a href="#org9d34eaf">第二十章 TCP 的成块数据流</a>
+<ul>
+<li><a href="#org3fa7716">20.1 引言</a></li>
+<li><a href="#orgc8fd684">20.2 正常数据流</a></li>
+<li><a href="#orgbff39fa">20.3 滑动窗口</a></li>
+<li><a href="#org0ce109a">20.4 窗口大小</a></li>
+<li><a href="#org3197bde">20.5 PUSH 标志</a></li>
+<li><a href="#org0776424">20.6 慢启动</a></li>
+<li><a href="#orgd2ebb44">20.7 成块数据的吞吐量</a></li>
+<li><a href="#org1224ad4">20.8 紧急方式</a></li>
+</ul>
+</li>
+<li><a href="#org565afc0">第二十一章 TCP 的超时与重传</a>
+<ul>
+<li><a href="#orge6d8efd">21.1 引言</a></li>
+<li><a href="#org87c5763">21.2 超时与重传的简单例子</a></li>
+<li><a href="#org432eb6f">21.3 往返时间测量</a></li>
+<li><a href="#org0938a5d">21.4 往返时间 RTT 例子</a></li>
+<li><a href="#org19e16e9">21.5 拥塞举例</a></li>
+<li><a href="#org94849a5">21.6 拥塞避免算法</a></li>
+<li><a href="#orga5ca97c">21.7 快速重传和快速恢复算法</a></li>
+<li><a href="#org38ba526">21.8 拥塞举例</a></li>
+<li><a href="#org189bc4a">21.9 按每条路由进行度量</a></li>
+<li><a href="#orgc0da9e8">21.10 ICMP 的差错</a></li>
+<li><a href="#orgafcc81c">21.11 重组分组</a></li>
+</ul>
+</li>
+<li><a href="#orga5fa124">第二十二章 TCP 的坚持定时器</a>
+<ul>
+<li><a href="#org1398566">22.1 引言</a></li>
+<li><a href="#org5589bc5">22.2 一个栗子</a></li>
+<li><a href="#org2e6efd5">22.3 糊涂窗口综合症</a></li>
+</ul>
+</li>
+<li><a href="#org4339a56">第二十三章 TCP 的保活定时器</a>
+<ul>
+<li><a href="#org2478df7">23.1 引言</a></li>
+<li><a href="#orgb131506">23.2 描述</a></li>
+<li><a href="#org2e74224">23.3 保活举例</a></li>
+</ul>
+</li>
+<li><a href="#org68452a9">第二十四章 TCP 的未来和性能</a></li>
+<li><a href="#org39f4828">第二十五章 SNMP：简单网络管理协议</a></li>
+<li><a href="#org509fa39">第二十六章 Telnet 和 Rlogin：远程登陆</a></li>
+<li><a href="#orge82488e">第二十七章 FTP：文件传送协议</a></li>
+<li><a href="#org8e6992f">第二十八章 SMTP：简单邮件传送键盘</a></li>
+<li><a href="#org2b2062a">第二十九章 网络文件系统</a></li>
+<li><a href="#orga943080">第三十章 其他的 TCP/IP 应用程序</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org26a6938" class="outline-2">
+<h2 id="org26a6938">第一章 概述</h2>
+<div class="outline-text-2" id="text-org26a6938">
+</div>
+<div id="outline-container-orgd1ceb3f" class="outline-3">
+<h3 id="orgd1ceb3f">1.2 分层</h3>
+<div class="outline-text-3" id="text-orgd1ceb3f">
+<ul class="org-ul">
+<li>链路层：包括设备驱动协议和网络设备，处理传输媒介的物理接口细节。
+<ul class="org-ul">
+<li>ARP（地址解析协议）和 RARP（逆向地址解析协议），转换 IP 层和其他链路层地址。</li>
+</ul></li>
+<li>网络层：处理分组在网络中的活动。
+<ul class="org-ul">
+<li>IP（网际协议），</li>
+<li>ICMP（互联网控制报文协议），是 IP 的附属协议，IP 层用它与其他主机或路由器交换错误报文和其他重要消息。</li>
+<li>IGMP（互联网分组管理协议），用于 UDP 多播。</li>
+</ul></li>
+<li>传输层：为应用层提供端到端的通信。
+<ul class="org-ul">
+<li>TCP（传输控制协议）</li>
+<li>UDP（用户数据报协议）</li>
+</ul></li>
+<li>应用层：处理应用程序细节。
+<ul class="org-ul">
+<li>Telnet（远程登陆）</li>
+<li>FTP（文件传输协议）</li>
+<li>SMTP（简单邮件传输协议）</li>
+<li>SNMP（简单网络管理协议）</li>
+</ul></li>
+
+<li>端系统</li>
+<li>中间系统
+<ul class="org-ul">
+<li>路由器，让异构网络在 <b>网络层</b> 互联。</li>
+<li>网桥，在 <b>链路层</b> 网络互联。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc820e95" class="outline-3">
+<h3 id="orgc820e95">1.3 TCP/IP 的分层</h3>
+</div>
+
+<div id="outline-container-org337170e" class="outline-3">
+<h3 id="org337170e">1.4 互联网的地址</h3>
+<div class="outline-text-3" id="text-org337170e">
+
+<div class="figure">
+<p><img src="http://images2015.cnblogs.com/blog/603942/201610/603942-20161024110345781-1165410356.png" alt="603942-20161024110345781-1165410356.png" />
+</p>
+</div>
+
+<p>
+记忆方法：
+</p>
+<ul class="org-ul">
+<li>起始地址分别是：0，10，110，1110，11110，增量分别是 128，64，32，16</li>
+<li>A-C 网络号长度分别是：7，14，21</li>
+<li>D-E 类没有网络号和主机号。</li>
+<li>D 类剩下的 28 位全部是多播组号。</li>
+<li>E 类留作后用，地址到 247.255.255.255。</li>
+</ul>
+
+<p>
+地址分：单播，多播，和广播。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc674677" class="outline-3">
+<h3 id="orgc674677">1.5 域名系统</h3>
+</div>
+
+<div id="outline-container-org0878575" class="outline-3">
+<h3 id="org0878575">1.6 封装</h3>
+<div class="outline-text-3" id="text-org0878575">
+<ul class="org-ul">
+<li>TCP 段（tcp segment），UDP 数据报（UDP datagram），16 bit 端口号表示应用程序标识符。</li>
+<li>IP 数据报（IP datagram），8 bit 协议域（1 是 ICMP，2 是 IGMP，6 是 TCP，17 是 UDP）。</li>
+<li>以太网帧（Frame），16 bit 帧类型域。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0f76d2d" class="outline-3">
+<h3 id="org0f76d2d">1.7 分用</h3>
+</div>
+
+<div id="outline-container-org4d4178d" class="outline-3">
+<h3 id="org4d4178d">1.8 客户服务器模型</h3>
+</div>
+
+<div id="outline-container-orgbc87301" class="outline-3">
+<h3 id="orgbc87301">1.9 端口号</h3>
+</div>
+</div>
+
+<div id="outline-container-orgb6a643b" class="outline-2">
+<h2 id="orgb6a643b">第二章 链路层</h2>
+<div class="outline-text-2" id="text-orgb6a643b">
+</div>
+<div id="outline-container-org5731b73" class="outline-3">
+<h3 id="org5731b73">2.1 引言</h3>
+<div class="outline-text-3" id="text-org5731b73">
+<p>
+链路层作用：为 IP、ARP、RARP 模块发送和接受数据包。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd21c3d6" class="outline-3">
+<h3 id="orgd21c3d6">2.2 以太网和 IEEE 802 封装</h3>
+<div class="outline-text-3" id="text-orgd21c3d6">
+<p>
+以太网（Ethernet II）和 IEEE 802 分别定义了 CSMA/CD（带冲突检测的载波侦听多路接入）技术的帧封装格式。
+</p>
+
+<p>
+以太网帧主要由三部分组成：
+</p>
+<ul class="org-ul">
+<li>数据 Payload 部分 (46-1500 byte)。(为什么是 46-1500<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup><sup>, </sup><sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>)</li>
+<li>以太网协议本身占用 (18-22 byte)，包括：目的 Mac(6 byte)、源 MAC(6 byte)、标签 (可选)(4 byte)、类型或长度 (2 byte)、校验码 (4 byte)。</li>
+<li>以太网协议填充占用 (20 byte)，包括：前序 (8 byte)、包间隙 (12 byte)。</li>
+
+<li>使用 48 bit（6 字节）作为源地址和目的地址，也就是硬件地址（MAC 地址）。</li>
+<li>RFC802.3
+<ul class="org-ul">
+<li>协议中的长度字段表示它后续字节长度，但不包括 CRC 校验码。</li>
+<li>长度 38-1492 字节。</li>
+</ul></li>
+<li>Ethernet II（RFC894）
+<ul class="org-ul">
+<li>最常用。</li>
+<li>长度 46-1500 字节。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org21b9250" class="outline-3">
+<h3 id="org21b9250">2.7 还回端口</h3>
+<div class="outline-text-3" id="text-org21b9250">
+<p>
+传递给还回端口的数据包不能在任何网络上出现。
+</p>
+
+<p>
+传递给多播或广播的数据包都会复制一份传给还回端口。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc72e7ce" class="outline-3">
+<h3 id="orgc72e7ce">2.8 最大传输单元 MTU</h3>
+<div class="outline-text-3" id="text-orgc72e7ce">
+<p>
+链路层最大传输数据称为 MTU，以太网帧 MTU 是 46-1500，如果 IP 层数据超过 MTU 需要进行分片。
+</p>
+</div>
+
+<div id="outline-container-org756a73e" class="outline-4">
+<h4 id="org756a73e">为什么要设置 MTU</h4>
+<div class="outline-text-4" id="text-org756a73e">
+<p>
+点到点的链路层（如 SLIP 和 PPP）的 MTU 并非网络媒体的物理特性，而是一个逻辑限制，目的是为交互提供足够快的响应时间。
+</p>
+<ul class="org-ul">
+<li>太大别人需要等。</li>
+<li>太大出错了重发浪费时间。</li>
+<li>太大不容易对数据进行校验。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org54b0290" class="outline-3">
+<h3 id="org54b0290">2.9 路径 MTU</h3>
+<div class="outline-text-3" id="text-org54b0290">
+<p>
+两台机主通信路径上的最小 MTU 称为路径 MTU。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc0d06c8" class="outline-2">
+<h2 id="orgc0d06c8">第三章 IP：网际协议</h2>
+<div class="outline-text-2" id="text-orgc0d06c8">
+</div>
+<div id="outline-container-org9fab709" class="outline-3">
+<h3 id="org9fab709">3.1 引言</h3>
+<div class="outline-text-3" id="text-org9fab709">
+<p>
+发生错误式，IP 层只是简单的丢弃数据包，然后发送 ICMP 消息报给信源端。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3b1cb54" class="outline-3">
+<h3 id="org3b1cb54">3.2 IP 首部</h3>
+<div class="outline-text-3" id="text-org3b1cb54">
+<p>
+普通 IP 首部是 20 个字节。
+</p>
+<ul class="org-ul">
+<li>版本 version（4 bit）</li>
+<li>首部长度 header lenght（4 bit)， <b>单位是 32 位字长度</b> ，所以首部最长 15 个字，60 个字节。</li>
+<li>服务类型 type of service（TOS）(8 bit)，不同的上层服务对应不同的服务类型：最小时延，最大吞吐量，最高可靠性，最小费用</li>
+<li>总长度 total length 是指整个 IP 数据报的总长度（字节）。
+<ul class="org-ul">
+<li>主机要求不能接受超过 576 字节的数据报。</li>
+<li>大量使用 UDP 的应用限制用户数据是 512 字节。</li>
+</ul></li>
+<li>标识段 identification（16 bit）
+<ul class="org-ul">
+<li>唯一标识主机发送的每一份数据报。通常每发送一份它的值就会加一。</li>
+</ul></li>
+<li>标志（3 bit）</li>
+<li>片偏移 Fragment offset（13 bit）</li>
+<li>生存时间 time to live（TTL）（8 bit）初始值由 RFC 指定，当前值是 64。ping 将该字段设置为最大值 255。</li>
+<li>协议字段 Protocol（8 bit）</li>
+<li>首部检验和 header checksum（16 bit）
+<ul class="org-ul">
+<li>ICMP，IGMP，UDP，TCP 在各自的首部中包含同时覆盖首部和数据的校验和。</li>
+<li>计算规则</li>
+<li>校验出错直接丢弃收到的数据报，不生成出错报文，由上层协议发现丢失的数据包并进行重传。</li>
+</ul></li>
+<li>源 IP</li>
+<li>目的 IP</li>
+<li>任选项（options）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd2da8b9" class="outline-3">
+<h3 id="orgd2da8b9">3.3 IP 路由选择</h3>
+<div class="outline-text-3" id="text-orgd2da8b9">
+<p>
+路由规则
+</p>
+
+<p>
+路由表：route 命令
+</p>
+</div>
+</div>
+<div id="outline-container-org28e2b66" class="outline-3">
+<h3 id="org28e2b66">3.4 子网寻址</h3>
+</div>
+<div id="outline-container-org39657c5" class="outline-3">
+<h3 id="org39657c5">3.5 子网掩码</h3>
+</div>
+<div id="outline-container-org1d49231" class="outline-3">
+<h3 id="org1d49231">3.6 特殊情况的 IP 地址</h3>
+</div>
+<div id="outline-container-orgaec69a1" class="outline-3">
+<h3 id="orgaec69a1">3.8 iconfig 命令</h3>
+</div>
+<div id="outline-container-org9f84f20" class="outline-3">
+<h3 id="org9f84f20">3.9 netstat 命令</h3>
+</div>
+</div>
+
+<div id="outline-container-org6f173f7" class="outline-2">
+<h2 id="org6f173f7">第四章 ARP：地址解析协议</h2>
+<div class="outline-text-2" id="text-org6f173f7">
+</div>
+<div id="outline-container-org58a645a" class="outline-3">
+<h3 id="org58a645a">4.2 一个例子</h3>
+<div class="outline-text-3" id="text-org58a645a">
+<p>
+ARP 本来适用于广播的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8ec4899" class="outline-3">
+<h3 id="org8ec4899">4.3 ARP 高速缓存</h3>
+</div>
+<div id="outline-container-org9cd795e" class="outline-3">
+<h3 id="org9cd795e">4.4 ARP 分组格式</h3>
+</div>
+<div id="outline-container-orgf020e6c" class="outline-3">
+<h3 id="orgf020e6c">4.5 ARP 举例</h3>
+</div>
+<div id="outline-container-orgcfd8315" class="outline-3">
+<h3 id="orgcfd8315">4.6 ARP 代理</h3>
+</div>
+<div id="outline-container-org91cb0f4" class="outline-3">
+<h3 id="org91cb0f4">4.7 免费 ARP</h3>
+<div class="outline-text-3" id="text-org91cb0f4">
+<p>
+是指主机发送 ARP 查找自己的 IP 地址。通常发生在系统引导期间进行接口配置的时候。
+</p>
+
+<p>
+主要有两个方面的作用：
+</p>
+<ol class="org-ol">
+<li>一个主机通过它来确定另一个主机是否设置了相同的 IP 地址。</li>
+<li>发送免费 ARP 的主机更改硬件地址后，通过该分组通知其他主机更新 ARP 缓存。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgb8468aa" class="outline-3">
+<h3 id="orgb8468aa">4.8 arp 命令</h3>
+</div>
+</div>
+
+<div id="outline-container-orgcd87490" class="outline-2">
+<h2 id="orgcd87490">第五章 RARP：逆地址解析协议</h2>
+</div>
+<div id="outline-container-orgbfb3100" class="outline-2">
+<h2 id="orgbfb3100">第六章 ICMP：internet 控制报文协议</h2>
+<div class="outline-text-2" id="text-orgbfb3100">
+</div>
+<div id="outline-container-org11b8766" class="outline-3">
+<h3 id="org11b8766">6.1 引言</h3>
+<div class="outline-text-3" id="text-org11b8766">
+<p>
+ICMP 传输差错信息以及其他需要注意的信息。
+</p>
+
+<p>
+ICMP 报文是在 IP 数据报内部传输的。
+</p>
+
+<p>
+报文组成：
+</p>
+<ul class="org-ul">
+<li>类型（8）</li>
+<li>代码（8）</li>
+<li>检验和（16）</li>
+<li>内容</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org98a0ff3" class="outline-3">
+<h3 id="org98a0ff3">6.2 ICMP 报文的类型</h3>
+<div class="outline-text-3" id="text-org98a0ff3">
+<p>
+各种类型 ICMP 报文由报文中的类型和代码字段共同决定。主要分为两大类：查询报文和差错报文。差错报文有时需要特殊处理。
+</p>
+
+<p>
+当发送差错报文时，报文是中包含 IP 的首部和产生 ICMP 差错报文的 IP 数据报的前八个字节。这样，接受 ICMP 报文的模块就会把它与某个特性的协议（根据 IP 数据报首部中的协议字段）和用户进程（根据包含在 IP 数据报前 8 个字节中的 TCP 或 UDP 报文首部中的端口号来判断）联系起来。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org34b1928" class="outline-3">
+<h3 id="org34b1928">6.3 ICMP 地址掩码请求与应答</h3>
+</div>
+<div id="outline-container-org2991e3f" class="outline-3">
+<h3 id="org2991e3f">6.4 ICMP 时间戳请求与应答</h3>
+</div>
+<div id="outline-container-org47d5837" class="outline-3">
+<h3 id="org47d5837">6.5 ICMP 端口不可达差错</h3>
+</div>
+</div>
+
+<div id="outline-container-org3cc9b05" class="outline-2">
+<h2 id="org3cc9b05">第七章 Ping 程序</h2>
+</div>
+<div id="outline-container-org4cca8e0" class="outline-2">
+<h2 id="org4cca8e0">第八章 Tracerrout 程序</h2>
+<div class="outline-text-2" id="text-org4cca8e0">
+</div>
+<div id="outline-container-org3dda07b" class="outline-3">
+<h3 id="org3dda07b">8.2 Traceroute 程序的操作</h3>
+<div class="outline-text-3" id="text-org3dda07b">
+<p>
+tranceroute 程序利用的是 ICMP 报文和 IP 首部中的 TTL 字段。
+</p>
+
+<p>
+当路由器收到一份 IP 数据报，如果其 TTL 字段是 0 或 1，则路由器不转发该数据报（接收这种数据报的目的主机可以将它交给应用程序，这是因为不需要转发该数据报。但是在通常情况下，系统不应该接受到 TTL 值为 0 的数据报）。相反，路由器将该数据报丢弃，并给信源机发一份 ICMP“超时”消息。tranceroute 程序的关键在于包含这份 ICMP 信息的 IP 报文的信源地址是该路由器的 IP 地址。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8cad96f" class="outline-3">
+<h3 id="org8cad96f">8.3</h3>
+</div>
+</div>
+<div id="outline-container-org93f2e77" class="outline-2">
+<h2 id="org93f2e77">第九章 IP 选路</h2>
+<div class="outline-text-2" id="text-org93f2e77">
+</div>
+<div id="outline-container-orgf8ff37f" class="outline-3">
+<h3 id="orgf8ff37f">9.1 引言</h3>
+<div class="outline-text-3" id="text-orgf8ff37f">
+<ul class="org-ul">
+<li>动态选路和选路信息协议 RIP（Routing Information Protocol）</li>
+<li>IP 层路由决策</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org884b477" class="outline-3">
+<h3 id="org884b477">9.2 选路的原理</h3>
+<div class="outline-text-3" id="text-org884b477">
+<p>
+IP 层的选路实际上是一种 <b>选路机制（routing mechanism）</b> ， 它搜索路由表并决定向哪个网络接口发送分组。这区别于 <b>选路策略（routing policy）</b> ，它只是一组决定把那些路由器放入路由表的规则。
+</p>
+
+<p>
+IP 执行选路机制，而路由守护程序则一般提供选路策略。
+</p>
+
+<p>
+路由表中的标志（flag）：
+</p>
+<ul class="org-ul">
+<li>U 该路由可以使用。</li>
+<li>G 区分直接路由和间接路由。间接路由 MAC 指向网关，而直接路由目的 MAC 地址指向主机。</li>
+<li>H 表明目的地是一个主机地址还是网络地址。</li>
+<li>D 该路由由重定向报文创建。</li>
+<li>M 该路由由重定向报文修改。</li>
+</ul>
+
+<p>
+每个接口都有对应的子网掩码，因此每个路由表项都有一个隐含的子网掩码。
+</p>
+
+<p>
+当路由器没有默认项，而又没有找到匹配项时，如果 IP 数据报
+</p>
+<ul class="org-ul">
+<li>由本地主机产生，返回应用程序“网络不可达差错”或“网络不可达差错”。</li>
+<li>由路由器转发，给信源发送“主机不可达差错”。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org544ba37" class="outline-3">
+<h3 id="org544ba37">9.5 ICMP 重定向</h3>
+<div class="outline-text-3" id="text-org544ba37">
+<p>
+当 IP 数据报应该发送给另外一个路由器时（发现接收和发送数据报的接口是一样的），收到数据报的路由器给信源发送“ICMP 重定向差错报文”。
+</p>
+
+<p>
+重定向一般用来让具有很少选路信息的主机逐渐建立更完善的路由表。
+</p>
+
+<p>
+ICMP 重定向报文创建的时主机路由，而不是网络路由。
+</p>
+
+<p>
+ICMP 重定向报文规则：
+</p>
+<ul class="org-ul">
+<li>只能由路由器生成，不能由主机生成。</li>
+<li>重定向报文是为主机而不是路由器使用的。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8ab8934" class="outline-3">
+<h3 id="org8ab8934">9.6 ICMP 路由发现报文</h3>
+<div class="outline-text-3" id="text-org8ab8934">
+<p>
+初始化路由表的方法：
+</p>
+<ul class="org-ul">
+<li>配置文件中指定默认路由</li>
+<li>使用 ICMP 路由器通告和请求报文。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8501fb8" class="outline-2">
+<h2 id="org8501fb8">第十章 动态选路协议</h2>
+<div class="outline-text-2" id="text-org8501fb8">
+</div>
+<div id="outline-container-org586757e" class="outline-3">
+<h3 id="org586757e">10.2 动态选路</h3>
+<div class="outline-text-3" id="text-org586757e">
+<p>
+相邻路由器上的路由守护程序，运行选路协议，交换当前路由器所连接的网络信息，然后更新内核中的路由表，这就是动态选路。也就是说路由表由路由守护程序动态更新，而不是 route 命令。
+</p>
+
+<p>
+自治网络系统内部各路由之间选路协议称之为内部网关协议 IGP（interior Gateway Protocol），常用的协议有：
+</p>
+<ul class="org-ul">
+<li>选路信息协议（RIP）</li>
+<li>开放最短路径优先协议 OSPF（Open Shortest Path First）</li>
+</ul>
+
+
+<p>
+自治网络系统之间使用外部网关协议：
+</p>
+<ul class="org-ul">
+<li>EGP（Exterier Gateway Protocol）。</li>
+<li>边界网关协议 BGP（Border Gateway Protocol）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7d68b72" class="outline-3">
+<h3 id="org7d68b72">10.3 Unix 选路守护程序</h3>
+<div class="outline-text-3" id="text-org7d68b72">
+<p>
+选路程序：
+</p>
+<ul class="org-ul">
+<li>routed，只支持 RIP</li>
+<li>gated，IGP EGP 支持</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge92b712" class="outline-3">
+<h3 id="orge92b712">10.4 RIP 选路信息协议</h3>
+<div class="outline-text-3" id="text-orge92b712">
+<p>
+RIP 是距离向量协议。
+</p>
+</div>
+</div>
+<div id="outline-container-org7e34b29" class="outline-3">
+<h3 id="org7e34b29">10.5 RIP 版本 2</h3>
+</div>
+
+<div id="outline-container-org62db787" class="outline-3">
+<h3 id="org62db787">10.6 OSPF 开放最短路径优先</h3>
+<div class="outline-text-3" id="text-org62db787">
+<p>
+与 RIP 不同：
+</p>
+<ul class="org-ul">
+<li>OSPF 是链路状态协议。链路状态协议比距离向量协议收敛更快。</li>
+<li>直接使用 IP。</li>
+<li>支持子网。</li>
+<li>采用多播。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org85836d9" class="outline-3">
+<h3 id="org85836d9">10.7 BGP 边界网关</h3>
+<div class="outline-text-3" id="text-org85836d9">
+<p>
+BGP 使用 TCP，是一个距离向量协议。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1620a17" class="outline-3">
+<h3 id="org1620a17">10.8 CIDR</h3>
+</div>
+</div>
+
+<div id="outline-container-org7af82fa" class="outline-2">
+<h2 id="org7af82fa">第十一章 UDP：用户数据报协议</h2>
+<div class="outline-text-2" id="text-org7af82fa">
+</div>
+<div id="outline-container-org5c748e8" class="outline-3">
+<h3 id="org5c748e8">11.1 引言</h3>
+<div class="outline-text-3" id="text-org5c748e8">
+<p>
+UDP 是一个 <b>面向数据报</b> 的传输层协议： 进程的 <b>每个输出操作都正好产生一个 UDP 数据报，并组装成一个待发送的 IP 数据报</b> 。
+</p>
+
+<p>
+这与面向 <b>流字符</b> 的协议不同， <b>应用程序产生的全体数据与真正发送的单个 IP 数据报可能没有什么联系</b> 。
+</p>
+
+<p>
+应用程序必须关系 IP 数据报的长度。因为超过网络 MTU，可能会被发送端或者中建系统分片。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbe432f8" class="outline-3">
+<h3 id="orgbe432f8">11.2 UDP 首部</h3>
+<div class="outline-text-3" id="text-orgbe432f8">
+<ul class="org-ul">
+<li><p>
+source port number，destination port number（16bit）
+</p>
+
+<p>
+TCP 端口号与 UDP 端口号是独立的，同一端口号可以同时被 TCP 和 UDP 监听。
+</p></li>
+
+<li><p>
+total length(16 bit)
+</p>
+
+<p>
+这个字段是冗余的，
+</p></li>
+
+<li>checksum(16 bit)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6dcf9a6" class="outline-3">
+<h3 id="org6dcf9a6">11.3 UDP 检验和</h3>
+<div class="outline-text-3" id="text-org6dcf9a6">
+<p>
+检验和覆盖首部和数据。UDP 的检验和是可选的（但总是在用），但是 TCP 是必须的。
+</p>
+
+<p>
+UDP 数据报 和 TCP 段都包含一个 12 字节长的伪首部，它是为了就是你检验和而设计的。
+</p>
+
+<p>
+伪首部包含 IP 首部的一些字段，其目的是让 UDP 再次检查数据是否已经正确到达目的地。
+</p>
+
+<p>
+与 IP 层一样，检验和出错直接丢弃数据报，不产生任何差错报文。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2422bbb" class="outline-3">
+<h3 id="org2422bbb">11.4</h3>
+</div>
+<div id="outline-container-org9e59cf2" class="outline-3">
+<h3 id="org9e59cf2">11.5 IP 分片</h3>
+<div class="outline-text-3" id="text-org9e59cf2">
+<p>
+IP 数据报分片以后，只有到达目的地才进行重新组装。
+</p>
+
+<p>
+IP 分片，即使丢失一片数据也要重传整个数据报。因为这个原因，要避免分片。
+</p>
+
+<p>
+运输层首部只在第一片数据中。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org95af83b" class="outline-3">
+<h3 id="org95af83b">11.6 ICMP 不可达差错</h3>
+</div>
+<div id="outline-container-org92ee148" class="outline-3">
+<h3 id="org92ee148">11.11 ICMP 源站抑制差错</h3>
+<div class="outline-text-3" id="text-org92ee148">
+<p>
+当一个系统接收数据的速度比处理速度快时，可能产生这个差错。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc3ddb43" class="outline-2">
+<h2 id="orgc3ddb43">第十二章 广播和多播</h2>
+</div>
+
+<div id="outline-container-org4878247" class="outline-2">
+<h2 id="org4878247">第十三章 IGMP：internet 组管理协议</h2>
+</div>
+<div id="outline-container-orgb49f537" class="outline-2">
+<h2 id="orgb49f537">第十四章 DNS：域名系统</h2>
+</div>
+
+<div id="outline-container-org86d35ab" class="outline-2">
+<h2 id="org86d35ab">第十五章 TFTP：简单文件传送协议</h2>
+</div>
+
+<div id="outline-container-orge2b2055" class="outline-2">
+<h2 id="orge2b2055">第十六章 BOOTP：引导程序协议</h2>
+</div>
+
+<div id="outline-container-org42a941c" class="outline-2">
+<h2 id="org42a941c">第十七章 TCP：传输控制协议</h2>
+<div class="outline-text-2" id="text-org42a941c">
+</div>
+<div id="outline-container-org5068359" class="outline-3">
+<h3 id="org5068359">17.2 TCP 服务</h3>
+<div class="outline-text-3" id="text-org5068359">
+<p>
+TCP 提供了一种面向连接的、可靠的字节流服务。
+</p>
+
+<ul class="org-ul">
+<li>面向连接：三次握手，四次挥手。</li>
+<li>可靠：
+<ul class="org-ul">
+<li>数据分段</li>
+<li>接受确认</li>
+<li>超时重传</li>
+<li>检验和</li>
+<li>重新排序</li>
+<li>流量控制</li>
+</ul></li>
+<li>字节流：</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga8a9b32" class="outline-3">
+<h3 id="orga8a9b32">17.3 TCP 首部</h3>
+<div class="outline-text-3" id="text-orga8a9b32">
+<ul class="org-ul">
+<li>源端口、目的端口</li>
+<li>序列号、确认号</li>
+<li>首部长度，单位是 32 字长度</li>
+<li>窗口大小</li>
+<li>检验和</li>
+<li>紧急指针</li>
+<li>选项
+<ul class="org-ul">
+<li>最大报文段长度（MSS），避免分段。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org3985263" class="outline-2">
+<h2 id="org3985263">第十八章 TCP 连接的建立和终止</h2>
+<div class="outline-text-2" id="text-org3985263">
+</div>
+<div id="outline-container-orgd61d2af" class="outline-3">
+<h3 id="orgd61d2af">18.2 连接的建立和终止</h3>
+<div class="outline-text-3" id="text-orgd61d2af">
+<p>
+终止连接需要 4 次握手，这是由于 TCP 的半关闭造成的。发送 FIN 通常是应用层进行关闭的结果。
+</p>
+
+<p>
+FIN 占用一个序号。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3d18381" class="outline-3">
+<h3 id="org3d18381">18.4 最大报文长度</h3>
+<div class="outline-text-3" id="text-org3d18381">
+<p>
+当一个连接建立时，连接的双方都要通告各自的 MSS。也就是说 MSS 选项只能出现在 SYN 报文段中。
+</p>
+
+<p>
+MSS 默认 536 字节。
+</p>
+
+<p>
+当 TCP 发送一个 SYC 时，它能将 MSS 值设置为外出接口上的 MTU 长度减去固定的 IP 首部长度和 TCP 首部长度。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf485c28" class="outline-3">
+<h3 id="orgf485c28">18.6 TCP 状态变迁图</h3>
+<div class="outline-text-3" id="text-orgf485c28">
+<p>
+注意连接终止时，主动关闭的四种状态，和被动关闭的两种状态。
+</p>
+
+<p>
+在连接处于 2MSL 等待时，任何迟到的报文段将被丢弃。
+</p>
+
+<p>
+一个插口对，在它处于 2MSL 等待时，将不能再被使用。（注意，使用 SO_REUSEADDR 可以重用端口，但是插口对不可用。）
+</p>
+
+<p>
+如果处于 2MSL 等待的主机故障重启，那么故障前发出报文会被错误的当做重启后新连接的报文段。为了防止这种情况，RFC793 支出 TCP 在重启后的 MSL 秒内不能建立任何链接。这称为平静时间（quiet time）。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb9cf9c5" class="outline-3">
+<h3 id="orgb9cf9c5">18.7 复位报文段</h3>
+<div class="outline-text-3" id="text-orgb9cf9c5">
+<p>
+也可能发送一个复位报文段而不是 FIN 来中途释放一个连接。
+</p>
+
+<p>
+如果一方已经关闭或异常终止连接而另一方还不知道，这样的 TCP 连接称为半打开的。（比如主机断电产生）
+</p>
+
+<p>
+这样的坏处是服务器主机会产生很多半打开的 TCP 连接，可使用 keepalive 避免。
+</p>
+
+<p>
+如果是服务器故障导致客户端产生半打开连接，客户端发送消息将会收到复位作为应答。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge10408c" class="outline-3">
+<h3 id="orge10408c">18.8 同时打开</h3>
+<div class="outline-text-3" id="text-orge10408c">
+<p>
+同时打开需要交换 4 个报文段，但仍然只产生一个连接。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org21433c6" class="outline-2">
+<h2 id="org21433c6">第十九章 TCP 的交互数据流</h2>
+</div>
+
+<div id="outline-container-org9d34eaf" class="outline-2">
+<h2 id="org9d34eaf">第二十章 TCP 的成块数据流</h2>
+<div class="outline-text-2" id="text-org9d34eaf">
+</div>
+<div id="outline-container-org3fa7716" class="outline-3">
+<h3 id="org3fa7716">20.1 引言</h3>
+<div class="outline-text-3" id="text-org3fa7716">
+<p>
+滑动窗口协议：允许发送方在停止并等待确认前可以连续发送多个分组。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc8fd684" class="outline-3">
+<h3 id="orgc8fd684">20.2 正常数据流</h3>
+<div class="outline-text-3" id="text-orgc8fd684">
+<p>
+ACK 可以累计，并在时延定时器溢出是发出。
+</p>
+
+<p>
+特殊的 ACK 可以用来更新窗口。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbff39fa" class="outline-3">
+<h3 id="orgbff39fa">20.3 滑动窗口</h3>
+<div class="outline-text-3" id="text-orgbff39fa">
+<p>
+窗口合拢，窗口张开，窗口收缩（不要使用）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ce109a" class="outline-3">
+<h3 id="org0ce109a">20.4 窗口大小</h3>
+<div class="outline-text-3" id="text-org0ce109a">
+<p>
+通过 socket 接口设置 recv buffer 大小来设置窗口大小。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3197bde" class="outline-3">
+<h3 id="org3197bde">20.5 PUSH 标志</h3>
+<div class="outline-text-3" id="text-org3197bde">
+<p>
+该标志通知接收方将所有收到的数据全部提交给接收进程，不要因等待额外数据而使已提交数据在缓存中滞留。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0776424" class="outline-3">
+<h3 id="org0776424">20.6 慢启动</h3>
+<div class="outline-text-3" id="text-org0776424">
+<p>
+如果发送方和接收方中间存在多个路由器和速率较慢的链路，这时 <b>中间路由将需缓存分组</b> ，并有可能耗尽存储器空间。
+</p>
+
+<p>
+所以实际网络中，发送方不可以一开始就发送多个报文段，直至达到接收方通告的窗口大小为止。
+</p>
+
+<p>
+慢启动算法通过观察到 <b>新分组进入网络的速率和另一端返回确认的速率相同</b> 而进行工作。
+</p>
+
+<p>
+拥塞窗口（congestion window），cwnd 初始化为一个报文段， <b>每收到一个 ACK，拥塞窗口就增加一个报文段</b> 。
+</p>
+
+<p>
+慢启动以 <b>报文段为单位</b> 进行增加。
+</p>
+
+<p>
+发送方取拥塞窗口与通告窗口中的最小值作为发送上限。
+</p>
+
+<p>
+拥塞窗口是发送方使用的流浪控制，而通告窗口是接收方使用的流量控制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd2ebb44" class="outline-3">
+<h3 id="orgd2ebb44">20.7 成块数据的吞吐量</h3>
+<div class="outline-text-3" id="text-orgd2ebb44">
+<p>
+发送一个分组的时间取决于两个因素：传播时延和发送时延。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1224ad4" class="outline-3">
+<h3 id="org1224ad4">20.8 紧急方式</h3>
+<div class="outline-text-3" id="text-org1224ad4">
+<p>
+它使一端可以告诉另一端有些具有某种方式的“紧急数据”已经放置在普通的数据流中。
+</p>
+
+<p>
+紧急指针与 TCP 首部中的序号相加，得出紧急数据的最后一个字节的序号。
+</p>
+
+<p>
+没办法指明紧急数据从数据流的何处开始。
+</p>
+
+<p>
+用途：Telnet 和 Rlogin 使用该方式通知服务器用户键入了中断键。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org565afc0" class="outline-2">
+<h2 id="org565afc0">第二十一章 TCP 的超时与重传</h2>
+<div class="outline-text-2" id="text-org565afc0">
+</div>
+<div id="outline-container-orge6d8efd" class="outline-3">
+<h3 id="orge6d8efd">21.1 引言</h3>
+<div class="outline-text-3" id="text-orge6d8efd">
+<p>
+超时和重传的策略：怎样决定超时间隔和如何确定重传频率。
+</p>
+
+<p>
+对于每个连接，TCP 管理 4 个不同的定时器：
+</p>
+<ul class="org-ul">
+<li>重传定时器，希望得到对方确认。</li>
+<li>坚持定时器（persist），使窗口大小信息保持不断流动。</li>
+<li>保活定时器（keepalive），检测空闲连接的另一端何时崩溃或重启。</li>
+<li>2MSL 定时器，测量一个处于 TIME_WAIT 状态的时间。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org87c5763" class="outline-3">
+<h3 id="org87c5763">21.2 超时与重传的简单例子</h3>
+<div class="outline-text-3" id="text-org87c5763">
+<p>
+连续重传之间的时间间隔 1,3,6,12,24,48,64，指数退避（exponential backoff）。
+</p>
+
+<p>
+首次分组传输与复位信号之间的时间差约为 9 分钟，该时间在当前的 TCP 实现中是不可变的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org432eb6f" class="outline-3">
+<h3 id="org432eb6f">21.3 往返时间测量</h3>
+<div class="outline-text-3" id="text-org432eb6f">
+<p>
+往返时间（RTT）， 平滑是是为了更好的计算均值。
+</p>
+
+<p>
+RTO = A + 4D
+</p>
+
+<p>
+重传超时时间（RTO），A 是被平滑的 RTT，D 是被平滑的均值偏差。
+</p>
+
+<p>
+重传多义性问题。
+</p>
+
+<p>
+当一个超时和重传发生时，在重传数据的确认最后到达之前，不能更新 RTT 估计器。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0938a5d" class="outline-3">
+<h3 id="org0938a5d">21.4 往返时间 RTT 例子</h3>
+</div>
+
+<div id="outline-container-org19e16e9" class="outline-3">
+<h3 id="org19e16e9">21.5 拥塞举例</h3>
+</div>
+
+<div id="outline-container-org94849a5" class="outline-3">
+<h3 id="org94849a5">21.6 拥塞避免算法</h3>
+<div class="outline-text-3" id="text-org94849a5">
+<p>
+慢启动是在一个连接上发起数据流的方法。
+</p>
+
+<p>
+拥塞避免算法是一种处理丢失分组的方法。
+</p>
+
+<p>
+二者是两个目的不同、独立的算法。但是二者通常在一起实现。
+</p>
+
+<p>
+拥塞避免算法和慢启动算法需要对每个连接维持两个变量：一个拥塞窗口（cwnd）和一个慢启动门限（ssthresh）。
+</p>
+
+<p>
+算法的工作流程：
+</p>
+<ol class="org-ol">
+<li>对给定的一个连接，初始化 cwnd 为一个报文段，ssthresh 为 65535 个字节。</li>
+<li>TCP 输出不能超过 cwnd 和接收方通告窗口的大小。</li>
+<li>当拥塞发生时，ssthresh 被设置位当前窗口的一半。如果是超时引起了拥塞，则 cwnd 设置为一个报文段（这就是慢启动）。</li>
+<li>当新的数据被对方确认时，就增加 cwnd，但是增加的方法依赖于我们是否正在进行慢启动或拥塞避免。如果 cwnd 小于或等于 ssthresh，则正在进行慢启动，否则正在进行拥塞避免。慢启动一直持续到当拥塞发生时所处位置的一半（此时 sshthresh）才停止，然后转为执行拥塞避免。</li>
+</ol>
+
+<p>
+慢启动初始设置 cwnd 为 1 个报文段，此后每收到一个确认就增加 1。（指数增长）
+</p>
+
+<p>
+拥塞避免算法要求每次收到一个确认时将 cwnd 增加 1/cwnd。（加性增长） 这样，在一个往返时间内最多位 cwnd 增加一个报文段（不管这个 RTT 中收到了多少 ACK）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga5ca97c" class="outline-3">
+<h3 id="orga5ca97c">21.7 快速重传和快速恢复算法</h3>
+<div class="outline-text-3" id="text-orga5ca97c">
+<p>
+连续收到 3 个或 3 个以上重复 ack，就立刻重传丢失的数据报文段，而无需等待超市定时器溢出。这就是 <b>快速重传算法</b> 。
+</p>
+
+<p>
+接下来执行就 <b>不是慢启动而是拥塞避免算法</b> ，这就是快速恢复算法。（注：“恢复”是指从拥塞状况中恢复）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org38ba526" class="outline-3">
+<h3 id="org38ba526">21.8 拥塞举例</h3>
+</div>
+
+<div id="outline-container-org189bc4a" class="outline-3">
+<h3 id="org189bc4a">21.9 按每条路由进行度量</h3>
+<div class="outline-text-3" id="text-org189bc4a">
+<p>
+路由表信息中保留了很多指标。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc0da9e8" class="outline-3">
+<h3 id="orgc0da9e8">21.10 ICMP 的差错</h3>
+<div class="outline-text-3" id="text-orgc0da9e8">
+<p>
+tcp 常见 ICMP 差错就是：源站抑制、主机不可达和网络不可达。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgafcc81c" class="outline-3">
+<h3 id="orgafcc81c">21.11 重组分组</h3>
+<div class="outline-text-3" id="text-orgafcc81c">
+<p>
+当 TCP 超时并重传时，他不一定要重传同样的报文段。相反，TCP 允许进行重新分组而发送一个较大的报文段。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga5fa124" class="outline-2">
+<h2 id="orga5fa124">第二十二章 TCP 的坚持定时器</h2>
+<div class="outline-text-2" id="text-orga5fa124">
+</div>
+<div id="outline-container-org1398566" class="outline-3">
+<h3 id="org1398566">22.1 引言</h3>
+<div class="outline-text-3" id="text-org1398566">
+<p>
+解决：接收方窗口从 0 恢复后，通知窗口变化 ack 可能丢失的问题。
+</p>
+
+<p>
+坚持定时器用来周期性的向接收方查询，以便发现窗口是否增大。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5589bc5" class="outline-3">
+<h3 id="org5589bc5">22.2 一个栗子</h3>
+<div class="outline-text-3" id="text-org5589bc5">
+<p>
+窗口探查包含一个字节的数据。TCP 总是允许在关闭连接钱发送一个字节的数据。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2e6efd5" class="outline-3">
+<h3 id="org2e6efd5">22.3 糊涂窗口综合症</h3>
+<div class="outline-text-3" id="text-org2e6efd5">
+<p>
+待了解
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4339a56" class="outline-2">
+<h2 id="org4339a56">第二十三章 TCP 的保活定时器</h2>
+<div class="outline-text-2" id="text-org4339a56">
+</div>
+<div id="outline-container-org2478df7" class="outline-3">
+<h3 id="org2478df7">23.1 引言</h3>
+<div class="outline-text-3" id="text-org2478df7">
+<p>
+保活功能主要是为服务器应用程序提供的。服务器应用程序希望知道客户主机是否崩溃，从而可以代表客户使用资源。
+</p>
+
+<p>
+保活功能就是试图在服务端检测到这种半开放连接。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb131506" class="outline-3">
+<h3 id="orgb131506">23.2 描述</h3>
+<div class="outline-text-3" id="text-orgb131506">
+<p>
+如果一个给定的连接在两个小时内没有任何动作，则服务器就向客户发送一个探查报文段。客户端必须处于以下 4 中状态之一：
+</p>
+<ul class="org-ul">
+<li>客户主机依然正常运行，并从服务器可达。此种情况将正常响应探查。</li>
+<li>客户主机已经崩溃并重新启动。此种情况不能正常响应探查，此后主机将每隔 75 秒发送一个探查报文，连续发 10 次，如果服务器没有收到一个响应，认为客户端已经关闭并终止连接。</li>
+<li>客户主机已经崩溃并已经重新启动。响应复位报文。</li>
+<li>客户主机正常响应，但是从服务器不可达。处理同 2.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2e74224" class="outline-3">
+<h3 id="org2e74224">23.3 保活举例</h3>
+</div>
+</div>
+<div id="outline-container-org68452a9" class="outline-2">
+<h2 id="org68452a9">第二十四章 TCP 的未来和性能</h2>
+</div>
+<div id="outline-container-org39f4828" class="outline-2">
+<h2 id="org39f4828">第二十五章 SNMP：简单网络管理协议</h2>
+</div>
+<div id="outline-container-org509fa39" class="outline-2">
+<h2 id="org509fa39">第二十六章 Telnet 和 Rlogin：远程登陆</h2>
+</div>
+
+<div id="outline-container-orge82488e" class="outline-2">
+<h2 id="orge82488e">第二十七章 FTP：文件传送协议</h2>
+</div>
+
+<div id="outline-container-org8e6992f" class="outline-2">
+<h2 id="org8e6992f">第二十八章 SMTP：简单邮件传送键盘</h2>
+</div>
+
+<div id="outline-container-org2b2062a" class="outline-2">
+<h2 id="org2b2062a">第二十九章 网络文件系统</h2>
+</div>
+
+<div id="outline-container-orga943080" class="outline-2">
+<h2 id="orga943080">第三十章 其他的 TCP/IP 应用程序</h2>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.mnstory.net/2017/07/05/network-ethernet-mtu-mss/">https://www.mnstory.net/2017/07/05/network-ethernet-mtu-mss/</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://community.cisco.com/t5/other-network-architecture/why-the-mtu-size-is-1500/td-p/105418">https://community.cisco.com/t5/other-network-architecture/why-the-mtu-size-is-1500/td-p/105418</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

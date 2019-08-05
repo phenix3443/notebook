@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>helm-projectile</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">helm-projectile</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgaa2fd6a">1. 概述</a></li>
+<li><a href="#org1c9da76">2. 安装</a>
+<ul>
+<li><a href="#orgddf8b6b">2.1. package.el</a></li>
+<li><a href="#orgae3ea77">2.2. el-get</a></li>
+<li><a href="#org5265ba0">2.3. Emacs Prelude</a></li>
+<li><a href="#org18b6b91">2.4. Debian and Ubuntu</a></li>
+</ul>
+</li>
+<li><a href="#org1c63cf1">3. 配置</a></li>
+<li><a href="#org48f60b5">4. 使用</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaa2fd6a" class="outline-2">
+<h2 id="orgaa2fd6a"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Projectile 可以与 Helm 集成，通过 helm-source-projectile-projects，helm-source-projectile-files-list，helm-source-projectile-buffers-list 和 helm-source-projectile-recentf-list（位于 helm-projectile.el）。 还有一个使用 Projectile 文件源调用 Helm 的示例函数。 可以这样调用它：
+</p>
+<pre class="example">
+M-x helm-projectile
+</pre>
+
+<p>
+更好的是调用键绑定 =C-c p h=。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1c9da76" class="outline-2">
+<h2 id="org1c9da76"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+安装 helm-projectile 的推荐方法是通过 package.el。
+</p>
+</div>
+
+<div id="outline-container-orgddf8b6b" class="outline-3">
+<h3 id="orgddf8b6b"><span class="section-number-3">2.1</span> package.el</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>MELPA
+You can install a snapshot version of helm-projectile from the MELPA repository. The version of Projectile there will always be up-to-date, but it might be unstable (albeit rarely).</li>
+<li>MELPA Stable
+You can install the last stable version of helm-projectile from the MELPA Stable repository.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgae3ea77" class="outline-3">
+<h3 id="orgae3ea77"><span class="section-number-3">2.2</span> el-get</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+helm-projectile is also available for installation from the el-get package manager.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5265ba0" class="outline-3">
+<h3 id="org5265ba0"><span class="section-number-3">2.3</span> Emacs Prelude</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+helm-projectile is naturally part of the Emacs Prelude. If you're a Prelude user - helm-projectile is already properly configured and ready for action.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18b6b91" class="outline-3">
+<h3 id="org18b6b91"><span class="section-number-3">2.4</span> Debian and Ubuntu</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Users of Debian 9 or later or Ubuntu 16.04 or later may apt-get install elpa-helm-projectile.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1c63cf1" class="outline-2">
+<h2 id="org1c63cf1"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">helm-projectile</span>)
+(helm-projectile-on)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org48f60b5" class="outline-2">
+<h2 id="org48f60b5"><span class="section-number-2">4</span> 使用</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+对于那些喜欢 helm 胜过 ido 的人来说，helm-projectile-switch-project 可以用来代替 projectile-switch-project 切换项目。请注意，这与简单地将 projectile-completion-system 设置为 helm 不同，后者只是使 projectile 能够使用 Helm 完成来补全项目名称。使用 helm-projectile-switch-project 的好处是，在任何选定的项目中，可以触发许多动作，而不仅仅是 “切换到项目” 动作。目前，有五个操作：“切换到项目”，“在 Dired 打开项目目录”，“在 vc-dir 或 magit 中打开项目根目录”，“切换到 Eshell” 和 “Grep 项目文件”。将来会添加更多的行动。
+</p>
+
+<p>
+helm-projectile 能够打开多个文件。先使用 <code>C-SPC</code> 或 <code>M-a</code> 标记文件，然后按 RET，将打开所有选定的文件。
+</p>
+
+<p>
+请注意，helm grep 与 projectile-grep 不同，因为 helm grep 是增量的。要使用它，请选择您的项目（按 C-SPC 选择多个项目），按 “C-s”（或 “C-u C-s” 表示递归 grep），然后键入正则表达式。在 mini buffer 中键入正则表达式时，将以递增方式显示实时 grep 结果。
+</p>
+
+<p>
+helm-projectile 还提供常见 Projectile 命令的 Helm 版本。目前，这些是受支持的命令：
+</p>
+<ul class="org-ul">
+<li>helm-projectile-switch-project</li>
+<li>helm-projectile-find-file</li>
+<li>helm-projectile-find-file-in-known-projects</li>
+<li>helm-projectile-find-file-dwim</li>
+<li>helm-projectile-find-dir</li>
+<li>helm-projectile-recentf</li>
+<li>helm-projectile-switch-to-buffer</li>
+<li>helm-projectile-grep (can be used for both grep or ack)</li>
+<li>helm-projectile-ag</li>
+<li>helm-projectile-rg</li>
+<li>Replace Helm equivalent commands in projectile-commander</li>
+<li>A virtual directory manager that is unique to Helm Projectile</li>
+</ul>
+
+
+<p>
+与普通的 Projectile 命令相比，即使普通命令使用 helm 作为补全系统，为什么要使用这些命令？答案是，Helm 特定命令提供了更多有用的功能。例如，helm-projectile-switch-project 允许在 Dired，Magit 或 Eshell 中打开项目。helm-projectile-find-file 重用 helm-find-files 中的动作（有很多）并且能够打开多个文件。另一个原因是，在大型源树中，projectile 可能很慢，因为它必须打开所有可用的源。
+</p>
+
+<p>
+如果要使用这些命令，则必须将其激活以替换常规的 Projectile 命令：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(setq helm-projectile-fuzzy-match nil)</span>
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">helm-projectile</span>)
+(helm-projectile-on)
+</pre>
+</div>
+
+<p>
+如果你已经激活了 helm-projectile 键绑定，但不喜欢它，可以使用命令 helm-projectile-off 关闭它，而使用普通的 Projectile 绑定。同样，如果要在 Helm Projectile 中禁用模糊匹配（默认情况下启用），则必须在加载 helm-projectile 之前将 helm-projectile-fuzzy-match 设置为 nil。
+</p>
+
+<p>
+要完全学习 Helm Projectile 并了解它的功能，应该参考本指南：<a href="http://tuhdo.github.io/helm-projectile.html">使用 Projectile 和 Helm Projectile 探索大型项目</a> 。
+</p>
+
+<p>
+显然你需要安装 Helm 才能工作。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lua Summary</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Lua Summary</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org47add9e">1. 简介</a>
+<ul>
+<li><a href="#org6759372">1.1. 起源</a></li>
+<li><a href="#org91dc039">1.2. 优点</a></li>
+<li><a href="#org1d5b282">1.3. 特性</a></li>
+<li><a href="#org1eadc90">1.4. 语言文化</a></li>
+</ul>
+</li>
+<li><a href="#orgfef5e25">2. 程序结构</a>
+<ul>
+<li><a href="#org328c9b6">2.1. 总览</a></li>
+<li><a href="#orgda15d50">2.2. 注释</a></li>
+<li><a href="#org6798d8a">2.3. 符号</a>
+<ul>
+<li><a href="#org0aa9542">2.3.1. 字面量</a></li>
+<li><a href="#org8ac5e35">2.3.2. 标识符</a></li>
+<li><a href="#orgc84fb77">2.3.3. 关键字</a></li>
+<li><a href="#orgcb2b490">2.3.4. 运算符</a>
+<ul>
+<li><a href="#org0b0a020">2.3.4.1. 算数运算符</a></li>
+<li><a href="#org7f31043">2.3.4.2. 关系运算符</a></li>
+<li><a href="#orgba8b729">2.3.4.3. 赋值运算符</a></li>
+<li><a href="#org5d2bdbe">2.3.4.4. 逻辑运算符</a></li>
+<li><a href="#orgc615bdd">2.3.4.5. 位运算符</a></li>
+<li><a href="#org1210705">2.3.4.6. 其他</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgaec9b1b">2.4. 表达式</a></li>
+<li><a href="#org992f15f">2.5. 语句</a>
+<ul>
+<li><a href="#orgce37984">2.5.1. 声明与定义</a></li>
+<li><a href="#org0ccb739">2.5.2. 赋值</a></li>
+<li><a href="#orga36bab9">2.5.3. 函数调用</a></li>
+<li><a href="#orgc6de30a">2.5.4. 执行控制</a>
+<ul>
+<li><a href="#orgbee68fa">2.5.4.1. 分支</a></li>
+<li><a href="#org65ee690">2.5.4.2. 循环</a></li>
+<li><a href="#org6382306">2.5.4.3. 跳转</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org575b2c4">2.6. 函数</a>
+<ul>
+<li><a href="#org21ec795">2.6.1. 闭包</a></li>
+</ul>
+</li>
+<li><a href="#orgf3f459b">2.7. 模块</a></li>
+</ul>
+</li>
+<li><a href="#orgdaf6ab2">3. 类型系统</a>
+<ul>
+<li><a href="#org1c2f899">3.1. 数值类型</a></li>
+<li><a href="#org46094eb">3.2. 字符类型</a></li>
+<li><a href="#org42a234e">3.3. 布尔类型</a></li>
+<li><a href="#org555bf05">3.4. 空类型</a></li>
+<li><a href="#org7c37c3d">3.5. 存储类型</a></li>
+<li><a href="#org8c4ecd9">3.6. 自定义类型</a></li>
+<li><a href="#orgeed9263">3.7. 类型转换</a></li>
+<li><a href="#org90f66ed">3.8. 类型判断</a></li>
+</ul>
+</li>
+<li><a href="#org4ac99d3">4. 数据结构</a></li>
+<li><a href="#orgc64140d">5. 错误处理</a>
+<ul>
+<li><a href="#org783c430">5.1. error</a></li>
+<li><a href="#org060106e">5.2. assert</a></li>
+<li><a href="#org331866c">5.3. pcall</a></li>
+<li><a href="#org6cb2656">5.4. xpcall</a></li>
+<li><a href="#org22ac633">5.5. 实践</a></li>
+</ul>
+</li>
+<li><a href="#org1fac29a">6. 编码规范</a></li>
+<li><a href="#org3c2685b">7. 高级特性</a>
+<ul>
+<li><a href="#org671d261">7.1. 元表（metatable）</a>
+<ul>
+<li><a href="#org086b8a4">7.1.1. 使用元表实现 OOP</a></li>
+</ul>
+</li>
+<li><a href="#org3466195">7.2. 协程</a></li>
+<li><a href="#orgeb8c9a0">7.3. 线程</a></li>
+<li><a href="#orge4055e1">7.4. 与 C 程序相互调用</a></li>
+<li><a href="#org86e8024">7.5. 与 C++ 程序相互调用</a></li>
+<li><a href="#orga3df1d3">7.6. 迭代器与泛型 for</a></li>
+</ul>
+</li>
+<li><a href="#org0ced4b0">8. 程序库</a>
+<ul>
+<li><a href="#org9436e4b">8.1. luaossl</a></li>
+<li><a href="#org98ed0bd">8.2. lua-iconv</a></li>
+<li><a href="#org7c4e22e">8.3. lua-cjson</a></li>
+<li><a href="#orgaf06c4f">8.4. lualogging</a></li>
+<li><a href="#org2b0763f">8.5. luasocket</a></li>
+<li><a href="#org5b020aa">8.6. luafilesystem</a></li>
+<li><a href="#org262b3e4">8.7. loop</a></li>
+<li><a href="#org6b9c6f7">8.8. protobuf</a></li>
+<li><a href="#org1ef868e">8.9. lpeg</a></li>
+<li><a href="#org4b075e7">8.10. lua-struct</a></li>
+<li><a href="#orgdc6078b">8.11. serpent</a></li>
+<li><a href="#orgf246322">8.12. luaunit</a></li>
+<li><a href="#org504749d">8.13. busted</a></li>
+</ul>
+</li>
+<li><a href="#org5cfd42f">9. 参考书籍</a>
+<ul>
+<li><a href="#org9441eb8">9.1. 入门</a></li>
+<li><a href="#orged25d36">9.2. 高级</a></li>
+<li><a href="#org0cd4335">9.3. 实践</a></li>
+<li><a href="#org9e1dae9">9.4. 原理</a></li>
+</ul>
+</li>
+<li><a href="#org4d23aed">10. 相关工具</a>
+<ul>
+<li><a href="#org98abf87">10.1. 安装运行</a></li>
+<li><a href="#org5fdc725">10.2. 标准命令</a></li>
+<li><a href="#orgd3e843d">10.3. 集成开发</a></li>
+<li><a href="#orgbbc8b85">10.4. 静态检查</a>
+<ul>
+<li><a href="#org3453949">10.4.1. lua-check</a></li>
+</ul>
+</li>
+<li><a href="#org4326bac">10.5. 构建编译</a></li>
+<li><a href="#org54bd23b">10.6. 代码调试</a></li>
+<li><a href="#org664adaa">10.7. 内存检查</a></li>
+<li><a href="#orgac3ac9a">10.8. 性能分析</a></li>
+<li><a href="#org72d3486">10.9. 自动测试</a></li>
+<li><a href="#orgece5d42">10.10. 文档系统</a></li>
+<li><a href="#orgce662aa">10.11. 包管理</a>
+<ul>
+<li><a href="#org89d1ea0">10.11.1. luarocks</a></li>
+</ul>
+</li>
+<li><a href="#org9d12367">10.12. 其他工具</a></li>
+</ul>
+</li>
+<li><a href="#org7a8102f">11. 扩展阅读</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org47add9e" class="outline-2">
+<h2 id="org47add9e"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org6759372" class="outline-3">
+<h3 id="org6759372"><span class="section-number-3">1.1</span> 起源</h3>
+</div>
+<div id="outline-container-org91dc039" class="outline-3">
+<h3 id="org91dc039"><span class="section-number-3">1.2</span> 优点</h3>
+</div>
+<div id="outline-container-org1d5b282" class="outline-3">
+<h3 id="org1d5b282"><span class="section-number-3">1.3</span> 特性</h3>
+</div>
+<div id="outline-container-org1eadc90" class="outline-3">
+<h3 id="org1eadc90"><span class="section-number-3">1.4</span> 语言文化</h3>
+</div>
+</div>
+<div id="outline-container-orgfef5e25" class="outline-2">
+<h2 id="orgfef5e25"><span class="section-number-2">2</span> 程序结构</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org328c9b6" class="outline-3">
+<h3 id="org328c9b6"><span class="section-number-3">2.1</span> 总览</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="HTML">
+<p>
+
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgda15d50" class="outline-3">
+<h3 id="orgda15d50"><span class="section-number-3">2.2</span> 注释</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+单行注释：
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #6c6c6c; font-style: italic;">-- </span><span style="color: #6c6c6c; font-style: italic;">single line comment</span>
+</pre>
+</div>
+<p>
+块注释
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #6c6c6c; font-style: italic;">--</span><span style="color: #6c6c6c; font-style: italic;">[[</span>
+<span style="color: #6c6c6c; font-style: italic;">    block comment</span>
+<span style="color: #6c6c6c; font-style: italic;">--]]</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6798d8a" class="outline-3">
+<h3 id="org6798d8a"><span class="section-number-3">2.3</span> 符号</h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-org0aa9542" class="outline-4">
+<h4 id="org0aa9542"><span class="section-number-4">2.3.1</span> 字面量</h4>
+</div>
+<div id="outline-container-org8ac5e35" class="outline-4">
+<h4 id="org8ac5e35"><span class="section-number-4">2.3.2</span> 标识符</h4>
+</div>
+<div id="outline-container-orgc84fb77" class="outline-4">
+<h4 id="orgc84fb77"><span class="section-number-4">2.3.3</span> 关键字</h4>
+</div>
+<div id="outline-container-orgcb2b490" class="outline-4">
+<h4 id="orgcb2b490"><span class="section-number-4">2.3.4</span> 运算符</h4>
+<div class="outline-text-4" id="text-2-3-4">
+</div>
+<div id="outline-container-org0b0a020" class="outline-5">
+<h5 id="org0b0a020"><span class="section-number-5">2.3.4.1</span> 算数运算符</h5>
+<div class="outline-text-5" id="text-2-3-4-1">
+<p>
+加、减、乘、除、mod
+</p>
+
+<p>
+算数运算符对整数来说，计算结果的符号永远与第二个参数相同。对实数来说，它有一些额外的用途。例如，x%1 表示 x 的小数部分，x-x%1 表示 x 的整数部分。类似的，x-x%0.01 将 x 精确到小数点后 2 位。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7f31043" class="outline-5">
+<h5 id="org7f31043"><span class="section-number-5">2.3.4.2</span> 关系运算符</h5>
+<div class="outline-text-5" id="text-2-3-4-2">
+<p>
+gt,ge,lt,le,eq,noteq
+</p>
+</div>
+</div>
+<div id="outline-container-orgba8b729" class="outline-5">
+<h5 id="orgba8b729"><span class="section-number-5">2.3.4.3</span> 赋值运算符</h5>
+</div>
+<div id="outline-container-org5d2bdbe" class="outline-5">
+<h5 id="org5d2bdbe"><span class="section-number-5">2.3.4.4</span> 逻辑运算符</h5>
+</div>
+<div id="outline-container-orgc615bdd" class="outline-5">
+<h5 id="orgc615bdd"><span class="section-number-5">2.3.4.5</span> 位运算符</h5>
+</div>
+<div id="outline-container-org1210705" class="outline-5">
+<h5 id="org1210705"><span class="section-number-5">2.3.4.6</span> 其他</h5>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaec9b1b" class="outline-3">
+<h3 id="orgaec9b1b"><span class="section-number-3">2.4</span> 表达式</h3>
+</div>
+<div id="outline-container-org992f15f" class="outline-3">
+<h3 id="org992f15f"><span class="section-number-3">2.5</span> 语句</h3>
+<div class="outline-text-3" id="text-2-5">
+</div>
+<div id="outline-container-orgce37984" class="outline-4">
+<h4 id="orgce37984"><span class="section-number-4">2.5.1</span> 声明与定义</h4>
+</div>
+<div id="outline-container-org0ccb739" class="outline-4">
+<h4 id="org0ccb739"><span class="section-number-4">2.5.2</span> 赋值</h4>
+</div>
+<div id="outline-container-orga36bab9" class="outline-4">
+<h4 id="orga36bab9"><span class="section-number-4">2.5.3</span> 函数调用</h4>
+</div>
+<div id="outline-container-orgc6de30a" class="outline-4">
+<h4 id="orgc6de30a"><span class="section-number-4">2.5.4</span> 执行控制</h4>
+<div class="outline-text-4" id="text-2-5-4">
+</div>
+<div id="outline-container-orgbee68fa" class="outline-5">
+<h5 id="orgbee68fa"><span class="section-number-5">2.5.4.1</span> 分支</h5>
+</div>
+<div id="outline-container-org65ee690" class="outline-5">
+<h5 id="org65ee690"><span class="section-number-5">2.5.4.2</span> 循环</h5>
+<div class="outline-text-5" id="text-2-5-4-2">
+<p>
+为什么 Lua 没有 continue？官方也有作出了<a href="http://www.luafaq.org/#T1.26">解释</a>。
+</p>
+
+<p>
+那么如何用别的机制来代码 continue 呢？有一个比较简单的方法：在循环内套一个 repeat &#x2026; until true，再将想用 continue 的地方写成 break。如：
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #a1db00;">for</span> <span style="color: #ff8700;">i</span> = 1, 10 <span style="color: #a1db00;">do</span>
+    <span style="color: #a1db00;">repeat</span>
+        <span style="color: #a1db00;">if</span> i == 5 <span style="color: #a1db00;">then</span>
+            <span style="color: #a1db00;">break</span>
+        <span style="color: #a1db00;">end</span>
+        <span style="color: #d18aff;">print</span>(i)
+    <span style="color: #a1db00;">until</span> <span style="color: #5fafd7;">true</span>
+<span style="color: #a1db00;">end</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6382306" class="outline-5">
+<h5 id="org6382306"><span class="section-number-5">2.5.4.3</span> 跳转</h5>
+</div>
+</div>
+</div>
+<div id="outline-container-org575b2c4" class="outline-3">
+<h3 id="org575b2c4"><span class="section-number-3">2.6</span> 函数</h3>
+<div class="outline-text-3" id="text-2-6">
+</div>
+<div id="outline-container-org21ec795" class="outline-4">
+<h4 id="org21ec795"><span class="section-number-4">2.6.1</span> 闭包</h4>
+<div class="outline-text-4" id="text-2-6-1">
+<p>
+简单地讲，一个 closure 就是一个函数加上该函数所需访问的所有“非局部的变量”。感觉类似 C++中的 lamda 捕获。
+</p>
+
+<p>
+主要作用有两个：返回回调函数和定义沙盒函数。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf3f459b" class="outline-3">
+<h3 id="orgf3f459b"><span class="section-number-3">2.7</span> 模块</h3>
+</div>
+</div>
+<div id="outline-container-orgdaf6ab2" class="outline-2">
+<h2 id="orgdaf6ab2"><span class="section-number-2">3</span> 类型系统</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org1c2f899" class="outline-3">
+<h3 id="org1c2f899"><span class="section-number-3">3.1</span> 数值类型</h3>
+</div>
+<div id="outline-container-org46094eb" class="outline-3">
+<h3 id="org46094eb"><span class="section-number-3">3.2</span> 字符类型</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+可以 <b>用一对匹配的双方括号来界定一个字母字符串</b> ，就像写块注释那样。 <b>以这种形式书写的字符串可以延伸多行，且 Lua 不会解释其中的转义序列，</b> 如果字符串的第一个字符是换行符，则 Lua 会忽略它，这种写法对那种含有程序代码的字符串尤为有用，比如：
+</p>
+<div class="org-src-container">
+<pre class="src src-lua">page = <span style="color: #ff4ea3;">[[</span>
+<span style="color: #ff4ea3;">    &lt;html&gt;</span>
+<span style="color: #ff4ea3;">    &lt;head&gt;</span>
+<span style="color: #ff4ea3;">    &lt;title&gt;An HTML Page&lt;/title&gt;</span>
+<span style="color: #ff4ea3;">    &lt;/head&gt;</span>
+<span style="color: #ff4ea3;">    &lt;body&gt;</span>
+<span style="color: #ff4ea3;">    &lt;a href="http://www.lua.org"&gt;lua&lt;/a&gt;</span>
+<span style="color: #ff4ea3;">    &lt;/body&gt;</span>
+<span style="color: #ff4ea3;">    &lt;/html&gt;</span>
+<span style="color: #ff4ea3;">    ]]</span>
+</pre>
+</div>
+<p>
+有时候字符串中可能包含这样的内容： <code>a=b[c[i]]</code> 或者 <b>包含已经被注释掉的代码。为了解决这种问题，需要在两个方括号之间加上任意数量的等号，</b> 如： <code>[===[</code> ，这样字符串只有遇到内嵌有相同数量等号的双右括号时才会结束，即 <code>]===]</code> ，否则 Lua 会忽略它。通过这种方式，就可以不用对此进行转义了。同理，注释块时也可以采用这种机制，即 <code>--[===[</code> 开始， <code>]===]</code>  结束。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42a234e" class="outline-3">
+<h3 id="org42a234e"><span class="section-number-3">3.3</span> 布尔类型</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+true false, false 和 nil 都认为是假。
+</p>
+</div>
+</div>
+<div id="outline-container-org555bf05" class="outline-3">
+<h3 id="org555bf05"><span class="section-number-3">3.4</span> 空类型</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+nil 表示空。
+</p>
+</div>
+</div>
+<div id="outline-container-org7c37c3d" class="outline-3">
+<h3 id="org7c37c3d"><span class="section-number-3">3.5</span> 存储类型</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+table 可用作数组、字典。
+</p>
+
+<p>
+在 Lua 中， <b>table 既不是值也不是变量，而是对象</b> 。可以将一个 table 想象成一种动态分配的对象，程序仅持有一个对它们的引用或指针。
+</p>
+
+<p>
+Lua 将 nil 作为界定数组结尾的标志，当一个数组有空隙（Hole）时，即中间含有 nil 时，长度操作符会认为这些 nil 元素就是结尾标记，因此，应该避免对含有空隙的数组使用长度操作符。当然，可以使用函数 table.maxn 来返回一个 table 的最大正索引数：
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #d18aff;">print</span>(<span style="color: #d18aff;">table</span>.<span style="color: #d18aff;">maxn</span>[a])        <span style="color: #6c6c6c; font-style: italic;">--</span><span style="color: #6c6c6c; font-style: italic;">&gt;10000</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8c4ecd9" class="outline-3">
+<h3 id="org8c4ecd9"><span class="section-number-3">3.6</span> 自定义类型</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+由于 userdata 类型可以将任意的 C 语言数据存储到 Lua 变量中，所以这种类型没有太多的预定义操作，只能进行赋值和相等性测试。userdata 用于表示一种由应用程序或 C 语言库所创建的新类型，例如标准的 I/O 库就用 userdata 来表示文件。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeed9263" class="outline-3">
+<h3 id="orgeed9263"><span class="section-number-3">3.7</span> 类型转换</h3>
+<div class="outline-text-3" id="text-3-7">
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #d18aff;">tonumber</span>() <span style="color: #d18aff;">tostring</span>()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org90f66ed" class="outline-3">
+<h3 id="org90f66ed"><span class="section-number-3">3.8</span> 类型判断</h3>
+<div class="outline-text-3" id="text-3-8">
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #d18aff;">type</span>()
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org4ac99d3" class="outline-2">
+<h2 id="org4ac99d3"><span class="section-number-2">4</span> 数据结构</h2>
+</div>
+<div id="outline-container-orgc64140d" class="outline-2">
+<h2 id="orgc64140d"><span class="section-number-2">5</span> 错误处理</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Lua 遇到任何意外情况都会抛出 <b>异常</b> 。例如相加的不是数字，被索引不是 table 等。
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #a1db00;">local</span> <span style="color: #ff8700;">a</span>
+<span style="color: #d18aff;">print</span>(a[1])
+</pre>
+</div>
+</div>
+<div id="outline-container-org783c430" class="outline-3">
+<h3 id="org783c430"><span class="section-number-3">5.1</span> error</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+也可以通过 <code>error()</code> 函数抛出错误。
+</p>
+<pre class="example">
+error(message[,level])
+</pre>
+
+<p>
+error 终止正在执行的函数，并将 message 的内容作为错误错误信息返回。Level 参数指示获得错误的位置:
+</p>
+<ul class="org-ul">
+<li>Level=1[默认]：为调用 error 位置 (文件 + 行号)</li>
+<li>Level=2：指出哪个调用 error 的函数的函数（为什么没有生效呢？）</li>
+<li>Level=0: 不添加错误位置信息</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org060106e" class="outline-3">
+<h3 id="org060106e"><span class="section-number-3">5.2</span> assert</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+“如果条件不满足，就引发错误”这种逻辑如此常见，所以单独提供 <code>assert()</code> 函数以供使用。
+</p>
+</div>
+</div>
+<div id="outline-container-org331866c" class="outline-3">
+<h3 id="org331866c"><span class="section-number-3">5.3</span> pcall</h3>
+<div class="outline-text-3" id="text-5-3">
+<pre class="example">
+pcall (f [, arg1, ···])
+</pre>
+<p>
+通过该函数来捕获异常。如果调用的函数没有异常，返回 true 和函数的返回值，否则返回 false 和异常消息。
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/40b02a082d6a4fd63e0c6857508ad730.js">https://gist.github.com/phenix3443/40b02a082d6a4fd63e0c6857508ad730.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org6cb2656" class="outline-3">
+<h3 id="org6cb2656"><span class="section-number-3">5.4</span> xpcall</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+在错误发生时，希望获得更多调试信息，而不只是发生错误的位置。但 pcall 返回时，它已经销毁了调用桟的部分内容。
+</p>
+
+<pre class="example">
+xpcall (f, err) --lua5.1
+xpcall (f, msgh [, arg1, ···]) --lua5.3
+</pre>
+
+<p>
+Lua 提供了 xpcall 函数，xpcall 接收第二个参数：—一个错误处理函数，当错误发生时，Lua 会在调用桟展看（unwind）前调用错误处理函数，于是就可以在这个函数中使用 debug 库来获取关于错误的额外信息了。
+</p>
+
+<p>
+debug 库提供了两个通用的错误处理函数:
+</p>
+<ul class="org-ul">
+<li>debug.debug：提供交互模式，让用户来检查错误的原因。</li>
+<li>debug.traceback：根据调用桟来构建一个扩展的错误消息。</li>
+</ul>
+
+<p>
+注意：该函数 5.1 和 5.3 用法不一样
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/c4c4c021fbefba6f466a0d778ea84f5c.js">https://gist.github.com/phenix3443/c4c4c021fbefba6f466a0d778ea84f5c.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org22ac633" class="outline-3">
+<h3 id="org22ac633"><span class="section-number-3">5.5</span> 实践</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+当函数发现意外情况时，可以采取两种方法：
+</p>
+<ul class="org-ul">
+<li>返回（return） 错误代码，通常为 nil 或 false。</li>
+<li>通过调用 <code>error()</code> 引发异常（error 函数永远都不会返回）</li>
+</ul>
+
+<p>
+二者之间如何选择没有固定的规则，可以使用以下指南： 一个 <b>容易避免</b> 的异常应该 <b>引发异常</b> ， 否则，它应该返回错误代码。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1fac29a" class="outline-2">
+<h2 id="org1fac29a"><span class="section-number-2">6</span> 编码规范</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>避免使用下划线（_）开始的标识符，它们仅限于 Lua 的特殊用途。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3c2685b" class="outline-2">
+<h2 id="org3c2685b"><span class="section-number-2">7</span> 高级特性</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org671d261" class="outline-3">
+<h3 id="org671d261"><span class="section-number-3">7.1</span> 元表（metatable）</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+表的行为由其元表控制。元表有很多有用的元方法：
+</p>
+<ul class="org-ul">
+<li>setmetatable 和 getmetatable</li>
+<li>算术类元方法： <code>__add  __ sub  __mul  __div  __unm  __mod  __pow __concat</code> ，分别对应操作 加，减，乘，除，相反数，取模，乘幂，连接（ <code>..</code> ）。</li>
+<li>关系类元方法： <code>__eq __lt __le</code> ，分别对应  <code>=,&lt;,&lt;=</code></li>
+<li>访问的元方法： <code>__index __newindex rawget rawset</code></li>
+<li>序列化元方法： <code>__tostring</code></li>
+</ul>
+</div>
+
+<div id="outline-container-org086b8a4" class="outline-4">
+<h4 id="org086b8a4"><span class="section-number-4">7.1.1</span> 使用元表实现 OOP</h4>
+<div class="outline-text-4" id="text-7-1-1">
+<p>
+实际上，Lua 有一个非常通用的机制来扩展表的行为，如果元表具有 <code>__index</code> 函数或表，它将处理查找原始表中找不到的任何内容。这使得实现类变得简单。
+</p>
+
+<p>
+<b>类只是一个带有指向自身的 <code>__index</code> 键的表。</b>
+</p>
+
+<p>
+<b>创建一个对象包括创建一个表并将其 metatable 设置为该类。</b>
+</p>
+
+<p>
+在处理 <code>obj.fun</code> 时，Lua 首先在表 obj 中查找，如果没有找到，它在类中查找它。 <code>obj:fun（a）</code> 只是 <code>obj.fun(obj,a)</code> 的缩写。 因此，使用 metatable 机制和这一点语法糖，可以直接实现经典的面向对象。
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/6b9004164e188442e20a86e953fab474.js">https://gist.github.com/phenix3443/6b9004164e188442e20a86e953fab474.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+<p>
+生产中使用 penlight 库的表。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org3466195" class="outline-3">
+<h3 id="org3466195"><span class="section-number-3">7.2</span> 协程</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+协程与线程差不多，也就是一条执行序列，拥有自己独立的栈、局部变量和指令指针，同时又与其他协程共享全局变量和其他大部分东西。
+</p>
+
+<p>
+协程和线程的主要区别基本上就是非抢占式和抢占式的区别。
+</p>
+
+<p>
+现在的操作系统的进程/线程 调度模型是抢占式的。在用户空间下无法完全自主控制进程/线程 的切换。抢占又引发竞争。在高并发的情况下，由于强行切换导致的资源竞争冲突会经常性发生，严重影响性能。
+而协程是非抢占式的，程序逻辑可以保证不在锁没有释放的情况下切换，从而每个获得执行权的协程都可以有效的执行逻辑，避免资源竞争引起的并发冲突。
+</p>
+
+<p>
+非抢占式（协程）模型下，要求程序逻辑主动、及时的释放执行权。在最初的 windows3,windows95 系统是非抢占式的，一旦某个进程/线程不主动释放执行权，整个系统就会被卡死，所以现在的操作系统的进程/线程调度方式都是抢占式的。由于非抢占式（协程）模型在高并发下有其优势，很多程序使用这种模式调度其并发逻辑。
+</p>
+
+<p>
+<b>当一个协同程序调用 yield 时，它不是进入了一个新的函数，而是从一个悬而未决的调用中返回。同样的，对于 resume 的调用也不会启动一个新函数，而是从一次 yeild 调用中返回。</b> 要深刻理解这一点，有利于分析协程的执行过程。同时也说明了协程和回调函数的区别。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeb8c9a0" class="outline-3">
+<h3 id="orgeb8c9a0"><span class="section-number-3">7.3</span> 线程</h3>
+</div>
+<div id="outline-container-orge4055e1" class="outline-3">
+<h3 id="orge4055e1"><span class="section-number-3">7.4</span> 与 C 程序相互调用</h3>
+</div>
+<div id="outline-container-org86e8024" class="outline-3">
+<h3 id="org86e8024"><span class="section-number-3">7.5</span> 与 C++ 程序相互调用</h3>
+</div>
+<div id="outline-container-orga3df1d3" class="outline-3">
+<h3 id="orga3df1d3"><span class="section-number-3">7.6</span> 迭代器与泛型 for</h3>
+</div>
+</div>
+<div id="outline-container-org0ced4b0" class="outline-2">
+<h2 id="org0ced4b0"><span class="section-number-2">8</span> 程序库</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org9436e4b" class="outline-3">
+<h3 id="org9436e4b"><span class="section-number-3">8.1</span> <a href="https://github.com/wahern/luaossl">luaossl</a></h3>
+</div>
+<div id="outline-container-org98ed0bd" class="outline-3">
+<h3 id="org98ed0bd"><span class="section-number-3">8.2</span> lua-iconv</h3>
+</div>
+<div id="outline-container-org7c4e22e" class="outline-3">
+<h3 id="org7c4e22e"><span class="section-number-3">8.3</span> <a href="https://luarocks.org/modules/luarocks/lua-cjson">lua-cjson</a></h3>
+</div>
+<div id="outline-container-orgaf06c4f" class="outline-3">
+<h3 id="orgaf06c4f"><span class="section-number-3">8.4</span> <a href="https://github.com/Neopallium/lualogging">lualogging</a></h3>
+</div>
+<div id="outline-container-org2b0763f" class="outline-3">
+<h3 id="org2b0763f"><span class="section-number-3">8.5</span> <a href="https://github.com/diegonehab/luasocket">luasocket</a></h3>
+</div>
+<div id="outline-container-org5b020aa" class="outline-3">
+<h3 id="org5b020aa"><span class="section-number-3">8.6</span> <a href="https://keplerproject.github.io/luafilesystem/">luafilesystem</a></h3>
+</div>
+<div id="outline-container-org262b3e4" class="outline-3">
+<h3 id="org262b3e4"><span class="section-number-3">8.7</span> <a href="http://loop.luaforge.net/">loop</a></h3>
+</div>
+<div id="outline-container-org6b9c6f7" class="outline-3">
+<h3 id="org6b9c6f7"><span class="section-number-3">8.8</span> <a href="https://luarocks.org/modules/djungelorm/protobuf">protobuf</a></h3>
+</div>
+<div id="outline-container-org1ef868e" class="outline-3">
+<h3 id="org1ef868e"><span class="section-number-3">8.9</span> <a href="http://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html">lpeg</a></h3>
+</div>
+<div id="outline-container-org4b075e7" class="outline-3">
+<h3 id="org4b075e7"><span class="section-number-3">8.10</span> <a href="https://github.com/iryont/lua-struct">lua-struct</a></h3>
+</div>
+<div id="outline-container-orgdc6078b" class="outline-3">
+<h3 id="orgdc6078b"><span class="section-number-3">8.11</span> <a href="https://github.com/pkulchenko/serpent">serpent</a></h3>
+</div>
+<div id="outline-container-orgf246322" class="outline-3">
+<h3 id="orgf246322"><span class="section-number-3">8.12</span> <a href="https://github.com/bluebird75/luaunit">luaunit</a></h3>
+</div>
+<div id="outline-container-org504749d" class="outline-3">
+<h3 id="org504749d"><span class="section-number-3">8.13</span> <a href="http://olivinelabs.com/busted/">busted</a></h3>
+</div>
+</div>
+
+<div id="outline-container-org5cfd42f" class="outline-2">
+<h2 id="org5cfd42f"><span class="section-number-2">9</span> 参考书籍</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org9441eb8" class="outline-3">
+<h3 id="org9441eb8"><span class="section-number-3">9.1</span> 入门</h3>
+<div class="outline-text-3" id="text-9-1">
+<ul class="org-ul">
+<li><a href="https://book.douban.com/subject/26932940/">Programming in Lua</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orged25d36" class="outline-3">
+<h3 id="orged25d36"><span class="section-number-3">9.2</span> 高级</h3>
+</div>
+<div id="outline-container-org0cd4335" class="outline-3">
+<h3 id="org0cd4335"><span class="section-number-3">9.3</span> 实践</h3>
+<div class="outline-text-3" id="text-9-3">
+<ul class="org-ul">
+<li><a href="https://www.lua.org/gems/">Lua Programming Gems</a></li>
+<li><a href="http://lua-users.org/wiki/OptimisationTips">Optimisation Tips</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9e1dae9" class="outline-3">
+<h3 id="org9e1dae9"><span class="section-number-3">9.4</span> 原理</h3>
+<div class="outline-text-3" id="text-9-4">
+<ul class="org-ul">
+<li><a href="https://www.codingnow.com/temp/readinglua.pdf">Lua 源码欣赏</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org4d23aed" class="outline-2">
+<h2 id="org4d23aed"><span class="section-number-2">10</span> 相关工具</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-org98abf87" class="outline-3">
+<h3 id="org98abf87"><span class="section-number-3">10.1</span> 安装运行</h3>
+</div>
+<div id="outline-container-org5fdc725" class="outline-3">
+<h3 id="org5fdc725"><span class="section-number-3">10.2</span> 标准命令</h3>
+</div>
+<div id="outline-container-orgd3e843d" class="outline-3">
+<h3 id="orgd3e843d"><span class="section-number-3">10.3</span> 集成开发</h3>
+</div>
+<div id="outline-container-orgbbc8b85" class="outline-3">
+<h3 id="orgbbc8b85"><span class="section-number-3">10.4</span> 静态检查</h3>
+<div class="outline-text-3" id="text-10-4">
+</div>
+<div id="outline-container-org3453949" class="outline-4">
+<h4 id="org3453949"><span class="section-number-4">10.4.1</span> <a href="https://github.com/mpeterv/luacheck">lua-check</a></h4>
+</div>
+</div>
+<div id="outline-container-org4326bac" class="outline-3">
+<h3 id="org4326bac"><span class="section-number-3">10.5</span> 构建编译</h3>
+</div>
+<div id="outline-container-org54bd23b" class="outline-3">
+<h3 id="org54bd23b"><span class="section-number-3">10.6</span> 代码调试</h3>
+</div>
+<div id="outline-container-org664adaa" class="outline-3">
+<h3 id="org664adaa"><span class="section-number-3">10.7</span> 内存检查</h3>
+</div>
+<div id="outline-container-orgac3ac9a" class="outline-3">
+<h3 id="orgac3ac9a"><span class="section-number-3">10.8</span> 性能分析</h3>
+</div>
+<div id="outline-container-org72d3486" class="outline-3">
+<h3 id="org72d3486"><span class="section-number-3">10.9</span> 自动测试</h3>
+</div>
+<div id="outline-container-orgece5d42" class="outline-3">
+<h3 id="orgece5d42"><span class="section-number-3">10.10</span> 文档系统</h3>
+</div>
+<div id="outline-container-orgce662aa" class="outline-3">
+<h3 id="orgce662aa"><span class="section-number-3">10.11</span> 包管理</h3>
+<div class="outline-text-3" id="text-10-11">
+</div>
+<div id="outline-container-org89d1ea0" class="outline-4">
+<h4 id="org89d1ea0"><span class="section-number-4">10.11.1</span> <a href="https://luarocks.org/">luarocks</a></h4>
+</div>
+</div>
+<div id="outline-container-org9d12367" class="outline-3">
+<h3 id="org9d12367"><span class="section-number-3">10.12</span> 其他工具</h3>
+</div>
+</div>
+<div id="outline-container-org7a8102f" class="outline-2">
+<h2 id="org7a8102f"><span class="section-number-2">11</span> 扩展阅读</h2>
+<div class="outline-text-2" id="text-11">
+<ul class="org-ul">
+<li><a href="https://www.lua.org/manual/5.3/">Lua 5.3 Reference Manual</a></li>
+<li><a href="https://cloudwu.github.io/lua53doc/manual.html">云风翻译的Lua 5.3 参考手册</a></li>
+<li><a href="http://www.lua.org/gems/">Lua 编程精粹（programming Gems）</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

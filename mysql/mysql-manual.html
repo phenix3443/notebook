@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MYSQL Reference Manual</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">MYSQL Reference Manual</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2d76d0c">1. 简介</a></li>
+<li><a href="#org14d0e18">2. Preface and Legal Notices</a></li>
+<li><a href="#orgbf83808">3. General Information</a></li>
+<li><a href="#org831dd58">4. Installing and Upgrading MySQL</a></li>
+<li><a href="#org4c80e07">5. Using MySQL as a Document Store</a></li>
+<li><a href="#orgb848aa9">6. Tutorial</a></li>
+<li><a href="#orgf6b088f">7. MySQL Programs</a>
+<ul>
+<li><a href="#orgd11641e">7.1. Overview of MySQL Programs</a></li>
+<li><a href="#orgacc67fa">7.2. Using MySQL Programs</a>
+<ul>
+<li><a href="#org76790ee">7.2.1. Invoking MySQL Programs</a></li>
+<li><a href="#org160e83e">7.2.2. Connecting to the MySQL Server</a></li>
+<li><a href="#org1df0b05">7.2.3. Specifying Program Options</a></li>
+<li><a href="#orgc0e9b63">7.2.4. Using Options on the Command Line</a></li>
+<li><a href="#orgafdb448">7.2.5. Program Option Modifiers</a></li>
+<li><a href="#org17a748b">7.2.6. Using Option Files</a></li>
+<li><a href="#org4e3818b">7.2.7. Command-Line Options that Affect Option-File Handling</a></li>
+<li><a href="#orge7bf750">7.2.8. Using Options to Set Program Variables</a></li>
+<li><a href="#orgb60cae4">7.2.9. Option Defaults, Options Expecting Values, and the = Sign</a></li>
+<li><a href="#org25cc85e">7.2.10. Setting Environment Variables</a></li>
+</ul>
+</li>
+<li><a href="#org5507cfb">7.3. MySQL Server and Server-Startup Programs</a></li>
+<li><a href="#org3633dd6">7.4. MySQL Installation-Related Programs</a></li>
+<li><a href="#org9b03127">7.5. MySQL Client Programs</a>
+<ul>
+<li><a href="#org79e125c">7.5.1. mysql — The MySQL Command-Line Tool</a>
+<ul>
+<li><a href="#org20b7323">7.5.1.1. mysql Options</a></li>
+<li><a href="#org829123d">7.5.1.2. mysql Commands</a></li>
+<li><a href="#org02533d8">7.5.1.3. mysql Logging</a></li>
+<li><a href="#org87397ca">7.5.1.4. mysql Server-Side Help</a></li>
+<li><a href="#orgdb71c1e">7.5.1.5. Executing SQL Statements from a Text File</a></li>
+<li><a href="#orga1c48b8">7.5.1.6. mysql Tips</a></li>
+</ul>
+</li>
+<li><a href="#org5ec5946">7.5.2. mysqladmin — Client for Administering a MySQL Server</a></li>
+<li><a href="#org0a657ca">7.5.3. mysqlcheck — A Table Maintenance Program</a></li>
+<li><a href="#org65ad3f4">7.5.4. mysqldump — A Database Backup Program</a></li>
+<li><a href="#orgef82c5e">7.5.5. mysqlimport — A Data Import Program</a></li>
+<li><a href="#org3280b2e">7.5.6. mysqlpump — A Database Backup Program</a></li>
+<li><a href="#orgbd1ca63">7.5.7. mysqlshow — Display Database, Table, and Column Information</a></li>
+<li><a href="#orga485fad">7.5.8. mysqlslap — Load Emulation Client</a></li>
+</ul>
+</li>
+<li><a href="#org868bff2">7.6. MySQL Administrative and Utility Programs</a></li>
+<li><a href="#org80206a9">7.7. MySQL Program Development Utilities</a></li>
+<li><a href="#org9f7b51e">7.8. Miscellaneous Programs</a></li>
+</ul>
+</li>
+<li><a href="#org996c546">8. MySQL Server Administration</a>
+<ul>
+<li><a href="#org580d1cb">8.1. The MySQL Server</a>
+<ul>
+<li><a href="#org9eff953">8.1.1. Server Option and Variable Reference</a></li>
+<li><a href="#org8c95282">8.1.2. Server Configuration Defaults</a></li>
+<li><a href="#org815d627">8.1.3. Server Command Options</a></li>
+<li><a href="#orgf000c7f">8.1.4. Server System Variables</a></li>
+<li><a href="#orgfe701a0">8.1.5. Using System Variables</a></li>
+<li><a href="#orgd552cfe">8.1.6. Server Status Variables</a></li>
+<li><a href="#org796178d">8.1.7. Server SQL Modes</a></li>
+<li><a href="#orgf9dec9a">8.1.8. Server Plugins</a></li>
+<li><a href="#org2f3255b">8.1.9. IPv6 Support</a></li>
+<li><a href="#org1aa2721">8.1.10. Server-Side Help</a></li>
+<li><a href="#org20cd4dd">8.1.11. Server Response to Signals</a></li>
+<li><a href="#org6c5a7d7">8.1.12. The Server Shutdown Process</a></li>
+</ul>
+</li>
+<li><a href="#orgacdc419">8.2. The MySQL Data Directory</a></li>
+<li><a href="#org76d9956">8.3. The mysql System Database</a></li>
+<li><a href="#orgaeba899">8.4. MySQL Server Logs</a></li>
+<li><a href="#org18f411f">8.5. Running Multiple MySQL Instances on One Machine</a></li>
+<li><a href="#org02e7614">8.6. Tracing mysqld Using DTrace</a></li>
+</ul>
+</li>
+<li><a href="#orgfcc0411">9. Security</a></li>
+<li><a href="#orgb9c389c">10. Backup and Recovery</a></li>
+<li><a href="#orgf2931e8">11. Optimization</a></li>
+<li><a href="#org43e2ba5">12. Language Structure</a></li>
+<li><a href="#org798c840">13. Globalization</a></li>
+<li><a href="#org5b785f2">14. Data Types</a></li>
+<li><a href="#org140883f">15. Functions and Operators</a>
+<ul>
+<li><a href="#org6341f25">15.1. 13.5 String Functions</a>
+<ul>
+<li><a href="#org5c18731">15.1.1. 13.5.2 Regular Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgb787f03">16. SQL Statement Syntax</a></li>
+<li><a href="#orgeae09a3">17. The InnoDB Storage Engine</a></li>
+<li><a href="#org035296d">18. Alternative Storage Engines</a></li>
+<li><a href="#org87208fc">19. High Availability and Scalability</a></li>
+<li><a href="#orgc980611">20. Replication</a></li>
+<li><a href="#orgf0d6084">21. MySQL Cluster NDB 7.5</a></li>
+<li><a href="#orgdd371a7">22. Partitioning</a></li>
+<li><a href="#orgb2cbd0a">23. Stored Programs and Views</a></li>
+<li><a href="#org9a0143a">24. INFORMATION_SCHEMA Tables</a></li>
+<li><a href="#orgedb14d2">25. MySQL Performance Schema</a></li>
+<li><a href="#org63d3e1c">26. MySQL sys Schema</a></li>
+<li><a href="#org6e5422a">27. Connectors and APIs</a></li>
+<li><a href="#org63fbd71">28. Extending MySQL</a></li>
+<li><a href="#org302b43d">29. MySQL Enterprise Edition</a></li>
+<li><a href="#orgba3e75d">30. MySQL Workbench</a></li>
+<li><a href="#org04dd98d">31. MySQL 5.7 Frequently Asked Questions</a></li>
+<li><a href="#org9108c08">32. Errors, Error Codes, and Common Problems</a>
+<ul>
+<li><a href="#orgd4268db">32.1. Sources of Error Information</a></li>
+<li><a href="#org8b4f80c">32.2. Types of Error Values</a></li>
+<li><a href="#org7e41f6f">32.3. Server Error Codes and Messages</a></li>
+<li><a href="#orgda92d98">32.4. Client Error Codes and Messages</a></li>
+<li><a href="#org53ccf4b">32.5. Problems and Common Errors</a>
+<ul>
+<li><a href="#org81ef973">32.5.1. How to Determine What Is Causing a Problem</a></li>
+<li><a href="#org0eaccc3">32.5.2. Common Errors When Using MySQL Programs</a></li>
+<li><a href="#orgc435381">32.5.3. Administration-Related Issues</a></li>
+<li><a href="#org4eb447e">32.5.4. Query-Related Issues</a>
+<ul>
+<li><a href="#orgf04202a">32.5.4.1. Case Sensitivity in String Searches</a></li>
+<li><a href="#org9adc23c">32.5.4.2. Problems Using DATE Columns</a></li>
+<li><a href="#org3ebf132">32.5.4.3. Problems with NULL Values</a></li>
+<li><a href="#org92ff0b9">32.5.4.4. Problems with Column Aliases</a></li>
+<li><a href="#org3656b01">32.5.4.5. Rollback Failure for Nontransactional Tables</a></li>
+<li><a href="#org3e0f490">32.5.4.6. Deleting Rows from Related Tables</a></li>
+<li><a href="#org159f49b">32.5.4.7. Solving Problems with No Matching Rows</a></li>
+<li><a href="#orgabf0d31">32.5.4.8. Problems with Floating-Point Values</a></li>
+</ul>
+</li>
+<li><a href="#org46cfb12">32.5.5. Optimizer-Related Issues</a></li>
+<li><a href="#org54fb27e">32.5.6. Table Definition-Related Issues</a></li>
+<li><a href="#orgfc5cd52">32.5.7. Known Issues in MySQL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org9f77c08">33. Restrictions and Limits</a></li>
+<li><a href="#org91fd557">34. MySQL Glossary</a></li>
+<li><a href="#orgf167161">35. General Index</a></li>
+<li><a href="#org85aa896">36. Function Index</a></li>
+<li><a href="#orgc0162e0">37. Command Index</a></li>
+<li><a href="#orgf230cad">38. Function Index</a></li>
+<li><a href="#org839a7f9">39. INFORMATION_SCHEMA Index</a></li>
+<li><a href="#org9c97bba">40. Join Types Index</a></li>
+<li><a href="#orgb049a21">41. Operator Index</a></li>
+<li><a href="#orga347ff6">42. Option Index</a></li>
+<li><a href="#org1f4eac0">43. Privileges Index</a></li>
+<li><a href="#org8a27aa2">44. Modes Index</a></li>
+<li><a href="#org1e91472">45. Statement/Syntax Index</a></li>
+<li><a href="#orgdb9a113">46. Status Variable Index</a></li>
+<li><a href="#orgb5d6bd3">47. System Variable Index</a></li>
+<li><a href="#orge0ce76f">48. Transaction Isolation Level Index</a></li>
+</ul>
+</div>
+</div>
+<p>
+#+email：phenix3443@gmail.com
+</p>
+
+<div id="outline-container-org2d76d0c" class="outline-2">
+<h2 id="org2d76d0c"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+基于<a href="https://dev.mysql.com/doc/refman/5.7/en/">MySQL 5.7 Reference Manual</a>以及日常使用整理的最佳实践。排列按照手册章节进行排列。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org14d0e18" class="outline-2">
+<h2 id="org14d0e18"><span class="section-number-2">2</span> Preface and Legal Notices</h2>
+</div>
+<div id="outline-container-orgbf83808" class="outline-2">
+<h2 id="orgbf83808"><span class="section-number-2">3</span> General Information</h2>
+</div>
+<div id="outline-container-org831dd58" class="outline-2">
+<h2 id="org831dd58"><span class="section-number-2">4</span> Installing and Upgrading MySQL</h2>
+</div>
+<div id="outline-container-org4c80e07" class="outline-2">
+<h2 id="org4c80e07"><span class="section-number-2">5</span> Using MySQL as a Document Store</h2>
+</div>
+<div id="outline-container-orgb848aa9" class="outline-2">
+<h2 id="orgb848aa9"><span class="section-number-2">6</span> Tutorial</h2>
+</div>
+<div id="outline-container-orgf6b088f" class="outline-2">
+<h2 id="orgf6b088f"><span class="section-number-2">7</span> MySQL Programs</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-orgd11641e" class="outline-3">
+<h3 id="orgd11641e"><span class="section-number-3">7.1</span> Overview of MySQL Programs</h3>
+</div>
+<div id="outline-container-orgacc67fa" class="outline-3">
+<h3 id="orgacc67fa"><span class="section-number-3">7.2</span> Using MySQL Programs</h3>
+<div class="outline-text-3" id="text-7-2">
+</div>
+<div id="outline-container-org76790ee" class="outline-4">
+<h4 id="org76790ee"><span class="section-number-4">7.2.1</span> Invoking MySQL Programs</h4>
+</div>
+<div id="outline-container-org160e83e" class="outline-4">
+<h4 id="org160e83e"><span class="section-number-4">7.2.2</span> Connecting to the MySQL Server</h4>
+</div>
+<div id="outline-container-org1df0b05" class="outline-4">
+<h4 id="org1df0b05"><span class="section-number-4">7.2.3</span> Specifying Program Options</h4>
+</div>
+<div id="outline-container-orgc0e9b63" class="outline-4">
+<h4 id="orgc0e9b63"><span class="section-number-4">7.2.4</span> Using Options on the Command Line</h4>
+</div>
+<div id="outline-container-orgafdb448" class="outline-4">
+<h4 id="orgafdb448"><span class="section-number-4">7.2.5</span> Program Option Modifiers</h4>
+</div>
+<div id="outline-container-org17a748b" class="outline-4">
+<h4 id="org17a748b"><span class="section-number-4">7.2.6</span> Using Option Files</h4>
+</div>
+<div id="outline-container-org4e3818b" class="outline-4">
+<h4 id="org4e3818b"><span class="section-number-4">7.2.7</span> Command-Line Options that Affect Option-File Handling</h4>
+</div>
+<div id="outline-container-orge7bf750" class="outline-4">
+<h4 id="orge7bf750"><span class="section-number-4">7.2.8</span> Using Options to Set Program Variables</h4>
+</div>
+<div id="outline-container-orgb60cae4" class="outline-4">
+<h4 id="orgb60cae4"><span class="section-number-4">7.2.9</span> Option Defaults, Options Expecting Values, and the = Sign</h4>
+</div>
+<div id="outline-container-org25cc85e" class="outline-4">
+<h4 id="org25cc85e"><span class="section-number-4">7.2.10</span> Setting Environment Variables</h4>
+</div>
+</div>
+<div id="outline-container-org5507cfb" class="outline-3">
+<h3 id="org5507cfb"><span class="section-number-3">7.3</span> MySQL Server and Server-Startup Programs</h3>
+</div>
+<div id="outline-container-org3633dd6" class="outline-3">
+<h3 id="org3633dd6"><span class="section-number-3">7.4</span> MySQL Installation-Related Programs</h3>
+</div>
+<div id="outline-container-org9b03127" class="outline-3">
+<h3 id="org9b03127"><span class="section-number-3">7.5</span> MySQL Client Programs</h3>
+<div class="outline-text-3" id="text-7-5">
+</div>
+<div id="outline-container-org79e125c" class="outline-4">
+<h4 id="org79e125c"><span class="section-number-4">7.5.1</span> mysql — The MySQL Command-Line Tool</h4>
+<div class="outline-text-4" id="text-7-5-1">
+</div>
+<div id="outline-container-org20b7323" class="outline-5">
+<h5 id="org20b7323"><span class="section-number-5">7.5.1.1</span> mysql Options</h5>
+</div>
+<div id="outline-container-org829123d" class="outline-5">
+<h5 id="org829123d"><span class="section-number-5">7.5.1.2</span> mysql Commands</h5>
+</div>
+<div id="outline-container-org02533d8" class="outline-5">
+<h5 id="org02533d8"><span class="section-number-5">7.5.1.3</span> mysql Logging</h5>
+</div>
+<div id="outline-container-org87397ca" class="outline-5">
+<h5 id="org87397ca"><span class="section-number-5">7.5.1.4</span> mysql Server-Side Help</h5>
+</div>
+<div id="outline-container-orgdb71c1e" class="outline-5">
+<h5 id="orgdb71c1e"><span class="section-number-5">7.5.1.5</span> Executing SQL Statements from a Text File</h5>
+</div>
+<div id="outline-container-orga1c48b8" class="outline-5">
+<h5 id="orga1c48b8"><span class="section-number-5">7.5.1.6</span> mysql Tips</h5>
+</div>
+</div>
+<div id="outline-container-org5ec5946" class="outline-4">
+<h4 id="org5ec5946"><span class="section-number-4">7.5.2</span> mysqladmin — Client for Administering a MySQL Server</h4>
+</div>
+<div id="outline-container-org0a657ca" class="outline-4">
+<h4 id="org0a657ca"><span class="section-number-4">7.5.3</span> mysqlcheck — A Table Maintenance Program</h4>
+</div>
+<div id="outline-container-org65ad3f4" class="outline-4">
+<h4 id="org65ad3f4"><span class="section-number-4">7.5.4</span> mysqldump — A Database Backup Program</h4>
+</div>
+<div id="outline-container-orgef82c5e" class="outline-4">
+<h4 id="orgef82c5e"><span class="section-number-4">7.5.5</span> mysqlimport — A Data Import Program</h4>
+</div>
+<div id="outline-container-org3280b2e" class="outline-4">
+<h4 id="org3280b2e"><span class="section-number-4">7.5.6</span> mysqlpump — A Database Backup Program</h4>
+</div>
+<div id="outline-container-orgbd1ca63" class="outline-4">
+<h4 id="orgbd1ca63"><span class="section-number-4">7.5.7</span> mysqlshow — Display Database, Table, and Column Information</h4>
+</div>
+<div id="outline-container-orga485fad" class="outline-4">
+<h4 id="orga485fad"><span class="section-number-4">7.5.8</span> mysqlslap — Load Emulation Client</h4>
+</div>
+</div>
+<div id="outline-container-org868bff2" class="outline-3">
+<h3 id="org868bff2"><span class="section-number-3">7.6</span> MySQL Administrative and Utility Programs</h3>
+</div>
+<div id="outline-container-org80206a9" class="outline-3">
+<h3 id="org80206a9"><span class="section-number-3">7.7</span> MySQL Program Development Utilities</h3>
+</div>
+<div id="outline-container-org9f7b51e" class="outline-3">
+<h3 id="org9f7b51e"><span class="section-number-3">7.8</span> Miscellaneous Programs</h3>
+</div>
+</div>
+<div id="outline-container-org996c546" class="outline-2">
+<h2 id="org996c546"><span class="section-number-2">8</span> MySQL Server Administration</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org580d1cb" class="outline-3">
+<h3 id="org580d1cb"><span class="section-number-3">8.1</span> The MySQL Server</h3>
+<div class="outline-text-3" id="text-8-1">
+</div>
+<div id="outline-container-org9eff953" class="outline-4">
+<h4 id="org9eff953"><span class="section-number-4">8.1.1</span> Server Option and Variable Reference</h4>
+</div>
+<div id="outline-container-org8c95282" class="outline-4">
+<h4 id="org8c95282"><span class="section-number-4">8.1.2</span> Server Configuration Defaults</h4>
+</div>
+<div id="outline-container-org815d627" class="outline-4">
+<h4 id="org815d627"><span class="section-number-4">8.1.3</span> Server Command Options</h4>
+</div>
+<div id="outline-container-orgf000c7f" class="outline-4">
+<h4 id="orgf000c7f"><span class="section-number-4">8.1.4</span> Server System Variables</h4>
+</div>
+<div id="outline-container-orgfe701a0" class="outline-4">
+<h4 id="orgfe701a0"><span class="section-number-4">8.1.5</span> Using System Variables</h4>
+</div>
+<div id="outline-container-orgd552cfe" class="outline-4">
+<h4 id="orgd552cfe"><span class="section-number-4">8.1.6</span> Server Status Variables</h4>
+</div>
+<div id="outline-container-org796178d" class="outline-4">
+<h4 id="org796178d"><span class="section-number-4">8.1.7</span> Server SQL Modes</h4>
+</div>
+<div id="outline-container-orgf9dec9a" class="outline-4">
+<h4 id="orgf9dec9a"><span class="section-number-4">8.1.8</span> Server Plugins</h4>
+</div>
+<div id="outline-container-org2f3255b" class="outline-4">
+<h4 id="org2f3255b"><span class="section-number-4">8.1.9</span> IPv6 Support</h4>
+</div>
+<div id="outline-container-org1aa2721" class="outline-4">
+<h4 id="org1aa2721"><span class="section-number-4">8.1.10</span> Server-Side Help</h4>
+</div>
+<div id="outline-container-org20cd4dd" class="outline-4">
+<h4 id="org20cd4dd"><span class="section-number-4">8.1.11</span> Server Response to Signals</h4>
+</div>
+<div id="outline-container-org6c5a7d7" class="outline-4">
+<h4 id="org6c5a7d7"><span class="section-number-4">8.1.12</span> The Server Shutdown Process</h4>
+</div>
+</div>
+<div id="outline-container-orgacdc419" class="outline-3">
+<h3 id="orgacdc419"><span class="section-number-3">8.2</span> The MySQL Data Directory</h3>
+</div>
+<div id="outline-container-org76d9956" class="outline-3">
+<h3 id="org76d9956"><span class="section-number-3">8.3</span> The mysql System Database</h3>
+</div>
+<div id="outline-container-orgaeba899" class="outline-3">
+<h3 id="orgaeba899"><span class="section-number-3">8.4</span> MySQL Server Logs</h3>
+</div>
+<div id="outline-container-org18f411f" class="outline-3">
+<h3 id="org18f411f"><span class="section-number-3">8.5</span> Running Multiple MySQL Instances on One Machine</h3>
+</div>
+<div id="outline-container-org02e7614" class="outline-3">
+<h3 id="org02e7614"><span class="section-number-3">8.6</span> Tracing mysqld Using DTrace</h3>
+</div>
+</div>
+<div id="outline-container-orgfcc0411" class="outline-2">
+<h2 id="orgfcc0411"><span class="section-number-2">9</span> Security</h2>
+</div>
+<div id="outline-container-orgb9c389c" class="outline-2">
+<h2 id="orgb9c389c"><span class="section-number-2">10</span> Backup and Recovery</h2>
+</div>
+<div id="outline-container-orgf2931e8" class="outline-2">
+<h2 id="orgf2931e8"><span class="section-number-2">11</span> Optimization</h2>
+</div>
+<div id="outline-container-org43e2ba5" class="outline-2">
+<h2 id="org43e2ba5"><span class="section-number-2">12</span> Language Structure</h2>
+</div>
+<div id="outline-container-org798c840" class="outline-2">
+<h2 id="org798c840"><span class="section-number-2">13</span> Globalization</h2>
+</div>
+<div id="outline-container-org5b785f2" class="outline-2">
+<h2 id="org5b785f2"><span class="section-number-2">14</span> Data Types</h2>
+</div>
+<div id="outline-container-org140883f" class="outline-2">
+<h2 id="org140883f"><span class="section-number-2">15</span> Functions and Operators</h2>
+<div class="outline-text-2" id="text-15">
+</div>
+<div id="outline-container-org6341f25" class="outline-3">
+<h3 id="org6341f25"><span class="section-number-3">15.1</span> 13.5 String Functions</h3>
+<div class="outline-text-3" id="text-15-1">
+</div>
+<div id="outline-container-org5c18731" class="outline-4">
+<h4 id="org5c18731"><span class="section-number-4">15.1.1</span> 13.5.2 Regular Expressions</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb787f03" class="outline-2">
+<h2 id="orgb787f03"><span class="section-number-2">16</span> SQL Statement Syntax</h2>
+</div>
+<div id="outline-container-orgeae09a3" class="outline-2">
+<h2 id="orgeae09a3"><span class="section-number-2">17</span> The InnoDB Storage Engine</h2>
+</div>
+<div id="outline-container-org035296d" class="outline-2">
+<h2 id="org035296d"><span class="section-number-2">18</span> Alternative Storage Engines</h2>
+</div>
+<div id="outline-container-org87208fc" class="outline-2">
+<h2 id="org87208fc"><span class="section-number-2">19</span> High Availability and Scalability</h2>
+</div>
+<div id="outline-container-orgc980611" class="outline-2">
+<h2 id="orgc980611"><span class="section-number-2">20</span> Replication</h2>
+</div>
+<div id="outline-container-orgf0d6084" class="outline-2">
+<h2 id="orgf0d6084"><span class="section-number-2">21</span> MySQL Cluster NDB 7.5</h2>
+</div>
+<div id="outline-container-orgdd371a7" class="outline-2">
+<h2 id="orgdd371a7"><span class="section-number-2">22</span> Partitioning</h2>
+</div>
+<div id="outline-container-orgb2cbd0a" class="outline-2">
+<h2 id="orgb2cbd0a"><span class="section-number-2">23</span> Stored Programs and Views</h2>
+</div>
+<div id="outline-container-org9a0143a" class="outline-2">
+<h2 id="org9a0143a"><span class="section-number-2">24</span> INFORMATION_SCHEMA Tables</h2>
+</div>
+<div id="outline-container-orgedb14d2" class="outline-2">
+<h2 id="orgedb14d2"><span class="section-number-2">25</span> MySQL Performance Schema</h2>
+</div>
+<div id="outline-container-org63d3e1c" class="outline-2">
+<h2 id="org63d3e1c"><span class="section-number-2">26</span> MySQL sys Schema</h2>
+</div>
+<div id="outline-container-org6e5422a" class="outline-2">
+<h2 id="org6e5422a"><span class="section-number-2">27</span> Connectors and APIs</h2>
+</div>
+<div id="outline-container-org63fbd71" class="outline-2">
+<h2 id="org63fbd71"><span class="section-number-2">28</span> Extending MySQL</h2>
+</div>
+<div id="outline-container-org302b43d" class="outline-2">
+<h2 id="org302b43d"><span class="section-number-2">29</span> MySQL Enterprise Edition</h2>
+</div>
+<div id="outline-container-orgba3e75d" class="outline-2">
+<h2 id="orgba3e75d"><span class="section-number-2">30</span> MySQL Workbench</h2>
+</div>
+<div id="outline-container-org04dd98d" class="outline-2">
+<h2 id="org04dd98d"><span class="section-number-2">31</span> MySQL 5.7 Frequently Asked Questions</h2>
+</div>
+<div id="outline-container-org9108c08" class="outline-2">
+<h2 id="org9108c08"><span class="section-number-2">32</span> Errors, Error Codes, and Common Problems</h2>
+<div class="outline-text-2" id="text-32">
+</div>
+<div id="outline-container-orgd4268db" class="outline-3">
+<h3 id="orgd4268db"><span class="section-number-3">32.1</span> Sources of Error Information</h3>
+</div>
+<div id="outline-container-org8b4f80c" class="outline-3">
+<h3 id="org8b4f80c"><span class="section-number-3">32.2</span> Types of Error Values</h3>
+</div>
+<div id="outline-container-org7e41f6f" class="outline-3">
+<h3 id="org7e41f6f"><span class="section-number-3">32.3</span> Server Error Codes and Messages</h3>
+</div>
+<div id="outline-container-orgda92d98" class="outline-3">
+<h3 id="orgda92d98"><span class="section-number-3">32.4</span> Client Error Codes and Messages</h3>
+</div>
+<div id="outline-container-org53ccf4b" class="outline-3">
+<h3 id="org53ccf4b"><span class="section-number-3">32.5</span> Problems and Common Errors</h3>
+<div class="outline-text-3" id="text-32-5">
+</div>
+<div id="outline-container-org81ef973" class="outline-4">
+<h4 id="org81ef973"><span class="section-number-4">32.5.1</span> How to Determine What Is Causing a Problem</h4>
+</div>
+<div id="outline-container-org0eaccc3" class="outline-4">
+<h4 id="org0eaccc3"><span class="section-number-4">32.5.2</span> Common Errors When Using MySQL Programs</h4>
+</div>
+<div id="outline-container-orgc435381" class="outline-4">
+<h4 id="orgc435381"><span class="section-number-4">32.5.3</span> Administration-Related Issues</h4>
+</div>
+<div id="outline-container-org4eb447e" class="outline-4">
+<h4 id="org4eb447e"><span class="section-number-4">32.5.4</span> Query-Related Issues</h4>
+<div class="outline-text-4" id="text-32-5-4">
+</div>
+<div id="outline-container-orgf04202a" class="outline-5">
+<h5 id="orgf04202a"><span class="section-number-5">32.5.4.1</span> Case Sensitivity in String Searches</h5>
+</div>
+<div id="outline-container-org9adc23c" class="outline-5">
+<h5 id="org9adc23c"><span class="section-number-5">32.5.4.2</span> Problems Using DATE Columns</h5>
+</div>
+<div id="outline-container-org3ebf132" class="outline-5">
+<h5 id="org3ebf132"><span class="section-number-5">32.5.4.3</span> Problems with NULL Values</h5>
+</div>
+<div id="outline-container-org92ff0b9" class="outline-5">
+<h5 id="org92ff0b9"><span class="section-number-5">32.5.4.4</span> Problems with Column Aliases</h5>
+</div>
+<div id="outline-container-org3656b01" class="outline-5">
+<h5 id="org3656b01"><span class="section-number-5">32.5.4.5</span> Rollback Failure for Nontransactional Tables</h5>
+</div>
+<div id="outline-container-org3e0f490" class="outline-5">
+<h5 id="org3e0f490"><span class="section-number-5">32.5.4.6</span> Deleting Rows from Related Tables</h5>
+</div>
+<div id="outline-container-org159f49b" class="outline-5">
+<h5 id="org159f49b"><span class="section-number-5">32.5.4.7</span> Solving Problems with No Matching Rows</h5>
+</div>
+<div id="outline-container-orgabf0d31" class="outline-5">
+<h5 id="orgabf0d31"><span class="section-number-5">32.5.4.8</span> Problems with Floating-Point Values</h5>
+</div>
+</div>
+<div id="outline-container-org46cfb12" class="outline-4">
+<h4 id="org46cfb12"><span class="section-number-4">32.5.5</span> Optimizer-Related Issues</h4>
+</div>
+<div id="outline-container-org54fb27e" class="outline-4">
+<h4 id="org54fb27e"><span class="section-number-4">32.5.6</span> Table Definition-Related Issues</h4>
+</div>
+<div id="outline-container-orgfc5cd52" class="outline-4">
+<h4 id="orgfc5cd52"><span class="section-number-4">32.5.7</span> Known Issues in MySQL</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org9f77c08" class="outline-2">
+<h2 id="org9f77c08"><span class="section-number-2">33</span> Restrictions and Limits</h2>
+</div>
+<div id="outline-container-org91fd557" class="outline-2">
+<h2 id="org91fd557"><span class="section-number-2">34</span> MySQL Glossary</h2>
+</div>
+<div id="outline-container-orgf167161" class="outline-2">
+<h2 id="orgf167161"><span class="section-number-2">35</span> General Index</h2>
+</div>
+<div id="outline-container-org85aa896" class="outline-2">
+<h2 id="org85aa896"><span class="section-number-2">36</span> Function Index</h2>
+</div>
+<div id="outline-container-orgc0162e0" class="outline-2">
+<h2 id="orgc0162e0"><span class="section-number-2">37</span> Command Index</h2>
+</div>
+<div id="outline-container-orgf230cad" class="outline-2">
+<h2 id="orgf230cad"><span class="section-number-2">38</span> Function Index</h2>
+</div>
+<div id="outline-container-org839a7f9" class="outline-2">
+<h2 id="org839a7f9"><span class="section-number-2">39</span> INFORMATION_SCHEMA Index</h2>
+</div>
+<div id="outline-container-org9c97bba" class="outline-2">
+<h2 id="org9c97bba"><span class="section-number-2">40</span> Join Types Index</h2>
+</div>
+<div id="outline-container-orgb049a21" class="outline-2">
+<h2 id="orgb049a21"><span class="section-number-2">41</span> Operator Index</h2>
+</div>
+<div id="outline-container-orga347ff6" class="outline-2">
+<h2 id="orga347ff6"><span class="section-number-2">42</span> Option Index</h2>
+</div>
+<div id="outline-container-org1f4eac0" class="outline-2">
+<h2 id="org1f4eac0"><span class="section-number-2">43</span> Privileges Index</h2>
+</div>
+<div id="outline-container-org8a27aa2" class="outline-2">
+<h2 id="org8a27aa2"><span class="section-number-2">44</span> Modes Index</h2>
+</div>
+<div id="outline-container-org1e91472" class="outline-2">
+<h2 id="org1e91472"><span class="section-number-2">45</span> Statement/Syntax Index</h2>
+</div>
+<div id="outline-container-orgdb9a113" class="outline-2">
+<h2 id="orgdb9a113"><span class="section-number-2">46</span> Status Variable Index</h2>
+</div>
+<div id="outline-container-orgb5d6bd3" class="outline-2">
+<h2 id="orgb5d6bd3"><span class="section-number-2">47</span> System Variable Index</h2>
+</div>
+<div id="outline-container-orge0ce76f" class="outline-2">
+<h2 id="orge0ce76f"><span class="section-number-2">48</span> Transaction Isolation Level Index</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RTags 使用</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">RTags 使用</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9684f46">1. 简介</a></li>
+<li><a href="#org96864bb">2. 快速入门</a>
+<ul>
+<li><a href="#orgf4439be">2.1. 编译 Rtags</a></li>
+<li><a href="#orgcf6733b">2.2. 启动 rtags daemon（rdm）</a></li>
+<li><a href="#orgab5abe3">2.3. 索引 rtags 项目</a></li>
+<li><a href="#orgc12a601">2.4. 使用 Emacs 打开文件</a></li>
+<li><a href="#org89d1b9a">2.5. Load rtags.el</a></li>
+<li><a href="#orgadf890d">2.6. 确保能找到 rc</a></li>
+<li><a href="#org59d5644">2.7. 调用 rtags-find-symbol-at-point</a></li>
+</ul>
+</li>
+<li><a href="#org37cd5e7">3. 安装</a></li>
+<li><a href="#org210182b">4. Setup</a>
+<ul>
+<li><a href="#orgbf9fd3f">4.1. ninja</a></li>
+<li><a href="#orgc2c3771">4.2. cmake</a></li>
+<li><a href="#org7a8cc66">4.3. Bear</a></li>
+<li><a href="#org128062a">4.4. make</a></li>
+<li><a href="#orgc2a90cc">4.5. Integration with systemd (GNU Linux)</a></li>
+</ul>
+</li>
+<li><a href="#org527ba38">5. 使用</a></li>
+<li><a href="#orgf7a383d">6. Elisp</a>
+<ul>
+<li><a href="#orgf0a74f2">6.1. Functions</a></li>
+</ul>
+</li>
+<li><a href="#org24e751e">7. Variables</a>
+<ul>
+<li><a href="#orgcf407cc">7.1. rtags-path</a></li>
+<li><a href="#org911577c">7.2. rtags-jump-to-first-match</a></li>
+<li><a href="#orgf1ce764">7.3. rtags-find-file-case-insensitive</a></li>
+<li><a href="#org7dd9748">7.4. rtags-find-file-prefer-exact-match</a></li>
+</ul>
+</li>
+<li><a href="#org93f018b">8. Fall back to other taggers（回退到其他 tagger）</a></li>
+<li><a href="#orgfee93d2">9. Code Completion in Emacs:（代码补全）</a></li>
+<li><a href="#orge2e9d87">10. RTags Flycheck integration</a>
+<ul>
+<li><a href="#org1df1fac">10.1. Optional</a></li>
+</ul>
+</li>
+<li><a href="#org791390d">11. Debugging RTags（调试 RTags）</a></li>
+<li><a href="#orgf3e85b9">12. Support for other editors（支持其他编辑器）</a></li>
+<li><a href="#orgab9eb04">13. Disclaimer（免责声明）</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文是对 Github 上 RTags <a href="https://github.com/Andersbakken/rtags">README</a> 文档的翻译。
+</p>
+
+<div id="outline-container-org9684f46" class="outline-2">
+<h2 id="org9684f46"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+RTags is a client/server application that indexes C/C++ code and keeps a persistent file-based database of references, declarations, definitions, symbolnames etc. There’s also limited support for ObjC/ObjC++. It allows you to find symbols by name (including nested class and namespace scope). Most importantly we give you proper follow-symbol and find-references support. We also have neat little things like rename-symbol, integration with clang’s “fixits” (<a href="http://clang.llvm.org/diagnostics.html">http://clang.llvm.org/diagnostics.html</a>). We also integrate with flymake using clang’s vastly superior errors and warnings. Since RTags constantly will reindex “dirty” files you get live updates of compiler errors and warnings. Since we already know how to compile your sources we have a way to quickly bring up the preprocessed output of the current source file in a buffer.
+</p>
+
+<p>
+RTags 是一个客户端/服务器应用程序，它可以索引 C/C++代码，并将引用、声明、定义、符号名等保留到一个基于文件的数据库中。也有限支持 ObjC/OjbC++。可以通过名字查找符号（包括嵌套的类和命名空间）。更重要的是支持合适的后续付豪和引用查找。还有一些小功能，比如重命名符号，与 clang 的“fixits”集成（<a href="http://clang.llvm.org/diagnostics.html">http://clang.llvm.org/diagnostics.html</a>）。 还将 clang 处理错误为和警告方面的优势与 flymake 整合在一起。RTags 不断重新索引“脏”文件，因而会收到编译器错误和警告的实时更新。由于我们已经知道如何编译源代码，因此我们可以快速将当前源文件的预处理输出显示在缓冲区中。
+</p>
+
+<p>
+While existing taggers like gnu global, cscope, etags, ctags etc do a decent job for C they often fall a little bit short for C++. With its incredible lexical complexity, parsing C++ is an incredibly hard task and we make no bones about the fact that the only reason we are able to improve on the current tools is because of clang (<a href="http://clang.llvm.org/">http://clang.llvm.org/</a>). RTags is named RTags in recognition of Roberto Raggi on whose C++ parser we intended to base this project but he assured us clang was the way to go. The name stuck though.
+</p>
+
+<p>
+虽然其他已有的标签工具，如 gnu global，cscope，etags，ctags 等可以很好的处理 C，但是 C++就要差一点。由于 C++难以置信的词法复杂性，解析 C++是一项困难至极的任务，我们能不顾这个事实，在当前工具上作出改进的唯一原因是 clang(<a href="http://clang.llvm.org/">http://clang.llvm.org/</a>)。RTags 名字是也出于对 Roberto Raggi 的认同，我们计划基于它的 C++解析器构建该项目，但是他向我们保证 clang 是一条可行的路。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org96864bb" class="outline-2">
+<h2 id="org96864bb"><span class="section-number-2">2</span> 快速入门</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgf4439be" class="outline-3">
+<h3 id="orgf4439be"><span class="section-number-3">2.1</span> 编译 Rtags</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-sh">git clone --recursive https://github.com/Andersbakken/rtags.git
+<span style="color: #d18aff;">cd</span> rtags
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+make
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcf6733b" class="outline-3">
+<h3 id="orgcf6733b"><span class="section-number-3">2.2</span> 启动 rtags daemon（rdm）</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-sh">./bin/rdm &amp;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgab5abe3" class="outline-3">
+<h3 id="orgab5abe3"><span class="section-number-3">2.3</span> 索引 rtags 项目</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-sh">./bin/rc -J .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc12a601" class="outline-3">
+<h3 id="orgc12a601"><span class="section-number-3">2.4</span> 使用 Emacs 打开文件</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+<pre class="src src-sh">emacs +73:34 src/rdm.cpp
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org89d1b9a" class="outline-3">
+<h3 id="org89d1b9a"><span class="section-number-3">2.5</span> Load rtags.el</h3>
+<div class="outline-text-3" id="text-2-5">
+<pre class="example">
+M-: (load-file "rtags.el") RET
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgadf890d" class="outline-3">
+<h3 id="orgadf890d"><span class="section-number-3">2.6</span> 确保能找到 rc</h3>
+<div class="outline-text-3" id="text-2-6">
+<pre class="example">
+M-x set-variable RET rtags-path RET "../bin" RET
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org59d5644" class="outline-3">
+<h3 id="org59d5644"><span class="section-number-3">2.7</span> 调用 rtags-find-symbol-at-point</h3>
+<div class="outline-text-3" id="text-2-7">
+<pre class="example">
+M-x rtags-find-symbol-at-point RET
+</pre>
+
+<p>
+当前未知就是 <code>Server::instance()</code> 的定义。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org37cd5e7" class="outline-2">
+<h2 id="org37cd5e7"><span class="section-number-2">3</span> 安装</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+参见 <a href="https://github.com/Andersbakken/rtags#installing-rtags">官方说明</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org210182b" class="outline-2">
+<h2 id="org210182b"><span class="section-number-2">4</span> Setup</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+rdm runs in the background and monitors all your indexed files for changes, and reindexes when a source file or one of its dependencies is modified. Since clang is a fully compliant compiler it needs specific information about how your sources are compiled to be able to properly index them. This is done through telling rdm about the compile line like this:
+</p>
+
+<p>
+运行在后台的 rdm 监控所有索引文件的更改，当一个源码文件或者它的依赖修改后它会重新索引。因为 clang 是一个完全兼容的编译器，需要知道如何编译源码的特定信息才能正确的索引它们。这通过如下的编译行来告诉 rdm：
+</p>
+
+<pre class="example">
+  rc -c gcc -I... -fsomeflag -c foobar.c
+  rc -J /path/to/a/directory/containing/compile_commands.json
+</pre>
+
+<p>
+You can generate a <code>compile_commands.json</code> with various different tools, one might fit better than the other, depending on your project build system.
+</p>
+
+<p>
+可以使用各种工具生成 compile_commands.json，工具的选择取决于项目的构建系统：
+</p>
+</div>
+
+<div id="outline-container-orgbf9fd3f" class="outline-3">
+<h3 id="orgbf9fd3f"><span class="section-number-3">4.1</span> ninja</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-sh">ninja -t compdb cxx cc &gt; compile_commands.json
+rc -J
+</pre>
+</div>
+<p>
+With ninja it’s also possible to pipe the commands directly to rc.
+</p>
+
+<p>
+使用 ninja 可以使用管道命令直接输出到 rc。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">ninja -t commands | rc -c -
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Parse commands for a specific target only</span>
+ninja -t commands rdm | rc -c -
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc2c3771" class="outline-3">
+<h3 id="orgc2c3771"><span class="section-number-3">4.2</span> cmake</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+cmake can generate a compile_commands.json file as well.
+</p>
+
+<p>
+cmake 也能生成 compile_commands.json。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+rc -J
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7a8cc66" class="outline-3">
+<h3 id="org7a8cc66"><span class="section-number-3">4.3</span> Bear</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+For other projects you can use bear to generate a compile_commands.json file. However, if you are cross-compiling you probably need to adjust the command entries in the compile_commands.json file to match the correct compiler. Furthermore, make sure you clean your project before invoking bear.
+</p>
+
+<p>
+对于其他项目也可以使用 bear 生成 compile_commands.json 文件。然而，交叉编译可能需要调整 compile_command.json 文件中的命令条目来匹配正确的编译器。此外，调用 bear 之前确保清理了工程。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">make clean
+bear make
+rc -J
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Parse commands for a specific target only</span>
+make clean
+bear make rdm
+rc -J
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org128062a" class="outline-3">
+<h3 id="org128062a"><span class="section-number-3">4.4</span> make</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+You can ask make to only print the recipes without actually doing something. This way may be perfectly fine for not too complex Makefiles.
+</p>
+
+<p>
+可以让 make 只打印信息而不执行任何事情。这种方式可能对于不是很复杂的 makefile 有用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">make clean
+make -nk | rc -c -
+</pre>
+</div>
+
+<p>
+There are very likely similar things you can do with other build systems that we’re unfamiliar with, please let us know if you do.
+</p>
+
+<p>
+其他一些我们不熟悉的构建系统很可能做类似的事情，如果愿意的话，请告诉我们。
+</p>
+
+<p>
+A different approach to get your files indexed is the man-in-the-middle
+</p>
+
+<p>
+索引文件的另一种方法是中间人，可以这样做：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/gcc
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/c++
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/cc
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/g++
+</pre>
+</div>
+
+<p>
+例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">which -a gcc | xargs file
+/home/abakken/bin/gcc: symbolic link to <span style="color: #fa8072;">`/home/abakken/dev/rtags/bin/gcc-rtags-wrapper.sh'</span>
+<span style="color: #fa8072;">/usr/bin/gcc:         symbolic link to `</span>gcc-4.7<span style="color: #ff4ea3;">'</span>
+</pre>
+</div>
+
+<p>
+Now every time you compile a file with which gcc rc will get its grubby hands all over your command line and make sure RTags knows about it.
+</p>
+
+<p>
+现在每次使用 <code>which gcc</code> 编译文件，rc 都会处理你所有的命令行，以确保 RTage 知道。
+</p>
+
+<p>
+RTags will group source files into projects based on some heuristics.
+</p>
+
+<p>
+RTags 基于一些启发式会将工程中的源码文件分组。
+</p>
+
+<p>
+Essentially it will look for certain files/dirs (like configure/CMakeLists.txt/scons.1/.git) etc to try to determine the likely project root for each source file. For generated source files that end up in the build directory we try to find the source root based on similar heuristics around config.status/CMakeCache.txt etc. Usually this works out reasonably well. If it doesn’t for you, you can pass &#x2013;project-root /path/to/the/project/root to rc.
+</p>
+
+<p>
+本质上它会查看特定文件/目录（比如 configure/CMakeLists.txt/scons.1/.git）等来尝试确定每个源码文件的可能的项目根目录。也会尝试根据源码在编译目录中生成的 config.status/CMakeCache.txt 等找到源码根目录。这通常可以很好的解决问题。如果不适合你，可以给 rc 传递 <code>--project-root /path/to/the/project/root</code> 。
+</p>
+
+<p>
+RTags only gives you information about current project when you ask for things by name. You can explicitly change the current project using:
+</p>
+
+<p>
+当通过名字查询时，Rtags 只会给出和当前工程有关的信息。使用如下命令可以显示改变当前工程：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">rc -w foobar
+</pre>
+</div>
+
+<p>
+We try to do it automatically for you by passing along information about the current buffer when we call rc from elisp so that rdm can update its current project on demand.
+</p>
+
+<p>
+当从 elisp 调用 rc 时，将尝试自动传递当前 buffer 的信息，以便 rdm 可以根据需求自动更新它当前的项目，
+</p>
+
+<p>
+RTags keeps a cache of indexed data so you don’t have to reindex everything if you restart it.
+</p>
+
+<p>
+RTags 缓存了索引数据，因而重启后无需重建索引。
+</p>
+
+<p>
+The location of this data is by default ~/.rtags but can be overridden by passing &#x2013;data-dir <i>other/dir to rdm or putting something like this in your ~</i>.rdmrc:
+</p>
+
+<p>
+数据的默认位置 <code>~/.rtags</code> ，但是通过给 rdm 传递 <code>--data-dir /other/dir</code> ，或者在 <code>~/.rdmrc</code> 中写入类似的内容进行覆盖，。
+</p>
+
+<pre class="example">
+   $ cat ~/.rdmrc
+   --data-dir=/other/dir
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc2a90cc" class="outline-3">
+<h3 id="orgc2a90cc"><span class="section-number-3">4.5</span> Integration with systemd (GNU Linux)</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+On GNU/Linux distributions based on the systemd service manager, rdm can also be socket acivated.
+</p>
+
+<p>
+基于 systemd 服务管理的 GNU/Linux 发行版中，rdm 可以通过 socket 激活。
+</p>
+
+<p>
+Add the following to ~/.config/systemd/user/rdm.socket
+</p>
+
+<p>
+将下面的代码写入 <code>~/.config/systemd/user/rdm.socket</code>
+</p>
+
+<pre class="example">
+   [Unit]
+   Description=RTags daemon socket
+
+   [Socket]
+   ListenStream=%h/.rdm
+
+   [Install]
+   WantedBy=multi-user.target
+</pre>
+
+<p>
+Add the following to <code>~/.config/systemd/user/rdm.service</code>
+</p>
+
+<pre class="example">
+   [Unit]
+   Description=RTags daemon
+
+   Requires=rdm.socketp
+
+   [Service]
+   Type=simple
+   ExecStart=$RDM -v --inactivity-timeout 300
+</pre>
+
+
+<p>
+Replace $RDM with the path to your copy of rdm, and add any command line parameters you might usually use.
+</p>
+
+<p>
+将 <code>$RDM</code> 替换为 <code>rdm</code> 的路径，添加可能使用的任何命令行参数。
+</p>
+
+<p>
+You have to use absolute paths here. %h is expanded to your home directory. Environment variables are not expanded inside strings.
+</p>
+
+<p>
+这里必须使用绝对路径。%h 将会扩展为 home 目录，字符串中的环境变量不会扩展。
+</p>
+
+<p>
+Run the following command from the terminal:
+</p>
+
+<p>
+从终端运行如下命令：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"> systemctl --user enable rdm.socket
+ systemctl --user start rdm.socket
+</pre>
+</div>
+
+<p>
+Systemd will create the rdm socket automatically.
+</p>
+
+<p>
+Systemd 将会自动创建 rdm 套接字。
+</p>
+
+<p>
+如果你更喜欢使用 SystemV，可以这样使用：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">!/bin/</span><span style="color: #a1db00;">bash</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">chkconfig: 35 90 12</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">description: Foo server</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span>
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Get function from functions library</span>
+<span style="color: #d18aff;">.</span> /etc/init.d/functions
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Start the service FOO</span>
+<span style="color: #ffd700;">start</span>() {
+        initlog -c <span style="color: #ff4ea3;">"echo -n Starting FOO server: "</span>
+        /path/to/FOO &amp;
+        <span style="color: #6c6c6c; font-style: italic;">### </span><span style="color: #6c6c6c; font-style: italic;">Create the lock file ###</span>
+        touch /var/lock/subsys/FOO
+        success $<span style="color: #ff4ea3;">"FOO server startup"</span>
+        <span style="color: #d18aff;">echo</span>
+}
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Restart the service FOO</span>
+<span style="color: #ffd700;">stop</span>() {
+        initlog -c <span style="color: #ff4ea3;">"echo -n Stopping FOO server: "</span>
+        killproc FOO
+        <span style="color: #6c6c6c; font-style: italic;">### </span><span style="color: #6c6c6c; font-style: italic;">Now, delete the lock file ###</span>
+        rm -f /var/lock/subsys/FOO
+        <span style="color: #d18aff;">echo</span>
+}
+
+<span style="color: #6c6c6c; font-style: italic;">### </span><span style="color: #6c6c6c; font-style: italic;">main logic ###</span>
+<span style="color: #a1db00;">case</span> <span style="color: #ff4ea3;">"$1"</span><span style="color: #a1db00;"> in</span>
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status FOO
+        ;;
+  restart|reload|condrestart)
+        stop
+        start
+        ;;
+  *)
+        <span style="color: #d18aff;">echo</span> $<span style="color: #ff4ea3;">"Usage: $0 {start|stop|restart|reload|status}"</span>
+        <span style="color: #a1db00;">exit</span> 1
+<span style="color: #a1db00;">esac</span>
+
+<span style="color: #a1db00;">exit</span> 0
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org527ba38" class="outline-2">
+<h2 id="org527ba38"><span class="section-number-2">5</span> 使用</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Now that your files are indexed you can start using RTags. Normally you would do this from your editor but the way to extract this information from rdm is to use the command line tool rc.
+</p>
+
+<p>
+现在可以启动 RTags 索引文件了。通常希望从编辑器进行操作，但从 rdm 提取信息的方法是使用命令行工具 rc。 例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ rdm &amp;
+$ ninja -t commands | rc -c
+$ rc --follow-location Job.cpp:20:10
+/home/abakken/dev/rtags/src/Job.h:10:18      List&lt;RegExp&gt; *mPathFiltersRegExp;
+</pre>
+</div>
+
+<p>
+A location has the format of <a href="line:column">line:column</a>.
+</p>
+
+<p>
+location 格式是 <code>file:line:column</code> 。
+</p>
+
+<p>
+For Emacs we maintain a set of elisp bindings that allows you to control RTags from your editor. There are projects that provide integration for other editors out there.
+</p>
+
+<p>
+针对 Emacs 我们维护了一组 elisp 绑定，方便从编辑器控制 RTags。有些别的项目为其他编辑器提供了整合。
+</p>
+
+<p>
+Vim: <a href="https://github.com/lyuts/vim-rtags">https://github.com/lyuts/vim-rtags</a> and <a href="https://github.com/shaneharper/vim-rtags">https://github.com/shaneharper/vim-rtags</a>
+</p>
+
+<p>
+Sublime Text: <a href="https://github.com/rampage644/sublime-rtags">https://github.com/rampage644/sublime-rtags</a>
+</p>
+
+<p>
+Atom: <a href="https://github.com/artagnon/atomic-rtags">https://github.com/artagnon/atomic-rtags</a> and <a href="https://github.com/rajendrant/atom-rtags">https://github.com/rajendrant/atom-rtags</a>
+</p>
+
+<p>
+rc has a vast number of commands and options and we intend to write a man page at some point. Most users will have limited interest in ever calling them manually and would rather just use the interactive elisp functions.
+</p>
+
+<p>
+rc 有大量的命令和选项，我们计划编写一个 man page。大多数用户对手动调用它们兴趣有限，他们更愿意使用交互的 elisp 函数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf7a383d" class="outline-2">
+<h2 id="orgf7a383d"><span class="section-number-2">6</span> Elisp</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgf0a74f2" class="outline-3">
+<h3 id="orgf0a74f2"><span class="section-number-3">6.1</span> Functions</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-elisp">(rtags-start-process-unless-running)
+</pre>
+</div>
+
+<p>
+Start the rdm process unless the process is already running. You may create hook to automatically call this function upon entering, e.g. c-mode or c++mode.
+</p>
+
+<p>
+启动 rdm 进程，除非该进程已经运行。可以创建钩子函数在输入时自动调用该函数，例如 c-mode 或 c++-mode 中。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(rtags-restart-process)
+</pre>
+</div>
+
+<p>
+Restart the rdm process.
+</p>
+
+<p>
+重启 rdm 进程。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"> (rtags-find-symbol-at-point)
+</pre>
+</div>
+
+<p>
+Follow symbol under cursor. For references this goes to the definition (or declaration if no definition is known of the symbol. For declarations it goes to the definition and vice versa. For definitions of variables/parameters with constructors it goes to the constructor in question. If you pass a prefix argument, limit to current source file, if you pass a prefix argument and have narrowed the current file, limit to the narrowed region. This prefix argument is the same for: rtags-find-references-at-point, rtags-find-symbol, rtags-find-references
+</p>
+
+<p>
+跟踪 cursor 下的符号。对于引用会跳转到定义（如果该符号没有定义则跳转到声明。对于声明跳转到定义。对于有构造函数的变量/参数的定义跳转到构造函数。如果传递前缀参数，限制在当前源码文件，如果传递前缀参数并 narrow 了当前文件，会限制于 narrowed 区域。前缀参数同样适用于 rtags-find-references-at-point, rtags-find-symbol, rtags-find-references）
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"> (rtags-find-references-at-point)
+</pre>
+</div>
+
+<p>
+Find all references to symbol under cursor. If symbol is itself a reference it will find all references to the referenced symbol。
+</p>
+
+<p>
+查找当前 cursor 下符号的所有引用。如果符号本身是一个引用，将会查找该符号的所有引用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-find-symbol)
+</pre>
+</div>
+
+<p>
+Prompt for name of symbol to go to. Imagine the following code:
+</p>
+
+<p>
+提示想要跳转的符号，考虑下面的代码：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++">       <span style="color: #a1db00;">namespace</span> <span style="color: #5fafd7;">N</span>
+       {
+           <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">C</span>
+           {
+           <span style="color: #a1db00;">public</span>:
+               <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">func</span>(<span style="color: #00d7af;">int</span>);
+           };
+       };
+
+       <span style="color: #a1db00;">using</span> <span style="color: #a1db00;">namespace</span> <span style="color: #5fafd7;">N</span>;
+       <span style="color: #00d7af;">int</span> <span style="color: #5fafd7;">C</span>::<span style="color: #ffd700;">func</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">val</span>)
+       {
+           <span style="color: #a1db00;">return</span> val * 2;
+       }
+</pre>
+</div>
+
+<p>
+<code>int N::C::func(int)</code> will now be accessible by the following names:
+</p>
+
+<p>
+通过下面的代码可以访问到 <code>int N::C::func(int)</code> ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">func</span>
+<span style="color: #ffd700;">func</span>(<span style="color: #00d7af;">int</span>)
+<span style="color: #5fafd7;">C</span>::func(<span style="color: #00d7af;">int</span>)
+<span style="color: #5fafd7;">C</span>::<span style="color: #00d7af;">func</span>
+<span style="color: #5fafd7;">N</span>::<span style="color: #5fafd7;">C</span>::<span style="color: #ffd700;">func</span>(<span style="color: #00d7af;">int</span>)
+<span style="color: #5fafd7;">N</span>::<span style="color: #5fafd7;">C</span>::func
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-find-references)
+</pre>
+</div>
+
+<p>
+Prompt for name of symbol to find references to. Same as above but find references to symbol rather than declarations and definitions.
+</p>
+
+<p>
+提示要查找引用的符号。除了是查找引用而不是声明和定义，和上面没差别。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-diagnostics)
+</pre>
+</div>
+
+<p>
+Start an async process in a buffer to receive warnings/errors from clang whenever a file gets reindexed. It integrates with flymake to put highlighting on code with warnings and errors。
+</p>
+
+<p>
+重新索引文件时，在 buffer 中启用异步进程接收来自 clang 的警告/错误。它和 flymake 整合在一起，高亮带有警告和错误的代码。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-enable-standard-keybindings)
+</pre>
+</div>
+
+<p>
+Sets up a ton of standard keybindings under C-c r. If you pass a mode to the function it will set it up on that mode, otherwise it will use c-mode-base-map). You can choose a different prefix than C-c r like this:
+</p>
+
+<p>
+在 C-c r 下建立大量的标准键绑定。如果给该函数传递一个模式，将会设置在该模式下，否则使用 c-mode-base-map。可以这样选择不同于 <code>C-c r</code> 的前缀：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-enable-standard-keybindings c-mode-base-map <span style="color: #ff4ea3;">"\C-xr"</span>)
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-find-file)
+</pre>
+</div>
+
+<p>
+Lets you jump to file by name (partial or full, concept kinda stolen from gtags.el) with completion in the project. This includes all files under what we determine to be the root of the project, not just source files.
+</p>
+
+<p>
+在项目补全时通过名字（部分或全部，概念有点来自 gtags.el）跳转到文件。包括项目根目录下面的所有文件，不只是源码文件。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-find-virtuals-at-point)
+</pre>
+</div>
+
+<p>
+For virtual functions, show the various reimplementations of the function at point。
+</p>
+
+<p>
+对于虚函数，显示当前 point 处函数的各种实现。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-fixit)
+</pre>
+</div>
+
+<p>
+Apply clang’s automatic fixits in current file. If you pass a prefix arg use ediff to apply it. See (<a href="http://clang.llvm.org/diagnostics.html">http://clang.llvm.org/diagnostics.html</a>) for more info.
+</p>
+
+<p>
+在当前文件应用 clang 的自动修正。如果传递前缀参数，使用 ediff 来应用它。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-imenu)
+</pre>
+</div>
+
+<p>
+Provides an ido-based imenu like interface to a subset of the symbols in the current file. Note that it does not actually use imenu infrastructure.
+</p>
+
+<p>
+为当前文件中的部分符号提供基于 ido 的类似 imenu 的接口。注意，它并不会使用 imenu 功能。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-location-stack-back)
+(rtags-location-stack-forward)
+</pre>
+</div>
+
+<p>
+Whenever RTags jumps somewhere it pushes a location onto its stack. Jump back and forward in this stack。
+</p>
+
+<p>
+RTags 跳转时都会将位置压栈。可以在栈中前后跳转。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-next-match)
+(rtags-previous-match)
+</pre>
+</div>
+
+<p>
+For functions that return more than one match, jump to the next/previous one.
+</p>
+
+<p>
+对于返回多个匹配的函数，跳转到下一个或下一个。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-preprocess-file)
+</pre>
+</div>
+
+<p>
+Preprocess current file according to known C(XX)Flags and show the result in a buffer. If region is active only display the preprocessed output for that region.
+</p>
+
+<p>
+通过已知的 C(XX)标识预处理当前文件，在 buffer 中显示结果。如果激活了区域则只显示区域的处理结果。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-print-symbol-info)
+</pre>
+</div>
+
+<p>
+Print some info about symbol under cursor
+</p>
+
+<p>
+打印 cursor 下符号的一些信息
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-symbol-type)
+</pre>
+</div>
+
+<p>
+Print the type of the symbol under cursor.
+</p>
+
+<p>
+打印 cursor 下符号的类型
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-print-dependencies)
+</pre>
+</div>
+
+<p>
+Open a buffer showing files that depend on current file/files that current file depends on.
+</p>
+
+<p>
+打开 buffer 显示当前文件所依赖的文件。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-print-enum-value-at-point)
+</pre>
+</div>
+
+<p>
+Print integral value of enum value at point
+</p>
+
+<p>
+打印 point 处枚举变量的整数值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-quit-rdm)
+</pre>
+</div>
+
+<p>
+Shut down rdm
+</p>
+
+<p>
+关闭 rdm
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-rename-symbol)
+</pre>
+</div>
+
+<p>
+Rename symbol under cursor. Make sure all files are saved and fully indexed before using.
+</p>
+
+<p>
+重命名 cursor 下的符号。使用之前确保所有的文件已保存并全部被索引。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-reparse-file)
+</pre>
+</div>
+
+<p>
+Explicitly trigger a reparse of current file. Mostly for debugging. Unless we have bugs it should not be necessary.
+</p>
+
+<p>
+显示触发重新解析当前文件。多用于调试。除非我们有不必要的 bug。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-show-rtags-buffer)
+</pre>
+</div>
+
+<p>
+Switch to <code>*RTags*</code> buffer. This is the buffer where a number of functions display their alternatives when they have more than one match.
+</p>
+
+<p>
+切换到 <code>*RTags*</code> buffer。如果在该 buffer 中显示函数的多个匹配。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-include-file)
+
+</pre>
+</div>
+
+<p>
+Insert selected or entered include, e.g. “string.h”/&lt;string.h&gt; in current buffer, either at the top, after the first include statement or with prefix argument (C-u) at current point.
+</p>
+
+<p>
+在当前 buffer 插入选中或输入的头文件，比如“string.h”/&lt;string.h&gt;，在顶部第一个头文件声明之后插入，使用前缀参数(C-u)在当前 point 处插入。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(rtags-get-include-file-for-symbol)
+</pre>
+</div>
+
+<p>
+Insert include for entered symbol or symbol under courser in current buffer, either at the top, after the first include statement or with prefix argument (C-u) at current point.
+</p>
+
+<p>
+插入正在输入的符号或 cursor 下符号对应的头文件，在顶部第一个头文件声明之后插入，使用前缀参数(C-u)在当前 point 处插入。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org24e751e" class="outline-2">
+<h2 id="org24e751e"><span class="section-number-2">7</span> Variables</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-orgcf407cc" class="outline-3">
+<h3 id="orgcf407cc"><span class="section-number-3">7.1</span> rtags-path</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+Path to rc/rdm if they’re not in $PATH.
+</p>
+
+<p>
+如果 <code>rc/rdm</code> 不在 <code>$PATH</code> 中，改变量说明它们的路径。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org911577c" class="outline-3">
+<h3 id="org911577c"><span class="section-number-3">7.2</span> rtags-jump-to-first-match</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+Similar to compilation-auto-jump-to-first-error. Whether to jump to the first match automatically when there’s more than one.
+</p>
+
+<p>
+类似 compilation-auto-jump-to-first-error。当有多个匹配时，是否自动跳转到第一个匹配。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf1ce764" class="outline-3">
+<h3 id="orgf1ce764"><span class="section-number-3">7.3</span> rtags-find-file-case-insensitive</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+Whether to match files case-insensitively
+</p>
+
+<p>
+匹配文件是否区分大小写。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7dd9748" class="outline-3">
+<h3 id="org7dd9748"><span class="section-number-3">7.4</span> rtags-find-file-prefer-exact-match</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+Whether to exclude partial matches for file names when an exact match is found. E.g. /foobar.cpp /bar.cpp If rtags-find-file-prefer-exact-match is t a query for bar.cpp would only return /bar.cpp, otherwise both foobar.cpp and bar.cpp would be returned.
+</p>
+
+<p>
+是否在找到完全匹配时排除文件名的部分匹配。 例如。 /foobar.cpp /bar.cpp 如果 rtags-find-file-prefer-exact-match 是 t，查询 bar.cpp，则只会返回 / bar.cpp，否则将返回 foobar.cpp 和 bar.cpp。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org93f018b" class="outline-2">
+<h2 id="org93f018b"><span class="section-number-2">8</span> Fall back to other taggers（回退到其他 tagger）</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+You can do something like the following to fall back to e.g. gtags if RTags doesn’t have a certain project indexed:
+</p>
+
+<p>
+如果 RTags 不能索引特定项目，可以使用下面的代码回退，比如 gtags。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">use-rtags</span> (<span style="color: #00d7af;">&amp;optional</span> useFileManager)
+  (<span style="color: #a1db00;">and</span> (rtags-executable-find <span style="color: #ff4ea3;">"rc"</span>)
+       (<span style="color: #a1db00;">cond</span> ((not (gtags-get-rootpath)) t)
+             ((<span style="color: #a1db00;">and</span> (not (eq major-mode 'c++-mode))
+                   (not (eq major-mode 'c-mode))) <span style="color: #dd0000; font-weight: bold;">(rtags-has-filemanager))</span>
+             (useFileManager (rtags-has-filemanager))
+             (t (rtags-is-indexed)))))
+
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-find-symbol-at-point</span> (<span style="color: #00d7af;">&amp;optional</span> prefix)
+  (<span style="color: #a1db00;">interactive</span> <span style="color: #ff4ea3;">"P"</span>)
+  (<span style="color: #a1db00;">if</span> (<span style="color: #a1db00;">and</span> (not (rtags-find-symbol-at-point prefix)) rtags-last-request-not-indexed)
+      (gtags-find-tag)))
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-find-references-at-point</span> (<span style="color: #00d7af;">&amp;optional</span> prefix)
+  (<span style="color: #a1db00;">interactive</span> <span style="color: #ff4ea3;">"P"</span>)
+  (<span style="color: #a1db00;">if</span> (<span style="color: #a1db00;">and</span> (not (rtags-find-references-at-point prefix)) rtags-last-request-not-indexed)
+      (gtags-find-rtag)))
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-find-symbol</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (call-interactively (<span style="color: #a1db00;">if</span> (use-rtags) 'rtags-find-symbol 'gtags-find-symbol)))
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-find-references</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (call-interactively (<span style="color: #a1db00;">if</span> (use-rtags) 'rtags-find-references 'gtags-find-rtag)))
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-find-file</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (call-interactively (<span style="color: #a1db00;">if</span> (use-rtags t) 'rtags-find-file 'gtags-find-file)))
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">tags-imenu</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (call-interactively (<span style="color: #a1db00;">if</span> (use-rtags t) 'rtags-imenu 'idomenu)))
+
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"M-."</span>) (<span style="color: #a1db00;">function</span> tags-find-symbol-at-point))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"M-,"</span>) (<span style="color: #a1db00;">function</span> tags-find-references-at-point))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"M-;"</span>) (<span style="color: #a1db00;">function</span> tags-find-file))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"C-."</span>) (<span style="color: #a1db00;">function</span> tags-find-symbol))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"C-,"</span>) (<span style="color: #a1db00;">function</span> tags-find-references))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"C-&lt;"</span>) (<span style="color: #a1db00;">function</span> rtags-find-virtuals-at-point))
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"M-i"</span>) (<span style="color: #a1db00;">function</span> tags-imenu))
+
+(define-key global-map (kbd <span style="color: #ff4ea3;">"M-."</span>) (<span style="color: #a1db00;">function</span> tags-find-symbol-at-point))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"M-,"</span>) (<span style="color: #a1db00;">function</span> tags-find-references-at-point))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"M-;"</span>) (<span style="color: #a1db00;">function</span> tags-find-file))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"C-."</span>) (<span style="color: #a1db00;">function</span> tags-find-symbol))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"C-,"</span>) (<span style="color: #a1db00;">function</span> tags-find-references))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"C-&lt;"</span>) (<span style="color: #a1db00;">function</span> rtags-find-virtuals-at-point))
+(define-key global-map (kbd <span style="color: #ff4ea3;">"M-i"</span>) (<span style="color: #a1db00;">function</span> tags-imenu))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfee93d2" class="outline-2">
+<h2 id="orgfee93d2"><span class="section-number-2">9</span> Code Completion in Emacs:（代码补全）</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+To enable code completion in Emacs with company mode do the following:
+</p>
+
+<p>
+Emacs 中结合 company mode 启用代码补全：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Enable rtags-diagnostics. The easiest way is to:
+</p>
+
+<p>
+启用 rtags-diagnostics，最简单的方式如下：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">setq</span> rtags-autostart-diagnostics t)
+</pre>
+</div></li>
+
+<li><p>
+but you can also explicitly start it with
+</p>
+
+<p>
+也可以显示启动：
+</p>
+
+<pre class="example">
+    M-x rtags-diagnostics &lt;RET&gt;
+</pre></li>
+
+<li><p>
+Enable completions in RTags:
+</p>
+
+<p>
+使用 RTags 补全：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">setq</span> rtags-completions-enabled t)
+</pre>
+</div></li>
+
+<li><p>
+Enable company-mode
+</p>
+
+<p>
+启用 company-mode
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">company</span>)
+(global-company-mode)
+</pre>
+</div></li>
+
+<li><p>
+Add company-rtags to company-backends:
+</p>
+
+<p>
+company-rtags 添加到 company-backends:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">push</span> 'company-rtags company-backends)
+</pre>
+</div>
+
+<p>
+This minimal init.el configuration should be enough to get completion to work.
+</p>
+
+<p>
+最小的 init.el 应该足以完成启用补全。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">package</span>)
+(package-initialize)
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">rtags</span>)
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">company</span>)
+
+(<span style="color: #a1db00;">setq</span> rtags-autostart-diagnostics t)
+(rtags-diagnostics)
+(<span style="color: #a1db00;">setq</span> rtags-completions-enabled t)
+(<span style="color: #a1db00;">push</span> 'company-rtags company-backends)
+(global-company-mode)
+(define-key c-mode-base-map (kbd <span style="color: #ff4ea3;">"&lt;C-tab&gt;"</span>) (<span style="color: #a1db00;">function</span> company-complete))
+</pre>
+</div>
+
+<p>
+To enable completion in Emacs with auto-complete-mode do the following: …TODO…
+</p>
+
+<p>
+Emacs 中配合 auto-complete-mode 启用补全。。还未实现。。。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge2e9d87" class="outline-2">
+<h2 id="orge2e9d87"><span class="section-number-2">10</span> RTags Flycheck integration</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+To turn on RTags Flycheck support you need to load the flycheck-rtags package.
+</p>
+
+<p>
+RTags Flycheck 需要加载 flycheck-rtags package.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">flycheck-rtags</span>)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org1df1fac" class="outline-3">
+<h3 id="org1df1fac"><span class="section-number-3">10.1</span> Optional</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+You may explicitly select the RTags Flycheck checker for some major modes for better experience.
+</p>
+
+<p>
+可以为某些 major mode 显式选择 RTags Flycheck 检查以获得的更好体验。
+</p>
+
+<p>
+At the moment there is no customize option available to choose between rtags-diagnostics overlays or Flycheck overlays, nor is it planned right now. We recommend setting flycheck-highlighting-mode locally to nil as the RTags overlays are more accurate.
+</p>
+
+<p>
+目前没有可用的定制选项选择 rtags-diagnostics overlays or Flycheck overlays，现在也不计划这么做。推荐局部设置 flycheck-highlighting-mode 为 nil，因为 RTags overlays 更准确。
+</p>
+
+<p>
+Further, Flycheck will trigger automatically, based on events, the syntax checker for the current buffer, this is however, pretty useless in conjunction with RTags. We trigger it manually because we find it gives you a better experience. To turn off the automatic Flycheck syntax checking, set the variable flycheck-check-syntax-automatically locally to nil.
+</p>
+
+<p>
+此外，Flycheck 将根据事件自动激活针对当前 buffer 的语法检查器，然而这与 RTags 结合在一起显得相当无用。手动激活它将会有更好的体验。将 flycheck-check-syntax-automatically 局部设置为 nil 关闭 Flycheck 自动语法检查。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">my-flycheck-rtags-setup</span> ()
+  (flycheck-select-checker 'rtags)
+  (<span style="color: #a1db00;">setq-local</span> flycheck-highlighting-mode nil) <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">RTags creates more accurate overlays.</span>
+  (<span style="color: #a1db00;">setq-local</span> flycheck-check-syntax-automatically nil))
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">c-mode-common-hook is also called by c++-mode</span>
+(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org791390d" class="outline-2">
+<h2 id="org791390d"><span class="section-number-2">11</span> Debugging RTags（调试 RTags）</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+If you find that rp is crashing (leading to output like this: “job crashed 191 9698036154370 0x331e7e30”). You should be able to do the following:
+</p>
+
+<p>
+如果发现 rp 崩溃了（出现类似的输出“job crashed 191 9698036154370 0x331e7e30”）。应该如下处理：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">rdm --suspend-rp-on-crash
+</pre>
+</div>
+
+
+<p>
+When rp crashes the rp process will stay alive, enabling you to debug it with something like this:
+</p>
+
+<p>
+当 rp 崩溃，rp 继承仍然存活，可以如下调试：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">gdb -p <span style="color: #fa8072;">`pidof rp`</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf3e85b9" class="outline-2">
+<h2 id="orgf3e85b9"><span class="section-number-2">12</span> Support for other editors（支持其他编辑器）</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+There are several other projects integrating RTags with other editors.
+</p>
+
+<p>
+有一些其他的项目将 RTags 与其他编辑器整合。
+</p>
+
+<p>
+Sublime Text: <a href="https://github.com/rampage644/sublime-rtags">https://github.com/rampage644/sublime-rtags</a>
+</p>
+
+<p>
+Vim: <a href="https://github.com/lyuts/vim-rtags">https://github.com/lyuts/vim-rtags</a> <a href="https://github.com/shaneharper/vim-rtags">https://github.com/shaneharper/vim-rtags</a> <a href="https://github.com/mattn/vim-rtags">https://github.com/mattn/vim-rtags</a>
+</p>
+
+<p>
+Note to those maintainers. If you need RTags to behave differently or add features to make these other integration’s easier (like produce output in other formats etc), just drop us a note.
+</p>
+
+<p>
+这些维护者请注意，如果需要 RTags 有所不同或添加功能让这些其他集成更简单（比如产生其他格式输出），请给我们留言。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgab9eb04" class="outline-2">
+<h2 id="orgab9eb04"><span class="section-number-2">13</span> Disclaimer（免责声明）</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+RTags is still under development and is not the most stable piece of software you’ll ever find. We’re constantly working to improve on it.
+</p>
+
+<p>
+RTags 仍处于开发阶段，你会发现它并不是最稳定的软件。我们正为了改进它坚持不懈的工作。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

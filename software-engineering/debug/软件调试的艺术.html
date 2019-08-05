@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>软件调试的艺术读书笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">软件调试的艺术读书笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge94e76c">1. 第一章 预备知识</a></li>
+<li><a href="#org29ad9b1">2. 第二章 停下来环顾程序</a></li>
+<li><a href="#org3838474">3. 第三章 检查和设置变量</a></li>
+<li><a href="#org08fd597">4. 第四章 程序崩溃处理</a></li>
+<li><a href="#orgd27551c">5. 第五章 多活动上下文中的调试</a></li>
+<li><a href="#org52e88b5">6. 第六章 特殊主题</a></li>
+<li><a href="#org16b94b4">7. 第七章 其他工具</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge94e76c" class="outline-2">
+<h2 id="orge94e76c"><span class="section-number-2">1</span> 第一章 预备知识</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>调试原则：
+<ul class="org-ul">
+<li>确认的基本原则。</li>
+<li>从简单工作开始调试。</li>
+<li>使用自顶向下的方法。也就是说，调试到函数时候，先通过返回值等确定函数是否执行正确，不要着急进入函数进行单步调试浪费时间。</li>
+<li>使用调试工具确定段错误的位置。</li>
+<li>通过发出中断确定无限循环的位置。</li>
+<li>使用二分搜索。</li>
+</ul></li>
+<li>调试命令：
+<ul class="org-ul">
+<li>断点：
+<ul class="org-ul">
+<li>break，clear,delete,disable,enable,enable once, info break, 。</li>
+<li>tbreak</li>
+<li>next,step,continue,finish，until</li>
+</ul></li>
+
+<li>打印：
+<ul class="org-ul">
+<li>print，list</li>
+<li>watch</li>
+<li>backtrace，frame</li>
+</ul></li>
+
+<li>帮助：
+<ul class="org-ul">
+<li>help breakpoints</li>
+</ul></li>
+</ul></li>
+
+<li>图形界面:
+<ul class="org-ul">
+<li><p>
+使用 TUI 模式
+</p>
+<pre class="example">
+	  gdb -tui
+</pre>
+<p>
+或者在 TUI 模式的 GDB 中使用 Ctrl+X+A 进入。
+</p></li>
+
+<li>使用 CGDB。</li>
+</ul></li>
+
+<li>启动文件 .gdbinit。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org29ad9b1" class="outline-2">
+<h2 id="org29ad9b1"><span class="section-number-2">2</span> 第二章 停下来环顾程序</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>暂停机制：断点，监视点，捕获点。</li>
+<li>同一行代码上的多个断点只会中断一次，触发中断的断点将是标识符编号最小的断点。</li>
+<li>使用断点命令列表在每次执行到某个断点时候自动执行一组命令。</li>
+<li>调试命令：
+<ul class="org-ul">
+<li>commands，silent，define</li>
+<li>define 使用要不停的按下回车才能不断的调用？参见第二章 fibonacci 例子。</li>
+</ul></li>
+<li>监视点只能监视存在且在作用域内的变量。一旦变量不再存在于调用栈的任何帧中，GDB 会自动删除监视点。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3838474" class="outline-2">
+<h2 id="org3838474"><span class="section-number-2">3</span> 第三章 检查和设置变量</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>调试命令：
+<ul class="org-ul">
+<li>disp, commands, call</li>
+<li>*pointer@number_of_elements</li>
+<li>ptype</li>
+<li>info locals</li>
+<li>x</li>
+<li>set</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org08fd597" class="outline-2">
+<h2 id="org08fd597"><span class="section-number-2">4</span> 第四章 程序崩溃处理</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>内存布局：
+<ul class="org-ul">
+<li>文本区（.text）</li>
+<li>数据区，包含在 <b>编译时</b> 分配的所有程序变量，即全局变量。
+<ul class="org-ul">
+<li>.data，</li>
+<li>.bss，存放未经初始化的变量。</li>
+</ul></li>
+<li>操作系统不会将不完整的页分配给程序。页是虚拟内存系统能够操作的最小内存单元。这一点暗示了程序的一些错误内存访问不会触发段错误。</li>
+<li>当运行程序时，操作系统创建一个用来管理执行程序代码进程的虚拟内存页表。当进程运行时，硬件的页表寄存器都会指向该表。进程虚拟空间的每个页在页表中都有一个页表项。页表项存储与该页相关的各种信息。与段错误相关的是数据该页的访问权限。</li>
+<li>段错误设计访问不具备足够权限的内存。总线错误是提供给处理器的是无效地址。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd27551c" class="outline-2">
+<h2 id="orgd27551c"><span class="section-number-2">5</span> 第五章 多活动上下文中的调试</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>gdb 中手工执行 connect 调用时，必须去掉类型强制转换。</li>
+<li>使用 strace 跟踪程序做过的系统调用。</li>
+<li>在 RUN 状态中并不表示进程实际在 CPU 上执行；相反，这仅意味着它准备运行，即有资格获得处理器的时间片。</li>
+<li>调试命令：
+<ul class="org-ul">
+<li>info threads</li>
+<li>thread 3</li>
+<li>break 88 thread 3</li>
+</ul></li>
+<li>链接库的命令（-lpthread）要放在编译文件后面。</li>
+<li>通过在代码中建立无限循环设置断点。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org52e88b5" class="outline-2">
+<h2 id="org52e88b5"><span class="section-number-2">6</span> 第六章 特殊主题</h2>
+</div>
+
+<div id="outline-container-org16b94b4" class="outline-2">
+<h2 id="org16b94b4"><span class="section-number-2">7</span> 第七章 其他工具</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>strace 用来查看系统函数调用。 -s N 选项强制截短字符，使用-0 LOG ff 切换子进程。</li>
+<li>ltrace 用来查看库函数调用。</li>
+<li>mtrace()</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

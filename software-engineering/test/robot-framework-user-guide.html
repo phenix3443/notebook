@@ -1,0 +1,4281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Robot Framework User Guide</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Robot Framework User Guide</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org45f3ca8">1. Getting started</a>
+<ul>
+<li><a href="#org434bd45">1.1. Introduction（简介）</a>
+<ul>
+<li><a href="#orgf314c06">1.1.1. Why Robot Framework?（为什么使用 Robot Framework）</a></li>
+<li><a href="#orgb383dcc">1.1.2. High-level architecture（高层次架构）</a></li>
+<li><a href="#org2b3d747">1.1.3. Screenshots（截图）</a></li>
+<li><a href="#org2fcd98b">1.1.4. Getting more information</a></li>
+</ul>
+</li>
+<li><a href="#org3cf708f">1.2. Copyright and license</a></li>
+<li><a href="#org25d5c84">1.3. Installation instructions（安装指南）</a>
+<ul>
+<li><a href="#org50f4a03">1.3.1. Introduction（简介）</a></li>
+<li><a href="#orgcd76cbd">1.3.2. Preconditions（先决条件）</a></li>
+<li><a href="#org0ddf99e">1.3.3. Installing with pip（使用 pip 安装）</a></li>
+<li><a href="#org572f8d6">1.3.4. Installing from source</a></li>
+<li><a href="#orgd156dd2">1.3.5. Standalone JAR distribution</a></li>
+<li><a href="#org3161136">1.3.6. Manual installation</a></li>
+<li><a href="#org2898fc1">1.3.7. Verifying installation（确认安装）</a></li>
+<li><a href="#org6b48e91">1.3.8. Uninstallation</a></li>
+<li><a href="#org8fc7f6e">1.3.9. Upgrading（升级）</a></li>
+<li><a href="#orgc98a846">1.3.10. Executing Robot Framework（执行 Robot Framework）</a></li>
+</ul>
+</li>
+<li><a href="#orgf13cd4d">1.4. Demonstrations（示例）</a></li>
+</ul>
+</li>
+<li><a href="#org819e8fc">2. Creating test data</a>
+<ul>
+<li><a href="#org998b35c">2.1. Test data syntax</a>
+<ul>
+<li><a href="#org6b29549">2.1.1. Files and directories（文件和目录）</a></li>
+<li><a href="#org243ce53">2.1.2. Supported file formats（支持的文件格式）</a></li>
+<li><a href="#orgefdaa42">2.1.3. Test data tables（测试数据表格）</a></li>
+<li><a href="#org559cbc7">2.1.4. Rules for parsing the data（解析数据的规则）</a></li>
+</ul>
+</li>
+<li><a href="#orgf254266">2.2. Creating test cases</a>
+<ul>
+<li><a href="#org3ccbbc7">2.2.1. Test case syntax</a></li>
+<li><a href="#org9baca26">2.2.2. Using arguments</a>
+<ul>
+<li><a href="#org65b3863">2.2.2.1. Mandatory arguments（强制参数）</a></li>
+<li><a href="#org71d8caf">2.2.2.2. Default values（默认值）</a></li>
+<li><a href="#orga0f7489">2.2.2.3. Variable number of arguments（可变数目的参数）</a></li>
+<li><a href="#orgb417762">2.2.2.4. Named arguments（命名参数）</a></li>
+<li><a href="#org56e598e">2.2.2.5. Free keyword arguments（自由关键字参数）</a></li>
+<li><a href="#orgae3d8a8">2.2.2.6. Arguments embedded to keyword names（嵌入在关键词名字中的参数）</a></li>
+</ul>
+</li>
+<li><a href="#orgaecb144">2.2.3. Failures</a>
+<ul>
+<li><a href="#org4454197">2.2.3.1. When test case fails（何时测试用例失败）</a></li>
+<li><a href="#org08db1a4">2.2.3.2. Error messages（错误消息）</a></li>
+</ul>
+</li>
+<li><a href="#orgec95bd5">2.2.4. Test case name and documentation（测试用例名字和文档）</a></li>
+<li><a href="#org6bb5d51">2.2.5. Tagging test cases（标记测试用例）</a>
+<ul>
+<li><a href="#orgc591087">2.2.5.1. Reserved tags（保留标签）</a></li>
+</ul>
+</li>
+<li><a href="#org4090bf3">2.2.6. Test setup and teardown</a></li>
+<li><a href="#orgc2fbe92">2.2.7. Test templates</a>
+<ul>
+<li><a href="#orgea31341">2.2.7.1. Basic usage</a></li>
+<li><a href="#org6e6005e">2.2.7.2. Templates with embedded arguments</a></li>
+<li><a href="#org9234a06">2.2.7.3. Templates with for loops</a></li>
+</ul>
+</li>
+<li><a href="#org1a98b76">2.2.8. Different test case styles</a>
+<ul>
+<li><a href="#orge2b3870">2.2.8.1. Keyword-driven style</a></li>
+<li><a href="#orgc333004">2.2.8.2. Data-driven style</a></li>
+<li><a href="#orge6c8346">2.2.8.3. Behavior-driven style</a></li>
+<li><a href="#org7e2537f">2.2.8.4. Ignoring Given/When/Then/And/But prefixes</a></li>
+<li><a href="#org2fab82d">2.2.8.5. Embedding data to keywords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org32ce306">2.3. Using test libraries</a></li>
+</ul>
+</li>
+<li><a href="#org2d8470f">3. Executing test cases</a></li>
+<li><a href="#org18086c2">4. Extending Robot Framework</a></li>
+<li><a href="#org2ec25e0">5. Supporting Tools</a></li>
+<li><a href="#orgca21ef6">6. Appendices</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org45f3ca8" class="outline-2">
+<h2 id="org45f3ca8"><span class="section-number-2">1</span> Getting started</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org434bd45" class="outline-3">
+<h3 id="org434bd45"><span class="section-number-3">1.1</span> Introduction（简介）</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Robot Framework is a Python-based, extensible keyword-driven test automation framework for end-to-end acceptance testing and acceptance-test-driven development (ATDD). It can be used for testing distributed, heterogeneous applications, where verification requires touching several technologies and interfaces.
+</p>
+
+<p>
+Robot Framework 是一个基于 python，可扩展关键字驱动测试的自动化框架，针对端到端验收测试和验收测试驱动开发（ATDD）。可以用于测试分布式、异构应用程序，验证需要接触几种技术和接口。
+</p>
+</div>
+
+<div id="outline-container-orgf314c06" class="outline-4">
+<h4 id="orgf314c06"><span class="section-number-4">1.1.1</span> Why Robot Framework?（为什么使用 Robot Framework）</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li><p>
+Enables easy-to-use tabular syntax for creating test cases in a uniform way.
+</p>
+
+<p>
+使用易于使用的表格语法以统一方式创建测试用例。
+</p></li>
+
+<li><p>
+Provides ability to create reusable higher-level keywords from the existing keywords.
+</p>
+
+<p>
+可以根据已有的关键词创建可重用更高层次的关键词。
+</p></li>
+
+<li><p>
+Provides easy-to-read result reports and logs in HTML format.
+</p>
+
+<p>
+以 HTML 格式提供易读的结果报告和日志。
+</p></li>
+
+<li><p>
+Is platform and application independent.
+</p>
+
+<p>
+独立于平台和应用程序。
+</p></li>
+
+<li><p>
+Provides a command line interface and XML based output files for integration into existing build infrastructure (continuous integration systems).
+</p>
+
+<p>
+提供可用于集成到已有构建设施（持续集成系统）的命令行接口和基于 XML 的输出文件。
+</p></li>
+
+<li><p>
+Provides support for Selenium for web testing, Java GUI testing, running processes, Telnet, SSH, and so on.
+</p>
+
+<p>
+支持用于 web 测试的 Selenium，Java GUI 测试，运行程序，Telnet，SSH 等。
+</p></li>
+
+<li><p>
+Supports creating data-driven test cases.
+</p>
+
+<p>
+支持创建数据驱动的测试用例。
+</p></li>
+
+<li><p>
+Has built-in support for variables, practical particularly for testing in different environments.
+</p>
+
+<p>
+内建支持变量，对测试不同环境特别有用。
+</p></li>
+
+<li><p>
+Provides tagging to categorize and select test cases to be executed.
+</p>
+
+<p>
+提供的标签可用于分类和选择要执行的测试用例。
+</p></li>
+
+<li><p>
+Enables easy integration with source control: test suites are just files and directories that can be versioned with the production code.
+</p>
+
+<p>
+易于集成到源码控制：测试套件是文件和目录，可以和生产代码一起版本控制。
+</p></li>
+
+<li><p>
+Provides test-case and test-suite -level setup and teardown.
+</p>
+
+<p>
+提供测试用例和测试套件级别的 setup 和 teardown。
+</p></li>
+
+<li><p>
+The modular architecture supports creating tests even for applications with several diverse interfaces.
+</p>
+
+<p>
+即使应用程序有多个不同接口，模块化架构支持创建测试用例。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb383dcc" class="outline-4">
+<h4 id="orgb383dcc"><span class="section-number-4">1.1.2</span> High-level architecture（高层次架构）</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Robot Framework is a generic, application and technology independent framework. It has a highly modular architecture illustrated in the diagram below.
+</p>
+
+<p>
+Robot Framework 是一个通用的，独立于应用程序和技术的框架。它有一个如下图所示的高度模块化的架构。
+</p>
+
+
+<div id="org02d3c26" class="figure">
+<p><img src="http://robotframework.org/robotframework/latest/images/architecture.png" alt="architecture.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Robot Framework architecture</p>
+</div>
+
+<p>
+The test data is in simple, easy-to-edit tabular format. When Robot Framework is started, it processes the test data, executes test cases and generates logs and reports. The core framework does not know anything about the target under test, and the interaction with it is handled by test libraries. Libraries can either use application interfaces directly or use lower level test tools as drivers.
+</p>
+
+<p>
+测试数据是简单的，易于编辑的表格形式。Robot Framework 启动后，它处理测试数据，执行测试用例，并生成日志和报告。核心框架不知道任何被测试目标，通过测试库与其交互。库能直接使用应用接口，也可以使用低水平的测试工具作为驱动。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2b3d747" class="outline-4">
+<h4 id="org2b3d747"><span class="section-number-4">1.1.3</span> Screenshots（截图）</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+Following screenshots show examples of the test data and created reports and logs.
+</p>
+
+<p>
+下面的截图是测试数据和创建报告和日志的例子。
+</p>
+
+
+<div id="orgc0eb270" class="figure">
+<p><img src="http://robotframework.org/robotframework/latest/images/testdata_screenshots.png" alt="testdata_screenshots.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Test case files</p>
+</div>
+
+
+<div id="org55017c2" class="figure">
+<p><img src="http://robotframework.org/robotframework/latest/images/screenshots.png" alt="screenshots.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Report and logs</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2fcd98b" class="outline-4">
+<h4 id="org2fcd98b"><span class="section-number-4">1.1.4</span> Getting more information</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+<b>Project pages</b>
+</p>
+
+<p>
+The number one place to find more information about Robot Framework and the rich ecosystem around it is <a href="http://robotframework.org">http://robotframework.org</a>. Robot Framework itself is hosted on GitHub.
+</p>
+
+<p>
+<b>Mailing lists</b>
+</p>
+
+<p>
+There are several Robot Framework mailing lists where to ask and search for more information. The mailing list archives are open for everyone (including the search engines) and everyone can also join these lists freely. Only list members can send mails, though, and to prevent spam new users are moderated which means that it might take a little time before your first message goes through. Do not be afraid to send question to mailing lists but remember How To Ask Questions The Smart Way.
+</p>
+<ul class="org-ul">
+<li><p>
+robotframework-users
+</p>
+
+<p>
+General discussion about all Robot Framework related issues. Questions and problems can be sent to this list. Used also for information sharing for all users.
+</p></li>
+
+<li><p>
+robotframework-announce
+</p>
+
+<p>
+An announcements-only mailing list where only moderators can send messages. All announcements are sent also to the robotframework-users mailing list so there is no need to join both lists.
+</p></li>
+
+<li><p>
+robotframework-devel
+</p>
+
+<p>
+Discussion about Robot Framework development.
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3cf708f" class="outline-3">
+<h3 id="org3cf708f"><span class="section-number-3">1.2</span> Copyright and license</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Robot Framework itself, test libraries and supporting tools distributed with it, as well as this user guide and other provided documentation have the following copyright statement.
+</p>
+
+<blockquote>
+<p>
+Copyright 2008-2015 Nokia Solutions and Networks
+</p>
+
+<p>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+</p>
+
+<p>
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+</p>
+
+<p>
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org25d5c84" class="outline-3">
+<h3 id="org25d5c84"><span class="section-number-3">1.3</span> Installation instructions（安装指南）</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+These instructions cover installing and uninstalling Robot Framework and its preconditions on different operating systems. If you already have pip installed, it is enough to run:
+</p>
+
+<p>
+这些指南包括安装和卸载 Robot Framework，以及不同操作系统上的依赖。如果已经安装 pip，足以运行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pip install robotframework
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org50f4a03" class="outline-4">
+<h4 id="org50f4a03"><span class="section-number-4">1.3.1</span> Introduction（简介）</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Robot Framework is implemented with Python and supports also Jython (JVM) and IronPython (.NET). Before installing the framework, an obvious precondition is installing at least one of these interpreters.
+</p>
+
+<p>
+Robot Framework 使用 Python 实现，也支持 Jython（JVM）和 IronPython（.NET）。安装 Framework 之前，一个明显的前提是至少安装这些解释器中的一个。
+</p>
+
+<p>
+Different ways to install Robot Framework itself are listed below and explained more thoroughly in the subsequent sections.
+</p>
+
+<p>
+下面列出了安装 Robot Framework 的不同方法，随后的章节中进行更加彻底的解释。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Installing with pip（使用 pip 安装）
+</p>
+
+<p>
+Using pip is the recommended way to install Robot Framework. As the standard Python package manager it is included in the latest Python, Jython and IronPython versions. If you already have pip available, you can simply execute:
+</p>
+
+<p>
+推荐使用 pip 安装 Robot Frame。作为标准 Python 包管理器包含在最新版本的 Python，Jython 和 IronPython 版本中。如果已有可用的 pip，可以简单执行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pip install robotframework
+</pre>
+</div></li>
+
+<li><p>
+Installing from source
+</p>
+
+<p>
+This approach works regardless the operating system and the Python interpreter used. You can get the source code either by downloading a source distribution from PyPI and extracting it, or by cloning the GitHub repository .
+</p></li>
+
+<li><p>
+Standalone JAR distribution
+</p>
+
+<p>
+If running tests with Jython is enough, the easiest approach is downloading the standalone robotframework-&lt;version&gt;.jar from Maven central. The JAR distribution contains both Jython and Robot Framework and thus only requires having Java installed.
+</p></li>
+
+<li><p>
+Manual installation
+</p>
+
+<p>
+If you have special needs and nothing else works, you can always do a custom manual installation.
+</p></li>
+</ul>
+
+
+<pre class="example">
+Note
+
+Prior to Robot Framework 3.0, there were also separate Windows installers for 32bit and 64bit Python versions. Because Python 2.7.9 and newer contain pip on Windows and Python 3 would have needed two more installers, it was decided that Windows installers are not created anymore. The recommend installation approach also on Windows is using pip.
+
+Robot Frame 3.0 之前，针对 32 位和 64 位 Python 有单独的 Windows 安装包。由于 Python 2.7.9 及更新版本在 window 上包含 pip，而 Python 3 需要两个额外的安装包，这决定了不再需要 Windows 安装包。Windows 上推荐使用 pip 进行安装。
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgcd76cbd" class="outline-4">
+<h4 id="orgcd76cbd"><span class="section-number-4">1.3.2</span> Preconditions（先决条件）</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+Robot Framework is supported on Python (both Python 2 and Python 3), Jython (JVM) and IronPython (.NET) and runs also on PyPy. The interpreter you want to use should be installed before installing the framework itself.
+</p>
+
+<p>
+Robot Framework 支持 Python (both Python 2 and Python 3), Jython (JVM) and IronPython (.NET)，可以运行于 PyPy。想要使用的解释器应该在框架之前安装。
+</p>
+
+<p>
+Which interpreter to use depends on the needed test libraries and test environment in general. Some libraries use tools or modules that only work with Python, while others may use Java tools that require Jython or need .NET and thus IronPython. There are also many tools and libraries that run fine with all interpreters.
+</p>
+
+<p>
+一般来说使用哪个编译器取决于所需的测试库和测试环境。一些库使用的工具或模块值使用 python，另一些可能使用 java 工具就需要 Jython，或者使用.NET 需要 IronPython。也有很多工具或库和所有的编译器很好的工作。
+</p>
+
+<p>
+If you do not have special needs or just want to try out the framework, it is recommended to use Python. It is the most mature implementation, considerably faster than Jython or IronPython (especially start-up time is faster), and also readily available on most UNIX-like operating systems. Another good alternative is using the standalone JAR distribution that only has Java as a precondition.
+</p>
+
+<p>
+如果没有特殊需求，只是想尝试 framework，推荐使用 Python。它是最成熟的实现，速度大大快于 Jython 或 IronPython（特别是启动时间更短），在大部分类 Unix 操作系统上都可用。另一个不错的选择是使用只要求 Java 作为前提的标准 JAR 发行版。
+</p>
+
+<p>
+<b>Python 2 vs Python 3</b>
+</p>
+
+<p>
+Python 2 and Python 3 are mostly the same language, but they are not fully compatible with each others. The main difference is that in Python 3 all strings are Unicode while in Python 2 strings are bytes by default, but there are also several other backwards incompatible changes. The last Python 2 release is Python 2.7 that was released in 2010 and will be supported until 2020. See Should I use Python 2 or 3? for more information about the differences, which version to use, how to write code that works with both versions, and so on.
+</p>
+
+<p>
+Python2 和 Python3 基本上是同一种语言，但它们之间并不完全兼容。主要区别在于 Python3 中所有字符串都是 Unicode，而 Python 2 默认情况下字符串是字节类型，但也有一些向后不见荣的更改。最新的 Python2 发布是 2010 年发布的 Python2.7，将会支持到 2020 年。查看 Should I use Python 2 or 3?了解更多关于差异，应该选用哪个版本，如何编写两个版本都可用的代码等等。
+</p>
+
+<p>
+Robot Framework 3.0 is the first Robot Framework version to support Python 3. It supports also Python 2, and the plan is to continue Python 2 support as long as Python 2 itself is officially supported. We hope that authors of the libraries and tools in the wider Robot Framework ecosystem also start looking at Python 3 support now that the core framework supports it.
+</p>
+
+<p>
+Robot Framework 3.0 是第一个支持 Python 3 的 Robot Framework 版本。它也支持 Python 2，计划继续支持 Python 2 直到官方支持结束。我们希望更广泛的 Robot Framework 生态系统中的库和工具的作者开始关注 Python 3 支持，现在核心框架已经支持它。
+</p>
+
+<p>
+<b>Python installation</b>
+</p>
+
+<p>
+On most UNIX-like systems such as Linux and OS X you have Python installed by default. If you are on Windows or otherwise need to install Python yourself, a good place to start is <a href="http://python.org">http://python.org</a>. There you can download a suitable installer and get more information about the installation process and Python in general.
+</p>
+
+<p>
+Robot Framework 3.0 supports Python 2.6, 2.7, 3.3 and newer, but the plan is to drop Python 2.6 support in RF 3.1. If you need to use older versions, Robot Framework 2.5-2.8 support Python 2.5 and Robot Framework 2.0-2.1 support Python 2.3 and 2.4.
+</p>
+
+<p>
+On Windows it is recommended to install Python to all users and to run the installer as an administrator. Additionally, environment variable PYTHONCASEOK must not be set.
+</p>
+
+<p>
+After installing Python, you probably still want to configure PATH to make Python itself as well as the robot and rebot runner scripts executable on the command line.
+</p>
+
+<pre class="example">
+Tip
+
+Latest Python Windows installers allow setting PATH as part of the installation. This is disabled by default, but Add python.exe to Path can be enabled on the Customize Python screen.
+</pre>
+
+<p>
+<b>Jython installation</b>
+</p>
+
+<p>
+Using test libraries implemented with Java or that use Java tools internally requires running Robot Framework on Jython, which in turn requires Java Runtime Environment (JRE) or Java Development Kit (JDK). Installing either of these Java distributions is out of the scope of these instructions, but you can find more information, for example, from <a href="http://java.com">http://java.com</a>.
+</p>
+
+<p>
+Installing Jython is a fairly easy procedure, and the first step is getting an installer from <a href="http://jython.org">http://jython.org</a>. The installer is an executable JAR package, which you can run from the command line like java -jar jython_installer-&lt;version&gt;.jar. Depending on the system configuration, it may also be possible to just double-click the installer.
+</p>
+
+<p>
+Robot Framework 3.0 supports Jython 2.7 which requires Java 7 or newer. If older Jython or Java versions are needed, Robot Framework 2.5-2.8 support Jython 2.5 (requires Java 5 or newer) and Robot Framework 2.0-2.1 support Jython 2.2.
+</p>
+
+<p>
+After installing Jython, you probably still want to configure PATH to make Jython itself as well as the robot and rebot runner scripts executable on the command line.
+</p>
+
+<p>
+<b>IronPython installation</b>
+</p>
+
+<p>
+IronPython allows running Robot Framework on the .NET platform and interacting with C# and other .NET languages and APIs. Only IronPython 2.7 is supported.
+</p>
+
+<p>
+When using IronPython, an additional dependency is installing elementtree module 1.2.7 preview release. This is required because the elementtree module distributed with IronPython is broken. You can install the package by downloading the source distribution, unzipping it, and running ipy setup.py install on the command prompt in the created directory.
+</p>
+
+<p>
+After installing IronPython, you probably still want to configure PATH to make IronPython itself as well as the robot and rebot runner scripts executable on the command line.
+</p>
+
+<p>
+<b>Configuring PATH</b>
+</p>
+
+<p>
+The PATH environment variable lists locations where commands executed in a system are searched from. To make using Robot Framework easier from the command prompt, it is recommended to add the locations where the runner scripts are installed into the PATH. It is also often useful to have the interpreter itself in the PATH to make executing it easy.
+</p>
+
+<p>
+When using Python on UNIX-like machines both Python itself and scripts installed with should be automatically in the PATH and no extra actions needed. On Windows and with other interpreters the PATH must be configured separately.
+</p>
+<pre class="example">
+Tip
+
+Latest Python Windows installers allow setting PATH as part of the installation. This is disabled by default, but Add python.exe to Path can be enabled on the Customize Python screen. It will add both the Python installation directory and the Scripts directory to the PATH.
+</pre>
+
+<p>
+<b>What directories to add to PATH</b>
+</p>
+
+<p>
+What directories you need to add to the PATH depends on the interpreter and the operating system. The first location is the installation directory of the interpreter (e.g. C:\Python27) and the other is the location where scripts are installed with that interpreter. Both Python and IronPython install scripts to Scripts directory under the installation directory on Windows (e.g. C:\Python27\Scripts) and Jython uses bin directory regardless the operating system (e.g. C:\jython2.7.0\bin).
+</p>
+
+<p>
+Notice that the Scripts and bin directories may not be created as part of the interpreter installation, but only later when Robot Framework or some other third party module is installed.
+</p>
+
+<p>
+<b>Setting PATH on Windows</b>
+</p>
+
+<p>
+On Windows you can configure PATH by following the steps below. Notice that the exact setting names may be different on different Windows versions, but the basic approach should still be the same.
+</p>
+
+<ul class="org-ul">
+<li>Open Control Panel &gt; System &gt; Advanced &gt; Environment Variables. There are User variables and System variables, and the difference between them is that user variables affect only the current users, whereas system variables affect all users.</li>
+<li>To edit an existing PATH value, select Edit and add ;&lt;InstallationDir&gt;;&lt;ScriptsDir&gt; at the end of the value (e.g. ;C:\Python27;C:\Python27\Scripts). Note that the semicolons (;) are important as they separate the different entries. To add a new PATH value, select New and set both the name and the value, this time without the leading semicolon.</li>
+<li>Exit the dialog with Ok to save the changes.</li>
+<li>Start a new command prompt for the changes to take effect.</li>
+</ul>
+
+<p>
+Notice that if you have multiple Python versions installed, the executed robot or rebot runner script will always use the one that is first in the PATH regardless under what Python version that script is installed. To avoid that, you can always execute the installed robot module directly like C:\Python27\python.exe -m robot.
+</p>
+
+<p>
+Notice also that you should not add quotes around directories you add into the PATH (e.g. "C:\Python27\Scripts"). Quotes can cause problems with Python programs and they are not needed in this context even if the directory path would contain spaces.
+</p>
+
+<p>
+<b>Setting PATH on UNIX-like systems</b>
+</p>
+
+<p>
+On UNIX-like systems you typically need to edit either some system wide or user specific configuration file. Which file to edit and how depends on the system, and you need to consult your operating system documentation for more details.
+</p>
+
+<p>
+<b>Setting https_proxy</b>
+</p>
+
+<p>
+If you are installing with pip and are behind a proxy, you need to set the https_proxy environment variable. It is needed both when installing pip itself and when using it to install Robot Framework and other Python packages.
+</p>
+
+<p>
+How to set the https_proxy depends on the operating system similarly as configuring PATH. The value of this variable must be an URL of the proxy, for example, <a href="http://10.0.0.42:8080">http://10.0.0.42:8080</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ddf99e" class="outline-4">
+<h4 id="org0ddf99e"><span class="section-number-4">1.3.3</span> Installing with pip（使用 pip 安装）</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+The standard Python package manager is pip, but there are also other alternatives such as Buildout and easy_install. These instructions only cover using pip, but other package managers ought be able to install Robot Framework as well.
+</p>
+
+<p>
+标准 Python 包管理器是 pip，但也有其他选择比如 Buildout 和 easy_install。这些说明哪个只针对使用 pip，但其他包管理器也应该能够安装 Robot Framework。
+</p>
+
+<p>
+Latest Python, Jython and IronPython versions contain pip bundled in. Which versions contain it and how to possibly activate it is discussed in sections below. See pip project pages if for latest installation instructions if you need to install it.
+</p>
+
+<p>
+最新的 Python, Jython and IronPython 版本捆绑了 pip。下面的章节讨论了哪个版本包含以及如果启用。参见需要安装 pip 参见 pip project pages 上面最新的安装指南。
+</p>
+
+<pre class="example">
+Note
+
+Only Robot Framework 2.7 and newer can be installed using pip. If you need an older version, you must use other installation approaches.
+
+只有 Robot Framework 2.7 及最更新版本能够使用 pip 安装，如果需要旧版本，应该使用其他方法安装。
+</pre>
+
+<p>
+<b>Installing pip for Python</b>
+</p>
+
+<p>
+Starting from Python 2.7.9, the standard Windows installer by default installs and activates pip. Assuming you also have configured PATH and possibly set https_proxy, you can run pip install robotframework right after Python installation.
+</p>
+
+<p>
+从 Python 2.7.9 开始，标准 Windows 安装其默认安装和启用 pip。假设你已经配置了 PATH 和可能设置的 https_proxy，安装好 Python 之后就可运行 pip 安装 robotframework。
+</p>
+
+<p>
+Outside Windows and with older Python versions you need to install pip yourself. You may be able to do it using system package managers like Apt or Yum on Linux, but you can always use the manual installation instructions found from the pip project pages.
+</p>
+
+<p>
+除了 Windows 和使用 python 旧版本，需要自己安装 pip。linux 上可能需要使用系统包管理器比如 Apt 或者 Yum，反仍然可以使用从 pip proejct 的手动安装指南。
+</p>
+
+<p>
+If you have multiple Python versions with pip installed, the version that is used when the pip command is executed depends on which pip is first in the PATH. An alternative is executing the pip module using the selected Python version directly:
+</p>
+
+<p>
+如果有多个 Python 版本都安装了 pip，当执行 pip 命令时使用的版本取决于 PATH 中出现的第一个 pip。另一个是直接使用选中的 Pyhon 版本执行 pip 模块。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">python -m pip install robotframework
+python3 -m pip install robotframework
+</pre>
+</div>
+
+<p>
+<b>Installing pip for Jython</b>
+</p>
+
+<p>
+Jython 2.7 contain pip bundled in, but it needs to be activated before using it by running the following command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">jython -m ensurepip
+</pre>
+</div>
+<p>
+Jython installs its pip into &lt;JythonInstallation&gt;/bin directory. Does running pip install robotframework actually use it or possibly some other pip version depends on which pip is first in the PATH. An alternative is executing the pip module using Jython directly:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">jython -m pip install robotframework
+</pre>
+</div>
+
+
+<p>
+<b>Installing pip for IronPython</b>
+</p>
+
+<p>
+IronPython contains bundled pip starting from version 2.7.5. Similarly as with Jython, it needs to be activated first:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">ipy -X:Frames -m ensurepip
+</pre>
+</div>
+
+
+<p>
+Notice that with IronPython -X:Frames command line option is needed both when activating and when using pip.
+</p>
+
+<p>
+IronPython installs pip into &lt;IronPythonInstallation&gt;/Scripts directory. Does running pip install robotframework actually use it or possibly some other pip version depends on which pip is first in the PATH. An alternative is executing the pip module using IronPython directly:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">ipy -X:Frames -m pip install robotframework
+</pre>
+</div>
+
+<p>
+IronPython versions prior to 2.7.5 do not officially support pip.
+</p>
+
+<p>
+<b>Using pip</b>
+</p>
+
+<p>
+Once you have pip installed, and have set https_proxy is you are behind a proxy, using it on the command line is very easy. The easiest way to use pip is letting it find and download packages it installs from the Python Package Index (PyPI), but it can also install packages downloaded from the PyPI separately. The most common usages are shown below and pip documentation has more information and examples.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Install the latest version</span>
+pip install robotframework
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Upgrade to the latest version</span>
+pip install --upgrade robotframework
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Install a specific version</span>
+pip install <span style="color: #ff8700;">robotframework</span>==2.9.2
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Install separately downloaded package (no network connection needed)</span>
+pip install robotframework-3.0.tar.gz
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Uninstall</span>
+pip uninstall robotframework
+</pre>
+</div>
+
+
+<p>
+Notice that pip 1.4 and newer will only install stable releases by default. If you want to install an alpha, beta or release candidate, you need to either specify the version explicitly or use the &#x2013;pre option:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Install 3.0 beta 1</span>
+pip install <span style="color: #ff8700;">robotframework</span>==3.0b1
+
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Upgrade to the latest version even if it is a pre-release</span>
+pip install --pre --upgrade robotframework
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org572f8d6" class="outline-4">
+<h4 id="org572f8d6"><span class="section-number-4">1.3.4</span> Installing from source</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+This installation method can be used on any operating system with any of the supported interpreters. Installing from source can sound a bit scary, but the procedure is actually pretty straightforward.
+</p>
+
+<p>
+<b>Getting source code</b>
+</p>
+
+<p>
+You typically get the source by downloading a source distribution package in .tar.gz format. Newer packages are available on PyPI, but Robot Framework 2.8.1 and older can be found from the old Google Code download page. Once you have downloaded the package, you need to extract it somewhere and, as a result, you get a directory named robotframework-&lt;version&gt;. The directory contains the source code and scripts needed for installing it.
+</p>
+
+<p>
+An alternative approach for getting the source code is cloning project's GitHub repository directly. By default you will get the latest code, but you can easily switch to different released versions or other tags.
+</p>
+
+<p>
+<b>Installation</b>
+</p>
+
+<p>
+Robot Framework is installed from source using Python's standard setup.py script. The script is in the directory containing the sources and you can run it from the command line using any of the supported interpreters:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">python setup.py install
+jython setup.py install
+ipy setup.py install
+</pre>
+</div>
+
+<p>
+The setup.py script accepts several arguments allowing, for example, installation into a non-default location that does not require administrative rights. It is also used for creating different distribution packages. Run python setup.py &#x2013;help for more details.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd156dd2" class="outline-4">
+<h4 id="orgd156dd2"><span class="section-number-4">1.3.5</span> Standalone JAR distribution</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<p>
+Robot Framework is also distributed as a standalone Java archive that contains both Jython and Robot Framework and only requires Java a dependency. It is an easy way to get everything in one package that requires no installation, but has a downside that it does not work with the normal Python interpreter.
+</p>
+
+<p>
+The package is named robotframework-&lt;version&gt;.jar and it is available on the Maven central. After downloading the package, you can execute tests with it like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">java -jar robotframework-3.0.jar mytests.robot
+java -jar robotframework-3.0.jar --variable name:value mytests.robot
+</pre>
+</div>
+
+<p>
+If you want to post-process outputs using Rebot or use other built-in supporting tools, you need to give the command name rebot, libdoc, testdoc or tidy as the first argument to the JAR file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">java -jar robotframework-3.0.jar rebot output.xml
+java -jar robotframework-3.0.jar libdoc MyLibrary list
+</pre>
+</div>
+
+<p>
+For more information about the different commands, execute the JAR without arguments.
+</p>
+
+<p>
+In addition to the Python standard library and Robot Framework modules, the standalone JAR versions starting from 2.9.2 also contain the PyYAML dependency needed to handle yaml variable files.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3161136" class="outline-4">
+<h4 id="org3161136"><span class="section-number-4">1.3.6</span> Manual installation</h4>
+<div class="outline-text-4" id="text-1-3-6">
+<p>
+If you do not want to use any automatic way of installing Robot Framework, you can always install it manually following these steps:
+</p>
+
+<p>
+Get the source code. All the code is in a directory (a package in Python) called robot. If you have a source distribution or a version control checkout, you can find it from the src directory, but you can also get it from an earlier installation.
+</p>
+
+<p>
+Copy the source code where you want to.
+</p>
+
+<p>
+Decide how to run tests.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2898fc1" class="outline-4">
+<h4 id="org2898fc1"><span class="section-number-4">1.3.7</span> Verifying installation（确认安装）</h4>
+<div class="outline-text-4" id="text-1-3-7">
+<p>
+After a successful installation, you should be able to execute the created runner scripts with &#x2013;version option and get both Robot Framework and interpreter versions as a result:
+</p>
+
+<p>
+成功安装之后，应该能够使用&#x2013;version 选项执行创建的运行脚本，得到如下有关 Robot Framework 和解释器的版本：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ robot --version
+Robot Framework 3.0 (Python 2.7.10 on linux2)
+
+$ rebot --version
+Rebot 3.0 (Python 2.7.10 on linux2)
+</pre>
+</div>
+
+<p>
+If running the runner scripts fails with a message saying that the command is not found or recognized, a good first step is double-checking the PATH configuration. If that does not help, it is a good idea to re-read relevant sections from these instructions before searching help from the Internet or as asking help on robotframework-users mailing list or elsewhere.
+</p>
+
+<p>
+如果运行脚本执行失败，提示消息说命令没有找到或不识别，最好检查一下 PATH 配置。如果这没有帮助，从网上搜索帮助或者在 robotframework 用户邮件列表或其他什么地方寻求帮助前重读一下这些说明中的相关章节是个好主意。
+</p>
+
+<p>
+*Where files are installed*（文件安装在哪里了？）
+</p>
+
+<p>
+When an automatic installer is used, Robot Framework source code is copied into a directory containing external Python modules. On UNIX-like operating systems where Python is pre-installed the location of this directory varies. If you have installed the interpreter yourself, it is normally Lib/site-packages under the interpreter installation directory, for example, C:\Python27\Lib\site-packages. The actual Robot Framework code is in a directory named robot.
+</p>
+
+<p>
+当使用自动安装，Robot Framework 源码被拷贝到外部 Python 模块所在的目录。在类 Unix 操作系统中，这个目录根据 Python 预安装的目录有所不同。如果自己安装了解释器，通常是解释器安装目录下的 Lib/site-packages，例如 C:\Python27\Lib\site-packages。Robot Framework 的实际代码放在名为 robot 的目录中。
+</p>
+
+<p>
+Robot Framework runner scripts are created and copied into another platform-specific location. When using Python on UNIX-like systems, they normally go to /usr/bin or /usr/local/bin. On Windows and with Jython and IronPython, the scripts are typically either in Scripts or bin directory under the interpreter installation directory.
+</p>
+
+<p>
+创建 Robot Framework 运行脚本，并将其拷贝到另一个平台的特定位置。在类 Unix 操作系统中使用 Python，通常是/usr/bin or /usr/local/bin。安装 Jython 或者 IronPython 的 Windows 中，这些脚本通常在解释器安装目录下的 Scripts 或者 bin 目录。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6b48e91" class="outline-4">
+<h4 id="org6b48e91"><span class="section-number-4">1.3.8</span> Uninstallation</h4>
+<div class="outline-text-4" id="text-1-3-8">
+<p>
+The easiest way to uninstall Robot Framework is using pip:
+</p>
+
+<p>
+卸载 Robot Framework 最简单的方式是使用 pip：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pip uninstall robotframework
+</pre>
+</div>
+
+<p>
+A nice feature in pip is that it can uninstall packages even if they are installed from the source. If you do not have pip available or have done a manual installation to a custom location, you need to find where files are installed and remove them manually.
+</p>
+
+<p>
+即使从源码安装，也可以通过 pip 卸载，这挺不错的。如果没有可用的 pip，或者手动安装到自定义位置，需要找到文件位置并手动删除它们。
+</p>
+
+<p>
+If you have set PATH or configured the environment otherwise, you need to undo those changes separately.
+</p>
+
+<p>
+如果有设置 PATH 或者配置环境变量，需要单独撤销这些变化。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8fc7f6e" class="outline-4">
+<h4 id="org8fc7f6e"><span class="section-number-4">1.3.9</span> Upgrading（升级）</h4>
+<div class="outline-text-4" id="text-1-3-9">
+<p>
+If you are using pip, upgrading to a new version required either using the &#x2013;upgrade option or specifying the version to use explicitly:
+</p>
+
+<p>
+如果使用 pip，升级到新版本需要使用 &#x2013;upgrade 选项或者显示指定要使用的版本：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pip install --upgrade robotframework
+pip install <span style="color: #ff8700;">robotframework</span>==2.9.2
+</pre>
+</div>
+
+<p>
+When using pip, it automatically uninstalls previous versions before installation. If you are installing from source, it should be safe to just install over an existing installation. If you encounter problems, uninstallation before installation may help.
+</p>
+
+<p>
+When upgrading Robot Framework, there is always a change that the new version contains backwards incompatible changes affecting existing tests or test infrastructure. Such changes are very rare in minor versions like 2.8.7 or 2.9.2, but more common in major versions like 2.9 and 3.0. Backwards incompatible changes and deprecated features are explained in the release notes, and it is a good idea to study them especially when upgrading to a new major version.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc98a846" class="outline-4">
+<h4 id="orgc98a846"><span class="section-number-4">1.3.10</span> Executing Robot Framework（执行 Robot Framework）</h4>
+<div class="outline-text-4" id="text-1-3-10">
+<p>
+<b>Using robot and rebot scripts</b>
+</p>
+
+<p>
+<b>使用 robot 和 robot 脚本</b>
+</p>
+
+<p>
+Starting from Robot Framework 3.0, tests are executed using the robot script and results post-processed with the rebot script:
+</p>
+
+<p>
+启动 Robot Framework 3.0，使用 robot 脚本执行测试和后期处理结果：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">robot tests.robot
+rebot output.xml
+</pre>
+</div>
+
+<p>
+Both of these scripts are installed as part of the normal installation and can be executed directly from the command line if PATH is set correctly. They are implemented using Python except on Windows where they are batch files.
+</p>
+
+<p>
+这两个脚本作为正常安装的一部分，如果正确设置 PATH，可以直接命令行执行。它们用 Python 实现，Windows 上是批处理文件。
+</p>
+
+<p>
+Older Robot Framework versions do not have the robot script and the rebot script is installed only with Python. Instead they have interpreter specific scripts pybot, jybot and ipybot for test execution and jyrebot and ipyrebot for post-processing outputs. These scripts still work, but they will be deprecated and removed in the future.
+</p>
+
+<p>
+旧的 Robot Framework 版本没有 robot 脚本，这些脚本只随 Python 安装。相反，它们有编译器特定脚本 pybot，jybot 和 ipybot 用来执行测试，jyrebot 和 ipyrebot 用来后期处理输出，这些脚本仍然工作，但将来可能会弃用或删除。
+</p>
+
+<p>
+<b>Executing installed robot module</b>
+</p>
+
+<p>
+<b>执行安装的 robot 模块</b>
+</p>
+
+<p>
+An alternative way to run tests is executing the installed robot module or its sub module robot.run directly using Python's -m command line option. This is especially useful if Robot Framework is used with multiple Python versions:
+</p>
+
+<p>
+另一种运行测试的方法是执行安装的 robot 模块或使用 Python 的 -m 命令行参数直接执行它的 robot.run 字模块。如果使用多个 Python 版本执行 Robt Framework 这很有用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">python -m robot tests.robot
+python3 -m robot.run tests.robot
+jython -m robot tests.robot
+/opt/jython/jython -m robot tests.robot
+</pre>
+</div>
+
+<p>
+The support for python -m robot approach is a new feature in Robot Framework 3.0, but the older versions support python -m robot.run. The latter must also be used with Python 2.6.
+</p>
+
+<p>
+支持 python -m robot 方法是 Robt Framework 3.0 的新功能，但旧版本支持 python -m robot.run。后者必须配合 Python 2.6 使用。
+</p>
+
+<p>
+Post-processing outputs using the same approach works too, but the module to run is robot.rebot:
+</p>
+
+<p>
+后期处理输出使用相同的方法工作，但运行的模块是 robot.rebot：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">python -m robot.rebot output.xml
+</pre>
+</div>
+
+<p>
+<b>Executing installed robot directory</b>
+</p>
+
+<p>
+<b>执行安装的 robot 目录</b>
+</p>
+
+<p>
+If you know where Robot Framework is installed, you can also execute the installed robot directory or run.py file inside it directly:
+</p>
+
+<p>
+如果知道 Robot Framework 安装目录，可以直接执行安装 robot 的目录或其中的 run.py：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">python path/to/robot/ tests.robot
+jython path/to/robot/run.py tests.robot
+</pre>
+</div>
+
+<p>
+Running the directory is a new feature in Robot Framework 3.0, but the older versions support running the robot/run.py file.
+</p>
+
+<p>
+执行目录是 Robot Framework 3.0 的新功能，但旧版本支持运行 robot/run.py 文件。
+</p>
+
+<p>
+Post-processing outputs using the robot/rebot.py file works the same way too:
+</p>
+
+<p>
+可以用同样的方式使用 robot/reobot.py 处理后期输出：
+</p>
+
+<p>
+#+BEGIN_SRC sh
+python path/to/robot/rebot.py output.xml
+</p>
+
+<p>
+Executing Robot Framework this way is especially handy if you have done a manual installation.
+</p>
+
+<p>
+如果手动安装，这种方式执行 Robot Framework 尤其方便。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf13cd4d" class="outline-3">
+<h3 id="orgf13cd4d"><span class="section-number-3">1.4</span> Demonstrations（示例）</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+There are several demo projects that introduce Robot Framework and help getting started with it.
+</p>
+
+<p>
+有几个演示项目介绍 Robot Framework，并帮助开始使用它。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Quick Start Guide（快速入门指南）
+</p>
+
+<p>
+Introduces the most important features of Robot Framework and acts as an executable demo.
+</p>
+
+<p>
+介绍最 Robot Framework 最重要的功能，作为一个可行只的 demo 执行。
+</p></li>
+
+<li><p>
+Robot Framework demo
+</p>
+
+<p>
+Simple example test cases. Demonstrates also creating custom test libraries.
+</p>
+
+<p>
+简单的测试用例。还演示了如何创建自定义测试库。
+</p></li>
+
+<li><p>
+Web testing demo
+</p>
+
+<p>
+web 测试演示。
+</p>
+
+<p>
+Demonstrates how to create tests and higher level keywords. The system under test is a simple web page that is tested using Selenium2Library.
+</p>
+
+<p>
+演示如何创建测试和更高级的关键字。被测试的系统的是一个简单的网页，测试使用 Selenium2Library。
+</p></li>
+
+<li><p>
+SwingLibrary demo
+</p>
+
+<p>
+Demonstrates using SwingLibrary for testing Java GUI applications.
+</p>
+
+<p>
+演示使用 SwingLibrary 测试 Java GUI 应用。
+</p></li>
+
+<li><p>
+ATDD with Robot Framework
+</p>
+
+<p>
+Demonstrates how to use Robot Framework when following Acceptance Test Driven Development (ATDD) process.
+</p>
+
+<p>
+演示按照验收测试驱动开发过程如何使用 Robot Framework，
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org819e8fc" class="outline-2">
+<h2 id="org819e8fc"><span class="section-number-2">2</span> Creating test data</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org998b35c" class="outline-3">
+<h3 id="org998b35c"><span class="section-number-3">2.1</span> Test data syntax</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+This section covers Robot Framework's overall test data syntax. The following sections will explain how to actually create test cases, test suites and so on.
+</p>
+
+<p>
+本节囊括 Robot Framework 全部测试数据的语法。下面的小节将解释如何创建测试用例，测试套件等等。
+</p>
+</div>
+
+<div id="outline-container-org6b29549" class="outline-4">
+<h4 id="org6b29549"><span class="section-number-4">2.1.1</span> Files and directories（文件和目录）</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+The hierarchical structure for arranging test cases is built as follows:
+</p>
+
+<p>
+安排测试用例的层次结构可以如下构建：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Test cases are created in test case files.
+</p>
+
+<p>
+在测试用例中文件中创建测试用例。
+</p></li>
+
+<li><p>
+A test case file automatically creates a test suite containing the test cases in that file.
+</p>
+
+<p>
+测试用例文件自动创建包含该文件中的测试用例测试套件。
+</p></li>
+
+<li><p>
+A directory containing test case files forms a higher-level test suite. Such a test suite directory has suites created from test case files as its sub test suites.
+</p>
+
+<p>
+包含测试用例文件的目录是更高级别的测试套件。测试用例文件中创建的测试套件作为这种测试套件目录子测试套件。
+</p></li>
+
+<li><p>
+A test suite directory can also contain other test suite directories, and this hierarchical structure can be as deeply nested as needed.
+</p>
+
+<p>
+测试套件目录可以包含其他测试套件目录，这种层次的结构可以按照需要任意嵌套。
+</p></li>
+
+<li><p>
+Test suite directories can have a special initialization file.
+</p>
+
+<p>
+测试套件目录可以有一个特殊的初始化文件。
+</p></li>
+</ul>
+
+<p>
+In addition to this, there are:
+</p>
+
+<p>
+除此之外，还有：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Test libraries containing the lowest-level keywords.
+</p>
+
+<p>
+测试库包含最低级别的关键词。
+</p></li>
+
+<li><p>
+Resource files with variables and higher-level user keywords.
+</p>
+
+<p>
+资源文件有变量和更高级别的用户关键词。
+</p></li>
+
+<li><p>
+Variable files to provide more flexible ways to create variables than resource files.
+</p>
+
+<p>
+变量文件提供比资源文件更灵活的方式创建变量。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org243ce53" class="outline-4">
+<h4 id="org243ce53"><span class="section-number-4">2.1.2</span> Supported file formats（支持的文件格式）</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+Robot Framework test data is defined in tabular format, using either hypertext markup language (HTML), tab-separated values (TSV), plain text, or reStructuredText (reST) formats. The details of these formats, as well as the main benefits and problems with them, are explained in the subsequent sections. Which format to use depends on the context, but the plain text format is recommended if there are no special needs.
+</p>
+
+<p>
+Robot Framework 使用表格形式定义测试数据，可以使用超文本标记语言（HTML），制表符分割值（TSV），纯文本，或者 reStructuredText(reST)格式。随后的部分会解释这些格式的细节，主要优点和问题。使用哪种格式依赖于上下文，但如果没有特殊需要推荐使用纯文本格式。
+</p>
+
+<p>
+Robot Framework selects a parser for the test data based on the file extension. The extension is case-insensitive, and the recognized extensions are .html, .htm and .xhtml for HTML, .tsv for TSV, .txt and special .robot for plain text, and .rst and .rest for reStructuredText.
+</p>
+
+<p>
+Robot Framework 基于文件扩展名为测试数据选择解释器。扩展名不区分大小写，可识别的扩展名是.html, .htm and .xhtml for HTML, .tsv for TSV, .txt and special .robot for plain text, and .rst and .rest for reStructuredText。
+</p>
+
+<p>
+Different test data templates are available for HTML and TSV formats to make it easier to get started writing tests.
+</p>
+
+<p>
+HTML 和 TSV 格式有各自的测试数据模板，可以更容易开始编写测试。
+</p>
+
+<pre class="example">
+Note
+
+The special .robot extension with plain text files is supported starting from Robot Framework 2.7.6.
+
+纯文本使用的特殊的.robot 扩展从 Robot Framework 2.7.6。
+</pre>
+
+<p>
+<b>HTML format</b>
+</p>
+
+<p>
+HTML files support formatting and free text around tables. This makes it possible to add additional information into test case files and allows creating test case files that look like formal test specifications. The main problem with HTML format is that editing these files using normal text editors is not that easy. Another problem is that HTML does not work as well with version control systems because the diffs resulting from changes contain HTML syntax in addition to changes to the actual test data.
+</p>
+
+<p>
+In HTML files, the test data is defined in separate tables (see the example below). Robot Framework recognizes these test data tables based on the text in their first cell. Everything outside recognized tables is ignored.
+#+caption：using the HTML format
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Setting</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Library</td>
+<td class="org-left">OperatingSystem</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">${MESSAGE}</td>
+<td class="org-left">Hello, world!</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Test Case</th>
+<th scope="col" class="org-left">Action</th>
+<th scope="col" class="org-left">Argument</th>
+<th scope="col" class="org-left">Argument</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">My Test</td>
+<td class="org-left">[Documentation]</td>
+<td class="org-left">Example test</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Log</td>
+<td class="org-left">${MESSAGE}</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">My Keyword</td>
+<td class="org-left">/tmp</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Another Test</td>
+<td class="org-left">Should Be Equal</td>
+<td class="org-left">${MESSAGE}</td>
+<td class="org-left">Hello, world!</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Keyword</th>
+<th scope="col" class="org-left">Action</th>
+<th scope="col" class="org-left">Argument</th>
+<th scope="col" class="org-left">Argument</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">My Keyword</td>
+<td class="org-left">[Arguments]</td>
+<td class="org-left">${path}</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Directory Should Exist</td>
+<td class="org-left">${path}</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<b>Editing test data</b>
+</p>
+
+<p>
+Test data in HTML files can be edited with whichever editor you prefer, but a graphic editor, where you can actually see the tables, is recommended. RIDE can read and write HTML files, but unfortunately it loses all HTML formatting and also possible data outside test case tables.
+</p>
+
+<p>
+<b>Encoding and entity references</b>
+</p>
+
+<p>
+HTML entity references (for example, &amp;auml;) are supported. Additionally, any encoding can be used, assuming that it is specified in the data file. Normal HTML files must use the META element as in the example below:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;<span style="color: #ffd700;">meta</span> <span style="color: #ff8700;">http-equiv</span>=<span style="color: #ff4ea3;">"Content-Type"</span> <span style="color: #ff8700;">content</span>=<span style="color: #ff4ea3;">"text/html; charset=UTF-8"</span>&gt;
+</pre>
+</div>
+
+<p>
+XHTML files should use the XML preamble as in this example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml"><span style="color: #ff4ea3;">&lt;?</span><span style="color: #a1db00;">xml</span><span style="color: #ff4ea3;"> </span><span style="color: #ff4b4b;">version="1.0" encoding="Big5"</span><span style="color: #ff4ea3;">?&gt;</span>
+</pre>
+</div>
+
+<p>
+If no encoding is specified, Robot Framework uses ISO-8859-1 by default.
+</p>
+
+<p>
+<b>TSV format</b>
+</p>
+
+<p>
+TSV files can be edited in spreadsheet programs and, because the syntax is so simple, they are easy to generate programmatically. They are also pretty easy to edit using normal text editors and they work well in version control, but the plain text format is even better suited for these purposes.
+</p>
+
+<p>
+The TSV format can be used in Robot Framework's test data for all the same purposes as HTML. In a TSV file, all the data is in one large table. Test data tables are recognized from one or more asterisks (*), followed by a normal table name and an optional closing asterisks. Everything before the first recognized table is ignored similarly as data outside tables in HTML data.
+</p>
+
+<p>
+<b>Editing test data</b>
+</p>
+
+<p>
+You can create and edit TSV files in any spreadsheet program, such as Microsoft Excel. Select the tab-separated format when you save the file and remember to set the file extension to .tsv. It is also a good idea to turn all automatic corrections off and configure the tool to treat all values in the file as plain text.
+</p>
+
+<p>
+TSV files are relatively easy to edit with any text editor, especially if the editor supports visually separating tabs from spaces. The TSV format is also supported by RIDE.
+</p>
+
+<p>
+Robot Framework parses TSV data by first splitting all the content into rows and then rows into cells on the basis of the tabular characters. Spreadsheet programs sometimes surround cells with quotes (for example, "my value") and Robot Framework removes them. Possible quotes inside the data are doubled (for example, "my ""quoted"" value") and also this is handled correctly. If you are using a spreadsheet program to create TSV data, you should not need to pay attention to this, but if you create data programmatically, you have to follow the same quoting conventions as spreadsheets.
+</p>
+
+<p>
+<b>Encoding</b>
+</p>
+
+<p>
+TSV files are always expected to use UTF-8 encoding. Because ASCII is a subset of UTF-8, plain ASCII is naturally supported too.
+</p>
+
+<p>
+<b>Plain text format</b>
+</p>
+
+<p>
+<b>纯文本格式</b>
+</p>
+
+<p>
+The plain texts format is very easy to edit using any text editor and they also work very well in version control. Because of these benefits it has became the most used data format with Robot Framework.
+</p>
+
+<p>
+纯文本格式可以用任何编辑器很容易的编辑，也很容易进行版本控制。由于这些优点，它成了 Robot Framework 最常用的数据格式。
+</p>
+
+<p>
+The plain text format is technically otherwise similar to the TSV format but the separator between the cells is different. The TSV format uses tabs, but in the plain text format you can use either two or more spaces or a pipe character surrounded with spaces (|).
+</p>
+
+<p>
+纯文本格式技术和 TSV 格式类似，但分隔符不同。TSV 使用制表符，但纯文本格式使用两个或更多空格，或者空格包围的管道符（|）。
+</p>
+
+<p>
+The test data tables must have one or more asterisk before their names similarly as in the TSV format. Otherwise asterisks and possible spaces in the table header are ignored so, for example, <b>*</b> Settings <b>*</b> and *Settings work the same way. Also similarly as in the TSV format, everything before the first table is ignored.
+</p>
+
+<p>
+和 TSV 格式一样，测试数据表名前必须有一个或更多星号。表头的中其他星号和可能的空格将会忽略，例如*** Settings <b>*</b> and *Settings 以相同的方式工作。和 TSV 格式类似，第一个表格前的所有东西将会忽略。
+</p>
+
+<p>
+In plain text files tabs are automatically converted to two spaces. This allows using a single tab as a separator similarly as in the TSV format. Notice, however, that in the plain text format multiple tabs are considered to be a single separator whereas in the TSV format every tab would be a separator.
+</p>
+
+<p>
+纯文本文件中制表符自动转换为两个空格。类似 TSV 格式，这允许使用一个制表符作为分隔符。不过，请注意，纯文本格式中多个制表符被当作单个分隔符，而 TSV 格式中，每个制表符都是一个制表符。
+</p>
+
+<p>
+<b>Space separated format</b>
+</p>
+
+<p>
+<b>空格分割格式</b>
+</p>
+
+<p>
+The number of spaces used as separator can vary, as long as there are at least two spaces, and it is thus possible to align the data nicely. This is a clear benefit over editing the TSV format in a text editor because with TSV the alignment cannot be controlled.
+</p>
+
+<p>
+作为分隔符的空格数量各有不同，只要至少有两个空格，因而可以很好看的对其数据。相比 TSV 格式，在文本编辑器中这是很明显的优势，因为 TSV 对齐不能控制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgefdaa42" class="outline-4">
+<h4 id="orgefdaa42"><span class="section-number-4">2.1.3</span> Test data tables（测试数据表格）</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+Test data is structured in four types of tables listed below. These test data tables are identified by the first cell of the table. Recognized table names are Settings, Variables, Test Cases, and Keywords. Matching is case-insensitive and also singular variants like Setting and Test Case are accepted.
+</p>
+
+<p>
+测试数据按照下面列出的四种类型的表格组织。这些测试数据通过表格的第一个元素区别。可识别的表名是 Settings, Variables, Test Cases, and Keywords。匹配不去分大小写，也接受奇怪的变体比如 Setting 和 Test Case。
+</p>
+
+<p>
+#+caption：Different test data tables
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Table</td>
+<td class="org-left">Used for</td>
+</tr>
+
+<tr>
+<td class="org-left">Settings</td>
+<td class="org-left">1) Importing test libraries, resource files and variable files.</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">2) Defining metadata for test suites and test cases.</td>
+</tr>
+
+<tr>
+<td class="org-left">Variables</td>
+<td class="org-left">Defining variables that can be used elsewhere in the test data.</td>
+</tr>
+
+<tr>
+<td class="org-left">Test Cases</td>
+<td class="org-left">Creating test cases from available keywords.</td>
+</tr>
+
+<tr>
+<td class="org-left">Keywords</td>
+<td class="org-left">Creating user keywords from existing lower-level keywords</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org559cbc7" class="outline-4">
+<h4 id="org559cbc7"><span class="section-number-4">2.1.4</span> Rules for parsing the data（解析数据的规则）</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+<b>Ignored data</b>
+</p>
+
+<p>
+<b>忽略的数据</b>
+</p>
+
+<p>
+When Robot Framework parses the test data, it ignores:
+</p>
+
+<p>
+当 Robot Framework 分析测试数据时，它忽略：
+</p>
+
+<ul class="org-ul">
+<li><p>
+All tables that do not start with a recognized table name in the first cell.
+</p>
+
+<p>
+第一个表格不是可识别表名的所有表格。
+</p></li>
+
+<li><p>
+Everything else on the first row of a table apart from the first cell.
+</p>
+
+<p>
+表格第一行中除了第一个单元格的其他数据。
+</p></li>
+
+<li><p>
+All data before the first table. If the data format allows data between tables, also that is ignored.
+</p>
+
+<p>
+第一个表格前的所有数据。如果数据格式允许在表格之间有数据，这些数据也会被忽略。
+</p></li>
+
+<li><p>
+All empty rows, which means these kinds of rows can be used to make the tables more readable.
+</p>
+
+<p>
+所有空行，这些空行为了让表更具可读性。
+</p></li>
+
+<li><p>
+All empty cells at the end of rows, unless they are escaped.
+</p>
+
+<p>
+行末尾所有的单元格，除非它们被转义。
+</p></li>
+
+<li><p>
+All single backslashes (\) when not used for escaping.
+</p>
+
+<p>
+所有不用于转义的单个发斜杠。
+</p></li>
+
+<li><p>
+All characters following the hash character (#), when it is the first character of a cell. This means that hash marks can be used to enter comments in the test data.
+</p>
+
+<p>
+如果#是单元格的第一个字符，忽略其后的所有字符。这意味着#可用于在测试数据中输入注释。
+</p></li>
+
+<li><p>
+All formatting in the HTML/reST test data.
+</p>
+
+<p>
+HTML/reST 测试数据中所有格式。
+</p></li>
+</ul>
+
+<p>
+When Robot Framework ignores some data, this data is not available in any resulting reports and, additionally, most tools used with Robot Framework also ignore them. To add information that is visible in Robot Framework outputs, place it to the documentation or other metadata of test cases or suites, or log it with the BuiltIn keywords Log or Comment.
+</p>
+
+<p>
+当 Robot Framework 忽略一些数据，这些数据不会用在任何结果报告中，此外，大多数配合 Robot Framework 使用的工具也会忽略它们。为了添加在 Robot Framework 输出中可见的信息，将它们放在文档或其他测试用例或套件的元数据中，或者使用内建关键词 Log 或 Comment。
+</p>
+
+<p>
+<b>Handling whitespace</b>
+</p>
+
+<p>
+<b>处理空白符</b>
+</p>
+
+<p>
+Robot Framework handles whitespace the same way as they are handled in HTML source code:
+</p>
+
+<p>
+Robot Framework 处理空白符的方式和在 HTML 源码中处理空白符方式相同：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Newlines, carriage returns, and tabs are converted to spaces.
+</p>
+
+<p>
+换行，回车，制表符转换为空格。
+</p></li>
+
+<li><p>
+Leading and trailing whitespace in all cells is ignored.
+</p>
+
+<p>
+忽略单元格中首部和尾部的空白符。
+</p></li>
+
+<li><p>
+Multiple consecutive spaces are collapsed into a single space.
+</p>
+
+<p>
+多个连续的空格将被折叠为单个空格。
+</p></li>
+</ul>
+
+<p>
+In addition to that, non-breaking spaces are replaced with normal spaces. This is done to avoid hard-to-debug errors when a non-breaking space is accidentally used instead of a normal space.
+</p>
+
+<p>
+除此之外，没有换行的空格将替换为普通空格。这么做是为了避免难以调试的错误，因为偶尔会使用不换行的空格而不是普通的空格。
+</p>
+
+<p>
+If leading, trailing, or consecutive spaces are needed, they must be escaped. Newlines, carriage returns, tabs, and non-breaking spaces can be created using escape sequences \n, \r, \t, and \xA0 respectively.
+</p>
+
+<p>
+如果首部，尾部和连续空格是必要的，它们必须被转义。换行，回车，制表符，或没有换行的空格可以相应的通过\n, \r, \t, and \xA0 创建。
+</p>
+
+<p>
+<b>Escaping</b>
+</p>
+
+<p>
+<b>转义</b>
+</p>
+
+<p>
+The escape character in Robot Framework test data is the backslash (\) and additionally built-in variables ${EMPTY} and ${SPACE} can often be used for escaping. Different escaping mechanisms are discussed in the sections below.
+</p>
+
+<p>
+Robot Framework 测试数据中的转义字符是反斜杠（\），另外的内置变量${EMPTY} 和 ${SPACE}经常用于进行转义。下面的章节将讨论不同的转义机制。
+</p>
+
+
+<p>
+<b>Escaping special characters</b>
+</p>
+
+<p>
+<b>转义特殊字符</b>
+</p>
+
+<p>
+The backslash character can be used to escape special characters so that their literal values are used.
+</p>
+
+<p>
+反斜杠字符可以用转义特殊字符，这样就可以使用它们的字面值。
+</p>
+
+<p>
+#+caption：Escaping special characters
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Character</td>
+<td class="org-left">Meaning</td>
+<td class="org-left">Examples</td>
+</tr>
+
+<tr>
+<td class="org-left">\$</td>
+<td class="org-left">Dollar sign, never starts a scalar variable.</td>
+<td class="org-left">\${notvar}</td>
+</tr>
+
+<tr>
+<td class="org-left">\@</td>
+<td class="org-left">At sign, never starts a list variable.</td>
+<td class="org-left">\@{notvar}</td>
+</tr>
+
+<tr>
+<td class="org-left">\%</td>
+<td class="org-left">Percent sign, never starts an environment variable.</td>
+<td class="org-left">\%{notvar}</td>
+</tr>
+
+<tr>
+<td class="org-left">\#</td>
+<td class="org-left">Hash sign, never starts a comment.</td>
+<td class="org-left">\# not comment</td>
+</tr>
+
+<tr>
+<td class="org-left">\=</td>
+<td class="org-left">Equal sign, never part of named argument syntax.</td>
+<td class="org-left">not\=named</td>
+</tr>
+
+<tr>
+<td class="org-left">&vert;</td>
+<td class="org-left">Pipe character, not a separator in the pipe separated format.</td>
+<td class="org-left">&vert; Run &vert; ps ps &vert; grep xxx</td>
+</tr>
+
+<tr>
+<td class="org-left">\\</td>
+<td class="org-left">Backslash character, never escapes anything.</td>
+<td class="org-left">c:\\temp, \\${var}</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<b>Forming escape sequences</b>
+</p>
+
+<p>
+<b>组织转义序列</b>
+</p>
+
+<p>
+The backslash character also allows creating special escape sequences that are recognized as characters that would otherwise be hard or impossible to create in the test data.
+</p>
+
+<p>
+转义字符还允许创建特殊转义序列，这些转义序列为在测试数据中很难或不可能创建的字符。
+</p>
+
+<p>
+Escape sequences
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Sequence</td>
+<td class="org-left">Meaning</td>
+<td class="org-left">Examples</td>
+</tr>
+
+<tr>
+<td class="org-left">\n</td>
+<td class="org-left">Newline character.</td>
+<td class="org-left">first line\n2nd line</td>
+</tr>
+
+<tr>
+<td class="org-left">\r</td>
+<td class="org-left">Carriage return character</td>
+<td class="org-left">text\rmore text</td>
+</tr>
+
+<tr>
+<td class="org-left">\t</td>
+<td class="org-left">Tab character.</td>
+<td class="org-left">text\tmore text</td>
+</tr>
+
+<tr>
+<td class="org-left">\xhh</td>
+<td class="org-left">Character with hex value hh.</td>
+<td class="org-left">null byte: \x00, ä: \xE4</td>
+</tr>
+
+<tr>
+<td class="org-left">\uhhhh</td>
+<td class="org-left">Character with hex value hhhh.</td>
+<td class="org-left">snowman: \u2603</td>
+</tr>
+
+<tr>
+<td class="org-left">\Uhhhhhhhh</td>
+<td class="org-left">Character with hex value hhhhhhhh.</td>
+<td class="org-left">love hotel: \U0001f3e9</td>
+</tr>
+</tbody>
+</table>
+
+<pre class="example">
+Note
+
+All strings created in the test data, including characters like \x02, are Unicode and must be explicitly converted to byte strings if needed. This can be done, for example, using Convert To Bytes or Encode String To Bytes keywords in BuiltIn and String libraries, respectively, or with something like str(value) or value.encode('UTF-8') in Python code.
+
+测试数据中创建的所有的字符串，包括类似\x02 的字符，是 unicode，如果有需要必须显示转为字节字符串。这可以使用内建的字符串库转为字节或编码字符串为字节，在 Python 代码中相应的库诶有使用 str(value)或 value.encode('UTF-8')。
+</pre>
+
+<pre class="example">
+Note
+
+If invalid hexadecimal values are used with \x, \u or \U escapes, the end result is the original value without the backslash character. For example, \xAX (not hex) and \U00110000 (too large value) result with xAX and U00110000, respectively. This behavior may change in the future, though.
+
+如果和\x, \u or \U 一起使用的是无效的十六进制值，最后的结果是没有反斜杠的原始数值。例如，\xAX (非十六进制) and \U00110000（过大）相应的结果是 xAX and U00110000。尽管将来这种行为可能会改变。
+</pre>
+
+<pre class="example">
+Note
+
+Built-in variable ${\n} can be used if operating system dependent line terminator is needed (\r\n on Windows and \n elsewhere).
+
+如果需要和操作系统有关的行结束符（Windows 上是\r\n，其他是\n），可以使用内建变量${\n}。
+</pre>
+
+<pre class="example">
+Note
+
+Possible un-escaped whitespace character after the \n is ignored. This means that two lines\nhere and two lines\n here are equivalent. The motivation for this is to allow wrapping long lines containing newlines when using the HTML format, but the same logic is used also with other formats. An exception to this rule is that the whitespace character is not ignored inside the extended variable syntax.
+
+忽略\n 之后可能的未转义的空白字符。这意味着 two lines\nhere 等同于 two lines\n here。这样做是为了当使用 HTML 格式是，允许包含换行符的较长的行，但相同的逻辑也可用于其他格式。该规则的一个例外的是扩展变量语法内的空白字符不会忽略。
+</pre>
+
+<pre class="example">
+Note
+
+\x, \u and \U escape sequences are new in Robot Framework 2.8.2.
+
+\x, \u and \U 转义序列是在 Robot Framework 2.8.2 中新出现的。
+</pre>
+
+
+<p>
+<b>Prevent ignoring empty cells</b>
+</p>
+
+<p>
+<b>禁止忽略空单元格</b>
+</p>
+
+<p>
+If empty values are needed as arguments for keywords or otherwise, they often need to be escaped to prevent them from being ignored. Empty trailing cells must be escaped regardless of the test data format, and when using the space separated format all empty values must be escaped.
+</p>
+
+<p>
+如果需要空值作为关键词或其他，经常需要将其转义避免被忽略。不管何种测试数据格式，结尾的空单元格必须被转义，当使用空格分割格式所有空值都必须转义。
+</p>
+
+<p>
+Empty cells can be escaped either with the backslash character or with built-in variable ${EMPTY}. The latter is typically recommended as it is easier to understand. An exception to this recommendation is escaping the indented cells in for loops with a backslash when using the space separated format. All these cases are illustrated in the following examples first in HTML and then in the space separated plain text format:
+</p>
+
+<p>
+空单元格可以使用反斜杠字符或内建变量${EMPTY}转义。由于更易理解，通常推荐使用后者。这种推荐的例外是当使用空格分割格式时，在循环使用反斜杠转义缩进的单元格。
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Test Case</td>
+<td class="org-left">Action</td>
+<td class="org-left">Argument</td>
+<td class="org-left">Argument</td>
+<td class="org-left">Argument</td>
+</tr>
+
+<tr>
+<td class="org-left">Using backslash</td>
+<td class="org-left">Do Something</td>
+<td class="org-left">first arg</td>
+<td class="org-left">\</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Using ${EMPTY}</td>
+<td class="org-left">Do Something</td>
+<td class="org-left">first arg</td>
+<td class="org-left">${EMPTY}</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Non-trailing empty</td>
+<td class="org-left">Do Something</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">second arg</td>
+<td class="org-left"># No escaping needed in HTML</td>
+</tr>
+
+<tr>
+<td class="org-left">For loop</td>
+<td class="org-left">:FOR</td>
+<td class="org-left">${var}</td>
+<td class="org-left">IN</td>
+<td class="org-left">@{VALUES}</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Log</td>
+<td class="org-left">${var}</td>
+<td class="org-left"># No escaping needed here either</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<pre class="example">
+=*** Test Cases ***=
+Using backslash
+    Do Something    first arg    \
+Using ${EMPTY}
+    Do Something    first arg    ${EMPTY}
+Non-trailing empty
+    Do Something    ${EMPTY}     second arg    # Escaping needed in space separated format
+For loop
+    :FOR    ${var}    IN    @{VALUES}
+    \    Log    ${var}                         # Escaping needed here too
+</pre>
+
+<p>
+<b>Prevent ignoring spaces</b>
+</p>
+
+<p>
+<b>禁止忽略空格</b>
+</p>
+
+<p>
+Because leading, trailing, and consecutive spaces in cells are ignored, they need to be escaped if they are needed as arguments to keywords or otherwise. Similarly as when preventing ignoring empty cells, it is possible to do that either using the backslash character or using built-in variable ${SPACE}.
+</p>
+
+<p>
+因为单元格中忽略开头，结尾和连续空格，如果它们作为关键词的参数或其他需要被转义。与阻止转义空单元格类似，可以使用反斜杠字符或内建变量${SPACE}进行转义。
+</p>
+
+<p>
+Escaping spaces examples
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Escaping with backslash</td>
+<td class="org-left">Escaping with ${SPACE}</td>
+<td class="org-left">Notes</td>
+</tr>
+
+<tr>
+<td class="org-left">\ leading space</td>
+<td class="org-left">${SPACE}leading space</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">trailing space \</td>
+<td class="org-left">trailing space${SPACE}</td>
+<td class="org-left">Backslash must be after the space.</td>
+</tr>
+
+<tr>
+<td class="org-left">\ \</td>
+<td class="org-left">${SPACE}</td>
+<td class="org-left">Backslash needed on both sides.</td>
+</tr>
+
+<tr>
+<td class="org-left">consecutive \ \ spaces</td>
+<td class="org-left">consecutive${SPACE * 3}spaces</td>
+<td class="org-left">Using extended variable syntax.</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+As the above examples show, using the ${SPACE} variable often makes the test data easier to understand. It is especially handy in combination with the extended variable syntax when more than one space is needed.
+</p>
+
+<p>
+正如上面显示的例子，使用${SPACE}通常使测试数据更容易理解。当需要多余一个空格时和扩展变量语法配合特别方便。
+</p>
+
+<p>
+<b>Dividing test data to several rows</b>
+</p>
+
+<p>
+<b>将测试数据分割为几行</b>
+</p>
+
+<p>
+If there is more data than readily fits a row, it possible to use ellipsis (&#x2026;) to continue the previous line. In test case and keyword tables, the ellipsis must be preceded by at least one empty cell. In settings and variable tables, it can be placed directly under the setting or variable name. In all tables, all empty cells before the ellipsis are ignored.
+</p>
+
+<p>
+如果如何一行的数据超过预期，使用省略号（&#x2026;）继续前一行。在测试用例和关键词表格中。省略号将被预处理为至少一个空白单元格。在设置和变量表格中，可直接置于在设置和变量名下。在所有表格中，忽略省略号前所有空单元格。
+</p>
+
+<p>
+Additionally, values of settings that take only one value (mainly documentations) can be split to several columns. These values will be then catenated together with spaces when the test data is parsed. Starting from Robot Framework 2.7, documentation and test suite metadata split into multiple rows will be catenated together with newlines.
+</p>
+
+<p>
+此外，只需要一个值的设置（主要是记录）的取值可以分割为几列。当分析测试数据时这些值将与空格相加。从 Robot Framework 2.7 开始，分割为多行的记录和测试套件元数据将与换行相加。
+</p>
+
+<p>
+All the syntax discussed above is illustrated in the following examples. In the first three tables test data has not been split, and the following three illustrate how fewer columns are needed after splitting the data to several rows.
+</p>
+
+<p>
+上面讨论的语法在下面的例子中应用。前三个表中没有分割测试数据，后面三个例子说明了将数据分割为多行之后需要更少的列。
+</p>
+
+<p>
+Test data that has not been split
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Setting</td>
+<td class="org-left">Value</td>
+<td class="org-left">Value</td>
+<td class="org-left">Value</td>
+<td class="org-left">Value</td>
+<td class="org-left">Value</td>
+<td class="org-left">Value</td>
+</tr>
+</tbody>
+</table>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Default Tags</td>
+<td class="org-left">tag-1</td>
+<td class="org-left">tag-2</td>
+<td class="org-left">tag-3</td>
+<td class="org-left">tag-4</td>
+<td class="org-left">tag-5</td>
+<td class="org-left">tag-6</td>
+</tr>
+</tbody>
+</table>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">@{LIST}</td>
+<td class="org-left">this</td>
+<td class="org-left">list</td>
+<td class="org-left">has</td>
+<td class="org-left">quite</td>
+<td class="org-left">many</td>
+<td class="org-left">items</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Test Case</th>
+<th scope="col" class="org-left">Action</th>
+<th scope="col" class="org-left">Argument</th>
+<th scope="col" class="org-left">Arg</th>
+<th scope="col" class="org-left">Arg</th>
+<th scope="col" class="org-left">Arg</th>
+<th scope="col" class="org-left">Arg</th>
+<th scope="col" class="org-left">Arg</th>
+<th scope="col" class="org-left">Arg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Example</td>
+<td class="org-left">[Documentation]</td>
+<td class="org-left">Documentation for this test case.\n This can get quite long&#x2026;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">[Tags]</td>
+<td class="org-left">t-1</td>
+<td class="org-left">t-2</td>
+<td class="org-left">t-3</td>
+<td class="org-left">t-4</td>
+<td class="org-left">t-5</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Do X</td>
+<td class="org-left">one</td>
+<td class="org-left">two</td>
+<td class="org-left">three</td>
+<td class="org-left">four</td>
+<td class="org-left">five</td>
+<td class="org-left">six</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">${var} =</td>
+<td class="org-left">Get X</td>
+<td class="org-left">1</td>
+<td class="org-left">2</td>
+<td class="org-left">3</td>
+<td class="org-left">4</td>
+<td class="org-left">5</td>
+<td class="org-left">6</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Test data split to several rows
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Setting</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Default Tags</td>
+<td class="org-left">tag-1</td>
+<td class="org-left">tag-2</td>
+<td class="org-left">tag-3</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">tag-4</td>
+<td class="org-left">tag-5</td>
+<td class="org-left">tag-6</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+<th scope="col" class="org-left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">@{LIST}</td>
+<td class="org-left">this</td>
+<td class="org-left">list</td>
+<td class="org-left">has</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">quite</td>
+<td class="org-left">many</td>
+<td class="org-left">items</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Test Case</th>
+<th scope="col" class="org-left">Action</th>
+<th scope="col" class="org-left">Argument</th>
+<th scope="col" class="org-left">Argument</th>
+<th scope="col" class="org-left">Argument</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Example</td>
+<td class="org-left">[Documentation]</td>
+<td class="org-left">Documentation</td>
+<td class="org-left">for this</td>
+<td class="org-left">test case.</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">This can get</td>
+<td class="org-left">quite</td>
+<td class="org-left">long&#x2026;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">[Tags]</td>
+<td class="org-left">t-1</td>
+<td class="org-left">t-2</td>
+<td class="org-left">t-3</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">t-4</td>
+<td class="org-left">t-5</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Do X</td>
+<td class="org-left">one</td>
+<td class="org-left">two</td>
+<td class="org-left">three</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">four</td>
+<td class="org-left">five</td>
+<td class="org-left">six</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">${var} =</td>
+<td class="org-left">Get X</td>
+<td class="org-left">1</td>
+<td class="org-left">2</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">3</td>
+<td class="org-left">4</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">5</td>
+<td class="org-left">6</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf254266" class="outline-3">
+<h3 id="orgf254266"><span class="section-number-3">2.2</span> Creating test cases</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+This section describes the overall test case syntax. Organizing test cases into test suites using test case files and test suite directories is discussed in the next section.
+</p>
+
+<p>
+本节描述整个测试用例语法。下节中讨论使用测试用例文件和测试套件目录将测试用例组织为测试套件。
+</p>
+</div>
+
+<div id="outline-container-org3ccbbc7" class="outline-4">
+<h4 id="org3ccbbc7"><span class="section-number-4">2.2.1</span> Test case syntax</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+<b>Basic syntax</b>
+</p>
+
+<p>
+<b>基本语法</b>
+</p>
+
+<p>
+Test cases are constructed in test case tables from the available keywords. Keywords can be imported from test libraries or resource files, or created in the keyword table of the test case file itself.
+</p>
+
+<p>
+测试用例通过可用的关键词在测试用例表中构造。关键词可以从测试库或者资源文件中导入，或在测试文件本身的关键词表中创建。
+</p>
+
+<p>
+The first column in the test case table contains test case names. A test case starts from the row with something in this column and continues to the next test case name or to the end of the table. It is an error to have something between the table headers and the first test.
+</p>
+
+<p>
+测试用例表的第一列包含测试用例名字。测试用例开始于包含该列的行，直到下个测试用例名字或该用例表结束。在表头和第一个测试之间有任何东西都是错误的。
+</p>
+
+<p>
+The second column normally has keyword names. An exception to this rule is setting variables from keyword return values, when the second and possibly also the subsequent columns contain variable names and a keyword name is located after them. In either case, columns after the keyword name contain possible arguments to the specified keyword.
+</p>
+
+<p>
+第二列通常有关键词名字。该规则例外是从关键词的返回值设置变量，第二列以及其后可能存在的列包含变量名字，最后是关键词。这种情况下，关键词名字后面的列可能是该关键词可能的参数。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Valid Login
+    Open Login Page
+    Input Username    demo
+    Input Password    mode
+    Submit Credentials
+    Welcome Page Should Be Open
+
+Setting Variables
+    Do Something    first argument    second argument
+    ${value} =    Get Some Value
+    Should Be Equal    ${value}    Expected value
+</pre>
+
+<p>
+<b>Settings in the Test Case table</b>
+</p>
+
+<p>
+<b>测试用例表中的设置</b>
+</p>
+
+<p>
+Test cases can also have their own settings. Setting names are always in the second column, where keywords normally are, and their values are in the subsequent columns. Setting names have square brackets around them to distinguish them from keywords. The available settings are listed below and explained later in this section.
+</p>
+
+<p>
+测试用例可以有自己的设置。测试名字总是放在第二列，该列通常是关键词，它们的取值位于随后的列中。设置名字必须被方括号包围
+</p>
+
+<ul class="org-ul">
+<li><p>
+[Documentation]
+</p>
+
+<p>
+Used for specifying a test case documentation.
+</p>
+
+<p>
+用来指定测试用例的文档说明。
+</p></li>
+
+<li><p>
+[Tags]
+</p>
+
+<p>
+Used for tagging test cases.
+</p>
+
+<p>
+用来标记测试用例。
+</p></li>
+
+<li><p>
+[Setup], [Teardown]
+</p>
+
+<p>
+Specify test setup and teardown.
+</p>
+
+<p>
+指定测试的 setup 和 teardown。
+</p></li>
+
+<li><p>
+[Template]
+</p>
+
+<p>
+Specifies the template keyword to use. The test itself will contain only data to use as arguments to that keyword.
+</p>
+
+<p>
+指定使用的板关键词。测试本身将只包含该关键词使用的数据。
+</p></li>
+
+<li><p>
+[Timeout]
+</p>
+
+<p>
+Used for setting a test case timeout. Timeouts are discussed in their own section.
+</p>
+
+<p>
+设置测试用例的超时时间。超时将在相关的章节谈论。
+</p></li>
+</ul>
+
+<p>
+Example test case with settings:
+</p>
+
+<p>
+包含设置的测试用例如下：
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Test With Settings
+    [Documentation]    Another dummy test
+    [Tags]    dummy    owner-johndoe
+    Log    Hello, world!
+</pre>
+
+<p>
+<b>Test case related settings in the Setting table</b>
+</p>
+
+<p>
+<b>设置表格中测试用例相关的设置</b>
+</p>
+
+<p>
+The Setting table can have the following test case related settings. These settings are mainly default values for the test case specific settings listed earlier.
+</p>
+
+<p>
+设置表中可以有如下测试现相关的设置。这些设置主要是前面列出的测试用例的具体设置的默认值。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Force Tags, Default Tags
+</p>
+
+<p>
+强制标签，默认标签
+</p>
+
+<p>
+The forced and default values for tags.
+</p></li>
+
+<li><p>
+Test Setup, Test Teardown
+</p>
+
+<p>
+The default values for test setup and teardown.
+</p></li>
+
+<li><p>
+Test Template
+</p>
+
+<p>
+测试模板
+</p>
+
+<p>
+The default template keyword to use.
+</p>
+
+<p>
+使用的默认模板关键词。
+</p></li>
+
+<li><p>
+Test Timeout
+</p>
+
+<p>
+The default value for test case timeout. Timeouts are discussed in their own section.
+</p>
+
+<p>
+测试用例超时的默认值。后面章节将会讨论超时。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9baca26" class="outline-4">
+<h4 id="org9baca26"><span class="section-number-4">2.2.2</span> Using arguments</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+The earlier examples have already demonstrated keywords taking different arguments, and this section discusses this important functionality more thoroughly. How to actually implement user keywords and library keywords with different arguments is discussed in separate sections.
+</p>
+
+<p>
+前面的例子已经证明了关键词可以取不同的参数，本章节更加深入的讨论这个关键的功能。单独的部分讨论了如何使用实现带不同参数的用户关键词和库关键词。
+</p>
+
+<p>
+Keywords can accept zero or more arguments, and some arguments may have default values. What arguments a keyword accepts depends on its implementation, and typically the best place to search this information is keyword's documentation. In the examples in this section the documentation is expected to be generated using the Libdoc tool, but the same information is available on documentation generated by generic documentation tools such as javadoc.
+</p>
+
+<p>
+关键词可以接受零个或更多参数，一些参数可以有默认值。关键词接受何参数取决于实现，通常最好在关键词的文档中搜寻该信息。本节中例子的文档将使用 Libdoc 工具生成，但同样的信息也可能通用文档工具，比如 javadoc，生成的文档中。
+</p>
+</div>
+
+<div id="outline-container-org65b3863" class="outline-5">
+<h5 id="org65b3863"><span class="section-number-5">2.2.2.1</span> Mandatory arguments（强制参数）</h5>
+<div class="outline-text-5" id="text-2-2-2-1">
+<p>
+Most keywords have a certain number of arguments that must always be given. In the keyword documentation this is denoted by specifying the argument names separated with a comma like first, second, third. The argument names actually do not matter in this case, except that they should explain what the argument does, but it is important to have exactly the same number of arguments as specified in the documentation. Using too few or too many arguments will result in an error.
+</p>
+
+<p>
+大部分关键字有一部分参数总是必须给定。在关键词文档中，这些参数使用逗号分割，例如 first,second，third。这钟情况下参数名实际上并不重要，除了它们应该解释参数做了什么，但重要的是有文档中指定的相同数量的参数。使用过少或过多参数都会导致错误。
+</p>
+
+<p>
+The test below uses keywords Create Directory and Copy File from the OperatingSystem library. Their arguments are specified as path and source, destination, which means that they take one and two arguments, respectively. The last keyword, No Operation from BuiltIn, takes no arguments.
+</p>
+
+<p>
+下面的测试使用了来自 OperationgSystem 库中的 Create Directory and Copy File 关键词。它们参数被指定为路径和源，目标，这意味着相应的它们使用一个或两个参数。最后一个来自 BuiltIn 的 No Operation 关键词，美欧参数。
+</p>
+<pre class="example">
+=*** Test Cases ***=
+Example
+    Create Directory    ${TEMPDIR}/stuff
+    Copy File    ${CURDIR}/file.txt    ${TEMPDIR}/stuff
+    No Operation
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org71d8caf" class="outline-5">
+<h5 id="org71d8caf"><span class="section-number-5">2.2.2.2</span> Default values（默认值）</h5>
+<div class="outline-text-5" id="text-2-2-2-2">
+<p>
+Arguments often have default values which can either be given or not. In the documentation the default value is typically separated from the argument name with an equal sign like name=default value, but with keywords implemented using Java there may be multiple implementations of the same keyword with different arguments instead. It is possible that all the arguments have default values, but there cannot be any positional arguments after arguments with default values.
+</p>
+
+<p>
+参数经常有可有可无的默认值。文档中默认值通常和参数名使用等号分割，比如 name=default，但使用 Java 实现的官架子，使用不同参数的关键词可能有多个实现。所有的参数都有默认值也是可能的，但是有默认值的参数之后不能有位置参数。
+</p>
+
+<p>
+Using default values is illustrated by the example below that uses Create File keyword which has arguments path, content=, encoding=UTF-8. Trying to use it without any arguments or more than three arguments would not work.
+</p>
+
+<p>
+下面演示使用默认值的例子，使用了 Create File 关键词，它有参数 path，content=，encoding=UTF-8。不使用任何参数或超过三个参数的尝试都将失败。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Example
+    Create File    ${TEMPDIR}/empty.txt
+    Create File    ${TEMPDIR}/utf-8.txt         Hyvä esimerkki
+    Create File    ${TEMPDIR}/iso-8859-1.txt    Hyvä esimerkki    ISO-8859-1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga0f7489" class="outline-5">
+<h5 id="orga0f7489"><span class="section-number-5">2.2.2.3</span> Variable number of arguments（可变数目的参数）</h5>
+<div class="outline-text-5" id="text-2-2-2-3">
+<p>
+It is also possible that a keyword accepts any number of arguments. These so called varargs can be combined with mandatory arguments and arguments with default values, but they are always given after them. In the documentation they have an asterisk before the argument name like *varargs.
+</p>
+
+<p>
+一个关键词有任意数量的参数也是可能的。这些所谓的可变参数可以结合强制参数和默认参数，但他们总在这些参数之后。文档中参数名之前有星号，类似*varargs。
+</p>
+
+<p>
+For example, Remove Files and Join Paths keywords from the OperatingSystem library have arguments *paths and base, *parts, respectively. The former can be used with any number of arguments, but the latter requires at least one argument.
+</p>
+
+<p>
+例如，来自 OperatingSystem 库中的 Remove Files 和 Join Paths 关键词相应的有*path，base 和*parts 参数。前者可以使用任意数量的参数，后者需要至少有一个参数。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Example
+    Remove Files    ${TEMPDIR}/f1.txt    ${TEMPDIR}/f2.txt    ${TEMPDIR}/f3.txt
+    @{paths} =    Join Paths    ${TEMPDIR}    f1.txt    f2.txt    f3.txt    f4.txt
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb417762" class="outline-5">
+<h5 id="orgb417762"><span class="section-number-5">2.2.2.4</span> Named arguments（命名参数）</h5>
+<div class="outline-text-5" id="text-2-2-2-4">
+<p>
+The named argument syntax makes using arguments with default values more flexible, and allows explicitly labeling what a certain argument value means. Technically named arguments work exactly like keyword arguments in Python.
+</p>
+
+<p>
+命名参数可以更灵活的使用带默认值的参数，允许显示标识特定参数值的意义。命名参数和 Python 中的关键词参数在技术上完全一样。
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="orgf060256"></a>Basic syntax（基本语法）<br />
+<div class="outline-text-6" id="text-2-2-2-4-1">
+<p>
+It is possible to name an argument given to a keyword by prefixing the value with the name of the argument like arg=value. This is especially useful when multiple arguments have default values, as it is possible to name only some the arguments and let others use their defaults. For example, if a keyword accepts arguments arg1=a, arg2=b, arg3=c, and it is called with one argument arg3=override, arguments arg1 and arg2 get their default values, but arg3 gets value override. If this sounds complicated, the named arguments example below hopefully makes it more clear.
+</p>
+
+<p>
+通过将参数名字放在值前面来命名关键词给定的参数是可能的，比如 arg=value。当多个参数有默认值时这特别有用，只命名一些参数，让另外一些使用默认值也是可能的。例如，如果一个关键词接受如下参数 arg1=a, arg2=b, arg3=c，使用一个参数 arg3=override 调用，参数 arg1 和 arg2 使用默认值，但 arg2 使用值 override。如果这听起来复杂，希望下面命名参数的例子可以使它更清楚。
+</p>
+
+<p>
+The named argument syntax is both case and space sensitive. The former means that if you have an argument arg, you must use it like arg=value, and neither Arg=value nor ARG=value works. The latter means that spaces are not allowed before the = sign, and possible spaces after it are considered part of the given value.
+</p>
+
+<p>
+命名参数语法是大小写和空格敏感的。前者意味着，如果有参数 arg，必须类似 arg=value 使用，Arg=value 和 ARG=value 都不起作用。后者意味着等号左边不能有空号，等号右边的空格将被当作给定值的一部分。
+</p>
+
+<p>
+When the named argument syntax is used with user keywords, the argument names must be given without the ${} decoration. For example, user keyword with arguments ${arg1}=first, ${arg2}=second must be used like arg2=override.
+</p>
+
+<p>
+当命名参数语法配合用户关键词使用时，参数名字不能使用\({}给出。例如，有参数\){arg1}=first, ${arg2}=second 的用户关键词必须像 arg2=override 这样使用。
+</p>
+
+<p>
+Using normal positional arguments after named arguments like, for example, | Keyword | arg=value | positional |, does not work. Starting from Robot Framework 2.8 this causes an explicit error. The relative order of the named arguments does not matter.
+</p>
+
+<p>
+在命名参数后使用常规位置参数，例如，| Keyword | arg=value | positional |不会生效。在 Robot Framework 2.8 中这样使用将会导致显示错误。命名参数的相对顺序无关紧要。
+</p>
+
+<pre class="example">
+Note
+
+Prior to Robot Framework 2.8 it was not possible to name arguments that did not have a default value.
+</pre>
+</div>
+</li>
+
+
+<li><a id="org663a252"></a>Named arguments with variables（带变量的命名参数）<br />
+<div class="outline-text-6" id="text-2-2-2-4-2">
+<p>
+It is possible to use variables in both named argument names and values. If the value is a single scalar variable, it is passed to the keyword as-is. This allows using any objects, not only strings, as values also when using the named argument syntax. For example, calling a keyword like arg=${object} will pass the variable ${object} to the keyword without converting it to a string.
+</p>
+
+<p>
+在命名参数名字和值中使用变量是可能的。如果值是一个标量变量，它按照原样传递给关键字。这允许使用命名参数语法将任何对象作为值，不仅仅是字符串。例如，类似 arg=\({object}调用关键字会将变量\){object}传递给关键字，而不会将其转变为字符串。
+</p>
+
+<p>
+If variables are used in named argument names, variables are resolved before matching them against argument names. This is a new feature in Robot Framework 2.8.6.
+</p>
+
+<p>
+如果在命名参数名字中使用变量，在匹配参数名字前变量将会解析。这是 Robot Framwork 2.8.6 中的新功能。
+</p>
+
+<p>
+The named argument syntax requires the equal sign to be written literally in the keyword call. This means that variable alone can never trigger the named argument syntax, not even if it has a value like foo=bar. This is important to remember especially when wrapping keywords into other keywords. If, for example, a keyword takes a variable number of arguments like @{args} and passes all of them to another keyword using the same @{args} syntax, possible named=arg syntax used in the calling side is not recognized. This is illustrated by the example below.
+</p>
+
+<p>
+命名参数语法要求等号必须在关键词调用中。这意味着单独的变量将不会触发命名参数语法，即使入 foo=bar 这样的取值。当将关键词包装到其他关键词时记住这个是重要的。例如，如果一个关键词有多个类似@{args}的参数，使用@{args}将它们全部传递到另外一个关键词，不能识别调用侧可能存在的 named=arg 语法。如下示例：
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Example
+    Run Program    shell=True    # This will not come as a named argument to Run Process
+
+=*** Keywords ***=
+Run Program
+    [Arguments]    @{args}
+    Run Process    program.py    @{args}    # Named arguments are not recognized from inside @{args}
+</pre>
+
+<p>
+If keyword needs to accept and pass forward any named arguments, it must be changed to accept free keyword arguments. See kwargs examples for a wrapper keyword version that can pass both positional and named arguments forward.
+</p>
+
+<p>
+如果关键词需要接受或传递任何命名参数，必须修改它来接受任意的关键词参数。参见 Kwars 了解包装关键版本，它可用来向前传递位置参数和命名参数。
+</p>
+</div>
+</li>
+
+<li><a id="orgbe84fed"></a>Escaping named arguments syntax（转义命名参数语法）<br />
+<div class="outline-text-6" id="text-2-2-2-4-3">
+<p>
+The named argument syntax is used only when the part of the argument before the equal sign matches one of the keyword's arguments. It is possible that there is a positional argument with a literal value like foo=quux, and also an unrelated argument with name foo. In this case the argument foo either incorrectly gets the value quux or, more likely, there is a syntax error.
+</p>
+
+<p>
+只有当等号前面参数部分匹配关键词参数的时候才会使用命名参数语法。可能存在带 foo=quux 字面值的位置参数，也存在名为 foo 的无关参数。这种情况下，参数 foo 错误的得到值 quux，或者更可能的是，这是个语法错误。
+</p>
+
+<p>
+In these rare cases where there are accidental matches, it is possible to use the backslash character to escape the syntax like foo\=quux. Now the argument will get a literal value foo=quux. Note that escaping is not needed if there are no arguments with name foo, but because it makes the situation more explicit, it may nevertheless be a good idea.
+</p>
+
+<p>
+在这些罕见的情况下，
+</p>
+</div>
+</li>
+<li><a id="org5a7bfb2"></a>Where named arguments are supported（何处支持命名参数）<br />
+<div class="outline-text-6" id="text-2-2-2-4-4">
+<p>
+As already explained, the named argument syntax works with keywords. In addition to that, it also works when importing libraries.
+</p>
+
+<p>
+正如解释过的，命名参数语法可以和关键词一起工作。除此之外，还可以和导入库一起工作。
+</p>
+
+<p>
+      Naming arguments is supported by user keywords and by most test libraries. The only exception are Java based libraries that use the static library API. Library documentation generat
+ed with Libdoc has a note does the library support named arguments or not.
+</p>
+
+<p>
+用户关键词和大多数测试库支持命名参数。唯一的例外是基于 JAVA 使用静态库 API 的测试库。使用 Libdoc 生成的库文档有关于库是否支持命名参数的记录。
+</p>
+
+<pre class="example">
+Note
+
+Prior to Robot Framework 2.8 named argument syntax did not work with test libraries using the dynamic library API.
+
+Robot Framework 2.8 之前的版本命名参数语法不能于私用动态库 API 的测试库一起使用。
+
+</pre>
+</div>
+</li>
+
+
+<li><a id="org8406a2c"></a>Named arguments example（命名参数示例）<br />
+<div class="outline-text-6" id="text-2-2-2-4-5">
+<p>
+The following example demonstrates using the named arguments syntax with library keywords, user keywords, and when importing the Telnet test library.
+</p>
+
+<p>
+下面的示例演示了搭配库关键词，用户关键词和导入 Telnet 测试库使用命名参数语法。
+</p>
+
+<pre class="example">
+=*** Settings ***=
+Library    Telnet    prompt=$    default_log_level=DEBUG
+
+=*** Test Cases ***=
+Example
+    Open connection    10.0.0.42    port=${PORT}    alias=example
+    List files    options=-lh
+    List files    path=/tmp    options=-l
+
+=*** Keywords ***=
+List files
+    [Arguments]    ${path}=.    ${options}=
+    List files    options=-lh
+    Execute command    ls ${options} ${path}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org56e598e" class="outline-5">
+<h5 id="org56e598e"><span class="section-number-5">2.2.2.5</span> Free keyword arguments（自由关键字参数）</h5>
+<div class="outline-text-5" id="text-2-2-2-5">
+<p>
+Robot Framework 2.8 added support for Python style free keyword arguments (**kwargs). What this means is that keywords can receive all arguments that use the name=value syntax and do not match any other arguments as kwargs.
+</p>
+
+<p>
+Robot Framework 2.8 添加 Python 风格的自由关键词参数（**kwargs）支持。也就是关键词可以使用 kwargs 接受使用 name=value 语法的所有参数，而不会其他参数。
+</p>
+
+<p>
+Free keyword arguments support variables similarly as named arguments. In practice that means that variables can be used both in names and values, but the escape sign must always be visible literally. For example, both foo=${bar} and \({foo}=\){bar} are valid, as long as the variables that are used exist. An extra limitation is that free keyword argument names must always be strings. Support for variables in names is a new feature in Robot Framework 2.8.6, prior to that possible variables were left un-resolved.
+</p>
+
+<p>
+自由关键词参数支持类型命名参数的变量。在实践中这意味着该变量既可以使用名字也可以使用值，但转义符必须是字面可见的。例如，${bar} and \({foo}=\){bar}都是有效的，只要使用的变量存在。一个额外的限制是自由关键词参数名字必须是字符串。支持名字中使用变量是 Robot Framework 2.8.6 的新特性，该版本之前可能存在变量不会进行解析。
+</p>
+
+<p>
+Initially free keyword arguments only worked with Python based libraries, but Robot Framework 2.8.2 extended the support to the dynamic library API and Robot Framework 2.8.3 extended it further to Java based libraries and to the remote library interface. Finally, user keywords got kwargs support in Robot Framework 2.9. In other words, all keywords can nowadays support kwargs.
+</p>
+
+<p>
+最初自由关键词参数只和基于 Python 的库一起工作，但 Robot Framework 2.8.2 扩展支持动态库 API，Robot Framework 2.8.3 进一步将其扩展到支持基于 Java 的库和远程库接口。最后，Robot Framework 2.9 支持用户关键字使用 kwargs。换句话说，现在所有关键词都可以支持 kwargs。
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org82db480"></a>Kwargs examples<br />
+<div class="outline-text-6" id="text-2-2-2-5-1">
+<p>
+As the first example of using kwargs, let's take a look at Run Process keyword in the Process library. It has a signature command, *arguments, **configuration, which means that it takes the command to execute (command), its arguments as variable number of arguments (*arguments) and finally optional configuration parameters as free keyword arguments (**configuration). The example below also shows that variables work with free keyword arguments exactly like when using the named argument syntax.
+</p>
+
+<p>
+作为使用 kwargs 的首个示例，看一下 Process 库中的 Run Process 关键词。它有一个签名 command，*arguments, **configuration，这意味着它可以执行命令（command），不同数量的参数（*arguments）作为参数，最后是自由关键词参数（**configuration）作为可选的配置参数。下面的例子显示了如同使用命名参数语法一样使用自由关键词参数的各种工作。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Using Kwargs
+    Run Process    program.py    arg1    arg2    cwd=/home/user
+    Run Process    program.py    argument    shell=True    env=${ENVIRON}
+</pre>
+
+<p>
+See Free keyword arguments (**kwargs) section under Creating test libraries for more information about using the kwargs syntax in your custom test libraries.
+</p>
+
+<p>
+参见 Creating test libraries 下的 Free keyword arguments (**kwargs)小节了解更多在自定义测试库中使用 kwargs 的信息。
+</p>
+
+<p>
+As the second example, let's create a wrapper user keyword for running the program.py in the above example. The wrapper keyword Run Program accepts any number of arguments and kwargs, and passes them forward for Run Process along with the name of the command to execute.
+</p>
+
+<p>
+作为第二个例子，让我们创建一个包装用户键词来运行上面例子中的 program.py。包装关键词 Run Program 接受任意数量的参数和 kwargs，将它们连同执行的命令名字传递到 Run Process,
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Using Kwargs
+    Run Program    arg1    arg2    cwd=/home/user
+    Run Program    argument    shell=True    env=${ENVIRON}
+
+=*** Keywords ***=
+Run Program
+    [Arguments]    @{arguments}    &amp;{configuration}
+    Run Process    program.py    @{arguments}    &amp;{configuration}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgae3d8a8" class="outline-5">
+<h5 id="orgae3d8a8"><span class="section-number-5">2.2.2.6</span> Arguments embedded to keyword names（嵌入在关键词名字中的参数）</h5>
+<div class="outline-text-5" id="text-2-2-2-6">
+<p>
+A totally different approach to specify arguments is embedding them into keyword names. This syntax is supported by both test library keywords and user keywords.
+</p>
+
+<p>
+指定参数的一个完全不同的方法是将它们嵌入到关键词的名字中。测试库关键和用户关键词都支持该语法。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaecb144" class="outline-4">
+<h4 id="orgaecb144"><span class="section-number-4">2.2.3</span> Failures</h4>
+<div class="outline-text-4" id="text-2-2-3">
+</div>
+<div id="outline-container-org4454197" class="outline-5">
+<h5 id="org4454197"><span class="section-number-5">2.2.3.1</span> When test case fails（何时测试用例失败）</h5>
+<div class="outline-text-5" id="text-2-2-3-1">
+<p>
+A test case fails if any of the keyword it uses fails. Normally this means that execution of that test case is stopped, possible test teardown is executed, and then execution continues from the next test case. It is also possible to use special continuable failures if stopping test execution is not desired.
+</p>
+
+<p>
+测试用例中使用的任何关键词失败都会导致其失败。通常这意味着测试用例停止执行，执行可能存在的测试 teardown，然后继续执行下一个测试用例。如果不需要停止测试执行，可能需要使用特殊的继续执行的失败。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org08db1a4" class="outline-5">
+<h5 id="org08db1a4"><span class="section-number-5">2.2.3.2</span> Error messages（错误消息）</h5>
+<div class="outline-text-5" id="text-2-2-3-2">
+<p>
+The error message assigned to a failed test case is got directly from the failed keyword. Often the error message is created by the keyword itself, but some keywords allow configuring them.
+</p>
+
+<p>
+分配给失败的测试用例的错误消息直接来自失败的关键词。通常错误信息由关键词本身创建，但一些关键词允许配置它们。
+</p>
+
+<p>
+In some circumstances, for example when continuable failures are used, a test case can fail multiple times. In that case the final error message is got by combining the individual errors. Very long error messages are automatically cut from the middle to keep reports easier to read. Full error messages are always visible in log file as a message of the failed keyword.
+</p>
+
+<p>
+在某些情况下，例如，使用了可继续的失败，测试用例可能失败多次。这种情况下，错误消息通过将诶和单独的错误给出。为了让报告容易阅读，很长的错误信息自动从中间切断。在长文件中作为失败关键词的全部错误消息都是可见的。
+</p>
+
+<p>
+By default error messages are normal text, but starting from Robot Framework 2.8 they can contain HTML formatting. This is enabled by starting the error message with marker string <b>HTML</b>. This marker will be removed from the final error message shown in reports and logs. Using HTML in a custom message is shown in the second example below.
+</p>
+
+<p>
+默认错误信息是正常的文本，但从 Robot Framework 2.8 开始它们可以包含 HTML 格式。以标记字符串=*HTML*=开始的错误信息启用该功能。报告和日志中将移除该标记。下面第二个例子中显示在订制消息使用 HTML。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Normal Error
+    Fail    This is a rather boring example...
+
+HTML Error
+    ${number} =    Get Number
+    Should Be Equal    ${number}    42    *HTML* Number is not my &lt;b&gt;MAGIC&lt;/b&gt; number.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgec95bd5" class="outline-4">
+<h4 id="orgec95bd5"><span class="section-number-4">2.2.4</span> Test case name and documentation（测试用例名字和文档）</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+The test case name comes directly from the Test Case table: it is exactly what is entered into the test case column. Test cases in one test suite should have unique names. Pertaining to this, you can also use the automatic variable ${TEST_NAME} within the test itself to refer to the test name. It is available whenever a test is being executed, including all user keywords, as well as the test setup and the test teardown.
+</p>
+
+<p>
+测试用例名字直接来自 Test Case 表：就是测试用例列中输入的内容。测试套件中的测试用例应该有唯一的名字。为了说明这个，可以使用测试本身的自动变量${TEST_NAME}引用测试名字。当执行测试的时候它是可用的，还有所有用户关键词，测试 setup 和测试 teardown。
+</p>
+
+<p>
+The [Documentation] setting allows you to set a free documentation for a test case. That text is shown in the command line output, as well as the resulting test logs and test reports. It is possible to use simple HTML formatting in documentation and variables can be used to make the documentation dynamic.
+</p>
+
+<p>
+[Documentation]设置允许为测试用例设置自由的文档。文本内容将显示在命令行输出上，以及由此产生的日志和报告中。在文档和变量中可以使用 HTML 格式，可用于动态生成文档。
+</p>
+
+<p>
+If documentation is split into multiple columns, cells in one row are concatenated together with spaces. This is mainly be useful when using the HTML format and columns are narrow. If documentation is split into multiple rows, the created documentation lines themselves are concatenated using newlines. Newlines are not added if a line already ends with a newline or an escaping backslash.
+</p>
+
+<p>
+如果文档分为多列，每行单元格使用空格连接。这对于使用 HTML 格式 narrow 列的时候有用。如果文档分割为多行，它们滋生创建的文档使用换行符连接。如果一行行尾已经使用换行符或转义反斜杠，就不会添加换行。
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Simple
+    [Documentation]    Simple documentation
+    No Operation
+
+Formatting
+    [Documentation]    *This is bold*, _this is italic_  and here is a link: http://robotframework.org
+    No Operation
+
+Variables
+    [Documentation]    Executed at ${HOST} by ${USER}
+    No Operation
+
+Splitting
+    [Documentation]    This documentation    is split    into multiple columns
+    No Operation
+
+Many lines
+    [Documentation]    Here we have
+    ...                an automatic newline
+    No Operation
+</pre>
+
+
+<p>
+It is important that test cases have clear and descriptive names, and in that case they normally do not need any documentation. If the logic of the test case needs documenting, it is often a sign that keywords in the test case need better names and they are to be enhanced, instead of adding extra documentation. Finally, metadata, such as the environment and user information in the last example above, is often better specified using tags.
+</p>
+
+<p>
+重要的是测试用例有明确的和描述型的名字，这种情况下它们通常不需要任何文档。如果测试用例的逻辑需要文档，通常这表明测试用例中的关键词需要更好的名字，需要被加强，包括添加额外文档。最后，元数据，比如上面最后一个列子中的环境变量和用户信息通常使用标签更好的指定。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6bb5d51" class="outline-4">
+<h4 id="org6bb5d51"><span class="section-number-4">2.2.5</span> Tagging test cases（标记测试用例）</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+Using tags in Robot Framework is a simple, yet powerful mechanism for classifying test cases. Tags are free text and they can be used at least for the following purposes:
+</p>
+
+<p>
+在 Robot Framework 中使用标签很简单，这也是对测试用例进行分类的强大工具。tag 是任意文本，至少可用于一下目的：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Tags are shown in test reports, logs and, of course, in the test data, so they provide metadata to test cases.
+</p>
+
+<p>
+标签可以显示在测试报告，日志，当然还有测试数据中，所以它们提供测试用例的元数据。
+</p></li>
+
+<li><p>
+Statistics about test cases (total, passed, failed are automatically collected based on tags).
+</p>
+
+<p>
+统计测试测试用例信息（总数，通过，失败，基于标签自动搜集）
+</p></li>
+
+<li><p>
+With tags, you can include or exclude test cases to be executed.
+</p>
+
+<p>
+使用标签，可以指定执行包含或排除的测试用例。
+</p></li>
+
+<li><p>
+With tags, you can specify which test cases are considered critical.
+</p>
+
+<p>
+使用标签，可以指定哪些测试用例是关键的。
+</p></li>
+</ul>
+
+<p>
+In this section it is only explained how to set tags for test cases, and different ways to do it are listed below. These approaches can naturally be used together.
+</p>
+
+<p>
+本章节中直接是如何为测试用例设置标签，以及下面所列的不同的设置方式。这些方法可以自然的一起使用。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Force Tags in the Setting table
+</p>
+
+<p>
+Setting 表中的强制标签
+</p>
+
+<p>
+All test cases in a test case file with this setting always get specified tags. If it is used in the test suite initialization file, all test cases in sub test suites get these tags.
+</p>
+
+<p>
+测试用例文件中使用该设置的所有测试用例总是获得指定标签。如果测试套件初始化文件中使用，子测试套件中所有的测试用例都会获得这些标签。
+</p></li>
+
+<li><p>
+Default Tags in the Setting table
+</p>
+
+<p>
+Setting 表中的默认标签。
+</p>
+
+<p>
+Test cases that do not have a [Tags] setting of their own get these tags. Default tags are not supported in test suite initialization files.
+</p>
+
+<p>
+自身没有[Tags]设定的测试用例将会使用这些标签。默认标签不支持谓语测试套件初始化文件中。
+</p></li>
+
+<li><p>
+[Tags] in the Test Case table
+</p>
+
+<p>
+测试用例表中[Tags]
+</p>
+
+<p>
+A test case always gets these tags. Additionally, it does not get the possible tags specified with Default Tags, so it is possible to override the Default Tags by using empty value. It is also possible to use value NONE to override default tags.
+</p>
+
+<p>
+测试用例总会得到这些标签。此外，不会获得默认标签指定的可能的标签。所以可以使用空值覆盖默认标签的值。可以使用 NONE 覆盖默认标签。
+</p></li>
+
+<li><p>
+&#x2013;settag command line option
+</p>
+
+<p>
+&#x2013;settag 命令行选项
+</p>
+
+<p>
+All executed test cases get tags set with this option in addition to tags they got elsewhere.
+</p>
+
+<p>
+除了其他地方的标签，所有执行的测试用例获得使用该选项设置的标签。
+</p></li>
+
+<li><p>
+Set Tags, Remove Tags, Fail and Pass Execution keywords
+</p>
+
+<p>
+Set Tags, Remove Tags, Fail and Pass Execution 关键词
+</p>
+
+<p>
+These BuiltIn keywords can be used to manipulate tags dynamically during the test execution.
+</p>
+
+<p>
+这些 BuiltIn 关键词可以用动态维护测试执行时的标签。
+</p></li>
+</ul>
+
+<p>
+Tags are free text, but they are normalized so that they are converted to lowercase and all spaces are removed. If a test case gets the same tag several times, other occurrences than the first one are removed. Tags can be created using variables, assuming that those variables exist.
+</p>
+
+<p>
+标签是任意文本，但它们是标准化的，所以它们转换为小写，移除了所有空格。如果测试用例几次获得相同的标签，其他发生在第一次之后的将被移除。可以使用变量创建标签，假设存在这些变量。
+</p>
+
+<pre class="example">
+=*** Settings ***=
+Force Tags      req-42
+Default Tags    owner-john    smoke
+
+=*** Variables ***=
+${HOST}         10.0.1.42
+
+=*** Test Cases ***=
+No own tags
+    [Documentation]    This test has tags owner-john, smoke and req-42.
+    No Operation
+
+With own tags
+    [Documentation]    This test has tags not_ready, owner-mrx and req-42.
+    [Tags]    owner-mrx    not_ready
+    No Operation
+
+Own tags with variables
+    [Documentation]    This test has tags host-10.0.1.42 and req-42.
+    [Tags]    host-${HOST}
+    No Operation
+
+Empty own tags
+    [Documentation]    This test has only tag req-42.
+    [Tags]
+    No Operation
+
+Set Tags and Remove Tags Keywords
+    [Documentation]    This test has tags mytag and owner-john.
+    Set Tags    mytag
+    Remove Tags    smoke    req-*
+</pre>
+</div>
+
+
+<div id="outline-container-orgc591087" class="outline-5">
+<h5 id="orgc591087"><span class="section-number-5">2.2.5.1</span> Reserved tags（保留标签）</h5>
+<div class="outline-text-5" id="text-2-2-5-1">
+<p>
+Users are generally free to use whatever tags that work in their context. There are, however, certain tags that have a predefined meaning for Robot Framework itself, and using them for other purposes can have unexpected results. All special tags Robot Framework has and will have in the future have a robot- prefix. To avoid problems, users should thus not use any tag with a robot- prefix unless actually activating the special functionality.
+</p>
+
+<p>
+用户可以在工作环境中任意使用标签。然而，某些标签有针对 Robot Framework 自身的预先定义，将它们用于其他目的会有意想不到的结果。Robot Framework 已有的，及将来会有的特殊标签会有一个 <code>robot-</code> 前缀。为了避免出问题，因而用户不应该使用任何包含 <code>robot-</code> 前缀的标签，除非真正激活这些特殊功能。
+</p>
+
+<p>
+At the time of writing, the only special tag is robot-exit that is automatically added to tests when stopping test execution gracefully. More usages are likely to be added in the future, though.
+</p>
+
+<p>
+写作本文时，唯一特殊的标签就是 robot-exit，该标签在优雅的停止测试执行时自动添加到测试。将来会添加更多的使用。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4090bf3" class="outline-4">
+<h4 id="org4090bf3"><span class="section-number-4">2.2.6</span> Test setup and teardown</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+Robot Framework has similar test setup and teardown functionality as many other test automation frameworks. In short, a test setup is something that is executed before a test case, and a test teardown is executed after a test case. In Robot Framework setups and teardowns are just normal keywords with possible arguments.
+</p>
+
+<p>
+和其他很多自动化测试框架一样，Robot Framework 也有测试设置和清楚功能。简而言之，测试设置就是在执行测试用例之前所做的事情，测试清楚是测试用例之后所做的事情。Robot Framework 中测试设置和清理只是可能带有参数的正常关键词。
+</p>
+
+<p>
+Setup and teardown are always a single keyword. If they need to take care of multiple separate tasks, it is possible to create higher-level user keywords for that purpose. An alternative solution is executing multiple keywords using the BuiltIn keyword Run Keywords.
+</p>
+
+<p>
+Setup 和 teardown 总是单个关键字。如果它们需要考虑多个安顿的任务，可使用用户关键词创建更高级别的用户关键词。执行多个关键词的另一个解决方案是使用 BuiltIn 关键字 Run。
+</p>
+
+<p>
+The test teardown is special in two ways. First of all, it is executed also when a test case fails, so it can be used for clean-up activities that must be done regardless of the test case status. In addition, all the keywords in the teardown are also executed even if one of them fails. This continue on failure functionality can be used also with normal keywords, but inside teardowns it is on by default.
+</p>
+
+<p>
+test teardown 在两方面是特殊的。首先，当测试用例失败时也会执行，所以，它可以用于不管测试用例状态是什么都需要做的清理活动。除此之外，teardown 中的所有关键字都会执行，即使它们其中的某一个失败了，这种失败情况下仍会继续继续的功能可以用普通关键，但在 teardown 内部是默认启用的。
+</p>
+
+<p>
+The easiest way to specify a setup or a teardown for test cases in a test case file is using the Test Setup and Test Teardown settings in the Setting table. Individual test cases can also have their own setup or teardown. They are defined with the [Setup] or [Teardown] settings in the test case table and they override possible Test Setup and Test Teardown settings. Having no keyword after a [Setup] or [Teardown] setting means having no setup or teardown. It is also possible to use value NONE to indicate that a test has no setup/teardown.
+</p>
+
+<p>
+为一个测试用例指定 setup 和 teardown 最简单的方法是在 Setting 表中使用 Test Setup 和 Test Teardown。单独的测试用例还可以有自己的 setup 和 teardown。在测试用例表中使用[Setup] or [Teardown]定义设置，它们可能会覆盖 Test Setup and Test Teardown 设置。[Setup] or [Teardown]之后没有关键字意味着没有 setup 或 teardown。使用值 NONE 指示一个测试没有 setup/teardown 也是可能的。
+</p>
+
+<pre class="example">
+=*** Settings ***=
+Test Setup       Open Application    App A
+Test Teardown    Close Application
+
+=*** Test Cases ***=
+Default values
+    [Documentation]    Setup and teardown from setting table
+    Do Something
+
+Overridden setup
+    [Documentation]    Own setup, teardown from setting table
+    [Setup]    Open Application    App B
+    Do Something
+
+No teardown
+    [Documentation]    Default setup, no teardown at all
+    Do Something
+    [Teardown]
+
+No teardown 2
+    [Documentation]    Setup and teardown can be disabled also with special value NONE
+    Do Something
+    [Teardown]    NONE
+
+Using variables
+    [Documentation]    Setup and teardown specified using variables
+    [Setup]    ${SETUP}
+    Do Something
+    [Teardown]    ${TEARDOWN}
+</pre>
+
+<p>
+The name of the keyword to be executed as a setup or a teardown can be a variable. This facilitates having different setups or teardowns in different environments by giving the keyword name as a variable from the command line.
+</p>
+
+<p>
+作为 setup 或 teardown 执行的关键词的名字可以是变量。这个功能有助于根据不同的环境设置不同的 setups 或 teardowns，而作为变量的关键词名字可以来自命令行。
+</p>
+<blockquote>
+<p>
+Note
+</p>
+
+<p>
+Test suites can have a setup and teardown of their own. A suite setup is executed before any test cases or sub test suites in that test suite, and similarly a suite teardown is executed after them.
+</p>
+
+<p>
+测试套件可以有自己的 setup 和 teardown。测试套件的 setup 在套件中任何测试用例或子测试套件之前执行，类似的测试套件 teardown 在它们之后执行。
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgc2fbe92" class="outline-4">
+<h4 id="orgc2fbe92"><span class="section-number-4">2.2.7</span> Test templates</h4>
+<div class="outline-text-4" id="text-2-2-7">
+<p>
+Test templates convert normal keyword-driven test cases into data-driven tests. Whereas the body of a keyword-driven test case is constructed from keywords and their possible arguments, test cases with template contain only the arguments for the template keyword. Instead of repeating the same keyword multiple times per test and/or with all tests in a file, it is possible to use it only per test or just once per file.
+</p>
+
+<p>
+Template keywords can accept both normal positional and named arguments, as well as arguments embedded to the keyword name. Unlike with other settings, it is not possible to define a template using a variable.
+</p>
+</div>
+
+<div id="outline-container-orgea31341" class="outline-5">
+<h5 id="orgea31341"><span class="section-number-5">2.2.7.1</span> Basic usage</h5>
+<div class="outline-text-5" id="text-2-2-7-1">
+<p>
+How a keyword accepting normal positional arguments can be used as a template is illustrated by the following example test cases. These two tests are functionally fully identical.
+</p>
+
+<pre class="example">
+=*** Test Cases **=
+Normal test case
+    Example keyword    first argument    second argument
+
+Templated test case
+    [Template]    Example keyword
+    first argument    second argument
+</pre>
+
+<p>
+As the example illustrates, it is possible to specify the template for an individual test case using the [Template] setting. An alternative approach is using the Test Template setting in the Setting table, in which case the template is applied for all test cases in that test case file. The [Template] setting overrides the possible template set in the Setting table, and an empty value for [Template] means that the test has no template even when Test Template is used. It is also possible to use value NONE to indicate that a test has no template.
+</p>
+
+<p>
+If a templated test case has multiple data rows in its body, the template is applied for all the rows one by one. This means that the same keyword is executed multiple times, once with data on each row. Templated tests are also special so that all the rounds are executed even if one or more of them fails. It is possible to use this kind of continue on failure mode with normal tests too, but with the templated tests the mode is on automatically.
+</p>
+
+<pre class="example">
+=*** Settings ***=
+Test Template    Example keyword
+
+=*** Test Cases ***=
+Templated test case
+    first round 1     first round 2
+    second round 1    second round 2
+    third round 1     third round 2
+</pre>
+
+
+<p>
+Using arguments with default values or varargs, as well as using named arguments and free keyword arguments, work with templates exactly like they work otherwise. Using variables in arguments is also supported normally.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e6005e" class="outline-5">
+<h5 id="org6e6005e"><span class="section-number-5">2.2.7.2</span> Templates with embedded arguments</h5>
+<div class="outline-text-5" id="text-2-2-7-2">
+<p>
+Starting from Robot Framework 2.8.2, templates support a variation of the embedded argument syntax. With templates this syntax works so that if the template keyword has variables in its name, they are considered placeholders for arguments and replaced with the actual arguments used with the template. The resulting keyword is then used without positional arguments. This is best illustrated with an example:
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Normal test case with embedded arguments
+    The result of 1 + 1 should be 2
+    The result of 1 + 2 should be 3
+
+Template with embedded arguments
+    [Template]    The result of ${calculation} should be ${expected}
+    1 + 1    2
+    1 + 2    3
+
+=*** Keywords ***=
+The result of ${calculation} should be ${expected}
+    ${result} =    Calculate    ${calculation}
+    Should Be Equal    ${result}     ${expected}
+</pre>
+
+<p>
+When embedded arguments are used with templates, the number of arguments in the template keyword name must match the number of arguments it is used with. The argument names do not need to match the arguments of the original keyword, though, and it is also possible to use different arguments altogether:
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Different argument names
+    [Template]    The result of ${foo} should be ${bar}
+    1 + 1    2
+    1 + 2    3
+
+Only some arguments
+    [Template]    The result of ${calculation} should be 3
+    1 + 2
+    4 - 1
+
+New arguments
+    [Template]    The ${meaning} of ${life} should be 42
+    result    21 * 2
+</pre>
+
+<p>
+The main benefit of using embedded arguments with templates is that argument names are specified explicitly. When using normal arguments, the same effect can be achieved by naming the columns that contain arguments. This is illustrated by the data-driven style example in the next section.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9234a06" class="outline-5">
+<h5 id="org9234a06"><span class="section-number-5">2.2.7.3</span> Templates with for loops</h5>
+<div class="outline-text-5" id="text-2-2-7-3">
+<p>
+If templates are used with for loops, the template is applied for all the steps    inside the loop. The continue on failure mode is in use also in this case, which means that all the steps are executed with all the looped elements even if there are failures.
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Template and for
+    [Template]    Example keyword
+    :FOR    ${item}    IN    @{ITEMS}
+    \    ${item}    2nd arg
+    :FOR    ${index}    IN RANGE    42
+    \    1st arg    ${index}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1a98b76" class="outline-4">
+<h4 id="org1a98b76"><span class="section-number-4">2.2.8</span> Different test case styles</h4>
+<div class="outline-text-4" id="text-2-2-8">
+<p>
+There are several different ways in which test cases may be written. Test cases that describe some kind of workflow may be written either in keyword-driven or behavior-driven style. Data-driven style can be used to test the same workflow with varying input data.
+</p>
+</div>
+
+<div id="outline-container-orge2b3870" class="outline-5">
+<h5 id="orge2b3870"><span class="section-number-5">2.2.8.1</span> Keyword-driven style</h5>
+<div class="outline-text-5" id="text-2-2-8-1">
+<p>
+Workflow tests, such as the Valid Login test described earlier, are constructed from several keywords and their possible arguments. Their normal structure is that first the system is taken into the initial state (Open Login Page in the Valid Login example), then something is done to the system (Input Name, Input Password, Submit Credentials), and finally it is verified that the system behaved as expected (Welcome Page Should Be Open).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc333004" class="outline-5">
+<h5 id="orgc333004"><span class="section-number-5">2.2.8.2</span> Data-driven style</h5>
+<div class="outline-text-5" id="text-2-2-8-2">
+<p>
+Another style to write test cases is the data-driven approach where test cases use only one higher-level keyword, normally created as a user keyword, that hides the actual test workflow. These tests are very useful when there is a need to test the same scenario with different input and/or output data. It would be possible to repeat the same keyword with every test, but the test template functionality allows specifying the keyword to use only once.
+</p>
+
+<pre class="example">
+=*** Settings ***=
+Test Template    Login with invalid credentials should fail
+
+=*** Test Cases ***                USERNAME         PASSWORD=
+Invalid User Name                 invalid          ${VALID PASSWORD}
+Invalid Password                  ${VALID USER}    invalid
+Invalid User Name and Password    invalid          invalid
+Empty User Name                   ${EMPTY}         ${VALID PASSWORD}
+Empty Password                    ${VALID USER}    ${EMPTY}
+Empty User Name and Password      ${EMPTY}         ${EMPTY}
+</pre>
+
+<blockquote>
+<p>
+Tip
+</p>
+
+<p>
+Naming columns like in the example above makes tests easier to understand. This is possible because on the header row other cells except the first one are ignored.
+</p>
+</blockquote>
+<p>
+The above example has six separate tests, one for each invalid user/password combination, and the example below illustrates how to have only one test with all the combinations. When using test templates, all the rounds in a test are executed even if there are failures, so there is no real functional difference between these two styles. In the above example separate combinations are named so it is easier to see what they test, but having potentially large number of these tests may mess-up statistics. Which style to use depends on the context and personal preferences.
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Invalid Password
+    [Template]    Login with invalid credentials should fail
+    invalid          ${VALID PASSWORD}
+    ${VALID USER}    invalid
+    invalid          whatever
+    ${EMPTY}         ${VALID PASSWORD}
+    ${VALID USER}    ${EMPTY}
+    ${EMPTY}         ${EMPTY}
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orge6c8346" class="outline-5">
+<h5 id="orge6c8346"><span class="section-number-5">2.2.8.3</span> Behavior-driven style</h5>
+<div class="outline-text-5" id="text-2-2-8-3">
+<p>
+It is also possible to write test cases as requirements that also non-technical project stakeholders must understand. These executable requirements are a corner stone of a process commonly called Acceptance Test Driven Development (ATDD) or Specification by Example.
+</p>
+
+<p>
+One way to write these requirements/tests is Given-When-Then style popularized by Behavior Driven Development (BDD). When writing test cases in this style, the initial state is usually expressed with a keyword starting with word Given, the actions are described with keyword starting with When and the expectations with a keyword starting with Then. Keyword starting with And or But may be used if a step has more than one action.
+</p>
+
+<pre class="example">
+=*** Test Cases ***=
+Valid Login
+    Given login page is open
+    When valid username and password are inserted
+    and credentials are submitted
+    Then welcome page should be open
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7e2537f" class="outline-5">
+<h5 id="org7e2537f"><span class="section-number-5">2.2.8.4</span> Ignoring Given/When/Then/And/But prefixes</h5>
+<div class="outline-text-5" id="text-2-2-8-4">
+<p>
+Prefixes Given, When, Then, And and But are dropped when matching keywords are searched, if no match with the full name is found. This works for both user keywords and library keywords. For example, Given login page is open in the above example can be implemented as user keyword either with or without the word Given. Ignoring prefixes also allows using the same keyword with different prefixes. For example Welcome page should be open could also used as And welcome page should be open.
+</p>
+
+<blockquote>
+<p>
+Note
+</p>
+
+<p>
+Ignoring But prefix is new in Robot Framework 2.8.7.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org2fab82d" class="outline-5">
+<h5 id="org2fab82d"><span class="section-number-5">2.2.8.5</span> Embedding data to keywords</h5>
+<div class="outline-text-5" id="text-2-2-8-5">
+<p>
+When writing concrete examples it is useful to be able pass actual data to keyword implementations. User keywords support this by allowing embedding arguments into keyword name.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org32ce306" class="outline-3">
+<h3 id="org32ce306"><span class="section-number-3">2.3</span> Using test libraries</h3>
+</div>
+</div>
+
+<div id="outline-container-org2d8470f" class="outline-2">
+<h2 id="org2d8470f"><span class="section-number-2">3</span> Executing test cases</h2>
+</div>
+
+<div id="outline-container-org18086c2" class="outline-2">
+<h2 id="org18086c2"><span class="section-number-2">4</span> Extending Robot Framework</h2>
+</div>
+
+<div id="outline-container-org2ec25e0" class="outline-2">
+<h2 id="org2ec25e0"><span class="section-number-2">5</span> Supporting Tools</h2>
+</div>
+
+<div id="outline-container-orgca21ef6" class="outline-2">
+<h2 id="orgca21ef6"><span class="section-number-2">6</span> Appendices</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

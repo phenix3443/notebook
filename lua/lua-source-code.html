@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>lua 源码分析</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">lua 源码分析</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org645e918">1. 概览</a>
+<ul>
+<li><a href="#org0d4be7f">1.1. 源文件划分</a>
+<ul>
+<li><a href="#orgf5ca99e">1.1.1. 实用功能：</a></li>
+<li><a href="#org6a73e47">1.1.2. 基本数据类型。</a></li>
+<li><a href="#org8bfd02e">1.1.3. 代码解析和生成：</a></li>
+<li><a href="#orga4424da">1.1.4. 执行 Lua 字节码：</a>
+<ul>
+<li><a href="#orgb924b5f">1.1.4.1. 标准库：</a></li>
+<li><a href="#org290e611">1.1.4.2. C API：</a></li>
+<li><a href="#org90b456c">1.1.4.3. lua 和 luac 程序</a></li>
+<li><a href="#org68ed999">1.1.4.4. src/Makefile</a></li>
+<li><a href="#orgeaa23e7">1.1.4.5. /Makfile</a></li>
+</ul>
+</li>
+<li><a href="#orge581ac8">1.1.5. 阅读源代码的次序</a></li>
+</ul>
+</li>
+<li><a href="#org9026d3e">1.2. 多返回值</a></li>
+<li><a href="#org642fc6b">1.3. unpack</a></li>
+<li><a href="#orge31f86f">1.4. 函数 first class value</a></li>
+<li><a href="#org1b3fbb1">1.5. closure</a></li>
+</ul>
+</li>
+<li><a href="#org43338c2">2. Lua parser 实现</a></li>
+<li><a href="#orgbf8e1ca">3. 垃圾收集(garbage-collect)</a></li>
+<li><a href="#orgf962e13">4. 扩展阅读</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org645e918" class="outline-2">
+<h2 id="org645e918"><span class="section-number-2">1</span> 概览</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Lua 作为一门动态语言，提供了一个虚拟机。Lua 代码最终都是是以字节码的形式由虚拟机解释执行的。把外部组织好的代码置入内存，让虚拟机解析运行，需要有一个源代码解释器，或是预编译字节码的加载器。
+</p>
+
+<p>
+下面，我们按这个划分来分析源码文件的结构。
+</p>
+</div>
+<div id="outline-container-org0d4be7f" class="outline-3">
+<h3 id="org0d4be7f"><span class="section-number-3">1.1</span> 源文件划分</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+从官网下载到 Lua5.3 的源代码后，展开压缩包，会发现源代码文件全部放在 src 子目录下，模块结构如下：
+</p>
+</div>
+<div id="outline-container-orgf5ca99e" class="outline-4">
+<h4 id="orgf5ca99e"><span class="section-number-4">1.1.1</span> 实用功能：</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>ldebug.c - 调试接口。用于访问调试钩子的函数 <code>(lua_sethook, lua_gethook, lua_gethookcount)</code> , 访问运行时堆栈信息 <code>(lua_getstack / lua_getlocal / lua_setlocal)</code> , 检查字节码 (luaG_checkopenop / luaG_checkcode), 和发现错误 <code>(luaG_typeerror / luaG_concaterror / luaG_aritherror / luaG_ordererror / luaG_errormsg / luaG_runerror)</code></li>
+<li>lzio.c - 通用缓冲输入流接口。</li>
+<li>lmem.c - 内存管理接口，实现用于包裹内存分配函数的 <code>luaM_realloc / luaM_growaux_</code> 。</li>
+<li>lgc.c - 增量垃圾收集器（内存管理）。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6a73e47" class="outline-4">
+<h4 id="org6a73e47"><span class="section-number-4">1.1.2</span> 基本数据类型。</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li>lstate.c - 全局状态机，用于打开和关闭 Lua states <code>(lua_newstate/lua_close)</code>  和线程 <code>(luaE_nEwthread / luaE_freethread)</code> 的函数。</li>
+<li>lobject.c - 不同的数据类型最终被统一定义为 LuaObject，这里定义了对象相关的操作，包括数据类型和字符串之间的转换, raw equality test ( <code>luaO_rawequalObj</code> ), and log base 2 (luaO_log2)</li>
+<li>lstring.c - 字符串表（保存由 Lua 处理的所有字符串）。</li>
+<li>lfunc.c - 操作原型和闭包的辅助函数。</li>
+<li>ltable.c - Lua tables (hash)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8bfd02e" class="outline-4">
+<h4 id="org8bfd02e"><span class="section-number-4">1.1.3</span> 代码解析和生成：</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+光有核心代码和一个虚拟机还无法让 Lua 程序运行起来。因为必须从外部输入将运行的 Lua 程序。Lua 的程序的人读形式是一种程序文本，需要经过解析得到内部的数据结构（常量和 opcode 的集合） 。这个过程是通过 parser:lparser.c（luaY为前缀的 API）及词法分析 llex.c（luaX 为前缀的 API） 。
+</p>
+
+<p>
+解析完文本代码，还需要最终生成虚拟机理解的数据，这个步骤在 lcode.c 中实现，其 API 以 luaK 为前缀。
+为了满足某些需求，加快代码翻译的流程。还可以采用预编译的过程。把运行时编译的结果，生成为字节码。这个过程以及逆过程由 ldump.c 和 lundump.c 实现。其 API 以 luaU 为前缀。
+</p>
+<ul class="org-ul">
+<li>lcode.c - 由 lparser.c 使用的 Lua 代码生成器。</li>
+<li>llex.c - 由 lparser.c 使用的此法分析器。</li>
+<li>lparser.c - Lua 解析器。</li>
+<li>lundump.c - 还原预编译的 Lua 代码块（chunks）。实现了用来加载预编译代码块的函数 <code>luaU_undump</code>,也实现了分析函数头的 <code>luaU_header</code> (由 <code>luaU_undump</code> 内部使用)。</li>
+<li>ldump.c - 序列化预编译的 Lua 块。实现了用于将函数对象转储为预编译代码串的 <code>luaU_dump</code> 。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga4424da" class="outline-4">
+<h4 id="orga4424da"><span class="section-number-4">1.1.4</span> 执行 Lua 字节码：</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+Lua 核心部分仅包括 Lua 虚拟机的运转。Lua 虚拟机的行为是由一组组 opcode 控制的。这些 opcode 定义在 lopcode.h 及 lopcode.c 中。而虚拟机对 opcode 的解析和运作在 lvm.c 中，其 API 以 luaV 为前缀。
+</p>
+
+<p>
+Lua 虚拟机的外在数据形式是一个 <code>lua_state</code> 结构体，取名 State 大概意为 Lua 虚拟机的当前状态。全局 State 引用了整个虚拟机的所有数据。这个全局 State 的相关代码放在 lstate.c 中，API 使用 luaE 为前缀。
+</p>
+
+<p>
+函数的运行流程：函数调用及返回则放在 ldo.c 中，相关 API 以 luaD为前缀。
+</p>
+
+<ul class="org-ul">
+<li>lopcodes.c - Lua 虚拟机的操作码。定了所有操作码的名字和信息（通过表 <code>luaP_opnames and luaP_opmodes</code> )。</li>
+<li>lvm.c - Lua 虚拟机，用来执行 Lua 字节码 ( <code>luaV_execute</code> ). 也暴露了一些 lapi.c 使用的函数（比如 <code>luaV_concat</code> ）。</li>
+<li>ldo.c - Lua 函数调用及栈管理。处理函数调用 （ <code>luaD_call / luaD_pcall</code> )，堆栈增长，协程处理。。。。</li>
+<li>ltm.c - 标记方法（tag methods）。实现了访问对象的元方法。</li>
+</ul>
+</div>
+<div id="outline-container-orgb924b5f" class="outline-5">
+<h5 id="orgb924b5f"><span class="section-number-5">1.1.4.1</span> 标准库：</h5>
+<div class="outline-text-5" id="text-1-1-4-1">
+<p>
+作为嵌入式语言，其实完全可以不提供任何库及函数。全部由宿主系统注入到 State 中即可。也的确有许多系统是这么用的。但 Lua 的官方版本还是提供了少量必要的库。尤其是一些基础函数如 pairs、error、sermetatable、type 等等，完成了语言的一些基本特性，几乎很难不使用。
+而 coroutine、string、table、math 等等库，也很常用。Lua 提供了一套简洁的方案，允许你自由加载你需要的部分，以控制最终执行文件的体积和内存的占用量。主动加载这些内建库进入  <code>lua_State</code> ，是由在 lualib.h 中的 API 实现的。
+</p>
+
+<p>
+在 Lua5.0 之前，Lua 并没有一个统一的模块管理机制。这是由早期 Lua 仅仅定位在嵌入式语言决定的。这些年，由更多的人倾向于把 Lua 作为一门独立编程语言来使用，那么统一的模块化管理就变得非常有必要。这样才能让丰富的第三方库可以协同工作。即使是当成嵌入式语言使用，随着代码编写规模的扩大，也需要合理的模块划分。
+</p>
+
+<p>
+Lua 5.1 引入了一个官方推荐的模块管理机制。使用 require/module 来管理 Lua 模块，并允许从 C 语言编写的动态库中加载扩展模块。这个机制被作者认为有点过度设计了。在 Lua5.2 中又有所简化。我们可以在 loadlib.c 中找到实现。内建库的初始化 API 则在 linit.c 中可以找到。
+</p>
+
+<p>
+其它基础库可以在那些以 lib.c 为后缀的源文件中，分别找到它们的实现。
+</p>
+<ul class="org-ul">
+<li>lbaselib.c - (base functions)</li>
+<li>lstrlib.c - string</li>
+<li>ltablib.c - table</li>
+<li>lmathlib.c - math</li>
+<li>loslib.c - os</li>
+<li>liolib.c - io</li>
+<li>loadlib.c - package</li>
+<li>ldblib.c - debug</li>
+<li>lbitlib.c 位操作库</li>
+<li>lcorolib.c 协程库</li>
+<li>linit.c 内嵌库的初始化</li>
+<li>loadlib.c 动态扩展库管理</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org290e611" class="outline-5">
+<h5 id="org290e611"><span class="section-number-5">1.1.4.2</span> C API：</h5>
+<div class="outline-text-5" id="text-1-1-4-2">
+<ul class="org-ul">
+<li>lapi.c - Lua API. 实现了大部分的 Lua C API ( <code>lua_*</code> functions)。</li>
+<li>lauxlib.c - 定义了辅助库提供的函数。它的所有定义都以 <code>luaL_</code> 开头，辅助库一个使用 lua.h 中 API 编写出的一个较高的抽象层。Lua 所有标准库编写都用到了辅助库。注意，辅助库并没有直接访问 Lua 内部，它都是用官方的基础 API 来完成所有工作的。</li>
+<li>linit.c - 实现了加载从 C 加载上述模块的 <code>luaL_openlibs</code> 。</li>
+<li>lctype.c C 标准库中 ctype 相关实现</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org90b456c" class="outline-5">
+<h5 id="org90b456c"><span class="section-number-5">1.1.4.3</span> lua 和 luac 程序</h5>
+<div class="outline-text-5" id="text-1-1-4-3">
+<ul class="org-ul">
+<li>lua.c - Lua 解释器。</li>
+<li>print.c - 定义了打印函数内字节码的"PrintFunction?"函数，（由 luac.c 的"-l"选项调用）。</li>
+<li>luac.c - Lua 编译器（保存字节码到文件；也可以列出字节码）。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org68ed999" class="outline-5">
+<h5 id="org68ed999"><span class="section-number-5">1.1.4.4</span> src/Makefile</h5>
+<div class="outline-text-5" id="text-1-1-4-4">
+<p>
+In src/Makefile (5.1.1), the mingw target 不寻常之处在于他只编译 lua（没有 luac），也可以在添加一个 mingw-cygwin target。结果查看 See mingw notes in <a href="http://lua-users.org/wiki/BuildingLua">BuildingLua</a> 中的 mingw notes。
+</p>
+
+<p>
+In src/luaconf.h (5.1.1), <code>LUA_PATH_DEFAULT</code> 是指 <code>LUA_LDIR</code> 和 <code>LUA_CDIR</code> , 但 <code>LUA_CPATH_DEFAULT</code> 只是 <code>LUA_CDIR</code> 。RiciLake 暗示这可能是一个安全方面的决定，因为于 Lua 模块相比，C 模块需要更多信任。
+</p>
+</div>
+</div>
+<div id="outline-container-orgeaa23e7" class="outline-5">
+<h5 id="orgeaa23e7"><span class="section-number-5">1.1.4.5</span> /Makfile</h5>
+<div class="outline-text-5" id="text-1-1-4-5">
+<p>
+首先浏览一下 doc/readme.html，了解编译和安装的信息。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">      wget -P ~/Downloads/ http://www.lua.org/ftp/lua-5.3.1.tar.gz
+      tar zxf ~/Downloads/lua-5.3.1.gz
+      <span style="color: #d18aff;">cd</span> lua-5.3.1
+      make linux install
+</pre>
+</div>
+
+<p>
+因为想要查看 lua 的源码，所以编译的可执行文件和库文件要添加调试所需要的信息。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">      make <span style="color: #ff8700;">CFLAGS</span>+=-g linux
+      make local
+</pre>
+</div>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">./lua-5.3.1/</td>
+<td class="org-left">[error</td>
+<td class="org-left">opening</td>
+<td class="org-left">dir]</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">0</td>
+<td class="org-left">directories</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+所有生成的 bin、lib、include 文件都放在 include 文件中。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge581ac8" class="outline-4">
+<h4 id="orge581ac8"><span class="section-number-4">1.1.5</span> 阅读源代码的次序</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+Lua 的源代码有着良好的设计，优美易读。其整体篇幅不大，仅两万行 C 代码左右。但一开始入手阅读还是有些许难度的。
+</p>
+
+<p>
+从易到难，理清作者编写代码的脉络非常重要。LuaJIT 的作者 Mike Pall 在回答“哪一个开源代码项目设计优美，值得阅读不容错过”这个问题时，推荐了一个阅读次序:
+</p>
+<ul class="org-ul">
+<li>首先、阅读外围的库是如何实现功能扩展的，这样可以熟悉 Lua 公开 API。不必陷入功能细节。</li>
+<li>然后、阅读 API 的具体实现。Lua 对外暴露的 API 可以说是一个对内部模块的一层封装，这个层次尚未触及核心，但可以对核心代码有个初步的了解。</li>
+<li>之后、可以开始了解 LuaVM 的实现。</li>
+<li>接下来就是分别理解函数调用、返回，string、table、metatable 等如何实现。</li>
+<li>debug 模块是一个额外的设施，但可以帮助你理解 Lua 内部细节。</li>
+<li>最后是 parser 等等编译相关的部分。</li>
+<li>垃圾收集将是最难的部分，可能会花掉最多的时间去理解细节。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9026d3e" class="outline-3">
+<h3 id="org9026d3e"><span class="section-number-3">1.2</span> 多返回值</h3>
+</div>
+<div id="outline-container-org642fc6b" class="outline-3">
+<h3 id="org642fc6b"><span class="section-number-3">1.3</span> unpack</h3>
+</div>
+<div id="outline-container-orge31f86f" class="outline-3">
+<h3 id="orge31f86f"><span class="section-number-3">1.4</span> 函数 first class value</h3>
+</div>
+<div id="outline-container-org1b3fbb1" class="outline-3">
+<h3 id="org1b3fbb1"><span class="section-number-3">1.5</span> closure</h3>
+</div>
+</div>
+<div id="outline-container-org43338c2" class="outline-2">
+<h2 id="org43338c2"><span class="section-number-2">2</span> Lua parser 实现</h2>
+</div>
+<div id="outline-container-orgbf8e1ca" class="outline-2">
+<h2 id="orgbf8e1ca"><span class="section-number-2">3</span> 垃圾收集(garbage-collect)</h2>
+</div>
+<div id="outline-container-orgf962e13" class="outline-2">
+<h2 id="orgf962e13"><span class="section-number-2">4</span> 扩展阅读</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="https://github.com/davidm/lua-annotate">lua annotate</a></li>
+<li><a href="http://stevedonovan.github.com/lua-5.1.4/">lua 5.1.4 annotate</a></li>
+<li>在 Lua Wiki 上有一篇文章介绍了 Lua 源代码的结构：<a href="http://lua-users.org/wiki/LuaSource">http://lua-users.org/wiki/LuaSource</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

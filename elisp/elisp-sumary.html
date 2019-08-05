@@ -1,0 +1,1216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emas Lisp语言总结</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Emas Lisp语言总结</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org81e15d2">1. 简介</a>
+<ul>
+<li><a href="#orgc5c7a4f">1.1. 起源</a></li>
+<li><a href="#orgb395af9">1.2. 优点</a></li>
+<li><a href="#org304bf47">1.3. 特性</a></li>
+<li><a href="#org338a428">1.4. 语言文化</a></li>
+</ul>
+</li>
+<li><a href="#org6dc7aa9">2. 程序结构</a>
+<ul>
+<li><a href="#org1f6374f">2.1. 注释</a></li>
+<li><a href="#org183feb9">2.2. token</a>
+<ul>
+<li><a href="#org6abb51f">2.2.1. 字面量</a>
+<ul>
+<li><a href="#orgd698ca9">2.2.1.1. 整数常量</a></li>
+<li><a href="#org0752d77">2.2.1.2. 浮点常量</a></li>
+<li><a href="#orgab51820">2.2.1.3. 字符常量</a></li>
+<li><a href="#org9bf4df3">2.2.1.4. 字符串常量</a></li>
+<li><a href="#org3622cd7">2.2.1.5. cons</a></li>
+</ul>
+</li>
+<li><a href="#orgbf9b1c1">2.2.2. 标识符</a>
+<ul>
+<li><a href="#org10ad130">2.2.2.1. 常量</a></li>
+<li><a href="#orgd865b36">2.2.2.2. 变量</a></li>
+<li><a href="#orgfada7e6">2.2.2.3. 作用域</a></li>
+<li><a href="#orgc0c2e1b">2.2.2.4. 生存期</a></li>
+</ul>
+</li>
+<li><a href="#orgb852d0f">2.2.3. 关键字</a></li>
+<li><a href="#orgf00ac74">2.2.4. 运算符</a>
+<ul>
+<li><a href="#orgf3e5d0b">2.2.4.1. 算数运算符</a></li>
+<li><a href="#org41892b0">2.2.4.2. 位运算符</a></li>
+<li><a href="#orgcd751b7">2.2.4.3. 关系运算符</a></li>
+<li><a href="#org0408352">2.2.4.4. 逻辑运算符</a></li>
+<li><a href="#orga671d1d">2.2.4.5. 赋值运算符</a></li>
+<li><a href="#org8a903ac">2.2.4.6. 其他</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgd6d54e3">2.3. 表达式</a>
+<ul>
+<li><a href="#org9876f57">2.3.1. 声明，定义，赋值</a>
+<ul>
+<li><a href="#org1abd728">2.3.1.1. set</a></li>
+<li><a href="#orge1555d3">2.3.1.2. setq</a></li>
+<li><a href="#org68a1b69">2.3.1.3. let</a></li>
+<li><a href="#orgd407792">2.3.1.4. defvar</a></li>
+<li><a href="#orge749e63">2.3.1.5. defcustom</a></li>
+<li><a href="#org88d56e3">2.3.1.6. set-variable</a></li>
+</ul>
+</li>
+<li><a href="#org3bdbe01">2.3.2. 分支控制</a>
+<ul>
+<li><a href="#org6837ac9">2.3.2.1. 分支</a></li>
+<li><a href="#orga3c505a">2.3.2.2. 循环</a></li>
+<li><a href="#orgf1a41d2">2.3.2.3. 跳转</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgaa3602b">2.4. 函数</a>
+<ul>
+<li><a href="#org88a9925">2.4.1. 参数默认值</a></li>
+<li><a href="#orgd50f908">2.4.2. 可变参数</a></li>
+</ul>
+</li>
+<li><a href="#org1003f2d">2.5. 模块</a></li>
+</ul>
+</li>
+<li><a href="#orgfdf91f5">3. 类型系统</a>
+<ul>
+<li><a href="#orgf1c44ca">3.1. 整型</a></li>
+<li><a href="#org3a39db4">3.2. 浮点型</a></li>
+<li><a href="#org6e58179">3.3. 复数</a></li>
+<li><a href="#orgfadea55">3.4. 字符</a></li>
+<li><a href="#orge1bd032">3.5. 布尔</a></li>
+<li><a href="#org54d23cb">3.6. 空类型</a></li>
+<li><a href="#org681d54b">3.7. 存储类型</a></li>
+<li><a href="#orgb313744">3.8. 复合类型</a></li>
+<li><a href="#orgdf2cd5e">3.9. 自定义</a>
+<ul>
+<li><a href="#org1bf96d5">3.9.1. 类型别名</a></li>
+</ul>
+</li>
+<li><a href="#org15c6177">3.10. 类型转换</a>
+<ul>
+<li><a href="#org249b1fc">3.10.1. 自动转换</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org9ae25bc">4. 数据结构</a>
+<ul>
+<li><a href="#org4d6943b">4.1. 顺序</a>
+<ul>
+<li><a href="#org1ab5cb9">4.1.1. array</a></li>
+<li><a href="#orgbb698c6">4.1.2. list</a></li>
+<li><a href="#org8c58854">4.1.3. vectors</a></li>
+<li><a href="#org61fd42b">4.1.4. bool-vectors</a></li>
+</ul>
+</li>
+<li><a href="#org9fb137e">4.2. 关联</a>
+<ul>
+<li><a href="#org4996f37">4.2.1. char-tables</a></li>
+<li><a href="#orga683275">4.2.2. hash-tables</a></li>
+</ul>
+</li>
+<li><a href="#org2aeb04b">4.3. 迭代</a></li>
+</ul>
+</li>
+<li><a href="#org37a4be7">5. 错误处理</a></li>
+<li><a href="#orgaf3984c">6. 编码规范</a></li>
+<li><a href="#orga6a811a">7. 高级语言特性</a>
+<ul>
+<li><a href="#org2043e62">7.1. 闭包</a></li>
+<li><a href="#org3ffba6b">7.2. 模板</a></li>
+<li><a href="#org8714536">7.3. 函数重载</a></li>
+<li><a href="#orgf26dc51">7.4. 反射</a></li>
+</ul>
+</li>
+<li><a href="#org7c5a90a">8. 程序库</a>
+<ul>
+<li><a href="#org7a52970">8.1. 內建函数</a>
+<ul>
+<li><a href="#org2fbfe4d">8.1.1. list相关函数</a></li>
+</ul>
+</li>
+<li><a href="#orge907402">8.2. 通用函数</a></li>
+<li><a href="#org6c1dab6">8.3. 数据类型</a></li>
+<li><a href="#org99cef69">8.4. 字符串</a></li>
+<li><a href="#org8f61987">8.5. 输入输出</a></li>
+<li><a href="#org6c499d6">8.6. 文件</a></li>
+<li><a href="#org28e741a">8.7. 日期</a></li>
+<li><a href="#orgfb6bef6">8.8. 日志</a></li>
+<li><a href="#org1394e49">8.9. 数学</a></li>
+</ul>
+</li>
+<li><a href="#org89c8ada">9. 参考书籍</a>
+<ul>
+<li><a href="#org60609ac">9.1. 入门</a></li>
+<li><a href="#org69baf1e">9.2. 高级</a></li>
+<li><a href="#orgfa5ed81">9.3. 实践</a></li>
+<li><a href="#org74fdf7a">9.4. 原理</a></li>
+</ul>
+</li>
+<li><a href="#org0adf8bd">10. 安装运行</a>
+<ul>
+<li><a href="#orgc3c6788">10.1. 安装</a></li>
+<li><a href="#orga17ae75">10.2. 运行</a></li>
+</ul>
+</li>
+<li><a href="#org9e38b4c">11. 相关工具</a>
+<ul>
+<li><a href="#orgca7d366">11.1. 标准命令</a></li>
+<li><a href="#orgbd43705">11.2. 集成开发</a></li>
+<li><a href="#orga123a1b">11.3. 静态检查</a></li>
+<li><a href="#org2653014">11.4. 构建编译</a></li>
+<li><a href="#org3eba50d">11.5. 代码调试</a></li>
+<li><a href="#org0499f02">11.6. 内存检查</a></li>
+<li><a href="#orge1c0faf">11.7. 性能分析</a></li>
+<li><a href="#org18adcf0">11.8. 自动测试</a></li>
+<li><a href="#org432717d">11.9. 文档系统</a></li>
+<li><a href="#orge015ccb">11.10. 包管理系统</a></li>
+<li><a href="#orgd35677f">11.11. 其他工具</a></li>
+</ul>
+</li>
+<li><a href="#org21299a5">12. 工程布局</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org81e15d2" class="outline-2">
+<h2 id="org81e15d2"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgc5c7a4f" class="outline-3">
+<h3 id="orgc5c7a4f"><span class="section-number-3">1.1</span> 起源</h3>
+</div>
+<div id="outline-container-orgb395af9" class="outline-3">
+<h3 id="orgb395af9"><span class="section-number-3">1.2</span> 优点</h3>
+</div>
+<div id="outline-container-org304bf47" class="outline-3">
+<h3 id="org304bf47"><span class="section-number-3">1.3</span> 特性</h3>
+</div>
+<div id="outline-container-org338a428" class="outline-3">
+<h3 id="org338a428"><span class="section-number-3">1.4</span> 语言文化</h3>
+</div>
+</div>
+<div id="outline-container-org6dc7aa9" class="outline-2">
+<h2 id="org6dc7aa9"><span class="section-number-2">2</span> 程序结构</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org1f6374f" class="outline-3">
+<h3 id="org1f6374f"><span class="section-number-3">2.1</span> 注释</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+使用分号 <code>;</code> 作为注释的开始。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;</span><span style="color: #6c6c6c; font-style: italic;">&#36825;&#26159;&#19968;&#34892;&#27880;&#37322;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org183feb9" class="outline-3">
+<h3 id="org183feb9"><span class="section-number-3">2.2</span> token</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-org6abb51f" class="outline-4">
+<h4 id="org6abb51f"><span class="section-number-4">2.2.1</span> 字面量</h4>
+<div class="outline-text-4" id="text-2-2-1">
+</div>
+<div id="outline-container-orgd698ca9" class="outline-5">
+<h5 id="orgd698ca9"><span class="section-number-5">2.2.1.1</span> 整数常量</h5>
+<div class="outline-text-5" id="text-2-2-1-1">
+<pre class="example">
+integer,
+</pre>
+</div>
+</div>
+<div id="outline-container-org0752d77" class="outline-5">
+<h5 id="org0752d77"><span class="section-number-5">2.2.1.2</span> 浮点常量</h5>
+<div class="outline-text-5" id="text-2-2-1-2">
+<pre class="example">
+float,cons
+</pre>
+</div>
+</div>
+<div id="outline-container-orgab51820" class="outline-5">
+<h5 id="orgab51820"><span class="section-number-5">2.2.1.3</span> 字符常量</h5>
+<div class="outline-text-5" id="text-2-2-1-3">
+<p>
+其实就是integer，字面量表示前面要加 <code>?</code> ，表示标点符号和特殊修饰符前面要加 <code>\</code> 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">?A ?\( ?\\ ?\C-M-a
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9bf4df3" class="outline-5">
+<h5 id="org9bf4df3"><span class="section-number-5">2.2.1.4</span> 字符串常量</h5>
+<div class="outline-text-5" id="text-2-2-1-4">
+<p>
+单双引号区别
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3622cd7" class="outline-5">
+<h5 id="org3622cd7"><span class="section-number-5">2.2.1.5</span> cons</h5>
+<div class="outline-text-5" id="text-2-2-1-5">
+<div class="org-src-container">
+<pre class="src src-elisp">'(a . b)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbf9b1c1" class="outline-4">
+<h4 id="orgbf9b1c1"><span class="section-number-4">2.2.2</span> 标识符</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+标识符是用来标识变量、函数或其他 <b>用户自定义</b> 项目的名称。如常量名、变量名、函数名。
+</p>
+
+<p>
+标识符作为变量，其实是一块内存区域的别名。
+</p>
+
+<p>
+elisp中的标识符（也叫symbol），可以同时保存数值、函数名称或属性列表。
+</p>
+</div>
+
+<div id="outline-container-org10ad130" class="outline-5">
+<h5 id="org10ad130"><span class="section-number-5">2.2.2.1</span> 常量</h5>
+<div class="outline-text-5" id="text-2-2-2-1">
+<p>
+名称以冒号（'：'）开头的符号称为关键字符号（key symbol）。这些符号自动作为常量使用。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd865b36" class="outline-5">
+<h5 id="orgd865b36"><span class="section-number-5">2.2.2.2</span> 变量</h5>
+<div class="outline-text-5" id="text-2-2-2-2">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgfada7e6" class="outline-5">
+<h5 id="orgfada7e6"><span class="section-number-5">2.2.2.3</span> 作用域</h5>
+<div class="outline-text-5" id="text-2-2-2-3">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc0c2e1b" class="outline-5">
+<h5 id="orgc0c2e1b"><span class="section-number-5">2.2.2.4</span> 生存期</h5>
+<div class="outline-text-5" id="text-2-2-2-4">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb852d0f" class="outline-4">
+<h4 id="orgb852d0f"><span class="section-number-4">2.2.3</span> 关键字</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+语言保留，不能做标识符。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf00ac74" class="outline-4">
+<h4 id="orgf00ac74"><span class="section-number-4">2.2.4</span> 运算符</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+需要注意的是优先级和结合律。
+</p>
+</div>
+
+<div id="outline-container-orgf3e5d0b" class="outline-5">
+<h5 id="orgf3e5d0b"><span class="section-number-5">2.2.4.1</span> 算数运算符</h5>
+<div class="outline-text-5" id="text-2-2-4-1">
+<p>
+加、减、乘、除、mod、自增、自减
+</p>
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org41892b0" class="outline-5">
+<h5 id="org41892b0"><span class="section-number-5">2.2.4.2</span> 位运算符</h5>
+<div class="outline-text-5" id="text-2-2-4-2">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcd751b7" class="outline-5">
+<h5 id="orgcd751b7"><span class="section-number-5">2.2.4.3</span> 关系运算符</h5>
+<div class="outline-text-5" id="text-2-2-4-3">
+<p>
+gt,ge,lt,le,eq,noteq
+</p>
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org0408352" class="outline-5">
+<h5 id="org0408352"><span class="section-number-5">2.2.4.4</span> 逻辑运算符</h5>
+<div class="outline-text-5" id="text-2-2-4-4">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orga671d1d" class="outline-5">
+<h5 id="orga671d1d"><span class="section-number-5">2.2.4.5</span> 赋值运算符</h5>
+<div class="outline-text-5" id="text-2-2-4-5">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org8a903ac" class="outline-5">
+<h5 id="org8a903ac"><span class="section-number-5">2.2.4.6</span> 其他</h5>
+<div class="outline-text-5" id="text-2-2-4-6">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd6d54e3" class="outline-3">
+<h3 id="orgd6d54e3"><span class="section-number-3">2.3</span> 表达式</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+表达式可以求值。与其他语言不同，elisp中没有语句的概念，表达式就是执行单位。
+</p>
+
+<p>
+表达式可以是list，或者是字面常量。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">()
+(message <span style="color: #ff4ea3;">"hello,elisp"</span>)
+fill-column
+<span style="color: #ff4ea3;">"message"</span>
+7
+nil
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9876f57" class="outline-4">
+<h4 id="org9876f57"><span class="section-number-4">2.3.1</span> 声明，定义，赋值</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+elisp中变量不需要预先声明和定义。
+</p>
+</div>
+<div id="outline-container-org1abd728" class="outline-5">
+<h5 id="org1abd728"><span class="section-number-5">2.3.1.1</span> set</h5>
+</div>
+<div id="outline-container-orge1555d3" class="outline-5">
+<h5 id="orge1555d3"><span class="section-number-5">2.3.1.2</span> setq</h5>
+</div>
+<div id="outline-container-org68a1b69" class="outline-5">
+<h5 id="org68a1b69"><span class="section-number-5">2.3.1.3</span> let</h5>
+<div class="outline-text-5" id="text-2-3-1-3">
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">let</span> ((welcome <span style="color: #ff4ea3;">"hello,elisp"</span>))
+  (message welcome))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd407792" class="outline-5">
+<h5 id="orgd407792"><span class="section-number-5">2.3.1.4</span> defvar</h5>
+<div class="outline-text-5" id="text-2-3-1-4">
+<p>
+用来创建并初始化变量，但是与setq有两点不同：
+</p>
+<ul class="org-ul">
+<li>如果变量没有值，才设置变量的值。</li>
+<li>defvar有文档字符串。</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-elisp">        (<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">symbol</span> init-val
+          <span style="color: #ff4b4b;">"document"</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge749e63" class="outline-5">
+<h5 id="orge749e63"><span class="section-number-5">2.3.1.5</span> defcustom</h5>
+<div class="outline-text-5" id="text-2-3-1-5">
+<p>
+尽量使用该macro来定义定制（customizable）变量，这样这些变量可以在Customization命令界面中可以定制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org88d56e3" class="outline-5">
+<h5 id="org88d56e3"><span class="section-number-5">2.3.1.6</span> set-variable</h5>
+<div class="outline-text-5" id="text-2-3-1-6">
+<p>
+该命令用来修改变量的值，但是这种改变只在当次session中有效。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3bdbe01" class="outline-4">
+<h4 id="org3bdbe01"><span class="section-number-4">2.3.2</span> 分支控制</h4>
+<div class="outline-text-4" id="text-2-3-2">
+</div>
+<div id="outline-container-org6837ac9" class="outline-5">
+<h5 id="org6837ac9"><span class="section-number-5">2.3.2.1</span> 分支</h5>
+<div class="outline-text-5" id="text-2-3-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgd6cfae6"></a>if-else<br />
+<div class="outline-text-6" id="text-2-3-2-1-1">
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">if</span> (&gt; 5 4)
+    (message <span style="color: #ff4ea3;">"then part"</span>)
+  (message <span style="color: #ff4ea3;">"else part"</span>))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgb8e5196"></a>unless<br />
+<div class="outline-text-6" id="text-2-3-2-1-2">
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgf473f11"></a>condition-case<br />
+<div class="outline-text-6" id="text-2-3-2-1-3">
+<p>
+类似于try-catch
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orge5887c3"></a>when<br />
+<div class="outline-text-6" id="text-2-3-2-1-4">
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orga3c505a" class="outline-5">
+<h5 id="orga3c505a"><span class="section-number-5">2.3.2.2</span> 循环</h5>
+<div class="outline-text-5" id="text-2-3-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgefb6462"></a>while<br />
+<div class="outline-text-6" id="text-2-3-2-2-1">
+<p>
+while的返回值是true-false判断表达式，所以正常的while循环的返回值始终是false。
+</p>
+</div>
+</li>
+
+<li><a id="orgc7fca8f"></a>dolist<br /></li>
+
+<li><a id="org720df43"></a>dotimes<br /></li>
+</ol>
+</div>
+
+
+<div id="outline-container-orgf1a41d2" class="outline-5">
+<h5 id="orgf1a41d2"><span class="section-number-5">2.3.2.3</span> 跳转</h5>
+<div class="outline-text-5" id="text-2-3-2-3">
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa3602b" class="outline-3">
+<h3 id="orgaa3602b"><span class="section-number-3">2.4</span> 函数</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+使用 <code>defun</code> 定义函数，函数总共有5个部分：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">      (<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">fun-name</span>(param)
+        <span style="color: #ff4b4b;">"doc string"</span>
+        (<span style="color: #a1db00;">interactive</span> <span style="color: #ff4ea3;">"p"</span>)
+        (message <span style="color: #ff4ea3;">"function body"</span>))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org88a9925" class="outline-4">
+<h4 id="org88a9925"><span class="section-number-4">2.4.1</span> 参数默认值</h4>
+</div>
+<div id="outline-container-orgd50f908" class="outline-4">
+<h4 id="orgd50f908"><span class="section-number-4">2.4.2</span> 可变参数</h4>
+</div>
+</div>
+
+<div id="outline-container-org1003f2d" class="outline-3">
+<h3 id="org1003f2d"><span class="section-number-3">2.5</span> 模块</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+使用require引用模块。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfdf91f5" class="outline-2">
+<h2 id="orgfdf91f5"><span class="section-number-2">3</span> 类型系统</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgf1c44ca" class="outline-3">
+<h3 id="orgf1c44ca"><span class="section-number-3">3.1</span> 整型</h3>
+<div class="outline-text-3" id="text-3-1">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org3a39db4" class="outline-3">
+<h3 id="org3a39db4"><span class="section-number-3">3.2</span> 浮点型</h3>
+<div class="outline-text-3" id="text-3-2">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org6e58179" class="outline-3">
+<h3 id="org6e58179"><span class="section-number-3">3.3</span> 复数</h3>
+<div class="outline-text-3" id="text-3-3">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfadea55" class="outline-3">
+<h3 id="orgfadea55"><span class="section-number-3">3.4</span> 字符</h3>
+<div class="outline-text-3" id="text-3-4">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orge1bd032" class="outline-3">
+<h3 id="orge1bd032"><span class="section-number-3">3.5</span> 布尔</h3>
+<div class="outline-text-3" id="text-3-5">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org54d23cb" class="outline-3">
+<h3 id="org54d23cb"><span class="section-number-3">3.6</span> 空类型</h3>
+<div class="outline-text-3" id="text-3-6">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org681d54b" class="outline-3">
+<h3 id="org681d54b"><span class="section-number-3">3.7</span> 存储类型</h3>
+<div class="outline-text-3" id="text-3-7">
+<pre class="example">
+
+</pre>
+<p>
+指针与引用
+</p>
+</div>
+</div>
+<div id="outline-container-orgb313744" class="outline-3">
+<h3 id="orgb313744"><span class="section-number-3">3.8</span> 复合类型</h3>
+<div class="outline-text-3" id="text-3-8">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgdf2cd5e" class="outline-3">
+<h3 id="orgdf2cd5e"><span class="section-number-3">3.9</span> 自定义</h3>
+<div class="outline-text-3" id="text-3-9">
+</div>
+<div id="outline-container-org1bf96d5" class="outline-4">
+<h4 id="org1bf96d5"><span class="section-number-4">3.9.1</span> 类型别名</h4>
+<div class="outline-text-4" id="text-3-9-1">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org15c6177" class="outline-3">
+<h3 id="org15c6177"><span class="section-number-3">3.10</span> 类型转换</h3>
+<div class="outline-text-3" id="text-3-10">
+</div>
+<div id="outline-container-org249b1fc" class="outline-4">
+<h4 id="org249b1fc"><span class="section-number-4">3.10.1</span> 自动转换</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9ae25bc" class="outline-2">
+<h2 id="org9ae25bc"><span class="section-number-2">4</span> 数据结构</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org4d6943b" class="outline-3">
+<h3 id="org4d6943b"><span class="section-number-3">4.1</span> 顺序</h3>
+<div class="outline-text-3" id="text-4-1">
+</div>
+<div id="outline-container-org1ab5cb9" class="outline-4">
+<h4 id="org1ab5cb9"><span class="section-number-4">4.1.1</span> array</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<div class="org-src-container">
+<pre class="src src-elisp">[1 2 3]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbb698c6" class="outline-4">
+<h4 id="orgbb698c6"><span class="section-number-4">4.1.2</span> list</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<div class="org-src-container">
+<pre class="src src-elisp">'(one two three)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8c58854" class="outline-4">
+<h4 id="org8c58854"><span class="section-number-4">4.1.3</span> vectors</h4>
+<div class="outline-text-4" id="text-4-1-3">
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org61fd42b" class="outline-4">
+<h4 id="org61fd42b"><span class="section-number-4">4.1.4</span> bool-vectors</h4>
+</div>
+</div>
+
+<div id="outline-container-org9fb137e" class="outline-3">
+<h3 id="org9fb137e"><span class="section-number-3">4.2</span> 关联</h3>
+<div class="outline-text-3" id="text-4-2">
+</div>
+<div id="outline-container-org4996f37" class="outline-4">
+<h4 id="org4996f37"><span class="section-number-4">4.2.1</span> char-tables</h4>
+</div>
+<div id="outline-container-orga683275" class="outline-4">
+<h4 id="orga683275"><span class="section-number-4">4.2.2</span> hash-tables</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+字典，集合
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2aeb04b" class="outline-3">
+<h3 id="org2aeb04b"><span class="section-number-3">4.3</span> 迭代</h3>
+<div class="outline-text-3" id="text-4-3">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org37a4be7" class="outline-2">
+<h2 id="org37a4be7"><span class="section-number-2">5</span> 错误处理</h2>
+</div>
+<div id="outline-container-orgaf3984c" class="outline-2">
+<h2 id="orgaf3984c"><span class="section-number-2">6</span> 编码规范</h2>
+</div>
+<div id="outline-container-orga6a811a" class="outline-2">
+<h2 id="orga6a811a"><span class="section-number-2">7</span> 高级语言特性</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org2043e62" class="outline-3">
+<h3 id="org2043e62"><span class="section-number-3">7.1</span> 闭包</h3>
+</div>
+<div id="outline-container-org3ffba6b" class="outline-3">
+<h3 id="org3ffba6b"><span class="section-number-3">7.2</span> 模板</h3>
+</div>
+<div id="outline-container-org8714536" class="outline-3">
+<h3 id="org8714536"><span class="section-number-3">7.3</span> 函数重载</h3>
+</div>
+<div id="outline-container-orgf26dc51" class="outline-3">
+<h3 id="orgf26dc51"><span class="section-number-3">7.4</span> 反射</h3>
+</div>
+</div>
+
+<div id="outline-container-org7c5a90a" class="outline-2">
+<h2 id="org7c5a90a"><span class="section-number-2">8</span> 程序库</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org7a52970" class="outline-3">
+<h3 id="org7a52970"><span class="section-number-3">8.1</span> 內建函数</h3>
+<div class="outline-text-3" id="text-8-1">
+</div>
+<div id="outline-container-org2fbfe4d" class="outline-4">
+<h4 id="org2fbfe4d"><span class="section-number-4">8.1.1</span> list相关函数</h4>
+<div class="outline-text-4" id="text-8-1-1">
+<p>
+cons car cdr nth nthcdr setcar setcdr length push
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge907402" class="outline-3">
+<h3 id="orge907402"><span class="section-number-3">8.2</span> 通用函数</h3>
+</div>
+<div id="outline-container-org6c1dab6" class="outline-3">
+<h3 id="org6c1dab6"><span class="section-number-3">8.3</span> 数据类型</h3>
+</div>
+<div id="outline-container-org99cef69" class="outline-3">
+<h3 id="org99cef69"><span class="section-number-3">8.4</span> 字符串</h3>
+</div>
+<div id="outline-container-org8f61987" class="outline-3">
+<h3 id="org8f61987"><span class="section-number-3">8.5</span> 输入输出</h3>
+</div>
+<div id="outline-container-org6c499d6" class="outline-3">
+<h3 id="org6c499d6"><span class="section-number-3">8.6</span> 文件</h3>
+</div>
+<div id="outline-container-org28e741a" class="outline-3">
+<h3 id="org28e741a"><span class="section-number-3">8.7</span> 日期</h3>
+</div>
+<div id="outline-container-orgfb6bef6" class="outline-3">
+<h3 id="orgfb6bef6"><span class="section-number-3">8.8</span> 日志</h3>
+</div>
+<div id="outline-container-org1394e49" class="outline-3">
+<h3 id="org1394e49"><span class="section-number-3">8.9</span> 数学</h3>
+</div>
+</div>
+<div id="outline-container-org89c8ada" class="outline-2">
+<h2 id="org89c8ada"><span class="section-number-2">9</span> 参考书籍</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org60609ac" class="outline-3">
+<h3 id="org60609ac"><span class="section-number-3">9.1</span> 入门</h3>
+</div>
+<div id="outline-container-org69baf1e" class="outline-3">
+<h3 id="org69baf1e"><span class="section-number-3">9.2</span> 高级</h3>
+</div>
+<div id="outline-container-orgfa5ed81" class="outline-3">
+<h3 id="orgfa5ed81"><span class="section-number-3">9.3</span> 实践</h3>
+</div>
+<div id="outline-container-org74fdf7a" class="outline-3">
+<h3 id="org74fdf7a"><span class="section-number-3">9.4</span> 原理</h3>
+</div>
+</div>
+<div id="outline-container-org0adf8bd" class="outline-2">
+<h2 id="org0adf8bd"><span class="section-number-2">10</span> 安装运行</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-orgc3c6788" class="outline-3">
+<h3 id="orgc3c6788"><span class="section-number-3">10.1</span> 安装</h3>
+</div>
+<div id="outline-container-orga17ae75" class="outline-3">
+<h3 id="orga17ae75"><span class="section-number-3">10.2</span> 运行</h3>
+</div>
+</div>
+<div id="outline-container-org9e38b4c" class="outline-2">
+<h2 id="org9e38b4c"><span class="section-number-2">11</span> 相关工具</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-orgca7d366" class="outline-3">
+<h3 id="orgca7d366"><span class="section-number-3">11.1</span> 标准命令</h3>
+</div>
+<div id="outline-container-orgbd43705" class="outline-3">
+<h3 id="orgbd43705"><span class="section-number-3">11.2</span> 集成开发</h3>
+</div>
+<div id="outline-container-orga123a1b" class="outline-3">
+<h3 id="orga123a1b"><span class="section-number-3">11.3</span> 静态检查</h3>
+</div>
+<div id="outline-container-org2653014" class="outline-3">
+<h3 id="org2653014"><span class="section-number-3">11.4</span> 构建编译</h3>
+</div>
+<div id="outline-container-org3eba50d" class="outline-3">
+<h3 id="org3eba50d"><span class="section-number-3">11.5</span> 代码调试</h3>
+</div>
+<div id="outline-container-org0499f02" class="outline-3">
+<h3 id="org0499f02"><span class="section-number-3">11.6</span> 内存检查</h3>
+</div>
+<div id="outline-container-orge1c0faf" class="outline-3">
+<h3 id="orge1c0faf"><span class="section-number-3">11.7</span> 性能分析</h3>
+</div>
+<div id="outline-container-org18adcf0" class="outline-3">
+<h3 id="org18adcf0"><span class="section-number-3">11.8</span> 自动测试</h3>
+</div>
+<div id="outline-container-org432717d" class="outline-3">
+<h3 id="org432717d"><span class="section-number-3">11.9</span> 文档系统</h3>
+</div>
+<div id="outline-container-orge015ccb" class="outline-3">
+<h3 id="orge015ccb"><span class="section-number-3">11.10</span> 包管理系统</h3>
+</div>
+<div id="outline-container-orgd35677f" class="outline-3">
+<h3 id="orgd35677f"><span class="section-number-3">11.11</span> 其他工具</h3>
+</div>
+</div>
+<div id="outline-container-org21299a5" class="outline-2">
+<h2 id="org21299a5"><span class="section-number-2">12</span> 工程布局</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

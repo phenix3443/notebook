@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>常见急救知识</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">常见急救知识</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga737af7">1. CPR+AED</a>
+<ul>
+<li><a href="#orge5cc982">1.1. 心肺复苏的条件</a></li>
+<li><a href="#org4bdc7cf">1.2. 成人心肺复苏基础生命支持流程</a></li>
+<li><a href="#org92c9ea1">1.3. 高质量心肺复苏关键点</a></li>
+</ul>
+</li>
+<li><a href="#org9b73adb">2. 常见急症识别与处置</a>
+<ul>
+<li><a href="#orgba523da">2.1. 气道阻塞</a></li>
+<li><a href="#org18fcdb3">2.2. 昏迷体位翻转</a></li>
+<li><a href="#org25b5754">2.3. 心梗</a></li>
+<li><a href="#org3d01109">2.4. 脑卒</a></li>
+<li><a href="#org3603649">2.5. 鼻出血</a></li>
+<li><a href="#orgf37e4bd">2.6. 创伤止血包扎</a></li>
+<li><a href="#org07d4b3a">2.7. 热痉挛 低血钠症</a></li>
+<li><a href="#orga548fe5">2.8. 热衰竭 严重脱水</a></li>
+<li><a href="#org2c6860d">2.9. 中暑</a></li>
+<li><a href="#org8e8c45c">2.10. 蛇咬伤</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga737af7" class="outline-2">
+<h2 id="orga737af7"><span class="section-number-2">1</span> CPR+AED</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orge5cc982" class="outline-3">
+<h3 id="orge5cc982"><span class="section-number-3">1.1</span> 心肺复苏的条件</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+心脏骤停识别：
+</p>
+<ul class="org-ul">
+<li>无反应。</li>
+<li>呼吸停止或仅有濒死喘息。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4bdc7cf" class="outline-3">
+<h3 id="org4bdc7cf"><span class="section-number-3">1.2</span> 成人心肺复苏基础生命支持流程</h3>
+<div class="outline-text-3" id="text-1-2">
+<ol class="org-ol">
+<li>环境安全评估
+<ul class="org-ul">
+<li>目标及周边环境是否安全，例如触电或高速路上。</li>
+</ul></li>
+
+<li>判断反应
+<ul class="org-ul">
+<li>成人：拍肩+大声喊叫，声音和动作刺激。</li>
+<li>婴儿：拍脚底板</li>
+</ul></li>
+
+<li>呼叫急救电话
+<ul class="org-ul">
+<li>不要主动挂断急救电话，医生可能会详细询问或电话指导 CPR</li>
+</ul></li>
+
+<li>判断呼吸（脉搏）
+<ul class="org-ul">
+<li>呼吸停止或仅有濒死喘息</li>
+</ul></li>
+
+<li>胸外按压
+<ul class="org-ul">
+<li>按压本身并不能使心脏恢复跳动。是为了模拟心脏跳动，让血液流动起来。</li>
+<li>技巧：四个音节是一秒，数数应该“一千零一”是一秒。</li>
+</ul></li>
+
+<li>人工呼吸
+<ul class="org-ul">
+<li>呼出的气体中有 11%的氧气。</li>
+<li>按压通气比是 30:2，即按压三十次以后人工呼吸两次。</li>
+<li>口诀：一切二抬三捏四吹。</li>
+<li>注意不要卡在下巴或脖子上。</li>
+<li>吹气过程中观察胸廓鼓起。</li>
+</ul></li>
+
+<li>电除颤
+<ul class="org-ul">
+<li>AED 设备查找：微信-&gt;城市生活-&gt;</li>
+<li>开机后遵从设备语音提示说明。</li>
+<li>充电和放电过程中所有人不要接触患者。</li>
+</ul></li>
+
+<li>持续心肺复苏直到专业人员到达</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org92c9ea1" class="outline-3">
+<h3 id="org92c9ea1"><span class="section-number-3">1.3</span> 高质量心肺复苏关键点</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>在识别心脏骤停 10s 内开始按压。</li>
+<li><b>用力按压，快速按压。</b>
+<ul class="org-ul">
+<li>位置：两胸中间，两乳连线与胸部中线交叉点位置。
+<ul class="org-ul">
+<li>快速定位技巧：手掌位于腋下，向胸部横移。</li>
+</ul></li>
+<li>姿势：
+<ul class="org-ul">
+<li>双手紧扣，按压手掌手指翘起。按压时中指位于乳头方向。</li>
+<li>用掌托底部按压。</li>
+<li>双臂伸直，用上身下落的力量进行按压，而不是手臂力量。</li>
+</ul></li>
+<li>速度：每分钟 100-120 次，按压数数应该是 01,02 这样数。</li>
+<li>力度：至少为胸部厚度的三分之一。
+<ul class="org-ul">
+<li>成人深度至少 5cm，不超过 6cm。</li>
+<li>儿童深度大约 5cm。</li>
+<li>婴儿深度大约 4cm。</li>
+</ul></li>
+</ul></li>
+<li>每次按压后， <b>让胸廓完全回弹</b> 。即：确保抬起时没有任何理想施加在患者的胸壁上。</li>
+<li>按压过程中 <b>尽量减少中断</b> 。中断控制在 10s 以内，这些中断会导致大脑缺血缺氧加重。</li>
+<li>给予有效的人工呼吸，是胸腹隆起。</li>
+<li>避免过量通气。</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org9b73adb" class="outline-2">
+<h2 id="org9b73adb"><span class="section-number-2">2</span> 常见急症识别与处置</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgba523da" class="outline-3">
+<h3 id="orgba523da"><span class="section-number-3">2.1</span> 气道阻塞</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+使用“海姆立克腹部冲击法”：
+</p>
+<ul class="org-ul">
+<li>成人：肚脐以上，向上向后。口诀：石头剪刀布。</li>
+<li>孕妇和胖子：胸口中间，向内向后。</li>
+</ul>
+
+
+<p>
+婴儿要使用背部拍击和胸部冲击。操作方法：
+</p>
+<ul class="org-ul">
+<li>将婴儿面朝下放在前臂上，用手拖住婴儿的头部和下颚。</li>
+<li>用另一只手的手掌根拍击婴儿肩胛骨之间的区域，共拍击 5 次。</li>
+<li>如果拍击 5 次后，梗阻物还未掉出，则将婴儿翻为面朝上，并托住他的头部</li>
+<li>用另一只手的 2 根手指按压胸部 5 次，按压部位与 CPR 的按压部位相同（胸骨的乳线下缘水平）。</li>
+<li>重复拍击后背和冲击前胸各 5 次，直至婴儿可以呼吸、咳嗽或哭泣；若婴儿停止反应，也停止抢救，立即进行心肺复苏。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org18fcdb3" class="outline-3">
+<h3 id="org18fcdb3"><span class="section-number-3">2.2</span> 昏迷体位翻转</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+先折叠胳膊和腿，然后翻转。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org25b5754" class="outline-3">
+<h3 id="org25b5754"><span class="section-number-3">2.3</span> 心梗</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+前兆：
+</p>
+<ul class="org-ul">
+<li>长时间心绞痛。持续 20min 以上的心绞痛，同时伴随烦躁不安、出汗、恐惧和濒死感觉。</li>
+<li>胃肠道反应：许多人还会出现恶心、呕吐腹泻等。</li>
+<li>休克、晕倒等症状。</li>
+<li>与劳累有关的全身性疼痛。</li>
+</ul>
+
+<p>
+处理：
+</p>
+<ul class="org-ul">
+<li>有症状立即平静休息，帮助患者半坐卧，用物件支持头肩，屈膝。</li>
+<li>使用急救箱和自动体外除颤器。</li>
+<li>如患者失去反应，立即进行心肺复苏。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3d01109" class="outline-3">
+<h3 id="org3d01109"><span class="section-number-3">2.4</span> 脑卒</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+种类：脑梗和脑溢血。
+</p>
+
+<p>
+诱发因素：抽烟、喝酒、高血压、高血胆固醇、肥胖、心脏病、糖尿病、压力、缺乏锻炼。
+</p>
+
+<p>
+识别：BEFAST
+</p>
+<ul class="org-ul">
+<li>Balance 失去平衡，头疼或头晕。</li>
+<li>Eyes 视觉模糊。</li>
+<li>Face 身体一侧或面部一侧下垂。</li>
+<li>Arms 手或腿无力。</li>
+<li>Speech 说话困难。</li>
+<li>TIME 立即呼叫救护车</li>
+</ul>
+
+
+<p>
+急救：
+</p>
+<ul class="org-ul">
+<li>如伤者清醒，应让他侧卧，用柔软物件垫高头及双肩，让唾液容易流出，保持起到畅通。</li>
+<li>解除阻碍呼吸的衣物，不要让伤者饮食。</li>
+<li>保持伤者体温。</li>
+<li>保持伤者气道干净通畅。</li>
+</ul>
+
+<p>
+若无意识:
+</p>
+<ul class="org-ul">
+<li>让伤者保持恢复姿势。</li>
+<li>如果伤者不省人事，应立即检查呼吸、脉搏和清醒程度。</li>
+</ul>
+
+
+<p>
+禁忌：
+</p>
+<ul class="org-ul">
+<li>不要独自带伤者去医院。</li>
+<li>不要给伤者饮食。</li>
+<li>不要服用阿司匹林等药物。（防过敏）</li>
+<li>不要拖延治疗。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3603649" class="outline-3">
+<h3 id="org3603649"><span class="section-number-3">2.5</span> 鼻出血</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+挤压鼻子下部，挤压止血。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf37e4bd" class="outline-3">
+<h3 id="orgf37e4bd"><span class="section-number-3">2.6</span> 创伤止血包扎</h3>
+</div>
+
+<div id="outline-container-org07d4b3a" class="outline-3">
+<h3 id="org07d4b3a"><span class="section-number-3">2.7</span> 热痉挛 低血钠症</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+原因：大量喝水，或摄入盐不足，不能补充大量出汗导致的电解质流失。
+处置：
+</p>
+<ul class="org-ul">
+<li>正常补水。</li>
+<li>吃咸味食物。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga548fe5" class="outline-3">
+<h3 id="orga548fe5"><span class="section-number-3">2.8</span> 热衰竭 严重脱水</h3>
+<div class="outline-text-3" id="text-2-8">
+<ul class="org-ul">
+<li>停止运动</li>
+<li>补水</li>
+<li>补电解质</li>
+<li>阴凉环境休息</li>
+<li>喷洒凉水、降温</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2c6860d" class="outline-3">
+<h3 id="org2c6860d"><span class="section-number-3">2.9</span> 中暑</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+原因：
+</p>
+<ul class="org-ul">
+<li>严重的体温升高而威胁生命</li>
+<li>可能和热衰竭同事发生。</li>
+</ul>
+
+<p>
+症状：
+</p>
+<ul class="org-ul">
+<li>神志不清，抽搐</li>
+<li>发热、多汗，体温高于 40.5 摄氏度。</li>
+<li>皮肤潮红，或苍白</li>
+</ul>
+
+<p>
+处置：
+</p>
+<ul class="org-ul">
+<li>停止运动，离开炎热环境。</li>
+<li>立即剧烈冷却。冷敷或冷水浸泡</li>
+<li>补充电解质（如无反应不可以饮水进食）</li>
+<li>尽快撤离，医院治疗。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8e8c45c" class="outline-3">
+<h3 id="org8e8c45c"><span class="section-number-3">2.10</span> 蛇咬伤</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+减少运动。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

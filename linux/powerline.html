@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>powerline</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">powerline</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgaf7c7a9">1. 概述</a></li>
+<li><a href="#orgb163287">2. 安装</a>
+<ul>
+<li><a href="#org16f4118">2.1. 依赖</a></li>
+<li><a href="#org46de2f4">2.2. apt 安装</a></li>
+<li><a href="#org07a4439">2.3. pip 安装</a></li>
+<li><a href="#org1d1d301">2.4. 字体安装</a>
+<ul>
+<li><a href="#org7b7078c">2.4.1. 修补字体</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3a8b150">3. 配置</a>
+<ul>
+<li><a href="#orge63324e">3.1. 快速配置指南</a></li>
+</ul>
+</li>
+<li><a href="#orge13e30b">4. 使用</a>
+<ul>
+<li><a href="#org97f019d">4.1. bash</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaf7c7a9" class="outline-2">
+<h2 id="orgaf7c7a9"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://github.com/powerline/powerline">Powerline</a> 是 vim 的状态行插件，也可为其他几个应用程序提供状态和提示，包括 zsh，bash，fish，tmux，IPython，Awesome，i3 和 Qtile。
+</p>
+
+<p>
+特征：
+</p>
+
+<ul class="org-ul">
+<li>可扩展且功能丰富。Powerline 完全用 Python 重写，以尽可能避免 vimscript。这样可以提供更好的可扩展性，更精简和更好的配置文件，以及一个结构化的，面向对象的代码库，除了 Python 解释器之外没有强制的第三方依赖。</li>
+<li>稳定且可测试的代码库。使用 Python 允许对所有项目代码进行单元测试。该代码经过测试，可在 Python 2.6 + 和 Python 3 中使用。</li>
+<li>支持许多应用程序中的提示和状态行。该项目最初是专门为 vim 状态行创建的，已经发展为在 tmux 和几个 WM 中提供状态行，并为像 bash/zsh 一样的 shell 和其他应用程序进行提示。为 Powerline 尚不支持的任何其他应用程序编写渲染器很简单。</li>
+<li>用 JSON 编写配置和配色方案。JSON 是一种标准化，简单易用的文件格式，可以在所有 Powerline 支持的应用程序中轻松进行用户配置。</li>
+<li>快速轻巧，使用守护程序提供更好的性能。提供丰富的功能集同时，更关注更好的性能和尽可能少的代码。新守护程序还确保仅为提示和状态行启动一个 Python 实例，从而提供出色的性能。</li>
+</ul>
+
+<p>
+本地编译的 C 版本要比 python 版本快。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb163287" class="outline-2">
+<h2 id="orgb163287"><span class="section-number-2">2</span> 安装<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org16f4118" class="outline-3">
+<h3 id="org16f4118"><span class="section-number-3">2.1</span> 依赖</h3>
+</div>
+
+<div id="outline-container-org46de2f4" class="outline-3">
+<h3 id="org46de2f4"><span class="section-number-3">2.2</span> apt 安装</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-sh">apt install -y powerline fonts-powerline python3-pygit2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org07a4439" class="outline-3">
+<h3 id="org07a4439"><span class="section-number-3">2.3</span> pip 安装</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+使用 pip 安装是首选方法，应为这样可以安装到最新版本。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pip3 install pygit2
+pip3 install powerline-status
+</pre>
+</div>
+
+<p>
+但是安装的时候发现 pygit2 与 ubuntu 18.04 自带的 libgit2-dev (0.26.0) 不兼容。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d1d301" class="outline-3">
+<h3 id="org1d1d301"><span class="section-number-3">2.4</span> 字体安装</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Powerline 使用几个特殊字型来获得箭头效果和一些为开发人员定义的符号。这需要在系统中安装符号字体或修补字体。使用的应用程序（例如终端仿真器）也必须配置为使用修补字体（甚至在某些自定义字型是程序自行保留使用的情况下也要支持）或支持字体配置以使 powerline 与之特定的字形正常工作。
+</p>
+
+<p>
+如果使用的终端仿真器支持，则可以启用 24 位颜色支持。
+</p>
+
+<p>
+基本上有两种显示 powerline 字形的方法：使用 PowerlineSymbols.otf 字体作为现有字体之一的备用字体或安装修补字体。
+</p>
+</div>
+
+<div id="outline-container-org7b7078c" class="outline-4">
+<h4 id="org7b7078c"><span class="section-number-4">2.4.1</span> 修补字体</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+此方法是后备方法，适用于每个终端。
+</p>
+
+<p>
+从 <a href="https://github.com/powerline/fonts">powerline-fonts</a> 下载字体。如果在 <a href="https://github.com/powerline/fonts">powerline-fonts</a> repo 中找不到首选字体，则需要修补首选字体。
+</p>
+
+<p>
+下载此字体后，请参阅特定于平台的说明。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3a8b150" class="outline-2">
+<h2 id="org3a8b150"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Powerline 有一个主配置文件，主题和配色有单独的配置文件。所有配置文件都是用 JSON 编写的，但 segment 的定义是用 python 编写的。
+</p>
+
+<p>
+Powerline 在以下位置提供默认配置：
+</p>
+<ul class="org-ul">
+<li>主配置文件： <code>{powerline}/config.json</code></li>
+<li>配色： <code>{powerline}/colorschemes/name.json, {powerline}/colorschemes/extension/__main__.json, {powerline}/colorschemes/extension/name.json</code></li>
+<li>主题： <code>{powerline}/themes/top_theme.json, {powerline}/themes/extension/__main__.json, {powerline}/themes/extension/default.json</code></li>
+</ul>
+
+<p>
+这里 <code>{powerline}</code> 是以下之一：
+</p>
+<ul class="org-ul">
+<li>位于主程序包中的默认配置目录： <code>powerline_root/powerline/config_files</code> 。可能在某些包中不存在（例如，通过 Gentoo ebuilds 安装时）。</li>
+<li>如果变量 <code>$XDG_CONFIG_DIRS</code> 设置为非空，则任何 <code>{directory}/powerline</code> ，其中 {directory} 是以冒号分隔的 <code>$XDG_CONFIG_DIRS</code> 列表中列出的目录。目录以相反的顺序检查。</li>
+<li>位于 <code>$XDG_CONFIG_HOME/powerline</code> 中的用户配置目录。这通常对应于所有平台上的 <code>～/.config/powerline</code> 。</li>
+</ul>
+
+<p>
+注意：
+</p>
+
+<ul class="org-ul">
+<li>将合并具有相同名称但位于不同目录中的现有多个配置文件。合并按照上面可能的 {powerline} 含义列表中给出的顺序进行。</li>
+<li>合并配置时，只合并字典并以递归方式合并：来自下一个文件的 key 覆盖 了前一个文件中的 key，除非相应的值都是字典，在这种情况下这些字典被合并，key 被赋予合并的结果。</li>
+<li>一些配置文件（即主题和颜色方案）具有两个级别的合并：首先发生上述合并，第二主题或颜色方案特定的合并发生。</li>
+</ul>
+</div>
+
+<div id="outline-container-orge63324e" class="outline-3">
+<h3 id="orge63324e"><span class="section-number-3">3.1</span> 快速配置指南</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+该指南将帮助您完成 Powerline 的初始配置。
+</p>
+
+<p>
+查看 <code>{powerline_root}/powerline/config_files</code> 中的配置。如果要修改某个文件，可以创建 <code>~/.config/powerline</code> 目录并在其中进行修改：所有配置文件相互合并。
+</p>
+
+<p>
+每个扩展（vim，tmux 等）都有自己的主题，它们位于 <code>{config directory}/themes/extension/default.json</code> 中。修改它的最佳方法是将此主题作为一个整体复制，删除具有相应值的 segment_data 键（如果存在）（除非需要修改它，在这种情况下只需保留修改）并在 segment 列表中进行必要的修改（列表不需要合并：这就是需要副本的原因）。
+</p>
+
+<p>
+如果要移动，删除或自定义副本中提供的任何 segment，可以通过更新要自定义的主题中的 segment 字典来实现。segment 字典看起来像这样：
+</p>
+<div class="org-src-container">
+<pre class="src src-json">{
+    <span style="color: #a1db00;">"name"</span>: <span style="color: #ff4ea3;">"segment_name"</span>
+    ...
+}
+</pre>
+</div>
+
+<p>
+可以移动 segment 字典以更改 segment 位置，或删除整个字典以从提示或状态行中删除 segment。
+</p>
+
+<p>
+注意：
+</p>
+<ul class="org-ul">
+<li>所有配置文件的内容都必须是有效的 JSON！强烈建议在更改后通过 jsonlint 运行配置文件。</li>
+<li>如果修改似乎不起作用，请运行 <code>powerline-lint</code> 脚本。此脚本应显示错误的位置。</li>
+</ul>
+
+<p>
+某些 segment 需要用户配置才能正常工作。以下是可能希望立即自定义的几个 segment：
+</p>
+
+<ul class="org-ul">
+<li><p>
+E-mail alert segment
+</p>
+
+<p>
+必须为 E-mail alert segment 设置用户名和密码（可能还有服务器/端口）。如果使用的是 GMail，建议您为此目的生成特定于应用程序的密码。
+</p>
+
+<p>
+打开主题文件，向下滚动到 email_imap_alert 段并设置您的用户名和密码。服务器默认为 GMail 的 IMAP 服务器，但可以通过添加服务器和端口参数来设置服务器/端口。
+</p></li>
+
+<li><p>
+Weather segment
+</p>
+
+<p>
+Weather segment 将尝试使用 GeoIP 查找来定位，因此除非使用 VPN，否则可能不必更改位置查询。
+</p>
+
+<p>
+如果要更改位置查询或温度单位，则必须更新 segment 参数。打开主题文件，向下滚动到天气段并将其更新为包含单位/位置查询参数：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-json">{
+    <span style="color: #a1db00;">"name"</span>: <span style="color: #ff4ea3;">"weather"</span>,
+    <span style="color: #a1db00;">"priority"</span>: <span style="color: #5fafd7;">50</span>,
+    <span style="color: #a1db00;">"args"</span>: {
+        <span style="color: #a1db00;">"unit"</span>: <span style="color: #ff4ea3;">"F"</span>,
+        <span style="color: #a1db00;">"location_query"</span>: <span style="color: #ff4ea3;">"oslo, norway"</span>
+    }
+},
+</pre>
+</div></li>
+</ul>
+
+
+<p>
+其他详见 <a href="https://powerline.readthedocs.io/en/latest/configuration/reference.html#">Configuration reference</a>
+</p>
+
+<p>
+注意：如果想修改之后立马生效，需要执行  <code>powerline-daemon --replace</code> 。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge13e30b" class="outline-2">
+<h2 id="orge13e30b"><span class="section-number-2">4</span> 使用</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org97f019d" class="outline-3">
+<h3 id="org97f019d"><span class="section-number-3">4.1</span> bash</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+在 <code>.bashrc</code> 中添加以下内容：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #d18aff;">source</span> /usr/share{powerline}bindings/bash/powerline.sh
+<span style="color: #a1db00;">if</span> [ -f <span style="color: #fa8072;">`which powerline-daemon`</span> ]; <span style="color: #a1db00;">then</span>
+  powerline-daemon -q
+  <span style="color: #ff8700;">POWERLINE_BASH_CONTINUATION</span>=1
+  <span style="color: #ff8700;">POWERLINE_BASH_SELECT</span>=1
+  <span style="color: #d18aff;">.</span> /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+<span style="color: #a1db00;">fi</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://powerline.readthedocs.io/en/latest/">https://powerline.readthedocs.io/en/latest/</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

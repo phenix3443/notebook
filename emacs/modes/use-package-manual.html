@@ -1,0 +1,1366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>use-package manual</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">use-package manual</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgf071d1c">1. 概览</a></li>
+<li><a href="#org394b6cf">2. 基本使用</a>
+<ul>
+<li><a href="#org2b8768b">2.1. 加载前准备</a></li>
+<li><a href="#org9e3dff2">2.2. 加载后配置</a></li>
+<li><a href="#org022e6da">2.3. 自动加载命令（autoload）</a></li>
+<li><a href="#org917a115">2.4. 钩子（hook）</a></li>
+<li><a href="#org2c85c55">2.5. 键绑定</a></li>
+<li><a href="#org35b362f">2.6. 禁用模块</a></li>
+</ul>
+</li>
+<li><a href="#org9e4f6aa">3. 基本用法示例</a></li>
+<li><a href="#org94405f2">4. 高级用法</a>
+<ul>
+<li><a href="#orgbc8f41c">4.1. 扩展加载路径</a></li>
+<li><a href="#orgc5eb192">4.2. 自动安装</a></li>
+<li><a href="#orga40eccf">4.3. 绑定 keymap</a></li>
+<li><a href="#org5a71b7d">4.4. 局部键绑定</a></li>
+<li><a href="#org56ad371">4.5. 模式和解释器</a></li>
+<li><a href="#org6443957">4.6. Magic handlers</a></li>
+<li><a href="#orgc3d60bc">4.7. custom</a></li>
+<li><a href="#orgcef620a">4.8. custom-face</a></li>
+<li><a href="#org67098a6">4.9. 延迟加载</a>
+<ul>
+<li><a href="#org8446b7f">4.9.1. 延迟加载的注意事项</a></li>
+</ul>
+</li>
+<li><a href="#orge144bff">4.10. 条件加载</a>
+<ul>
+<li><a href="#org6846937">4.10.1. if</a></li>
+<li><a href="#orgcb8713e">4.10.2. after</a></li>
+<li><a href="#org368f2ac">4.10.3. require</a></li>
+</ul>
+</li>
+<li><a href="#org476199d">4.11. 字节编译配置文件</a></li>
+<li><a href="#org8fdeb06">4.12. 编译时阻止加载包</a></li>
+<li><a href="#org60c6aa1">4.13. diminish 和 delight 辅助模式</a></li>
+</ul>
+</li>
+<li><a href="#org5301149">5. 加载信息</a></li>
+<li><a href="#orge256c12">6. 关键字扩展</a>
+<ul>
+<li><a href="#org8ea8372">6.1. 如何创建扩展</a>
+<ul>
+<li><a href="#org69e7e08">6.1.1. First step: Add the keyword</a></li>
+<li><a href="#org3a8eb35">6.1.2. Second step: Create a normalizer</a></li>
+<li><a href="#orge1f4f36">6.1.3. Third step: Create a handler</a></li>
+<li><a href="#org4012eda">6.1.4. Fourth step: Test it out</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgf071d1c" class="outline-2">
+<h2 id="orgf071d1c"><span class="section-number-2">1</span> 概览</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+通过 <a href="https://github.com/jwiegley/use-package">use-package</a> ，可以使 <code>.emacs</code> 中的 package 配置更加独立，既不影响性能，又整洁好看。
+</p>
+
+<p>
+use-package 主要通过关键字（keyword）来配置 package，这些关键字涉及 package 的安装、初始化（initialize）、配置（config）、键绑定（key-binding）、自动加载（autoload）等。后面逐步介绍这些关键字。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org394b6cf" class="outline-2">
+<h2 id="org394b6cf"><span class="section-number-2">2</span> 基本使用</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+下面是最简单的 use-package 声明：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">foo</span>)
+</pre>
+</div>
+
+<p>
+这会加载 foo package，但只有系统存在该 package 时才会加载成功。如果无该 package， <code>*Message*</code> buffer 会出现警告信息。
+</p>
+</div>
+
+<div id="outline-container-org2b8768b" class="outline-3">
+<h3 id="org2b8768b"><span class="section-number-3">2.1</span> 加载前准备</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<code>:init</code> 关键字设置 package 加载前执行的代码，可用来设置影响 package 加载过程的变量。 即使配置的 package 不存在， <code>:init</code> 部分的代码也会执行，所以该部分代码应该保证 package 不存在也可以执行成功。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e3dff2" class="outline-3">
+<h3 id="org9e3dff2"><span class="section-number-3">2.2</span> 加载后配置</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<code>:config</code> 关键字设置 package 加载后执行的代码，主要用来对 package 进行配置。在 package 自动加载（autoload）的情况下，这些代码直到加载时才会执行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org022e6da" class="outline-3">
+<h3 id="org022e6da"><span class="section-number-3">2.3</span> 自动加载命令（autoload）</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+<code>:command</code> 关键字会为命令创建自动加载（autoload），他的参数是 symbol 或 symbol 列表。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org917a115" class="outline-3">
+<h3 id="org917a115"><span class="section-number-3">2.4</span> 钩子（hook）</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+<code>:hook</code> 关键字允许将函数添加到钩子上，这里只需要钩子的基本名称。因此，以下所有内容都是等同的：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:hook</span> prog-mode)   <span style="color: #6c6c6c; font-style: italic;">;</span><span style="color: #6c6c6c; font-style: italic;">&#28982;&#32780;&#32463;&#36807;&#27979;&#35797;&#36825;&#31181;&#20889;&#27861;&#24182;&#27809;&#26377;&#29983;&#25928;</span>
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:hook</span> (prog-mode . ace-jump-mode))
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:commands</span> ace-jump-mode
+  <span style="color: #d18aff;">:init</span>
+  (add-hook 'prog-mode-hook #'ace-jump-mode))
+</pre>
+</div>
+
+<p>
+同样，如果命令添加到多个钩子，以下内容也是等同的：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:hook</span> (prog-mode text-mode)) <span style="color: #6c6c6c; font-style: italic;">;</span><span style="color: #6c6c6c; font-style: italic;">&#27809;&#26377;&#29983;&#25928;</span>
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:hook</span> ((prog-mode text-mode) . ace-jump-mode))
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:hook</span> ((prog-mode . ace-jump-mode)
+         (text-mode . ace-jump-mode)))
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:commands</span> ace-jump-mode
+  <span style="color: #d18aff;">:init</span>
+  (add-hook 'prog-mode-hook #'ace-jump-mode)
+  (add-hook 'text-mode-hook #'ace-jump-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c85c55" class="outline-3">
+<h3 id="org2c85c55"><span class="section-number-3">2.5</span> 键绑定</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+<code>:bind</code> 关键字用来设置键绑定：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:bind</span> (<span style="color: #ff4ea3;">"C-."</span> . ace-jump-mode))
+</pre>
+</div>
+
+<p>
+这会做两件事情：
+</p>
+<ul class="org-ul">
+<li>首先,为 ace-jump-mode 命令创建自动加载。</li>
+<li>其次，将 <code>C-.</code> 绑定到该命令。加载之后，可以使用 <code>M-x describe-personal-keybindings</code> 查看.emacs 文件中设置的所有键绑定。</li>
+</ul>
+
+<p>
+<code>:bind</code> 作用基本等同于以下代码：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:commands</span> ace-jump-mode
+  <span style="color: #d18aff;">:init</span>
+  (<span style="color: #a1db00;">bind-key</span> <span style="color: #ff4ea3;">"C-."</span> 'ace-jump-mode))
+</pre>
+</div>
+
+<p>
+此外， <code>:bind</code> 的配置可以是 cons 或 cons 的列表：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">hi-lock</span>
+  <span style="color: #d18aff;">:bind</span> ((<span style="color: #ff4ea3;">"M-o l"</span> . highlight-lines-matching-regexp)
+         (<span style="color: #ff4ea3;">"M-o r"</span> . highlight-regexp)
+         (<span style="color: #ff4ea3;">"M-o w"</span> . highlight-phrase)))
+</pre>
+</div>
+
+<p>
+注意：像 tab 或 F1-Fn 这样的特殊键要可以写在方括号中，如 [tab] 而不是"tab"。键绑定的语法与“kbd”类似：参见<a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html">Init-Rebinding</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">helm</span>
+  <span style="color: #d18aff;">:bind</span> ((<span style="color: #ff4ea3;">"M-x"</span> . helm-M-x)
+         (<span style="color: #ff4ea3;">"M-&lt;f5&gt;"</span> . helm-find-files)
+         ([f10] . helm-buffers-list)
+         ([S-f10] . helm-recentf)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org35b362f" class="outline-3">
+<h3 id="org35b362f"><span class="section-number-3">2.6</span> 禁用模块</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+<code>:disabled</code> 关键字可以关闭遇到困难的模块，或停止加载目前未使用的某个模块：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ess-site</span>
+  <span style="color: #d18aff;">:disabled</span> t
+  <span style="color: #d18aff;">:commands</span> R)
+</pre>
+</div>
+
+<p>
+字节编译.emacs 文件时，输出的字节码文件中会删除所有禁用的声明，以加快启动速度。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9e4f6aa" class="outline-2">
+<h2 id="org9e4f6aa"><span class="section-number-2">3</span> 基本用法示例</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">color-moccur</span>
+  <span style="color: #d18aff;">:commands</span> (isearch-moccur isearch-all)
+  <span style="color: #d18aff;">:bind</span> ((<span style="color: #ff4ea3;">"M-s O"</span> . moccur)
+         <span style="color: #d18aff;">:map</span> isearch-mode-map
+         (<span style="color: #ff4ea3;">"M-o"</span> . isearch-moccur)
+         (<span style="color: #ff4ea3;">"M-O"</span> . isearch-moccur-all))
+  <span style="color: #d18aff;">:init</span>
+  (<span style="color: #a1db00;">setq</span> isearch-lazy-highlight t)
+  <span style="color: #d18aff;">:config</span>
+  (<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">moccur-edit</span>))
+</pre>
+</div>
+
+<p>
+本例中，来自 color-moccur.el 的 isearch-moccur 和 isearch-all 会延迟加载（autoload），并在全局和 isearch-mode-map 中进行了键绑定。当该 package 真正加载时（通过使用其中一个命令），moccur-edit 也会加载，以允许编辑 moccur buffer。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org94405f2" class="outline-2">
+<h2 id="org94405f2"><span class="section-number-2">4</span> 高级用法</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgbc8f41c" class="outline-3">
+<h3 id="orgbc8f41c"><span class="section-number-3">4.1</span> 扩展加载路径</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+如果 pacakge 的加载需要将一个目录添加到 load-path 中，使用 <code>:load-path</code> 。参数可以是一个符号、函数、字符串或字符串列表。如果是相对路径，基于 user-emacs-directory 进行扩展。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ess-site</span>
+  <span style="color: #d18aff;">:load-path</span> <span style="color: #ff4ea3;">"site-lisp/ess/lisp/"</span>
+  <span style="color: #d18aff;">:commands</span> R)
+</pre>
+</div>
+
+<p>
+注意，如果使用一个符号或函数来动态生成路径列表，必须通知字节编译器该定义，以保证该值在编译时可用。这通过使用特殊形式（special form）eval-and-compile (而不是 eval-when-compile)实现。进一步说，该值固定为编译期间确定的值，避免在每次启动时再次查找相同的信息：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">eval-and-compile</span>
+  (<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">ess-site-load-path</span> ()
+    (shell-command <span style="color: #ff4ea3;">"find ~ -path ess/lisp"</span>)))
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ess-site</span>
+  <span style="color: #d18aff;">:load-path</span> (<span style="color: #a1db00;">lambda</span> () (list (ess-site-load-path)))
+  <span style="color: #d18aff;">:commands</span> R)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc5eb192" class="outline-3">
+<h3 id="orgc5eb192"><span class="section-number-3">4.2</span> 自动安装</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+可以使用 use-package 配合 package.el 从 ELPA 加载 pacakge。这对于在多个机器之间共享.emacs 很有用；在.emacs 中声明的 package 都会自动下载。 <code>:ensure</code> 关键字会自动安装系统没有的 package。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">magit</span>
+  <span style="color: #d18aff;">:ensure</span> t)
+</pre>
+</div>
+
+<p>
+如果希望所有包 package 都这样处理，需要设置
+</p>
+
+<pre class="example">
+(setq use-package-always-ensure t)
+</pre>
+
+<p>
+可以这样指定 安装 package 的别名：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">tex-site</span>
+  <span style="color: #d18aff;">:ensure</span> auctex)
+</pre>
+</div>
+
+<p>
+注意： <code>:ensure</code> 会安装系统上没有的 package，但不会进行主动更新。如果希望主动更新，可以使用 auto-package-update，如
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">auto-package-update</span>
+  <span style="color: #d18aff;">:config</span>
+  (<span style="color: #a1db00;">setq</span> auto-package-update-delete-old-versions t)
+  (<span style="color: #a1db00;">setq</span> auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+</pre>
+</div>
+
+<p>
+最后，如果 Emacs 是 24.4 或更高版本，use-package 可以将一个包 pin 到特定的 archive，允许混合和匹配来自不同 archive 的 package。主要使用场景是从 gnu 和 melpa-stable 选择 package（混合选择）；但需要跟踪稳定 archive 可用新版本时，使用 melpa 指定的 pacakge 也是一个有效的使用场景。
+</p>
+
+<p>
+默认情况下，由于版本比较（&gt; evil-20141208.623 evil-1.0.9），package.el 更喜欢 melpa 而不是 melpa-stable，所以即使只跟踪 melpa 中的一个包，也需要用适当的 archive 标记所有非 melpa 的 pakage。 如果觉得麻烦，那么可以通过 <code>use-package-always-pin</code> 来设置默认值。
+</p>
+
+<p>
+如果想手动保持更新 package 并忽略上游更新，可以将其 pin 到 <code>manual</code> ，只要没有该名称的 respository 就可以正常工作。
+</p>
+
+<p>
+如果尝试将 package pin 到一个没有使用 package-archives 配置的 archive（除了上面提到的 manual archive），use-package 将会引发错误：
+</p>
+
+<pre class="example">
+   Archive 'foo' requested for package 'bar' is not available.
+</pre>
+
+<p>
+Example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">company</span>
+  <span style="color: #d18aff;">:ensure</span> t
+  <span style="color: #d18aff;">:pin</span> melpa-stable)
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">evil</span>
+  <span style="color: #d18aff;">:ensure</span> t)
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">no :pin needed, as package.el will choose the version in melpa</span>
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">adaptive-wrap</span>
+  <span style="color: #d18aff;">:ensure</span> t
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">as this package is available only in the gnu archive, this is</span>
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">technically not needed, but it helps to highlight where it</span>
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">comes from</span>
+  <span style="color: #d18aff;">:pin</span> gnu)
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">org</span>
+  <span style="color: #d18aff;">:ensure</span> t
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">ignore org-mode from upstream and use a manually installed version</span>
+  <span style="color: #d18aff;">:pin</span> manual)
+</pre>
+</div>
+
+<p>
+注意：pin 参数对于版本小于 24.4 的 emacs 无效。
+</p>
+
+<p>
+其他的 package 管理器通过重写 use-package-ensure-function 或 use-package-pre-ensure-function，可以覆盖 <code>:ensure</code> ，进而使用自身而不是 package.el。目前，唯一这么做的是 =straight.el=。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga40eccf" class="outline-3">
+<h3 id="orga40eccf"><span class="section-number-3">4.3</span> 绑定 keymap</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+通常 <code>:bind</code> 绑定的命令是 package 中自动加载的函数。然而，如果命令实际上是键映射（keymap）的话，这就有所不同了，因为键映射不是函数，不能使用 Emacs 的自动加载机制进行自动加载。
+</p>
+
+<p>
+为了处理这种情况，use-package 提供了 <code>:bind-keymap</code> ，它是 <code>:bind</code> 一个特殊受限的变体。 二者之间的唯一区别是： <code>:bind-keymap</code> 绑定的命令必须是 package 中定义的键映射，而不是命令函数。这通过生成一段定制代码来处理：这段代码首先加载含有键映射的 package，加载之后再次执行后续的按键，也就说，将 <code>:bind-keymap</code> 绑定的按键解释为一个前缀键来处理。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">projectile</span>
+  <span style="color: #d18aff;">:bind-keymap</span>
+  (<span style="color: #ff4ea3;">"C-c p"</span> . projectile-command-map))
+</pre>
+</div>
+<p>
+<code>C-h c C-c p</code> 可以查看到 <code>C-c p</code> 绑定到了 lambda 函数。
+</p>
+
+<p>
+备注：但是实践的过程中，发现这个关键字使用还有一些注意事项：
+</p>
+<ul class="org-ul">
+<li>和 guide-key 有点冲突，参见 <a href="https://github.com/jwiegley/use-package/issues/685">https://github.com/jwiegley/use-package/issues/685</a></li>
+<li>这个指令不能和 hook，或者 global-mode 一起使用，如果这样使用， <code>bind</code> 中绑定的按键就会在当前 mode 中变成全局按键。换个角度，既然已经是 global 了，为什么还要把这些按键绑定到 local-mole-map 呢？</li>
+</ul>
+
+<p>
+具体用法示例如下：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">smartparens-config</span>
+  <span style="color: #d18aff;">:ensure</span> smartparens
+  <span style="color: #d18aff;">:bind-keymap</span> (<span style="color: #ff4ea3;">"C-c s"</span> . smartparens-mode-map)
+  <span style="color: #d18aff;">:bind</span>
+  (<span style="color: #d18aff;">:map</span> smartparens-mode-map
+        (<span style="color: #ff4ea3;">"c"</span> . sp-beginning-of-next-sexp))
+  )
+</pre>
+</div>
+<p>
+等同于
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">smartparens-config</span>
+  <span style="color: #d18aff;">:ensure</span> smartparens
+  <span style="color: #d18aff;">:bind</span>
+  (<span style="color: #d18aff;">:prefix-map</span> smartparens-mode-map
+               <span style="color: #d18aff;">:prefix</span> <span style="color: #ff4ea3;">"C-c s"</span>
+               (<span style="color: #ff4ea3;">"c"</span> . sp-beginning-of-next-sexp))
+  )
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5a71b7d" class="outline-3">
+<h3 id="org5a71b7d"><span class="section-number-3">4.4</span> 局部键绑定</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+与绑定到键映射稍微不同，局部 keymap 的键绑定只有在 package 加载后才生效。use-package 通过 <code>:map</code> 修饰符支持局部键绑定：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">helm</span>
+  <span style="color: #d18aff;">:bind</span> (<span style="color: #d18aff;">:map</span> helm-mode-map
+         (<span style="color: #ff4ea3;">"C-c h"</span> . helm-execute-persistent-action)))
+</pre>
+</div>
+
+<p>
+上面声明等到 helm 加载后才生效，在 helm 的局部键映射 helm-mode-map 中将 <code>C-c h</code> 绑定到 helm-execute-persistent-action。
+</p>
+
+<p>
+可以使用多个 <code>:map</code> 。首次使用 <code>:map</code> 之前的任何绑定都应用于全局键映射。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">term</span>
+  <span style="color: #d18aff;">:bind</span> ((<span style="color: #ff4ea3;">"C-c t"</span> . term)
+         <span style="color: #d18aff;">:map</span> term-mode-map
+         (<span style="color: #ff4ea3;">"M-p"</span> . term-send-up)
+         (<span style="color: #ff4ea3;">"M-n"</span> . term-send-down)
+         <span style="color: #d18aff;">:map</span> term-raw-map
+         (<span style="color: #ff4ea3;">"M-o"</span> . other-window)
+         (<span style="color: #ff4ea3;">"M-p"</span> . term-send-up)
+         (<span style="color: #ff4ea3;">"M-n"</span> . term-send-down)))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org56ad371" class="outline-3">
+<h3 id="org56ad371"><span class="section-number-3">4.5</span> 模式和解释器</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+类似 <code>:bind</code> ,可以使用 <code>:mode</code> 和 <code>:interpreter</code> 在变量 auto-mode-alist 和 interpreter-mode-alist 中建立延迟绑定。这些关键字的参数可以是 cons、 列表、字符串或正则表达式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ruby-mode</span>
+  <span style="color: #d18aff;">:mode</span> <span style="color: #ff4ea3;">"\\.rb\\'"</span>
+  <span style="color: #d18aff;">:interpreter</span> <span style="color: #ff4ea3;">"ruby"</span>)
+
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">The package is "python" but the mode is "python-mode":</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">python</span>
+  <span style="color: #d18aff;">:mode</span> (<span style="color: #ff4ea3;">"\\.py\\'"</span> . python-mode)
+  <span style="color: #d18aff;">:interpreter</span> (<span style="color: #ff4ea3;">"python"</span> . python-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6443957" class="outline-3">
+<h3 id="org6443957"><span class="section-number-3">4.6</span> Magic handlers</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+类似于 <code>:mode</code> 和 <code>:interpreter</code> ，如果文件开始处符合给定的正则表达式，您还可以使用 <code>:magic</code> 和 <code>:magic-fallback</code> 执行函数。两者之间的区别在于 <code>:magic-fallback</code> 的优先级低于 <code>:mode</code> 。例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">pdf-tools</span>
+  <span style="color: #d18aff;">:load-path</span> <span style="color: #ff4ea3;">"site-lisp/pdf-tools/lisp"</span>
+  <span style="color: #d18aff;">:magic</span> (<span style="color: #ff4ea3;">"%PDF"</span> . pdf-view-mode)
+  <span style="color: #d18aff;">:config</span>
+  (pdf-tools-install))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc3d60bc" class="outline-3">
+<h3 id="orgc3d60bc"><span class="section-number-3">4.7</span> custom</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+<code>:custom</code> 关键字允许设置 package 的自定义变量。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">comint</span>
+  <span style="color: #d18aff;">:custom</span>
+  (comint-buffer-maximum-size 20000 <span style="color: #ff4ea3;">"Increase comint buffer size."</span>)
+  (comint-prompt-read-only t <span style="color: #ff4ea3;">"Make the prompt read only."</span>))
+</pre>
+</div>
+<p>
+文档字符串并不是必须的。
+</p>
+
+<p>
+这些仅适用那些希望通过 customization 定制 use-package 中声明的变量的人。从功能上来说，与 <code>:config</code> 中使用 setq 相比，唯一的好处在于，设置当被赋值时可能会执行代码。如果当前使用 <code>M-x customize-option</code> 保存设置文件，不会想用该选项。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcef620a" class="outline-3">
+<h3 id="orgcef620a"><span class="section-number-3">4.8</span> custom-face</h3>
+<div class="outline-text-3" id="text-4-8">
+<p>
+<code>:custom-face</code> 用来设置 package 自定义 face。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">eruby-mode</span>
+  <span style="color: #d18aff;">:custom-face</span>
+  (eruby-standard-face ((t (<span style="color: #d18aff;">:slant</span> italic)))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org67098a6" class="outline-3">
+<h3 id="org67098a6"><span class="section-number-3">4.9</span> 延迟加载</h3>
+<div class="outline-text-3" id="text-4-9">
+<p>
+如果没有使用 <code>:commands, :bind, :bind*, :bind-keymap, :bind-keymap*, :mode, or :interpreter</code> （这些都意味着 <code>:defer</code> ; 参阅 use-package 中的文档对每个都简单了解一下），也可以使用 <code>:defer</code> 关键字实现延迟加载：
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:defer</span> t
+  <span style="color: #d18aff;">:init</span>
+  (autoload 'ace-jump-mode <span style="color: #ff4ea3;">"ace-jump-mode"</span> nil t)
+  (<span style="color: #a1db00;">bind-key</span> <span style="color: #ff4ea3;">"C-."</span> 'ace-jump-mode))
+</pre>
+</div>
+
+<p>
+这等同于：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:bind</span> (<span style="color: #ff4ea3;">"C-."</span> . ace-jump-mode))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8446b7f" class="outline-4">
+<h4 id="org8446b7f"><span class="section-number-4">4.9.1</span> 延迟加载的注意事项</h4>
+<div class="outline-text-4" id="text-4-9-1">
+<p>
+几乎所有情况下都不需要手动指定 <code>:defer t</code> 。每当使用 <code>:bind</code> 、 <code>:mode、 ~:interpreter</code> 时，这都是隐含的。 通常，如果知道其他 package 会做一些事情导致当前 package 在适当的时间加载，只需指定 <code>:defer</code>, 因而即使 use-package 不会为你创建任何自动加载，也会推迟加载。
+</p>
+
+<p>
+可以使用 <code>:demand</code> 关键字覆盖包的延迟加载。因此，即使使用 <code>:bind</code> ，使用 <code>:demand</code> 也会强制立即加载，不会为绑定键建立任何自动加载。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge144bff" class="outline-3">
+<h3 id="orge144bff"><span class="section-number-3">4.10</span> 条件加载</h3>
+<div class="outline-text-3" id="text-4-10">
+</div>
+<div id="outline-container-org6846937" class="outline-4">
+<h4 id="org6846937"><span class="section-number-4">4.10.1</span> if</h4>
+<div class="outline-text-4" id="text-4-10-1">
+<p>
+可以使用 <code>:if</code> 关键字来预测模块的加载和初始化。 例如，只想让 edit-server 运行在图形 Emacs 下，而不是其他从命令行启动的 Emacsen：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">edit-server</span>
+  <span style="color: #d18aff;">:if</span> window-system
+  <span style="color: #d18aff;">:init</span>
+  (add-hook 'after-init-hook 'server-start t)
+  (add-hook 'after-init-hook 'edit-server-start t))
+</pre>
+</div>
+
+<p>
+此外，还可以限制操作系统：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">exec-path-from-shell</span>
+  <span style="color: #d18aff;">:if</span> (memq window-system '(mac ns))
+  <span style="color: #d18aff;">:ensure</span> t
+  <span style="color: #d18aff;">:config</span>
+  (exec-path-from-shell-initialize))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcb8713e" class="outline-4">
+<h4 id="orgcb8713e"><span class="section-number-4">4.10.2</span> after</h4>
+<div class="outline-text-4" id="text-4-10-2">
+<p>
+有时，只有在另一个 package 加载之后，加载当前 package 才有意义，因为有些变量或函数此前不在作用域内。这可以通过 <code>:after</code> 关键字来实现，该关键字允许设置相当丰富的加载条件。这里有一个例子：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">hydra</span>
+  <span style="color: #d18aff;">:load-path</span> <span style="color: #ff4ea3;">"site-lisp/hydra"</span>)
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ivy</span>
+  <span style="color: #d18aff;">:load-path</span> <span style="color: #ff4ea3;">"site-lisp/swiper"</span>)
+
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ivy-hydra</span>
+  <span style="color: #d18aff;">:after</span> (ivy hydra))
+</pre>
+</div>
+
+<p>
+这种情况下，所有的 package 都按照它们出现的顺序进行了加载，使用 <code>:after</code> 关键字不是绝对必要的。但是，通过使用它，上面的代码可以变得与顺序无关，init 文件本质上隐含了这种顺序依赖关系。
+</p>
+
+<p>
+默认情况下, <code>:after(foo bar)</code> 与 <code>:after(:all foo bar)</code> 相同，这意味着直到 foo 和 bar 加载后才会加载该 package。以下是其他一些可能的例子：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #d18aff;">:after</span> (foo bar)
+<span style="color: #d18aff;">:after</span> (<span style="color: #d18aff;">:all</span> foo bar)
+<span style="color: #d18aff;">:after</span> (<span style="color: #d18aff;">:any</span> foo bar)
+<span style="color: #d18aff;">:after</span> (<span style="color: #d18aff;">:all</span> (<span style="color: #d18aff;">:any</span> foo bar) (<span style="color: #d18aff;">:any</span> baz quux))
+<span style="color: #d18aff;">:after</span> (<span style="color: #d18aff;">:any</span> (<span style="color: #d18aff;">:all</span> foo bar) (<span style="color: #d18aff;">:all</span> baz quux))
+</pre>
+</div>
+
+<p>
+当嵌套使用选择器时，例如 <code>(:any (:all foo bar) (:all baz quux))</code> ， 这意味着只要 foo 和 bar 其中之一加载，或者 baz 和 quux 必须都加载，package 才会加载，。
+</p>
+
+<p>
+注意：如果 use-package-always-defer 设置为 t，并且使用了 <code>:after</code> 关键字，则需要说明声明 package 的加载方式：例如通过 <code>:bind</code> 。如果没有使用注册自动加载的机制，例如 <code>:bind</code> 或 <code>:hook</code> ，包管理器也没有提供自动加载，如果不给这些声明添加 <code>:demand</code> 的话，package 将永远不会加载。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org368f2ac" class="outline-4">
+<h4 id="org368f2ac"><span class="section-number-4">4.10.3</span> require</h4>
+<div class="outline-text-4" id="text-4-10-3">
+<p>
+虽然 <code>:after</code> 可以让 package 在依赖加载后才加载，但如果依赖不可用时， <code>:require</code> 关键字更简单些，它不会加载该 package。此时的可用是指 <code>(featurep 'foo)</code> 计算 non-nil，例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">abbrev</span>
+  <span style="color: #d18aff;">:requires</span> foo)
+</pre>
+</div>
+
+<p>
+等同于
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">abbrev</span>
+  <span style="color: #d18aff;">:if</span> (<span style="color: #a1db00;">featurep</span> '<span style="color: #5fafd7;">foo</span>))
+</pre>
+</div>
+
+<p>
+更方便是可以指定一个 package 列表：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">abbrev</span>
+  <span style="color: #d18aff;">:requires</span> (foo bar baz))
+</pre>
+</div>
+<p>
+更复杂的逻辑，比如 <code>:after</code> 支持的那些，只需使用 <code>:if</code> 和适合的 lisp 表达式就可以实现。
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org476199d" class="outline-3">
+<h3 id="org476199d"><span class="section-number-3">4.11</span> 字节编译配置文件</h3>
+<div class="outline-text-3" id="text-4-11">
+<p>
+use-package 另一个特点，字节编译了.emacs 文件后，它总是加载所有文件。这有助于消除未知变量和函数引起的虚假警告。
+</p>
+
+<p>
+然而，有时这还不够。这时，使用 <code>:defines</code> 和 <code>:functions</code> 关键字只为字节编译器引入虚拟变量和函数声明。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">texinfo</span>
+  <span style="color: #d18aff;">:defines</span> texinfo-section-list
+  <span style="color: #d18aff;">:commands</span> texinfo-mode
+  <span style="color: #d18aff;">:init</span>
+  (add-to-list 'auto-mode-alist '(<span style="color: #ff4ea3;">"\\.texi$"</span> . texinfo-mode)))
+</pre>
+</div>
+
+<p>
+如果需要消除一个缺失函数的警告，可以使用 <code>:function</code> :
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ruby-mode</span>
+  <span style="color: #d18aff;">:mode</span> <span style="color: #ff4ea3;">"\\.rb\\'"</span>
+  <span style="color: #d18aff;">:interpreter</span> <span style="color: #ff4ea3;">"ruby"</span>
+  <span style="color: #d18aff;">:functions</span> inf-ruby-keys
+  <span style="color: #d18aff;">:config</span>
+  (<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">my-ruby-mode-hook</span> ()
+    (<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">inf-ruby</span>)
+    (inf-ruby-keys))
+
+  (add-hook 'ruby-mode-hook 'my-ruby-mode-hook))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8fdeb06" class="outline-3">
+<h3 id="org8fdeb06"><span class="section-number-3">4.12</span> 编译时阻止加载包</h3>
+<div class="outline-text-3" id="text-4-12">
+<p>
+正常情况下，编译时，use-package 在编译配置之前加载 package，以满足字节编译器所需的任何必要的符号都在作用域中。有时这会导致问题，因为 package 可能有特殊加载要求，为此希望 use-package 可以为 eval-after-load hook 添加一个配置。这种情况下，使用 <code>:no-require</code> 关键字。（没有理解啥意思和具体是使用场景，不使用不就是这样么）
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">foo</span>
+  <span style="color: #d18aff;">:no-require</span> t
+  <span style="color: #d18aff;">:config</span>
+  (message <span style="color: #ff4ea3;">"This is evaluated when `</span><span style="color: #5fafd7;">foo</span><span style="color: #ff4ea3;">' is loaded"</span>))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org60c6aa1" class="outline-3">
+<h3 id="org60c6aa1"><span class="section-number-3">4.13</span> diminish 和 delight 辅助模式</h3>
+<div class="outline-text-3" id="text-4-13">
+<p>
+如果安装 diminsh 和 delight，use-package 内置对它们的支持。它的目的是删除或更改 mode line 中的字符串。
+</p>
+
+<p>
+通过 <code>:diminish</code> 关键字调用 diminish，该关键字需要一个 minor mode symbol 或符号组成的 cons 以及替代字符串；也可以仅是替代符串，这种情况下，通过末尾带有“-mode"的 package 名猜 minor modes symbol。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">abbrev</span>
+  <span style="color: #d18aff;">:diminish</span> abbrev-mode
+  <span style="color: #d18aff;">:config</span>
+  (<span style="color: #a1db00;">if</span> (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file)))
+</pre>
+</div>
+
+<p>
+通过 <code>:delight</code> 关键字调用 delight，该关键字需要 minor mode symbol 和替换字符串，或带引号的 mode-line 数据（这种情况下，通过末尾带有“-mode"的 package 名猜 minor modes symbol）。这两种用法，或两种用法组成的 list，都可以作为关键字的参数。如果没有提供参数，默认该模式名字完全隐藏。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Don't show anything for rainbow-mode.</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">rainbow-mode</span>
+  <span style="color: #d18aff;">:delight</span>)
+
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Don't show anything for auto-revert-mode, which doesn't match</span>
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">its package name.</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">autorevert</span>
+  <span style="color: #d18aff;">:delight</span> auto-revert-mode)
+
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Remove the mode name for projectile-mode, but show the project name.</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">projectile</span>
+  <span style="color: #d18aff;">:delight</span> '(<span style="color: #d18aff;">:eval</span> (concat <span style="color: #ff4ea3;">" "</span> (projectile-project-name))))
+
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Completely hide visual-line-mode and change auto-fill-mode to " AF".</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">emacs</span>
+  <span style="color: #d18aff;">:delight</span>
+  (auto-fill-function <span style="color: #ff4ea3;">" AF"</span>)
+  (visual-line-mode))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org5301149" class="outline-2">
+<h2 id="org5301149"><span class="section-number-2">5</span> 加载信息</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+package 加载时，如果 use-package-verbose 设置为 t，或者包加载耗时超过 0.1s，就会在 <code>*Messages* buffer</code> 中看到指示此加载活动。如果 <code>:config</code> 块执行超过 0.1s 配置也同样处理。通常，应该保持 <code>:init</code> 应该尽可能简单和迅速，尽可能放在 <code>:config</code> 块中。这样，延迟加载可以帮助 Emacs 尽快启动。
+</p>
+
+<p>
+此外，如果初始化或配置 package 时发生了错误，不会阻止 Emacs 继续加载。相反，use-package 会捕获到该错误，并在 <code>*Warnings* popup buffer</code> 中报告，这样可以在其他功能正常的 Emacs 中进行调试。
+</p>
+
+<p>
+如果想查看已加载的软件包数量，它们已达到的初始化阶段以及它们花费的总时间（大致），则可以在加载 use-pacakge 后，任何使用 use-package 之前启用 use-package-compute-statistics-package，然后运行命令 Mx use-package-report 查看结果。 显示的缓冲区是一个列表，可以在列中使用 S 进行排序。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge256c12" class="outline-2">
+<h2 id="orge256c12"><span class="section-number-2">6</span> 关键字扩展</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Starting with version 2.0, use-package is based on an extensible framework that makes it easy for package authors to add new keywords, or modify the behavior of existing keywords.
+</p>
+
+<p>
+Some keyword extensions are now included in the use-package distribution and can be optionally installed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(use-package-ensure-system-package)
+</pre>
+</div>
+
+<p>
+The :ensure-system-package keyword allows you to ensure system binaries exist alongside your package declarations.
+</p>
+
+<p>
+First, you will want to make sure exec-path is cognisant of all binary package names that you would like to ensure are installed. exec-path-from-shell is often a good way to do this.
+</p>
+
+<p>
+To enable the extension after you've loaded use-package:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">use-package-ensure-system-package</span>
+  <span style="color: #d18aff;">:ensure</span> t)
+</pre>
+</div>
+
+<p>
+Here’s an example of usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">rg</span>
+  <span style="color: #d18aff;">:ensure-system-package</span> rg)
+</pre>
+</div>
+
+<p>
+This will expect a global binary package to exist called rg. If it does not, it will use your system package manager (using the package system-packages) to attempt an install of a binary by the same name asyncronously. For example, for most macOS users this would call: brew install rg.
+</p>
+
+<p>
+If the package is named differently than the binary, you can use a cons in the form of (binary . package-name), i.e.:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">rg</span>
+  <span style="color: #d18aff;">:ensure-system-package</span>
+  (rg . ripgrep))
+</pre>
+</div>
+
+<p>
+In the previous macOS example, this would call: brew install ripgrep if rg was not found.
+</p>
+
+<p>
+What if you want to customize the install command further?
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">tern</span>
+  <span style="color: #d18aff;">:ensure-system-package</span> (tern . <span style="color: #ff4ea3;">"npm i -g tern"</span>))
+</pre>
+</div>
+
+<p>
+:ensure-system-package can also take a cons where its cdr is a string that will get called by (async-shell-command) to install if it isn’t found.
+</p>
+
+<p>
+You may also pass in a list of cons-es:
+</p>
+<pre class="example">
+(use-package ruby-mode
+  :ensure-system-package
+  ((rubocop     . "gem install rubocop")
+   (ruby-lint   . "gem install ruby-lint")
+   (ripper-tags . "gem install ripper-tags")
+   (pry         . "gem install pry")))
+(use-package-chords)
+</pre>
+<p>
+The :chords keyword allows you to define key-chord bindings for use-package declarations in the same manner as the :bind keyword.
+</p>
+
+<p>
+To enable the extension:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">use-package-chords</span>
+  <span style="color: #d18aff;">:ensure</span> t
+  <span style="color: #d18aff;">:config</span> (key-chord-mode 1))
+</pre>
+</div>
+
+<p>
+Then you can define your chord bindings in the same manner as :bind using a cons or a list of conses:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">ace-jump-mode</span>
+  <span style="color: #d18aff;">:chords</span> ((<span style="color: #ff4ea3;">"jj"</span> . ace-jump-char-mode)
+           (<span style="color: #ff4ea3;">"jk"</span> . ace-jump-word-mode)
+           (<span style="color: #ff4ea3;">"jl"</span> . ace-jump-line-mode)))
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org8ea8372" class="outline-3">
+<h3 id="org8ea8372"><span class="section-number-3">6.1</span> 如何创建扩展</h3>
+<div class="outline-text-3" id="text-6-1">
+</div>
+<div id="outline-container-org69e7e08" class="outline-4">
+<h4 id="org69e7e08"><span class="section-number-4">6.1.1</span> First step: Add the keyword</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<p>
+The first step is to add your keyword at the right place in use-package-keywords. This list determines the order in which things will happen in the expanded code. You should never change this order, but it gives you a framework within which to decide when your keyword should fire.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3a8eb35" class="outline-4">
+<h4 id="org3a8eb35"><span class="section-number-4">6.1.2</span> Second step: Create a normalizer</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<p>
+Define a normalizer for your keyword by defining a function named after the keyword, for example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">use-package-normalize/:pin</span> (name-symbol keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    (<span style="color: #a1db00;">lambda</span> (label arg)
+      (<span style="color: #a1db00;">cond</span>
+       ((stringp arg) arg)
+       ((symbolp arg) (symbol-name arg))
+       (t
+        (use-package-error
+         <span style="color: #ff4ea3;">":pin wants an archive name (a string)"</span>))))))
+</pre>
+</div>
+
+
+<p>
+The job of the normalizer is take a list of arguments (possibly nil), and turn it into the single argument (which could still be a list) that should appear in the final property list used by use-package.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1f4f36" class="outline-4">
+<h4 id="orge1f4f36"><span class="section-number-4">6.1.3</span> Third step: Create a handler</h4>
+<div class="outline-text-4" id="text-6-1-3">
+<p>
+Once you have a normalizer, you must create a handler for the keyword:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">use-package-handler/:pin</span> (name-symbol keyword archive-name rest state)
+  (<span style="color: #a1db00;">let</span> ((body (use-package-process-keywords name-symbol rest state)))
+    <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">This happens at macro expansion time, not when the expanded code is</span>
+    <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">compiled or evaluated.</span>
+    (<span style="color: #a1db00;">if</span> (null archive-name)
+        body
+      (use-package-pin-package name-symbol archive-name)
+      (use-package-concat
+       body
+       `((<span style="color: #a1db00;">push</span> '(,name-symbol . ,archive-name)
+               package-pinned-packages))))))
+</pre>
+</div>
+
+<p>
+Handlers can affect the handling of keywords in two ways. First, it can modify the state plist before recursively processing the remaining keywords, to influence keywords that pay attention to the state (one example is the state keyword :deferred, not to be confused with the use-package keyword :defer). Then, once the remaining keywords have been handled and their resulting forms returned, the handler may manipulate, extend, or just ignore those forms.
+</p>
+
+<p>
+The task of each handler is to return a list of forms representing code to be inserted. It does not need to be a progn list, as this is handled automatically in other places. Thus it is very common to see the idiom of using use-package-concat to add new functionality before or after a code body, so that only the minimum code necessary is emitted as the result of a use-package expansion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4012eda" class="outline-4">
+<h4 id="org4012eda"><span class="section-number-4">6.1.4</span> Fourth step: Test it out</h4>
+<div class="outline-text-4" id="text-6-1-4">
+<p>
+After the keyword has been inserted into use-package-keywords, and a normalizer and a handler defined, you can now test it by seeing how usages of the keyword will expand. For this, temporarily set use-package-debug to t, and just evaluate the use-package declaration. The expansion will be shown in a special buffer called <b>use-package</b>.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

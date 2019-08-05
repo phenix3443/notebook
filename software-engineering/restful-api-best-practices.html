@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RESTFUL API 设计最佳实践</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">RESTFUL API 设计最佳实践</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6628c6a">1. 概述</a></li>
+<li><a href="#org0f7e506">2. RESTful 最佳实践</a>
+<ul>
+<li><a href="#org2801b9a">2.1. 以资源为中心的 URL 设计</a>
+<ul>
+<li><a href="#org7f95f11">2.1.1. 推荐用复数名词</a></li>
+<li><a href="#orgdaa251d">2.1.2. 每个资源使用两个 URL</a></li>
+<li><a href="#org65823d3">2.1.3. 过滤搜索</a></li>
+</ul>
+</li>
+<li><a href="#orge6a53fd">2.2. 用 HTTP 方法操作资源(CURD)</a></li>
+<li><a href="#orgf4e27d6">2.3. 非资源请求用动词</a>
+<ul>
+<li><a href="#orgf24ceee">2.3.1. 增加 endpoint</a></li>
+<li><a href="#orgb79a771">2.3.2. 增加控制参数</a></li>
+<li><a href="#orga2bc53b">2.3.3. 把动作转换成资源</a></li>
+</ul>
+</li>
+<li><a href="#org105867e">2.4. 使用标准 HTTP 响应码</a></li>
+<li><a href="#org3e04de0">2.5. 返回有用的错误提示</a></li>
+<li><a href="#orga129535">2.6. 在响应参数中添加浏览其它 API 的链接</a></li>
+<li><a href="#orgd74da07">2.7. 提供分页信息</a></li>
+</ul>
+</li>
+<li><a href="#org710df23">3. 其他最佳实践</a>
+<ul>
+<li><a href="#orgfb1e1e0">3.1. 使用 HTTPS</a></li>
+<li><a href="#orgf03038e">3.2. 验证和授权</a></li>
+<li><a href="#orge722313">3.3. HTTP Headers</a>
+<ul>
+<li><a href="#org7ec5123">3.3.1. Content-Type</a></li>
+<li><a href="#org0b3b591">3.3.2. Location</a></li>
+</ul>
+</li>
+<li><a href="#orgd7ea9a1">3.4. API 地址</a></li>
+<li><a href="#orgbdbd908">3.5. API 版本</a></li>
+<li><a href="#org3382943">3.6. 分隔符</a></li>
+<li><a href="#orgee705e8">3.7. 连字符</a></li>
+<li><a href="#org5b1d28e">3.8. URI 中统一使用小写字母</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6628c6a" class="outline-2">
+<h2 id="org6628c6a"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Roy Fielding 于 2000 年在博士论文 《Architectural Styles and the Design of Network-based Software Architectures》（<a href="https://docs.huihoo.com/rest/REST_cn.pdf">中文版</a>） 提出 REpresentational State Transfer (REST) 概念，它倡导一种新的 web 架构风格，具有面向资源、松耦合、无状态、易扩展等特点，如今被广泛应用。
+</p>
+
+<p>
+那么什么是 REST 风格呢，论文的第五章节 Representational State Transfer (REST) 做了详细说明，其中 uniform interface 是 REST 架构的最主要特征。
+</p>
+<blockquote>
+<p>
+The central feature that distinguishes the REST architectural style from other network-based styles is its emphasis on a uniform interface between components…….
+</p>
+
+<p>
+In order to obtain a uniform interface, multiple architectural constraints are needed to guide the behavior of components. REST is defined by four interface constraints: identification of resources; manipulation of resources through representations; self-descriptive messages; and, hypermedia as the engine of application state.
+</p>
+</blockquote>
+
+<p>
+将 REST 架构风格与其他基于网络的风格区分开来的核心功能是强调组件之间的统一接口。
+</p>
+
+<p>
+REST 架构有四个接口约束，其中前两个约束：identification of resources（资源识别） 和 manipulation of resources through representations（使用 representations 操作资源），它们表明 <b>uniform interface(即 RESTful API) 操作的主体是 resource，即 REST 是面向 resource 的</b> 。
+</p>
+
+<p>
+那么什么是 resource 呢？任何能够被命名的事物都可称为 resource，比如某个文本、图像，甚至某种服务。在 web 中，我们采用 URI 来指代某个 resource。顾名思义，representation 就是资源的表现形式，比如图像资源的表现形式可为 JPEG image，文本资源的表现可为 text。
+</p>
+
+<p>
+那么第三个约束 "self-descriptive messages（自我描述性的信息）" 表示什么呢？论文是这样解释的：即采用 standard methods(如 HTTP Method) 和 media types(如 HTTP Content type) 来表示操作类型，举例来说，我们可以用 GET 方法表示查询某个资源，用 DELETE 方法表示删除某个资源。
+</p>
+
+<p>
+第四个约束 "hypermedia as the engine of application state（超媒体作为应用程序状态的引擎）" 表示 application 的状态由 request 决定，即客户端通过发送 request 来改变 application 的状态。以 HTTP POST 为例，客户端可以新建一个 resource，因而改变了 application 的状态。
+</p>
+
+<p>
+总结而言，uniform interface 的约束条件定义了 web application API 的风格，即 RESTful API， <b>这种 API 是面向 resource 的，利用 (HTTP) 标准方法来描述操作，客户端通过 representation 来操作 resource，从而转化 resource 的状态</b> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0f7e506" class="outline-2">
+<h2 id="org0f7e506"><span class="section-number-2">2</span> RESTful 最佳实践<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+如何设计 RESTful API？
+</p>
+</div>
+
+<div id="outline-container-org2801b9a" class="outline-3">
+<h3 id="org2801b9a"><span class="section-number-3">2.1</span> 以资源为中心的 URL 设计</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-org7f95f11" class="outline-4">
+<h4 id="org7f95f11"><span class="section-number-4">2.1.1</span> 推荐用复数名词</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+推荐：
+</p>
+<pre class="example">
+    /employees
+    /employees/21
+</pre>
+
+<p>
+不推荐：
+</p>
+<pre class="example">
+    /employee
+    /employee/21
+</pre>
+
+<p>
+在资源集合 URL 上用 GET 方法，它更直观，特别是
+</p>
+<pre class="example">
+    GET  /employees?state=external
+    POST /employees
+    PUT  /employees/56
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgdaa251d" class="outline-4">
+<h4 id="orgdaa251d"><span class="section-number-4">2.1.2</span> 每个资源使用两个 URL</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+资源集合用一个 URL，具体某个资源用一个 URL：
+</p>
+
+<pre class="example">
+    /employees         #资源集合的 URL
+    /employees/56      #具体某个资源的 URL
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org65823d3" class="outline-4">
+<h4 id="org65823d3"><span class="section-number-4">2.1.3</span> 过滤搜索</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+提供对特定资源的搜索很容易。只需使用相应的资源集合 URL，并将搜索字符串附加到查询参数中即可。
+</p>
+
+<p>
+不推荐做法：
+</p>
+<pre class="example">
+    GET /internalEmployees
+</pre>
+
+<pre class="example">
+    GET /employees?state=internal
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge6a53fd" class="outline-3">
+<h3 id="orge6a53fd"><span class="section-number-3">2.2</span> 用 HTTP 方法操作资源(CURD)</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+使用 HTTP 方法来指定怎么处理这个资源。使用四种 HTTP 方法 POST，GET，PUT，DELETE 可以提供 CRUD 功能（创建，获取，更新，删除）。这让 API 更简洁，URL 数目更少。
+</p>
+
+<p>
+不好的设计：
+</p>
+<pre class="example">
+   /getAllEmployees
+   /createEmployee
+   /updateEmployee
+</pre>
+
+<p>
+更好的设计：
+</p>
+<pre class="example">
+   GET /employees
+   POST /employees
+   PUT /employees/56
+</pre>
+
+<p>
+2 个 URL 乘以 4 个 HTTP 方法就是一组很好的功能。看看这个表格：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">POST（创建）</th>
+<th scope="col" class="org-left">GET（读取）</th>
+<th scope="col" class="org-left">PUT（更新）</th>
+<th scope="col" class="org-left">DELETE（删除）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">/employees</td>
+<td class="org-left">创建一个新员工</td>
+<td class="org-left">列出所有员工</td>
+<td class="org-left">批量更新员工信息</td>
+<td class="org-left">删除所有员工</td>
+</tr>
+
+<tr>
+<td class="org-left">/employees/56</td>
+<td class="org-left">（错误）</td>
+<td class="org-left">获取 56 号员工的信息</td>
+<td class="org-left">更新 56 号员工的信息</td>
+<td class="org-left">删除 56 号员工</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+对资源集合的 URL 使用 POST 方法，创建新资源。
+</p>
+
+<div class="figure">
+<p><img src="http://p0.qhimg.com/t015c68b6244b11b29e.png" alt="t015c68b6244b11b29e.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>在资源集合 URL 上使用 POST 来创建新的资源过程</p>
+</div>
+
+<ol class="org-ol">
+<li>客户端向资源集合 URL/employees 发送 POST 请求。HTTP body 包含新资源的属性 “Albert Stark”。</li>
+<li>RESTful Web 服务器为新员工生成 ID，在其内部模型中创建员工，并向客户端发送响应。这个响应的 HTTP 头部包含一个 Location 字段，指示创建资源可访问的 URL。</li>
+</ol>
+
+<p>
+对具体资源的 URL 使用 PUT 方法，来更新资源。
+</p>
+
+<div class="figure">
+<p><img src="http://p0.qhimg.com/t01285dbf149a61a0fa.png" alt="t01285dbf149a61a0fa.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>使用 PUT 更新已有资源</p>
+</div>
+
+<ol class="org-ol">
+<li>客户端向具体资源的 URL 发送 PUT 请求/employee/21。请求的 HTTP body 中包含要更新的属性值（21 号员工的新名称 “Bruce Wayne”）。</li>
+<li>REST 服务器更新 ID 为 21 的员工名称，并使用 HTTP 状态码 200 表示更改成功。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgf4e27d6" class="outline-3">
+<h3 id="orgf4e27d6"><span class="section-number-3">2.3</span> 非资源请求用动词</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+在实际资源操作中，总会有一些不符合 CRUD（Create-Read-Update-Delete） 的情况，一般有几种处理方法。
+</p>
+</div>
+
+<div id="outline-container-orgf24ceee" class="outline-4">
+<h4 id="orgf24ceee"><span class="section-number-4">2.3.1</span> 增加 endpoint</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+使用 POST 来执行动作，比如：
+</p>
+<pre class="example">
+   GET /translate?from=de_DE&amp;to=en_US&amp;text=Hallo
+   GET /calculate?para2=23&amp;para2=432
+</pre>
+<p>
+在这种情况下，API 响应不会返回任何资源。而是执行一个操作并将结果返回给客户端。因此，应该在 URL 中使用动词而不是名词，来清楚的区分资源请求和非资源请求。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb79a771" class="outline-4">
+<h4 id="orgb79a771"><span class="section-number-4">2.3.2</span> 增加控制参数</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+添加资源动作相关的参数，通过修改参数来控制动作。比如一个博客网站，会有把写好的文章 “发布” 的功能，可以
+</p>
+<pre class="example">
+POST /articles/id/publish
+</pre>
+
+<p>
+也可以在文章中增加 published 字段，发布的时候就是更新该字段
+</p>
+<pre class="example">
+PUT /articles/id?published=true
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga2bc53b" class="outline-4">
+<h4 id="orga2bc53b"><span class="section-number-4">2.3.3</span> 把动作转换成资源</h4>
+<div class="outline-text-4" id="text-2-3-3">
+<p>
+把动作转换成可以执行 CRUD 操作的资源，github 就是用了这种方法。
+</p>
+
+<p>
+比如 “喜欢” 一个 gist，就增加一个 /gists/id/star 子资源，然后对其进行操作：“喜欢” 使用
+</p>
+<pre class="example">
+PUT /gists/id/star
+</pre>
+
+<p>
+“取消喜欢” 使用
+</p>
+<pre class="example">
+DELETE /gists/:id/star
+</pre>
+
+<p>
+另外一个例子是 Fork，这也是一个动作，但是在 gist 下面增加 forks 资源，就能把动作变成 CRUD 兼容的，可以执行用户 fork 的动作。
+</p>
+<pre class="example">
+POST /gists/id/forks
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org105867e" class="outline-3">
+<h3 id="org105867e"><span class="section-number-3">2.4</span> 使用标准 HTTP 响应码</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+RESTful Web 服务应使用合适的 HTTP 状态码来响应客户端请求。常用的响应码有：
+</p>
+
+<p>
+请求成功：
+</p>
+<ul class="org-ul">
+<li>200 OK: 请求已成功，Body 有返回内容。多用作 GET Method 的 API 的返回码。</li>
+<li>201 Created: 请求已经被实现，资源被创建。多用作 POST Method 的同步类型 API 的返回码。</li>
+<li>202 Accepted: 服务器已接受请求，但尚未处理。多用作 POST Method 异步类型 API 的返回码。</li>
+<li>204 No Content: 服务器成功处理了请求，没有返回任何内容。用多于 DELETE／PUT Method 的 API 的返回码。</li>
+</ul>
+
+<p>
+因客户端原因导致请求失败：
+</p>
+
+<ul class="org-ul">
+<li>400 Bad Request: 如参数错误，格式错误</li>
+<li>401 Unauthorized: 用户未被认证，如用密码错误，证书错误</li>
+<li>403 Forbidden: 用户权限不够</li>
+<li>404 Not Found: 服务端无此资源。通常为 URL 不存在，或者某个 Method 不存在</li>
+<li>409 Conflict: 请求存在冲突无法处理该请求</li>
+</ul>
+
+<p>
+因服务端原因导致请求失败：
+</p>
+
+<ul class="org-ul">
+<li>500 Internal Server Error: 服务端错误消息，服务器遇到了一个未曾预料的状况。这是最常用的服务端错误代码</li>
+<li>501 Not Implemented: 服务器不支持当前请求所需要的某个功能</li>
+<li>503 Service Unavailable: 如服务器维护或者过载等</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3e04de0" class="outline-3">
+<h3 id="org3e04de0"><span class="section-number-3">2.5</span> 返回有用的错误提示</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+除了合适的状态码之外，还应该在 HTTP 响应正文中提供有用的错误提示和详细的描述。这是一个例子。 请求：
+</p>
+<pre class="example">
+   GET /employees?state=super
+</pre>
+
+<p>
+响应：
+</p>
+<pre class="example">
+   // 400 Bad Request
+   {
+    "message": "You submitted an invalid state. Valid state values are 'internal' or 'external'",
+    "errorCode": 352,
+    "additionalInformation" :
+    "http://www.domain.com/rest/errorcode/352"
+   }
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga129535" class="outline-3">
+<h3 id="orga129535"><span class="section-number-3">2.6</span> 在响应参数中添加浏览其它 API 的链接</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+理想情况下，不会让客户端自己构造使用 REST API 的 URL。让我们思考一个例子。 客户端想要访问员工的薪酬表。为此，他必须知道他可以通过在员工 URL（例如/employees/21/salaryStatements）中附加字符串 “salaryStatements” 来访问薪酬表。这个字符串连接很容易出错，且难以维护。如果更改了访问薪水表的 REST API 的方式（例如变成了/employees/21/salary-statement 或/employees/21/paySlips），所有客户端都将中断。 更好的方案是在响应参数中添加一个 links 字段，让客户端可以自动变更。
+请求：
+</p>
+
+<pre class="example">
+   GET /employees/
+</pre>
+<p>
+响应：
+</p>
+<pre class="example">
+   {
+      "id":1,
+      "name":"Paul",
+      "links": [
+         {
+            "rel": "salary",
+            "href": "/employees/1/salaryStatements"
+         }
+      ]
+   },
+</pre>
+
+<p>
+如果客户端完全依靠 links 中的字段获得薪资表，及时更改了 API，客户端将始终获得一个有效的 URL（只要更改了 link 字段，请求的 URL 会自动更改），不会中断。另一个好处是，API 变得可以自我描述，需要写的文档更少。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd74da07" class="outline-3">
+<h3 id="orgd74da07"><span class="section-number-3">2.7</span> 提供分页信息</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+一次性返回数据库所有资源不是一个好主意。因此，需要提供分页机制。通过两个参数来控制要返回的资源结果：
+</p>
+<ul class="org-ul">
+<li>page：要获取哪一页的资源，默认是第一页</li>
+<li>page_size：每页返回多少资源，如果没提供会使用预设的默认值；这个数量也是有一个最大值，不然用户把它设置成一个非常大的值（比如 99999999）也失去了设计的初衷。</li>
+</ul>
+
+<p>
+这两个参数通常数据库中众所周知的 offset 和 limit。
+</p>
+
+<pre class="example">
+   /employees?page=30&amp;page_size=15       #返回 30 到 45 的员工
+</pre>
+
+<p>
+在分页时，还可以添加获取下一页或上一页的链接示例。只需提供适当的偏移和限制的链接示例。
+</p>
+<pre class="example">
+   GET /employees?offset=20&amp;limit=10
+   {
+   "offset": 20,
+   "limit": 10,
+   "total": 3465,
+   "employees": [
+    //...
+   ],
+   "links": [
+     {
+        "rel": "nextPage",
+        "href": "/employees?offset=30&amp;limit=10"
+     },
+     {
+        "rel": "previousPage",
+        "href": "/employees?offset=10&amp;limit=10"
+     }
+   ]
+   }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org710df23" class="outline-2">
+<h2 id="org710df23"><span class="section-number-2">3</span> 其他最佳实践</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgfb1e1e0" class="outline-3">
+<h3 id="orgfb1e1e0"><span class="section-number-3">3.1</span> 使用 HTTPS</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+这个和 RESTful API 本身没有很大的关系，但是对于增加网站的安全是非常重要的。特别如果提供的是公开 API，用户的信息泄露或者被攻击会严重影响网站的信誉。
+</p>
+
+<p>
+NOTE：不要让非 SSL 的 url 访问重定向到 SSL 的 url。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf03038e" class="outline-3">
+<h3 id="orgf03038e"><span class="section-number-3">3.2</span> 验证和授权</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+一般来说，让任何人随意访问公开的 API 是不好的做法。验证和授权是两件事情：
+</p>
+
+<p>
+验证（Authentication）是为了确定用户是其申明的身份，比如提供账户的密码。
+</p>
+
+<p>
+授权（Authorization）是为了保证用户有对请求资源特定操作的权限。比如用户的私人信息只能自己能访问，其他人无法看到；有些特殊的操作只能管理员可以操作，其他用户有只读的权限等等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge722313" class="outline-3">
+<h3 id="orge722313"><span class="section-number-3">3.3</span> HTTP Headers</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org7ec5123" class="outline-4">
+<h4 id="org7ec5123"><span class="section-number-4">3.3.1</span> Content-Type</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+标示 body 的数据格式。对于响应返回的格式，JSON 因为它的可读性、紧凑性以及多种语言支持等优点，成为了 HTTP API 最常用的返回格式。因此，最好采用 JSON 作为返回内容的格式。
+</p>
+
+<p>
+如果用户需要其他格式，比如 xml，应该在请求头部 Accept 中指定。对于不支持的格式，服务端需要返回正确的 status code，并给出详细的说明。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0b3b591" class="outline-4">
+<h4 id="org0b3b591"><span class="section-number-4">3.3.2</span> Location</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+在响应 header 中使用，一般为客户端感兴趣的资源 URI, 例如在成功创建一个资源后，我们可以把新的资源 URI 放在 Location 中，如果是一个异步创建资源的请求，接口在响应 202 (“Accepted”) 的同时可以给予客户端一个异步状态查询的地址
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd7ea9a1" class="outline-3">
+<h3 id="orgd7ea9a1"><span class="section-number-3">3.4</span> API 地址</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+在 url 中指定 API 的版本是个很好地做法。如果 API 变化比较大，可以把 API 设计为子域名，比如 <code>https://api.github.com/v3</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbdbd908" class="outline-3">
+<h3 id="orgbdbd908"><span class="section-number-3">3.5</span> API 版本</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+API 版本可以放在两个地方：
+</p>
+<ul class="org-ul">
+<li>url，例如 <code>https://example.com/api/v1</code> 。
+<ul class="org-ul">
+<li>优点：
+<ul class="org-ul">
+<li>版本明确，方便调试。</li>
+<li>不同版本的协议解析可以放在不同的服务器上。</li>
+<li>不用考虑协议兼容性，开发方便，升级也不受影响。</li>
+</ul></li>
+<li>缺点：
+<ul class="org-ul">
+<li>代码可能会有一定冗余。</li>
+</ul></li>
+</ul></li>
+
+<li>HTTP Header 中
+<ul class="org-ul">
+<li>优点：url 显得干净，符合 RESTful 惯例，毕竟版本号不属于资源的属性。</li>
+<li>缺点：需要根据解析头部，判断返回。</li>
+</ul></li>
+</ul>
+
+<p>
+另外，不需要使用次级版本号（“v1.2”），因为不应该频繁的去发布 API 版本，只有当接口不兼容的时候才应该变更版本号。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3382943" class="outline-3">
+<h3 id="org3382943"><span class="section-number-3">3.6</span> 分隔符</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+"/"分隔符一般用来对资源层级的划分，例如 <a href="http://api.canvas.restapi.org/shapes/polygons/quadrilaterals/squares">http://api.canvas.restapi.org/shapes/polygons/quadrilaterals/squares</a>
+</p>
+
+<p>
+对于 REST API 来说，"<i>"只是一个分隔符，并无其他含义。为了避免混淆，"</i>"不应该出现在 URL 的末尾。例如以下两个地址实际表示的都是同一个资源：
+</p>
+<pre class="example">
+http://api.canvas.restapi.org/shapes/
+http://api.canvas.restapi.org/shapes
+</pre>
+
+<p>
+REST API 对 URI 资源的定义具有唯一性，一个资源对应一个唯一的地址。为了使接口保持清晰干净，如果访问到末尾包含 "<i>" 的地址，服务端应该 301 到没有 "</i>"的地址上。当然这个规则也仅限于 REST API 接口的访问，对于传统的 WEB 页面服务来说，并不一定适用这个规则。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgee705e8" class="outline-3">
+<h3 id="orgee705e8"><span class="section-number-3">3.7</span> 连字符</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+URI 中尽量使用连字符 "-" 代替下划线 "_" 的使用。
+</p>
+
+<p>
+连字符"-"一般用来分割 URI 中出现的字符串(单词)，来提高 URI 的可读性，例如：
+</p>
+<pre class="example">
+http://api.example.restapi.org/blogs/mark-masse/entries/this-is-my-first-post
+</pre>
+<p>
+使用下划线"_"来分割字符串(单词)可能会和链接的样式冲突重叠，而影响阅读性。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5b1d28e" class="outline-3">
+<h3 id="org5b1d28e"><span class="section-number-3">3.8</span> URI 中统一使用小写字母</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+根据 RFC3986 定义，URI 是对大小写敏感的，所以为了避免歧义，我们尽量用小写字符。但主机名(Host)和 scheme（协议名称:http/ftp/&#x2026;）对大小写是不敏感的。
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://blog.philipphauer.de/restful-api-design-best-practices/">RESTful API Design Best Practices</a> (<a href="https://www.zcfy.cc/article/restful-api-design-best-practices-in-a-nutshell-4388.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io">中文翻译</a>)
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

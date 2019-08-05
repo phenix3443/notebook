@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>自控力</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">自控力</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0217965">导言</a></li>
+<li><a href="#org4970505">什么是意志力</a></li>
+<li><a href="#org95eb260">为什么需要意志力</a>
+<ul>
+<li><a href="#orgd73d655">意识</a></li>
+</ul>
+</li>
+<li><a href="#org0e42c2a">如何锻炼意志力</a>
+<ul>
+<li><a href="#orgfc34ff1">意志力和生理有关</a></li>
+<li><a href="#org6d6954c">锻炼方法</a>
+<ul>
+<li><a href="#org1478b0d">健康饮食</a></li>
+<li><a href="#org4b538e4">冥想</a></li>
+<li><a href="#orge09b695">放慢呼吸</a></li>
+<li><a href="#org2e11e6f">锻炼</a></li>
+<li><a href="#orgfd3a9a0">睡眠</a></li>
+<li><a href="#orgd87b537">放松</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org465cfbc">意志力的极限</a></li>
+<li><a href="#org3d802f5">善行之后的恶行</a></li>
+<li><a href="#orga5fcba3">错把渴望当成幸福</a></li>
+<li><a href="#org06b4627">情绪低落导致屈服</a></li>
+<li><a href="#orgd9803ae">出售未来与及时行乐</a></li>
+<li><a href="#orgb19baed">意志力会传染</a></li>
+<li><a href="#org8e1db5c">“我不要”力量的局限性</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org0217965" class="outline-2">
+<h2 id="org0217965">导言</h2>
+<div class="outline-text-2" id="text-org0217965">
+<p>
+提高自控的有效途径在于，弄清自己如何失控，为何失控。
+</p>
+
+<p>
+自知之明是自控的基础，认识到自己的意志力存在问题，则是自控的关键。
+</p>
+
+<p>
+意志力挑战：
+</p>
+<ul class="org-ul">
+<li>逃避的事情（“我要做”的意志力挑战）：（提高效率）</li>
+<li>改掉的习惯（“我不要”的意志力挑战）：（拖延）</li>
+<li>重要的生活目标（“我想要”的意志力挑战）：（健康生活，高效工作）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4970505" class="outline-2">
+<h2 id="org4970505">什么是意志力</h2>
+<div class="outline-text-2" id="text-org4970505">
+<p>
+意志力实际上是“我要做”，“我不要”，“我想要”三种力量。它们协同努力，让我们变成更好的自己。
+</p>
+
+<p>
+实践：思考更难的事情是什么？为什么会困难？当想到它的时候的感觉是什么？
+</p>
+<ul class="org-ul">
+<li>减肥为什么难？</li>
+<li>专注为什么难？</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org95eb260" class="outline-2">
+<h2 id="org95eb260">为什么需要意志力</h2>
+<div class="outline-text-2" id="text-org95eb260">
+<p>
+为了更好的团结合作，人们衍生出意志力来克服原始本能冲动。
+</p>
+
+<p>
+意志力挑战过程中获胜的关键，在于学会利用原始本能，而不是反抗这些本能。
+</p>
+
+<p>
+实践：回想意志力挑战中两个自我的对抗过程。
+</p>
+</div>
+
+<div id="outline-container-orgd73d655" class="outline-3">
+<h3 id="orgd73d655">意识</h3>
+<div class="outline-text-3" id="text-orgd73d655">
+<p>
+人类拥有意识：知道自己在做什么，以及为什么要这样做。
+</p>
+
+<p>
+在自控的过程中反思自己的行为，更加坚定自控。
+</p>
+
+<p>
+注意力分散的人更容易失控。 <b>所以需要锻炼自己的专注力</b>
+</p>
+
+<p>
+实践：思考一天中自己的行为，哪些行为自控，哪些失控。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0e42c2a" class="outline-2">
+<h2 id="org0e42c2a">如何锻炼意志力</h2>
+<div class="outline-text-2" id="text-org0e42c2a">
+</div>
+<div id="outline-container-orgfc34ff1" class="outline-3">
+<h3 id="orgfc34ff1">意志力和生理有关</h3>
+<div class="outline-text-3" id="text-orgfc34ff1">
+<p>
+本能和自控，应激反应和自控反应。
+</p>
+
+<p>
+自控的生理学指标：
+</p>
+<ul class="org-ul">
+<li>压力，交感神经，心率升高，心率变异度降低。</li>
+<li>自控，副交感神经，心率降低，心率变异度升高。</li>
+</ul>
+
+<p>
+心率变异度搞得人能更好的集中精力、更好的应对压力。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6d6954c" class="outline-3">
+<h3 id="org6d6954c">锻炼方法</h3>
+<div class="outline-text-3" id="text-org6d6954c">
+</div>
+<div id="outline-container-org1478b0d" class="outline-4">
+<h4 id="org1478b0d">健康饮食</h4>
+<div class="outline-text-4" id="text-org1478b0d">
+<p>
+未加工的食物。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4b538e4" class="outline-4">
+<h4 id="org4b538e4">冥想</h4>
+<div class="outline-text-4" id="text-org4b538e4">
+<p>
+实践：
+</p>
+<ul class="org-ul">
+<li>静坐</li>
+<li>注意呼吸，默念“呼吸”二字，走神时重新集中到呼吸上。</li>
+<li>感受呼吸，感受空气吸入呼出，胸腹的收缩扩张，弄清自己是怎么走神的。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge09b695" class="outline-4">
+<h4 id="orge09b695">放慢呼吸</h4>
+<div class="outline-text-4" id="text-orge09b695">
+<p>
+每天进行 20 分钟放慢呼吸的练习，有助于提高心率变异度。
+</p>
+
+<p>
+实践：将呼吸频率降低到每分钟 4-6 次。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2e11e6f" class="outline-4">
+<h4 id="org2e11e6f">锻炼</h4>
+<div class="outline-text-4" id="text-org2e11e6f">
+<p>
+锻炼能提高心率变异的基准线，从而改善意志力的生理基础。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfd3a9a0" class="outline-4">
+<h4 id="orgfd3a9a0">睡眠</h4>
+<div class="outline-text-4" id="text-orgfd3a9a0">
+<p>
+缺少睡眠会影响身体和大脑吸收葡萄糖，前额皮质因为能量不足会失去对大脑其他区域的控制。
+</p>
+
+<p>
+充足睡眠，补觉，打盹。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd87b537" class="outline-4">
+<h4 id="orgd87b537">放松</h4>
+<div class="outline-text-4" id="text-orgd87b537">
+<p>
+自控需要消耗能量，试图控制所有思想、情绪和行为也会带来过重的生理负担。所以需要放松来进行调节。
+</p>
+
+<p>
+实践：生理放松 5-10 分钟。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org465cfbc" class="outline-2">
+<h2 id="org465cfbc">意志力的极限</h2>
+<div class="outline-text-2" id="text-org465cfbc">
+<p>
+意志力如同肌肉一样，也有极限。但是锻炼自控力能提升上限。
+</p>
+
+<p>
+自控需要消耗能量。人在饥饿的时候更愿意冒险。
+</p>
+
+<p>
+实践：
+</p>
+<ul class="org-ul">
+<li>保证食物身体有足够的食物，推荐低血糖饮食。</li>
+<li>锻炼意志力方法：控制自己以前不会去控制的小事。目的：养成习惯，关注自己正在做的事情。</li>
+</ul>
+
+<p>
+虚假疲惫，可能是大脑给出的一种保护信号。
+</p>
+
+<p>
+实践：当疲惫时，运用“我想要”的力量。
+</p>
+
+<p>
+如果想要增强自控力，就要考虑如何支撑住最疲劳的自己。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3d802f5" class="outline-2">
+<h2 id="org3d802f5">善行之后的恶行</h2>
+<div class="outline-text-2" id="text-org3d802f5">
+<p>
+不是每次失控都是真正失去了意志力，有时，我们是有意识的选择了在诱惑面前屈服。
+</p>
+
+<p>
+“道德许可效应”：我们很容易的认为，纵容是对美德最好的奖励；而我们忘记了自己的目标，向诱惑屈服了。
+</p>
+
+<p>
+我们通常相信本能，只有当需要解释自己的判断时，我们才寻求逻辑。
+</p>
+
+<p>
+最能带给我们动力的事情是获得我们想要的，避开我们不想要的。而不是将某种行为到道德化。
+</p>
+
+<p>
+我们总是把进步当做放松的借口。
+</p>
+
+<p>
+实践：取消许可，牢记理由。当我们用善行给放纵做借口时，想想自己为什么能拒绝诱惑。
+</p>
+
+<p>
+透支明天：明天和今天毫无区别，当想改变行为时，试着减少行为的变化性，而不是减少某种行为。
+</p>
+
+<p>
+实践：今日事今日毕，不要透支明天。
+</p>
+
+<p>
+光环效应：当我们想要获得放纵许可的时候，我们会寻找一个美德暗示，为自己放弃抵抗做辩护。
+</p>
+
+<p>
+只要使你放纵的东西和是你觉得品德高尚的东西同时出现时，就会产生光环效应。
+</p>
+
+<p>
+当我们将意志力挑战看成衡量道德水平的标准时，善行就会允许我们做坏事，为了更好的自控，我们需要忘掉美德，关注目标和价值观。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga5fcba3" class="outline-2">
+<h2 id="orga5fcba3">错把渴望当成幸福</h2>
+<div class="outline-text-2" id="text-orga5fcba3">
+<p>
+多巴胺的作用是让我们追求快乐，而不是让我们快乐。
+</p>
+
+<p>
+示例：想占有某件东西。
+</p>
+
+<p>
+实践：区分是渴望占有，还是物品真的有用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org06b4627" class="outline-2">
+<h2 id="org06b4627">情绪低落导致屈服</h2>
+<div class="outline-text-2" id="text-org06b4627">
+<p>
+压力带来欲望，大脑把欲望和奖励系统联系在一起。
+</p>
+
+<p>
+有效的解压方法：锻炼，阅读，听音乐，散步，冥想。
+</p>
+
+<p>
+自我谅解会在破罐子破摔的时候不再放纵自己。
+</p>
+
+<p>
+自我批评会降低积极性和自控力，而且容易导致抑郁。自我同情则相反：自我同情的人更愿意承担责任，接受别人的反馈和建议。
+</p>
+
+<p>
+不要用“改变的承诺”，而不是“改变”来改善我们的心情。前者完不成容易导致更大的失落。
+</p>
+
+<p>
+乐观给我们动力，但少许的悲观能帮助我们走向成功。
+</p>
+
+<p>
+实践：预见失败其实是一种自我同情的方式，而不是自我怀疑的方式。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd9803ae" class="outline-2">
+<h2 id="orgd9803ae">出售未来与及时行乐</h2>
+</div>
+
+<div id="outline-container-orgb19baed" class="outline-2">
+<h2 id="orgb19baed">意志力会传染</h2>
+</div>
+
+<div id="outline-container-org8e1db5c" class="outline-2">
+<h2 id="org8e1db5c">“我不要”力量的局限性</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

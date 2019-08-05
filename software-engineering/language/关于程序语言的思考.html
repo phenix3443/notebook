@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>关于程序语言的思考</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">关于程序语言的思考</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0766dd4">1. 类型系统</a>
+<ul>
+<li><a href="#orgcfd93fe">1.1. 静态类型和动态类型</a></li>
+<li><a href="#orga4b5a68">1.2. 作用域（scope）</a></li>
+</ul>
+</li>
+<li><a href="#orgce06ac8">2. 语句（statement）</a></li>
+<li><a href="#orgd1f2f8c">3. 语言学习</a>
+<ul>
+<li><a href="#orgb8eec51">3.1. 语法</a>
+<ul>
+<li><a href="#orgcb927fc">3.1.1. 类型</a>
+<ul>
+<li><a href="#orgd876dc4">3.1.1.1. 基本类型</a></li>
+<li><a href="#org2ebcf25">3.1.1.2. 复合类型</a></li>
+</ul>
+</li>
+<li><a href="#orgfb2fcaf">3.1.2. 语句</a>
+<ul>
+<li><a href="#org5175c22">3.1.2.1. 表达式语句</a></li>
+<li><a href="#org6764809">3.1.2.2. 控制语句</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgeab30d3">3.2. 相关的库</a>
+<ul>
+<li><a href="#org9f3cd0b">3.2.1. 数学</a></li>
+<li><a href="#org38ccdd8">3.2.2. 字符串处理</a></li>
+<li><a href="#org4310675">3.2.3. 正则表达</a></li>
+<li><a href="#orgc407a54">3.2.4. 输入输出</a></li>
+<li><a href="#org9393e44">3.2.5. 数学</a></li>
+<li><a href="#org50ad347">3.2.6. 日期、时间和本地化</a></li>
+<li><a href="#org4480655">3.2.7. 动态分配</a></li>
+<li><a href="#orgc65e247">3.2.8. 网络</a></li>
+<li><a href="#orgf237188">3.2.9. 邮件</a></li>
+<li><a href="#orgfa999ed">3.2.10. 并发</a></li>
+</ul>
+</li>
+<li><a href="#org4eb5bed">3.3. 工具</a>
+<ul>
+<li><a href="#orgb64c86c">3.3.1. 调试工具</a></li>
+<li><a href="#orgf0a1775">3.3.2. 文档话工具</a></li>
+<li><a href="#org9882e02">3.3.3. 代码检查</a></li>
+<li><a href="#orgf1b9501">3.3.4. 性能测试</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+实际上， <b>程序就是 CPU 不断操作存储设备（内存和寄存器）的过程</b> 。
+</p>
+
+<p>
+这就衍生出两个问题：
+</p>
+<ol class="org-ol">
+<li>如何操作？</li>
+<li>操作区域？</li>
+</ol>
+
+<p>
+对存储区域的操作无非就四种：增（分配）、删（释放）、改（修改存储内容）、查（获取存储内容）。
+</p>
+
+<p>
+现代操作系统中把所有的存储设备抽象为虚拟内存模型，虚拟内存地址如何映射到存储设备涉及存储设备的寻址方式：基址寻址，变址寻址等等，这里不展开讲这部分内容。
+</p>
+
+<p>
+在虚拟内存模型中，所有存储区域都用内存地址来表示。内存地址是一串十六进制的编号，不便记忆，所以才有可读意义的 <b>标识符</b> 。我们可以认为 <b>标识符是内存地址的别称</b> 。
+</p>
+
+<p>
+最接近机器语言的是汇编语言，每条汇编语句都可以转换为一条或多条机器指令。汇编指令由两部分构成：操作码和操作数，操作码指明了操作的动作，操作数指明待操作的地址。
+</p>
+
+<p>
+但内存起始地址+偏移量才能指定一个操作范围，操作数只指明起始地址，那偏移量在哪里指定呢？熟悉汇编语言就知道，这部门内容就包含在操作码当中了，比如 addw，w 就表明是一个字的范围。 也就是说 <b>汇编语言是无类型的语言</b> ，汇编语言中的标识符没有类型说明。
+</p>
+
+<p>
+既然无类型的汇编语言已经可以编程了，那么为什么我们还需要有类型的高级语言呢？
+</p>
+
+<div id="outline-container-org0766dd4" class="outline-2">
+<h2 id="org0766dd4"><span class="section-number-2">1</span> 类型系统<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在计算机科学中，类型系统用于定义如何将编程语言中的 <b>数值和表达式</b> 归类为许多不同的类型，如何操作这些类型，这些类型如何互相作用。类型可以确认一个值或者一组值具有特定的意义和目的（虽然某些类型，如抽象类型和函数类型，在程序运行中，可能不表示为值）。 类型系统提供的主要功能有：<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
+</p>
+
+<ul class="org-ul">
+<li><p>
+安全性
+</p>
+
+<p>
+使用类型可允许编译器侦测无意义的，或者是可能无效的代码。例如，可以识出一个无效的表达式 "Hello, World" + 3，因为不能对（在平常的直觉中）逐字字符串加上一个整数。强类型提供更多的安全性，但它并不能保证绝对安全（详情请见类型安全）。安全性检查分静态类型检查和动态类型检查。
+</p></li>
+
+<li><p>
+优化
+</p>
+
+<p>
+静态类型检查可提供有用的信息给编译器来进行优化生成的机器指令。例如 C 中的结构体对齐。
+</p></li>
+
+<li><p>
+可读性
+</p>
+
+<p>
+在更具表现力的类型系统中，更容易阐明程序设计者的意图。例如 size_t 其实是 uint_32 的别称，但是 size_t 更明确的表明这个类型是说明 size 的，典型的就是 typedef 的使用。
+</p></li>
+
+<li><p>
+抽象化
+</p>
+
+<p>
+<b>抽象才是引入类型系统最重要的原因</b> 。类型允许程序设计者对程序以较高层次的方式思考，而不是烦人的低层次实现。例如可以将人抽象为一个结构体或类，其中的字段代表人的属性（名字，年龄等），该类型对象映射到内存中依旧是一段二进制数据，但二进制数据明显不便于我们操作。 <b>如果说高级语言中的类型是对数据集合的抽象，那么函数是对指令集合的抽象，包含局部变量的函数就是数据和指令的集合</b> ，从这个角度看， <b>函数是一种特殊的数据类型，参数和返回值指明了函数的类型</b> 。
+</p></li>
+</ul>
+</div>
+
+<div id="outline-container-orgcfd93fe" class="outline-3">
+<h3 id="orgcfd93fe"><span class="section-number-3">1.1</span> 静态类型和动态类型</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+编程语言目前分：
+</p>
+<ul class="org-ul">
+<li>静态类型：变量类型在编译期确定，例如 C/C++、Java 等。</li>
+<li>动态类型：变量类型在运行时确定，例如 python、shell 等。</li>
+</ul>
+<p>
+静态类型语言中，声明将标识符和其类型进行绑定，之后不能改变。与其操作（比如赋值）的其他变量只能是相同类型（意味着相同大小的内存）的标识符，想想 C/C++中的类型转换。
+</p>
+
+<p>
+静态类型语言中的标识符使用之前要先声明，但要记住 <b>赋值操作才会分配内存</b> ，操作只声明而没有赋值的标识符可能会引发段错误。思考以下问题并做练习：
+</p>
+<ul class="org-ul">
+<li>C/C++中标识符声明在文件作用域和函数作用域中的区别。</li>
+<li>使用没有赋值的 extern 关键字。</li>
+<li>C/C++中的在不同区域声明的标识符如何初始化。</li>
+</ul>
+
+<p>
+动态型语言则相反，标识符并没有和类型绑定，也就不需要声明。标识符可以通过赋值引用任意内存块。此时标识符只是 <b>某一对象的别名</b> ，该对象才是绑定类型的内存块， 比如 python 和 lua 中的标识符。
+</p>
+
+<p>
+但是为了保证操作标识符的时候真的在操作内存块，所以动态类型语言规定标识符使用前必须赋值。（ <b>赋值才有内存分配</b> ）
+</p>
+
+<p>
+静态、动态类型语言各有什么优缺点呢？
+</p>
+
+<p>
+静态类型语言的主要优点在于其结构非常规范，便于调试，方便类型安全；缺点是为此需要写更多的类型相关代码，导致不便于阅读、不清晰明了。
+</p>
+
+<p>
+动态类型语言的优点在于方便阅读，不需要写非常多的类型相关的代码；缺点自然就是不方便调试，命名不规范时会造成读不懂，不利于理解等。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orga4b5a68" class="outline-3">
+<h3 id="orga4b5a68"><span class="section-number-3">1.2</span> 作用域（scope）</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+为了描述标识符与内存区域的绑定关系，引入了作用域的概念。
+</p>
+
+<ul class="org-ul">
+<li>静态作用域（词法作用域）
+
+<ul class="org-ul">
+<li>文件作用域（static）</li>
+<li>类作用域（public，private，friend）</li>
+<li>函数作用域：了解函数中的 static 变量在内存中的布局（todo）</li>
+<li>块作用域</li>
+</ul></li>
+
+<li>动态作用域</li>
+
+<li>作用域和命名空间的区别？</li>
+
+<li><p>
+作用域是如何实现的？
+</p>
+
+<p>
+作用域是编译前端里面的概念，前端编译后，标识符就都映射到寄存器或调用栈上了。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgce06ac8" class="outline-2">
+<h2 id="orgce06ac8"><span class="section-number-2">2</span> 语句（statement）</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<b>语句定义了指令</b> ：
+</p>
+<ul class="org-ul">
+<li>赋值语句中的左值对应内存的增、改，右值对应查。</li>
+<li>内存释放语句（free，delete）、垃圾回收机制对应释放内存（删）。</li>
+<li>控制语句，有三种基本的结构来控制指令的执行流程：
+<ul class="org-ul">
+<li>顺序结构</li>
+<li>选择结构（if，switch）</li>
+<li>循环结构（while，until，for）</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd1f2f8c" class="outline-2">
+<h2 id="orgd1f2f8c"><span class="section-number-2">3</span> 语言学习</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+高级语言的学习要点有两点：语法和程序库。
+</p>
+</div>
+
+<div id="outline-container-orgb8eec51" class="outline-3">
+<h3 id="orgb8eec51"><span class="section-number-3">3.1</span> 语法</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+对于语法，根据上面的分析，其实就是类型和语句的学习。
+</p>
+</div>
+
+<div id="outline-container-orgcb927fc" class="outline-4">
+<h4 id="orgcb927fc"><span class="section-number-4">3.1.1</span> 类型</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+掌握各种类型的的增删改查操作，内存大小，作用域范围，以及相互之间的转换。
+</p>
+</div>
+
+<div id="outline-container-orgd876dc4" class="outline-5">
+<h5 id="orgd876dc4"><span class="section-number-5">3.1.1.1</span> 基本类型</h5>
+<div class="outline-text-5" id="text-3-1-1-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgd0357f9"></a>数字<br />
+<div class="outline-text-6" id="text-3-1-1-1-1">
+<ul class="org-ul">
+<li>所占内存大小</li>
+<li>数学操作中的隐式转换</li>
+<li>不同进制间的转换</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org198576c"></a>bool<br />
+<div class="outline-text-6" id="text-3-1-1-1-2">
+<ul class="org-ul">
+<li>真假的规则</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org88d5d71"></a>byte<br /></li>
+</ol>
+</div>
+
+<div id="outline-container-org2ebcf25" class="outline-5">
+<h5 id="org2ebcf25"><span class="section-number-5">3.1.1.2</span> 复合类型</h5>
+<div class="outline-text-5" id="text-3-1-1-2">
+<ul class="org-ul">
+<li>内存存储方式</li>
+<li>各字段的增删改查操作，注意是否原地修改。</li>
+</ul>
+</div>
+
+<ol class="org-ol">
+<li><a id="org1c33de3"></a>序列<br /></li>
+
+<li><a id="orgbf57711"></a>字典<br /></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgfb2fcaf" class="outline-4">
+<h4 id="orgfb2fcaf"><span class="section-number-4">3.1.2</span> 语句</h4>
+<div class="outline-text-4" id="text-3-1-2">
+</div>
+<div id="outline-container-org5175c22" class="outline-5">
+<h5 id="org5175c22"><span class="section-number-5">3.1.2.1</span> 表达式语句</h5>
+<div class="outline-text-5" id="text-3-1-2-1">
+<p>
+表达式（expression）由标识符和操作符可以组成。表达式和语句的区别：表达式有值，语句没有值。 能作为函数参数即为表达式，否则为语句。
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="orgcf2a79b"></a>操作符<br />
+<ol class="org-ol">
+<li><a id="org9d02fe5"></a>算术<br /></li>
+<li><a id="org1481c78"></a>逻辑<br /></li>
+<li><a id="orgf9b5bfe"></a>二进制<br /></li>
+<li><a id="org310549e"></a>赋值<br /></li>
+</ol>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org6764809" class="outline-5">
+<h5 id="org6764809"><span class="section-number-5">3.1.2.2</span> 控制语句</h5>
+<div class="outline-text-5" id="text-3-1-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgadc0d81"></a>顺序<br /></li>
+
+<li><a id="org8845a73"></a>选择<br /></li>
+
+<li><a id="orga35c050"></a>循环<br /></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeab30d3" class="outline-3">
+<h3 id="orgeab30d3"><span class="section-number-3">3.2</span> 相关的库</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-org9f3cd0b" class="outline-4">
+<h4 id="org9f3cd0b"><span class="section-number-4">3.2.1</span> 数学</h4>
+</div>
+<div id="outline-container-org38ccdd8" class="outline-4">
+<h4 id="org38ccdd8"><span class="section-number-4">3.2.2</span> 字符串处理</h4>
+</div>
+<div id="outline-container-org4310675" class="outline-4">
+<h4 id="org4310675"><span class="section-number-4">3.2.3</span> 正则表达</h4>
+</div>
+<div id="outline-container-orgc407a54" class="outline-4">
+<h4 id="orgc407a54"><span class="section-number-4">3.2.4</span> 输入输出</h4>
+</div>
+<div id="outline-container-org9393e44" class="outline-4">
+<h4 id="org9393e44"><span class="section-number-4">3.2.5</span> 数学</h4>
+</div>
+<div id="outline-container-org50ad347" class="outline-4">
+<h4 id="org50ad347"><span class="section-number-4">3.2.6</span> 日期、时间和本地化</h4>
+</div>
+<div id="outline-container-org4480655" class="outline-4">
+<h4 id="org4480655"><span class="section-number-4">3.2.7</span> 动态分配</h4>
+</div>
+<div id="outline-container-orgc65e247" class="outline-4">
+<h4 id="orgc65e247"><span class="section-number-4">3.2.8</span> 网络</h4>
+</div>
+<div id="outline-container-orgf237188" class="outline-4">
+<h4 id="orgf237188"><span class="section-number-4">3.2.9</span> 邮件</h4>
+</div>
+<div id="outline-container-orgfa999ed" class="outline-4">
+<h4 id="orgfa999ed"><span class="section-number-4">3.2.10</span> 并发</h4>
+</div>
+</div>
+
+<div id="outline-container-org4eb5bed" class="outline-3">
+<h3 id="org4eb5bed"><span class="section-number-3">3.3</span> 工具</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-orgb64c86c" class="outline-4">
+<h4 id="orgb64c86c"><span class="section-number-4">3.3.1</span> 调试工具</h4>
+</div>
+
+<div id="outline-container-orgf0a1775" class="outline-4">
+<h4 id="orgf0a1775"><span class="section-number-4">3.3.2</span> 文档话工具</h4>
+</div>
+
+<div id="outline-container-org9882e02" class="outline-4">
+<h4 id="org9882e02"><span class="section-number-4">3.3.3</span> 代码检查</h4>
+</div>
+
+<div id="outline-container-orgf1b9501" class="outline-4">
+<h4 id="orgf1b9501"><span class="section-number-4">3.3.4</span> 性能测试</h4>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://dev.gameres.com/Program/Other/bcxszyforgameres/bcxszy/xisofts.sinaapp.com/@p=88.htm">语言的类型系统</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://zh.wikipedia.org/wiki/%E9%A1%9E%E5%9E%8B%E7%B3%BB%E7%B5%B1">类型系统</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

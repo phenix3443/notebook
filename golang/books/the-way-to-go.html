@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《the way to go》读书笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">《the way to go》读书笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgefb51d4">1. 第二部分：语言的核心结构与技术</a>
+<ul>
+<li><a href="#org32db80d">1.1. 第四章 基本结构和数据类型</a>
+<ul>
+<li><a href="#orga264b10">1.1.1. 4.5 基本类型和运算符</a></li>
+<li><a href="#orgd96cea6">1.1.2. 4.6 字符串</a></li>
+<li><a href="#org5dd9f93">1.1.3. 4.7 strings 和 strconv 包</a></li>
+<li><a href="#orgc1c957e">1.1.4. 4.8 时间和日期</a></li>
+<li><a href="#org881ccfd">1.1.5. 4.9 指针</a></li>
+</ul>
+</li>
+<li><a href="#orge25c0cd">1.2. 第五章 控制结构</a>
+<ul>
+<li><a href="#org3378511">1.2.1. if-else 循环</a></li>
+<li><a href="#orgf39cdf3">1.2.2. 测试多返回值函数的错误</a></li>
+<li><a href="#orgda73f34">1.2.3. switch 结构</a></li>
+<li><a href="#org65e9236">1.2.4. for 结构</a></li>
+<li><a href="#org1f35ab3">1.2.5. break 与 continue</a></li>
+<li><a href="#org5a46013">1.2.6. 标签与 goto</a></li>
+</ul>
+</li>
+<li><a href="#org5196605">1.3. 第六章 函数</a>
+<ul>
+<li><a href="#org22ae2a0">1.3.1. 6.1 介绍</a></li>
+<li><a href="#org8e3eef4">1.3.2. 6.2 函数参数与返回值</a></li>
+<li><a href="#orgeb1275f">1.3.3. 6.3 传递变长参数</a></li>
+<li><a href="#orgf84541c">1.3.4. 6.4 defer 和追踪</a></li>
+<li><a href="#orgeeb5e8a">1.3.5. 6.5 内置函数</a></li>
+<li><a href="#org6ca8a37">1.3.6. 6.6 递归函数</a></li>
+<li><a href="#orgd7aaf85">1.3.7. 6.7 将函数作为参数</a></li>
+<li><a href="#orgf924f8c">1.3.8. 6.8 闭包</a></li>
+<li><a href="#orgf09bf45">1.3.9. 6.9 应用闭包：将函数作为返回值</a></li>
+<li><a href="#orgc5f04b3">1.3.10. 6.10 使用闭包调试</a></li>
+<li><a href="#orga339776">1.3.11. 6.11 计算函数执行时间</a></li>
+<li><a href="#org3063136">1.3.12. 6.12 通过内存缓存提升性能</a></li>
+</ul>
+</li>
+<li><a href="#org395b4e8">1.4. 第七章 数组与切片</a>
+<ul>
+<li><a href="#orgc11c091">1.4.1. 7.1 声明与初始化</a></li>
+<li><a href="#orgbce7bd3">1.4.2. 7.2 切片</a></li>
+<li><a href="#org01bd919">1.4.3. 7.3 for-range 结构</a></li>
+<li><a href="#org03c6472">1.4.4. 7.4 切片重组</a></li>
+<li><a href="#org6986d47">1.4.5. 7.5 切片的复制与追加</a></li>
+<li><a href="#orgaba4902">1.4.6. 7.6 字符串、数组和切片的应用</a></li>
+</ul>
+</li>
+<li><a href="#org150608b">1.5. 第八章 map</a>
+<ul>
+<li><a href="#orgbcdfaef">1.5.1. 8.1 声明、初始化和 make</a></li>
+<li><a href="#orge643130">1.5.2. 8.2 测试键值对是否存在及删除元素</a></li>
+<li><a href="#orgca93c52">1.5.3. 8.3 for-range 的配套用法</a></li>
+<li><a href="#org4458d29">1.5.4. 8.4 map 类型的切片</a></li>
+<li><a href="#org2726106">1.5.5. 8.5 map 的排序</a></li>
+<li><a href="#orgf839127">1.5.6. 8.6 将 map 的键值对调</a></li>
+</ul>
+</li>
+<li><a href="#orga05c918">1.6. 第九章 包</a>
+<ul>
+<li><a href="#org41af583">1.6.1. 9.1 标准库概述</a></li>
+<li><a href="#org13cf9c8">1.6.2. 9.2 regexp 包</a></li>
+<li><a href="#org9439cab">1.6.3. 9.3 锁和 sync 包</a></li>
+<li><a href="#org618f46d">1.6.4. 9.4 精密计算和 big 包</a></li>
+<li><a href="#org48f1f1b">1.6.5. 9.5 自定义包和可见性</a></li>
+<li><a href="#org15fa956">1.6.6. 9.6 为自定义包使用 godoc</a></li>
+<li><a href="#org1401ed5">1.6.7. 9.7 使用 go install 安装自定义包</a></li>
+<li><a href="#org544568e">1.6.8. 9.8 自定义包的目录结构、go install 和 go test</a></li>
+<li><a href="#org4e9e37c">1.6.9. 9.9 通过 git 打包和安装</a></li>
+<li><a href="#org9636815">1.6.10. 9.10 go 的外部包和项目</a></li>
+<li><a href="#org57cfed5">1.6.11. 9.11 在 go 程序中使用外部库</a></li>
+</ul>
+</li>
+<li><a href="#org002ff39">1.7. 第十章 结构与方法</a>
+<ul>
+<li><a href="#org8ec555c">1.7.1. 10.1 结构体定义</a></li>
+<li><a href="#org1ea8059">1.7.2. 10.2 使用工厂方法创建结构体实例</a></li>
+<li><a href="#org049aabb">1.7.3. 10.3 使用自定义包中的结构体</a></li>
+<li><a href="#org1aec023">1.7.4. 10.4 带标签的结构体</a></li>
+<li><a href="#org5a2635a">1.7.5. 10.5 匿名字段和内嵌结构体</a></li>
+<li><a href="#org4557e2c">1.7.6. 10.6 方法</a></li>
+<li><a href="#orga983801">1.7.7. 10.7 类型的 string（）方法和格式化描述符</a></li>
+<li><a href="#org426fc87">1.7.8. 10.8 垃圾回收和 setFinalizer</a></li>
+</ul>
+</li>
+<li><a href="#orgfb9a95a">1.8. 第十一章 接口与反射</a>
+<ul>
+<li><a href="#orgd5669ec">1.8.1. 11.1 接口是什么</a></li>
+<li><a href="#orgc29d120">1.8.2. 11.2 接口嵌套接口</a></li>
+<li><a href="#org211caa8">1.8.3. 11.3 类型断言</a></li>
+<li><a href="#org43b1619">1.8.4. 11.4 类型判断</a></li>
+<li><a href="#orgb2a3df8">1.8.5. 11.5 测试值是否实现了某个借口</a></li>
+<li><a href="#orgc2ee261">1.8.6. 11.6 使用方法集与接口</a></li>
+<li><a href="#org612a4bb">1.8.7. 11.7 例子 1</a></li>
+<li><a href="#orgb01d69f">1.8.8. 11.8 例子 2</a></li>
+<li><a href="#org16c5f23">1.8.9. 11.9 空接口</a></li>
+<li><a href="#orgcb31c80">1.8.10. 11.10 反射包</a></li>
+<li><a href="#orgda77336">1.8.11. 11.11 Printf 与反射</a></li>
+<li><a href="#org16e9624">1.8.12. 11.12 接口与动态类型</a></li>
+<li><a href="#orgf92f28b">1.8.13. 11.13 总结：go 中的面向对象</a></li>
+<li><a href="#orgecc83c9">1.8.14. 11.14 结构体、集合和高阶函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6640395">2. 第三部分 Go 高级编程</a>
+<ul>
+<li><a href="#orgb00d364">2.1. 第十二章 读写数据</a></li>
+<li><a href="#org57a8170">2.2. 第十三章 错误处理与测试</a></li>
+<li><a href="#org6616c3f">2.3. 第十四章 协程与通道</a></li>
+<li><a href="#orga461ee2">2.4. 第十五章 网络、模板与网页应用</a></li>
+</ul>
+</li>
+<li><a href="#org4ea2104">3. 第四部分 实际应用</a>
+<ul>
+<li><a href="#org613b676">3.1. 第十六章 常见的陷阱与错误</a></li>
+<li><a href="#orgbb67b11">3.2. 第十七章 模式</a></li>
+<li><a href="#org95e7b0b">3.3. 第十八章 处于性能考虑的实用代码片段</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgefb51d4" class="outline-2">
+<h2 id="orgefb51d4"><span class="section-number-2">1</span> 第二部分：语言的核心结构与技术</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org32db80d" class="outline-3">
+<h3 id="org32db80d"><span class="section-number-3">1.1</span> 第四章 基本结构和数据类型</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-orga264b10" class="outline-4">
+<h4 id="orga264b10"><span class="section-number-4">1.1.1</span> 4.5 基本类型和运算符</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>int 类型是计算最快的一种类型。为什么？</li>
+<li>/ 对于整数运算而言，结果依旧为整数。</li>
+<li>带有 ++ 和 &#x2013; 的只能作为语句，而非表达式。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd96cea6" class="outline-4">
+<h4 id="orgd96cea6"><span class="section-number-4">1.1.2</span> 4.6 字符串</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li>字符串是字节的定长数组。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5dd9f93" class="outline-4">
+<h4 id="org5dd9f93"><span class="section-number-4">1.1.3</span> 4.7 strings 和 strconv 包</h4>
+</div>
+
+<div id="outline-container-orgc1c957e" class="outline-4">
+<h4 id="orgc1c957e"><span class="section-number-4">1.1.4</span> 4.8 时间和日期</h4>
+</div>
+
+<div id="outline-container-org881ccfd" class="outline-4">
+<h4 id="org881ccfd"><span class="section-number-4">1.1.5</span> 4.9 指针</h4>
+</div>
+</div>
+
+<div id="outline-container-orge25c0cd" class="outline-3">
+<h3 id="orge25c0cd"><span class="section-number-3">1.2</span> 第五章 控制结构</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org3378511" class="outline-4">
+<h4 id="org3378511"><span class="section-number-4">1.2.1</span> if-else 循环</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>如果 if 初始化中的变量在 if 结构之前就已经存在，那么在 if 结构中，该变量原来的值会被隐藏。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf39cdf3" class="outline-4">
+<h4 id="orgf39cdf3"><span class="section-number-4">1.2.2</span> 测试多返回值函数的错误</h4>
+</div>
+
+<div id="outline-container-orgda73f34" class="outline-4">
+<h4 id="orgda73f34"><span class="section-number-4">1.2.3</span> switch 结构</h4>
+</div>
+
+<div id="outline-container-org65e9236" class="outline-4">
+<h4 id="org65e9236"><span class="section-number-4">1.2.4</span> for 结构</h4>
+</div>
+
+<div id="outline-container-org1f35ab3" class="outline-4">
+<h4 id="org1f35ab3"><span class="section-number-4">1.2.5</span> break 与 continue</h4>
+</div>
+
+<div id="outline-container-org5a46013" class="outline-4">
+<h4 id="org5a46013"><span class="section-number-4">1.2.6</span> 标签与 goto</h4>
+</div>
+</div>
+
+<div id="outline-container-org5196605" class="outline-3">
+<h3 id="org5196605"><span class="section-number-3">1.3</span> 第六章 函数</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-org22ae2a0" class="outline-4">
+<h4 id="org22ae2a0"><span class="section-number-4">1.3.1</span> 6.1 介绍</h4>
+</div>
+
+<div id="outline-container-org8e3eef4" class="outline-4">
+<h4 id="org8e3eef4"><span class="section-number-4">1.3.2</span> 6.2 函数参数与返回值</h4>
+</div>
+
+<div id="outline-container-orgeb1275f" class="outline-4">
+<h4 id="orgeb1275f"><span class="section-number-4">1.3.3</span> 6.3 传递变长参数</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<ul class="org-ul">
+<li>变长参数的主要用途是什么？除了字符格式化输出函数。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf84541c" class="outline-4">
+<h4 id="orgf84541c"><span class="section-number-4">1.3.4</span> 6.4 defer 和追踪</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<ul class="org-ul">
+<li>注意 defer 与 return 的坑。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgeeb5e8a" class="outline-4">
+<h4 id="orgeeb5e8a"><span class="section-number-4">1.3.5</span> 6.5 内置函数</h4>
+</div>
+
+<div id="outline-container-org6ca8a37" class="outline-4">
+<h4 id="org6ca8a37"><span class="section-number-4">1.3.6</span> 6.6 递归函数</h4>
+</div>
+
+<div id="outline-container-orgd7aaf85" class="outline-4">
+<h4 id="orgd7aaf85"><span class="section-number-4">1.3.7</span> 6.7 将函数作为参数</h4>
+</div>
+
+<div id="outline-container-orgf924f8c" class="outline-4">
+<h4 id="orgf924f8c"><span class="section-number-4">1.3.8</span> 6.8 闭包</h4>
+<div class="outline-text-4" id="text-1-3-8">
+<ul class="org-ul">
+<li>闭包多是匿名函数，配合 defer，go 使用，或者将函数作为返回值。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf09bf45" class="outline-4">
+<h4 id="orgf09bf45"><span class="section-number-4">1.3.9</span> 6.9 应用闭包：将函数作为返回值</h4>
+</div>
+
+<div id="outline-container-orgc5f04b3" class="outline-4">
+<h4 id="orgc5f04b3"><span class="section-number-4">1.3.10</span> 6.10 使用闭包调试</h4>
+</div>
+
+<div id="outline-container-orga339776" class="outline-4">
+<h4 id="orga339776"><span class="section-number-4">1.3.11</span> 6.11 计算函数执行时间</h4>
+</div>
+
+<div id="outline-container-org3063136" class="outline-4">
+<h4 id="org3063136"><span class="section-number-4">1.3.12</span> 6.12 通过内存缓存提升性能</h4>
+</div>
+</div>
+
+<div id="outline-container-org395b4e8" class="outline-3">
+<h3 id="org395b4e8"><span class="section-number-3">1.4</span> 第七章 数组与切片</h3>
+<div class="outline-text-3" id="text-1-4">
+</div>
+<div id="outline-container-orgc11c091" class="outline-4">
+<h4 id="orgc11c091"><span class="section-number-4">1.4.1</span> 7.1 声明与初始化</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<ul class="org-ul">
+<li>数组长度也是数组类型的一部分。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbce7bd3" class="outline-4">
+<h4 id="orgbce7bd3"><span class="section-number-4">1.4.2</span> 7.2 切片</h4>
+</div>
+
+<div id="outline-container-org01bd919" class="outline-4">
+<h4 id="org01bd919"><span class="section-number-4">1.4.3</span> 7.3 for-range 结构</h4>
+</div>
+
+<div id="outline-container-org03c6472" class="outline-4">
+<h4 id="org03c6472"><span class="section-number-4">1.4.4</span> 7.4 切片重组</h4>
+</div>
+
+<div id="outline-container-org6986d47" class="outline-4">
+<h4 id="org6986d47"><span class="section-number-4">1.4.5</span> 7.5 切片的复制与追加</h4>
+<div class="outline-text-4" id="text-1-4-5">
+<ul class="org-ul">
+<li>切片如何扩展成列表？</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgaba4902" class="outline-4">
+<h4 id="orgaba4902"><span class="section-number-4">1.4.6</span> 7.6 字符串、数组和切片的应用</h4>
+<div class="outline-text-4" id="text-1-4-6">
+<ul class="org-ul">
+<li>在内存中，一个字符串实际上是一个双字结构，即一个指向实际数据的指针和记录字符串长度的整数。</li>
+<li>append 的一些有用的用法：
+<ol class="org-ol">
+<li>删除位于索引 i 的元素：a = append(a[:i], a[i+1:]&#x2026;)</li>
+<li>取出位于切片 a 最末尾的元素 x：x, a = a[len(a)-1], a[:len(a)-1]</li>
+</ol></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org150608b" class="outline-3">
+<h3 id="org150608b"><span class="section-number-3">1.5</span> 第八章 map</h3>
+<div class="outline-text-3" id="text-1-5">
+</div>
+<div id="outline-container-orgbcdfaef" class="outline-4">
+<h4 id="orgbcdfaef"><span class="section-number-4">1.5.1</span> 8.1 声明、初始化和 make</h4>
+</div>
+<div id="outline-container-orge643130" class="outline-4">
+<h4 id="orge643130"><span class="section-number-4">1.5.2</span> 8.2 测试键值对是否存在及删除元素</h4>
+</div>
+<div id="outline-container-orgca93c52" class="outline-4">
+<h4 id="orgca93c52"><span class="section-number-4">1.5.3</span> 8.3 for-range 的配套用法</h4>
+</div>
+<div id="outline-container-org4458d29" class="outline-4">
+<h4 id="org4458d29"><span class="section-number-4">1.5.4</span> 8.4 map 类型的切片</h4>
+</div>
+<div id="outline-container-org2726106" class="outline-4">
+<h4 id="org2726106"><span class="section-number-4">1.5.5</span> 8.5 map 的排序</h4>
+</div>
+<div id="outline-container-orgf839127" class="outline-4">
+<h4 id="orgf839127"><span class="section-number-4">1.5.6</span> 8.6 将 map 的键值对调</h4>
+</div>
+</div>
+
+<div id="outline-container-orga05c918" class="outline-3">
+<h3 id="orga05c918"><span class="section-number-3">1.6</span> 第九章 包</h3>
+<div class="outline-text-3" id="text-1-6">
+</div>
+<div id="outline-container-org41af583" class="outline-4">
+<h4 id="org41af583"><span class="section-number-4">1.6.1</span> 9.1 标准库概述</h4>
+</div>
+<div id="outline-container-org13cf9c8" class="outline-4">
+<h4 id="org13cf9c8"><span class="section-number-4">1.6.2</span> 9.2 regexp 包</h4>
+</div>
+<div id="outline-container-org9439cab" class="outline-4">
+<h4 id="org9439cab"><span class="section-number-4">1.6.3</span> 9.3 锁和 sync 包</h4>
+</div>
+<div id="outline-container-org618f46d" class="outline-4">
+<h4 id="org618f46d"><span class="section-number-4">1.6.4</span> 9.4 精密计算和 big 包</h4>
+</div>
+<div id="outline-container-org48f1f1b" class="outline-4">
+<h4 id="org48f1f1b"><span class="section-number-4">1.6.5</span> 9.5 自定义包和可见性</h4>
+<div class="outline-text-4" id="text-1-6-5">
+<ul class="org-ul">
+<li>import . "path/to/package"</li>
+<li>import _ "path/to/package"</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org15fa956" class="outline-4">
+<h4 id="org15fa956"><span class="section-number-4">1.6.6</span> 9.6 为自定义包使用 godoc</h4>
+</div>
+<div id="outline-container-org1401ed5" class="outline-4">
+<h4 id="org1401ed5"><span class="section-number-4">1.6.7</span> 9.7 使用 go install 安装自定义包</h4>
+</div>
+<div id="outline-container-org544568e" class="outline-4">
+<h4 id="org544568e"><span class="section-number-4">1.6.8</span> 9.8 自定义包的目录结构、go install 和 go test</h4>
+</div>
+<div id="outline-container-org4e9e37c" class="outline-4">
+<h4 id="org4e9e37c"><span class="section-number-4">1.6.9</span> 9.9 通过 git 打包和安装</h4>
+</div>
+<div id="outline-container-org9636815" class="outline-4">
+<h4 id="org9636815"><span class="section-number-4">1.6.10</span> 9.10 go 的外部包和项目</h4>
+</div>
+<div id="outline-container-org57cfed5" class="outline-4">
+<h4 id="org57cfed5"><span class="section-number-4">1.6.11</span> 9.11 在 go 程序中使用外部库</h4>
+</div>
+</div>
+<div id="outline-container-org002ff39" class="outline-3">
+<h3 id="org002ff39"><span class="section-number-3">1.7</span> 第十章 结构与方法</h3>
+<div class="outline-text-3" id="text-1-7">
+</div>
+<div id="outline-container-org8ec555c" class="outline-4">
+<h4 id="org8ec555c"><span class="section-number-4">1.7.1</span> 10.1 结构体定义</h4>
+</div>
+<div id="outline-container-org1ea8059" class="outline-4">
+<h4 id="org1ea8059"><span class="section-number-4">1.7.2</span> 10.2 使用工厂方法创建结构体实例</h4>
+</div>
+<div id="outline-container-org049aabb" class="outline-4">
+<h4 id="org049aabb"><span class="section-number-4">1.7.3</span> 10.3 使用自定义包中的结构体</h4>
+</div>
+<div id="outline-container-org1aec023" class="outline-4">
+<h4 id="org1aec023"><span class="section-number-4">1.7.4</span> 10.4 带标签的结构体</h4>
+</div>
+<div id="outline-container-org5a2635a" class="outline-4">
+<h4 id="org5a2635a"><span class="section-number-4">1.7.5</span> 10.5 匿名字段和内嵌结构体</h4>
+</div>
+<div id="outline-container-org4557e2c" class="outline-4">
+<h4 id="org4557e2c"><span class="section-number-4">1.7.6</span> 10.6 方法</h4>
+<div class="outline-text-4" id="text-1-7-6">
+<ul class="org-ul">
+<li><p>
+如果方法不需要使用 recv 的值，可以用 _ 替换它，比如：
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> (_ <span style="color: #00d7af;">receiver_type</span>) <span style="color: #ffd700;">methodName</span>(<span style="color: #00d7af;">parameter_list</span>) (<span style="color: #00d7af;">return_value_list</span>) { ... }
+</pre>
+</div>
+<p>
+和类方法类似。
+</p></li>
+<li>在 Go 中，代码复用通过组合和委托实现，多态通过接口的使用来实现。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga983801" class="outline-4">
+<h4 id="orga983801"><span class="section-number-4">1.7.7</span> 10.7 类型的 string（）方法和格式化描述符</h4>
+</div>
+<div id="outline-container-org426fc87" class="outline-4">
+<h4 id="org426fc87"><span class="section-number-4">1.7.8</span> 10.8 垃圾回收和 setFinalizer</h4>
+</div>
+</div>
+<div id="outline-container-orgfb9a95a" class="outline-3">
+<h3 id="orgfb9a95a"><span class="section-number-3">1.8</span> 第十一章 接口与反射</h3>
+<div class="outline-text-3" id="text-1-8">
+</div>
+<div id="outline-container-orgd5669ec" class="outline-4">
+<h4 id="orgd5669ec"><span class="section-number-4">1.8.1</span> 11.1 接口是什么</h4>
+</div>
+<div id="outline-container-orgc29d120" class="outline-4">
+<h4 id="orgc29d120"><span class="section-number-4">1.8.2</span> 11.2 接口嵌套接口</h4>
+</div>
+<div id="outline-container-org211caa8" class="outline-4">
+<h4 id="org211caa8"><span class="section-number-4">1.8.3</span> 11.3 类型断言</h4>
+</div>
+<div id="outline-container-org43b1619" class="outline-4">
+<h4 id="org43b1619"><span class="section-number-4">1.8.4</span> 11.4 类型判断</h4>
+<div class="outline-text-4" id="text-1-8-4">
+<ul class="org-ul">
+<li>type-switch</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb2a3df8" class="outline-4">
+<h4 id="orgb2a3df8"><span class="section-number-4">1.8.5</span> 11.5 测试值是否实现了某个借口</h4>
+</div>
+<div id="outline-container-orgc2ee261" class="outline-4">
+<h4 id="orgc2ee261"><span class="section-number-4">1.8.6</span> 11.6 使用方法集与接口</h4>
+<div class="outline-text-4" id="text-1-8-6">
+<ul class="org-ul">
+<li>接口变量中存储的具体值是不可寻址的。这句话是什么意思？</li>
+<li>类型 *T 的可调用方法集包含接受者为 *T 或 T 的所有方法集。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org612a4bb" class="outline-4">
+<h4 id="org612a4bb"><span class="section-number-4">1.8.7</span> 11.7 例子 1</h4>
+</div>
+<div id="outline-container-orgb01d69f" class="outline-4">
+<h4 id="orgb01d69f"><span class="section-number-4">1.8.8</span> 11.8 例子 2</h4>
+</div>
+<div id="outline-container-org16c5f23" class="outline-4">
+<h4 id="org16c5f23"><span class="section-number-4">1.8.9</span> 11.9 空接口</h4>
+</div>
+<div id="outline-container-orgcb31c80" class="outline-4">
+<h4 id="orgcb31c80"><span class="section-number-4">1.8.10</span> 11.10 反射包</h4>
+</div>
+<div id="outline-container-orgda77336" class="outline-4">
+<h4 id="orgda77336"><span class="section-number-4">1.8.11</span> 11.11 Printf 与反射</h4>
+</div>
+<div id="outline-container-org16e9624" class="outline-4">
+<h4 id="org16e9624"><span class="section-number-4">1.8.12</span> 11.12 接口与动态类型</h4>
+</div>
+<div id="outline-container-orgf92f28b" class="outline-4">
+<h4 id="orgf92f28b"><span class="section-number-4">1.8.13</span> 11.13 总结：go 中的面向对象</h4>
+</div>
+<div id="outline-container-orgecc83c9" class="outline-4">
+<h4 id="orgecc83c9"><span class="section-number-4">1.8.14</span> 11.14 结构体、集合和高阶函数</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org6640395" class="outline-2">
+<h2 id="org6640395"><span class="section-number-2">2</span> 第三部分 Go 高级编程</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgb00d364" class="outline-3">
+<h3 id="orgb00d364"><span class="section-number-3">2.1</span> 第十二章 读写数据</h3>
+</div>
+
+<div id="outline-container-org57a8170" class="outline-3">
+<h3 id="org57a8170"><span class="section-number-3">2.2</span> 第十三章 错误处理与测试</h3>
+</div>
+
+<div id="outline-container-org6616c3f" class="outline-3">
+<h3 id="org6616c3f"><span class="section-number-3">2.3</span> 第十四章 协程与通道</h3>
+</div>
+
+<div id="outline-container-orga461ee2" class="outline-3">
+<h3 id="orga461ee2"><span class="section-number-3">2.4</span> 第十五章 网络、模板与网页应用</h3>
+</div>
+</div>
+
+<div id="outline-container-org4ea2104" class="outline-2">
+<h2 id="org4ea2104"><span class="section-number-2">3</span> 第四部分 实际应用</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org613b676" class="outline-3">
+<h3 id="org613b676"><span class="section-number-3">3.1</span> 第十六章 常见的陷阱与错误</h3>
+</div>
+
+<div id="outline-container-orgbb67b11" class="outline-3">
+<h3 id="orgbb67b11"><span class="section-number-3">3.2</span> 第十七章 模式</h3>
+</div>
+
+<div id="outline-container-org95e7b0b" class="outline-3">
+<h3 id="org95e7b0b"><span class="section-number-3">3.3</span> 第十八章 处于性能考虑的实用代码片段</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

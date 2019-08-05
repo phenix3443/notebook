@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:30 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>数码摄影基础知识</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">数码摄影基础知识</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org1b2fc5b">1. 概述</a></li>
+<li><a href="#org19f85bd">2. 构图基础</a></li>
+<li><a href="#orgd0e5c70">3. 构图法则</a></li>
+<li><a href="#org42b5e76">4. 构图形式</a></li>
+<li><a href="#org78984ce">5. 光的基本概念</a>
+<ul>
+<li><a href="#org5cf1140">5.1. 光源</a></li>
+<li><a href="#orgac2d715">5.2. 光的方向</a></li>
+</ul>
+</li>
+<li><a href="#org439722b">6. 曝光与测光</a></li>
+<li><a href="#org55ba758">7. 一天中各时段的光线特性</a>
+<ul>
+<li><a href="#org6868d4c">7.1. 早晨</a></li>
+<li><a href="#org6fda78c">7.2. 上午</a></li>
+<li><a href="#orgb5f7c31">7.3. 中午</a></li>
+<li><a href="#orgc76d161">7.4. 下午</a></li>
+<li><a href="#org8f53d0c">7.5. 黄昏</a></li>
+<li><a href="#orgfa1bb68">7.6. 夜晚</a></li>
+</ul>
+</li>
+<li><a href="#org19441b4">8. 光影的艺术</a>
+<ul>
+<li><a href="#org3614190">8.1. 光线质感</a></li>
+<li><a href="#org6fd630d">8.2. 不同的光影氛围</a></li>
+<li><a href="#org25167ab">8.3. 情感表达</a></li>
+<li><a href="#orgf5db0ee">8.4. 阴影</a></li>
+<li><a href="#orgd608d1f">8.5. 边光</a></li>
+</ul>
+</li>
+<li><a href="#org4fe4ad4">9. 闪光灯的效果</a></li>
+<li><a href="#org0f23693">10. 认识色彩</a>
+<ul>
+<li><a href="#org5b80392">10.1. 色系</a></li>
+<li><a href="#org15ae9ad">10.2. 色彩间的关系</a></li>
+<li><a href="#orgb7e160e">10.3. 色彩运用技巧</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1b2fc5b" class="outline-2">
+<h2 id="org1b2fc5b"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+摄影的基础知识主要是构图、光影、色彩。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org19f85bd" class="outline-2">
+<h2 id="org19f85bd"><span class="section-number-2">2</span> 构图基础</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+构图是为了处理好拍摄画面的空间关系、光影关系和色彩关系，从而达到突出拍摄主体的目的。
+</p>
+
+<ul class="org-ul">
+<li>点：摄影作品中的点可以极大地吸引欣赏者的注意力。</li>
+<li>线：线条在画面中可以用于分割面，还可以引导欣赏者的视线，从而使画面产生动感与韵律感。</li>
+<li>面：面与面产生线，多面交叉还会产生点。面主要用于营造一种环境的真实感。</li>
+</ul>
+
+<p>
+基本概念：前景、背景、主体、陪体、留白。
+</p>
+
+<p>
+突出主体方法：
+</p>
+<ul class="org-ul">
+<li>将主体放在某些构图点上。</li>
+<li>通过对比：大小、远近、动静、虚实、明暗、色彩等。</li>
+</ul>
+
+<p>
+陪体的作用：
+</p>
+<ul class="org-ul">
+<li>映衬主体，使主体更明确，内容更丰富。</li>
+<li>均衡和美化画面。</li>
+<li>帮助摄影作品阐明情节，对画面叙事起推动作用。</li>
+</ul>
+
+<p>
+留白的作用：
+</p>
+<ul class="org-ul">
+<li>避免画面拥挤产生视觉疲劳。</li>
+<li>给欣赏者留下思考空间。</li>
+</ul>
+
+
+<p>
+前景的作用：
+</p>
+<ul class="org-ul">
+<li>烘托主体和装饰画面。</li>
+<li>有时还有过渡作用。</li>
+</ul>
+
+<p>
+背景的作用：
+</p>
+<ul class="org-ul">
+<li>衬托主体，说明环境，丰富画面内容。</li>
+<li>要简洁，避免杂乱。</li>
+</ul>
+
+<p>
+直幅构图的作品有高耸、强力、逼近之感。能强调主体本身的高度、力量感与气势。
+</p>
+
+<p>
+横幅构图有安静、深沉、宽广的感觉。
+</p>
+
+<p>
+拍摄视角：
+</p>
+<ul class="org-ul">
+<li>仰视：被摄对象看起来更高达、重要或有气势。</li>
+<li>平视：照片效果一般比较平稳安定。</li>
+<li>俯视：容易排除景物的高低落差，搭配广角和较大的物距，可以拍出广阔的空间感。会压缩画面中主体的视觉比例，产生夸张的大小对比。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd0e5c70" class="outline-2">
+<h2 id="orgd0e5c70"><span class="section-number-2">3</span> 构图法则</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>黄金比例构图，完整的黄金比例构图，及其衍生的九宫格构图。</li>
+<li>三分法构图。</li>
+<li>视点构图，最灵活的构图法则，八点八线。</li>
+<li>对比法则
+<ul class="org-ul">
+<li>虚实对比：景深</li>
+<li>大小对比：广角，透视，近小远大。</li>
+<li>远近对比：小光圈，大焦距。</li>
+<li>动静对比：高速快门</li>
+<li>明暗对比：注意曝光补偿</li>
+<li>色彩对比：
+<ul class="org-ul">
+<li>互补色对比强调主体地位。</li>
+<li>相邻色对比强调画面的均衡和协调性。</li>
+<li>冷暖色对比表现画面的空间感。</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+画面平衡：
+</p>
+<ul class="org-ul">
+<li>重量平衡：</li>
+<li>刚柔平衡</li>
+<li>色彩平衡</li>
+<li>视线平衡：用留白引导观赏者的视线。</li>
+</ul>
+
+
+<p>
+构图是减法：减掉影响主体表现力的景物。
+</p>
+<ul class="org-ul">
+<li>景深减法</li>
+<li>遮挡减法</li>
+<li>夸张减法（近小远大）</li>
+</ul>
+
+<p>
+构图是加法：加入陪体，让主体鲜明，画面生动。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42b5e76" class="outline-2">
+<h2 id="org42b5e76"><span class="section-number-2">4</span> 构图形式</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>水平线构图：稳定、和谐。</li>
+<li>竖直线构图：坚定、向上、永恒。</li>
+<li>对角线构图：动感、有活力。</li>
+<li>s 形构图：延伸感、空间感。</li>
+<li>其他曲线构图。</li>
+<li>三角形构图：正三角安定、稳固、均衡。倒三角相反。</li>
+<li>圆形构图：均匀、团结、而定，但缺少视觉冲击力和变化。</li>
+<li>封闭式和开放式构图：开放式构图给人想象空间。</li>
+<li>放射式构图：汇集欣赏者注意力到主体。</li>
+<li>对称式构图：对称美。</li>
+<li>框景构图。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org78984ce" class="outline-2">
+<h2 id="org78984ce"><span class="section-number-2">5</span> 光的基本概念</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org5cf1140" class="outline-3">
+<h3 id="org5cf1140"><span class="section-number-3">5.1</span> 光源</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>直射光</li>
+<li>散射光</li>
+<li>反射光。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgac2d715" class="outline-3">
+<h3 id="orgac2d715"><span class="section-number-3">5.2</span> 光的方向</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>顺光</li>
+<li>斜射光
+<ul class="org-ul">
+<li>摄影中主要用光方式。</li>
+<li>不仅适合表现被摄对象的轮廓，更能通过其阴影部分增加画面的明暗层次，让画面更立体。</li>
+</ul></li>
+<li>侧光
+<ul class="org-ul">
+<li>明暗影调各一半，影子修长富有表现力。</li>
+<li>采用测光表现景物的立体感、表面质感和空间纵深感。</li>
+</ul></li>
+<li>逆光
+<ul class="org-ul">
+<li>表现轮廓和剪影。</li>
+</ul></li>
+<li>顶光
+<ul class="org-ul">
+<li>顶光一般不适合拍人像。</li>
+</ul></li>
+<li>脚光
+<ul class="org-ul">
+<li>做修饰光使用，修饰人物的眼神、衣服或头发。</li>
+<li>拍摄水池、玻璃柜时，增加被摄物体的立体感和空间感。</li>
+</ul></li>
+<li>边缘光，云层</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org439722b" class="outline-2">
+<h2 id="org439722b"><span class="section-number-2">6</span> 曝光与测光</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+曝光三角：光圈，快门、ISO。
+</p>
+
+<p>
+测光原理：快门捕捉到的光线是整个环境总光亮的 18%，就是曝光值。
+</p>
+
+<p>
+测光方式：
+</p>
+<ul class="org-ul">
+<li>平均测光</li>
+<li>中央部分测光：只对画面中央的一片区域进行测光，测光区域约占画面 3%-11%。
+<ul class="org-ul">
+<li>适合被摄主体位于画面的某一部分区域，并且该区域与周围环境光线相差较大。</li>
+<li>适合舞台、人像拍摄，也适合逆光拍摄。</li>
+</ul></li>
+<li>中央重点平均测光
+<ul class="org-ul">
+<li>测光重点在画面中央，同时兼顾画面边缘。</li>
+</ul></li>
+<li>点测光
+<ul class="org-ul">
+<li>对人物重点部分（如眼睛等）进行测光。</li>
+</ul></li>
+</ul>
+
+<p>
+曝光补偿：白加黑减。
+</p>
+
+<p>
+包围曝光。
+</p>
+
+<p>
+曝光锁定：防止测光完成后改变。
+</p>
+
+<p>
+曝光动态范围与直方图。
+</p>
+
+<p>
+曝光原则：宁欠勿过。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org55ba758" class="outline-2">
+<h2 id="org55ba758"><span class="section-number-2">7</span> 一天中各时段的光线特性</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+色温：红低蓝高。
+</p>
+</div>
+
+<div id="outline-container-org6868d4c" class="outline-3">
+<h3 id="org6868d4c"><span class="section-number-3">7.1</span> 早晨</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+早上的光线色彩比较浓郁，表现出或红或橙的色调。
+</p>
+
+<p>
+太阳上升快，色温也变化快，要注意及时调整色温，应该设定色温较高的白平衡。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6fda78c" class="outline-3">
+<h3 id="org6fda78c"><span class="section-number-3">7.2</span> 上午</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+上午的光线光源方向、质地和亮度比较稳定，8-10 点比较合适拍照。
+</p>
+
+<p>
+上午光线比较平淡，要从构图、光影、色彩等多方面进行考虑。
+</p>
+
+<p>
+上午是硬调光，强烈的光线照射在人物的脸上会显得刻板、枯燥，不建议上午拍摄人像。
+</p>
+
+<p>
+但是经过夜晚水汽的滋润，许多植物花草比较娇嫩、鲜艳，色彩表现力好，硬光富有层次，非常合适拍照风光题材。
+</p>
+
+<p>
+上午空气中的水汽和灰层会对光线产生反射和折射，偏振镜可以去除杂乱光线，是作品自然通透。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb5f7c31" class="outline-3">
+<h3 id="orgb5f7c31"><span class="section-number-3">7.3</span> 中午</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+中午是顶光，不适合拍摄人物。但是这时段光线强烈，使得主体边缘将高光和阴影划分的十分明显，适合拍摄纪实题材。
+</p>
+
+<p>
+中午要拍照要注意曝光，对暗处曝光，并降低 1/2 或 1/3 的曝光补偿。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc76d161" class="outline-3">
+<h3 id="orgc76d161"><span class="section-number-3">7.4</span> 下午</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+下午没有水汽，画面比较通透。
+</p>
+
+<p>
+午后，光线质感和色温变化稳定，适合拍照。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8f53d0c" class="outline-3">
+<h3 id="org8f53d0c"><span class="section-number-3">7.5</span> 黄昏</h3>
+<div class="outline-text-3" id="text-7-5">
+<p>
+太阳落山之前，光线缓慢变弱，色温下降，呈现暖色调。
+</p>
+
+<p>
+晚霞和各种层云也是拍摄重点。
+</p>
+
+<p>
+这时候拍照要注意明暗对比。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfa1bb68" class="outline-3">
+<h3 id="orgfa1bb68"><span class="section-number-3">7.6</span> 夜晚</h3>
+<div class="outline-text-3" id="text-7-6">
+<p>
+刚入夜时的光影效果是自然光与人造光的结合，这时候可以排出很动人的效果。
+</p>
+
+<p>
+入夜以后使用快门与光圈的组合，可以拍出特殊效果：
+</p>
+<ul class="org-ul">
+<li>慢速快门拍车流</li>
+<li>小光圈拍星芒</li>
+</ul>
+
+<p>
+夜晚拍照要注意：
+</p>
+<ul class="org-ul">
+<li>使用三脚架</li>
+<li>白平衡模式准确。因为人造光不同。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org19441b4" class="outline-2">
+<h2 id="org19441b4"><span class="section-number-2">8</span> 光影的艺术</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org3614190" class="outline-3">
+<h3 id="org3614190"><span class="section-number-3">8.1</span> 光线质感</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+主体表面的纹理、材质与色彩非常清晰，就是质感较好。
+</p>
+
+<p>
+微距拍摄质感要求高，最好用三脚架，没有的话，可以提高 iso，缩短曝光时间。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6fd630d" class="outline-3">
+<h3 id="org6fd630d"><span class="section-number-3">8.2</span> 不同的光影氛围</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+高反差光影质感强烈，暗处或大片留白给欣赏者以联想。
+</p>
+
+<p>
+低反差光影平淡柔和，比较适合主体不是特别明确的风光题材。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org25167ab" class="outline-3">
+<h3 id="org25167ab"><span class="section-number-3">8.3</span> 情感表达</h3>
+<div class="outline-text-3" id="text-8-3">
+<p>
+硬调光通常表现强烈、明快、干净、纯洁等情感。
+</p>
+
+<p>
+软调光通常表现柔和、恬静或者惆怅、压抑的情感。
+</p>
+
+<p>
+高反差表现刚毅、肃穆、激昂的情感。
+</p>
+
+<p>
+低反差表现恬静、柔和、深邃、理智、枯燥、压抑以及孕育等情感。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf5db0ee" class="outline-3">
+<h3 id="orgf5db0ee"><span class="section-number-3">8.4</span> 阴影</h3>
+<div class="outline-text-3" id="text-8-4">
+<p>
+画面的立体感和空间大多是通过阴影的衬托才能表现出来。
+</p>
+
+<p>
+阴影还能提升画面美感。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd608d1f" class="outline-3">
+<h3 id="orgd608d1f"><span class="section-number-3">8.5</span> 边光</h3>
+</div>
+</div>
+
+<div id="outline-container-org4fe4ad4" class="outline-2">
+<h2 id="org4fe4ad4"><span class="section-number-2">9</span> 闪光灯的效果</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+慢门同步功能。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0f23693" class="outline-2">
+<h2 id="org0f23693"><span class="section-number-2">10</span> 认识色彩</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+色彩的三属性：
+</p>
+<ul class="org-ul">
+<li>色相</li>
+<li>明度，同种或不同种色彩间的明暗差别。</li>
+<li>纯度，也就是色度，纯度高的颜色艳丽。</li>
+</ul>
+</div>
+
+
+<div id="outline-container-org5b80392" class="outline-3">
+<h3 id="org5b80392"><span class="section-number-3">10.1</span> 色系</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+红色系：代表吉祥、喜气、热烈、奔放、激情、斗志、革命。
+</p>
+
+<p>
+橙色系：代表明亮、华丽、健康、活力、欢乐以及极度危险。
+</p>
+
+<p>
+黄色系：亮度高，给人感觉不稳定。有轻松、欢快的感觉。还有 代表高贵。但是土黄色给人稳重、踏实、柔和、轻松的感觉。
+</p>
+
+<p>
+绿色系：代表生机、朝气、希望、和平。
+</p>
+
+<p>
+蓝色系：大气、平静、稳重、理智、博大。
+</p>
+
+<p>
+紫色系：代表高贵、美丽、浪漫、神秘、孤独、忧郁。当代社会中，紫色具有强烈的女性化风格。
+</p>
+
+<p>
+白色：代表平等、平和、纯净、明亮、朴素、平淡、寒冷、冷库等。
+</p>
+
+<p>
+黑色：代表冷酷、阴暗、黑暗，也可象征高贵、神秘。
+</p>
+
+<p>
+黑白搭配给人强烈的视觉冲击力，蓝白搭配表现平和、宁静的情感。
+</p>
+
+<p>
+灰色是过渡色，用于调和极端对立的色彩。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org15ae9ad" class="outline-3">
+<h3 id="org15ae9ad"><span class="section-number-3">10.2</span> 色彩间的关系</h3>
+<div class="outline-text-3" id="text-10-2">
+<ul class="org-ul">
+<li>互补色</li>
+<li>相邻色</li>
+<li>暖色系</li>
+<li>冷色系</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb7e160e" class="outline-3">
+<h3 id="orgb7e160e"><span class="section-number-3">10.3</span> 色彩运用技巧</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:30</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>调不尽的内存泄漏，用不完的 Valgrind</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="phenix3443" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">调不尽的内存泄漏，用不完的 Valgrind</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga62c103">1. Valgrind 安装</a></li>
+<li><a href="#org6522b17">2. Valgrind 包含的工具</a>
+<ul>
+<li><a href="#org5823c6e">2.1. memcheck</a></li>
+<li><a href="#org91fa15a">2.2. cachegrind</a></li>
+<li><a href="#org1597144">2.3. helgrind</a></li>
+<li><a href="#orge4fe75a">2.4. Callgrind</a></li>
+<li><a href="#org2f9d6a0">2.5. Massif</a></li>
+<li><a href="#org1eb30f5">2.6. lackey</a></li>
+</ul>
+</li>
+<li><a href="#org4e615f1">3. Valgrind 的参数</a>
+<ul>
+<li><a href="#org087b1f4">3.1. 常用选项</a></li>
+<li><a href="#orgdc44a44">3.2. 适用于 Memcheck 工具的相关选项：</a></li>
+</ul>
+</li>
+<li><a href="#orgdd385f9">4. Valgrind 的使用</a></li>
+<li><a href="#org648fbf8">5. Valgrind 的示例</a>
+<ul>
+<li><a href="#org50cde4a">5.1. 使用未初始化的内存</a>
+<ul>
+<li><a href="#orgbb50d61">5.1.1. 内存读写越界</a></li>
+<li><a href="#org6caf18d">5.1.2. src 和 dst 内存覆盖</a></li>
+<li><a href="#orgc0e9bad">5.1.3. 动态内存管理错误</a></li>
+<li><a href="#orgdcf5477">5.1.4. 内存泄漏</a></li>
+<li><a href="#orgc45e04b">5.1.5. 非法读写</a></li>
+<li><a href="#orge3e58b6">5.1.6. 无效指针</a></li>
+<li><a href="#org05bac9e">5.1.7. 重复释放</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgc482202">6. Valgrind 的局限</a></li>
+<li><a href="#org9b75b1d">7. 附录 A：参数指令</a>
+<ul>
+<li><a href="#org3bf84c4">7.1. 基本选项：</a></li>
+<li><a href="#org415b5b0">7.2. 错误相关选项：</a></li>
+<li><a href="#org3df8ef5">7.3. MALLOC() 相关的选项:</a></li>
+<li><a href="#orge6aeced">7.4. 非通用选项：</a></li>
+<li><a href="#orga2720a7">7.5. 调试 VALGRIND 选项：</a>
+<ul>
+<li><a href="#orga6dcfad">7.5.1. 内存检查选项：</a></li>
+<li><a href="#org6ad326a">7.5.2. CACHEGRIND 选项：</a></li>
+</ul>
+</li>
+<li><a href="#org7faf29b">7.6. CALLGRIND 选项：</a></li>
+<li><a href="#org9979b89">7.7. HELGRIND 选项：</a></li>
+<li><a href="#org8d8fef9">7.8. LACKEY 选项：</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga62c103" class="outline-2">
+<h2 id="orga62c103"><span class="section-number-2">1</span> Valgrind 安装</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-sh">      wget http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2
+      tar &#8211;jxvf ~/Downloads/valgrind-*.tar.bz2
+      <span style="color: #d18aff;">cd</span> valgrind-3.11.0
+      ./autogen.sh
+      ./configure &amp;&amp; make &amp;&amp; sudo make install
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6522b17" class="outline-2">
+<h2 id="org6522b17"><span class="section-number-2">2</span> Valgrind 包含的工具</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Valgrind 支持很多工具：memcheck，addrcheck，cachegrind，Massif，helgrind 和 Callgrind 等。在运行 Valgrind 时，你必须指明想用的工具,如果省略工具名，默认运行 memcheck。
+</p>
+</div>
+<div id="outline-container-org5823c6e" class="outline-3">
+<h3 id="org5823c6e"><span class="section-number-3">2.1</span> memcheck</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+memcheck 探测程序中内存管理存在的问题。它检查所有对内存的读/写操作，并截取所有的 malloc/new/free/delete 调用。因此 memcheck 工具能够探测到以下问题：
+</p>
+<ul class="org-ul">
+<li>使用未初始化的内存</li>
+<li>读/写已经被释放的内存</li>
+<li>读/写内存越界</li>
+<li>读/写不恰当的内存栈空间</li>
+<li>内存泄漏</li>
+<li>使用 <code>malloc/new/new[]</code> 和 <code>free/delete/delete[]</code> 不匹配。</li>
+<li>src 和 dst 的重叠</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org91fa15a" class="outline-3">
+<h3 id="org91fa15a"><span class="section-number-3">2.2</span> cachegrind</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+cachegrind 是一个 cache 剖析器。它模拟执行 CPU 中的 L1, D1 和 L2 cache，因此它能很精确的指出代码中的 cache 未命中。如果你需要，它可以打印出 cache 未命中的次数，内存引用和发生 cache 未命中的每一行代码，每一个函数，每一个模块和整个程序的摘要。如果你要求更细致的信息，它可以打印出每一行机器码的未命中次数。在 x86 和 amd64 上，cachegrind 通过 CPUID 自动探测机器的 cache 配置，所以在多数情况下它不再需要更多的配置信息了。
+</p>
+</div>
+</div>
+<div id="outline-container-org1597144" class="outline-3">
+<h3 id="org1597144"><span class="section-number-3">2.3</span> helgrind</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+它主要用来检查多线程程序中出现的竞争问题。Helgrind 寻找内存中被多个线程访问，而又没有一贯加锁的区域，这些区域往往是线程之间失去同步的地方，而且会导致难以发掘的错误。Helgrind 实现了名为”Eraser” 的竞争检测算法，并做了进一步改进，减少了报告错误的次数。
+</p>
+</div>
+</div>
+<div id="outline-container-orge4fe75a" class="outline-3">
+<h3 id="orge4fe75a"><span class="section-number-3">2.4</span> Callgrind</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Callgrind 收集程序运行时的一些数据，函数调用关系等信息，还可以有选择地进行 cache 模拟。在运行结束时，它会把分析数据写入一个文件。 <code>callgrind_annotate</code> 可以把这个文件的内容转化成可读的形式。
+</p>
+
+<p>
+一般用法:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">       valgrind --tool=callgrind ./sec_infod
+</pre>
+</div>
+
+<p>
+会在当前目录下生成 <code>callgrind.out.[pid]</code>, 如果我们想结束程序, 可以
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">       killall callgrind
+</pre>
+</div>
+
+<p>
+然后我们可以用
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">       callgrind_annotate --auto=yes callgrind.out.[pid] &gt; log
+       vi log
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2f9d6a0" class="outline-3">
+<h3 id="org2f9d6a0"><span class="section-number-3">2.5</span> Massif</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+堆栈分析器，它能测量程序在堆栈中使用了多少内存，告诉我们堆块，堆管理块和栈的大小。Massif 能帮助我们减少内存的使用，在带有虚拟内存的现代系统中，它还能够加速我们程序的运行，减少程序停留在交换区中的几率。
+</p>
+</div>
+</div>
+<div id="outline-container-org1eb30f5" class="outline-3">
+<h3 id="org1eb30f5"><span class="section-number-3">2.6</span> lackey</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+lackey 是一个示例程序，以其为模版可以创建你自己的工具。在程序结束后，它打印出一些基本的关于程序执行统计数据。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4e615f1" class="outline-2">
+<h2 id="org4e615f1"><span class="section-number-2">3</span> Valgrind 的参数</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+用法:
+</p>
+<pre class="example">
+      valgrind [options] prog-and-args [options]:
+</pre>
+</div>
+
+<div id="outline-container-org087b1f4" class="outline-3">
+<h3 id="org087b1f4"><span class="section-number-3">3.1</span> 常用选项</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+适用于所有 Valgrind 工具。
+</p>
+<ul class="org-ul">
+<li><code>--tool=&lt;name&gt;</code>
+最常用的选项。运行 valgrind 中名为 toolname 的工具。默认 memcheck。</li>
+<li><p>
+<code>-h --help</code>
+</p>
+
+<p>
+显示所有选项的帮助，包括内核和选定的工具两者。
+</p></li>
+<li><p>
+<code>--version</code>
+</p>
+
+<p>
+显示 valgrind 内核的版本，每个工具都有各自的版本。
+</p></li>
+<li><p>
+<code>-q --quiet</code>
+</p>
+
+<p>
+安静地运行，只打印错误信息。
+</p></li>
+<li><p>
+<code>--verbose</code>
+</p>
+
+<p>
+更详细的信息。
+</p></li>
+
+<li><p>
+<code>--trace-children=&lt;yes|no&gt;</code>
+</p>
+
+<p>
+跟踪子线程?  <code>[default: no]</code>
+</p></li>
+
+<li><p>
+<code>--track-fds=&lt;yes|no&gt;</code>
+</p>
+
+<p>
+跟踪打开的文件描述？ <code>[default: no]</code>
+</p></li>
+
+<li><p>
+<code>--time-stamp=&lt;yes|no&gt;</code>
+</p>
+
+<p>
+增加时间戳到 LOG 信息? <code>[default: no]</code>
+</p></li>
+
+<li><p>
+<code>--log-fd=&lt;number&gt;</code>
+</p>
+
+<p>
+输出 LOG 到描述符文件 [2=stderr]
+</p></li>
+
+<li><p>
+<code>--log-file=&lt;file&gt;</code>
+</p>
+
+<p>
+将输出的信息写入到 filename.PID 的文件里，PID 是运行程序的进行 ID
+</p></li>
+
+<li><p>
+<code>--log-file-exactly=&lt;file&gt;</code>
+</p>
+
+<p>
+输出 LOG 信息到 file,LOG 信息输出
+</p></li>
+
+<li><p>
+<code>--xml=yes</code>
+</p>
+
+<p>
+将信息以 xml 格式输出，只有 memcheck 可用
+</p></li>
+
+<li><p>
+<code>--num-callers=&lt;number&gt;</code>
+</p>
+
+<p>
+show &lt;number&gt; callers in stack traces
+</p></li>
+
+<li><p>
+<code>--error-exitcode=&lt;number&gt;</code>
+</p>
+
+<p>
+如果发现错误则返回错误代码 [0=disable]
+</p></li>
+
+<li><p>
+<code>--db-attach=&lt;yes|no&gt;</code>
+</p>
+
+<p>
+当出现错误，valgrind 会自动启动调试器 gdb。[default: no]
+</p></li>
+
+<li><p>
+<code>--db-command=&lt;command&gt;</code>
+</p>
+
+<p>
+启动调试器的命令行选项[gdb -nw %f %p]
+</p></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdc44a44" class="outline-3">
+<h3 id="orgdc44a44"><span class="section-number-3">3.2</span> 适用于 Memcheck 工具的相关选项：</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li><p>
+<code>--leak-check=&lt;no|summary|full&gt;</code>
+</p>
+
+<p>
+要求对 leak 给出详细信息? Leak 是指，存在一块没有被引用的内存空间，或没有被释放的内存空间，如 summary，只反馈一些总结信息，告诉你有多少个 malloc，多少个 free 等；如果是 full 将输出所有的 leaks，也就是定位到某一个 malloc/free。
+</p></li>
+
+<li><p>
+<code>--show-reachable=&lt;yes|no&gt;</code>
+</p>
+
+<p>
+如果为 no，只输出没有引用的内存 leaks，或指向 malloc 返回的内存块中部某处的 leaks [default: no]
+</p></li>
+</ul>
+
+<p>
+更详细的参数指令见附录 A。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdd385f9" class="outline-2">
+<h2 id="orgdd385f9"><span class="section-number-2">4</span> Valgrind 的使用</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+首先，在编译程序的时候打开调试模式（gcc 编译器的-g 选项）。如果没有调试信息，即使最好的 valgrind 工具也将中能够猜测特定的代码是属于哪一个函数。打开调试选项进行编译后再用 valgrind 检查，valgrind 将会给你的个详细的报告，比如哪一行代码出现了内存泄漏。
+</p>
+
+<p>
+当检查的是 C++程序的时候，还应该考虑另一个选项 -fno-inline。它使得函数调用链很清晰，这样可以减少你在浏览大型 C++程序时的混乱。比如在使用这个选项的时候，用 memcheck 检查 openoffice 就很容易。当然，你可能不会做这项工作，但是使用这一选项使得 valgrind 生成更精确的错误报告和减少混乱。
+</p>
+
+<p>
+一些编译优化选项(比如-O2 或者更高的优化选项)，可能会使得 memcheck 提交错误的未初始化报告，因此，为了使得 valgrind 的报告更精确，在编译的时候最好不要使用优化选项。
+</p>
+
+<p>
+如果程序是通过脚本启动的，可以修改脚本里启动程序的代码，或者使用 <code>--trace-children=yes</code> 选项来运行脚本。
+</p>
+</div>
+</div>
+<div id="outline-container-org648fbf8" class="outline-2">
+<h2 id="org648fbf8"><span class="section-number-2">5</span> Valgrind 的示例</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org50cde4a" class="outline-3">
+<h3 id="org50cde4a"><span class="section-number-3">5.1</span> 使用未初始化的内存</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;stdio.h&gt;</span>
+       <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+       {
+           <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">x</span>;
+           <span style="color: #a1db00;">if</span>(x == 0) {
+               printf(<span style="color: #ff4ea3;">"X is zero"</span>);
+           }
+           <span style="color: #a1db00;">return</span> 0;
+       }
+</pre>
+</div>
+
+<p>
+运行：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">      gcc -g uninit-mem.c -o uninit-mem
+      valgrind  --tool=memcheck ./uninit-mem
+</pre>
+</div>
+
+<p>
+我们可以看到:
+</p>
+<ul class="org-ul">
+<li>左边显示类似行号的数字（10297）表示的是 Process ID。</li>
+<li>最上面的红色方框表示的是 valgrind 的版本信息。</li>
+<li>中间的红色方框表示 valgrind 通过运行被测试程序，发现的内存问题。通过阅读这些信息，可以发现：
+<ul class="org-ul">
+<li>这是一个对内存的非法写操作，非法写操作的内存是 4 bytes。</li>
+<li>发生错误时的函数堆栈，以及具体的源代码行号。</li>
+<li>非法写操作的具体地址空间。</li>
+</ul></li>
+<li>最下面的红色方框是对发现的内存问题和内存泄漏问题的总结。内存泄漏的大小（40 bytes）也能够被检测出来。</li>
+</ul>
+</div>
+
+<div id="outline-container-orgbb50d61" class="outline-4">
+<h4 id="orgbb50d61"><span class="section-number-4">5.1.1</span> 内存读写越界</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdio.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>,<span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+        {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>=5;
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span>;
+            <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">pt</span>=(<span style="color: #00d7af;">int</span>*)malloc(<span style="color: #00d7af;">len</span>*<span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+            <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">p</span>=pt;
+            <span style="color: #a1db00;">for</span>(i=0;i&lt;len;i++)
+            {p++;}
+            *p=5;
+            printf(&#8220;%d&#8221;,*p);
+
+            <span style="color: #a1db00;">return</span>;
+        }
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-sh">
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6caf18d" class="outline-4">
+<h4 id="org6caf18d"><span class="section-number-4">5.1.2</span> src 和 dst 内存覆盖</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdio.h&gt;</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;string.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>,<span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+        {
+            <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">x</span>[50];
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span>;
+            <span style="color: #a1db00;">for</span>(i=0;i&lt;50;i++)
+            {
+                x[i]=i;
+            }
+            strncpy(x+20,x,20); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Good</span>
+            strncpy(x+20,x,21); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Overlap</span>
+            x[39]=&#8217;\0&#8217;;
+            strcpy(x,x+20); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Good</span>
+            x[39]=40;
+            x[40]=&#8217;\0&#8217;;
+            strcpy(x,x+20); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Overlap</span>
+
+            <span style="color: #a1db00;">return</span> 0;
+
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc0e9bad" class="outline-4">
+<h4 id="orgc0e9bad"><span class="section-number-4">5.1.3</span> 动态内存管理错误</h4>
+<div class="outline-text-4" id="text-5-1-3">
+<p>
+常见的内存分配方式分三种：静态存储，栈上分配，堆上分配。全局变量属于静态存储，它们是在编译时就被分配了存储空间，函数内的局部变量属于栈上分配，而最灵活的内存使用方式当属堆上分配，也叫做内存动态分配了。常用的内存动态分配函数包括：malloc, alloc, realloc, new 等，动态释放函数包括 free, delete。
+</p>
+
+<p>
+一旦成功申请了动态内存，我们就需要自己对其进行内存管理，而这又是最容易犯错误的。常见的内存动态管理错误包括：
+</p>
+<ul class="org-ul">
+<li>申请和释放不一致</li>
+<li>由于 C++ 兼容 C，而 C 与 C++ 的内存申请和释放函数是不同的，因此在 C++ 程序中，就有两套动态内存管理函数。一条不变的规则就是采用 C 方式申请的内存就用 C 方式释放；用 C++ 方式申请的内存，用 C++ 方式释放。也就是用 malloc/alloc/realloc 方式申请的内存，用 free 释放；用 new 方式申请的内存用 delete 释放。在上述程序中，用 malloc 方式申请了内存却用 delete 来释放，虽然这在很多情况下不会有问题，但这绝对是潜在的问题。</li>
+<li>申请和释放不匹配</li>
+<li>申请了多少内存，在使用完成后就要释放多少。如果没有释放，或者少释放了就是内存泄露；多释放了也会产生问题。上述程序中，指针 p 和 pt 指向的是同一块内存，却被先后释放两次。</li>
+<li>释放后仍然读写，本质上说，系统会在堆上维护一个动态内存链表，如果被释放，就意味着该块内存可以继续被分配给其他部分，如果内存被释放后再访问，就可能覆盖其他部分的信息，这是一种严重的错误。</li>
+</ul>
+
+<p>
+下面的一段程序，就包括了内存动态管理中常见的错误。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdio.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>,<span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+        {
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">p</span>=(<span style="color: #00d7af;">char</span>*)malloc(10);
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">pt</span>=p;
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span>;
+            <span style="color: #a1db00;">for</span>(i=0;i&lt;10;i++)
+            {
+                p[i]=&#8217;z&#8217;;
+            }
+            <span style="color: #00d7af;">delete</span> <span style="color: #ff8700;">p</span>;
+            p[1]=&#8217;a&#8217;;
+            free(pt);
+
+            <span style="color: #a1db00;">return</span> 0;
+
+        }
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgdcf5477" class="outline-4">
+<h4 id="orgdcf5477"><span class="section-number-4">5.1.4</span> 内存泄漏</h4>
+<div class="outline-text-4" id="text-5-1-4">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>()
+        {
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">x</span> = (<span style="color: #00d7af;">char</span>*)malloc(20);
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">y</span> = (<span style="color: #00d7af;">char</span>*)malloc(20);
+            x=y;
+            free(x);
+            free(y);
+
+            <span style="color: #a1db00;">return</span> 0;
+
+        }
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc45e04b" class="outline-4">
+<h4 id="orgc45e04b"><span class="section-number-4">5.1.5</span> 非法读写</h4>
+<div class="outline-text-4" id="text-5-1-5">
+<div class="org-src-container">
+<pre class="src src-c">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>()
+        {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span>, *<span style="color: #ff8700;">x</span>;
+            x = (<span style="color: #00d7af;">int</span> *)malloc(10*<span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+            <span style="color: #a1db00;">for</span> (i=0; i&lt;11; i++)
+                x[i] = i;
+            free(x);
+
+            <span style="color: #a1db00;">return</span> 0;
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge3e58b6" class="outline-4">
+<h4 id="orge3e58b6"><span class="section-number-4">5.1.6</span> 无效指针</h4>
+<div class="outline-text-4" id="text-5-1-6">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>()
+        {
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">x</span> = malloc(10);
+            x[10] = <span style="color: #ff4ea3;">'a'</span>;
+            free(x);
+
+            <span style="color: #a1db00;">return</span> 0;
+
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org05bac9e" class="outline-4">
+<h4 id="org05bac9e"><span class="section-number-4">5.1.7</span> 重复释放</h4>
+<div class="outline-text-4" id="text-5-1-7">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;stdlib.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+        {
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">x</span> = malloc(10);
+            free(x);
+            free(x);
+
+            <span style="color: #a1db00;">return</span> 0;
+        }
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc482202" class="outline-2">
+<h2 id="orgc482202"><span class="section-number-2">6</span> Valgrind 的局限</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Valgrind 不对静态数组 (分配在栈上) 进行边界检查。如果在程序中声明了一个数组:
+</p>
+<div class="org-src-container">
+<pre class="src src-c">      <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+      {
+          <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">x</span>[10];
+          x[11] = <span style="color: #ff4ea3;">'a'</span>;
+          <span style="color: #a1db00;">return</span> 0;
+      }
+
+</pre>
+</div>
+
+<p>
+Valgrind 则不会警告你，你可以把数组改为动态在堆上分配的数组，这样就可能进行边界检查了。这个方法好像有点得不偿失的感觉。
+</p>
+
+<p>
+Valgrind 占用了更多的内存&#x2014;可达两倍于你程序的正常使用量。如果你用 Valgrind 来检测使用大量内存的程序就会遇到问题，它可能会用很长的时间来运行测试。大多数情况下，这都不是问题，即使速度慢也仅是检测时速度慢，如果你用 Valgrind 来检测一个正常运行时速度就很慢的程序，这下问题就大了。Valgrind 不可能检测出你在程序中犯下的所有错误&#x2014;如果你不检查缓冲区溢出，Valgrind 也不会告诉你代码写了它不应该写的内存。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9b75b1d" class="outline-2">
+<h2 id="org9b75b1d"><span class="section-number-2">7</span> 附录 A：参数指令</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org3bf84c4" class="outline-3">
+<h3 id="org3bf84c4"><span class="section-number-3">7.1</span> 基本选项：</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+这些选项对所有工具都有效。
+</p>
+<ul class="org-ul">
+<li><p>
+-h  <code>--help</code>
+</p>
+
+<p>
+显示所有选项的帮助，包括内核和选定的工具两者。
+</p></li>
+
+<li><p>
+<code>--help-debug</code>
+</p>
+
+<p>
+和  <code>--help</code> 相同，并且还能显示通常只有 Valgrind 的开发人员使用的调试选项。
+</p></li>
+
+<li><p>
+<code>--version</code>
+</p>
+
+<p>
+显示 Valgrind 内核的版本号。工具可以有他们自已的版本号。这是一种保证工具只在它们可以运行的内核上工作的一种设置。这样可以减少在工具和内核之间版本兼容性导致奇怪问题的概率。
+</p></li>
+
+<li><p>
+-q  <code>--quiet</code>
+</p>
+
+<p>
+安静的运行，只打印错误信息。在进行回归测试或者有其它的自动化测试机制时会非常有用。
+</p></li>
+
+<li><p>
+-v  <code>--verbose</code>
+</p>
+
+<p>
+显示详细信息。在各个方面显示你的程序的额外信息，例如：共享对象加载，使用的重置，执行引擎和工具的进程，异常行为的警告信息。重复这个标记可以增加详细的级别。
+</p></li>
+
+<li><p>
+-d
+</p>
+
+<p>
+调试 Valgrind 自身发出的信息。通常只有 Valgrind 开发人员对此感兴趣。重复这个标记可以产生更详细的输出。如果你希望发送一个 bug 报告，通过 - v -v -d -d 生成的输出会使你的报告更加有效。
+</p></li>
+
+<li><p>
+<code>--tool=&lt;toolname&gt; [default: memcheck]</code>
+</p>
+
+<p>
+运行 toolname 指定的 Valgrind，例如，Memcheck, Addrcheck, Cachegrind, 等等。
+</p></li>
+
+<li><p>
+<code>--trace-children=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，Valgrind 会跟踪到子进程中。这经常会导致困惑，而且通常不是你所期望的，所以默认这个选项是关闭的。
+</p></li>
+
+<li><p>
+<code>--track-fds=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，Valgrind 会在退出时打印一个打开文件描述符的列表。每个文件描述符都会打印出一个文件是在哪里打开的栈回溯，和任何与此文件描述符相关的详细信息比如文件名或 socket 信息。
+</p></li>
+
+<li><p>
+<code>--time-stamp=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，每条信息之前都有一个从程序开始消逝的时间，用天，小时，分钟，秒和毫秒表示。
+</p></li>
+
+<li><p>
+<code>--log-fd=&lt;number&gt; [default: 2, stderr]</code>
+</p>
+
+<p>
+指定 Valgrind 把它所有的消息都输出到一个指定的文件描述符中去。默认值 2, 是标准错误输出 (stderr)。注意这可能会干扰到客户端自身对 stderr 的使用, Valgrind 的输出与客户程序的输出将穿插在一起输出到 stderr。
+</p></li>
+
+<li><p>
+<code>--log-file=&lt;filename&gt;</code>
+</p>
+
+<p>
+指定 Valgrind 把它所有的信息输出到指定的文件中。实际上，被创建文件的文件名是由 filename、'.'和进程号连接起来的（即 &lt;filename&gt;.&lt;pid&gt;），从而每个进程创建不同的文件。
+</p></li>
+
+<li><p>
+<code>--log-file-exactly=&lt;filename&gt;</code>
+</p>
+
+<p>
+类似于  ~&#x2013;log-file，但是后缀 ".pid" 不会被添加。如果设置了这个选项，使用 Valgrind 跟踪多个进程，可能会得到一个乱七八糟的文件。
+</p></li>
+
+<li><p>
+<code>--log-file-qualifier=&lt;VAR&gt;</code>
+</p>
+
+<p>
+当和  ~&#x2013;log-file 一起使用时，日志文件名将通过环境变量 $VAR 来筛选。这对于 MPI 程序是有益的。更多的细节，查看手册 2.3 节 "注解"。
+</p></li>
+
+<li><p>
+<code>--log-socket=&lt;ip-address:port-number&gt;</code>
+</p>
+
+<p>
+指定 Valgrind 输出所有的消息到指定的 IP，指定的端口。当使用 1500 端口时，端口有可能被忽略。如果不能建立一个到指定端口的连接，Valgrind 将输出写到标准错误 (stderr)。这个选项经常和一个 Valgrind 监听程序一起使用。更多的细节，查看手册 2.3 节 "注解"。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org415b5b0" class="outline-3">
+<h3 id="org415b5b0"><span class="section-number-3">7.2</span> 错误相关选项：</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+这些选项适用于所有产生错误的工具，比如 Memcheck, 但是 Cachegrind 不行。
+</p>
+<ul class="org-ul">
+<li><p>
+<code>--xml=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，输出将是 XML 格式。这是为了使用 Valgrind 的输出做为输入的工具，例如 GUI 前端更加容易些。目前这个选项只在 Memcheck 时生效。
+</p></li>
+
+<li><p>
+<code>--xml-user-comment=&lt;string&gt;</code>
+</p>
+
+<p>
+在 XML 开头 附加用户注释，仅在指定了  <code>--xml=yes</code> 时生效，否则忽略。
+</p></li>
+
+<li><p>
+<code>--demangle=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+打开 / 关闭 C++ 的名字自动解码。默认打开。当打开时，Valgrind 将尝试着把编码过的 C++ 名字自动转回初始状态。这个解码器可以处理 g++ 版本为 2.X,3.X 或 4.X 生成的符号。一个关于名字编码解码重要的事实是，禁止文件中的解码函数名仍然使用他们未解码的形式。Valgrind 在搜寻可用的禁止条目时不对函数名解码，因为这将使禁止文件内容依赖于 Valgrind 的名字解码机制状态，会使速度变慢，且无意义。
+</p></li>
+
+<li><p>
+~ <code>--num-callers=&lt;number&gt; [default: 12]</code>
+</p>
+
+<p>
+默认情况下，Valgrind 显示 12 层函数调用的函数名有助于确定程序的位置。可以通过这个选项来改变这个数字。这样有助在嵌套调用的层次很深时确定程序的位置。注意错误信息通常只回溯到最顶上的 4 个函数。(当前函数，和它的 3 个调用者的位置)。所以这并不影响报告的错误总数。这个值的最大值是 50。注意高的设置会使 Valgrind 运行得慢，并且使用更多的内存, 但是在嵌套调用层次比较高的程序中非常实用。
+</p></li>
+
+<li><p>
+<code>--error-limit=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+当这个选项打开时，在总量达到 10,000,000，或者 1,000 个不同的错误，Valgrind 停止报告错误。这是为了避免错误跟踪机制在错误很多的程序下变成一个巨大的性能负担。
+</p></li>
+
+<li><p>
+<code>--error-exitcode=&lt;number&gt; [default: 0]</code>
+</p>
+
+<p>
+指定如果 Valgrind 在运行过程中报告任何错误时的退出返回值，有两种情况；当设置为默认值 (零) 时，Valgrind 返回的值将是它模拟运行的程序的返回值。当设置为非零值时，如果 Valgrind 发现任何错误时则返回这个值。在 Valgrind 做为一个测试工具套件的部分使用时这将非常有用，因为使测试工具套件只检查 Valgrind 返回值就可以知道哪些测试用例 Valgrind 报告了错误。
+</p></li>
+
+<li><p>
+<code>--show-below-main=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+默认地，错误时的栈回溯不显示 main()之下的任何函数 (或者类似的函数像 glibc 的__libc_start_main()，如果 main() 没有出现在栈回溯中)；这些大部分都是令人厌倦的 C 库函数。如果打开这个选项，在 main()之下的函数也将会显示。
+</p></li>
+
+<li><p>
+<code>--suppressions=&lt;filename&gt; [default: $PREFIX/lib/valgrind/default.supp]</code>
+</p>
+
+<p>
+指定一个额外的文件读取不需要理会的错误；你可以根据需要使用任意多的额外文件。
+</p></li>
+
+<li><p>
+<code>--gen-suppressions=&lt;yes|no|all&gt; [default: no]</code>
+</p>
+
+<p>
+当设置为 yes 时，Valgrind 将会在每个错误显示之后自动暂停并且打印下面这一行： <code>--Print suppression ?  ~--- [Return/N/n/Y/y/C/c]</code> 个提示的行为和  <code>--db-attach</code> 选项 (见下面) 相同。如果选择是，Valgrind 会打印出一个错误的禁止条目，你可以把它剪切然后粘帖到一个文件，如果不希望在将来再看到这个错误信息。当设置为 all 时，Valgrind 会对每一个错误打印一条禁止条目，而不向用户询问。这个选项对 C++ 程序非常有用，它打印出编译器调整过的名字。注意打印出来的禁止条目是尽可能的特定的。如果需要把类似的条目归纳起来，比如在函数名中添加通配符。并且，有些时候两个不同的错误也会产生同样的禁止条目，这时 Valgrind 就会输出禁止条目不止一次，但是在禁止条目的文件中只需要一份拷贝(但是如果多于一份也不会引起什么问题)。并且，禁止条目的名字像&lt;在这儿输入一个禁止条目的名字&gt;; 名字并不是很重要，它只是和 - v 选项一起使用打印出所有使用的禁止条目记录。
+</p></li>
+
+<li><p>
+<code>--db-attach=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，Valgrind 将会在每次打印错误时暂停并打出如下一行： <code>-- Attach to debugger ?  - [Return/N/n/Y/y/C/c]</code> 按下回车, 或者 N、回车，n、回车，Valgrind 不会对这个错误启动调试器。按下 Y、回车，或者 y、回车，Valgrind 会启动调试器并设定在程序运行的这个点。当调试结束时，退出，程序会继续运行。在调试器内部尝试继续运行程序，将不会生效。按下 C、回车，或者 c、回车，Valgrind 不会启动一个调试器，并且不会再次询问。注意： <code>--db-attach=yes</code> 与  <code>--trace-children=yes</code> 有冲突。你不能同时使用它们。Valgrind 在这种情况下不能启动。
+</p></li>
+
+<li><p>
+<code>--db-command=&lt;command&gt; [default: gdb -nw %f %p]</code>
+</p>
+
+<p>
+通过  <code>--db-attach</code> 指定如何使用调试器。默认的调试器是 gdb. 默认的选项是一个运行时扩展 Valgrind 的模板。 %f 会用可执行文件的文件名替换，%p 会被可执行文件的进程 ID 替换。这指定了 Valgrind 将怎样调用调试器。默认选项不会因为在构造时是否检测到了 GDB 而改变, 通常是 /usr/bin/gdb. 使用这个命令，你可以指定一些调用其它的调试器来替换。给出的这个命令字串可以包括一个或多个 %p %f 扩展。每一个 %p 实例都被解释成将调试的进程的 PID，每一个 %f 实例都被解释成要调试的进程的可执行文件路径。
+</p></li>
+
+<li><p>
+<code>--input-fd=&lt;number&gt; [default: 0, stdin]</code>
+</p>
+
+<p>
+使用  <code>--db-attach=yes</code> 和  <code>--gen-suppressions=yes</code> 选项，在发现错误时，Valgrind 会停下来去读取键盘输入。默认地，从标准输入读取，所以关闭了标准输入的程序会有问题。这个选项允许你指定一个文件描述符来替代标准输入读取。
+</p></li>
+
+<li><p>
+<code>--max-stackframe=&lt;number&gt; [default: 2000000]</code>
+</p>
+
+<p>
+栈的最大值。如果栈指针的偏移超过这个数量，Valgrind 则会认为程序是切换到了另外一个栈执行。如果在程序中有大量的栈分配的数组，你可能需要使用这个选项。valgrind 保持对程序栈指针的追踪。如果栈指针的偏移超过了这个数量，Valgrind 假定你的程序切换到了另外一个栈，并且 Memcheck 行为与栈指针的偏移没有超出这个数量将会不同。通常这种机制运转得很好。然而，如果你的程序在栈上申请了大的结构，这种机制将会表现得愚蠢，并且 Memcheck 将会报告大量的非法栈内存访问。这个选项允许把这个阀值设置为其它值。应该只在 Valgrind 的调试输出中显示需要这么做时才使用这个选项。在这种情况下，它会告诉你应该指定的新的阀值。普遍地，在栈中分配大块的内存是一个坏的主意。因为这很容易用光你的栈空间，尤其是在内存受限的系统或者支持大量小堆栈的线程的系统上，因为 Memcheck 执行的错误检查，对于堆上的数据比对栈上的数据要高效很多。如果你使用这个选项，你可能希望考虑重写代码在堆上分配内存而不是在栈上分配。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3df8ef5" class="outline-3">
+<h3 id="org3df8ef5"><span class="section-number-3">7.3</span> MALLOC() 相关的选项:</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+对于使用自有版本的 malloc() (例如 Memcheck 和 massif)，下面的选项可以使用。
+</p>
+<ul class="org-ul">
+<li><p>
+<code>--alignment=&lt;number&gt; [default: 8]</code>
+</p>
+
+<p>
+默认 Valgrind 的 malloc(),realloc(), 等等，是 8 字节对齐地址的。这是大部分处理器的标准。然而，一些程序可能假定 malloc() 等总是返回 16 字节或更多对齐的内存。提供的数值必须在 8 和 4096 区间之内，并且必须是 2 的幂数。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge6aeced" class="outline-3">
+<h3 id="orge6aeced"><span class="section-number-3">7.4</span> 非通用选项：</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+这些选项可以用于所有的工具，它们影响 Valgrind core 的几个特性。大部分人不会用到这些选项。
+</p>
+<ul class="org-ul">
+<li><p>
+<code>--run-libc-freeres=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+GNU C 库 (libc.so)，所有程序共用的，可能会分配一部分内存自已用。通常在程序退出时释放内存并不麻烦，这里没什么问题，因为 Linux 内核在一个进程退出时会回收进程全部的资源，所以这只是会造成速度慢。glibc 的作者认识到这样会导致内存检查器，像 Valgrind，在退出时检查内存错误的报告 glibc 的内存泄漏问题，为了避免这个问题，他们提供了一个__libc_freeres() 例程特别用来让 glibc 释放分配的所有内存。因此 Memcheck 在退出时尝试着去运行__libc_freeres()。不幸的是，在 glibc 的一些版本中，__libc_freeres 是有 bug 会导致段错误的。这在 Red Hat 7.1 上有特别声明。所以，提供这个选项来决定是否运行__libc_freeres。如果你的程序看起来在 Valgrind 上运行得很好，但是在退出时发生段错误，你可能需要指定  <code>--run-libc-freeres=no</code> 来修正，这将可能错误的报告 libc.so 的内存泄漏。
+</p></li>
+
+<li><p>
+<code>--sim-hints=hint1,hint2,...</code>
+</p>
+
+<p>
+传递杂凑的提示给 Valgrind，轻微的修改模拟行为的非标准或危险方式，可能有助于模拟奇怪的特性。默认没有提示打开。小心使用！目前已知的提示有：
+</p>
+<ul class="org-ul">
+<li>lax-ioctls: 对 ioctl 的处理非常不严格，唯一的假定是大小是正确的。不需要在写时缓冲区完全的初始化。没有这个，用大量的奇怪的 ioctl 命令来使用一些设备驱动将会非常烦人。</li>
+<li>enable-inner: 打开某些特殊的效果，当运行的程序是 Valgrind 自身时。</li>
+</ul></li>
+
+<li><p>
+<code>--kernel-variant=variant1,variant2,...</code>
+</p>
+
+<p>
+处理系统调用和 ioctls 在这个平台的默认核心上产生不同的变量。这有助于运行在改进过的内核或者支持非标准的 ioctls 上。小心使用。如果你不理解这个选项做的是什么那你几乎不需要它。已经知道的变量有：
+</p>
+<ul class="org-ul">
+<li>bproc: 支持 X86 平台上的 sys_broc 系统调用。这是为了运行在 BProc，它是标准 Linux 的一个变种，有时用来构建集群。</li>
+</ul></li>
+
+<li><p>
+<code>--show-emwarns=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，Valgrind 在一些特定的情况下将对 CPU 仿真产生警告。通常这些都是不引人注意的。
+</p></li>
+
+<li><p>
+<code>--smc-check=&lt;none|stack|all&gt; [default: stack]</code>
+</p>
+
+<p>
+这个选项控制 Valgrind 对自我修改的代码的检测。Valgrind 可以不做检测，可以检测栈中自我修改的代码，或者任意地方检测自我修改的代码。注意默认选项是捕捉绝大多数情况，到目前我们了解的情况为止。使用 all 选项时会极大的降低速度。(但是用 none 选项运行极少影响速度，因为对大多数程序，非常少的代码被添加到栈中)
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga2720a7" class="outline-3">
+<h3 id="orga2720a7"><span class="section-number-3">7.5</span> 调试 VALGRIND 选项：</h3>
+<div class="outline-text-3" id="text-7-5">
+<p>
+还有一些选项是用来调试 Valgrind 自身的。在运行一般的东西时不应该需要的。如果你希望看到选项列表，使用  <code>--help-debug</code> 选项。
+</p>
+</div>
+
+<div id="outline-container-orga6dcfad" class="outline-4">
+<h4 id="orga6dcfad"><span class="section-number-4">7.5.1</span> 内存检查选项：</h4>
+<div class="outline-text-4" id="text-7-5-1">
+<ul class="org-ul">
+<li><p>
+<code>--leak-check=&lt;no|summary|yes|full&gt; [default: summary]</code>
+</p>
+
+<p>
+当这个选项打开时，当客户程序结束时查找内存泄漏。内存泄漏意味着有用 malloc 分配内存块，但是没有用 free 释放，而且没有指针指向这块内存。这样的内存块永远不能被程序释放，因为没有指针指向它们。如果设置为 summary，Valgrind 会报告有多少内存泄漏发生了。如果设置为 full 或 yes，Valgrind 给出每一个独立的泄漏的详细信息。
+</p>
+
+<ul class="org-ul">
+<li><p>
+<code>--show-reachable=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项关闭时，内存泄漏检测器只显示没有指针指向的内存块，或者只能找到指向块中间的指针。当这个选项打开时，内存泄漏检测器还报告有指针指向的内存块。这些块是最有可能出现内存泄漏的地方。你的程序可能，至少在原则上，应该在退出前释放这些内存块。这些有指针指向的内存块和没有指针指向的内存块，或者只有内部指针指向的块，都可能产生内存泄漏，因为实际上没有一个指向块起始的指针可以拿来释放，即使你想去释放它。
+</p></li>
+</ul></li>
+
+<li><p>
+<code>--leak-resolution=&lt;low|med|high&gt; [default: low]</code>
+</p>
+
+<p>
+在做内存泄漏检查时，确定 memcheck 将怎么样考虑不同的栈是相同的情况。当设置为 low 时，只需要前两层栈匹配就认为是相同的情况；当设置为 med，必须要四层栈匹配，当设置为 high 时，所有层次的栈都必须匹配。对于 hardcore 内存泄漏检查，你很可能需要使用  <code>--leak-resolution=high</code> 和  <code>--num-callers=40</code> 或者更大的数字。注意这将产生巨量的信息，这就是为什么默认选项是四个调用者匹配和低分辨率的匹配。注意  <code>--leak-resolution=</code> 设置并不影响 memcheck 查找内存泄漏的能力。它只是改变了结果如何输出。
+</p></li>
+
+<li><p>
+<code>--freelist-vol=&lt;number&gt; [default: 5000000]</code>
+</p>
+
+<p>
+当客户程序使用 free(C 中) 或者 delete(C++) 释放内存时，这些内存并不是马上就可以用来再分配的。这些内存将被标记为不可访问的，并被放到一个已释放内存的队列中。这样做的目的是，使释放的内存再次被利用的点尽可能的晚。这有利于 memcheck 在内存块释放后这段重要的时间检查对块不合法的访问。这个选项指定了队列所能容纳的内存总容量，以字节为单位。默认的值是 5000000 字节。增大这个数目会增加 memcheck 使用的内存，但同时也增加了对已释放内存的非法使用的检测概率。
+</p></li>
+
+<li><p>
+<code>--workaround-gcc296-bugs=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+当这个选项打开时，假定读写栈指针以下的一小段距离是 gcc 2.96 的 bug，并且不报告为错误。距离默认为 256 字节。注意 gcc 2.96 是一些比较老的 Linux 发行版 (RedHat 7.X) 的默认编译器，所以你可能需要使用这个选项。如果不是必要请不要使用这个选项，它可能会使一些真正的错误溜掉。一个更好的解决办法是使用较新的，修正了这个 bug 的 gcc/g++ 版本。
+</p></li>
+
+<li><p>
+<code>--partial-loads-ok=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+控制 memcheck 如何处理从地址读取时字长度，字对齐，因此哪些字节是可以寻址的，哪些是不可以寻址的。当设置为 yes 是，这样的读取并不抛出一个寻址错误。而是从非法地址读取的 V 字节显示为未定义，访问合法地址仍然是像平常一样映射到内存。设置为 no 时，从部分错误的地址读取与从完全错误的地址读取同样处理：抛出一个非法地址错误，结果的 V 字节显示为合法数据。注意这种代码行为是违背 ISO C/C++ 标准，应该被认为是有问题的。如果可能，这种代码应该修正。这个选项应该只是做为一个最后考虑的方法。
+</p></li>
+
+<li><p>
+<code>--undef-value-errors=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+控制 memcheck 是否检查未定义值的危险使用。当设为 yes 时，Memcheck 的行为像 Addrcheck, 一个轻量级的内存检查工具，是 Valgrind 的一个部分，它并不检查未定义值的错误。使用这个选项，如果你不希望看到未定义值错误。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6ad326a" class="outline-4">
+<h4 id="org6ad326a"><span class="section-number-4">7.5.2</span> CACHEGRIND 选项：</h4>
+<div class="outline-text-4" id="text-7-5-2">
+<p>
+手动指定 I1/D1/L2 缓冲配置，大小是用字节表示的。这三个必须用逗号隔开，中间没有空格，例如：valgrind  <code>--tool=cachegrind --I1=65535,2,64</code> 你可以指定一个，两个或三个 I1/D1/L2 缓冲。如果没有手动指定，每个级别使用普通方式 (通过 CPUID 指令得到缓冲配置，如果失败，使用默认值) 得到的配置。
+</p>
+
+<ul class="org-ul">
+<li><p>
+<code>--I1=&lt;size&gt;,&lt;associativity&gt;,&lt;line size&gt;</code>
+</p>
+
+<p>
+指定第一级指令缓冲的大小，关联度和行大小。
+</p></li>
+
+<li><p>
+<code>--D1=&lt;size&gt;,&lt;associativity&gt;,&lt;line size&gt;</code>
+</p>
+
+<p>
+指定第一级数据缓冲的大小，关联度和行大小。
+</p></li>
+
+<li><p>
+<code>--L2=&lt;size&gt;,&lt;associativity&gt;,&lt;line size&gt;</code>
+</p>
+
+<p>
+指定第二级缓冲的大小，关联度和行大小。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7faf29b" class="outline-3">
+<h3 id="org7faf29b"><span class="section-number-3">7.6</span> CALLGRIND 选项：</h3>
+<div class="outline-text-3" id="text-7-6">
+<ul class="org-ul">
+<li><p>
+<code>--heap=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+当这个选项打开时，详细的追踪堆的使用情况。关闭这个选项时，massif.pid.txt 或 massif.pid.html 将会非常的简短。
+</p></li>
+
+<li><p>
+<code>--heap-admin=&lt;number&gt; [default: 8]</code>
+</p>
+
+<p>
+每个块使用的管理字节数。这只能使用一个平均的估计值，因为它可能变化。glibc 使用的分配器每块需要 4~15 字节，依赖于各方面的因素。管理已经释放的块也需要空间，尽管 massif 不计算这些。
+</p></li>
+
+<li><p>
+<code>--stacks=&lt;yes|no&gt; [default: yes]</code>
+</p>
+
+<p>
+当打开时，在剖析信息中包含栈信息。多线程的程序可能有多个栈。
+</p></li>
+
+<li><p>
+<code>--depth=&lt;number&gt; [default: 3]</code>
+</p>
+
+<p>
+详细的堆信息中调用过程的深度。增加这个值可以给出更多的信息，但是 massif 会更使这个程序运行得慢，使用更多的内存，并且产生一个大的 massif.pid.txt 或者 massif.pid.hp 文件。
+</p></li>
+
+<li><p>
+<code>--alloc-fn=&lt;name&gt;</code>
+</p>
+
+<p>
+指定一个分配内存的函数。这对于使用 malloc() 的包装函数是有用的，可以用它来填充原来无效的上下文信息。(这些函数会给出无用的上下文信息，并在图中给出无意义的区域)。指定的函数在上下文中被忽略，例如，像对 malloc() 一样处理。这个选项可以在命令行中重复多次，指定多个函数。
+</p></li>
+
+<li><p>
+<code>--format=&lt;text|html&gt; [default: text]</code>
+</p>
+
+<p>
+产生 text 或者 HTML 格式的详细堆信息，文件的后缀名使用. txt 或者. html。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9979b89" class="outline-3">
+<h3 id="org9979b89"><span class="section-number-3">7.7</span> HELGRIND 选项：</h3>
+<div class="outline-text-3" id="text-7-7">
+<ul class="org-ul">
+<li><p>
+<code>--private-stacks=&lt;yes|no&gt; [default: no]</code>
+</p>
+
+<p>
+假定线程栈是私有的。
+</p></li>
+
+<li><p>
+<code>--show-last-access=&lt;yes|some|no&gt; [default: no]</code>
+</p>
+
+<p>
+显示最后一次字访问出错的位置。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8d8fef9" class="outline-3">
+<h3 id="org8d8fef9"><span class="section-number-3">7.8</span> LACKEY 选项：</h3>
+<div class="outline-text-3" id="text-7-8">
+<ul class="org-ul">
+<li><p>
+<code>--fnname=&lt;name&gt; [default: _dl_runtime_resolve()]</code>
+</p>
+
+<p>
+对 &lt;name&gt; 函数计数。
+</p></li>
+
+<li><p>
+<code>--detailed-counts=&lt;no|yes&gt; [default: no]</code>
+</p>
+
+<p>
+对读取，存储和 alu 操作计数。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: phenix3443</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

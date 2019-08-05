@@ -1,0 +1,1528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flycheck</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Flycheck</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc7fa2b7">1. Introduction</a></li>
+<li><a href="#org2a88bac">2. Installation</a>
+<ul>
+<li><a href="#org04433d7">2.1. Prerequisites</a></li>
+<li><a href="#org7fcfa9a">2.2. Syntax checking tools</a></li>
+<li><a href="#org6f80e1d">2.3. Installation</a></li>
+<li><a href="#org792ddf1">2.4. Cask</a></li>
+</ul>
+</li>
+<li><a href="#org979d7bc">3. Quickstart</a>
+<ul>
+<li><a href="#org7796787">3.1. Install and enable Flycheck</a></li>
+<li><a href="#orga14736e">3.2. Install syntax checker tools</a></li>
+<li><a href="#org2f6e740">3.3. Check syntax in a buffer</a></li>
+<li><a href="#orgf37a13b">3.4. Navigate and list errors</a>
+<ul>
+<li><a href="#org3acb212">3.4.1. More features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org748945d">4. Usage</a>
+<ul>
+<li><a href="#orgab0f26b">4.1. Checking buffers</a></li>
+<li><a href="#org4de4743">4.2. Syntax checkers</a></li>
+<li><a href="#org0ed56f1">4.3. Reporting results</a></li>
+<li><a href="#org2e630aa">4.4. Navigating errors</a></li>
+<li><a href="#org4e17f3e">4.5. Displaying errors</a></li>
+<li><a href="#orge1e78b3">4.6. Killing errors</a></li>
+<li><a href="#org8801473">4.7. Listing errors</a></li>
+<li><a href="#orgbd6b066">4.8. Mode line display</a></li>
+<li><a href="#orgadfccac">4.9. Configuring checkers</a></li>
+</ul>
+</li>
+<li><a href="#orgc42c42a">5. Syntax checker definitions</a></li>
+<li><a href="#orgeccb9de">6. Flycheck hooks</a></li>
+<li><a href="#orgd6f02c0">7. Flycheck API:</a></li>
+<li><a href="#org6ea52d5">8. Supported languages</a></li>
+</ul>
+</div>
+</div>
+<p>
+<a href="https://github.com/flycheck/flycheck">Flycheck</a> is a modern on-the-fly syntax checking extension for GNU Emacs 24, intended as replacement for the older Flymake extension which is part of GNU Emacs.
+</p>
+
+<p>
+Flycheck 是 GNUE macs24 的动态语法检查扩展，目的是取代 GNU Emacs 中旧的 Flymake 扩展。
+</p>
+
+<p>
+It uses various syntax checking and linting tools to check the contents of buffers, and reports warnings and errors directly in the buffer or in an optional error list (see <a href="http://www.flycheck.org/manual/latest/index.html">Flycheck manual</a> for more information):
+</p>
+
+<p>
+通过各种语法检查和 lint 工具检查 buffer 内容，直接在 buffer 或可选的错误列表中报告警告和错误。
+</p>
+
+<p>
+Out of the box Flycheck supports over 40 different programming languages with more than 80 different syntax checking tools, and comes with a simple interface to define new syntax checkers.
+</p>
+
+<p>
+开箱即用的 Flycheck 支持超过 40 中不同的编程语言和超过 80 种不同的语法检查工具，并带有一个简单的接口可以定义新的语法检查器。
+</p>
+
+<p>
+Many <a href="http://www.flycheck.org/extensions.html">3rd party extensions</a> provide new syntax checkers and other features like alternative error displays or mode line indicators.
+</p>
+
+<p>
+许多第三方扩展提供新的语法检查和其他功能，比如替代的错误显示和模式行指示符。
+</p>
+
+
+<div id="outline-container-orgc7fa2b7" class="outline-2">
+<h2 id="orgc7fa2b7"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Flycheck provides modern on-the-fly syntax checking extension for GNU Emacs 24, intended as replacement for the older Flymake extension which is part of GNU Emacs.
+</p>
+
+
+<p>
+Flycheck 为 GNU Emacs 24 提供现代的动态语法检查，目的是取代 GNU Emacs 中的 Flymake 扩展。
+</p>
+
+<p>
+Flycheck runs various linting tools and services to automatically check the contents of buffers while you are typing, and reports warnings and errors directly in the buffer, in the mode line and in an optional error list. You can navigate errors and warnings in the current buffer, show the corresponding messages, and copy errors to the kill ring.
+</p>
+
+<p>
+Flycheck 运行各种 linting 工具和服务自动检查输入到 buffer 中的内容，在 buffer、模式行或可选的 error 列表中报告错误。可以在当前 buffer 中浏览错误和警告，显示相应的信息，拷贝错误到 kill ring 中。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Over 40 languages with more than 70 checkers. See <a href="http://www.flycheck.org/manual/latest/Supported-languages.html#Supported-languages">Supported languages</a>.
+</p>
+
+<p>
+超过 40 种语言和 70 款检查器。
+</p></li>
+
+<li><p>
+Fully automatic, fail-safe, on-the-fly syntax checking in buffers
+</p>
+
+<p>
+全自动、防故障、动态检查 buffer。
+</p></li>
+
+<li><p>
+In-buffer error highlighting, with fringe indicators
+</p>
+
+<p>
+buffer 中使用边缘标识高亮错误
+</p></li>
+
+<li><p>
+Error navigation
+</p>
+
+<p>
+浏览错误
+</p></li>
+
+<li><p>
+Auto-updating error list
+</p>
+
+<p>
+自动更新错误列表
+</p></li>
+
+<li><p>
+Many customisation options
+</p>
+
+<p>
+许多定制选项。
+</p></li>
+
+<li><p>
+A comprehensive manual
+</p>
+
+<p>
+全面的手册。
+</p></li>
+
+<li><p>
+A simple API to add support for new languages and tools
+</p>
+
+<p>
+使用简单的 API 就可以添加新语言和工具。
+</p></li>
+
+<li><p>
+A “doesn’t get in your way guarantee”
+</p>
+
+<p>
+不以你的方式得到保证。（啥意思）
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2a88bac" class="outline-2">
+<h2 id="org2a88bac"><span class="section-number-2">2</span> Installation</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org04433d7" class="outline-3">
+<h3 id="org04433d7"><span class="section-number-3">2.1</span> Prerequisites</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Flycheck needs GNU Emacs 24. Older releases of GNU Emacs or other flavours of Emacs (e.g. XEmacs, Aquamacs, etc.) are not supported.
+</p>
+
+<p>
+Flycheck 需要 GNU Emacs24。旧版 GNU Emacs 和其他种类的 Emacs 不受支持。
+</p>
+
+<p>
+Flycheck works best on Unix-like operating systems. It is extensively tested on Linux and OS X.
+</p>
+
+<p>
+Flycheck 在类 Unix 操作系统中工作良好。在 Linux 和 OS X 上经过广泛测试。
+</p>
+
+<p>
+Flycheck does not explicitly support Windows, but tries to maintain Windows compatibility and should generally work fine on Windows, too. However, we can neither answer questions about Windows nor fix bugs that only occur on Windows without the help of active Windows users. Please watch out for known Windows issues!
+</p>
+
+<p>
+Flycheck 没有明确支持 windows，但试图维护 windows 兼容性，在 windows 行也应该运行良好。不过，没有活跃的 windows 用户的帮助，我们也不能回答关于 windows 的问题，或修复发生在 windows 上的错误。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7fcfa9a" class="outline-3">
+<h3 id="org7fcfa9a"><span class="section-number-3">2.2</span> Syntax checking tools</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Flycheck does not check buffers itself. It relies on external programs to check buffers, which need to be installed separately. See Supported languages, for a list of required programs for each language supported by Flycheck.
+</p>
+
+<p>
+Flycheck 并不自己检查 buffer。它以来那些需要单独安装的外部工具检查 buffer。
+</p>
+
+<p>
+Most of these programs are available in the package repositories of Linux distributions, or with the standard package managers of specific programming languages (e.g. Rubygems, NPM, Cabal, etc.)
+</p>
+
+<p>
+大部分这种程序都能在 Linux 发行版的包容器中找到，或者在特定语言的标准包管理器中。（比如 Rubygems、NPM、Cacal 等）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6f80e1d" class="outline-3">
+<h3 id="org6f80e1d"><span class="section-number-3">2.3</span> Installation</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Install Flycheck via Emacs’ built-in package manager, from the MELPA Stable repository:
+</p>
+
+<p>
+通过 Emacs 自带的包管理器或 MELPA 标准容器安装 Flycheck。
+</p>
+
+<pre class="example">
+ M-x package-install RET flycheck
+</pre>
+
+<p>
+Alternatively, you may use the MELPA repository, which hosts the most recent development version. Note that these repositories are not included in GNU Emacs by default.
+</p>
+
+<p>
+也可以使用 MELPA 容器，上次有最近的开发版本。注意 GNU Emacs 默认不包括这些容器。
+</p>
+
+<p>
+You need to enable them explicitly, by adding the following to your init file:
+</p>
+
+<p>
+可以通过在 init 文件中添加以下代码来显示启用他们：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">package</span>)
+(add-to-list 'package-archives
+             '(<span style="color: #ff4ea3;">"melpa"</span> . <span style="color: #ff4ea3;">"http://melpa.org/packages/"</span>) t)
+(package-initialize)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org792ddf1" class="outline-3">
+<h3 id="org792ddf1"><span class="section-number-3">2.4</span> Cask</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+If you use Cask to manage your packages, add the following to your Cask file:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(source gnu)
+(source melpa-stable)
+
+(depends-on <span style="color: #ff4ea3;">"flycheck"</span>)
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org979d7bc" class="outline-2">
+<h2 id="org979d7bc"><span class="section-number-2">3</span> Quickstart</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org7796787" class="outline-3">
+<h3 id="org7796787"><span class="section-number-3">3.1</span> Install and enable Flycheck</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+To get started with Flycheck, enable it by adding the following to your init file:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'after-init-hook #'global-flycheck-mode)
+</pre>
+</div>
+
+<p>
+If you don’t know where your init file is take a look at the value of the variable user-init-file with C-h v user-init-file.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga14736e" class="outline-3">
+<h3 id="orga14736e"><span class="section-number-3">3.2</span> Install syntax checker tools</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Next you need to install syntax checking tools for the major modes you are using. For instance, for Python you may want to install Pylint:
+</p>
+
+<p>
+下一步需要安装正在使用的 major mode 对应的语法检查工具。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ pip install pylint
+</pre>
+</div>
+
+<p>
+For Ruby, you might want to use Rubocop and ruby-lint:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">gem install rubocop ruby-lint
+</pre>
+</div>
+
+<p>
+See Supported languages, for a complete list of all languages that Flycheck supports.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2f6e740" class="outline-3">
+<h3 id="org2f6e740"><span class="section-number-3">3.3</span> Check syntax in a buffer</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Now switch to a Python or Ruby Mode buffer and run M-x flycheck-verify-setup to check whether Flycheck is correctly setup.
+</p>
+
+<p>
+现在在 Python 或者 Ruby 模式 buff 中使用 flycheck-verif-setup 来检查是否正确设置了 Flycheck。
+</p>
+
+<p>
+If everything is fine Flycheck will now check syntax using these tools, when you visit a buffer in any of these languages. Syntax checking happens automatically when you save the buffer or make any changes. Flycheck highlights errors and warnings in the buffer, indicates them in the fringe, and reports their numbers in the mode line.
+</p>
+
+<p>
+一切设置好之后，当访问这些语言的任何 buffer 时，Flycheck 将会使用这些工具进行代码检查。当保存 buffer 或作出改变时会自动检查。Flycheck 高亮 buffer 中的错误和警告，使用边缘标记指示它们，并在模式行显示它们的数字。
+</p>
+
+<p>
+You can also manually check a buffer with C-c ! c (flycheck-buffer).
+可以使用 C-c！c 手动检查 buffer。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf37a13b" class="outline-3">
+<h3 id="orgf37a13b"><span class="section-number-3">3.4</span> Navigate and list errors</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Use C-c ! n (flycheck-next-error) and C-c ! p (flycheck-previous-error) to navigate between error locations. If you keep the point at an error location, Flycheck will show the error message in the echo area after a short delay. You can also hover error locations with the mouse and see the error message in a tooltip.
+</p>
+
+<p>
+使用 C-c ! n (flycheck-next-error) and C-c ! p (flycheck-previous-error)在错误位置间进行导航。如果光标在 error 位置，短暂延迟后 Flycheck 会在回显区显示错误消息。也可以你使用鼠标悬位置，在 tooltip 中查看错误消息。
+</p>
+
+<p>
+To get an overview of all errors and warnings in the current buffer, type C-c ! l (flycheck-list-errors) to pop up a list of all errors in your current buffer. The error list updates automatically when you fix errors or introduce new ones, or when you switch to another buffer.
+</p>
+
+<p>
+为了得到当前 buffer 中所有错误和警告的概述，使用 C-c ! l(flycheck-list-error)来弹出当前 buffer 中所有错误的列表。当修正错误、引入新错误、或切换到新的 buff 时列表会自动更新。
+</p>
+</div>
+<div id="outline-container-org3acb212" class="outline-4">
+<h4 id="org3acb212"><span class="section-number-4">3.4.1</span> More features</h4>
+<div class="outline-text-4" id="text-3-4-1">
+<p>
+All Flycheck commands are available in the Emacs menu at ‘Syntax checking’ in the ‘Tools’ menu.
+</p>
+
+<p>
+所有 Flycheck 命令都在 Emacs Tools 菜单下“Syntax checking”菜单中。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org748945d" class="outline-2">
+<h2 id="org748945d"><span class="section-number-2">4</span> Usage</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This chapter explains the usage of Flycheck in-depth.
+</p>
+
+<p>
+本章深入讲解 Flycheck 的用法。
+</p>
+
+<p>
+Note: All commands in this chapter are documented with their default key prefix C-c !. You can customise this prefix with flycheck-keymap-prefix, but remember your custom prefix while reading this chapter.
+</p>
+
+<p>
+注意：本章的所有命令都是。可以通过 flycheck-keymap-prefix 定制该前缀，但是阅读本章的时候请记得定制的前缀。
+</p>
+</div>
+
+<div id="outline-container-orgab0f26b" class="outline-3">
+<h3 id="orgab0f26b"><span class="section-number-3">4.1</span> Checking buffers</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The minor mode flycheck-mode enables syntax checking in a single buffer. global-flycheck-mode automatically enables flycheck-mode all buffers whenever possible. You can exclude specific major modes from global-flycheck-mode with flycheck-global-modes.
+</p>
+
+<p>
+flycheck-mode 辅助模式在单独的 buffer 中启用语法检查。globa-flycheck-mode 自动在所有 buffer 中启用 flycheck-mode。可用 flycheck-global-modes 从 global-flycheck-mode 中排除特定的主模式。
+</p>
+
+<p>
+Note: global-flycheck-mode does not enable flycheck-mode for remote or encrypted files. The former is flaky and might be very slow, and the latter would leak confidential data to temporary directories. You may still check syntax in these buffers by manually enabling flycheck-mode with M-x flycheck-mode. However, this is not recommended for said reasons.
+</p>
+
+<p>
+注意：global-flycheck-mode 不会远程或加密文件启用 flycheck-mode。前者可能是片段，并且非常慢。后者可能会泄露机密数据到临时目录。可以在这些目录中通过 M-x flycheck-mode 手动启用 flycheck-mode。然而，正如刚才所说原因并不推荐这样做。
+</p>
+
+<p>
+Add the following code to your init file to enable syntax checking permanently:
+</p>
+
+<p>
+将下面的代码添加到 init 文件来永久启用语法检查：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'after-init-hook #'global-flycheck-mode)
+</pre>
+</div>
+
+<p>
+When flycheck-mode is enabled, Flycheck automatically checks a buffer whenever
+启动 flycheck-mode 后，下面这些情况，Flycheck 会自动检查 buffer：
+</p>
+
+<ul class="org-ul">
+<li>the buffer is saved,</li>
+<li>new lines are inserted,</li>
+<li>or a short time after you stopped to make changes to the buffer.</li>
+</ul>
+
+<p>
+You can customise this behaviour by changing flycheck-check-syntax-automatically:
+</p>
+
+<p>
+可以通过改变 flycheck-check-syntax-automatically 定制这种行为:
+</p>
+
+<p>
+User Option: flycheck-check-syntax-automatically
+</p>
+
+<p>
+A list of events that trigger a new syntax check in the current buffer:
+</p>
+
+<p>
+当前 buffer 中触发语法检查的事件列表：
+</p>
+
+<ul class="org-ul">
+<li><p>
+save
+</p>
+
+<p>
+Check the buffer immediately after it was saved.
+</p>
+
+<p>
+保存 buffer 后立即检查。
+</p></li>
+
+<li><p>
+idle-change
+</p>
+
+<p>
+Check the buffer a short time after the last change to the buffer. The delay is customisable with flycheck-idle-change-delay.
+</p>
+
+<p>
+buffer 最后更改一段时间后检查。通过 flycheck-idle-change-delay 定制延迟时间。
+</p></li>
+
+<li><p>
+new-line
+</p>
+
+<p>
+Check the buffer immediately after a new line was inserted.
+</p>
+
+<p>
+插入新行后立刻检查缓冲区。
+</p></li>
+
+<li><p>
+mode-enabled
+</p>
+
+<p>
+Check the buffer immediately after Flycheck Mode was enabled.
+</p>
+
+<p>
+Flycheck mode 启用后立即检查。
+</p></li>
+</ul>
+
+<p>
+For instance, with the following code in your init file Flycheck will only check the buffer when it is saved, but never while you are making changes to the buffer:
+</p>
+
+<p>
+例如，如果 init 文件中是下面的代码，只有在保存 buffer 的时候才会检查，更改 buffer 不会检查。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> flycheck-check-syntax-automatically '(mode-enabled save))
+</pre>
+</div>
+
+<p>
+In addition to automatic syntax checking you can always check the current buffer manually:
+</p>
+
+<p>
+除了自动语法检查，还可以手动检查当前 buffer：
+</p>
+<ul class="org-ul">
+<li>C-c ! c</li>
+<li><p>
+M-x flycheck-buffer
+</p>
+
+<p>
+Check syntax in the current buffer.
+</p></li>
+</ul>
+
+<p>
+Note: If syntax checking does not work, please check your setup:
+</p>
+
+<p>
+注意：如果语法检查不工作，请检查设置：
+</p>
+
+<ul class="org-ul">
+<li>C-c ! v</li>
+<li><p>
+M-x flycheck-verify-setup
+</p>
+
+<p>
+Popup a buffer with information about the Flycheck setup for the current buffer.
+</p>
+
+<p>
+弹出显示当前 buffer 的 Flycheck 设置信息的 buffer。
+</p>
+
+<p>
+Lists the syntax checkers available for the current buffer, together with potential problems in their setup.
+</p>
+
+<p>
+显示可用于当前 buffer 的语法检查器，以及它们设置中可能存在的问题。
+</p></li>
+</ul>
+
+<p>
+During syntax checks Flycheck creates temporary files to feed to contents of the current buffer to external programs. You can change the prefix used for the names of these temporary files with flycheck-temp-prefix.
+</p>
+
+<p>
+语法检查过程中 Flycheck 创建临时文件将当前 buffer 内容传递给外部程序。可通过 flycheck-mtp-prefix 改变这些临时文件名字的前缀。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4de4743" class="outline-3">
+<h3 id="org4de4743"><span class="section-number-3">4.2</span> Syntax checkers</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Flycheck does not check buffers by itself, but relies on external syntax checkers. When checking a buffer Flycheck automatically selects the best syntax checker from flycheck-checkers:
+</p>
+
+<p>
+Flycheck 本身不会检查 buffer，而是依赖外部的语法检查器。检查时 Flycheck 自动从 flycheck-checkers 中选择最好的语法检查器：
+</p>
+
+<p>
+User Option: flycheck-checkers
+</p>
+
+<p>
+A list of all syntax checkers available for syntax checking.
+</p>
+
+<p>
+用于语法检查的所有语法检查器的列表：
+</p>
+
+<p>
+A syntax checker in this list is a registered syntax checker.
+</p>
+
+<p>
+Flycheck may apply further syntax checkers to the current buffer, if the selected syntax checker chains to other syntax checkers. For instance, the emacs-lisp syntax checker, which checks Emacs Lisp with Emacs’ byte compiler, chains to the emacs-lisp-checkdoc syntax checker, which checks Emacs Lisp for violations of documentation conventions, (elisp)Documentation Tips. In Emacs Lisp buffers, Flycheck will first use emacs-lisp, and then emacs-lisp-checkdoc.
+</p>
+
+<p>
+如果选中的语法检查器关联其他检查器的话，Flycheck 可能会做进一步检查。例如，emacs-lisp 语法检查器使用 Emacs 的字节编译器检查 Emacs lisp，但它关联了检查 Emacs Lisp 是否违反文档约定 emacs-lisp-checkdoc 语法检查器。Emacs Lisp buffer 中，Flycheck 先使用 emacs-lisp，然后使用 emacs-lisp-checkdoc。
+</p>
+
+<p>
+Flycheck ignores chained checkers which are not contained in flycheck-checkers.
+</p>
+
+<p>
+Flycheck 忽略没有包含在 flycheck-chekcers 中的关联检查器。
+</p>
+
+<p>
+Like everything else in GNU Emacs, syntax checkers have online documentation as well. If you are interested what major modes a particular syntax checker in flycheck-checkers supports, or what tool it uses, type C-c ! ?:
+</p>
+
+<p>
+像 GNU Emacs 所有其他东西一样，语法检查器也有在线文档，如果有兴趣了解 flycheck-checkers 中的特定语法检查器支持哪种主模式，或者它使用什么工具，键入 C-c！ ？：
+</p>
+<ul class="org-ul">
+<li>C-c ! ?</li>
+<li><p>
+M-x flycheck-describe-checker
+</p>
+
+<p>
+Prompt for a syntax checker and show its documentation.
+</p>
+
+<p>
+输入语法检查器，显示它的文档。
+</p>
+
+<p>
+The documentation includes the name of the program or service used by the syntax checker, a list of major modes in which the checker will be used, and a list of its options.
+</p>
+
+<p>
+文档包括语法检查器使用的程序或服务的名字，检查器适用的主模式列表以及它的选项。
+</p></li>
+</ul>
+
+<p>
+Instead of letting Flycheck select a syntax checker automatically you can also explicitly tell Flycheck which checker to use for the current buffer, by manually selecting a specific syntax checker:
+</p>
+
+<p>
+除了让 Flycheck 自动选择语法检查器，还可以为当前 buffer 手动选择 Flycheck 使用的检查器：
+</p>
+<ul class="org-ul">
+<li>C-c ! s</li>
+<li><p>
+M-x flycheck-select-checker
+</p>
+
+<p>
+Prompt for a syntax checker and select this syntax checker for the current buffer.
+</p>
+
+<p>
+输入检查器名字，为当前 buffer 选择该检查器。
+</p></li>
+
+<li>C-u C-c ! s</li>
+<li><p>
+C-u M-x flycheck-select-checker Remove any manual
+</p>
+
+<p>
+syntax checker selection for the current buffer, and let Flycheck automatically select a syntax checker from flycheck-checkers again.
+</p>
+
+<p>
+当前 buffer 语法检查器选项，再次让 Flycheck 从 flycheck-checkers 中自动选择语法检查器。
+</p></li>
+</ul>
+
+<p>
+You can also select a syntax checker via the variable flycheck-checker. In fact, flycheck-select-checker just sets this variable accordingly:
+</p>
+
+<p>
+也可以通过变量 flycheck-checker 选择语法选择器，事实上，flycheck-select-checker 只是设置了这个变量：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Variable: flycheck-checker
+</p>
+
+<p>
+A syntax checker to use for the current buffer.
+</p>
+
+<p>
+用于当前 buffer 的语法检查器。
+</p>
+
+<p>
+If nil (the default), Flycheck will automatically select the best checker from flycheck-checkers.
+</p>
+
+<p>
+如果为 nil（默认值），Flycheck 将会自动从 flycheck-checkers 中选择最好的检查器。
+</p>
+
+<p>
+If set to a syntax checker, Flycheck will use this syntax checker for the current buffer, and never automatically select any other. Flycheck still runs chained checkers, though.
+</p>
+
+<p>
+如果设置为一个语法检查器，Flycheck 会将该检查器用于当前 buffer，不再自动选择其他的。Flycheck 仍会运行关联的检查器。
+</p>
+
+<p>
+If the syntax checker selected by this variable does not work in the current buffer, Flycheck signals an error.
+</p>
+
+<p>
+如果该变量选中的检查器不能再 buffer 中工作，Flych 将会给出错误信号。
+</p>
+
+<p>
+You can set this variable locally. For instance, if your Python project mandates Flake8 as a syntax checker, you can tell Flycheck to only use the corresponding checker python-flake8 in Python files of your project by setting flycheck-checker as a directory-local variable in the top-level directory of your project with M-x add-dir-local-variable RET python-mode RET flycheck-checker RET python-flake8. See (emacs)Directory Variables, for more information about directory variables.
+</p>
+
+<p>
+可以将该变量设置为局部值。例如，如果 Python 项目将 Flake8 设置为语法检查器，Flycheck 对项目中的所有 python 文件只使用对应的检查器 python-flake8 检查。要这样做，需要在项目顶层目录中通过
+</p>
+<pre class="example">
+M-x add-dir-local-variable RET python-mode RET flycheck-checker RET python-flake8
+</pre>
+<p>
+将 flycheck-checker 设置为局部目录变量。
+</p></li>
+</ul>
+
+<p>
+Occasionally you may want to disable specific syntax checkers completely, so that they can never be used at all, neither via automatic nor via manual selection:
+</p>
+
+<p>
+偶尔可能想要完全禁用特定语法检查器，这样它们就会永远不会被使用，不管通过自动还是手动选择：
+</p>
+
+<ul class="org-ul">
+<li>C-c ! x</li>
+<li><p>
+M-x flycheck-disable-checker
+</p>
+
+<p>
+Prompt for a syntax checker to disable in the current buffer.
+</p>
+
+<p>
+提示要在当前 buffer 中关闭的语法选择器。
+</p></li>
+
+<li>C-u C-c ! x</li>
+<li><p>
+C-u M-x flycheck-disable-checker
+</p>
+
+<p>
+Prompt for a syntax checker to re-enable in the current buffer.
+</p>
+
+<p>
+提示要在当前 buffer 中重新启用的语法选择器。
+</p></li>
+</ul>
+
+<p>
+This is particularly useful if you want to disable syntax checkers that are chained after others. For instance, if you do not care for documentation conventions of Emacs Lisp you may not need for the emacs-lisp-checkdoc checker, so you can disable it for the current buffer with M-x flycheck-disable-checker RET emacs-lisp-checkdoc.
+</p>
+
+<p>
+这对于禁用被关联的语法检查器很有用。例如，如果不关心 Emacs Lisp 的文档约定，可能就不需要 emacs-lisp-checkdoc 检查器，所以可以使用 M-x flycheck-disable-checker RET emacs-lisp-checkdoc 禁用它。
+</p>
+
+<p>
+flycheck-disable-checker actually sets the buffer-local value of the flycheck-disabled-checkers option:
+</p>
+
+<p>
+flycheck-disable-checker 实际上是设置了 buff-local 值 flycheck-disabled-checkers 选项的 buffer-local 值：
+</p>
+
+<ul class="org-ul">
+<li><p>
+User Option: flycheck-disabled-checkers
+</p>
+
+<p>
+A list of disabled syntax checkers. Flycheck will never use disabled syntax checkers to check a buffer.
+</p>
+
+<p>
+禁用的语法检查器列表。Flycheck 将不会使用禁用的语法检查器检查 buffer。
+</p>
+
+<p>
+You can customise this variable with M-x customize-variable RET flycheck-disabled-checkers or set its default value in your init file to permanently disable specific checkers. For instance, to permanently disable Clang for all C/C++ buffers:
+</p>
+
+<p>
+可以通过 M-x customize-variable RET flycheck-disabled-checkers 定制该变量，或者在 init 文件中将其值设置为永远禁用的指定检查器。例如，针对 C/C++ buffers 永远禁用 Clang。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq-default</span> flycheck-disabled-checkers '(c/c++-clang))
+</pre>
+</div>
+
+<p>
+You can also disable checkers via local variables. For instance, to disable emacs-lisp-checkdoc for your entire project, add it to flycheck-disabled-checkers in the .dir-locals.el file of your project:
+</p>
+
+<p>
+也可以通过局部变量禁用检查器。例如针对整个工程禁用 emacs-lisp-checkdoc，在工程的.dir-locals.el 文件中，将它添加到 flycheck-disable-checkers 变量中。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">((emacs-lisp-mode (flycheck-disabled-checkers emacs-lisp-checkdoc)))
+</pre>
+</div>
+
+<p>
+See (emacs)Directory Variables, for more information about directory variables.
+</p></li>
+</ul>
+
+<p>
+You can change the completion system used by the commands of this section with flycheck-completion-system.
+</p>
+
+<p>
+可以通过 flycheck-completion-system 改变本节所有命令使用的补全系统。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ed56f1" class="outline-3">
+<h3 id="org0ed56f1"><span class="section-number-3">4.3</span> Reporting results</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+When a syntax check in the current buffer has finished, Flycheck reports the results of the syntax checkers used by the check in the current buffer:
+</p>
+
+<ul class="org-ul">
+<li>It highlights errors and warnings reported by a syntax checking in the buffer according to flycheck-highlighting-mode,</li>
+
+<li>and indicates these locations in the fringe according to flycheck-indication-mode.</li>
+</ul>
+
+<p>
+User Option: flycheck-highlighting-mode
+</p>
+
+<p>
+How Flycheck highlights errors and warnings in the buffer:
+</p>
+
+<ul class="org-ul">
+<li><p>
+lines
+</p>
+
+<p>
+Highlight the whole line, ignoring any column information.
+</p></li>
+
+<li><p>
+columns
+</p>
+
+<p>
+Highlight the column of the error, if the error has a column, otherwise behave as lines.
+</p></li>
+
+<li><p>
+symbols
+</p>
+
+<p>
+Highlight the symbol at the error column, if any, otherwise behave like columns. This is default
+</p></li>
+
+<li><p>
+sexps
+</p>
+
+<p>
+Highlight the expression at the error column, if any, otherwise behave like columns. Warning: sexps can be very slow in some major modes, notably the built-in python-mode.
+</p></li>
+
+<li><p>
+nil
+</p>
+
+<p>
+Do not highlight errors at all.
+</p></li>
+</ul>
+
+<p>
+Flycheck uses the flycheck-error, flycheck-warning and flycheck-info faces to highlight errors, warnings and info messages respectively.
+</p>
+
+<p>
+User Option: flycheck-indication-mode
+</p>
+
+<p>
+How Flycheck indicates errors and warnings:
+</p>
+
+<ul class="org-ul">
+<li>left-fringe</li>
+<li><p>
+right-fringe
+</p>
+
+<p>
+Indicate errors in the left or right fringe respectively. See (emacs)Fringes, for more information about fringes.
+</p>
+
+<p>
+Flycheck uses the flycheck-fringe-error, flycheck-fringe-warning, and flycheck-fringe-info faces for the indicators for the corresponding error levels.
+</p></li>
+<li><p>
+nil
+</p>
+
+<p>
+Do not indicate errors and warnings.
+</p></li>
+</ul>
+
+<p>
+To avoid flooding a buffer with excessive reports, Flycheck discards any reports and disables the corresponding syntax checker subsequently, if the total number of reported errors of any level exceeds the value of flycheck-checker-error-threshold.
+</p>
+
+<p>
+You can explicitly clear with the flycheck-clear command.
+</p>
+</div>
+</div>
+<div id="outline-container-org2e630aa" class="outline-3">
+<h3 id="org2e630aa"><span class="section-number-3">4.4</span> Navigating errors</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+By default, Flycheck integrates into standard error navigation commands of Emacs: M-g n (next-error) and M-g p (previous-error) will navigate between Flycheck warnings and errors in the current buffer. See (emacs)Compilation Mode, for more information about these commands. You can disable this integration by setting flycheck-standard-error-navigation to nil, and re-enabling flycheck-mode afterwards.
+</p>
+
+<p>
+Note: With standard error navigation visible compilation buffers (e.g. from M-x compile, M-x grep, M-x occur, etc.) take precedence over Flycheck errors.
+</p>
+
+<p>
+Flycheck provides an independent set of navigation commands which will always navigate Flycheck errors in the current buffer, regardless of visible compilation buffers and flycheck-standard-error-navigation:
+</p>
+
+<ul class="org-ul">
+<li>C-c ! n</li>
+<li><p>
+M-x flycheck-next-error
+</p>
+
+<p>
+Jump to the next error.
+</p>
+
+<p>
+With prefix argument, jump forwards by as many errors as specified by the prefix argument, e.g. M-3 C-c ! n will move to the 3rd error from the current point. With negative prefix argument, move to previous errors instead. Signal an error, if there are no more Flycheck errors.
+</p></li>
+<li>C-c ! p</li>
+<li><p>
+M-x flycheck-previous-error
+</p>
+
+<p>
+Jump to the previous Flycheck error.
+</p>
+
+<p>
+With prefix argument, jump backwards by as many errors as specified by the prefix argument, e.g. M-3 C-c ! p will move to the 3rd error before the current point. With negative prefix argument, move to next errors instead. Signal an error, if there are no more Flycheck errors.
+</p>
+
+<ul class="org-ul">
+<li><p>
+M-x flycheck-first-error
+</p>
+
+<p>
+Jump to the first Flycheck error.
+</p>
+
+<p>
+With prefix argument, jump forwards to by as many errors as specified by the prefix argument, e.g. M-3 M-x flycheck-first-error moves to the 3rd error from the beginning of the buffer. With negative prefix argument, move to the last error instead.
+</p></li>
+</ul></li>
+</ul>
+
+<p>
+By default, these commands consider all errors in the current buffer. With flycheck-navigation-minimum-level you can restrict them to errors above certain levels:
+</p>
+
+<p>
+User Option: flycheck-navigation-minimum-level
+</p>
+
+<p>
+The minimum levels of errors to consider for navigation.
+</p>
+
+<p>
+If set to an error level, only navigate to errors whose level is as least as severe as this one. If nil, navigate to all errors.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org4e17f3e" class="outline-3">
+<h3 id="org4e17f3e"><span class="section-number-3">4.5</span> Displaying errors</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+When the point moves to an error location Flycheck automatically displays the error at point after a short delay:
+User Option: flycheck-display-errors-delay
+</p>
+
+<p>
+The number of seconds to wait before displaying the error at point. Floating point numbers can express fractions of seconds.
+</p>
+
+<p>
+You can also display errors at point explicitly with C-c ! h:
+</p>
+<ul class="org-ul">
+<li>C-c ! h</li>
+<li><p>
+M-x flycheck-display-error-at-point
+</p>
+
+<p>
+Show the error(s) at point.
+</p></li>
+</ul>
+
+<p>
+By default Flycheck shows the error message and the error ID in the echo area, but you can customise how Flycheck displays errors with flycheck-display-errors-function:
+</p>
+
+<ul class="org-ul">
+<li><p>
+User Option: flycheck-display-errors-function
+</p>
+
+<p>
+A function to display errors. The function is called with a list of Flycheck error objects to display. See Errors, for more information about these objects.
+</p></li>
+</ul>
+
+<p>
+Flycheck provides some built-in display functions:
+</p>
+
+<ul class="org-ul">
+<li><p>
+Function: flycheck-display-error-messages
+</p>
+
+<p>
+Show error messages and IDs in the echo area.
+</p></li>
+
+<li><p>
+Function: flycheck-display-error-messages-unless-error-list
+</p>
+
+<p>
+Like flycheck-display-error-messages, but does not show anything if the error list is visible. See Listing errors, for more information about the error list.
+</p></li>
+</ul>
+
+<p>
+Alternatively the flycheck-pos-tip extension provides an display function which shows error messages in a graphical popup.
+</p>
+
+<p>
+In addition to this display mechanism, Flycheck adds a tooltip to each error which appears when you hover the error location with the mouse pointer. You can force Emacs to show the contents of the tooltip in the echo area with C-h . (display-local-help).
+</p>
+
+<p>
+The contents of this tooltip are created with flycheck-help-echo-function:
+</p>
+
+<ul class="org-ul">
+<li><p>
+User Option: flycheck-help-echo-function
+</p>
+
+<p>
+A function to compute the contents of the error tooltips.
+</p>
+
+<p>
+By default Flycheck adds the error message and the error ID of all errors at point to the tooltip contents.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge1e78b3" class="outline-3">
+<h3 id="orge1e78b3"><span class="section-number-3">4.6</span> Killing errors</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+You can also put error messages into the kill ring:
+</p>
+
+<ul class="org-ul">
+<li>C-c ! C-w</li>
+<li><p>
+M-x flycheck-copy-errors-as-kill
+</p>
+
+<p>
+Copy all Flycheck error messages at point into the kill ring.
+</p>
+
+<p>
+Each error message is killed separately, so C-y (yank) only yanks a single error message. You can use M-y (yank-pop) to cycle between the killed messages after yanking the first one.
+</p></li>
+<li>C-u C-c ! C-w</li>
+<li><p>
+C-u M-x flycheck-copy-errors-as-kill
+</p>
+
+<p>
+Copy all Flycheck error messages at point, including their IDs.
+</p></li>
+
+<li>M-0 C-c ! C-w</li>
+<li><p>
+M-0 M-x flycheck-copy-errors-as-kill
+</p>
+
+<p>
+Copy the IDs of the errors at point.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8801473" class="outline-3">
+<h3 id="org8801473"><span class="section-number-3">4.7</span> Listing errors</h3>
+</div>
+<div id="outline-container-orgbd6b066" class="outline-3">
+<h3 id="orgbd6b066"><span class="section-number-3">4.8</span> Mode line display</h3>
+</div>
+<div id="outline-container-orgadfccac" class="outline-3">
+<h3 id="orgadfccac"><span class="section-number-3">4.9</span> Configuring checkers</h3>
+</div>
+</div>
+<div id="outline-container-orgc42c42a" class="outline-2">
+<h2 id="orgc42c42a"><span class="section-number-2">5</span> Syntax checker definitions</h2>
+</div>
+
+<div id="outline-container-orgeccb9de" class="outline-2">
+<h2 id="orgeccb9de"><span class="section-number-2">6</span> Flycheck hooks</h2>
+</div>
+
+<div id="outline-container-orgd6f02c0" class="outline-2">
+<h2 id="orgd6f02c0"><span class="section-number-2">7</span> Flycheck API:</h2>
+</div>
+
+<div id="outline-container-org6ea52d5" class="outline-2">
+<h2 id="org6ea52d5"><span class="section-number-2">8</span> Supported languages</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

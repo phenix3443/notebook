@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ccls</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">ccls</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org385bf19">1. 概述</a></li>
+<li><a href="#org1b8eeec">2. 安装</a></li>
+<li><a href="#org597a3d7">3. 编辑器配置</a></li>
+<li><a href="#org18f47d7">4. 项目配置</a>
+<ul>
+<li><a href="#orgd84e433">4.1. compile_commands.json</a>
+<ul>
+<li><a href="#orgcd0164c">4.1.1. cmake</a></li>
+</ul>
+</li>
+<li><a href="#orge9159fe">4.2. <code>.ccls</code> File</a>
+<ul>
+<li><a href="#org7cdda6f">4.2.1. %compile_commands.json</a></li>
+<li><a href="#org27d648f">4.2.2. %c / %cpp / %objective-c / %objective-cpp</a></li>
+<li><a href="#org94d7d22">4.2.3. %cu</a></li>
+<li><a href="#org42a11bb">4.2.4. %h / %hpp</a></li>
+<li><a href="#orgcd6945c">4.2.5. Compiler driver</a></li>
+</ul>
+</li>
+<li><a href="#org56e5216">4.3. .ccls examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org385bf19" class="outline-2">
+<h2 id="org385bf19"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://github.com/MaskRay/ccls">ccls</a> 源自 cquery，是一个 C/C++/Objective-C <a href="language-server-protocol.html">语言服务器</a>。它具有以下功能：
+</p>
+<ul class="org-ul">
+<li>代码补全（包括函数签名和代码片段）</li>
+<li>定义/引用以及其他交叉引用。</li>
+<li>交叉引用扩展： <code>$ccls/call $ccls/inheritance $ccls/member $ccls/vars ...</code></li>
+<li>代码格式化</li>
+<li>代码层次结构：调用（调用者/被调用者）层次结构，继承（基础/派生）层次结构，成员层次结构</li>
+<li>符号重命名</li>
+<li>文档符号和工作区符号的近似搜索</li>
+<li>悬停信息</li>
+<li>诊断和代码操作（clang FixIts）</li>
+<li>语义突出显示和预处理器跳过区域</li>
+<li>语义导航： <code>$ccls/navigate</code></li>
+</ul>
+
+<p>
+它具有代码库的全局视图，并支持许多交叉引用功能，请参阅 <a href="https://github.com/MaskRay/ccls/wiki/FAQ">wiki/FAQ</a>。 当打开第一个文件时，它会开始并行地索引整个项目（包括可能存在的子项目），而主线程可以在索引完成之前为请求提供服务。保存文件将增量更新索引。
+</p>
+
+<p>
+与 cquery 相比，它利用了 C++ 17 的特性，具有较少的第三方依赖性和较小的代码库。它像 clangd 一样利用 Clang C++ API，为代码完成和诊断提供了更好的支持。Refactoring（反射？） 由 clang-include-fixer 和其他基于 Clang 的工具提供。
+</p>
+
+<p>
+与 cquery 比较（截止 2018-07-15）:
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">cquery</th>
+<th scope="col" class="org-left">ccls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">third_party</td>
+<td class="org-left">more</td>
+<td class="org-left">fewer</td>
+</tr>
+
+<tr>
+<td class="org-left">C++</td>
+<td class="org-left">C++14</td>
+<td class="org-left">C++17</td>
+</tr>
+
+<tr>
+<td class="org-left">clang API</td>
+<td class="org-left">libclang(C)</td>
+<td class="org-left">clang/llvm C++</td>
+</tr>
+
+<tr>
+<td class="org-left">Filesystem</td>
+<td class="org-left">AbsolutePath + custom routines</td>
+<td class="org-left">llvm/Support</td>
+</tr>
+
+<tr>
+<td class="org-left">index</td>
+<td class="org-left">libclang</td>
+<td class="org-left">clangIndex, some enhancement</td>
+</tr>
+
+<tr>
+<td class="org-left">pipeline</td>
+<td class="org-left">index merge+id remapping</td>
+<td class="org-left">simpler and more robust</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+cquery 有系统头文件检测功能（通过运行编译器驱动程序），而 ccls 使用 clangDriver。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1b8eeec" class="outline-2">
+<h2 id="org1b8eeec"><span class="section-number-2">2</span> 安装<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+安装依赖环境：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker run -it --name ccls-build ubuntu:18.04 /bin/bash
+apt install -y git gcc cmake clang-8 libclang-8-dev llvm-8 llvm-8-dev zlib1g-dev libncurses-dev
+</pre>
+</div>
+
+<p>
+编译代码：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+<span style="color: #d18aff;">cd</span> ccls
+cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release
+cmake --build Release --target install
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org597a3d7" class="outline-2">
+<h2 id="org597a3d7"><span class="section-number-2">3</span> 编辑器配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+我在 emacs 中使用 ccls，需要配合 <a href="https://github.com/MaskRay/ccls/wiki/lsp-mode#configure">emacs-ccls</a> 一起使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18f47d7" class="outline-2">
+<h2 id="org18f47d7"><span class="section-number-2">4</span> 项目配置<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+ccls通常索引整个项目。 为了使其正常工作，ccls需要能够获取源文件列表及其编译命令行。 这有两种主要方式：
+</p>
+<ul class="org-ul">
+<li>在项目根目录中提供 <code>compile_commands.json</code></li>
+<li>提供 <code>.ccls</code> 文件。 它是一个基于行的、描述编译器标志的文本文件。 递归列出的源文件（标题除外）将被编入索引。</li>
+</ul>
+
+<p>
+如果两者都不存在，那么当ccls启动时它将不会索引任何内容：相反，它将等待 LSP 客户端打开文件并仅索引这些文件。
+</p>
+</div>
+
+<div id="outline-container-orgd84e433" class="outline-3">
+<h3 id="orgd84e433"><span class="section-number-3">4.1</span> compile_commands.json</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+通常，此文件不会纳入源代码管理，而是由构建系统生成。 这意味着项目中，最好在启动 ccls 服务器之前生成它。
+</p>
+
+<p>
+由于此文件是自动生成的，因此不容易自定义。 因此，可以在同一个项目中同时提供 <code>compile_commands.json</code> 和 <code>.ccls</code> ，并通过 <code>.ccls</code> 的配置增强 <code>compile_commands.json</code> 中的选项。
+</p>
+
+<p>
+如果 <code>compile_commands.json</code> 不在项目根目录中，请将初始化选项 <code>compilationDatabaseDirectory</code> 设置为包含 <code>compile_commands.json</code> 的备用目录。
+</p>
+</div>
+
+<div id="outline-container-orgcd0164c" class="outline-4">
+<h4 id="orgcd0164c"><span class="section-number-4">4.1.1</span> cmake</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<p>
+使用 cmake 生成该文件：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+ln -s Debug/compile_commands.json
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge9159fe" class="outline-3">
+<h3 id="orge9159fe"><span class="section-number-3">4.2</span> <code>.ccls</code> File</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+<code>.ccls</code> 是项目根目录下的基于行的文本文件。 它的主要功能是指定正确索引代码所需的编译器标志： <code>-I -D</code> 等。每行包含一个要添加到编译器命令行的参数。 不对参数执行空格分割，因此不能使用 <code>-I foo=（例如，使用 =-Ifoo</code> 或 <code>-I\nfoo</code> ）。
+</p>
+
+<p>
+如果需要，项目的子目录还可以包含 <code>.ccls</code> 文件，以指定特定于这些目录的编译器标志。
+</p>
+
+<p>
+一行可以选择以一个或多个 <code>％</code> 指令开头，这些指令专门用于该行的参数。
+</p>
+
+<p>
+可用的指令包括：
+</p>
+</div>
+
+<div id="outline-container-org7cdda6f" class="outline-4">
+<h4 id="org7cdda6f"><span class="section-number-4">4.2.1</span> %compile_commands.json</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+默认情况下，.ccls编译器标志仅应用于未在compile_commands.json中列出的文件。如果此指令首先出现在.ccls中，则在解析compile_commands.json之后，其余的.ccls参数将附加到compile_commands.json中找到的文件的编译器标志。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org27d648f" class="outline-4">
+<h4 id="org27d648f"><span class="section-number-4">4.2.2</span> %c / %cpp / %objective-c / %objective-cpp</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+仅在解析C (%c), C++ (%cpp), Objective-C (%objective-c), or Objective-C++ (%objective-c++) 时才添加此参数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org94d7d22" class="outline-4">
+<h4 id="org94d7d22"><span class="section-number-4">4.2.3</span> %cu</h4>
+<div class="outline-text-4" id="text-4-2-3">
+<p>
+只有在解析CUDA文件时才应添加此参数。如果要将选项添加到CUDA和常规C ++文件，请编写 <code>％cpp％cu -DA</code> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42a11bb" class="outline-4">
+<h4 id="org42a11bb"><span class="section-number-4">4.2.4</span> %h / %hpp</h4>
+<div class="outline-text-4" id="text-4-2-4">
+<p>
+仅在索引 C header files ( <code>%h: *.h</code> ) or C++ header files <code>(%hpp: *.hh *.hpp)</code>  时才应添加此参数。注意， <code>*.h</code> 文件被认为是C，而不是C ++。
+</p>
+
+<p>
+可以添加这些行以使每个 <code>*.h</code> 解析为C ++：
+</p>
+
+<pre class="example">
+%h -x
+%h c++-header
+</pre>
+<p>
+请注意，如果您的项目同时包含C和C++ 文件，则可以从C文件中推断出a.h的标志，从而将其解析为C.您可能会遇到类似未知类型名称“class”的解析错误。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcd6945c" class="outline-4">
+<h4 id="orgcd6945c"><span class="section-number-4">4.2.5</span> Compiler driver</h4>
+<div class="outline-text-4" id="text-4-2-5">
+<p>
+编译器驱动程序（第一行除非使用％compile_commands.json）通常只能是clang。 clang ++通常是不必要的，如果某些文件是C则不正确。
+</p>
+
+<p>
+请注意，clang a.cc和clang ++ a.cc是不同的，但区别仅在于链接（传递默认运行时库）并且与ccls执行的前端操作无关。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org56e5216" class="outline-3">
+<h3 id="org56e5216"><span class="section-number-3">4.3</span> .ccls examples</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Example A
+</p>
+<pre class="example">
+clang
+%c -std=c11
+%cpp -std=c++2a
+%h %hpp --include=Global.h
+-Iinc
+-DMACRO
+*.h *.hh *.hpp files will be parsed with extra --include=Global.h
+</pre>
+
+<p>
+Example B
+</p>
+<pre class="example">
+%compile_commands.json
+%c -std=c11
+%cpp -std=c++14
+%c %cpp -pthread
+%h %hpp --include=Global.h
+-Iinc
+</pre>
+
+<p>
+它会附加标志，因此不应使用clang。
+</p>
+
+<p>
+Example: -march=armv7a
+</p>
+
+<p>
+See <a href="https://github.com/MaskRay/ccls/issues/107">https://github.com/MaskRay/ccls/issues/107</a>. 如果编译器驱动程序是GCC交叉编译器，则可能需要 <code>--target</code> 。 假设使用 <code>arm-linux-gnueabi-gcc-march = armv7a</code> ，添加 <code>--target =</code> ：
+</p>
+
+<pre class="example">
+%compile_commands.json
+--target=armv7a-linux-gnueabi
+</pre>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/MaskRay/ccls/wiki">https://github.com/MaskRay/ccls/wiki</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/MaskRay/ccls/wiki/Project-Setup">https://github.com/MaskRay/ccls/wiki/Project-Setup</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

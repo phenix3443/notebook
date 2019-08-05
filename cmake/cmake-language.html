@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>cmake language 笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="phenix3443" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">cmake language 笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org4d469a7">1. 组织(Organization)</a>
+<ul>
+<li><a href="#orged17655">1.1. 目录(Directories)</a></li>
+<li><a href="#org5c7a834">1.2. 脚本(Scripts)</a></li>
+<li><a href="#org5f9335c">1.3. 模块(Modules)</a></li>
+</ul>
+</li>
+<li><a href="#org1618e64">2. 语法（Syntax）</a>
+<ul>
+<li><a href="#org35209ec">2.1. 编码（Encoding）</a></li>
+<li><a href="#orgc617b88">2.2. 源文件（Source Files）</a></li>
+<li><a href="#orgb6cb05f">2.3. 命令调用（Command Invocations）</a></li>
+<li><a href="#orga59b9ca">2.4. 命令参数（Command Arguments）</a>
+<ul>
+<li><a href="#orgfa63675">2.4.1. 中括号括号参数（Bracket Argument）</a></li>
+<li><a href="#orgde11548">2.4.2. 引号参数（Quoted Argument）</a></li>
+<li><a href="#org3023bf5">2.4.3. 非引号参数（Unquoted Argument）</a></li>
+</ul>
+</li>
+<li><a href="#org7d0ee6b">2.5. 转义序列（Escape Sequences）</a></li>
+<li><a href="#orgdab5eed">2.6. 变量引用（Variable References）</a></li>
+<li><a href="#org8c4fdf1">2.7. 注释（Comments）</a>
+<ul>
+<li><a href="#orgd4b47ab">2.7.1. 括号注释（Bracket Comment）</a></li>
+<li><a href="#orgc00826f">2.7.2. 行注释（Line Comment）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgcbb2c73">3. 控制结构（Control Structures）</a>
+<ul>
+<li><a href="#org18212e5">3.1. 条件块（Conditional Blocks）</a></li>
+<li><a href="#org26cd9f6">3.2. 循环（Loops）</a></li>
+<li><a href="#org4ee8e68">3.3. 命令定义（Command Definitions）</a></li>
+</ul>
+</li>
+<li><a href="#org36278a1">4. 变量（Variables）</a></li>
+<li><a href="#orgf073715">5. 列表（List）</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4d469a7" class="outline-2">
+<h2 id="org4d469a7"><span class="section-number-2">1</span> 组织(Organization)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+CMakeLists.txt 或用 <code>.cmake</code> 结尾的文件都作为 CMake 的输入文件，它们使用 “cmake language” 编写。
+</p>
+
+<p>
+项目中的 CMake 源文件组织为：
+</p>
+<ul class="org-ul">
+<li>目录 (CMakeLists.txt)</li>
+<li>脚本 (&lt;script&gt;.cmake)</li>
+<li>模块 (&lt;module&gt;.cmake)</li>
+</ul>
+</div>
+
+<div id="outline-container-orged17655" class="outline-3">
+<h3 id="orged17655"><span class="section-number-3">1.1</span> 目录(Directories)</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+当 CMake 处理项目源代码树时，入口点是顶级目录中的 CMakeLists.txt。该文件可能包含整个构建规范，或使用 <a href="https://cmake.org/cmake/help/latest/command/add_subdirectory.html#command:add_subdirectory">add_subdirectory()</a>命令将子目录添加到构建中。该命令添加的子目录还必须包含一个 CMakeLists.txt 文件作为该目录的入口点。CMake 处理 CMakeLists.txt 时，为会为其所在目录在构建树中生成对应的目录，来充当默认的工作和输出目录。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5c7a834" class="outline-3">
+<h3 id="org5c7a834"><span class="section-number-3">1.2</span> 脚本(Scripts)</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+&lt;script&gt;.cmake 源文件可以通过使用带有-P 选项的 cmake 命令行工具以脚本模式处理。脚本模式只运行给定的 CMake 语言源文件中的命令，不会生成构建系统。它不允许定义构建目标的命令或操作。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #6c6c6c; font-style: italic;"># script.cmake</span>
+<span style="color: #a1db00;">foreach</span>(arg
+    NoSpace
+    Escaped\ Space
+    This;Divides;Into;Five;Arguments
+    Escaped\;Semicolon
+    )
+  <span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"${</span><span style="color: #ff8700;">arg</span><span style="color: #ff4ea3;">}"</span>)
+<span style="color: #a1db00;">endforeach</span>()
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-sh">cmake -P script.cmake
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5f9335c" class="outline-3">
+<h3 id="org5f9335c"><span class="section-number-3">1.3</span> 模块(Modules)</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+目录或脚本中的 CMake 语言代码可以使用 <a href="https://cmake.org/cmake/help/latest/command/include.html#command:include">include()</a>命令在包含上下文的范围内加载&lt;module&gt;.cmake 源文件。有关模块的文档，请参阅 <a href="https://cmake.org/cmake/help/latest/manual/cmake-modules.7.html#manual:cmake-modules(7)">cmake-modules(7)</a>。项目源代码树也可以提供它们自己的模块，并在 <a href="https://cmake.org/cmake/help/latest/variable/CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH">CMAKE_MODULE_PATH</a> 变量中指定它们的位置。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1618e64" class="outline-2">
+<h2 id="org1618e64"><span class="section-number-2">2</span> 语法（Syntax）</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org35209ec" class="outline-3">
+<h3 id="org35209ec"><span class="section-number-3">2.1</span> 编码（Encoding）</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+建议统一使用 UTF-8 编码。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc617b88" class="outline-3">
+<h3 id="orgc617b88"><span class="section-number-3">2.2</span> 源文件（Source Files）</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+CMake 语言源文件由零个或多个<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#command-invocations">命令调用(Command Invocations)</a> 组成，这些命令调用由换行符和可选的空格和<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#comments">注释</a> 分开。
+</p>
+
+<p>
+请注意，任何不在“<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#command-arguments">命令参数(Command Arguments)</a>”或“<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#bracket-comment">括号注释(Bracket Comment)</a> ”中的行都可以在 <a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#line-comment">行注释(Line Comment)</a> 中结束。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb6cb05f" class="outline-3">
+<h3 id="orgb6cb05f"><span class="section-number-3">2.3</span> 命令调用（Command Invocations）</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+命令调用是一个名称，后跟括号中由空格分割的参数。例如:
+</p>
+<pre class="example">
+command_invocation  ::=  space* identifier space* '(' arguments ')'
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">add_executable</span>(hello world.c)
+</pre>
+</div>
+<p>
+命令名不区分大小写。参数中嵌套的不带引号（没被转义）的括号必须平衡。每个命令调用中的“(”或“)”都是字面值。if()命令可用此来聚合条件。例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #a1db00;">if</span>(FALSE <span style="color: #ffd700;">AND</span> (FALSE OR TRUE)) <span style="color: #6c6c6c; font-style: italic;"># evaluates to FALSE</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga59b9ca" class="outline-3">
+<h3 id="orga59b9ca"><span class="section-number-3">2.4</span> 命令参数（Command Arguments）</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+命令调用（Command Invocations）中有三种类型的参数：
+</p>
+</div>
+
+<div id="outline-container-orgfa63675" class="outline-4">
+<h4 id="orgfa63675"><span class="section-number-4">2.4.1</span> 中括号括号参数（Bracket Argument）</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<p>
+受 Lua 长括号语法启发，中括号参数将内容封闭在相同长度的开闭“中括号”之间：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">message</span>([=[
+This is the first line in a bracket argument with bracket length 1.
+No \-escape sequences or ${<span style="color: #ff8700;">variable</span>} references are evaluated.
+This is always one argument even though it contains a ; character.
+The text does not end on a closing bracket of length 0 like ]].
+It does end in a closing bracket of length 1.
+]=])
+</pre>
+</div>
+
+<p>
+开括号是“[”，后跟 0 或更多“=”，然后是“[”。相应的闭括号写为“]”，后跟相同的数量“=”，后跟“]”。括号不能嵌套。可以选择特殊长度的开闭括号来包含其他长度的开闭括号。
+</p>
+
+<p>
+中括号参数内容由开闭括号之间的所有文本组成，但紧接在开括号之后的换行符（如果有的话）将被忽略。不对中括号参数内容（例如转义序列或变量引用）进行求值。中括号参数总是作为一个参数赋给命令调用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgde11548" class="outline-4">
+<h4 id="orgde11548"><span class="section-number-4">2.4.2</span> 引号参数（Quoted Argument）</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<p>
+引用参数(Quoted Argument)包含开闭双引号("")中间的内容。 <a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#escape-sequences">转义序列(Escape Sequences)</a>和<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variable-references">变量引用(Variable References)</a> 会求值。引用参数总是作为命令调用的一个参数。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"This is a quoted argument containing multiple lines.</span>
+<span style="color: #ff4ea3;">This is always one argument even though it contains a ; character.</span>
+<span style="color: #ff4ea3;">Both \\-escape sequences and ${</span><span style="color: #ff8700;">variable</span><span style="color: #ff4ea3;">} references are evaluated.</span>
+<span style="color: #ff4ea3;">The text does not end on an escaped double-quote like \".</span>
+<span style="color: #ff4ea3;">It does end in an unescaped double quote.</span>
+<span style="color: #ff4ea3;">"</span>)
+</pre>
+</div>
+<p>
+如果某行以奇数个反斜杠结尾，最后那个“\”被视为一个续行，它和紧跟在后面的换行符将被忽略。例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"\</span>
+<span style="color: #ff4ea3;">This is the first line of a quoted argument. \</span>
+<span style="color: #ff4ea3;">In fact it is the only line but since it is long \</span>
+<span style="color: #ff4ea3;">the source code uses line continuation.\</span>
+<span style="color: #ff4ea3;">"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3023bf5" class="outline-4">
+<h4 id="org3023bf5"><span class="section-number-4">2.4.3</span> 非引号参数（Unquoted Argument）</h4>
+<div class="outline-text-4" id="text-2-4-3">
+<p>
+非引号参数不包含在任何引用语法。它可能不包含任何 <code>空格,(,),#,“,\</code> ，除非这些被反斜线转义。转义序列和变量引用都会被求值。
+</p>
+
+<p>
+结果值以列表分成元素的方式进行切分。每个非空元素都作为参数赋给命令调用。因此，一个非引号参数可以作为零个或多个参数传给命令调用。
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #a1db00;">foreach</span>(arg
+    NoSpace
+    Escaped\ Space
+    This;Divides;Into;Five;Arguments
+    Escaped\;Semicolon
+    )
+  <span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"${</span><span style="color: #ff8700;">arg</span><span style="color: #ff4ea3;">}"</span>)
+<span style="color: #a1db00;">endforeach</span>()
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7d0ee6b" class="outline-3">
+<h3 id="org7d0ee6b"><span class="section-number-3">2.5</span> 转义序列（Escape Sequences）</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+转义序列是“\”后跟一个字符。
+</p>
+
+<p>
+“\”后面跟一个非字母数字字符，只是对字面字符进行编码，而不会将其解释为语法。“\t”、“\r”或“\n”分别对制表符，回车符或换行符进行编码。“\;”用在任何变量引用之外可以编码“;”本身，但用在未引用的参数中也是编码“;”，而不是分割参数值。变量引用内部的“\;”用来编码字面量的“;”字符。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdab5eed" class="outline-3">
+<h3 id="orgdab5eed"><span class="section-number-3">2.6</span> 变量引用（Variable References）</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+变量引用的格式为 <code>${variable_name}</code> ，并在引用参数(Quoted Argument)或非引用参数(Unquoted Argument)中进行求值。变量引用被变量的值替换，或者如果变量没有被设置，则由空字符串替换。
+</p>
+
+<p>
+变量引用可嵌套，并由内向外进行求值，例如， $ <code>{_outer_${inner_variable}_variable}</code> 。
+</p>
+
+<p>
+字面变量引用可能由字母数字，/_.+-和转义序列组成。可以使用嵌套引用来对任何名称的变量进行求值。
+</p>
+
+<p>
+<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variables">变量(variables)</a>部分记录变量名称的范围以及如何设置它们的值。
+</p>
+
+<p>
+环境变量引用的形式为 <code>$ENV{VAR}</code> ，并在与普通变量引用一样在上下文中进行求值。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8c4fdf1" class="outline-3">
+<h3 id="org8c4fdf1"><span class="section-number-3">2.7</span> 注释（Comments）</h3>
+<div class="outline-text-3" id="text-2-7">
+</div>
+<div id="outline-container-orgd4b47ab" class="outline-4">
+<h4 id="orgd4b47ab"><span class="section-number-4">2.7.1</span> 括号注释（Bracket Comment）</h4>
+<div class="outline-text-4" id="text-2-7-1">
+<p>
+“#”紧接着一个<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#bracket-argument">括号参数（Bracket Argument）</a>构成了一个由整个括号框组成的括号注释，例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #6c6c6c; font-style: italic;">#[[This is a bracket comment.</span>
+It runs until the close bracket.]]
+<span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"First Argument\n"</span> <span style="color: #6c6c6c; font-style: italic;">#[[Bracket Comment]] "Second Argument")</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc00826f" class="outline-4">
+<h4 id="orgc00826f"><span class="section-number-4">2.7.2</span> 行注释（Line Comment）</h4>
+<div class="outline-text-4" id="text-2-7-2">
+<p>
+“#”不立即跟着一个<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#bracket-argument">括号参数(Bracket Argumen)</a>形成一个行注释直到行尾，例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #6c6c6c; font-style: italic;"># This is a line comment.</span>
+<span style="color: #ffd700;">message</span>(<span style="color: #ff4ea3;">"First Argument\n"</span> <span style="color: #6c6c6c; font-style: italic;"># This is a line comment :)</span>
+        <span style="color: #ff4ea3;">"Second Argument"</span>) <span style="color: #6c6c6c; font-style: italic;"># This is a line comment.</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcbb2c73" class="outline-2">
+<h2 id="orgcbb2c73"><span class="section-number-2">3</span> 控制结构（Control Structures）</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org18212e5" class="outline-3">
+<h3 id="org18212e5"><span class="section-number-3">3.1</span> 条件块（Conditional Blocks）</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+<a href="https://cmake.org/cmake/help/latest/command/if.html#command:if">if()</a>/elseif()/else()/endif() 命令分隔代码块以有条件地执行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org26cd9f6" class="outline-3">
+<h3 id="org26cd9f6"><span class="section-number-3">3.2</span> 循环（Loops）</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+<a href="https://cmake.org/cmake/help/latest/command/foreach.html#command:foreach">foreach()</a>/endforeach()和 <a href="https://cmake.org/cmake/help/latest/command/while.html#command:while">while()</a>/endwhile()命令分隔代码块，以循环执行。在这样的块内部，<a href="https://cmake.org/cmake/help/latest/command/break.html#command:break">break()</a>命令可以用来提前终止循环，而<a href="https://cmake.org/cmake/help/latest/command/continue.html#command:continue">continue()</a>命令可以用来立即开始下一次迭代。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4ee8e68" class="outline-3">
+<h3 id="org4ee8e68"><span class="section-number-3">3.3</span> 命令定义（Command Definitions）</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+macro()/endmacro()和 <a href="https://cmake.org/cmake/help/latest/command/function.html#command:function">function()</a>/ endfunction()命令将代码块分隔以便稍后调用以作为命令被记录。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org36278a1" class="outline-2">
+<h2 id="org36278a1"><span class="section-number-2">4</span> 变量（Variables）</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+变量是 CMake 语言的基本存储单元。它们的值始终是字符串类型，尽管有些命令可能会将字符串解释为其他类型的值。<a href="https://cmake.org/cmake/help/latest/command/set.html#command:set">set()</a>和 unset()命令明确设置或取消设置变量，但其他命令也可以修改变量。变量名称区分大小写，几乎可以包含任何文本，但是我们推荐使用只包含字母数字字符加上_和 - 的名称。
+</p>
+
+<p>
+变量具有动态范围。每个变量“set”或“unset”在当前范围内创建一个绑定：
+</p>
+
+<ul class="org-ul">
+<li><p>
+函数作用域（Function Scope）
+</p>
+
+<p>
+<a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#command-definitions">函数定义(Command Definitions)</a>，由 function()命令创建，当被调用时，在一个新的变量绑定范围中处理记录的命令。通过“set”或“unset”在此范围内绑定变量，只对于当前函数及其内部的任何嵌套调用可见，函数返回后不可见。
+</p></li>
+
+<li><p>
+目录作用域（Directory Scope）
+</p>
+
+<p>
+源码树中的每个目录都有自己的变量绑定。在处理目录中的 CMakeLists.txt 文件之前，CMake 会复制父目录中义的所有变量（如果有的话）以初始化当前目录作用域。当用 cmake -P 进行处理时，CMake 脚本将变量绑定在一个“目录”范围内。
+</p>
+
+<p>
+不在函数调用内的“set”或“unset”绑定变量到当前目录范围。
+</p></li>
+
+<li><p>
+持久缓存（Persistent Cache）
+</p>
+
+<p>
+CMake 存储一组单独的“缓存”变量或“缓存条目”，它们的值在项目构建树中的多个运行中保持不变。缓存条目具有独立绑定范围，仅由显式修改，例如由 set()和 unset()命令的 CACHE 选项。
+</p></li>
+</ul>
+
+
+<p>
+当对变量引用求值时，搜索顺序依次是函数调用堆栈，当前目录范围，缓存条目。如果最后没有找到就取空字符串。
+</p>
+
+<p>
+<a href="https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html#manual:cmake-variables(7)">cmake-variables(7)</a>手册记录了很多变量，它们由 CMake 提供，或者在由项目代码设置。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf073715" class="outline-2">
+<h2 id="orgf073715"><span class="section-number-2">5</span> 列表（List）</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+尽管 CMake 中的所有值都以字符串的形式存储，但是在特定的上下文中可能会将字符串视为列表（例如在 <a href="https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#unquoted-argument">Unquoted Argument</a> 求值期间）。在这样的上下文中，字符串被 <code>“;”</code> 分割为列表元素 ， <code>;</code> 前面没有数量不等的 <code>[</code> 和 <code>]</code> ，也没被 <code>\</code> 转义。序列 <code>\;</code> 不划分字符，而是在产生的元素中被 <code>;</code> 取代。
+</p>
+
+<p>
+元素列表通过由“;”将分隔的元素连接一起作为其字符串表示。例如，set（）命令将多个值作为列表存储到目标变量中：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">set</span>(srcs a.c b.c c.c) <span style="color: #6c6c6c; font-style: italic;"># sets "srcs" to "a.c;b.c;c.c"</span>
+</pre>
+</div>
+
+<p>
+列表适用于简单用例，如源文件列表，不应用于复杂的数据处理任务。大多数构造列表的命令不会转义列表元素中的“;”的字符，而是展开列表：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">set</span>(x a <span style="color: #ff4ea3;">"b;c"</span>) <span style="color: #6c6c6c; font-style: italic;"># sets "x" to "a;b;c", not "a;b\;c"</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: phenix3443</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

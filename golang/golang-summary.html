@@ -1,0 +1,2662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>golang summary</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">golang summary</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc9d53ee">1. 简介</a>
+<ul>
+<li><a href="#orgb29f399">1.1. 起源</a></li>
+<li><a href="#org11a1b43">1.2. 优点</a></li>
+<li><a href="#org96c9dbb">1.3. 特性</a></li>
+<li><a href="#orgeece4b2">1.4. 语言文化</a></li>
+<li><a href="#org5bb56c5">1.5. 编码规范</a>
+<ul>
+<li><a href="#org8631846">1.5.1. 注释</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org656a4ca">2. 安装运行</a>
+<ul>
+<li><a href="#org9aab814">2.1. 安装</a></li>
+<li><a href="#org18d6bf0">2.2. 运行</a>
+<ul>
+<li><a href="#orgba4faa6">2.2.1. GOROOT</a></li>
+<li><a href="#orgea347b5">2.2.2. GOPATH</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgbb5a727">3. 相关工具</a>
+<ul>
+<li><a href="#orgcb59e1e">3.1. 标准命令</a>
+<ul>
+<li><a href="#org045e831">3.1.1. go build</a></li>
+<li><a href="#org2fa8fb8">3.1.2. go clean</a></li>
+<li><a href="#org056c103">3.1.3. go doc</a></li>
+<li><a href="#org63f4e4f">3.1.4. go env</a></li>
+<li><a href="#org77de8e7">3.1.5. go fix</a></li>
+<li><a href="#org76bae16">3.1.6. go fmt</a></li>
+<li><a href="#orgb9b07c4">3.1.7. go get</a></li>
+<li><a href="#orgb6b848e">3.1.8. go list</a></li>
+<li><a href="#org10fb88d">3.1.9. go install</a></li>
+<li><a href="#org9e6610a">3.1.10. go run</a></li>
+<li><a href="#org499af1b">3.1.11. go test</a></li>
+<li><a href="#org3f53a24">3.1.12. go tool</a>
+<ul>
+<li><a href="#org92fd98e">3.1.12.1. pprof</a></li>
+<li><a href="#org9d27df8">3.1.12.2. vet</a></li>
+<li><a href="#org696e4b0">3.1.12.3. trace</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orge971c38">3.2. 集成开发</a>
+<ul>
+<li><a href="#org193dd77">3.2.1. editor</a></li>
+<li><a href="#orgdca9143">3.2.2. gocode</a></li>
+<li><a href="#orgfd576d1">3.2.3. godef</a></li>
+<li><a href="#orgfc39ab6">3.2.4. Guru</a></li>
+</ul>
+</li>
+<li><a href="#org1d94475">3.3. 代码检查</a>
+<ul>
+<li><a href="#org7be3e9c">3.3.1. gofmt</a></li>
+<li><a href="#orgfd3de37">3.3.2. goimports</a></li>
+<li><a href="#org6bc23fd">3.3.3. oracle</a></li>
+<li><a href="#orgaaa5c4d">3.3.4. vet</a></li>
+<li><a href="#org0e1e8dd">3.3.5. golint</a></li>
+<li><a href="#org8f25f55">3.3.6. errcheck</a></li>
+<li><a href="#orgd3924c3">3.3.7. goreporter</a></li>
+</ul>
+</li>
+<li><a href="#org64319d9">3.4. 构建编译</a>
+<ul>
+<li><a href="#org90def53">3.4.1. cmake</a></li>
+</ul>
+</li>
+<li><a href="#org36d5e83">3.5. 代码调试</a>
+<ul>
+<li><a href="#orgc4a280b">3.5.1. gdb</a></li>
+<li><a href="#org51ed9ad">3.5.2. dlv</a></li>
+</ul>
+</li>
+<li><a href="#orgc079920">3.6. 自动测试</a>
+<ul>
+<li><a href="#org1dccc4b">3.6.1. gotests</a></li>
+<li><a href="#org2ca1c27">3.6.2. gocheck</a></li>
+</ul>
+</li>
+<li><a href="#org737b7be">3.7. 性能分析</a>
+<ul>
+<li><a href="#orgb43727c">3.7.1. go tool pprof</a></li>
+</ul>
+</li>
+<li><a href="#org7fb1349">3.8. 文档系统</a>
+<ul>
+<li><a href="#org0b08e98">3.8.1. godoc</a></li>
+</ul>
+</li>
+<li><a href="#org839c53f">3.9. 包管理系统</a></li>
+<li><a href="#org884baac">3.10. 其他工具</a></li>
+</ul>
+</li>
+<li><a href="#org6b745d1">4. 工程布局</a>
+<ul>
+<li><a href="#org3a8de07">4.1. 包</a></li>
+<li><a href="#orgec679ff">4.2. 命令程序</a></li>
+</ul>
+</li>
+<li><a href="#org3efb145">5. 程序结构</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orga960249">5.0.1. 包</a></li>
+<li><a href="#orgdf95051">5.0.2. 函数</a>
+<ul>
+<li><a href="#org12f645a">5.0.2.1. 参数</a></li>
+<li><a href="#org0ea3302">5.0.2.2. 返回值</a></li>
+<li><a href="#org5141c07">5.0.2.3. 普通函数</a></li>
+<li><a href="#org0a488a3">5.0.2.4. 匿名函数</a></li>
+<li><a href="#org84c66ba">5.0.2.5. 方法函数</a></li>
+<li><a href="#org074e343">5.0.2.6. 协程函数</a></li>
+<li><a href="#org23785a2">5.0.2.7. 内建函数</a></li>
+</ul>
+</li>
+<li><a href="#org7101f54">5.0.3. 语句</a></li>
+<li><a href="#orgf9aeb7a">5.0.4. 变量</a>
+<ul>
+<li><a href="#org79a7774">5.0.4.1. 值类型</a></li>
+<li><a href="#org49b1774">5.0.4.2. 引用类型</a></li>
+<li><a href="#org5ddb4a4">5.0.4.3. 作用域</a></li>
+</ul>
+</li>
+<li><a href="#org4cb0407">5.0.5. 示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org37249bc">6. 类型系统</a>
+<ul>
+<li><a href="#orgd751b93">6.1. 基本类型</a>
+<ul>
+<li><a href="#org340c22f">6.1.1. 布尔(bool)</a></li>
+<li><a href="#orgfc1798c">6.1.2. 数字（numeric）</a></li>
+<li><a href="#org596ab20">6.1.3. 字符（character）</a></li>
+<li><a href="#org8423010">6.1.4. 字符串（string）</a></li>
+<li><a href="#orgd36e0b5">6.1.5. 通道（channel）</a>
+<ul>
+<li><a href="#org5012e45">6.1.5.1. 声明</a></li>
+<li><a href="#org835baff">6.1.5.2. 阻塞与带缓冲</a></li>
+<li><a href="#org85ecbb6">6.1.5.3. 习惯用法：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgf741ce9">6.2. 复合类型</a>
+<ul>
+<li><a href="#org8052ab0">6.2.1. 数组</a>
+<ul>
+<li><a href="#org6adb77d">6.2.1.1. 声明：</a></li>
+<li><a href="#org897a8a8">6.2.1.2. 值类型</a></li>
+</ul>
+</li>
+<li><a href="#org9e85b52">6.2.2. 切片（slice）</a>
+<ul>
+<li><a href="#org200daf8">6.2.2.1. 声明</a></li>
+<li><a href="#orgb7694d0">6.2.2.2. 扩展</a></li>
+</ul>
+</li>
+<li><a href="#org05902b0">6.2.3. 映射（map）：</a>
+<ul>
+<li><a href="#org3ef7f0c">6.2.3.1. 声明</a></li>
+</ul>
+</li>
+<li><a href="#org5c9ed7d">6.2.4. 结构体（struct）</a>
+<ul>
+<li><a href="#orgccd249e">6.2.4.1. 声明</a></li>
+<li><a href="#org1bb640f">6.2.4.2. 导出字段与可见性原则</a></li>
+<li><a href="#org7534c9a">6.2.4.3. 字段标签</a></li>
+<li><a href="#orgcdd6aec">6.2.4.4. 匿名字段</a></li>
+</ul>
+</li>
+<li><a href="#org99cade9">6.2.5. 接口（interface）</a>
+<ul>
+<li><a href="#org975f65a">6.2.5.1. 声明</a></li>
+<li><a href="#org0647133">6.2.5.2. 类型断言</a></li>
+<li><a href="#orge756ac8">6.2.5.3. 调用规则</a></li>
+<li><a href="#orgfcf1ccf">6.2.5.4. 空接口</a></li>
+<li><a href="#orgfaf5df5">6.2.5.5. 接口继承</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org74b6adb">6.3. 默认值</a></li>
+<li><a href="#org10b4975">6.4. 类型转换</a></li>
+</ul>
+</li>
+<li><a href="#orgf66cd0b">7. 运算符</a>
+<ul>
+<li><a href="#org66c609c">7.1. 算数运算符</a>
+<ul>
+<li><a href="#orga5a5e66">7.1.1. 自增，自减</a></li>
+</ul>
+</li>
+<li><a href="#org30b8357">7.2. 逻辑运算符</a></li>
+<li><a href="#org8b1059b">7.3. 位运算符</a></li>
+<li><a href="#orgdbb6cbd">7.4. 通信操作符</a></li>
+</ul>
+</li>
+<li><a href="#orga6e3395">8. 分支控制</a>
+<ul>
+<li><a href="#org63353a9">8.1. 判断</a>
+<ul>
+<li><a href="#org04fc883">8.1.1. if-else</a></li>
+<li><a href="#orgd3ee0ba">8.1.2. switch-case</a></li>
+</ul>
+</li>
+<li><a href="#org9d94d8d">8.2. 循环</a>
+<ul>
+<li><a href="#org265f1c8">8.2.1. for</a></li>
+</ul>
+</li>
+<li><a href="#orgf3d5e9c">8.3. 跳转</a>
+<ul>
+<li><a href="#orge68350d">8.3.1. break</a></li>
+<li><a href="#org243e91d">8.3.2. continue</a></li>
+<li><a href="#org75a3cf9">8.3.3. goto</a></li>
+<li><a href="#org9de5c16">8.3.4. return</a></li>
+<li><a href="#org28e055d">8.3.5. go</a></li>
+<li><a href="#org6ef499a">8.3.6. select</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgf96a6ce">9. 编程范式</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org86993e6">9.0.1. OOP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgc18253a">10. 基础库</a>
+<ul>
+<li><a href="#org87bc33f">10.1. bytes</a></li>
+<li><a href="#org5cf77bc">10.2. encoding</a>
+<ul>
+<li><a href="#org3913a69">10.2.1. binary</a></li>
+<li><a href="#org900ca14">10.2.2. errors</a></li>
+<li><a href="#org1ca8497">10.2.3. hex</a></li>
+<li><a href="#org7b3aee7">10.2.4. json</a></li>
+</ul>
+</li>
+<li><a href="#orgfef23a7">10.3. net</a>
+<ul>
+<li><a href="#orgd5c3c8b">10.3.1. http</a></li>
+</ul>
+</li>
+<li><a href="#orgbf4ce82">10.4. os</a></li>
+<li><a href="#orgfe9353e">10.5. path</a>
+<ul>
+<li><a href="#org61eecf8">10.5.1. filepath</a></li>
+</ul>
+</li>
+<li><a href="#org8a7f099">10.6. sql</a></li>
+<li><a href="#org8cbcaca">10.7. strconv</a></li>
+<li><a href="#org9b250d4">10.8. strings</a></li>
+<li><a href="#orgaae1e27">10.9. time</a></li>
+</ul>
+</li>
+<li><a href="#org3e9162d">11. 第三方库</a>
+<ul>
+<li><a href="#org150d5c6">11.1. go-cache</a></li>
+<li><a href="#org7c11470">11.2. gocheck</a></li>
+<li><a href="#org1ffc741">11.3. log4go</a></li>
+<li><a href="#org113702d">11.4. logrus</a></li>
+<li><a href="#org19acdbb">11.5. mysql-driver</a></li>
+<li><a href="#org2004000">11.6. redis</a></li>
+<li><a href="#org6fe1403">11.7. proto</a></li>
+</ul>
+</li>
+<li><a href="#org733168a">12. 参考书籍</a>
+<ul>
+<li><a href="#orgf3cc738">12.1. 入门</a></li>
+<li><a href="#orge8364ea">12.2. 高级</a></li>
+<li><a href="#org93d6cd2">12.3. 实践</a></li>
+<li><a href="#orgee0f360">12.4. 原理</a></li>
+</ul>
+</li>
+<li><a href="#org1b0d257">13. 实践 tips</a>
+<ul>
+<li><a href="#org5a4920f">13.1. golang.org/x/xx 下载失败解决办法</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc9d53ee" class="outline-2">
+<h2 id="orgc9d53ee"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgb29f399" class="outline-3">
+<h3 id="orgb29f399"><span class="section-number-3">1.1</span> 起源</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+golang 受到很多语言的启发：
+</p>
+
+<ul class="org-ul">
+<li>C：语法。</li>
+<li>java：通过接口实现类继承。</li>
+<li>java、C#、python： 包管理。</li>
+<li>unix，Plan9，Limbo：通信序列进程（communicating sequential process，CSP），协程间通信。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org11a1b43" class="outline-3">
+<h3 id="org11a1b43"><span class="section-number-3">1.2</span> 优点</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+golang 达到以下三者的平衡：
+</p>
+
+<ul class="org-ul">
+<li>易于开发
+<ul class="org-ul">
+<li><p>
+静态语言的安全性和高效性
+</p>
+
+<p>
+编译型，解释型，强类型，弱类型，静态，动态语言区别是什么？<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+</p></li>
+
+<li>动态语言的易开发性</li>
+
+<li>包管理</li>
+</ul></li>
+
+<li>快速编译
+<ul class="org-ul">
+<li>整个程序是一个执行文件</li>
+<li>编译速度快</li>
+<li>执行速度快</li>
+</ul></li>
+
+<li>高效执行，通过以下技术利用分布式和多核加快执行速度。
+<ul class="org-ul">
+<li>协程（goroutine），通过 channel 来在协程之间交换数据。</li>
+<li>连续栈(continuous stack)，以前是使用分段栈（segement stack）<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org96c9dbb" class="outline-3">
+<h3 id="org96c9dbb"><span class="section-number-3">1.3</span> 特性</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>支持
+<ul class="org-ul">
+<li>协程</li>
+<li>垃圾收集（gc）</li>
+<li>反射</li>
+<li>包管理</li>
+<li>通过接口实现多态</li>
+<li>与其他语言进行交互</li>
+</ul></li>
+
+<li>不支持
+<ul class="org-ul">
+<li>函数重载，操作符重载</li>
+<li>隐式转换</li>
+<li>类继承</li>
+<li>动态加载代码</li>
+<li>动态链接库</li>
+<li>泛型</li>
+<li>异常，通过 recover 和 panic 替代</li>
+<li>断言</li>
+<li>静态变量</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgeece4b2" class="outline-3">
+<h3 id="orgeece4b2"><span class="section-number-3">1.4</span> 语言文化</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+简单（simple）
+</p>
+<ul class="org-ul">
+<li>只有 25 个关键字</li>
+<li>同一个问题只使用一两种方法来解决。</li>
+<li>通过编码规范来对代码风格进行统一。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5bb56c5" class="outline-3">
+<h3 id="org5bb56c5"><span class="section-number-3">1.5</span> 编码规范</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+<a href="https://golang.org/ref/spec">go 语言编码规范</a>
+</p>
+</div>
+<div id="outline-container-org8631846" class="outline-4">
+<h4 id="org8631846"><span class="section-number-4">1.5.1</span> 注释</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<ul class="org-ul">
+<li>使用 C 风格注释。</li>
+<li>几乎所有全局作用域的类型、常量、变量、函数和被导出的对象都应该有一个合理的注释。如果这种注释（称为文档注释）出现在函数前面，例如函数 Abcd，则要以 "Abcd&#x2026;" 作为开头。godoc 会收集这些注释生成技术文档。</li>
+<li><p>
+package 注释，位于 package 声明上一行，不能空行
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Package superman implements methods for saving the world.</span>
+<span style="color: #6c6c6c; font-style: italic;">//</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Experience has shown that a small number of procedures can prove</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">helpful when attempting to save the world.</span>
+<span style="color: #a1db00;">package</span> superman
+</pre>
+</div></li>
+<li><p>
+func 注释
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">enterOrbit causes Superman to fly into low Earth orbit, a position</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">that presents several possibilities for planet salvation.</span>
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">enterOrbit</span>() <span style="color: #00d7af;">error</span> {
+   ...
+}
+</pre>
+</div></li>
+<li>inline 注释</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org656a4ca" class="outline-2">
+<h2 id="org656a4ca"><span class="section-number-2">2</span> 安装运行</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org9aab814" class="outline-3">
+<h3 id="org9aab814"><span class="section-number-3">2.1</span> 安装</h3>
+</div>
+<div id="outline-container-org18d6bf0" class="outline-3">
+<h3 id="org18d6bf0"><span class="section-number-3">2.2</span> 运行</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+需要设置环境变量：
+</p>
+</div>
+<div id="outline-container-orgba4faa6" class="outline-4">
+<h4 id="orgba4faa6"><span class="section-number-4">2.2.1</span> GOROOT</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+go 运行环境的安装目录。
+</p>
+</div>
+</div>
+<div id="outline-container-orgea347b5" class="outline-4">
+<h4 id="orgea347b5"><span class="section-number-4">2.2.2</span> GOPATH</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src、pkg 三个目录。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">mkdir ~/gospace
+</pre>
+</div>
+
+<p>
+在~/.profile 中修改如下环境变量。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #d18aff;">export</span> <span style="color: #ff8700;">GOROOT</span>=<span style="color: #ff4ea3;">"/usr/local/go"</span>
+<span style="color: #d18aff;">export</span> <span style="color: #ff8700;">GOPATH</span>=<span style="color: #ff4ea3;">"$HOME/gospace"</span>
+<span style="color: #d18aff;">export</span> <span style="color: #ff8700;">PATH</span>=<span style="color: #ff4ea3;">"$PATH:$GOROOT/bin:$HOME/gospace/bin"</span>
+</pre>
+</div>
+
+<p>
+GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安装到这个目录下，而且应该将该目录下的 bin 加入到 PATH 中。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbb5a727" class="outline-2">
+<h2 id="orgbb5a727"><span class="section-number-2">3</span> 相关工具</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgcb59e1e" class="outline-3">
+<h3 id="orgcb59e1e"><span class="section-number-3">3.1</span> 标准命令</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+详见 <a href="http://wiki.jikexueyuan.com/project/go-command-tutorial/">标准命令详解</a> 以及<a href="https://golang.org/cmd/go/">command go</a>
+</p>
+</div>
+<div id="outline-container-org045e831" class="outline-4">
+<h4 id="org045e831"><span class="section-number-4">3.1.1</span> go build</h4>
+</div>
+<div id="outline-container-org2fa8fb8" class="outline-4">
+<h4 id="org2fa8fb8"><span class="section-number-4">3.1.2</span> go clean</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<ul class="org-ul">
+<li>-i 选项删除 go install 安装的文件。</li>
+<li>-r 选项递归清理依赖项。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org056c103" class="outline-4">
+<h4 id="org056c103"><span class="section-number-4">3.1.3</span> go doc</h4>
+</div>
+<div id="outline-container-org63f4e4f" class="outline-4">
+<h4 id="org63f4e4f"><span class="section-number-4">3.1.4</span> go env</h4>
+</div>
+<div id="outline-container-org77de8e7" class="outline-4">
+<h4 id="org77de8e7"><span class="section-number-4">3.1.5</span> go fix</h4>
+</div>
+<div id="outline-container-org76bae16" class="outline-4">
+<h4 id="org76bae16"><span class="section-number-4">3.1.6</span> go fmt</h4>
+</div>
+<div id="outline-container-orgb9b07c4" class="outline-4">
+<h4 id="orgb9b07c4"><span class="section-number-4">3.1.7</span> go get</h4>
+</div>
+<div id="outline-container-orgb6b848e" class="outline-4">
+<h4 id="orgb6b848e"><span class="section-number-4">3.1.8</span> go list</h4>
+</div>
+<div id="outline-container-org10fb88d" class="outline-4">
+<h4 id="org10fb88d"><span class="section-number-4">3.1.9</span> go install</h4>
+</div>
+<div id="outline-container-org9e6610a" class="outline-4">
+<h4 id="org9e6610a"><span class="section-number-4">3.1.10</span> go run</h4>
+</div>
+<div id="outline-container-org499af1b" class="outline-4">
+<h4 id="org499af1b"><span class="section-number-4">3.1.11</span> go test</h4>
+</div>
+<div id="outline-container-org3f53a24" class="outline-4">
+<h4 id="org3f53a24"><span class="section-number-4">3.1.12</span> go tool</h4>
+<div class="outline-text-4" id="text-3-1-12">
+</div>
+<div id="outline-container-org92fd98e" class="outline-5">
+<h5 id="org92fd98e"><span class="section-number-5">3.1.12.1</span> pprof</h5>
+</div>
+<div id="outline-container-org9d27df8" class="outline-5">
+<h5 id="org9d27df8"><span class="section-number-5">3.1.12.2</span> vet</h5>
+</div>
+<div id="outline-container-org696e4b0" class="outline-5">
+<h5 id="org696e4b0"><span class="section-number-5">3.1.12.3</span> trace</h5>
+</div>
+</div>
+</div>
+<div id="outline-container-orge971c38" class="outline-3">
+<h3 id="orge971c38"><span class="section-number-3">3.2</span> 集成开发</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-org193dd77" class="outline-4">
+<h4 id="org193dd77"><span class="section-number-4">3.2.1</span> editor</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+一些编辑器以及相应的扩展。 <a href="http://go-lang.cat-v.org/text-editors/">text-editor</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgdca9143" class="outline-4">
+<h4 id="orgdca9143"><span class="section-number-4">3.2.2</span> gocode</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+golang 可以配合编辑器做自动补全。配置文件位于 <code>~/.config/gocode</code> ，可用于定制 gocode 行为。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">go get -u github.com/nsf/gocode
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfd576d1" class="outline-4">
+<h4 id="orgfd576d1"><span class="section-number-4">3.2.3</span> godef</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+用于查找定义。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">go get github.com/rogpeppe/godef
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfc39ab6" class="outline-4">
+<h4 id="orgfc39ab6"><span class="section-number-4">3.2.4</span> <a href="https://godoc.org/golang.org/x/tools/cmd/guru">Guru</a></h4>
+<div class="outline-text-4" id="text-3-2-4">
+<p>
+代码导航工具。这里有 <a href="http://www.jianshu.com/p/994e85e21135">说明</a> 。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org1d94475" class="outline-3">
+<h3 id="org1d94475"><span class="section-number-3">3.3</span> 代码检查</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org7be3e9c" class="outline-4">
+<h4 id="org7be3e9c"><span class="section-number-4">3.3.1</span> gofmt</h4>
+</div>
+<div id="outline-container-orgfd3de37" class="outline-4">
+<h4 id="orgfd3de37"><span class="section-number-4">3.3.2</span> goimports</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<div class="org-src-container">
+<pre class="src src-sh">proxychains4 go get golang.org/x/tools/cmd/goimports
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6bc23fd" class="outline-4">
+<h4 id="org6bc23fd"><span class="section-number-4">3.3.3</span> oracle</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+找到所有函数方法的调用者。
+</p>
+</div>
+</div>
+<div id="outline-container-orgaaa5c4d" class="outline-4">
+<h4 id="orgaaa5c4d"><span class="section-number-4">3.3.4</span> vet</h4>
+</div>
+<div id="outline-container-org0e1e8dd" class="outline-4">
+<h4 id="org0e1e8dd"><span class="section-number-4">3.3.5</span> golint</h4>
+</div>
+<div id="outline-container-org8f25f55" class="outline-4">
+<h4 id="org8f25f55"><span class="section-number-4">3.3.6</span> errcheck</h4>
+</div>
+<div id="outline-container-orgd3924c3" class="outline-4">
+<h4 id="orgd3924c3"><span class="section-number-4">3.3.7</span> <a href="https://github.com/360EntSecGroup-Skylar/goreporter">goreporter</a></h4>
+<div class="outline-text-4" id="text-3-3-7">
+<p>
+整合其他工具，做代码质量检测，生成网页版报告。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org64319d9" class="outline-3">
+<h3 id="org64319d9"><span class="section-number-3">3.4</span> 构建编译</h3>
+<div class="outline-text-3" id="text-3-4">
+</div>
+<div id="outline-container-org90def53" class="outline-4">
+<h4 id="org90def53"><span class="section-number-4">3.4.1</span> cmake</h4>
+</div>
+</div>
+<div id="outline-container-org36d5e83" class="outline-3">
+<h3 id="org36d5e83"><span class="section-number-3">3.5</span> 代码调试</h3>
+<div class="outline-text-3" id="text-3-5">
+</div>
+<div id="outline-container-orgc4a280b" class="outline-4">
+<h4 id="orgc4a280b"><span class="section-number-4">3.5.1</span> gdb</h4>
+</div>
+<div id="outline-container-org51ed9ad" class="outline-4">
+<h4 id="org51ed9ad"><span class="section-number-4">3.5.2</span> dlv</h4>
+<div class="outline-text-4" id="text-3-5-2">
+<p>
+出现错误：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">Could not attach to pid 6814: set /proc/sys/kernel/yama/ptrace_scope to 0
+</pre>
+</div>
+<p>
+原因：
+<a href="https://www.kernel.org/doc/Documentation/security/Yama.txt">https://www.kernel.org/doc/Documentation/security/Yama.txt</a>, you will need to set that to 0 in order to attach to a running process.
+解决办法：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #d18aff;">echo</span> 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc079920" class="outline-3">
+<h3 id="orgc079920"><span class="section-number-3">3.6</span> 自动测试</h3>
+<div class="outline-text-3" id="text-3-6">
+</div>
+<div id="outline-container-org1dccc4b" class="outline-4">
+<h4 id="org1dccc4b"><span class="section-number-4">3.6.1</span> <a href="https://github.com/cweill/gotests">gotests</a></h4>
+<div class="outline-text-4" id="text-3-6-1">
+<p>
+根据源码自动编写测试代码。
+</p>
+</div>
+</div>
+<div id="outline-container-org2ca1c27" class="outline-4">
+<h4 id="org2ca1c27"><span class="section-number-4">3.6.2</span> <a href="https://godoc.org/gopkg.in/check.v1">gocheck</a></h4>
+<div class="outline-text-4" id="text-3-6-2">
+<p>
+丰富的测试用例包。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org737b7be" class="outline-3">
+<h3 id="org737b7be"><span class="section-number-3">3.7</span> 性能分析</h3>
+<div class="outline-text-3" id="text-3-7">
+</div>
+<div id="outline-container-orgb43727c" class="outline-4">
+<h4 id="orgb43727c"><span class="section-number-4">3.7.1</span> go tool pprof</h4>
+</div>
+</div>
+<div id="outline-container-org7fb1349" class="outline-3">
+<h3 id="org7fb1349"><span class="section-number-3">3.8</span> 文档系统</h3>
+<div class="outline-text-3" id="text-3-8">
+</div>
+<div id="outline-container-org0b08e98" class="outline-4">
+<h4 id="org0b08e98"><span class="section-number-4">3.8.1</span> godoc</h4>
+<div class="outline-text-4" id="text-3-8-1">
+<p>
+查找 package 和函数文档。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org839c53f" class="outline-3">
+<h3 id="org839c53f"><span class="section-number-3">3.9</span> 包管理系统</h3>
+<div class="outline-text-3" id="text-3-9">
+<p>
+go get
+</p>
+</div>
+</div>
+<div id="outline-container-org884baac" class="outline-3">
+<h3 id="org884baac"><span class="section-number-3">3.10</span> 其他工具</h3>
+</div>
+</div>
+
+<div id="outline-container-org6b745d1" class="outline-2">
+<h2 id="org6b745d1"><span class="section-number-2">4</span> 工程布局<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+所有的 go 程序都应该在一个共同的 workspace 下面，这与其他语言不同，其他语言中一个项目就是一个单独的 workspace。这样组织方便 go build，go install 等工具的使用。
+</p>
+</div>
+<div id="outline-container-org3a8de07" class="outline-3">
+<h3 id="org3a8de07"><span class="section-number-3">4.1</span> 包</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+go get 命令会将项目下的所有子目录和源码文件存放到第一个工作区的 src 目录下，而 src 目录下的所有子目录都会是某个代码包导入路径的一部分或者全部。所以应该 <b>直接在项目目录下存放子代码包和源码文件</b> ，并且 <b>直接存放在项目目录下的源码文件所声明的包名应该与该项目名相同</b> 。这样做可以让其他人使用 go get 命令从 Github 站点上下载你的项目之后直接就能使用它。
+</p>
+
+<p>
+package name 应该是小写的单词，不要使用下划线或者驼峰命名法。
+</p>
+
+<pre class="example">
+go_test_lib
+└── stringutils
+    ├── reverse.go
+    └── reverse_test.go
+</pre>
+<p>
+库代码文件
+reverse.go
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">package</span> stringutils
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Reverse</span>(s <span style="color: #00d7af;">string</span>) <span style="color: #00d7af;">string</span> {
+    r := []<span style="color: #ffd700;">rune</span>(s)
+    <span style="color: #a1db00;">for</span> i, j := 0, <span style="color: #d18aff;">len</span>(r)-1; i &lt; <span style="color: #d18aff;">len</span>(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    <span style="color: #a1db00;">return</span> <span style="color: #ffd700;">string</span>(r)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgec679ff" class="outline-3">
+<h3 id="orgec679ff"><span class="section-number-3">4.2</span> 命令程序</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+命令程序和库代码有所不同，每个命令程序项目应该作为一个 gopath 路径进行部署。
+</p>
+
+<ul class="org-ul">
+<li>build.sh 对项目进行编译。</li>
+<li>src 下不直接放置代码文件，而是将其归类存放在文件夹中。</li>
+</ul>
+<pre class="example">
+test
+├── bin
+│   └── hello
+├── build.sh
+├── pkg
+└── src
+    └── hello
+        └── hello.go
+</pre>
+
+<p>
+hello.go
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">package</span> main
+
+<span style="color: #a1db00;">import</span> (
+    <span style="color: #ff4ea3;">"fmt"</span>
+
+    <span style="color: #ff4ea3;">"github.com/phenix3443/go_test_lib/stringutils"</span>
+)
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    str := <span style="color: #ff4ea3;">"hello,&#19990;&#30028;"</span>
+    fmt.<span style="color: #ffd700;">Println</span>(stringutils.<span style="color: #ffd700;">Reverse</span>(str))
+}
+</pre>
+</div>
+
+<p>
+buiild.sh
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">!/bin/</span><span style="color: #a1db00;">bash</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#39033;&#30446;&#26500;&#24314;&#33050;&#26412;</span>
+<span style="color: #ff8700;">project_name</span>=hello
+
+<span style="color: #a1db00;">if</span> [ <span style="color: #ff4b4b;">!</span> -d <span style="color: #ff4ea3;">"src/${project_name}"</span> ]; <span style="color: #a1db00;">then</span>
+    <span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"&#39033;&#30446;&#20195;&#30721;&#24517;&#39035;&#25918;&#22312; src/${project_name}&#19979;"</span>
+    <span style="color: #a1db00;">exit</span> 1
+<span style="color: #a1db00;">fi</span>
+
+<span style="color: #ff8700;">script_dir</span>=$(<span style="color: #fa8072;">cd</span> $(<span style="color: #fa8072;">dirname</span> <span style="color: #ff4ea3;">"$0"</span>); <span style="color: #d18aff;">pwd</span>)
+<span style="color: #ff8700;">project_dir</span>=$(<span style="color: #fa8072;">realpath</span> ${<span style="color: #ff8700;">script_dir</span>})
+<span style="color: #d18aff;">export</span> <span style="color: #ff8700;">GOPATH</span>=${<span style="color: #ff8700;">GOPATH</span>}:${<span style="color: #ff8700;">project_dir</span>} <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#23558;&#24403;&#21069;&#30446;&#24405;&#28155;&#21152;&#21040;</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">echo ${GOPATH}</span>
+
+go get -v -x ${<span style="color: #ff8700;">project_name</span>}/...
+go install ${<span style="color: #ff8700;">project_name</span>}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3efb145" class="outline-2">
+<h2 id="org3efb145"><span class="section-number-2">5</span> 程序结构<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup></h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orga960249" class="outline-4">
+<h4 id="orga960249"><span class="section-number-4">5.0.1</span> 包</h4>
+<div class="outline-text-4" id="text-5-0-1">
+<ul class="org-ul">
+<li>package
+<ul class="org-ul">
+<li>库（.a）</li>
+<li>可运行程序必须是 package main</li>
+</ul></li>
+<li>import
+<ul class="org-ul">
+<li>大写字母开头的标识符可以对外可见</li>
+<li>可以使用别名避免冲突</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdf95051" class="outline-4">
+<h4 id="orgdf95051"><span class="section-number-4">5.0.2</span> 函数</h4>
+<div class="outline-text-4" id="text-5-0-2">
+</div>
+<div id="outline-container-org12f645a" class="outline-5">
+<h5 id="org12f645a"><span class="section-number-5">5.0.2.1</span> 参数</h5>
+<div class="outline-text-5" id="text-5-0-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="org3f789fc"></a>变长参数<br /></li>
+</ol>
+</div>
+<div id="outline-container-org0ea3302" class="outline-5">
+<h5 id="org0ea3302"><span class="section-number-5">5.0.2.2</span> 返回值</h5>
+<div class="outline-text-5" id="text-5-0-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="orge0c468d"></a>多个返回值与空白符号<br /></li>
+
+<li><a id="orge8c740b"></a>命名返回值<br />
+<div class="outline-text-6" id="text-5-0-2-2-2">
+<p>
+尽量使用命名返回值：会使代码更清晰、更简短，同时更加容易读懂。
+</p>
+
+<p>
+即使函数使用了命名返回值，你依旧可以无视它而返回明确的值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">    <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+        fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">foo</span>()) <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">1</span>
+    }
+
+    <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">foo</span>() (x <span style="color: #00d7af;">int</span>) {
+        <span style="color: #a1db00;">var</span> a = 1
+        x = 2
+        <span style="color: #a1db00;">return</span> a
+    }
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org3056927"></a>defer<br />
+<div class="outline-text-6" id="text-5-0-2-2-3">
+<p>
+在 return 之前执行
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"in main top"</span>)
+           <span style="color: #a1db00;">defer</span> <span style="color: #ffd700;">foo</span>()
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"in main bottom"</span>)
+       }
+
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">foo</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"in def function"</span>)
+       }
+
+</pre>
+</div>
+
+<p>
+结果是：
+</p>
+
+<pre class="example">
+               in main top
+               in main bottom
+               in def function
+</pre>
+
+<p>
+多个 defer 后进先执行
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-go">       <span style="color: #a1db00;">package</span> main
+
+       <span style="color: #a1db00;">import</span> (
+           <span style="color: #ff4ea3;">"fmt"</span>
+       )
+
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"in main top"</span>)
+           <span style="color: #a1db00;">defer</span> <span style="color: #ffd700;">foo</span>()
+           <span style="color: #a1db00;">defer</span> <span style="color: #ffd700;">bar</span>()
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"in main bottom"</span>)
+       }
+
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">foo</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"foo"</span>)
+       }
+
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">bar</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ff4ea3;">"bar"</span>)
+       }
+
+</pre>
+</div>
+
+<p>
+执行结果：
+</p>
+
+<pre class="example">
+               in main top
+               in main bottom
+               bar
+               foo
+</pre>
+</div>
+</li>
+
+<li><a id="org1feb648"></a>def 与命名返回值的坑<br />
+<div class="outline-text-6" id="text-5-0-2-2-4">
+<div class="org-src-container">
+<pre class="src src-go">       <span style="color: #a1db00;">package</span> main
+
+       <span style="color: #a1db00;">import</span> (
+           <span style="color: #ff4ea3;">"fmt"</span>
+       )
+
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">f1</span>()) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">0</span>
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">f2</span>()) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">1</span>
+           fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">f3</span>()) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">2</span>
+       }
+
+       <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#38750;&#21629;&#21517;&#36820;&#22238;&#20540;</span>
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">f1</span>() <span style="color: #00d7af;">int</span> {
+           <span style="color: #a1db00;">var</span> a int
+           <span style="color: #a1db00;">defer</span> <span style="color: #a1db00;">func</span>() {
+               a++
+           }()
+           <span style="color: #a1db00;">return</span> a
+       }
+
+       <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#21629;&#21517;&#36820;&#22238;&#20540;&#65292;&#20462;&#25913;&#21629;&#21517;&#21442;&#25968;</span>
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">f2</span>() (r <span style="color: #00d7af;">int</span>) {
+           <span style="color: #a1db00;">defer</span> <span style="color: #a1db00;">func</span>() {
+               r++
+           }()
+           <span style="color: #a1db00;">return</span>
+       }
+
+       <span style="color: #6c6c6c; font-style: italic;">//</span>
+       <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">f3</span>() (r <span style="color: #00d7af;">int</span>) {
+           <span style="color: #a1db00;">defer</span> <span style="color: #a1db00;">func</span>() {
+               r++
+           }()
+           <span style="color: #a1db00;">return</span> 1
+       }
+</pre>
+</div>
+
+<p>
+defer 是在 return 之前执行的。这个在 官方文档中是明确说明了的。要使用 defer 时不踩坑，最重要的一点就是要明白，*return xxx 这一条语句并不是一条原子指令!*
+</p>
+
+
+<p>
+其实使用 defer 时，用一个简单的转换规则改写一下，就不会迷糊了。改写规则是将 return 语句拆成两句写，return xxx 会被改写成:
+</p>
+
+<pre class="example">
+               返回值 = xxx
+               调用 defer 函数
+               空的 return
+</pre>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org5141c07" class="outline-5">
+<h5 id="org5141c07"><span class="section-number-5">5.0.2.3</span> 普通函数</h5>
+<div class="outline-text-5" id="text-5-0-2-3">
+<p>
+声明：
+</p>
+
+<p>
+func(arg type) ret type
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0a488a3" class="outline-5">
+<h5 id="org0a488a3"><span class="section-number-5">5.0.2.4</span> 匿名函数</h5>
+<div class="outline-text-5" id="text-5-0-2-4">
+<p>
+闭包函数
+</p>
+</div>
+</div>
+
+<div id="outline-container-org84c66ba" class="outline-5">
+<h5 id="org84c66ba"><span class="section-number-5">5.0.2.5</span> 方法函数</h5>
+<div class="outline-text-5" id="text-5-0-2-5">
+<p>
+方法是作用在接收者（receiver）上的一个函数，接收者是某种类型的变量。
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="orgddfe5cf"></a>声明<br />
+<div class="outline-text-6" id="text-5-0-2-5-1">
+<p>
+func (recv receiver_type) methodName(parameter_list) (return_value_list) { &#x2026; }
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">  <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Person</span> <span style="color: #a1db00;">struct</span> {
+      name string
+  }
+
+  <span style="color: #a1db00;">func</span> (p *<span style="color: #00d7af;">Person</span>) <span style="color: #ffd700;">SayHi</span>() {
+      fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"%v say: hi"</span>, p.name)
+  }
+
+  <span style="color: #a1db00;">func</span> (p *<span style="color: #00d7af;">Person</span>) <span style="color: #ffd700;">ChangeName</span>(newName <span style="color: #00d7af;">string</span>) {
+      p.name = newName
+  }
+  <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+      p := &amp;<span style="color: #00d7af;">Person</span>{<span style="color: #ff4ea3;">"jon"</span>}
+      p.<span style="color: #ffd700;">SayHi</span>() <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">jon say: hi</span>
+      fmt.<span style="color: #ffd700;">Println</span>()
+      p.<span style="color: #ffd700;">ChangeName</span>(<span style="color: #ff4ea3;">"onj"</span>) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">onj say: hi</span>
+      p.<span style="color: #ffd700;">SayHi</span>()
+  }
+</pre>
+</div>
+
+<p>
+类型的代码和绑定在它上面的方法的代码可以存在在不同的源文件，但必须在同一个包。有一个间接的方式给内置类型添加方法：可以先定义该类型的别名类型，然后再为别名类型定义方法。
+</p>
+
+<p>
+别名类型不能有它原始类型上已经定义过的方法。
+</p>
+
+<p>
+指针方法和值方法都可以在指针或非指针上被调用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">  <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Person</span> <span style="color: #a1db00;">struct</span> {
+      name string
+  }
+
+  <span style="color: #a1db00;">func</span> (p *<span style="color: #00d7af;">Person</span>) <span style="color: #ffd700;">SayHi</span>() {
+      fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"%v say: hi"</span>, p.name)
+  }
+
+  <span style="color: #a1db00;">func</span> (p *<span style="color: #00d7af;">Person</span>) <span style="color: #ffd700;">ChangeName</span>(newName <span style="color: #00d7af;">string</span>) {
+      p.name = newName
+  }
+  <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+      p2 := <span style="color: #00d7af;">Person</span>{<span style="color: #ff4ea3;">"yoo"</span>}
+      p2.<span style="color: #ffd700;">SayHi</span>() <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">yoo say: hi</span>
+  }
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org074e343" class="outline-5">
+<h5 id="org074e343"><span class="section-number-5">5.0.2.6</span> 协程函数</h5>
+<div class="outline-text-5" id="text-5-0-2-6">
+<p>
+协程是根据一个或多个线程的可用性，映射（多路复用，执行于）在他们之上的；协程调度器在 Go 运行时很好的完成了这个工作。
+</p>
+
+<p>
+执行协程的函数没有返回值。
+</p>
+
+<p>
+协程的栈是动态调整的。
+</p>
+
+<p>
+经验法则，对于 n 个核心的情况设置 GOMAXPROCS 为 n-1 以获得最佳性能，也同样需要遵守这条规则：协程的数量 &gt; 1 + GOMAXPROCS &gt; 1。所以如果在某一时间只有一个协程在执行，不要设置 GOMAXPROCS！
+</p>
+</div>
+</div>
+<div id="outline-container-org23785a2" class="outline-5">
+<h5 id="org23785a2"><span class="section-number-5">5.0.2.7</span> 内建函数</h5>
+<div class="outline-text-5" id="text-5-0-2-7">
+</div>
+<ol class="org-ol">
+<li><a id="org566b643"></a>append，copy<br /></li>
+<li><a id="orgfc20f3b"></a>new, make<br />
+<div class="outline-text-6" id="text-5-0-2-7-2">
+<p>
+看起来二者没有什么区别，都在堆上分配内存，但是它们的行为不同，适用于不同的类型。
+</p>
+<ul class="org-ul">
+<li>new(T) 为每个新的类型 T 分配一片内存，初始化为 0 并且返回类型为 * T 的 <b>内存地址</b> ：这种方法 返回一个指向类型为 T，值为 0 的地址的指针，它适用于值类型如数组和结构体；它相当于 &amp;T{}。</li>
+<li>make(T) 返回一个类型为 T 的 <b>初始值</b> ，它只适用于 3 种内建的引用类型：切片、map 和 channel。</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+  p := <span style="color: #d18aff;">new</span>([]<span style="color: #00d7af;">int</span>)
+  s := <span style="color: #d18aff;">make</span>([]<span style="color: #00d7af;">int</span>, 0)
+  fmt.<span style="color: #ffd700;">Println</span>(reflect.<span style="color: #ffd700;">TypeOf</span>(p), p, *p, <span style="color: #d18aff;">len</span>(*p), <span style="color: #d18aff;">cap</span>(*p)) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">*[]int &amp;[] [] 0 0</span>
+  fmt.<span style="color: #ffd700;">Println</span>(reflect.<span style="color: #ffd700;">TypeOf</span>(s), &amp;s, s, <span style="color: #d18aff;">len</span>(s), <span style="color: #d18aff;">cap</span>(s))   <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">[]int &amp;[] [] 0 0</span>
+  <span style="color: #a1db00;">var</span> a [5]<span style="color: #00d7af;">int</span>
+  *p = a[:3]
+  fmt.<span style="color: #ffd700;">Println</span>(reflect.<span style="color: #ffd700;">TypeOf</span>(p), *p, <span style="color: #d18aff;">len</span>(*p), <span style="color: #d18aff;">cap</span>(*p)) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">*[]int [0 0 0 0 0] 3 5</span>
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgf2ec604"></a>print，println<br /></li>
+<li><a id="orgd169b32"></a>close<br /></li>
+<li><a id="orge6b607b"></a>len，cap<br /></li>
+<li><a id="orgc3ef3bc"></a>itoa<br /></li>
+<li><a id="org9fbf5a3"></a>panic，recover<br /></li>
+<li><a id="org6bb5c7c"></a>range<br /></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org7101f54" class="outline-4">
+<h4 id="org7101f54"><span class="section-number-4">5.0.3</span> 语句</h4>
+<div class="outline-text-4" id="text-5-0-3">
+<ul class="org-ul">
+<li>语句不使用；结尾</li>
+<li>变量声明语句有多行声明和并行声明</li>
+<li>赋值与初始化，局部变量的简短声明语法。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf9aeb7a" class="outline-4">
+<h4 id="orgf9aeb7a"><span class="section-number-4">5.0.4</span> 变量</h4>
+<div class="outline-text-4" id="text-5-0-4">
+</div>
+<div id="outline-container-org79a7774" class="outline-5">
+<h5 id="org79a7774"><span class="section-number-5">5.0.4.1</span> 值类型</h5>
+</div>
+
+<div id="outline-container-org49b1774" class="outline-5">
+<h5 id="org49b1774"><span class="section-number-5">5.0.4.2</span> 引用类型</h5>
+<div class="outline-text-5" id="text-5-0-4-2">
+<p>
+uintptr，slices，maps，channel
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5ddb4a4" class="outline-5">
+<h5 id="org5ddb4a4"><span class="section-number-5">5.0.4.3</span> 作用域</h5>
+<div class="outline-text-5" id="text-5-0-4-3">
+<ul class="org-ul">
+<li>global
+<ul class="org-ul">
+<li>package 导出</li>
+</ul></li>
+<li>local</li>
+<li>block</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4cb0407" class="outline-4">
+<h4 id="org4cb0407"><span class="section-number-4">5.0.5</span> 示例</h4>
+<div class="outline-text-4" id="text-5-0-5">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">package</span> main
+
+<span style="color: #a1db00;">import</span> (
+    <span style="color: #ff4ea3;">"fmt"</span>
+)
+
+<span style="color: #a1db00;">const</span> c = <span style="color: #ff4ea3;">"C"</span>
+
+<span style="color: #a1db00;">var</span> v int = 5
+
+<span style="color: #a1db00;">type</span> <span style="color: #00d7af;">T</span> <span style="color: #a1db00;">struct</span>{} <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#20197;&#19978;&#19977;&#31181;&#20840;&#23616;&#21464;&#37327;&#22768;&#26126;&#37117;&#26377;&#24182;&#34892;&#36171;&#20540;&#24418;&#24335;</span>
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">init</span>() { <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">initialization of package</span>
+}
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #a1db00;">var</span> a int
+
+    <span style="color: #ffd700;">Func1</span>()
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">...</span>
+    fmt.<span style="color: #ffd700;">Println</span>(a)
+}
+
+<span style="color: #a1db00;">func</span> (t <span style="color: #00d7af;">T</span>) <span style="color: #ffd700;">Method1</span>() {
+    <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">...</span>
+}
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Func1</span>() { <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">exported function Func1</span>
+    <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">...</span>
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org37249bc" class="outline-2">
+<h2 id="org37249bc"><span class="section-number-2">6</span> 类型系统</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgd751b93" class="outline-3">
+<h3 id="orgd751b93"><span class="section-number-3">6.1</span> 基本类型</h3>
+<div class="outline-text-3" id="text-6-1">
+</div>
+<div id="outline-container-org340c22f" class="outline-4">
+<h4 id="org340c22f"><span class="section-number-4">6.1.1</span> 布尔(bool)</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<p>
+bool，true，false，nil
+</p>
+</div>
+</div>
+<div id="outline-container-orgfc1798c" class="outline-4">
+<h4 id="orgfc1798c"><span class="section-number-4">6.1.2</span> 数字（numeric）</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<ul class="org-ul">
+<li>int，uint，int8，uint8，int16，uint16，int32，uint32，int64，uint64，</li>
+
+<li>float32，float64</li>
+
+<li>complex，complex64，complex128，image，real</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org596ab20" class="outline-4">
+<h4 id="org596ab20"><span class="section-number-4">6.1.3</span> 字符（character）</h4>
+<div class="outline-text-4" id="text-6-1-3">
+<p>
+byte，rune
+</p>
+</div>
+</div>
+<div id="outline-container-org8423010" class="outline-4">
+<h4 id="org8423010"><span class="section-number-4">6.1.4</span> 字符串（string）</h4>
+<div class="outline-text-4" id="text-6-1-4">
+<p>
+字符串是 UTF-8 字符的一个序列（当字符为 ASCII 码时则占用 1 个字节，其它字符根据需要占用 2-4 个字节）。
+</p>
+
+<p>
+len()计算字符串所占字节长度。
+</p>
+<div class="org-src-container">
+<pre class="src src-go"> <span style="color: #a1db00;">package</span> main
+
+ <span style="color: #a1db00;">import</span> (
+     <span style="color: #ff4ea3;">"fmt"</span>
+     <span style="color: #ff4ea3;">"unicode/utf8"</span>
+ )
+
+ <span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+     str := <span style="color: #ff4ea3;">"go &#19990;&#30028;"</span>
+     fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #d18aff;">len</span>(str))         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">9</span>
+     fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #d18aff;">len</span>([]<span style="color: #ffd700;">rune</span>(str))) <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">5</span>
+     bin := []<span style="color: #ffd700;">byte</span>(<span style="color: #ff4ea3;">"go &#19990;&#30028;"</span>)
+     fmt.<span style="color: #ffd700;">Println</span>(str == <span style="color: #ffd700;">string</span>(bin)) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">true</span>
+     r, s := utf8.<span style="color: #ffd700;">DecodeLastRune</span>(bin)
+     fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">string</span>(r), s)                <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#30028; 3</span>
+     fmt.<span style="color: #ffd700;">Println</span>(utf8.<span style="color: #ffd700;">RuneCount</span>(bin))         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">5</span>
+     fmt.<span style="color: #ffd700;">Println</span>(utf8.<span style="color: #ffd700;">RuneCountInString</span>(str)) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">5</span>
+     <span style="color: #a1db00;">for</span> _, c := <span style="color: #a1db00;">range</span> <span style="color: #ff4ea3;">"go &#19990;&#30028;"</span> {
+         fmt.<span style="color: #ffd700;">Println</span>(<span style="color: #ffd700;">string</span>(c))
+     }
+ }
+</pre>
+</div>
+<p>
+字符串比较操作都是用内存字节进行比较。
+</p>
+
+<p>
+非解释字符串：该类字符串使用反引号括起来，支持换行。
+</p>
+
+<p>
+高效字符串拼接方法:bytes.Buffer
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd36e0b5" class="outline-4">
+<h4 id="orgd36e0b5"><span class="section-number-4">6.1.5</span> 通道（channel）</h4>
+<div class="outline-text-4" id="text-6-1-5">
+</div>
+<div id="outline-container-org5012e45" class="outline-5">
+<h5 id="org5012e45"><span class="section-number-5">6.1.5.1</span> 声明</h5>
+<div class="outline-text-5" id="text-6-1-5-1">
+<p>
+var identifier chan datatype
+</p>
+</div>
+</div>
+
+<div id="outline-container-org835baff" class="outline-5">
+<h5 id="org835baff"><span class="section-number-5">6.1.5.2</span> 阻塞与带缓冲</h5>
+<div class="outline-text-5" id="text-6-1-5-2">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">sendData</span>(ch <span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">string</span>) {
+    <span style="color: #a1db00;">for</span> i, v := <span style="color: #a1db00;">range</span> []<span style="color: #00d7af;">string</span>{<span style="color: #ff4ea3;">"hello"</span>, <span style="color: #ff4ea3;">"world"</span>, <span style="color: #ff4ea3;">"happy"</span>, <span style="color: #ff4ea3;">"every"</span>, <span style="color: #ff4ea3;">"day"</span>} {
+        fmt.<span style="color: #ffd700;">Println</span>(i)
+        ch &lt;- v
+    }
+}
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">getData</span>(ch <span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">string</span>) {
+    fmt.<span style="color: #ffd700;">Println</span>(&lt;-ch)
+}
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    ch := <span style="color: #d18aff;">make</span>(<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">string</span>)
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">ch := make(chan string, 10)</span>
+    <span style="color: #a1db00;">go</span> <span style="color: #ffd700;">getData</span>(ch)
+    <span style="color: #a1db00;">go</span> <span style="color: #ffd700;">sendData</span>(ch)
+    time.<span style="color: #ffd700;">Sleep</span>(1e9 * 1)
+}
+</pre>
+</div>
+<p>
+结果：
+</p>
+<pre class="example">
+         0 begin
+         0 end
+         1 begin
+         hello
+</pre>
+<p>
+信号量模式通知协程结束。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org85ecbb6" class="outline-5">
+<h5 id="org85ecbb6"><span class="section-number-5">6.1.5.3</span> 习惯用法：</h5>
+<div class="outline-text-5" id="text-6-1-5-3">
+</div>
+<ol class="org-ol">
+<li><a id="org810d29b"></a>通道工厂模式<br />
+<div class="outline-text-6" id="text-6-1-5-3-1">
+<p>
+不将通道作为参数传递给协程，而用函数来生成一个通道并返回（工厂角色）；函数内有个匿名函数被协程调用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    stream := <span style="color: #ffd700;">pump</span>()
+    <span style="color: #a1db00;">go</span> <span style="color: #ffd700;">suck</span>(stream)
+    time.<span style="color: #ffd700;">Sleep</span>(1e9)
+}
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">pump</span>() <span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span> {
+    ch := <span style="color: #d18aff;">make</span>(<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span>)
+    <span style="color: #a1db00;">go</span> <span style="color: #a1db00;">func</span>() {
+        <span style="color: #a1db00;">for</span> i := 0; ; i++ {
+            ch &lt;- i
+        }
+    }()
+    <span style="color: #a1db00;">return</span> ch
+}
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">suck</span>(ch <span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span>) {
+    <span style="color: #a1db00;">for</span> {
+        fmt.<span style="color: #ffd700;">Println</span>(&lt;-ch)
+    }
+}
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orge733dbc"></a>通道迭代模式<br />
+<div class="outline-text-6" id="text-6-1-5-3-2">
+<p>
+返回只读通道迭代 container。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> (c *<span style="color: #00d7af;">container</span>) <span style="color: #ffd700;">Iter</span> () &lt;- <span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">items</span> {
+    ch := <span style="color: #d18aff;">make</span>(<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">item</span>)
+    <span style="color: #a1db00;">go</span> <span style="color: #a1db00;">func</span> () {
+        <span style="color: #a1db00;">for</span> i:= 0; i &lt; c.<span style="color: #ffd700;">Len</span>(); i++{    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">or use a for-range loop</span>
+            ch &lt;- c.items[i]
+        }
+    } ()
+    <span style="color: #a1db00;">return</span> ch
+}
+
+<span style="color: #a1db00;">for</span> x := <span style="color: #a1db00;">range</span> container.<span style="color: #ffd700;">Iter</span>() { ... }
+
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org48de1f2"></a>通道方向，只读，只写<br />
+<div class="outline-text-6" id="text-6-1-5-3-3">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">var</span> send_only <span style="color: #a1db00;">chan</span>&lt;- <span style="color: #00d7af;">int</span>        <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">channel can only send data</span>
+<span style="color: #a1db00;">var</span> recv_only &lt;-<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span>
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-go">sendChan := <span style="color: #d18aff;">make</span>(<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span>)
+reciveChan := <span style="color: #d18aff;">make</span>(<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">string</span>)
+<span style="color: #a1db00;">go</span> <span style="color: #ffd700;">processChannel</span>(sendChan, receiveChan)
+
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">processChannel</span>(in &lt;-<span style="color: #a1db00;">chan</span> <span style="color: #00d7af;">int</span>, out <span style="color: #a1db00;">chan</span>&lt;- <span style="color: #00d7af;">string</span>) {
+    <span style="color: #a1db00;">for</span> inValue := <span style="color: #a1db00;">range</span> in {
+        result := ... <span style="color: #6c6c6c; font-style: italic;">/// </span><span style="color: #6c6c6c; font-style: italic;">processing inValue</span>
+    out &lt;- result
+    }
+}
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orge8dd330"></a>for-range 自动检测通道是否关闭。<br /></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf741ce9" class="outline-3">
+<h3 id="orgf741ce9"><span class="section-number-3">6.2</span> 复合类型</h3>
+<div class="outline-text-3" id="text-6-2">
+</div>
+<div id="outline-container-org8052ab0" class="outline-4">
+<h4 id="org8052ab0"><span class="section-number-4">6.2.1</span> 数组</h4>
+<div class="outline-text-4" id="text-6-2-1">
+</div>
+<div id="outline-container-org6adb77d" class="outline-5">
+<h5 id="org6adb77d"><span class="section-number-5">6.2.1.1</span> 声明：</h5>
+<div class="outline-text-5" id="text-6-2-1-1">
+<p>
+[len]type
+</p>
+</div>
+</div>
+
+<div id="outline-container-org897a8a8" class="outline-5">
+<h5 id="org897a8a8"><span class="section-number-5">6.2.1.2</span> 值类型</h5>
+<div class="outline-text-5" id="text-6-2-1-2">
+<p>
+数组是值类型，长度是数组类型的一部分。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    fmt.<span style="color: #ffd700;">Println</span>(reflect.<span style="color: #ffd700;">TypeOf</span>(arr1), arr1) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">[5]int [0 0 0 0 0]</span>
+    <span style="color: #a1db00;">var</span> arr2 = <span style="color: #d18aff;">new</span>([5]<span style="color: #00d7af;">int</span>)
+    fmt.<span style="color: #ffd700;">Println</span>(reflect.<span style="color: #ffd700;">TypeOf</span>(arr2), arr2) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">*[5]int &amp;[0 0 0 0 0]</span>
+    <span style="color: #a1db00;">var</span> arr3 = *arr2
+    arr3[2] = 100
+    fmt.<span style="color: #ffd700;">Println</span>(arr2, arr3) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&amp;[0 0 0 0 0] [0 0 100 0 0]</span>
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9e85b52" class="outline-4">
+<h4 id="org9e85b52"><span class="section-number-4">6.2.2</span> 切片（slice）</h4>
+<div class="outline-text-4" id="text-6-2-2">
+<p>
+切片（slice）是对数组一个连续片段的 <b>引用</b> （该数组我们称之为相关数组，通常是匿名的），只有在没有任何切片指向的时候，底层的数组内存才会被释放，这种特性有时会导致程序占用多余的内存。
+</p>
+</div>
+<div id="outline-container-org200daf8" class="outline-5">
+<h5 id="org200daf8"><span class="section-number-5">6.2.2.1</span> 声明</h5>
+<div class="outline-text-5" id="text-6-2-2-1">
+<ul class="org-ul">
+<li>[]type</li>
+<li>make([]T, len, cap)</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #a1db00;">var</span> a = [5]<span style="color: #00d7af;">int</span>{1, 2, 3, 4}
+    s := a[:3]
+    <span style="color: #a1db00;">for</span> _, v := <span style="color: #a1db00;">range</span> s {
+        v *= 2
+    }
+    fmt.<span style="color: #ffd700;">Println</span>(a) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">[1 2 3 4 0]</span>
+
+    <span style="color: #a1db00;">for</span> i, _ := <span style="color: #a1db00;">range</span> s {
+        s[i] = 2
+    }
+    fmt.<span style="color: #ffd700;">Println</span>(a) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">[2 2 2 4 0]</span>
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb7694d0" class="outline-5">
+<h5 id="orgb7694d0"><span class="section-number-5">6.2.2.2</span> 扩展</h5>
+<div class="outline-text-5" id="text-6-2-2-2">
+<p>
+0 &lt;= len(s) &lt;= cap(s)，扩展 cap 只能通过复制。
+</p>
+
+<p>
+切片移动：slice = slice[1:]
+</p>
+
+<p>
+使用 append 对切片进行增删改查操作。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org05902b0" class="outline-4">
+<h4 id="org05902b0"><span class="section-number-4">6.2.3</span> 映射（map）：</h4>
+<div class="outline-text-4" id="text-6-2-3">
+</div>
+<div id="outline-container-org3ef7f0c" class="outline-5">
+<h5 id="org3ef7f0c"><span class="section-number-5">6.2.3.1</span> 声明</h5>
+<div class="outline-text-5" id="text-6-2-3-1">
+<p>
+map[keytype]valuetype
+</p>
+
+<ul class="org-ul">
+<li>Key 类型只要能支持==和!=操作符，所以不能是 slice，map，function。<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup></li>
+
+<li>不要使用 new，永远使用 make 来构造 map。</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    m := <span style="color: #d18aff;">new</span>(<span style="color: #a1db00;">map</span>[<span style="color: #00d7af;">string</span>]<span style="color: #00d7af;">string</span>)
+    (*m)[<span style="color: #ff4ea3;">"hello"</span>] = <span style="color: #ff4ea3;">"world"</span> <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">panic: assignment to entry in nil map</span>
+    fmt.<span style="color: #ffd700;">Println</span>(m)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org5c9ed7d" class="outline-4">
+<h4 id="org5c9ed7d"><span class="section-number-4">6.2.4</span> 结构体（struct）</h4>
+<div class="outline-text-4" id="text-6-2-4">
+</div>
+<div id="outline-container-orgccd249e" class="outline-5">
+<h5 id="orgccd249e"><span class="section-number-5">6.2.4.1</span> 声明</h5>
+<div class="outline-text-5" id="text-6-2-4-1">
+<p>
+struct {field type}
+</p>
+</div>
+</div>
+<div id="outline-container-org1bb640f" class="outline-5">
+<h5 id="org1bb640f"><span class="section-number-5">6.2.4.2</span> 导出字段与可见性原则</h5>
+<div class="outline-text-5" id="text-6-2-4-2">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">struct_pack.go</span>
+<span style="color: #a1db00;">package</span> struct_pack
+
+<span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Person</span> <span style="color: #a1db00;">struct</span> {
+    Name string
+    age  int
+}
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">main.go</span>
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #a1db00;">var</span> p = struct_pack.<span style="color: #00d7af;">Person</span>{}
+    p.Name = <span style="color: #ff4ea3;">"jon"</span>
+    <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">p.age = 20 //./hello.go:38: p.age undefined (cannot refer to unexported field or method age)</span>
+    fmt.<span style="color: #ffd700;">Println</span>(p)
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7534c9a" class="outline-5">
+<h5 id="org7534c9a"><span class="section-number-5">6.2.4.3</span> 字段标签</h5>
+</div>
+<div id="outline-container-orgcdd6aec" class="outline-5">
+<h5 id="orgcdd6aec"><span class="section-number-5">6.2.4.4</span> 匿名字段</h5>
+<div class="outline-text-5" id="text-6-2-4-4">
+</div>
+<ol class="org-ol">
+<li><a id="org7693225"></a>模拟组合<br />
+<div class="outline-text-6" id="text-6-2-4-4-1">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Base</span> <span style="color: #a1db00;">struct</span> {
+        in1 int
+    }
+
+    <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Derive</span> <span style="color: #a1db00;">struct</span> {
+        Base
+        int
+        in2 int
+    }
+    <span style="color: #a1db00;">var</span> p = <span style="color: #00d7af;">Derive</span>{}
+    p.in1 = 1
+    p.in2 = 2
+    p.int = 3
+    fmt.<span style="color: #ffd700;">Println</span>(p) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">{{1} 3 2}</span>
+}
+</pre>
+</div>
+<p>
+在一个结构体中对于每一种数据类型 <b>只能有一个匿名字段</b> 。匿名类型的可见方法也同样被内嵌
+</p>
+</div>
+</li>
+<li><a id="orgc38f64a"></a>命名冲突<br />
+<div class="outline-text-6" id="text-6-2-4-4-2">
+<p>
+外层覆盖内层:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Base</span> <span style="color: #a1db00;">struct</span> {
+        a int
+    }
+
+    <span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Derive</span> <span style="color: #a1db00;">struct</span> {
+        Base
+        a int
+        b int
+    }
+    <span style="color: #a1db00;">var</span> p = <span style="color: #00d7af;">Derive</span>{}
+    p.a = 1
+    p.b = 2
+    fmt.<span style="color: #ffd700;">Println</span>(p) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">{{0} 1 2}</span>
+}
+
+</pre>
+</div>
+
+<p>
+处于同一层级的报错:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org99cade9" class="outline-4">
+<h4 id="org99cade9"><span class="section-number-4">6.2.5</span> 接口（interface）</h4>
+<div class="outline-text-4" id="text-6-2-5">
+</div>
+<div id="outline-container-org975f65a" class="outline-5">
+<h5 id="org975f65a"><span class="section-number-5">6.2.5.1</span> 声明</h5>
+<div class="outline-text-5" id="text-6-2-5-1">
+<p>
+{} interface
+</p>
+</div>
+</div>
+<div id="outline-container-org0647133" class="outline-5">
+<h5 id="org0647133"><span class="section-number-5">6.2.5.2</span> 类型断言</h5>
+<div class="outline-text-5" id="text-6-2-5-2">
+<p>
+类型判断：type-switch
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    r := &amp;<span style="color: #00d7af;">Rectangle</span>{5, 3}
+    q := &amp;<span style="color: #00d7af;">Square</span>{5}
+
+    shapes := []<span style="color: #00d7af;">Shaper</span>{r, q}
+    <span style="color: #a1db00;">for</span> _, s := <span style="color: #a1db00;">range</span> shapes {
+        <span style="color: #a1db00;">switch</span> t := s.(<span style="color: #a1db00;">type</span>) {
+        <span style="color: #a1db00;">case</span> *Square:
+            fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"Type Square %T with value %v\n"</span>, t, t)
+        <span style="color: #a1db00;">case</span> *Rectangle:
+            fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"Type Rectangle %T with value %v\n"</span>, t, t)
+        <span style="color: #a1db00;">case</span> <span style="color: #5fafd7;">nil</span>:
+            fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"nil value: nothing to check?\n"</span>)
+        <span style="color: #a1db00;">default</span>:
+            fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"Unexpected type %T\n"</span>, t)
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge756ac8" class="outline-5">
+<h5 id="orge756ac8"><span class="section-number-5">6.2.5.3</span> 调用规则</h5>
+<div class="outline-text-5" id="text-6-2-5-3">
+<p>
+Go 语言规范定义了接口方法集的调用规则：
+</p>
+<ul class="org-ul">
+<li>类型 *T 的可调用方法集包含接受者为 *T 或 T 的所有方法集</li>
+<li>类型 T 的可调用方法集包含接受者为 T 的所有方法</li>
+<li>类型 T 的可调用方法集不包含接受者为 *T 的方法</li>
+</ul>
+
+<p>
+所以定义接口方法的时候接受者最好为（*T）。
+</p>
+</div>
+</div>
+<div id="outline-container-orgfcf1ccf" class="outline-5">
+<h5 id="orgfcf1ccf"><span class="section-number-5">6.2.5.4</span> 空接口</h5>
+<div class="outline-text-5" id="text-6-2-5-4">
+<p>
+定义个混合类型数组
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Element</span> <span style="color: #a1db00;">interface</span>{}
+
+<span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Vector</span> <span style="color: #a1db00;">struct</span> {
+    a []<span style="color: #00d7af;">Element</span>
+}
+
+<span style="color: #a1db00;">func</span> (v *<span style="color: #00d7af;">Vector</span>) <span style="color: #ffd700;">At</span>(i <span style="color: #00d7af;">int</span>) <span style="color: #00d7af;">Element</span> {
+    <span style="color: #a1db00;">return</span> v.a[i]
+}
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    v := <span style="color: #00d7af;">Vector</span>{[]<span style="color: #00d7af;">Element</span>{1, 0.2, <span style="color: #ff4ea3;">"hello"</span>}}
+    fmt.<span style="color: #ffd700;">Println</span>(v.<span style="color: #ffd700;">At</span>(2))
+}
+</pre>
+</div>
+<p>
+不能直接赋值
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    s := []<span style="color: #00d7af;">int</span>{1, 2, 3, 4}
+    i := <span style="color: #d18aff;">make</span>([]<span style="color: #a1db00;">interface</span>{}, <span style="color: #d18aff;">len</span>(s))
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">i = s //cannot use s (type []int) as type []interface {} in assignment</span>
+    <span style="color: #a1db00;">for</span> k, v := <span style="color: #a1db00;">range</span> s {
+        i[k] = v
+    }
+    fmt.<span style="color: #ffd700;">Println</span>(i) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">[1 2 3 4]</span>
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfaf5df5" class="outline-5">
+<h5 id="orgfaf5df5"><span class="section-number-5">6.2.5.5</span> 接口继承</h5>
+<div class="outline-text-5" id="text-6-2-5-5">
+<p>
+当一个类型内嵌另一个类型（实现了一个或多个接口）的指针时，这个类型就可以使用（另一个类型）所有的接口方法。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org74b6adb" class="outline-3">
+<h3 id="org74b6adb"><span class="section-number-3">6.3</span> 默认值</h3>
+</div>
+<div id="outline-container-org10b4975" class="outline-3">
+<h3 id="org10b4975"><span class="section-number-3">6.4</span> 类型转换</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+强制类型转换。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf66cd0b" class="outline-2">
+<h2 id="orgf66cd0b"><span class="section-number-2">7</span> 运算符</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org66c609c" class="outline-3">
+<h3 id="org66c609c"><span class="section-number-3">7.1</span> 算数运算符</h3>
+<div class="outline-text-3" id="text-7-1">
+</div>
+<div id="outline-container-orga5a5e66" class="outline-4">
+<h4 id="orga5a5e66"><span class="section-number-4">7.1.1</span> 自增，自减</h4>
+<div class="outline-text-4" id="text-7-1-1">
+<p>
+<code>++</code> 和 <code>--</code> 是 statement 而不是 expressions? <a href="http://golang.org/doc/faq#inc_dec">why</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    s := <span style="color: #ff4ea3;">"google"</span>
+    <span style="color: #a1db00;">for</span> i := 0; i &lt; <span style="color: #d18aff;">len</span>(s); {
+        fmt.<span style="color: #ffd700;">Println</span>(s[i])
+        <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">fmt.Println(s[i++])</span>
+        i++
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org30b8357" class="outline-3">
+<h3 id="org30b8357"><span class="section-number-3">7.2</span> 逻辑运算符</h3>
+</div>
+<div id="outline-container-org8b1059b" class="outline-3">
+<h3 id="org8b1059b"><span class="section-number-3">7.3</span> 位运算符</h3>
+</div>
+<div id="outline-container-orgdbb6cbd" class="outline-3">
+<h3 id="orgdbb6cbd"><span class="section-number-3">7.4</span> 通信操作符</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+&lt;-
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga6e3395" class="outline-2">
+<h2 id="orga6e3395"><span class="section-number-2">8</span> 分支控制</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org63353a9" class="outline-3">
+<h3 id="org63353a9"><span class="section-number-3">8.1</span> 判断</h3>
+<div class="outline-text-3" id="text-8-1">
+</div>
+<div id="outline-container-org04fc883" class="outline-4">
+<h4 id="org04fc883"><span class="section-number-4">8.1.1</span> if-else</h4>
+<div class="outline-text-4" id="text-8-1-1">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">if</span> initialization;condition1 {
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">do something</span>
+} <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> condition2 {
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">do something else</span>
+}<span style="color: #a1db00;">else</span> {
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">catch-all or default</span>
+}
+</pre>
+</div>
+<p>
+用于测试多返回值的错误。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd3ee0ba" class="outline-4">
+<h4 id="orgd3ee0ba"><span class="section-number-4">8.1.2</span> switch-case</h4>
+<div class="outline-text-4" id="text-8-1-2">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">switch</span> v {
+<span style="color: #a1db00;">case</span> val1:
+
+<span style="color: #a1db00;">case</span> val2, var3:
+
+<span style="color: #a1db00;">case</span> val4:
+    <span style="color: #a1db00;">fallthrough</span>
+
+<span style="color: #a1db00;">default</span>:
+
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">switch</span> initialization {
+    <span style="color: #a1db00;">case</span> condition1:
+        ...
+    <span style="color: #a1db00;">case</span> condition2:
+        ...
+    <span style="color: #a1db00;">default</span>:
+        ...
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org9d94d8d" class="outline-3">
+<h3 id="org9d94d8d"><span class="section-number-3">8.2</span> 循环</h3>
+<div class="outline-text-3" id="text-8-2">
+</div>
+<div id="outline-container-org265f1c8" class="outline-4">
+<h4 id="org265f1c8"><span class="section-number-4">8.2.1</span> for</h4>
+<div class="outline-text-4" id="text-8-2-1">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">for</span> initialization;condition;post {
+}
+</pre>
+</div>
+
+<p>
+init and post are optional.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">for</span> pos,data <span style="color: #a1db00;">range</span> slice/<span style="color: #a1db00;">map</span> {
+}
+</pre>
+</div>
+
+<p>
+range 是使用值拷贝的形式进行遍历。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">type</span> <span style="color: #00d7af;">Foo</span> <span style="color: #a1db00;">struct</span> {
+    bar string
+}
+<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    list := []<span style="color: #00d7af;">Foo</span>{
+        {<span style="color: #ff4ea3;">"A"</span>},
+        {<span style="color: #ff4ea3;">"B"</span>},
+        {<span style="color: #ff4ea3;">"C"</span>},
+    }
+    list2 := <span style="color: #d18aff;">make</span>([]*<span style="color: #00d7af;">Foo</span>, <span style="color: #d18aff;">len</span>(list))
+    <span style="color: #a1db00;">for</span> i, value := <span style="color: #a1db00;">range</span> list {
+        list2[i] = &amp;value
+    }
+    fmt.<span style="color: #ffd700;">Println</span>(list[0], list[1], list[2])
+    fmt.<span style="color: #ffd700;">Println</span>(list2[0], list2[1], list2[2])
+}
+</pre>
+</div>
+
+<p>
+正确的写法应该用 index 来访问 for…range 中真实的元素，并获取其指针地址：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">for</span> i, _ := <span style="color: #a1db00;">range</span> list {
+    list2[i] = &amp;list[i]
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf3d5e9c" class="outline-3">
+<h3 id="orgf3d5e9c"><span class="section-number-3">8.3</span> 跳转</h3>
+<div class="outline-text-3" id="text-8-3">
+</div>
+<div id="outline-container-orge68350d" class="outline-4">
+<h4 id="orge68350d"><span class="section-number-4">8.3.1</span> break</h4>
+</div>
+<div id="outline-container-org243e91d" class="outline-4">
+<h4 id="org243e91d"><span class="section-number-4">8.3.2</span> continue</h4>
+</div>
+<div id="outline-container-org75a3cf9" class="outline-4">
+<h4 id="org75a3cf9"><span class="section-number-4">8.3.3</span> goto</h4>
+</div>
+<div id="outline-container-org9de5c16" class="outline-4">
+<h4 id="org9de5c16"><span class="section-number-4">8.3.4</span> return</h4>
+</div>
+<div id="outline-container-org28e055d" class="outline-4">
+<h4 id="org28e055d"><span class="section-number-4">8.3.5</span> go</h4>
+</div>
+<div id="outline-container-org6ef499a" class="outline-4">
+<h4 id="org6ef499a"><span class="section-number-4">8.3.6</span> select</h4>
+<div class="outline-text-4" id="text-8-3-6">
+<p>
+select 与无限循环配合使用。
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">backend</span>() {
+    <span style="color: #a1db00;">for</span> {
+        <span style="color: #a1db00;">select</span> {
+        <span style="color: #a1db00;">case</span> cmd := &lt;-ch1:
+            <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Handle ...</span>
+        <span style="color: #a1db00;">case</span> cmd := &lt;-ch2:
+            ...
+        <span style="color: #a1db00;">case</span> cmd := &lt;-chStop:
+            <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">stop server</span>
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf96a6ce" class="outline-2">
+<h2 id="orgf96a6ce"><span class="section-number-2">9</span> 编程范式</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org86993e6" class="outline-4">
+<h4 id="org86993e6"><span class="section-number-4">9.0.1</span> OOP</h4>
+<div class="outline-text-4" id="text-9-0-1">
+<ul class="org-ul">
+<li>封装
+<ul class="org-ul">
+<li>package</li>
+<li>struct</li>
+</ul></li>
+<li>继承
+<ul class="org-ul">
+<li>类型内嵌</li>
+</ul></li>
+<li>多态
+<ul class="org-ul">
+<li>interface</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc18253a" class="outline-2">
+<h2 id="orgc18253a"><span class="section-number-2">10</span> 基础库</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-org87bc33f" class="outline-3">
+<h3 id="org87bc33f"><span class="section-number-3">10.1</span> <a href="https://golang.org/pkg/bytes/">bytes</a></h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+实现了操作 bytes 序列的相关操作，类似 strings。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5cf77bc" class="outline-3">
+<h3 id="org5cf77bc"><span class="section-number-3">10.2</span> encoding</h3>
+<div class="outline-text-3" id="text-10-2">
+</div>
+<div id="outline-container-org3913a69" class="outline-4">
+<h4 id="org3913a69"><span class="section-number-4">10.2.1</span> <a href="https://golang.org/pkg/encoding/binary/">binary</a></h4>
+<div class="outline-text-4" id="text-10-2-1">
+<p>
+实现 bytes 和数字之间的转换。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org900ca14" class="outline-4">
+<h4 id="org900ca14"><span class="section-number-4">10.2.2</span> <a href="https://golang.org/pkg/errors/">errors</a></h4>
+<div class="outline-text-4" id="text-10-2-2">
+<p>
+错误处理。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ca8497" class="outline-4">
+<h4 id="org1ca8497"><span class="section-number-4">10.2.3</span> <a href="https://golang.org/pkg/encoding/hex/">hex</a></h4>
+<div class="outline-text-4" id="text-10-2-3">
+<p>
+实现十六进制字符串 bytes 的转换。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7b3aee7" class="outline-4">
+<h4 id="org7b3aee7"><span class="section-number-4">10.2.4</span> <a href="https://golang.org/pkg/encoding/json/">json</a></h4>
+<div class="outline-text-4" id="text-10-2-4">
+<p>
+实现了 json 序列化的操作。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfef23a7" class="outline-3">
+<h3 id="orgfef23a7"><span class="section-number-3">10.3</span> <a href="https://golang.org/pkg/net/">net</a></h3>
+<div class="outline-text-3" id="text-10-3">
+<p>
+底层网络接口
+</p>
+</div>
+
+<div id="outline-container-orgd5c3c8b" class="outline-4">
+<h4 id="orgd5c3c8b"><span class="section-number-4">10.3.1</span> <a href="https://golang.org/pkg/net/http/">http</a></h4>
+<div class="outline-text-4" id="text-10-3-1">
+<p>
+http 协议，client，server 相关实现。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbf4ce82" class="outline-3">
+<h3 id="orgbf4ce82"><span class="section-number-3">10.4</span> <a href="https://golang.org/pkg/os/">os</a></h3>
+</div>
+
+<div id="outline-container-orgfe9353e" class="outline-3">
+<h3 id="orgfe9353e"><span class="section-number-3">10.5</span> path</h3>
+<div class="outline-text-3" id="text-10-5">
+</div>
+<div id="outline-container-org61eecf8" class="outline-4">
+<h4 id="org61eecf8"><span class="section-number-4">10.5.1</span> <a href="https://golang.org/pkg/path/filepath/">filepath</a></h4>
+</div>
+</div>
+
+<div id="outline-container-org8a7f099" class="outline-3">
+<h3 id="org8a7f099"><span class="section-number-3">10.6</span> <a href="https://golang.org/pkg/database/sql/">sql</a></h3>
+</div>
+
+<div id="outline-container-org8cbcaca" class="outline-3">
+<h3 id="org8cbcaca"><span class="section-number-3">10.7</span> <a href="https://golang.org/pkg/strconv/">strconv</a></h3>
+<div class="outline-text-3" id="text-10-7">
+<p>
+实现字符串和基础数据结构中之间的转换。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9b250d4" class="outline-3">
+<h3 id="org9b250d4"><span class="section-number-3">10.8</span> <a href="https://golang.org/pkg/strings/">strings</a></h3>
+<div class="outline-text-3" id="text-10-8">
+<p>
+实现了字符串相关操作，例如，查找，切片，strip，split 等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaae1e27" class="outline-3">
+<h3 id="orgaae1e27"><span class="section-number-3">10.9</span> <a href="https://golang.org/pkg/time/">time</a></h3>
+<div class="outline-text-3" id="text-10-9">
+<p>
+实现日期时间相关的函数。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3e9162d" class="outline-2">
+<h2 id="org3e9162d"><span class="section-number-2">11</span> 第三方库</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-org150d5c6" class="outline-3">
+<h3 id="org150d5c6"><span class="section-number-3">11.1</span> <a href="https://godoc.org/github.com/patrickmn/go-cache">go-cache</a></h3>
+<div class="outline-text-3" id="text-11-1">
+<p>
+基于内存的 kv 缓存系统。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7c11470" class="outline-3">
+<h3 id="org7c11470"><span class="section-number-3">11.2</span> <a href="https://labix.org/gocheck">gocheck</a></h3>
+<div class="outline-text-3" id="text-11-2">
+<p>
+单元测试。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ffc741" class="outline-3">
+<h3 id="org1ffc741"><span class="section-number-3">11.3</span> <a href="https://github.com/alecthomas/log4go">log4go</a></h3>
+<div class="outline-text-3" id="text-11-3">
+<p>
+日志库，已经没人维护，不要使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org113702d" class="outline-3">
+<h3 id="org113702d"><span class="section-number-3">11.4</span> <a href="https://godoc.org/github.com/sirupsen/logrus">logrus</a></h3>
+<div class="outline-text-3" id="text-11-4">
+<p>
+日志库
+</p>
+</div>
+</div>
+
+<div id="outline-container-org19acdbb" class="outline-3">
+<h3 id="org19acdbb"><span class="section-number-3">11.5</span> <a href="https://godoc.org/github.com/go-sql-driver/mysql">mysql-driver</a></h3>
+<div class="outline-text-3" id="text-11-5">
+<p>
+mysql 数据库驱动，配合 sql 库使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2004000" class="outline-3">
+<h3 id="org2004000"><span class="section-number-3">11.6</span> <a href="https://godoc.org/github.com/go-redis/redis">redis</a></h3>
+<div class="outline-text-3" id="text-11-6">
+<p>
+redis 客户端。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6fe1403" class="outline-3">
+<h3 id="org6fe1403"><span class="section-number-3">11.7</span> <a href="https://godoc.org/github.com/golang/protobuf/proto">proto</a></h3>
+<div class="outline-text-3" id="text-11-7">
+<p>
+实现了 protobuf 协议。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org733168a" class="outline-2">
+<h2 id="org733168a"><span class="section-number-2">12</span> 参考书籍</h2>
+<div class="outline-text-2" id="text-12">
+</div>
+<div id="outline-container-orgf3cc738" class="outline-3">
+<h3 id="orgf3cc738"><span class="section-number-3">12.1</span> 入门</h3>
+<div class="outline-text-3" id="text-12-1">
+<p>
+<a href="https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md">the way to go</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge8364ea" class="outline-3">
+<h3 id="orge8364ea"><span class="section-number-3">12.2</span> 高级</h3>
+</div>
+<div id="outline-container-org93d6cd2" class="outline-3">
+<h3 id="org93d6cd2"><span class="section-number-3">12.3</span> 实践</h3>
+</div>
+<div id="outline-container-orgee0f360" class="outline-3">
+<h3 id="orgee0f360"><span class="section-number-3">12.4</span> 原理</h3>
+</div>
+</div>
+
+<div id="outline-container-org1b0d257" class="outline-2">
+<h2 id="org1b0d257"><span class="section-number-2">13</span> 实践 tips</h2>
+<div class="outline-text-2" id="text-13">
+</div>
+<div id="outline-container-org5a4920f" class="outline-3">
+<h3 id="org5a4920f"><span class="section-number-3">13.1</span> golang.org/x/xx 下载失败解决办法</h3>
+<div class="outline-text-3" id="text-13-1">
+<ul class="org-ul">
+<li>使用 VPN</li>
+<li>golang 中国上面给出了一种<a href="https://www.golangtc.com/download/package">解决办法</a></li>
+<li><p>
+从 github 下载，比如 golang.org/x/net，其实镜像托管在在 github.com/golang/net。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #d18aff;">cd</span> $<span style="color: #ff8700;">GOPATH</span>/src/golang.org/x/
+git clone git@github.com:golang/net.git
+<span style="color: #d18aff;">cd</span> net
+go install
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.zhihu.com/question/19918532">弱类型、强类型、动态类型、静态类型语言的区别是什么？</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.5.html">深入解析 go</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://golang.org/doc/code.html">How to Write Go Code</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://golang.org/doc/effective_go.html#names">Effective Go</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://lanlingzi.cn/post/technical/2016/0904_go_map/">go map key 类型分析</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

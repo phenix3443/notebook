@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Appendix A Quick Reference</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Appendix A Quick Reference</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0a5f6a7">1. Appendix A Quick Reference</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0a5f6a7" class="outline-2">
+<h2 id="org0a5f6a7"><span class="section-number-2">1</span> Appendix A Quick Reference</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本附录总结了GNU理解的指令，文本操作函数和特殊变量。 有关其他摘要，请参阅 <a href="https://www.gnu.org/software/make/manual/html_node/Special-Targets.html#Special-Targets">特殊目标</a>，<a href="https://www.gnu.org/software/make/manual/html_node/Catalogue-of-Rules.html#Catalogue-of-Rules">内置规则目录</a> 和 <a href="https://www.gnu.org/software/make/manual/html_node/Options-Summary.html#Options-Summary">选项摘要</a>。
+</p>
+
+<p>
+以下是GNU make识别的指令的摘要：
+</p>
+<div class="org-src-container">
+<pre class="src src-make">define variable
+define variable =
+define variable :=
+define variable ::=
+define variable +=
+define variable ?=
+endef
+</pre>
+</div>
+
+<p>
+定义多行变量。 See <a href="https://www.gnu.org/software/make/manual/html_node/Multi_002dLine.html#Multi_002dLine">Multi-Line</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">undefine variable
+</pre>
+</div>
+<p>
+Undefining variables. See <a href="https://www.gnu.org/software/make/manual/html_node/Undefine-Directive.html#Undefine-Directive">Undefine Directive</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">ifdef variable
+ifndef variable
+ifeq (a,b)
+ifeq "a" "b"
+ifeq 'a' 'b'
+ifneq (a,b)
+ifneq "a" "b"
+ifneq 'a' 'b'
+else
+endif
+</pre>
+</div>
+<p>
+makefile的条件求值部分。See <a href="https://www.gnu.org/software/make/manual/html_node/Conditionals.html#Conditionals">Conditionals</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">include file
+-include file
+sinclude file
+</pre>
+</div>
+
+<p>
+包含其他makefile。See <a href="https://www.gnu.org/software/make/manual/html_node/Include.html#Include">Including Other Makefiles</a>.
+</p>
+
+<pre class="example">
+override variable-assignment
+</pre>
+
+<p>
+定义一个变量，覆盖任何先前的定义，甚至是命令行中的定义。See <a href="https://www.gnu.org/software/make/manual/html_node/Override-Directive.html#Override-Directive">The override Directive</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">export
+</pre>
+</div>
+
+<p>
+告诉make默认情况下将所有变量导出到子进程。See <a href="https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion">Communicating Variables to a Sub-make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">export variable
+export variable-assignment
+unexport variable
+</pre>
+</div>
+
+<p>
+告诉是否要将特定变量导出到子进程。See <a href="https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion">Communicating Variables to a Sub-make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">private variable-assignment
+</pre>
+</div>
+
+<p>
+不允许先决条件继承此变量赋值。ee <a href="https://www.gnu.org/software/make/manual/html_node/Suppressing-Inheritance.html#Suppressing-Inheritance">Suppressing Inheritance</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">vpath pattern path
+</pre>
+</div>
+
+<p>
+为与'％'模式匹配的文件指定搜索路径。See <a href="https://www.gnu.org/software/make/manual/html_node/Selective-Search.html#Selective-Search">The vpath Directive</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">vpath pattern
+</pre>
+</div>
+
+<p>
+删除先前为pattern指定的所有搜索路径。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">vpath
+</pre>
+</div>
+
+<p>
+删除先前在任何vpath指令中指定的所有搜索路径。
+</p>
+
+<p>
+下面是内置函数的汇总 (see <a href="https://www.gnu.org/software/make/manual/html_node/Functions.html#Functions">Functions</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(subst from,to,text)
+</pre>
+</div>
+
+<p>
+将 text中的 from 替换为 to。See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(patsubst pattern,replacement,text)
+</pre>
+</div>
+
+<p>
+使用replacement 替换text中匹配pattern的 <b>word</b> 。See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(strip string)
+</pre>
+</div>
+
+<p>
+从string 中移除空白符。See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(findstring find,text)
+</pre>
+</div>
+
+<p>
+在text中查找find。See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(filter pattern…,text)
+</pre>
+</div>
+
+<p>
+在text 中查找匹配其中一个 pattern 的word. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(filter-out pattern…,text)
+</pre>
+</div>
+
+<p>
+Select words in text that do not match any of the pattern words. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(sort list)
+</pre>
+</div>
+
+<p>
+Sort the words in list lexicographically, removing duplicates. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-make">$(word n,text)
+</pre>
+</div>
+<p>
+Extract the nth word (one-origin) of text. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(words text)
+</pre>
+</div>
+<p>
+Count the number of words in text. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(wordlist s,e,text)
+</pre>
+</div>
+
+<p>
+  Returns the list of words in text from s to e. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+See Functions for String Substitution and Analysis.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(firstword names…)
+</pre>
+</div>
+
+<p>
+Extract the first word of names. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(lastword names…)
+</pre>
+</div>
+
+<p>
+Extract the last word of names. See <a href="https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions">Functions for String Substitution and Analysis</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(dir names…)
+</pre>
+</div>
+
+<p>
+Extract the directory part of each file name. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(notdir names…)
+</pre>
+</div>
+<p>
+Extract the non-directory part of each file name. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(suffix names…)
+</pre>
+</div>
+<p>
+Extract the suffix (the last ‘.’ and following characters) of each file name. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(basename names…)
+</pre>
+</div>
+
+<p>
+Extract the base name (name without suffix) of each file name. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(addsuffix suffix,names…)
+</pre>
+</div>
+
+<p>
+Append suffix to each word in names. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(addprefix prefix,names…)
+</pre>
+</div>
+
+<p>
+Prepend prefix to each word in names. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(join list1,list2)
+</pre>
+</div>
+
+<p>
+Join two parallel lists of words. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(wildcard pattern…)
+</pre>
+</div>
+
+<p>
+Find file names matching a shell file name pattern (not a ‘%’ pattern). See <a href="https://www.gnu.org/software/make/manual/html_node/Wildcard-Function.html#Wildcard-Function">The Function wildcard</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(realpath names…)
+</pre>
+</div>
+
+<p>
+For each file name in names, expand to an absolute name that does not contain any ., .., nor symlinks. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(abspath names…)
+</pre>
+</div>
+
+<p>
+For each file name in names, expand to an absolute name that does not contain any . or .. components, but preserves symlinks. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions">Functions for File Names</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(error text…)
+</pre>
+</div>
+<p>
+When this function is evaluated, make generates a fatal error with the message text. See <a href="https://www.gnu.org/software/make/manual/html_node/Make-Control-Functions.html#Make-Control-Functions">Functions That Control Make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(warning text…)
+</pre>
+</div>
+
+<p>
+When this function is evaluated, make generates a warning with the message text. See <a href="https://www.gnu.org/software/make/manual/html_node/Make-Control-Functions.html#Make-Control-Functions">Functions That Control Make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(shell command)
+</pre>
+</div>
+<p>
+Execute a shell command and return its output. See <a href="https://www.gnu.org/software/make/manual/html_node/Shell-Function.html#Shell-Function">The shell Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(origin variable)
+</pre>
+</div>
+<p>
+Return a string describing how the make variable variable was defined. See <a href="https://www.gnu.org/software/make/manual/html_node/Origin-Function.html#Origin-Function">The origin Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(flavor variable)
+</pre>
+</div>
+<p>
+Return a string describing the flavor of the make variable variable. See <a href="https://www.gnu.org/software/make/manual/html_node/Flavor-Function.html#Flavor-Function">The flavor Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(foreach var,words,text)
+</pre>
+</div>
+<p>
+Evaluate text with var bound to each word in words, and concatenate the results. See <a href="https://www.gnu.org/software/make/manual/html_node/Foreach-Function.html#Foreach-Function">The foreach Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(if condition,then-part[,else-part])
+</pre>
+</div>
+
+<p>
+Evaluate the condition condition; if it’s non-empty substitute the expansion of the then-part otherwise substitute the expansion of the else-part. See <a href="https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions">Functions for Conditionals</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(or condition1[,condition2[,condition3…]])
+</pre>
+</div>
+<p>
+Evaluate each condition conditionN one at a time; substitute the first non-empty expansion. If all expansions are empty, substitute the empty string. See <a href="https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions">Functions for Conditionals</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(and condition1[,condition2[,condition3…]])
+</pre>
+</div>
+<p>
+Evaluate each condition conditionN one at a time; if any expansion results in the empty string substitute the empty string. If all expansions result in a non-empty string, substitute the expansion of the last condition. See <a href="https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions">Functions for Conditionals</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(call var,param,…)
+</pre>
+</div>
+
+<p>
+Evaluate the variable var replacing any references to $(1), $(2) with the first, second, etc. param values. See <a href="https://www.gnu.org/software/make/manual/html_node/Call-Function.html#Call-Function">The call Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(eval text)
+</pre>
+</div>
+
+<p>
+Evaluate text then read the results as makefile commands. Expands to the empty string. See <a href="https://www.gnu.org/software/make/manual/html_node/Eval-Function.html#Eval-Function">The eval Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(file op filename,text)
+</pre>
+</div>
+
+<p>
+Expand the arguments, then open the file filename using mode op and write text to that file. See <a href="https://www.gnu.org/software/make/manual/html_node/File-Function.html#File-Function">The file Function</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(value var)
+</pre>
+</div>
+
+<p>
+Evaluates to the contents of the variable var, with no expansion performed on it. See <a href="https://www.gnu.org/software/make/manual/html_node/Value-Function.html#Value-Function">The value Function</a>.
+</p>
+
+
+<p>
+以下是自动变量汇总. See <a href="https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables">Automatic Variables</a>, for full information.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$@
+</pre>
+</div>
+
+<p>
+The file name of the target.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$%
+</pre>
+</div>
+
+<p>
+The target member name, when the target is an archive member.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$&lt;
+</pre>
+</div>
+
+<p>
+The name of the first prerequisite.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$?
+</pre>
+</div>
+
+<p>
+The names of all the prerequisites that are newer than the target, with spaces between them. For prerequisites which are archive members, only the named member is used (see Archives).
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$^
+$+
+</pre>
+</div>
+<p>
+The names of all the prerequisites, with spaces between them. For prerequisites which are archive members, only the named member is used (see Archives). The value of $^ omits duplicate prerequisites, while $+ retains them and preserves their order.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$*
+</pre>
+</div>
+<p>
+The stem with which an implicit rule matches (see How Patterns Match).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(@D)
+$(@F)
+</pre>
+</div>
+<p>
+The directory part and the file-within-directory part of $@.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(*D)
+$(*F)
+</pre>
+</div>
+
+<p>
+The directory part and the file-within-directory part of $*.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(%D)
+$(%F)
+</pre>
+</div>
+
+<p>
+The directory part and the file-within-directory part of $%.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(&lt;D)
+$(&lt;F)
+</pre>
+</div>
+<p>
+The directory part and the file-within-directory part of $&lt;.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(^D)
+$(^F)
+</pre>
+</div>
+
+<p>
+The directory part and the file-within-directory part of $^.
+</p>
+<div class="org-src-container">
+<pre class="src src-make">$(+D)
+$(+F)
+</pre>
+</div>
+
+<p>
+The directory part and the file-within-directory part of $+.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">$(?D)
+$(?F)
+</pre>
+</div>
+<p>
+The directory part and the file-within-directory part of $?.
+</p>
+
+
+<p>
+以下变量由GNU make特别使用：
+</p>
+<div class="org-src-container">
+<pre class="src src-make">MAKEFILES
+</pre>
+</div>
+<p>
+每次调用make时都会读取的Makefile。
+</p>
+
+<p>
+See <a href="https://www.gnu.org/software/make/manual/html_node/MAKEFILES-Variable.html#MAKEFILES-Variable">The Variable MAKEFILES</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">VPATH
+</pre>
+</div>
+
+<p>
+当前目录中找不到的文件的目录搜索路径。
+</p>
+
+<p>
+See <a href="https://www.gnu.org/software/make/manual/html_node/General-Search.html#General-Search">VPATH Search Path for All Prerequisites</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">SHELL
+</pre>
+</div>
+
+<p>
+系统默认命令解释程序的名称，通常为 <code>/bin/sh</code> 。可以在makefile中设置 <code>SHELL</code> 以更改用于运行的shell。 See <a href="https://www.gnu.org/software/make/manual/html_node/Execution.html#Execution">Recipe Execution</a>.  SHELL变量在从环境导入和导出时特别处理. See <a href="https://www.gnu.org/software/make/manual/html_node/Choosing-the-Shell.html#Choosing-the-Shell">Choosing the Shell</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKESHELL
+</pre>
+</div>
+
+<p>
+仅在MS-DOS上，由make使用的命令解释程序的名称。该值优先于SHELL的值。 See <a href="https://www.gnu.org/software/make/manual/html_node/Execution.html#Execution">MAKESHELL variable</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKE
+</pre>
+</div>
+<p>
+调用make的名称。 在食谱中使用此变量具有特殊含义。 See <a href="https://www.gnu.org/software/make/manual/html_node/MAKE-Variable.html#MAKE-Variable">How the MAKE Variable Works</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKE_VERSION
+</pre>
+</div>
+
+<p>
+内置变量'MAKE_VERSION'扩展为 GNU make程序的版本号。
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-make">MAKE_HOST
+</pre>
+</div>
+<p>
+内置变量'MAKE_HOST'扩展为一个字符串，表示构建运行GNU make的主机。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKELEVEL
+</pre>
+</div>
+<p>
+递归执行的级别。See <a href="https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion">Variables/Recursion</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKEFLAGS
+</pre>
+</div>
+<p>
+给make的标志。可以在环境变量或makefile中通过设置它以设置标志。
+</p>
+
+<p>
+See <a href="https://www.gnu.org/software/make/manual/html_node/Options_002fRecursion.html#Options_002fRecursion">Communicating Options to a Sub-make</a>.
+</p>
+
+<p>
+永远不适合在recipe行中直接使用MAKEFLAGS：它的内容可能无法在shell中正确引用。始终允许递归make从其父级通过环境获取这些值。
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-make">GNUMAKEFLAGS
+</pre>
+</div>
+<p>
+make解析的其他标志。可以在环境变量或makefile中设置它以设置make命令行标志。 GNU make从不设置此变量本身。仅当您要在符合POSIX的makefile中设置特定于GNU make的标志时，才需要此变量。这个变量将由GNU make看到，并被其他make实现忽略。如果只使用GNU make，则不需要它；只需直接使用MAKEFLAGS。See <a href="https://www.gnu.org/software/make/manual/html_node/Options_002fRecursion.html#Options_002fRecursion">Communicating Options to a Sub-make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">MAKECMDGOALS
+</pre>
+</div>
+<p>
+在命令行上给出的目标。设置此变量对make的操作没有影响。
+</p>
+
+<p>
+See <a href="https://www.gnu.org/software/make/manual/html_node/Goals.html#Goals">Arguments to Specify the Goals</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">CURDIR
+</pre>
+</div>
+<p>
+设置为当前工作目录的绝对路径名（处理完所有 <code>-C</code> 选项后，如果有）。设置此变量对make的操作没有影响。See <a href="https://www.gnu.org/software/make/manual/html_node/Recursion.html#Recursion">Recursive Use of make</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">SUFFIXES
+</pre>
+</div>
+<p>
+make读取任何makefile之前的默认后缀列表。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-make">.LIBPATTERNS
+</pre>
+</div>
+<p>
+定义库的命名以及搜索顺序。
+</p>
+
+<p>
+See <a href="https://www.gnu.org/software/make/manual/html_node/Libraries_002fSearch.html#Libraries_002fSearch">Directory Search for Link Libraries</a>.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>find_package</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">find_package</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org479d7c2">1. How To Find Libraries</a></li>
+<li><a href="#orgff374f2">2. Using external libraries</a></li>
+<li><a href="#org899247d">3. Using external libraries that CMake doesn't yet have modules for</a></li>
+<li><a href="#org1a8204c">4. Packages with components</a></li>
+<li><a href="#orgfe73c13">5. How package finding works</a></li>
+<li><a href="#orgff84799">6. Piggybacking on pkg-config</a></li>
+<li><a href="#org249e64a">7. Writing find modules</a></li>
+<li><a href="#orgca14fcb">8. Finding files</a></li>
+<li><a href="#org67b653e">9. 使用LibFindMacros</a></li>
+<li><a href="#org06ae0cc">10. Dependencies (optional)</a></li>
+<li><a href="#org1ddfa4b">11. Final processing</a></li>
+<li><a href="#org653406f">12. Performance and caching</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org479d7c2" class="outline-2">
+<h2 id="org479d7c2"><span class="section-number-2">1</span> How To Find Libraries<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+如果软件使用外部库（即软件自身未附带的库），大多数情况下，我们并不知道库（libraries）的头文件和二进制文件是否位于编译软件的系统中。但又必须将正确的头文件目录和二进制文件搜索路径添加到编译命令中，CMake通过提供 <a href="http://www.cmake.org/cmake/help/cmake-2-8-docs.html#command:find_package">find_package</a> 命令来辅助完成此任务。
+</p>
+
+<p>
+本文简要讨论如何在 CMake 项目中使用外部库，然后继续讨论如何为尚未拥有的库编写自己的查找模块（module）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgff374f2" class="outline-2">
+<h2 id="orgff374f2"><span class="section-number-2">2</span> Using external libraries</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+CMake附带了许多模块，可帮助查找各种知名库和包。可通过键入 <code>cmake --help-module-list</code> 或通过查看指定位置的中模块来获取当前 CMake 版本支持的模块列表。 例如，在Ubuntu linux上，模块路径是 <code>/usr/share/cmake/Modules/</code> 。
+</p>
+
+<p>
+以非常受欢迎的 bzip2 库为例。有一个名为 <code>FindBZip2.cmake</code> 的模块。使用 <code>find_package(BZip2)</code> 调用此模块后，cmake 将自动填写各种变量的值，然可以在 CMake 脚本中使用这些值。 有关变量列表，请查看实际的 cmake 模块文件，或者键入 <code>cmake --help-module FindBZip2</code> 。
+</p>
+
+<p>
+例如，考虑一个使用 bzip2 的非常简单的程序 - 即编译器需要知道 bzlib.h 在哪里以及链接器需要找到 bzip2 库（对于动态链接，Unix上是 libbz2.so，Windows上是 libbz2.dll）：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">cmake_minimum_required</span>(VERSION 2.8)
+<span style="color: #ffd700;">project</span>(helloworld)
+<span style="color: #ffd700;">add_executable</span>(helloworld hello.c)
+<span style="color: #ffd700;">find_package</span> (BZip2)
+<span style="color: #a1db00;">if</span> (BZIP2_FOUND)
+  <span style="color: #ffd700;">include_directories</span>(${<span style="color: #ff8700;">BZIP_INCLUDE_DIRS</span>})
+  <span style="color: #ffd700;">target_link_libraries</span> (helloworld ${<span style="color: #ff8700;">BZIP2_LIBRARIES</span>})
+<span style="color: #a1db00;">endif</span> (BZIP2_FOUND)
+</pre>
+</div>
+
+<p>
+然后，可以使用 cmake 并使 <code>VERBOSE = 1</code> 来验证是否将正确的标志传递给编译器和链接器。 还可以在编译后使用 “ldd” 或 “dependency walker” 等工具来验证 helloworld 与哪些确切文件相关联。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org899247d" class="outline-2">
+<h2 id="org899247d"><span class="section-number-2">3</span> Using external libraries that CMake doesn't yet have modules for</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+假设要使用 LibXML++ 库。在撰写本文时，CMake没有为 libXML++ 提供“查找”模块。但是通过谷歌搜索 FindLibXML++ Cmake 在互联网上找到了一个名为 <code>FindLibXML++.cmake</code> 的文件。在CMakeLists.txt中，添加如下代码：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">find_package</span>(LibXML++ REQUIRED)
+<span style="color: #ffd700;">include_directories</span>(${<span style="color: #ff8700;">LibXML++_INCLUDE_DIRS</span>})
+<span style="color: #ffd700;">set</span>(LIBS ${<span style="color: #ff8700;">LIBS</span>} ${<span style="color: #ff8700;">LibXML++_LIBRARIES</span>})
+</pre>
+</div>
+
+<p>
+如果包是可选的，可以省略 <code>REQUIRED</code> 关键字并查询布尔变量 <code>LibXML++_FOUND</code> ，看看它是否已被找到。然后，在检测到所有库之后，为目标添加依赖库：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">target_link_libraries</span>(exampleProgram ${<span style="color: #ff8700;">LIBS</span>})
+</pre>
+</div>
+
+<p>
+为此，需要将 <code>FindLibXML++.cmake</code> 文件放入CMake模块路径中。 由于CMake（目前f）未自带该文件，因此必须在包含在项目中。在项目根目录下创建名为 <code>cmake/Modules/</code> 的文件夹，并在根 <code>CMakeLists.txt</code> 中包含以下代码：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">set</span>(CMAKE_MODULE_PATH ${<span style="color: #ff8700;">CMAKE_MODULE_PATH</span>} <span style="color: #ff4ea3;">"${</span><span style="color: #ff8700;">CMAKE_SOURCE_DIR</span><span style="color: #ff4ea3;">}/cmake/Modules/"</span>)
+</pre>
+</div>
+
+<p>
+可能已经猜到了，需要放置使用的CMake模块，并且CMake必须在该文件夹中自动查找。
+</p>
+
+<p>
+通常这样就可以了。某些库可能需要其他内容，因此请务必查看 <code>FindSomething.cmake</code> 文件以查看该特定库的文档。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1a8204c" class="outline-2">
+<h2 id="org1a8204c"><span class="section-number-2">4</span> Packages with components</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+有些库带有一个或多个依赖库或组件。一个值得注意的例子是Qt库，它带有 QtOpenGL 和 QtXml，以及其他组件。 要使用这两个组件，请使用以下 find_package 命令：
+</p>
+
+<pre class="example">
+find_package(Qt COMPONENTS QtOpenGL QtXml REQUIRED)
+</pre>
+
+<p>
+同样，如果包对于您的项目是可选的，则可以省略REQUIRED关键字。在这种情况下，您可以使用 <code>__FOUND</code> 变量（例如Qt_QtXml_FOUND）来检查是否找到了组件。 以下对 find_package 的调用都是等效的：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">find_package</span>(Qt COMPONENTS QtOpenGL QtXml REQUIRED)
+<span style="color: #ffd700;">find_package</span>(Qt REQUIRED COMPONENTS QtOpenGL QtXml)
+<span style="color: #ffd700;">find_package</span>(Qt REQUIRED QtOpenGL QtXml)
+</pre>
+</div>
+
+<p>
+如果某个软件包的一些组件是必选，其他组件可选，则可以调用 find_package 两次：
+</p>
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">find_package</span>(Qt COMPONENTS QtXml REQUIRED)
+<span style="color: #ffd700;">find_package</span>(Qt COMPONENTS QtOpenGL)
+</pre>
+</div>
+
+<p>
+或者，可以使用所有组件调用 find_package 一次，但不使用REQUIRED关键字，然后显式检查所需的组件：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #ffd700;">find_package</span>(Qt COMPONENTS QtOpenGL QtXml)
+<span style="color: #a1db00;">if</span> ( NOT Qt_FOUND OR NOT QtXml_FOUND )
+  <span style="color: #ffd700;">message</span>(FATAL_ERROR <span style="color: #ff4ea3;">"Package Qt and component QtXml required, but not found!"</span>)
+<span style="color: #a1db00;">endif</span>( NOT Qt_FOUND OR NOT QtXml_FOUND )
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe73c13" class="outline-2">
+<h2 id="orgfe73c13"><span class="section-number-2">5</span> How package finding works</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+<code>find_package()</code> 命令将查找 <code>Find.cmake</code> 的模块路径，这是查找库的典型方法。首先 CMake检查 <code>${CMAKE_MODULE_PATH}</code> 中的所有目录，然后查找其自己的模块目录 <code>&lt;CMAKE_ROOT&gt;/share/cmake-x.y/Modules/</code> 。
+</p>
+
+<p>
+如果没有找到这样的文件，它会查找 <code>Config.cmake</code> 或 <code>-config.cmake</code> ，它们应该由库安装（但目前还没有很多库可以安装它们）并且不进行检测，而是只包含已安装库的硬编码值。
+</p>
+
+<p>
+前者称为模块模式，后者称为配置模式。此处记录了如何创建配置模式文件。可能还需要用于导入和导出目标的文档。
+</p>
+
+<p>
+对于模块系统，其他地方似乎没有文档，所以本文将重点放在它上面。无论使用哪种模式，如果找到包，将定义一组变量：
+</p>
+
+<ul class="org-ul">
+<li><code>_FOUND</code></li>
+<li><code>_INCLUDE_DIRS or _INCLUDES</code></li>
+<li><code>_LIBRARIES or _LIBRARIES or _LIBS</code></li>
+<li><code>_DEFINITIONS</code></li>
+</ul>
+
+<p>
+所有这些都发生在 Find.cmake 文件中。
+</p>
+
+<p>
+现在，在代码的顶级目录中的 CMakeLists.txt 文件中（实际上使用该库的客户端代码），检查变量 _FOUND 以查看是否已找到包。对于大多数 包结果变量使用所有大写的包的名称，例如 <code>LIBFOO_FOUND</code> ，对于某些包使用包的准确名称，例如 <code>LibFoo_FOUND</code> 。如果找到此变量，那么，分别讲将 <code>_INCLUDE_DIRS _LIBRARIES</code> 传递给 cmake 的 <code>include_directories() target_link_libraries()</code> 命令。
+</p>
+
+<p>
+这些约定记录在 CMake 模块目录的 readme.txt 文件中。
+</p>
+
+<p>
+“REQUIRED” 和其他可选的 find_package 参数由 find_package 转发到模块，模块应该根据它们影响它的操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgff84799" class="outline-2">
+<h2 id="orgff84799"><span class="section-number-2">6</span> Piggybacking on pkg-config</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Pkg-config是一个基于 “.pc” 文件的构建帮助工具，该文件记录库文件和头文件的位置。它通常出现在类 Unix系统上。有关更多信息，请参阅 <a href="http://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config的站点</a>。 如果 pkg-config 安装在系统上，CMake有自己的功能可以使用它。这些函数记录在 CMake 模块目录下的 FindPkgConfig.cmake 文件中。如果正在处理没有为其构建 cmake 脚本的库，或者正在处理 CMake 的普通查找脚本无法正常工作的情况，这可能特别有用。
+</p>
+
+<p>
+但是，如果只是调用 pkg-config 并使用它返回的内容，即使它可用，也应该非常小心。这样做的一个主要原因是，这种方式用户可以通过使用 ccmake 手动定义路径来意外地覆盖或增强库检测，这与 CMake 一样。还有一些情况，pkg-config 提供不正确的信息（错误的编译器等）。在这些情况下，让 CMake 像没有 pkg-config 一样进行检测，但是使用 pkg-config 提供有关查看其他提示的位置。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org249e64a" class="outline-2">
+<h2 id="org249e64a"><span class="section-number-2">7</span> Writing find modules</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+首先，请注意提供给 find_package 的名称或前缀是文件名的一部分，并且前缀用于所有变量。名称应完全匹配。不幸的是，在许多情况下，即使在CMake附带的模块中，名称也不匹配，从而导致各种问题。
+</p>
+
+<p>
+模块的基本操作应大致遵循此顺序：
+</p>
+
+<ul class="org-ul">
+<li>使用 find_package 检测库所依赖的其他库
+<ul class="org-ul">
+<li>转发 QUIETLY 和 REQUIRED 参数（例如，如果当前包是必需的，那么依赖性也应该是）</li>
+</ul></li>
+<li>（可选）使用 pkg-config 检测头文件/库路径（如果 pkg-config 可用）</li>
+<li>使用 find_path 和 find_library 分别查找头文件和库文件
+<ul class="org-ul">
+<li>pkg-config 提供的路径仅用作查看位置的提示</li>
+<li>CMake 还有很多其他硬编码的位置用于查找</li>
+<li>结果应保存在变量 <code>_INCLUDE_DIR</code> 和 <code>_LIBRARY</code> 中（注意：单数，不是复数）</li>
+</ul></li>
+<li>将 <code>_INCLUDE_DIRS</code> 设置为 <code>_INCLUDE_DIR</code></li>
+<li>将 <code>_LIBRARIES</code> 设置为 <code>_LIBRARY _LIBRARIES</code>
+<ul class="org-ul">
+<li>依赖关系使用复数形式，包本身使用 find_path 和 find_library 定义的单数形式</li>
+</ul></li>
+<li>调用 <code>find_package_handle_standard_args()</code> 宏来设置 <code>_FOUND</code> 变量并打印成功或失败消息。</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #6c6c6c; font-style: italic;"># - Try to find LibXml2</span>
+<span style="color: #6c6c6c; font-style: italic;"># Once done this will define</span>
+<span style="color: #6c6c6c; font-style: italic;">#  LIBXML2_FOUND - System has LibXml2</span>
+<span style="color: #6c6c6c; font-style: italic;">#  LIBXML2_INCLUDE_DIRS - The LibXml2 include directories</span>
+<span style="color: #6c6c6c; font-style: italic;">#  LIBXML2_LIBRARIES - The libraries needed to use LibXml2</span>
+<span style="color: #6c6c6c; font-style: italic;">#  LIBXML2_DEFINITIONS - Compiler switches required for using LibXml2</span>
+
+<span style="color: #ffd700;">find_package</span>(PkgConfig)
+<span style="color: #ffd700;">pkg_check_modules</span>(PC_LIBXML QUIET libxml-2.0)
+<span style="color: #ffd700;">set</span>(LIBXML2_DEFINITIONS ${<span style="color: #ff8700;">PC_LIBXML_CFLAGS_OTHER</span>})
+
+<span style="color: #ffd700;">find_path</span>(LIBXML2_INCLUDE_DIR libxml/xpath.h
+          HINTS ${<span style="color: #ff8700;">PC_LIBXML_INCLUDEDIR</span>} ${<span style="color: #ff8700;">PC_LIBXML_INCLUDE_DIRS</span>}
+          PATH_SUFFIXES libxml2 )
+
+<span style="color: #ffd700;">find_library</span>(LIBXML2_LIBRARY NAMES xml2 libxml2
+             HINTS ${<span style="color: #ff8700;">PC_LIBXML_LIBDIR</span>} ${<span style="color: #ff8700;">PC_LIBXML_LIBRARY_DIRS</span>} )
+
+<span style="color: #ffd700;">include</span>(FindPackageHandleStandardArgs)
+<span style="color: #6c6c6c; font-style: italic;"># handle the QUIETLY and REQUIRED arguments and set LIBXML2_FOUND to TRUE</span>
+<span style="color: #6c6c6c; font-style: italic;"># if all listed variables are TRUE</span>
+<span style="color: #ffd700;">find_package_handle_standard_args</span>(LibXml2  DEFAULT_MSG
+                                  LIBXML2_LIBRARY LIBXML2_INCLUDE_DIR)
+
+<span style="color: #ffd700;">mark_as_advanced</span>(LIBXML2_INCLUDE_DIR LIBXML2_LIBRARY )
+
+<span style="color: #ffd700;">set</span>(LIBXML2_LIBRARIES ${<span style="color: #ff8700;">LIBXML2_LIBRARY</span>} )
+<span style="color: #ffd700;">set</span>(LIBXML2_INCLUDE_DIRS ${<span style="color: #ff8700;">LIBXML2_INCLUDE_DIR</span>} )
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgca14fcb" class="outline-2">
+<h2 id="orgca14fcb"><span class="section-number-2">8</span> Finding files</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+然后进行实际检测。提供变量名作为 find_path 和 find_library 的第一个参数。如果需要多个包含路径，请多次调用 find_path 并使用不同变量名称。find_library也是如此。
+</p>
+<ul class="org-ul">
+<li>NAMES 为目标指定一个或多个可匹配的名称。在 find_path 中，应该使用主头文件或 C/C++ 代码中的 <code>#included</code> 使用的文件。这也可能包含一个文件夹，例如 <code>alsa/asound.h</code> 然后它将给出 asound.h 所在的文件夹的父目录。</li>
+<li>PATHS 用于为 CMake 提供额外的搜索路径，并且通常不应该定义为 pkg-config 之外的其他内容（CMake 具有内置默认值，并且可以根据各种配置变量的需要添加更多内容）。如果不使用它，请忽略整个部分。</li>
+<li>PATH_SUFFIXES（本示例中不存在），某些系统上，库将文件放在 <code>/usr/include/ExampleLibrary-1.23/ExampleLibrary/main.h</code> 等路径。在这种情况下，将使用 <code>NAMES ExampleLibrary/main.h PATH_SUFFIXES ExampleLibrary-1.23</code> 。可以指定多个后缀，并且CMake将在所有头文件目录中尝试它们。</li>
+</ul>
+
+<p>
+库名称不包含UNIX系统上使用的 lib 前缀，也不包含任何文件扩展名或编译器规范，因为 CMake 将平台独立地检测它们。如果库文件名中包含库版本号，则仍需要写明。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67b653e" class="outline-2">
+<h2 id="org67b653e"><span class="section-number-2">9</span> 使用LibFindMacros</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+LibFindMacros.cmake 模块是为了使 find-modules 更容易编写。它包含各种 libfind 宏，负责处理所有库始终相同的枯燥部分。有了它，脚本看起来像这样：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cmake"><span style="color: #6c6c6c; font-style: italic;"># - Try to find ImageMagick++</span>
+<span style="color: #6c6c6c; font-style: italic;"># Once done, this will define</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span>
+<span style="color: #6c6c6c; font-style: italic;">#  Magick++_FOUND - system has Magick++</span>
+<span style="color: #6c6c6c; font-style: italic;">#  Magick++_INCLUDE_DIRS - the Magick++ include directories</span>
+<span style="color: #6c6c6c; font-style: italic;">#  Magick++_LIBRARIES - link these to use Magick++</span>
+
+<span style="color: #ffd700;">include</span>(LibFindMacros)
+
+<span style="color: #6c6c6c; font-style: italic;"># Dependencies</span>
+<span style="color: #ffd700;">libfind_package</span>(Magick++ Magick)
+
+<span style="color: #6c6c6c; font-style: italic;"># Use pkg-config to get hints about paths</span>
+<span style="color: #ffd700;">libfind_pkg_check_modules</span>(Magick++_PKGCONF ImageMagick++)
+
+<span style="color: #6c6c6c; font-style: italic;"># Include dir</span>
+<span style="color: #ffd700;">find_path</span>(Magick++_INCLUDE_DIR
+  NAMES Magick++.h
+  PATHS ${<span style="color: #ff8700;">Magick++_PKGCONF_INCLUDE_DIRS</span>}
+)
+
+<span style="color: #6c6c6c; font-style: italic;"># Finally the library itself</span>
+<span style="color: #ffd700;">find_library</span>(Magick++_LIBRARY
+  NAMES Magick++
+  PATHS ${<span style="color: #ff8700;">Magick++_PKGCONF_LIBRARY_DIRS</span>}
+)
+
+<span style="color: #6c6c6c; font-style: italic;"># Set the include dir variables and the libraries and let libfind_process do the rest.</span>
+<span style="color: #6c6c6c; font-style: italic;"># NOTE: Singular variables for this library, plural for libraries this this lib depends on.</span>
+<span style="color: #ffd700;">set</span>(Magick++_PROCESS_INCLUDES Magick++_INCLUDE_DIR Magick_INCLUDE_DIRS)
+<span style="color: #ffd700;">set</span>(Magick++_PROCESS_LIBS Magick++_LIBRARY Magick_LIBRARIES)
+<span style="color: #ffd700;">libfind_process</span>(Magick++)
+</pre>
+</div>
+<p>
+libfind_pkg_check_modules 是 CMake自己的 pkg-config 模块的便利包装器，旨在简化操作。 不需要测试CMake版本，加载适当的模块，检查它是否已加载等等，而真正想做的只是一个简单的可选检查。 参数与 pkg_check_modules 相同：首先是返回变量的前缀，然后是包名（由pkg-config知道）。 这定义了_INCLUDE_DIRS和其他此类变量。
+</p>
+
+<p>
+在第一行中，引入 LibFindMacros。为此，必须将 LibFindMacros.cmake 文件放在模块路径中，因为它当前未在CMake发行版中提供。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org06ae0cc" class="outline-2">
+<h2 id="org06ae0cc"><span class="section-number-2">10</span> Dependencies (optional)</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+libfind_package 的功能与 find_package 类似，不同之处在于它转发了 QUIETLY 和 REQUIRED 参数。 为此，提供的第一个参数是当前包的名称。即 Magick++ 取决于 Magick。 其他参数如版本可以在Magick之后添加，它们只是被转发到 CMake 内部的 find_package 命令。为库所依赖的每个库都安装其中一行，并确保为它们提供查找模块。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ddfa4b" class="outline-2">
+<h2 id="org1ddfa4b"><span class="section-number-2">11</span> Final processing</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+Three items done, four to go. Fortunately, those last ones are rather mechanical and can be taken care of by the libfind_process macro and the last three lines of the example file. You will need to set _PROCESS_INCLUDES with the names of all variables to be included in _INCLUDE_DIRS, and _PROCESS_LIBS with the names of all variables to be included in _LIBRARIES. Then call libfind_process() and it'll do the rest.
+</p>
+
+<p>
+可以通过libfind_process 宏和示例文件的最后三行来处理。 您需要将 <code>_PROCESS_INCLUDES</code> 设置为包含在 <code>_INCLUDE_DIRS</code> 中的所有变量的名称，并将 <code>_PROCESS_LIBS</code> 设置为包含在 _LIBRARIES 中的所有变量的名称。然后调用 <code>libfind_process()</code> ，它将完成剩下的工作。
+</p>
+
+<p>
+仅当所有提供的变量都具有有效值时，才会将库视为FOUND。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org653406f" class="outline-2">
+<h2 id="org653406f"><span class="section-number-2">12</span> Performance and caching</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+CMake 变量系统比最初看起来要复杂得多。有些变量是缓存的，有些则不是。缓存的变量可以缓存为内部（无法使用 ccmake 进行编辑）或外部缓存（具有类型和文档字符串，可以在 ccmake 中进行修改）。此外，外部变量可以设置为高级，因此它们只能在ccmake的高级模式中看到。
+</p>
+
+<p>
+默认情况下，所有变量都是非缓存的。
+</p>
+
+<p>
+为了避免在每次运行时再次执行所有库检测，更重要的是允许用户在 ccmake 中设置头文件目录和库，这些都必须进行缓存。幸运的是，这已经由 find_path 和 find_library 处理，它将缓存它们的变量。如果变量已设置为有效值（例如，不是-NOTFOUND或未定义），则这些函数将不执行任何操作，但保留旧值。同样，pkg_check_modules 会对结果进行内部缓存，因此每次都不需要再次调用pkg-config。
+</p>
+
+<p>
+另一方面，不应缓存 find 模块（_FOUND，_INCLUDE_DIRS和_LIBRARIES）的输出值，因为修改其他缓存变量将不再导致实际输出发生变化，这显然不是所需的操作。
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://gitlab.kitware.com/cmake/community/wikis/doc/tutorials/How-To-Find-Libraries#how-package-finding-works">How To Find Libraries</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

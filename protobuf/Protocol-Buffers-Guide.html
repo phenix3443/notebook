@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protocol Buffers 开发指南</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Protocol Buffers 开发指南</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org36192fb">1. Overview</a></li>
+<li><a href="#org434075a">2. Start</a></li>
+<li><a href="#orgdf56fd8">3. 为什么不使用 XML?</a></li>
+<li><a href="#org2155bbc">4. Introducing proto3</a></li>
+<li><a href="#org571fb45">5. 历史</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org36192fb" class="outline-2">
+<h2 id="org36192fb"><span class="section-number-2">1</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Protocol buffers 是 google 提供的一种将结构化数据序列化和反序列化的方法，具有语言无关，平台无关，可扩展性好的优点。类似 XML，但是更小，更快，更简单。只需定义好如何结构化数据，就可以特殊生成的代码很容易的从各种数据流中读写结构化的数据，可用于多种语言。
+</p>
+
+<p>
+Protocol buffers 目前支持使用 Java、Python 和 C++生成代码。使用新的 proto3 语言版本可以和 Go、JavaNano、Ruby 和 C#协同工作，还有更多语言将要添加。
+</p>
+
+<p>
+本文主要介面向开开发者介绍如何在应用程序中使用 protocol buffers。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org434075a" class="outline-2">
+<h2 id="org434075a"><span class="section-number-2">2</span> Start</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+想要指定序列化的数据如何结构化，需要在.proto 文件中定义 protocol buffer 消息类型。每个 protocol buffer 消息类型是信息的一小段逻辑记录，包含一系列的名字-值对。下面是.proto 文件的一个非常基本的例子，它定义了有关个人信息的消息：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/f2b8c1d3a3c3868adc7d7b27a50c10b2.js">https://gist.github.com/phenix3443/f2b8c1d3a3c3868adc7d7b27a50c10b2.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+消息格式很简单：
+</p>
+<ul class="org-ul">
+<li>每个消息类型有一个或多个被唯一编号的字段。</li>
+<li>每个字段有名字和值类型，值类型可以是数字（整数或浮点数），布尔值，字符串，原始字节，甚至其他 protocol buffer 消息类型（如上所示）。</li>
+<li>以分层结构化数据。</li>
+<li>可以指定可选字段，必填字段和可重复字段。</li>
+</ul>
+
+
+<p>
+更多编写 proto 文件的信息参考 <a href="https://developers.google.com/protocol-buffers/docs/proto">Protocol Buffer Language Guide</a> 。
+</p>
+
+<p>
+定义好消息之后，就可以运行应用语言对应的 protocol buffer 编译器生成数据访问类。它们针对每个字段提供简单的访问器（比如 name()和 set_name()），也提供从原始字节序列化/分析整个结构的方法。
+</p>
+
+<p>
+所以，例如，如果选择 C++语言，针对上面的例子运行编译器将会产生一个叫做 Person 的类。
+</p>
+
+<p>
+可以在应用中使用该类来填充，序列化和获取 Person protocol buffer 消息。之后可能编写如下的代码:
+</p>
+
+<p>
+此后，可以读入该消息：
+</p>
+
+<p>
+可以向消息格式中添加新的字段，这不会破坏向后兼容性；旧二进制程序分析时简单忽略新字段。所以如果通讯协议使用了 protocol buffer 作为它的数据格式，可以扩展协议而无需担心破坏已有代码。
+</p>
+
+<p>
+<a href="https://developers.google.com/protocol-buffers/docs/reference/overview">API Reference section</a> 介绍了如何使用生成的 protobuf code。
+</p>
+
+<p>
+<a href="https://developers.google.com/protocol-buffers/docs/encoding">Protocol Buffer Encoding</a> 介绍了 protocol buffer message 是如何编码的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdf56fd8" class="outline-2">
+<h2 id="orgdf56fd8"><span class="section-number-2">3</span> 为什么不使用 XML?</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+相比 XML，Protocol buffers 在序列化结构数据方面有很多优势：
+</p>
+
+<ul class="org-ul">
+<li>are simpler</li>
+<li>are 3 to 10 times smaller</li>
+<li>are 20 to 100 times faster</li>
+<li>are less ambiguous</li>
+<li><p>
+generate data access classes that are easier to use programmatically
+</p>
+
+<p>
+生成更容易用于编程的数据访问类
+</p>
+
+<p>
+例如，假如要模拟一个有名字和 email 的人，XML 中，需要这样做。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;<span style="color: #ffd700;">person</span>&gt;
+  &lt;<span style="color: #ffd700;">name</span>&gt;John Doe&lt;/<span style="color: #ffd700;">name</span>&gt;
+  &lt;<span style="color: #ffd700;">email</span>&gt;jdoe@example.com&lt;/<span style="color: #ffd700;">email</span>&gt;
+&lt;/<span style="color: #ffd700;">person</span>&gt;
+</pre>
+</div>
+
+<p>
+对应的 protocol buffer 消息（以 protocol buffer 文本格式）：
+</p>
+<pre class="example">
+    person {
+	name: "John Doe"
+    email: "jdoe@example.com"
+    }
+</pre>
+
+<p>
+该消息编码为 protocol buffer 二进制格式（上面的文本形式只是一种用于调试和编辑的人类可读的表示）时，可能只有 28 字节长，解析需要 100-200 纳秒。XML 版本即使删掉空白符至少也有 69 字节，解析需要 5,000-10,000 纳秒。
+</p>
+
+<p>
+同时，操作 protocol buffer 更简单：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">cout &lt;&lt; <span style="color: #ff4ea3;">"Name: "</span> &lt;&lt; person.name() &lt;&lt; endl;
+cout &lt;&lt; <span style="color: #ff4ea3;">"E-mail: "</span> &lt;&lt; person.email() &lt;&lt; endl;
+</pre>
+</div>
+
+<p>
+然而使用 XML 不得不这样做：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++">cout &lt;&lt; <span style="color: #ff4ea3;">"Name: "</span>
+&lt;&lt; person.getElementsByTagName(<span style="color: #ff4ea3;">"name"</span>)-&gt;item(0)-&gt;innerText()
+&lt;&lt; endl;
+cout &lt;&lt; <span style="color: #ff4ea3;">"E-mail: "</span>
+&lt;&lt; person.getElementsByTagName(<span style="color: #ff4ea3;">"email"</span>)-&gt;item(0)-&gt;innerText()
+&lt;&lt; endl;
+</pre>
+</div>
+
+<p>
+然而，protocol buffers 并不总 XML 好&#x2014;例如，对使用标记的文本文档建模，protocol buffer 并不是一个好方法，因为不能轻易的交错文本结构。另外，XML 是人类可读和可变记得；protocol buffers 至少原生格式上不是。某种程度上 XML 还是自描述的。protocol buffer 只有在定义消息（.proto 文件）之后才是有意义的。
+</p>
+
+<p>
+听起来是我想要的方案。如何开始？
+</p>
+
+<p>
+一旦都准备好了，尝试按照所选语言的教程创建一个使用 protocol buffers 的简单应用。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2155bbc" class="outline-2">
+<h2 id="org2155bbc"><span class="section-number-2">4</span> Introducing proto3</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Proto3 简化了 protocol buffer 语言，以便更易于使用和面向更广泛的变成语言：当前版本可以针对 Java，C++，Python，Java Lite，Ruby，Javascript，Object-C 和 C# 生成 protocol buffer 代码。此外，使用最新版本的 Go protoc 插件还可以为 GO 生成 proto3 代码，该插件可以从 <a href="https://github.com/golang/protobuf">golang/protobuf</a> Github 仓库获取。
+</p>
+
+<p>
+当前推荐只在以下情况使用 proto3：
+</p>
+
+<ul class="org-ul">
+<li><p>
+if you want try using protocol buffers in one of our newly-supported languages.
+</p>
+
+<p>
+如果想使用新支持的语言使用 protocol buffers。
+</p></li>
+
+<li><p>
+If you you want to try our new open-source RPC implementation gRPC (currently also in alpha release) – we recommend using proto3 for all new gRPC servers and clients as it avoids compatibility issues.
+</p>
+
+<p>
+如果想尝试新开源的 RPC 实现 gRPC（当前仍处于 alpha 版本呢）&#x2014;推荐为所有新的 gRPC 服务器和客户端使用 proto3 来避免兼容问题。
+</p></li>
+</ul>
+
+<p>
+Note that the two language version APIs are not completely compatible. To avoid inconvenience to existing users, we will continue to support the previous language version in new protocol buffers releases.
+</p>
+
+<p>
+注意两种语言版本的 API 并不完全兼容，为了避免给现有用户带来的不变，新版本 protocol buffer 版本中将继续支持之前的语言版本。
+</p>
+
+<p>
+You can see the major differences from the current default version in the release notes and learn about proto3 syntax in the Proto3 Language Guide. Full documentation for proto3 is coming soon!
+</p>
+
+<p>
+可以在发布说明中看到与当前默认版本的主要差异，从 Proto3 语言指南中可以学习 proto3 语法。很快会有完整的 proto3 文档。
+</p>
+
+<p>
+(If the names proto2 and proto3 seem a little confusing, it's because when we originally open-sourced protocol buffers it was actually Google's second version of the language – also known as proto2. This is also why our open source version number started from v2.0.0).
+</p>
+
+<p>
+（proto2 和 proto3 的名字看起来有点迷惑，因为最初开源 protocol buffers 时，它实际上是 google 的第二个语言版本&#x2014;也称为 proto2。这也是为什么我们开源版本号从 V2.0.0 开始。）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org571fb45" class="outline-2">
+<h2 id="org571fb45"><span class="section-number-2">5</span> 历史</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+最初 google 开发 Protocol buffers 用于处理索引服务器请求/响应协议。protocol buffers 之前，有一个使用手动编组和解组请求和响应的格式，支持很多版本的协议。这导致一些非常丑陋的代码，比如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #a1db00;">if</span> (version == 3) {
+    ...
+} <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> (version &gt; 4) {
+    <span style="color: #a1db00;">if</span> (version == 5) {
+        ...
+    }
+    ...
+        }
+</pre>
+</div>
+
+<p>
+明确格式化过的协议也使得新版本协议的推出变得复杂，因为开发者必须确保处于请求发起者和实际处理请求的服务器之间的服务器在切换到新协议之前能够理解新协议。
+</p>
+
+<p>
+Protocol buffers 旨在解决这些问题：
+</p>
+<ul class="org-ul">
+<li>易于引入新字段，不需要检查数据的中间服务器，只解析并直接传递数据而不需要了解所有字段。</li>
+<li>自描述格式，可使用多种语言（C++，Java 等）处理。</li>
+</ul>
+
+<p>
+然而，用户依然需要手动编写解析带代码。
+</p>
+
+<p>
+随着系统的演化，它获得一些其他的功能和用法：
+</p>
+
+<ul class="org-ul">
+<li>自动生成序列化和反序列化代码避免手动解析。</li>
+<li>除了用于短暂的 RPC（远程过程调用）请求，人们开始使用 protocol buffers 作为方便的自描述格式持久化存储数据（例如，在 Bigtable 中）。</li>
+<li>服务器 RPC 接口开始被声明为 protocol 文件的一不部分，用户使用实际服务器接口的实现可以重新 protocol 编译器生成的基类。</li>
+</ul>
+
+<p>
+protocol buffer 现在是 Google 数据的通用语&#x2014;当前为止，google 代码树中 12183 个.proto 文件定义了 48162 个不同消息类型。它们用于 RPC 系统和各种存储系统中持久化存储数据。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

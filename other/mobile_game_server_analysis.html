@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>手游服务器架构剖析</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="lsl" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">手游服务器架构剖析</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2a61ab2">1. 整体架构</a></li>
+<li><a href="#org12ed1ba">2. 服务器详细功能模块</a>
+<ul>
+<li><a href="#orgf297af3">2.1. 登录服务器</a></li>
+<li><a href="#orga43b4d4">2.2. 逻辑服务器</a></li>
+<li><a href="#org88c9ae2">2.3. 用户中心服务器</a></li>
+<li><a href="#org9017638">2.4. 充值服务器</a></li>
+<li><a href="#org0f4826a">2.5. 数据库服务器</a></li>
+<li><a href="#org01bc133">2.6. 日志服务器</a></li>
+<li><a href="#orgb8a978c">2.7. 注意事项</a></li>
+</ul>
+</li>
+<li><a href="#org5aa632d">3. 总结</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2a61ab2" class="outline-2">
+<h2 id="org2a61ab2"><span class="section-number-2">1</span> 整体架构</h2>
+<div class="outline-text-2" id="text-1">
+
+<div class="figure">
+<p><img src="img/mobile-game-server.png" alt="mobile-game-server.png" />
+</p>
+</div>
+
+<p>
+服务器架构的几个模块：登录服务器(LS)、逻辑服务器（GS）、用户中心服务
+器（PF）、充值服务器、数据库服务器（DBA）、日志服务器（LogServer）。
+这些模块都是分开的，可以灵活地分布式部署到不同的物理服务器上。只需要
+修改一些配置文件即可，非常方便。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org12ed1ba" class="outline-2">
+<h2 id="org12ed1ba"><span class="section-number-2">2</span> 服务器详细功能模块</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgf297af3" class="outline-3">
+<h3 id="orgf297af3"><span class="section-number-3">2.1</span> 登录服务器</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+负责处理玩家登录的请求。一个登录服务器对应多个游戏逻辑分区。当玩家登录
+的时候，登录服务器向用户中心服务器发送登录信息。请求对登录信息的验证。
+通过验证之后，返回分区地址，之后，客户端与登录服务器断开，连接到游戏逻
+辑服务器。登录服务器是一个单独的 Java 运行程序，当访问量增加大，可以增
+加部署到多个物理服务器上面，均衡负载访问压力。它通过使用 Java 的
+NIO（非阻塞）方式与客户端进行通信。通过用户中心服务器提供的接口访问用
+户中心，进行数据处理。
+</p>
+</div>
+</div>
+<div id="outline-container-orga43b4d4" class="outline-3">
+<h3 id="orga43b4d4"><span class="section-number-3">2.2</span> 逻辑服务器</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+对玩家的操作进行逻辑处理。逻辑服务器是整个游戏的心脏。它的工作效率直接
+影响玩家在游戏中的体验，所以对它的要求就是速度，快速返回处理结果。为了
+达到满足要求的速度，逻辑服务器的大部分操作必须在内存中操作，避免 I/O
+操作，I/O 操作可以放到另外的线程中进行。说是大部分，是因为玩家在第一次
+登录的时候可能会从数据库加载所要用到的数据。在图中，大家看到了缓存，缓
+存的作用就是把数据放在内存中。当玩家退出时，它的数据也会在缓存中保存一
+段时间，在一定时间内，玩家再次登录，将不会再重新从数据库加载数据。在逻
+辑服务器中对数据库的操作可以先放入一个 Java 队列中，再另起一个 Java 线
+程负责从这个队列取数据，并发送到数据库服务器，这就是使用 Java 的阻塞队
+列，快速实现一个生产者—消费者模式，数据生产与处理相分离，这样既减轻了
+逻辑服务器的压力，也保证了数据处理的效率。逻辑服务器的日志也不在逻辑服
+务器入库，同样的发送到日志服务器处理。还有一种方法是以一种特定格式的方
+式，记录到本地文件中，再启动一个进程，读取这个文件，然后入库。
+</p>
+</div>
+</div>
+<div id="outline-container-org88c9ae2" class="outline-3">
+<h3 id="org88c9ae2"><span class="section-number-3">2.3</span> 用户中心服务器</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+现在很多游戏都对用户进行了集中管理。这方便了对用户提供更好的服务，比如
+充值、活动、礼包领取、新游戏导入用户等。有的游戏公司可能会用用户中心的
+数据发展游戏运营平台。这部分与游戏逻辑服务器分开，也减少了游戏逻辑服务
+器的压力。用户中心采用 JavaWeb 开发，它对游戏服务器只提供特定访问的接
+口，把数据与逻辑分离开来，方便管理，以及分布式部署，增强了架构的灵活性。
+</p>
+</div>
+</div>
+<div id="outline-container-org9017638" class="outline-3">
+<h3 id="org9017638"><span class="section-number-3">2.4</span> 充值服务器</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+充值是游戏收入的唯一方式，所以这个功能必须流畅，毫无压力。如果由于网络
+或服务器性能原因，导致玩家充值不了，会直接影响收益的。所以充值服务器最
+好部署在一台单独的物理机上面，也可以多个分区使用一个充值服务器，这要视
+游戏人数而定。
+</p>
+</div>
+</div>
+<div id="outline-container-org0f4826a" class="outline-3">
+<h3 id="org0f4826a"><span class="section-number-3">2.5</span> 数据库服务器</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+负责对数据入库及更新的操作。把这部分操作从逻辑服务器分离出来，就是为了
+减轻逻辑服务器的压力，减少逻辑服务器资源的占用。而且，如果逻辑服务器突
+然宕机的话，也能尽量保证数据少丢失。为了保证对数据的更新是顺序性的，这
+里把数据入库的操作使用队列单线程化。逻辑服务器与数据库服务器通过 Java
+的 TCP/IPSocket 进行 长连接，而且为了防止由于意外原因导致连接中断，在
+逻辑服务器与数据库服务器之间加入了一个心跳连接，这样短暂的中断可以被很
+快恢复，防止数据的丢失。
+</p>
+</div>
+</div>
+<div id="outline-container-org01bc133" class="outline-3">
+<h3 id="org01bc133"><span class="section-number-3">2.6</span> 日志服务器</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+处理玩家日志的入库。日志入库方便游戏运营管理游戏，统计玩家信息。当玩家
+人数比较多的时候，日志也会占用很多资源。所以把日志从逻辑服务器也分开了，
+因为日志只是插入操作，所以可以开几个线程进行并发插入到数据库。线程数要
+根据你数据库的连接池的最大连接数进行设置，要不然会导致连接资源被占完，
+数据插入不了数据库。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb8a978c" class="outline-3">
+<h3 id="orgb8a978c"><span class="section-number-3">2.7</span> 注意事项</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+在游戏服务器开发中，有几个需要注意的问题。
+</p>
+<ol class="org-ol">
+<li><p>
+通信协议
+</p>
+
+<p>
+开始的时候，我们为了快速开发，采用了 JSON 的变长协议处理方式，即
+把要传送的数据编码成 json 的字符串，再把 json 字符串转化为字节数
+据，传输过程中包的总结构为：总包长度（int 四个字节）+ 消息长度
+（int 四个字节）+ 消息体，即数据长度，n 个字节。这样做的好处是可
+以快速开发，缺点是在传输过程中无效的字节太多。而且这部分完全可以
+用代码自动完成。后来我们采用 Java 的反射机制，从定义好的 xml 描
+述协议文件中读取传输的内容格式，自动化生成传输的对象，在发送信息
+时，根据这个对象再把数据转化为二进制的数据流，解析的时候，同样也
+根据 xml 的描述文件，按顺序读取数据并转化为对象的 JavaBean 对象。
+如果时间充足，在游戏开发前期应该把这个做好。
+</p></li>
+<li><p>
+多线程并发
+</p>
+
+<p>
+游戏服务器是一个多用户的环境，其中多线程是必不可少的，它可以提交
+程序对 CPU 的利用率，提高处理性能。但它也有一个致命的缺点，就是
+在多线程下，数据同步的问题。因为在目前多核 CPU 下，线程算得上是
+可以并行执行的了。比如竞技场中的排行榜，每个玩家的名次变化都会对
+排行榜进行操作。如果不考虑数据同步的话，每个玩家可以随意更新排行
+榜，那这个排行榜的数据就会非常乱，名次也不正确。这个时间就需要保
+证在一个玩家更新排行的时候，其他玩家不能更新，只能阻塞等待。一般
+有两种方法可以解决：
+</p>
+<ul class="org-ul">
+<li>直接使用锁，当一个玩家更新排行榜时，使用锁锁定排行榜集合,让其他玩家不能再对排行榜操作，Java 有自带的两种方式，非常方便，一个是 Lock 接口，一个是 Synchronized；</li>
+<li>使用乐观同步，这种方式需要自己额外实现，之所以说是乐观，是因
+为它有可能执行失败。原理是当我取数据时，获得一个数据的一个版本
+号，而当写入数据时，如果版本一致，可写入，如果版本不一致，就需
+要重新获取数据，执行逻辑，直到版本一致后写入。可以设定重复次数，
+达到这个次数后，还没有成功就判定失败。根据我们目前的运行环境，
+我们采用了第一种方式。</li>
+</ul></li>
+<li><p>
+缓存的设计
+</p>
+
+<p>
+起初，为了快速敏捷开发，我们采用了一级缓存方式，即图 1 中的
+Redis 缓存，它是一个分布式的缓存，内部通过 Socket 连接。在玩家第
+一次进入游戏的时候会把玩家数据从数据库加载到 Redis 缓存之中，再
+取数据只从缓存中取。后来为了更加提高处理速度，增加了二级缓存，即
+内存缓存，利用 Java 提供的 Map、List 等集合保存数据，开发了一个
+基于内存的缓存构架 MemoryCacheTool，对外只提供操作接口。由于是直
+接从内存中读取或写入数据，其速度相对于 Redis 提高大约 20% 左右。
+</p></li>
+<li><p>
+负载均衡
+</p>
+
+<p>
+一台物理机台物理服务器的处理能力是有限的，对于可能支持数据众多的
+游戏服务器来说，分布式部署和动态添加服务器是不可缺少的。在逻辑上，
+可以把需要集中处理，与逻辑运算关系不大的模块单独部署。比如登录服
+务器、地图服务器、聊天服务器、数据库服务器等。像我们把登录服务器
+和数据库服务器分离开就是为了减少逻辑服务器的压力。
+</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org5aa632d" class="outline-2">
+<h2 id="org5aa632d"><span class="section-number-2">3</span> 总结</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Java 是一门安全、高效、跨平台的语言，它在游戏服务器开发过程中可以提高
+开发效率，减少异常，增强程序的健壮性。它很容易实现各个功能的衔接，方便
+后期的维护.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: lsl</p>
+<p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,2327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《UNIX 高级环境编程（第三版）》笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">《UNIX 高级环境编程（第三版）》笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org827172e">第一章 UNIX 基础知识</a>
+<ul>
+<li><a href="#org10708ce">1.2 UNIX 体系结构</a></li>
+<li><a href="#org05e56dc">1.4 文件和目录</a></li>
+<li><a href="#org5e6b0da">1.6 程序和进程</a>
+<ul>
+<li><a href="#org8903604">fork</a></li>
+<li><a href="#org5cf3a7a">execve</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8642721">第七章 进程环境</a></li>
+<li><a href="#org0de5814">第八章 进程控制</a></li>
+<li><a href="#org06b24fc">第八章 进程控制</a></li>
+<li><a href="#org1da8c69">第九章 进程关系</a></li>
+<li><a href="#org8880484">第十章 信号</a>
+<ul>
+<li><a href="#orgaced9f8">引言</a></li>
+<li><a href="#org286da8b">信号概念</a></li>
+<li><a href="#orge105c38">函数 signal</a></li>
+<li><a href="#org6184077">不可靠的信号</a></li>
+<li><a href="#org3058878">中断的系统调用</a></li>
+<li><a href="#org6b42e2d">可重入函数</a></li>
+<li><a href="#org32ba98f">SIGCLD 语义</a></li>
+<li><a href="#orgb122230">可靠信号术语和语义</a></li>
+<li><a href="#orgaf79910">函数 kill 和 raise</a></li>
+<li><a href="#orge03bca4">函数 alerm 和 pause</a></li>
+<li><a href="#orgf41e6b6">信号集</a></li>
+<li><a href="#org87eb9d0">函数 sigprocmask</a></li>
+<li><a href="#org19ec796">函数 sigpending</a></li>
+<li><a href="#orgf692d10">函数 sigaction</a></li>
+<li><a href="#org485d4a3">函数 sigsetjump 和 siglongjmp</a></li>
+<li><a href="#org3886846">函数 sigsuspend</a></li>
+<li><a href="#org8b30d6a">函数 abort</a></li>
+<li><a href="#orgfadc913">函数 system</a></li>
+<li><a href="#org5f9fb12">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></a></li>
+<li><a href="#org3820d32">函数 sigqueue</a></li>
+<li><a href="#org1dce7e9">作业控制信号</a></li>
+<li><a href="#org3b2a03a">信号名和编号</a></li>
+</ul>
+</li>
+<li><a href="#orgc43ab1b">第十一章 线程</a>
+<ul>
+<li><a href="#org08163a5">11.2 线程概念</a></li>
+<li><a href="#org8a293b4">11.3 线程标识</a></li>
+<li><a href="#org0d94613">11.4 线程创建</a></li>
+<li><a href="#orgda672c1">11.5 线程终止</a></li>
+<li><a href="#org6ca2e66">11.6 线程同步</a>
+<ul>
+<li><a href="#org0fd469f">11.6.1 互斥量（mutex）</a></li>
+<li><a href="#org853c412">11.6.2 避免死锁</a></li>
+<li><a href="#org3edf818">11.6.4 读写锁</a></li>
+<li><a href="#org5a57c81">11.6.6 条件变量（condition）</a></li>
+<li><a href="#orgb41ce12">11.6.7 自旋锁（spin lock）</a></li>
+<li><a href="#org8c93f43">11.6.8 屏障（barrier）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org4b9668e">第十二章 线程控制</a>
+<ul>
+<li><a href="#org337b40f">12.2 线程属性</a></li>
+<li><a href="#org08c88f6">12.4 同步属性</a>
+<ul>
+<li><a href="#org5799df9">12.4.1 互斥量属性</a>
+<ul>
+<li><a href="#org9d92dc2">共享属性</a></li>
+<li><a href="#org3520ed6">健壮属性</a></li>
+<li><a href="#org12996bf">类型属性</a></li>
+</ul>
+</li>
+<li><a href="#orga5efa96">12.4.2 读写锁属性</a></li>
+<li><a href="#orgfa54aef">12.4.3 条件变量属性</a></li>
+<li><a href="#orgdbc6f02">12.4.4 屏障属性</a></li>
+</ul>
+</li>
+<li><a href="#orgd800725">12.5 重入</a></li>
+<li><a href="#org86381f7">12.6 线程特定数据</a></li>
+<li><a href="#org0885b31">12.7 取消选项</a></li>
+<li><a href="#org2fcf60b">12.8 线程和信号</a></li>
+<li><a href="#orgb97208d">12.9 线程和 fork</a></li>
+<li><a href="#orgff1fc05">12.10 线程和 I/O</a></li>
+</ul>
+</li>
+<li><a href="#org04c9832">第十三章 守护进程</a></li>
+<li><a href="#orgb7e530d">第十四章 高级 I/O</a>
+<ul>
+<li><a href="#org204c47f">引言</a></li>
+<li><a href="#orgd55fd84">非阻塞 I/O</a></li>
+<li><a href="#orge101e08">记录锁</a></li>
+<li><a href="#orgdb71fa3">I/O 多路转接</a></li>
+<li><a href="#org6cf1c03">异步 I/O</a></li>
+<li><a href="#org2f1864c">函数 readv 和 writev</a></li>
+<li><a href="#org1f0e5f4">函数 readn 和 writen</a></li>
+<li><a href="#org3ab3783">存储映射 I/O</a></li>
+</ul>
+</li>
+<li><a href="#org6550642">第十五章 进程间通信</a>
+<ul>
+<li><a href="#org64da88e">管道</a></li>
+<li><a href="#orgd49e2ef">函数 popen 和 pclose</a></li>
+<li><a href="#orgd569b10">协同进程</a></li>
+<li><a href="#org14e60c6">FIFO</a></li>
+<li><a href="#org61886b7">XSI IPC</a></li>
+<li><a href="#org93c8b0c">消息队列</a></li>
+<li><a href="#org7280106">信号量</a></li>
+<li><a href="#org980afc5">共享存储</a></li>
+<li><a href="#orgc37f0ab">POSIX 信号量</a></li>
+<li><a href="#orgdfd2344">客户进程-服务器进程属性</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org827172e" class="outline-2">
+<h2 id="org827172e">第一章 UNIX 基础知识</h2>
+<div class="outline-text-2" id="text-org827172e">
+</div>
+<div id="outline-container-org10708ce" class="outline-3">
+<h3 id="org10708ce">1.2 UNIX 体系结构</h3>
+<div class="outline-text-3" id="text-org10708ce">
+<p>
+操作系统是一种软件，它控制计算机硬件资源，提供程序运行环境。我们称之为“内核（kernel）”。
+</p>
+
+<p>
+内核的接口称之为系统调用（system call）。公用函数库构建在系统调用接口之上，应用程序既可以调用系统调用，也可以调用公用函数库。
+</p>
+
+<p>
+理解：系统调用是最底层的功能，公用函数库是对系统调用的封装，借以简化特定功能。
+</p>
+
+<p>
+shell 是一个特殊的 <b>应用程序</b> ，为运行其他应用程序提供了一个接口。
+</p>
+
+<p>
+理解：shell 提供了交互的功能，如果没有 shell，也没图形界面的话，其他应用程序可能无法手动调用。
+</p>
+</div>
+</div>
+<div id="outline-container-org05e56dc" class="outline-3">
+<h3 id="org05e56dc">1.4 文件和目录</h3>
+<div class="outline-text-3" id="text-org05e56dc">
+<p>
+UNIX 文件系统的大多数实现并不在目录项中存放属性，这是因为当一个文件具有多个硬链接时，很难保持多个属性副本之间的同步。（理解这段话？）
+</p>
+</div>
+</div>
+<div id="outline-container-org5e6b0da" class="outline-3">
+<h3 id="org5e6b0da">1.6 程序和进程</h3>
+<div class="outline-text-3" id="text-org5e6b0da">
+</div>
+<div id="outline-container-org8903604" class="outline-4">
+<h4 id="org8903604">fork</h4>
+<div class="outline-text-4" id="text-org8903604">
+<p>
+The fork() function shall create a new process. The new process (child process) shall be an exact copy of the calling process (parent process) except as detailed below:
+</p>
+
+<p>
+fork（）函数将创建一个新进程。新进程（子进程）应该是调用进程（父进程）的精确副本，但以下说明除外：
+</p>
+
+<ul class="org-ul">
+<li><p>
+The child process shall have a unique process ID.
+</p>
+
+<p>
+子进程应具有唯一的进程 ID。
+</p></li>
+
+<li><p>
+The child process ID also shall not match any active process group ID.
+</p>
+
+<p>
+子进程 ID 也不能与任何活动进程组 ID 相匹配。
+</p></li>
+
+<li><p>
+The child process shall have a different parent process ID, which shall be the process ID of the calling process.
+</p>
+
+<p>
+子进程应该有一个不同的父进程 ID，它应该是调用进程的进程 ID。
+</p></li>
+
+<li><p>
+The child process shall have its own copy of the parent's file descriptors. Each of the child's file descriptors shall refer to the same open file description with the corresponding file descriptor of the parent.
+</p>
+
+<p>
+子进程应拥有自己父文件描述符的副本。每个子进程的文件描述符都应指向与父对应文件描述符相同的打开文件描述。
+</p></li>
+
+<li><p>
+The child process shall have its own copy of the parent's open directory streams. Each open directory stream in the child process may share directory stream positioning with the corresponding directory stream of the parent.
+</p>
+
+<p>
+子进程应拥有自己父开放目录流的副本。子进程中的每个打开的目录流可以与父对应的目录流共享目录流定位。
+</p></li>
+
+<li><p>
+The child process shall have its own copy of the parent's message catalog descriptors.
+</p>
+
+<p>
+子进程应拥有自己父进程的消息目录描述符的副本。
+</p></li>
+
+<li><p>
+The child process' values of tms_utime, tms_stime, tms_cutime, and tms_cstime shall be set to 0.
+</p>
+
+<p>
+子进程的 tms_utime，tms_stime，tms_cutime 和 tms_cstime 的值应设置为 0。
+</p></li>
+
+<li><p>
+The time left until an alarm clock signal shall be reset to zero, and the alarm, if any, shall be canceled; see alarm().
+</p>
+
+<p>
+alarm clock 信号应剩余时间重置为零，并且如果有 alarm 的话，应取消。
+</p></li>
+
+<li><p>
+All semadj values shall be cleared.
+</p>
+
+<p>
+所有 semadj 值都应清除。
+</p></li>
+
+<li><p>
+File locks set by the parent process shall not be inherited by the child process.
+</p>
+
+<p>
+父进程设置的文件锁不应由子进程继承。
+</p></li>
+
+<li><p>
+The set of signals pending for the child process shall be initialized to the empty set.
+</p>
+
+<p>
+子进程挂起的信号集初始化为空集。
+</p></li>
+
+<li><p>
+Interval timers shall be reset in the child process.
+</p>
+
+<p>
+间隔计时器应在子进程中重置。
+</p></li>
+
+<li><p>
+Any semaphores that are open in the parent process shall also be open in the child process.
+</p>
+
+<p>
+任何在父进程中打开的信号量也应该在子进程中打开。
+</p></li>
+
+<li><p>
+The child process shall not inherit any address space memory locks established by the parent process via calls to mlockall() or mlock().
+</p>
+
+<p>
+子进程不应继承由父进程通过调用 mlockall（）或 mlock（）建立的任何地址空间内存锁。
+</p></li>
+
+<li>Memory mappings created in the parent shall be retained in the child process. MAP_PRIVATE mappings inherited from the parent shall also be MAP_PRIVATE mappings in the child, and any modifications to the data in these mappings made by the parent prior to calling fork() shall be visible to the child. Any modifications to the data in MAP_PRIVATE mappings made by the parent after fork() returns shall be visible only to the parent. Modifications to the data in MAP_PRIVATE mappings made by the child shall be visible only to the child.</li>
+</ul>
+
+<p>
+在父进程中创建的内存映射应保留在子进程中。从父级继承的 MAP_PRIVATE 映射也应该是子进程中的 MAP_PRIVATE 映射，父进程中在调用 fork（）之前对这些映射中的数据所做的任何修改都应该对子级可见。在 fork（）返回后由父级所做的对 MAP_PRIVATE 映射中的数据的任何修改应仅对父级可见。子进程对 MAP_PRIVATE 映射中做的数据修改只能由子进程看到。
+</p>
+
+<ul class="org-ul">
+<li><p>
+For the SCHED_FIFO and SCHED_RR scheduling policies, the child process shall inherit the policy and priority settings of the parent process during a fork() function. For other scheduling policies, the policy and priority settings on fork() are implementation-defined.
+</p>
+
+<p>
+对于 SCHED_FIFO 和 SCHED_RR 调度策略，子进程应在 fork（）函数期间继承父进程的策略和优先级设置。对于其他调度策略，fork（）上的策略和优先级设置是实现定义的。
+</p></li>
+
+<li><p>
+Per-process timers created by the parent shall not be inherited by the child process.
+</p>
+
+<p>
+父进程创建的进程定时器不应该被子进程继承。
+</p></li>
+
+<li><p>
+The child process shall have its own copy of the message queue descriptors of the parent. Each of the message descriptors of the child shall refer to the same open message queue description as the corresponding message descriptor of the parent.
+</p>
+
+<p>
+子进程应拥有自己的父进程的消息队列描述符的副本。每个子进程的消息描述符应该指向与父对应消息描述符相同的开放消息队列描述。
+</p></li>
+
+<li><p>
+No asynchronous input or asynchronous output operations shall be inherited by the child process.
+</p>
+
+<p>
+子进程不应继承异步输入或异步输出操作。
+</p></li>
+
+<li><p>
+A process shall be created with a single thread. If a multi-threaded process calls fork(), the new process shall contain a replica of the calling thread and its entire address space, possibly including the states of mutexes and other resources. Consequently, to avoid errors, the child process may only execute async-signal-safe operations until such time as one of the exec functions is called. Fork handlers may be established by means of the pthread_atfork() function in order to maintain application invariants across fork() calls.
+父进程应该是单线程。如果多线程进程调用 fork（），则新进程应包含调用线程的副本及其整个地址空间，可能包括互斥锁和其他资源的状态。因此，为避免错误，子进程可能只会执行异步信号安全操作，直到调用其中一个 exec 函数为止。可以通过 pthread_atfork（）函数建立 fork 处理程序，以便跨 fork（）调用维护应用程序不变量。
+</p>
+
+<p>
+When the application calls fork() from a signal handler and any of the fork handlers registered by pthread_atfork() calls a function that is not asynch-signal-safe, the behavior is undefined.
+</p>
+
+<p>
+当应用程序从信号处理程序调用 fork（）并且由 pthread_atfork（）注册的任何 fork 处理程序调用不是异步信号安全的函数时，行为是未定义的。
+</p></li>
+
+<li><p>
+If the Trace option and the Trace Inherit option are both supported:
+</p>
+
+<p>
+如果跟踪选项和跟踪继承选项都支持：
+</p>
+
+<ul class="org-ul">
+<li><p>
+If the calling process was being traced in a trace stream that had its inheritance policy set to POSIX_TRACE_INHERITED, the child process shall be traced into that trace stream, and the child process shall inherit the parent's mapping of trace event names to trace event type identifiers. If the trace stream in which the calling process was being traced had its inheritance policy set to POSIX_TRACE_CLOSE_FOR_CHILD, the child process shall not be traced into that trace stream. The inheritance policy is set by a call to the posix_trace_attr_setinherited() function.
+</p>
+
+<p>
+如果调用进程在其继承策略设置为 POSIX_TRACE_INHERITED 的跟踪流中进行跟踪，则应将子进程跟踪到该跟踪流中，并且子进程应继承父进程的跟踪事件名称映射以跟踪事件类型标识符。如果跟踪调用进程的跟踪流将其继承策略设置为 POSIX_TRACE_CLOSE_FOR_CHILD，则不应将子进程跟踪到该跟踪流中。继承策略通过调用 posix_trace_attr_setinherited（）函数来设置。
+</p></li>
+</ul></li>
+
+<li><p>
+If the Trace option is supported, but the Trace Inherit option is not supported:
+</p>
+
+<p>
+如果支持 Trace 选项，但不支持 Trace Inherit 选项：
+</p>
+
+<ul class="org-ul">
+<li><p>
+The child process shall not be traced into any of the trace streams of its parent process.
+</p>
+
+<p>
+子进程不应追溯到其父进程的任何跟踪流中。
+</p></li>
+</ul></li>
+
+<li><p>
+If the Trace option is supported, the child process of a trace controller process shall not control the trace streams controlled by its parent process.
+</p>
+
+<p>
+如果支持跟踪选项，则跟踪控制器进程的子进程不应控制由其父进程控制的跟踪流。
+</p></li>
+
+<li><p>
+The initial value of the CPU-time clock of the child process shall be set to zero.
+</p>
+
+<p>
+子进程的 CPU 时间时钟的初始值应设置为零。
+</p></li>
+
+<li><p>
+The initial value of the CPU-time clock of the single thread of the child process shall be set to zero.
+</p>
+
+<p>
+子进程的单线程的 CPU 时钟的初始值应设置为零。
+</p></li>
+</ul>
+
+<p>
+All other process characteristics defined by IEEE Std 1003.1-2001 shall be the same in the parent and child processes. The inheritance of process characteristics not defined by IEEE Std 1003.1-2001 is unspecified by IEEE Std 1003.1-2001.
+</p>
+
+<p>
+所有其他由 IEEE Std 1003.1-2001 定义的过程特性在父进程和子进程中应该是相同的。IEEE Std 1003.1-2001 未定义的过程特性的继承是不可靠的
+</p>
+
+<p>
+After fork(), both the parent and the child processes shall be capable of executing independently before either one terminates.
+</p>
+
+<p>
+在 fork()之后，父进程和子进程在任何一个终止之前都应该能够独立执行。
+</p>
+
+<p>
+<a href="https://coolshell.cn/articles/7965.html">一个和 fork 相关的面试题</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5cf3a7a" class="outline-4">
+<h4 id="org5cf3a7a">execve</h4>
+<div class="outline-text-4" id="text-org5cf3a7a">
+<p>
+All process attributes are preserved during an execve(), except the following:
+</p>
+
+<p>
+执行 execve() 期间会保留所有进程属性，但以下内容除外：
+</p>
+
+<ul class="org-ul">
+<li><p>
+The dispositions of any signals that are being caught are reset to the default (signal(7)).
+</p>
+
+<p>
+捕捉到的任何信号都重置为默认值。
+</p></li>
+
+<li><p>
+Any alternate signal stack is not preserved (sigaltstack(2)).
+</p>
+
+<p>
+不保留任何备用的信号堆栈。
+</p></li>
+
+<li><p>
+Memory mappings are not preserved (mmap(2)).
+</p>
+
+<p>
+不保留内存映射。
+</p></li>
+
+<li><p>
+Attached System V shared memory segments are detached (shmat(2)).
+</p>
+
+<p>
+附加的 System V 内存会分离。
+</p></li>
+
+<li><p>
+POSIX shared memory regions are unmapped (shm_open(3)).
+</p>
+
+<p>
+POSIX 共享内存区域会 unmapped。
+</p></li>
+
+<li><p>
+Open POSIX message queue descriptors are closed (mq_overview(7)).
+</p>
+
+<p>
+打开的 POSIX 消息队列会关闭。
+</p></li>
+
+<li><p>
+Any open POSIX named semaphores are closed (sem_overview(7)).
+</p>
+
+<p>
+任何打开的 POSIX 命名信号都是关闭的。
+</p></li>
+
+<li><p>
+POSIX timers are not preserved (timer_create(2)).
+</p>
+
+<p>
+不保留 POSIX 计时器。
+</p></li>
+
+<li><p>
+Any open directory streams are closed (opendir(3)).
+</p>
+
+<p>
+任何打开的目录流都会关闭。
+</p></li>
+
+<li><p>
+Memory locks are not preserved (mlock(2), mlockall(2)).
+</p>
+
+<p>
+不保留内存锁。
+</p></li>
+
+<li><p>
+Exit handlers are not preserved (atexit(3), on_exit(3)).
+</p>
+
+<p>
+不保留退出处理程序。
+</p></li>
+
+<li><p>
+The floating-point environment is reset to the default (see fenv(3)).
+</p>
+
+<p>
+浮点环境重置为默认值。
+</p></li>
+</ul>
+
+<p>
+The process attributes in the preceding list are all specified in POSIX.1-2001. The following Linux-specific process attributes are also not preserved during an execve():
+</p>
+
+<p>
+前面列表中的进程属性都在 POSIX.1-2001 中指定。在 execve()期间，也不会保留以下特定于 Linux 的进程属性：
+</p>
+
+<ul class="org-ul">
+<li><p>
+The prctl(2) PR_SET_DUMPABLE flag is set, unless a set-user-ID or set-group ID program is being executed, in which case it is cleared.
+</p>
+
+<p>
+除非正在执行 set-user-ID 或 set-group ID 程序，否则将设置 prctl（2）PR_SET_DUMPABLE 标志，在这种情况下它将被清除。
+</p></li>
+
+<li><p>
+The prctl(2) PR_SET_KEEPCAPS flag is cleared.
+</p>
+
+<p>
+prctl（2）PR_SET_KEEPCAPS 标志被清除。
+</p></li>
+
+<li><p>
+(Since Linux 2.4.36 / 2.6.23) If a set-user-ID or set-group-ID program is being executed, then the parent death signal set by prctl(2) PR_SET_PDEATHSIG flag is cleared.
+</p>
+
+<p>
+（自 Linux 2.4.36 / 2.6.23 起）如果正在执行 set-user-ID 或 set-group-ID 程序，则清除由 prctl（2）PR_SET_PDEATHSIG 标志设置的父死亡信号。
+</p></li>
+
+<li><p>
+The process name, as set by prctl(2) PR_SET_NAME (and displayed by ps -o comm), is reset to the name of the new executable file.
+</p>
+
+<p>
+由 prctl（2）PR_SET_NAME（并由 ps -o comm 显示）设置的进程名称将重置为新可执行文件的名称。
+</p></li>
+
+<li><p>
+The SECBIT_KEEP_CAPS securebits flag is cleared. See capabilities(7).
+</p>
+
+<p>
+SECBIT_KEEP_CAPS securebits 标志被清除。
+</p></li>
+
+<li><p>
+The termination signal is reset to SIGCHLD (see clone(2)).
+</p>
+
+<p>
+终止信号被重置为 SIGCHLD（参见 clone（2））。
+</p></li>
+</ul>
+
+<p>
+Note the following further points:
+请注意以下几点：
+</p>
+
+<ul class="org-ul">
+<li><p>
+All threads other than the calling thread are destroyed during an execve(). Mutexes, condition variables, and other pthreads objects are not preserved.
+</p>
+
+<p>
+在 execve（）期间，除调用线程之外的所有线程都将被销毁。互斥体，条件变量和其他 pthreads 对象不会被保留。
+</p></li>
+
+<li><p>
+The equivalent of setlocale(LC_ALL, "C") is executed at program start-up.
+</p>
+
+<p>
+setlocale（LC_ALL，“C”）的等价物在程序启动时执行。
+</p></li>
+
+<li><p>
+POSIX.1-2001 specifies that the dispositions of any signals that are ignored or set to the default are left unchanged. POSIX.1-2001 specifies one exception: if SIGCHLD is being ignored, then an implementation may leave the disposition unchanged or reset it to the default; Linux does the former.
+</p>
+
+<p>
+POSIX.1-2001 规定，任何被忽略或设置为默认值的信号的配置都保持不变。POSIX.1-2001 规定了一个例外：如果 SIGCHLD 被忽略，那么实现可能会保持处置不变或将其重置为默认值; Linux 做前者。
+</p></li>
+
+<li><p>
+Any outstanding asynchronous I/O operations are canceled (aio_read(3), aio_write(3)).
+</p>
+
+<p>
+任何未完成的异步 I / O 操作都会被取消（aio_read（3），aio_write（3））。
+</p></li>
+
+<li><p>
+For the handling of capabilities during execve(), see capabilities(7).
+</p>
+
+<p>
+有关在 execve（）期间处理功能的信息，请参阅功能（7）。
+</p></li>
+
+<li><p>
+By default, file descriptors remain open across an execve(). File descriptors that are marked close-on-exec are closed; see the description of FD_CLOEXEC in fcntl(2). (If a file descriptor is closed, this will cause the release of all record locks obtained on the underlying file by this process. See fcntl(2) for details.) POSIX.1-2001 says that if file descriptors 0, 1, and 2 would otherwise be closed after a successful execve(), and the process would gain privilege because the set-user_ID or set-group_ID permission bit was set on the executed file, then the system may open an unspecified file for each of these file descriptors. As a general principle, no portable program, whether privileged or not, can assume that these three file descriptors will remain closed across an execve().
+</p>
+
+<p>
+默认情况下，文件描述符在 execve()中保持打开状态。标记为 close-on-exec 的文件描述符将被关闭; 请参阅 fcntl（2）中的 FD_CLOEXEC 说明。 （如果文件描述符被关闭，这将导致此进程释放在底层文件上获得的所有记录锁。有关详细信息，请参阅 fcntl（2）。）POSIX.1-2001 表示如果文件描述符为 0,1 和 2，在成功的 execve（）之后将关闭 ，并且因为在执行的文件上设置了 set-user_ID 或 set-group_ID 权限位，该进程将获得权限，然后系统可以为这些文件描述符中打开未指定的文件。作为一般原则，不管是否有权限的可移植程序都可以假设这三个文件描述符将在 execve（）中保持关闭状态。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8642721" class="outline-2">
+<h2 id="org8642721">第七章 进程环境</h2>
+<div class="outline-text-2" id="text-org8642721">
+<ol class="org-ol">
+<li>main 函数的执行流程（程序员的自我修养）(todo)</li>
+<li>_exit 直接进入内核，exit 先执行标准 I/O 库的清理操作：对所有打开流调用 fclose 函数。</li>
+<li>使用 atexit 来登记终止处理程序，每登记一次就会调用一次，如若程序调用 exec 函数族中的任意函数，则将清除所有已安装的终止处理程序。</li>
+<li>如果 exec 没有出错，则 exec 之后的代码都不会执行。</li>
+<li>malloc、TCMalloc 原理以及应用。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org0de5814" class="outline-2">
+<h2 id="org0de5814">第八章 进程控制</h2>
+<div class="outline-text-2" id="text-org0de5814">
+<ol class="org-ol">
+<li>子进程获得父进程数据空间、堆、栈的副本。使用写时复制技术，这些由父子进程共享，内核将他们的访问权限改变为只读。如果父子进程试图修改这些区域，则内核只为修改区域的那块内存制作一个副本。</li>
+<li>父子进程共享的属性。（L185）不继承：进程 ID，父进程 PID，tms_utime、tms_stime、tms_cutime、tms_ustime、文件锁、未处理的闹钟、未处理信号集。</li>
+<li>vfork 保证子进程先运行，在它调用 exec 或 exit 之后父进程才可能被调度运行。vfork 生成的子进程在调用 exec 或 exit 之前在父进程空间中运行，但如果子进程修改数据、进行函数调用、或者没有调用 exec 或 exit 就返回可能带来未知的结果。</li>
+<li>fork 两次来避免僵死进程和 waitpid 阻塞。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org06b24fc" class="outline-2">
+<h2 id="org06b24fc">第八章 进程控制</h2>
+</div>
+<div id="outline-container-org1da8c69" class="outline-2">
+<h2 id="org1da8c69">第九章 进程关系</h2>
+</div>
+<div id="outline-container-org8880484" class="outline-2">
+<h2 id="org8880484">第十章 信号</h2>
+<div class="outline-text-2" id="text-org8880484">
+</div>
+<div id="outline-container-orgaced9f8" class="outline-3">
+<h3 id="orgaced9f8">引言</h3>
+</div>
+<div id="outline-container-org286da8b" class="outline-3">
+<h3 id="org286da8b">信号概念</h3>
+<div class="outline-text-3" id="text-org286da8b">
+<p>
+L250:SIGKILL 和 SIGSTOP 是不能被忽略和捕捉的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge105c38" class="outline-3">
+<h3 id="orge105c38">函数 signal</h3>
+<div class="outline-text-3" id="text-orge105c38">
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #ffd700;">script</span> <span style="color: #ff8700;">src</span>=<span style="color: #ff4ea3;">"https://gist.github.com/phenix3443/4b2bad69799ba85096688570f0873f2d.js"</span>&gt;&lt;/<span style="color: #ffd700;">script</span>&gt;
+</pre>
+</div>
+
+<p>
+注意：不要在 eshell 中通过 kill 给上面的程序发信号。
+</p>
+
+<p>
+signal 函数的限制：不改变信号的处理方式就不能确定信号的当前处理方式。当一个进程调用 fork 时，其子进程继承父进程的信号处理方式。
+</p>
+</div>
+</div>
+<div id="outline-container-org6184077" class="outline-3">
+<h3 id="org6184077">不可靠的信号</h3>
+<div class="outline-text-3" id="text-org6184077">
+<p>
+不可靠是指信号可能会丢失。
+</p>
+</div>
+</div>
+<div id="outline-container-org3058878" class="outline-3">
+<h3 id="org3058878">中断的系统调用</h3>
+<div class="outline-text-3" id="text-org3058878">
+<p>
+为什么系统调用会被中断？哪些系统调用会被中断？
+</p>
+
+<p>
+唤醒阻塞的低速系统调用。低速系统调用是可能会使进程永远阻塞的系统调用。
+</p>
+
+<p>
+为什么要设置自动重启功能？
+</p>
+
+<p>
+为了帮助应用程序使其不必处理被中断的系统调用。有时候用户并不知道所使用的输入、输出设备是否是低速设备。
+</p>
+
+<p>
+哪些系统调用中断以后会自动重启？
+ioctl、read、readv、write、writev、wait、waitpid。前五个只有对低速设备进行操作时才会被信号中断。
+</p>
+
+<p>
+如何控制系统调用重启？
+</p>
+
+<p>
+Posix 要求只有中断信号的 <code>SA_RESTART</code> 标识有效时，实现才重启系统调用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6b42e2d" class="outline-3">
+<h3 id="org6b42e2d">可重入函数</h3>
+<div class="outline-text-3" id="text-org6b42e2d">
+<p>
+L262:信号处理程序会临时中断正在执行的正常指令序列，等从信号处理函数返回后，继续执行捕获时中断的正常指令序列。
+</p>
+
+<p>
+<b>但在信号处理程序中，不能判断捕捉信号时进程执行到何处。</b> 也就是说如果信号处理程序被中断就无法恢复执行了。所以需要一种能够在信号处理函数中安全运行，不被中断的函数。
+</p>
+
+<p>
+L262:表 10-4 说明了 <b>在信号处理程序中</b> 保证调用安全的函数，这些函数是可重入的，并被称为是异步信号安全的：除了可重入以外，在信号处理操作期间，它阻塞任何引起不一致的信号的发送。
+</p>
+
+<p>
+L263:函数不能重入的原因：
+</p>
+<ul class="org-ul">
+<li>已知它们使用静态数据结构。</li>
+<li>它们调用 malloc 或 free。</li>
+<li>它们是标准 I/O 函数。标准 I/O 函数的很多实现都以不可重入方式使用全局数据结构。</li>
+</ul>
+
+<p>
+L263: 每个线程中 errno 只有一个，因此，作为一个通用的规则：当在信号处理程序中调用图 10-4 的函数时，应当在调用前保存 errno，在调用后恢复 errno。
+</p>
+
+<p>
+在信号处理程序中调用一个非可重入函数，则其结果是不可预知的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org32ba98f" class="outline-3">
+<h3 id="org32ba98f">SIGCLD 语义</h3>
+</div>
+<div id="outline-container-orgb122230" class="outline-3">
+<h3 id="orgb122230">可靠信号术语和语义</h3>
+<div class="outline-text-3" id="text-orgb122230">
+<p>
+L266: 内核在递送一个原来被阻塞的信号给进程时（而不是在产生该信号时），才决定对他的处理方式。
+</p>
+
+<p>
+如果在进程解除对某个信号的阻塞之前，这种信号发生了多次，那么如何呢？
+</p>
+
+<p>
+L267:Posix.1 并没有对投递给同一进程的信号进行排队。
+</p>
+
+<p>
+L267:每个进程都有一个信号屏蔽字，它规定了当前要阻塞传递给该信号的信号集。
+</p>
+</div>
+</div>
+<div id="outline-container-orgaf79910" class="outline-3">
+<h3 id="orgaf79910">函数 kill 和 raise</h3>
+<div class="outline-text-3" id="text-orgaf79910">
+<p>
+L268:如果调用 kill 为调用进程产生信号，而且此信号是不被阻塞的，那么在 kill 返回之前，signo 或者其他的未决的、非阻塞信号被传递至该进程。
+</p>
+</div>
+</div>
+<div id="outline-container-orge03bca4" class="outline-3">
+<h3 id="orge03bca4">函数 alerm 和 pause</h3>
+<div class="outline-text-3" id="text-orge03bca4">
+<p>
+L268:每个进程只能有一个闹钟时间。注意 alarm 函数的参数和返回值的不同配置。
+</p>
+
+<p>
+L273:在信号处理函数中使用 longjump 要预防它可能和其他信号处理程序交互的问题。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf41e6b6" class="outline-3">
+<h3 id="orgf41e6b6">信号集</h3>
+</div>
+<div id="outline-container-org87eb9d0" class="outline-3">
+<h3 id="org87eb9d0">函数 sigprocmask</h3>
+<div class="outline-text-3" id="text-org87eb9d0">
+<p>
+设置当前阻塞不能传递给进程的信号集。
+</p>
+</div>
+</div>
+<div id="outline-container-org19ec796" class="outline-3">
+<h3 id="org19ec796">函数 sigpending</h3>
+<div class="outline-text-3" id="text-org19ec796">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;signal.h&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;unistd.h&gt;</span>
+
+<span style="color: #00d7af;">void</span> <span style="color: #ffd700;">HandleQuit</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">sig</span>) {
+    <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"get quit signal"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+    <span style="color: #a1db00;">if</span>(signal(SIGQUIT, SIG_DFL) == SIG_ERR) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"reset quit signal to default error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+    }
+}
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #a1db00;">if</span>(signal(SIGQUIT, HandleQuit) == SIG_ERR) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"set quit signal error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        <span style="color: #a1db00;">return</span> 1;
+    }
+
+    <span style="color: #00d7af;">sigset_t</span> <span style="color: #ff8700;">newmask</span>, <span style="color: #ff8700;">oldmask</span>;
+    sigemptyset(&amp;newmask);
+    sigaddset(&amp;newmask, SIGQUIT);
+    <span style="color: #a1db00;">if</span>(sigprocmask(SIG_BLOCK, &amp;newmask, &amp;oldmask)) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"set process signal mask error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        <span style="color: #a1db00;">return</span> 1;
+    }
+
+    sleep(5);
+
+    <span style="color: #00d7af;">sigset_t</span> <span style="color: #ff8700;">pendingmask</span>;
+    <span style="color: #a1db00;">if</span>(sigpending(&amp;pendingmask)) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"get pending mask error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        <span style="color: #a1db00;">return</span> 1;
+    }
+    <span style="color: #a1db00;">if</span>(sigismember(&amp;pendingmask, SIGQUIT)){
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"quit signal has been blocked"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+    }
+
+    sigprocmask(SIG_SETMASK, &amp;oldmask, <span style="color: #5fafd7;">NULL</span>);
+    <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"quit signal has unblocked"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+
+    sleep(5);
+
+    <span style="color: #a1db00;">return</span> 0;
+}
+
+</pre>
+</div>
+<p>
+获取进程当前阻塞的信号集。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf692d10" class="outline-3">
+<h3 id="orgf692d10">函数 sigaction</h3>
+<div class="outline-text-3" id="text-orgf692d10">
+<p>
+检查或修改预指定信号相关的处理动作。深入了解 sigaction 结构的 sa_mask 字段。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;signal.h&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;unistd.h&gt;</span>
+
+<span style="color: #00d7af;">void</span> <span style="color: #ffd700;">HandleUsr</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">sig</span>) {
+    <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"get usr1 signal"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+}
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"pid: "</span> &lt;&lt; getpid() &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+    <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">sigaction</span> <span style="color: #ff8700;">act</span>;
+    act.sa_handler = HandleUsr;
+    sigemptyset(&amp;act.sa_mask);
+    act.sa_flags = 0;
+
+    <span style="color: #a1db00;">if</span>(<span style="color: #ff8700;">sigaction</span>(SIGUSR1, &amp;act, <span style="color: #5fafd7;">NULL</span>)) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"change signal handle error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+    }
+
+    pause();
+
+    <span style="color: #a1db00;">return</span> 0;
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org485d4a3" class="outline-3">
+<h3 id="org485d4a3">函数 sigsetjump 和 siglongjmp</h3>
+<div class="outline-text-3" id="text-org485d4a3">
+<p>
+当捕捉到一个信号时，进入信号捕捉函数，此时当前信号被自动地加入到进程的信号屏蔽字当中。这阻止了后来产生的这种信号中断该信号处理程序。
+</p>
+</div>
+</div>
+<div id="outline-container-org3886846" class="outline-3">
+<h3 id="org3886846">函数 sigsuspend</h3>
+<div class="outline-text-3" id="text-org3886846">
+<p>
+如果希望对一个信号解阻塞，然后 pause 等待以前被阻塞的信号发生，该如何作合？使用 sigsuspend 函数可以在一个原子操作中先恢复信号屏蔽字，然后使进程休眠。
+</p>
+
+<p>
+进程的信号屏蔽字由参数 sigmask 指定。当程序返回时将进程的信号屏蔽字设置为调用 sigsuspend 之前的值。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b30d6a" class="outline-3">
+<h3 id="org8b30d6a">函数 abort</h3>
+</div>
+<div id="outline-container-orgfadc913" class="outline-3">
+<h3 id="orgfadc913">函数 system</h3>
+</div>
+<div id="outline-container-org5f9fb12" class="outline-3">
+<h3 id="org5f9fb12">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></h3>
+</div>
+<div id="outline-container-org3820d32" class="outline-3">
+<h3 id="org3820d32">函数 sigqueue</h3>
+</div>
+<div id="outline-container-org1dce7e9" class="outline-3">
+<h3 id="org1dce7e9">作业控制信号</h3>
+</div>
+<div id="outline-container-org3b2a03a" class="outline-3">
+<h3 id="org3b2a03a">信号名和编号</h3>
+</div>
+</div>
+<div id="outline-container-orgc43ab1b" class="outline-2">
+<h2 id="orgc43ab1b">第十一章 线程</h2>
+<div class="outline-text-2" id="text-orgc43ab1b">
+</div>
+<div id="outline-container-org08163a5" class="outline-3">
+<h3 id="org08163a5">11.2 线程概念</h3>
+<div class="outline-text-3" id="text-org08163a5">
+<p>
+多个进程需要使用系统提供的复杂机制才能实现内存和文件描述符的共享，而多个线程自动的可以放问相同的存储地址和文件描述符。
+</p>
+
+<p>
+每个线程都包含有表示执行环境所必须的信息，其中包括进程中标识线程的线程 ID、一组寄存器值、栈、调度优先级和策略、信号屏蔽字、errno 变量以及线程私有数据。一个进程的所有信息对该进程的所有线程都是共享的，包括可执行程序的代码，程序的全局内存和堆内存、栈以及文件描述符。
+</p>
+</div>
+</div>
+<div id="outline-container-org8a293b4" class="outline-3">
+<h3 id="org8a293b4">11.3 线程标识</h3>
+<div class="outline-text-3" id="text-org8a293b4">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_equal</span>(<span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid1</span>, <span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid2</span>);
+<span style="color: #00d7af;">pthread_t</span>  <span style="color: #ffd700;">pthread_self</span>(<span style="color: #00d7af;">void</span>);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0d94613" class="outline-3">
+<h3 id="org0d94613">11.4 线程创建</h3>
+<div class="outline-text-3" id="text-org0d94613">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_create</span>(<span style="color: #00d7af;">pthread_t</span> *<span style="color: #ff8700;">tidp</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">pthread_attr_t</span> *<span style="color: #ff8700;">attr</span>, <span style="color: #00d7af;">void</span>* (*<span style="color: #ffd700;">start_rtn</span>)(<span style="color: #00d7af;">void</span> *), <span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">arg</span>);
+</pre>
+</div>
+
+<p>
+线程创建时并不能保证哪个线程先运行：是先创建的线程，还是调用线程。新创建的线程可以访问进程的地址空间，并且继承线程的浮点环境和信号屏蔽字，但是该线程的挂起信号集会被清除。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda672c1" class="outline-3">
+<h3 id="orgda672c1">11.5 线程终止</h3>
+<div class="outline-text-3" id="text-orgda672c1">
+<p>
+注意 pthread_create 与 pthread_exit 传递的参数内存地址在调用者返回值后必须是有效的。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">void</span> <span style="color: #ffd700;">pthread_exit</span>(<span style="color: #00d7af;">void</span> **<span style="color: #ff8700;">rval_ptr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_join</span>(<span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">thread</span>, <span style="color: #00d7af;">void</span> **<span style="color: #ff8700;">rval_ptr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_cancel</span>(<span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid</span>);
+</pre>
+</div>
+
+<p>
+线程也可以安排退出时需要调用的函数，类似进程的 atexit 函数。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">void</span> <span style="color: #ffd700;">pthread_cleanup_push</span>(<span style="color: #00d7af;">void</span> (*<span style="color: #ffd700;">rtn</span>)(<span style="color: #00d7af;">void</span>*), <span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">arg</span>)
+<span style="color: #00d7af;">void</span> <span style="color: #ffd700;">pthread_cleanup_pop</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">execute</span>)
+</pre>
+</div>
+
+<p>
+当线程执行以下动作时，清理函数 rtn 是由 <code>pthread_cleanup_push</code> 函数调度的，调用时只有一个参数 arg：
+</p>
+<ul class="org-ul">
+<li>调用 <code>pthread_exit</code></li>
+<li>响应取消请求时</li>
+<li>用非零的 excute 参数调用 <code>pthread_cleanup_pop</code></li>
+<li>或者是 return 返回。（ubuntu 验证）</li>
+</ul>
+
+<p>
+以下是这两个函数在 pthread.h 中的定义：
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#define</span> <span style="color: #ffd700;">pthread_cleanup_push</span>(<span style="color: #ff8700;">routine</span>,<span style="color: #ff8700;">arg</span>) \
+
+{
+
+<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">_pthread_cleanup_buffer</span> <span style="color: #ff8700;">_buffer</span>; \
+
+_pthread_cleanup_push (&amp;_buffer, (routine), (arg));
+
+<span style="color: #d18aff;">#define</span> <span style="color: #ffd700;">pthread_cleanup_pop</span>(<span style="color: #ff8700;">execute</span>) \
+
+_pthread_cleanup_pop (&amp;_buffer, (execute)); \
+
+    }
+</pre>
+</div>
+
+<p>
+<b>由于这两个函数实现为宏，所以必须在线程相同的作用域中以配对的形式使用。</b>
+</p>
+
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/b3c1d43d21a219d06f7575ed3b7a229d.js">https://gist.github.com/phenix3443/b3c1d43d21a219d06f7575ed3b7a229d.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<blockquote>
+<p>
+When a cancellation requested is acted on, the  following  steps  occur
+for thread (in this order):
+</p>
+
+<ol class="org-ol">
+<li>Cancellation  clean-up  handlers  are  popped (in the reverse of the
+order   in   which   they   were   pushed)   and    called.     (See
+pthread_cleanup_push(3).)</li>
+
+<li>Thread-specific  data  destructors  are  called,  in  an unspecified
+order.  (See pthread_key_create(3).)</li>
+
+<li>The thread is terminated.  (See pthread_exit(3).)</li>
+</ol>
+
+<p>
+The above steps happen asynchronously with respect to the  pthread_can‐
+cel()  call;  the  return status of pthread_cancel() merely informs the
+caller whether the cancellation request was successfully queued.
+</p>
+
+<p>
+After a canceled thread has terminated, a join with that  thread  using
+pthread_join(3)  obtains  PTHREAD_CANCELED as the thread's exit status.
+(Joining with a thread is the only way to know  that  cancellation  has
+completed.)
+</p>
+</blockquote>
+<p>
+注意上面的线程被 cancel 掉时发生的动作与 pthread_cancel 调用这是异步的。
+</p>
+
+<p>
+如果线程已经被分离，线程的底层存储资源可以在线程终止时立即被收回。在线程被分离后，我们不能使用 pthread_join 函数等待它的终止状态。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_detach</span>(<span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid</span>);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6ca2e66" class="outline-3">
+<h3 id="org6ca2e66">11.6 线程同步</h3>
+<div class="outline-text-3" id="text-org6ca2e66">
+<p>
+当变量修改时间多于一个存储器访问周期的处理器结构中，当存储器读与写这两个周期交叉时，这种不一致就会出现。（什么是存储器周期？）
+</p>
+
+<p>
+以下代码模拟线程的竞争情形：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/d858d4ac2268af5a2c2acd5b94732490.js">https://gist.github.com/phenix3443/d858d4ac2268af5a2c2acd5b94732490.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+
+<div id="outline-container-org0fd469f" class="outline-4">
+<h4 id="org0fd469f">11.6.1 互斥量（mutex）</h4>
+<div class="outline-text-4" id="text-org0fd469f">
+<p>
+思考：一个线程对资源加锁了，另一个线程不加锁可以访问么？
+</p>
+
+<p>
+当然可以，只有将所有线程都设计成遵守相同数据访问规则的，互斥机制才能正常工作。如果允许某个线程在没有得到锁的情况下也可以访问共享资源，那么即使其他的线程在使用共享资源前都申请锁，也还是会出现数据不一致的问题。所以 <b>要保证所有线程访问资源的规则是一致的</b> 。
+</p>
+
+<p>
+使用动态分配的互斥量，在释放内存前需要调用 pthread_mutex_destory。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_init</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">pthread_mutexattr_t</span> *<span style="color: #ff8700;">attr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_destory</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_lock</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_trylock</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_unlock</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_mutex_timelock</span>(<span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>, <span style="color: #a1db00;">const</span> <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">timespec</span> *<span style="color: #ff8700;">tsptr</span>);  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">tsptr &#26159;&#32477;&#23545;&#26102;&#38388;</span>
+</pre>
+</div>
+
+<p>
+用互斥量解决前面的多线程竞争：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/df07a6342ca8442c20852ed3544e52f1.js">https://gist.github.com/phenix3443/df07a6342ca8442c20852ed3544e52f1.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org853c412" class="outline-4">
+<h4 id="org853c412">11.6.2 避免死锁</h4>
+<div class="outline-text-4" id="text-org853c412">
+<p>
+对已有互斥量再次加锁可能会导致死锁。
+</p>
+
+<p>
+程序中使用多个互斥量，可以通过仔细控制互斥量加锁的顺序来避免死锁的发生。
+</p>
+
+<p>
+可以用 pthread_mutex_trylock 接口避免死锁：如果该接口返回成功可以操作，否则，可以释放已经该占有的资源，做好清理工作，过一会再尝试。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3edf818" class="outline-4">
+<h4 id="org3edf818">11.6.4 读写锁</h4>
+<div class="outline-text-4" id="text-org3edf818">
+<p>
+有三种状态：加读锁，加写锁，不加锁。与互斥量相比，读写锁具有更高的并行性。非常适合于对数据结构读的次数大于写的情况。
+</p>
+
+<p>
+虽然个操作系统对读写锁实现不同，但是当读写锁处于读模式锁住的状态，而这时有一个线程试图以写模式获取锁时，读写锁通常会阻塞随后读模式锁的请求。这样可以避免读模式锁长期占用，而等待的写模式锁请求一直得不到满足。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_init</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>, <span style="color: #00d7af;">pthread_rwlockattr_t</span> *<span style="color: #ff8700;">attr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_destroy</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_rdlock</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_wrlock</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_unlock</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_timedrdlock</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">struce</span> <span style="color: #00d7af;">timespec</span> *<span style="color: #ff8700;">tsptr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_rwlock_timedwrlock</span>(<span style="color: #00d7af;">pthread_rwlock_t</span> *<span style="color: #ff8700;">rwlock</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">struce</span> <span style="color: #00d7af;">timespec</span> *<span style="color: #ff8700;">tsptr</span>);
+</pre>
+</div>
+<p>
+读写锁示例：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/942f4e21d0978248a0cdf0d5ba678de4.js">https://gist.github.com/phenix3443/942f4e21d0978248a0cdf0d5ba678de4.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5a57c81" class="outline-4">
+<h4 id="org5a57c81">11.6.6 条件变量（condition）</h4>
+<div class="outline-text-4" id="text-org5a57c81">
+<p>
+条件变量是线程可用的另一种 <b>同步机制</b> （不是互斥机制）。条件变量与互斥量一起使用时，允许线程 <b>以无竞争的方式等待特定的条件发生</b> 。
+</p>
+
+<p>
+<b>条件本身</b> 是由互斥量保护的。线程在改变 <b>条件状态</b> 之前必须首先锁住互斥量。其他线程在获得互斥量之前不会察觉这种改变，因为必须在锁定互斥量以后才能计算条件。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_cond_init</span>(<span style="color: #00d7af;">pthread_cond_t</span> *<span style="color: #ff8700;">cond</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">pthread_condattr_t</span> *<span style="color: #ff8700;">attr</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_cond_destroy</span>(<span style="color: #00d7af;">pthread_cond_t</span> *<span style="color: #ff8700;">cond</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">phtread_cond_wait</span>(<span style="color: #00d7af;">pthread_cond_t</span> <span style="color: #ff8700;">cond</span>, <span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">phtread_cond_timedwait</span>(<span style="color: #00d7af;">pthread_cond_t</span> <span style="color: #ff8700;">cond</span>, <span style="color: #00d7af;">pthread_mutex_t</span> *<span style="color: #ff8700;">mutex</span>, <span style="color: #a1db00;">const</span> <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">timespec</span> *<span style="color: #ff8700;">tsptr</span>);
+</pre>
+</div>
+
+<p>
+传递给 <code>pthread_cond_wait</code> 的互斥量对条件进行保护。调用者把锁住的互斥量传给函数，函数然后自动把调用线程放到等待的线程列表上，对互斥量解锁。（这样就使得判断和休眠成了原子操作） <b>这就关闭了条件检查和线程进入休眠状态等待条件改变之间的时间通道，这样线程就不会错过条件的任何变化。</b>
+</p>
+
+<p>
+示例代码：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/5bf69d12ceee6ea00186a40568729e9f.js">https://gist.github.com/phenix3443/5bf69d12ceee6ea00186a40568729e9f.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+<code>pthread_cond_wait</code> 返回时，线程需要重新计算条件，所以互斥量再次被锁住。
+</p>
+
+<p>
+上面线程代码使用了 pthread_cond_wait(&amp;cond,&amp;mutex); 在条件变量上休眠等待主线程发送信号过来。 那么就存在一个问题：假想一下，当主线程发送信号过来后。在子线程 在 <code>pthread_cond_wait</code> 上等待发现信号发过来了，那么子线程将醒来并运行（注意这个时候 pthread_cond_wait 还未返回，那么锁是释放的，因为 <code>pthread_cond_wait</code> 在等待是会释放锁，返回时才会重新获得锁），那么如果这时候另一个线程改变了 i，但是切换到子线程时他并不知情，它会仍旧认为条件是满足的。也就是说我们不应该仅仅依靠 <code>pthread_cond_wait</code> 的返回就认为条件满足。
+</p>
+
+<p>
+等待信号端代码：
+</p>
+<div class="org-src-container">
+<pre class="src src-c">        pthread_mutex_lock(&amp;mutex); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#24517;&#39035;&#20808;&#38145;&#20303;&#26465;&#20214;&#65292;&#28982;&#21518;&#25165;&#33021;&#21028;&#26029;</span>
+        <span style="color: #a1db00;">while</span>(condition is <span style="color: #00d7af;">not</span> <span style="color: #ff8700;">match</span>) { <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#36827;&#34892;&#26465;&#20214;&#19981;&#28385;&#36275;&#21028;&#26029;&#65292;&#27880;&#24847;&#19981;&#35201;&#20351;&#29992; if&#65292;&#20174; wait &#36820;&#22238;&#20043;&#21518;&#36824;&#38656;&#35201;&#36827;&#34892;&#26465;&#20214;&#21028;&#26029;</span>
+                pthread_cond_wait(&amp;cond, &amp;mutex);
+        }
+        <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#22312;&#36825;&#37324;&#20570;&#19968;&#20123;&#20462;&#25913;&#26465;&#20214;&#30340;&#25805;&#20316; </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
+
+        pthread_mutex_unlock(&amp;mutex);
+</pre>
+</div>
+
+<p>
+产生信号端代码：
+</p>
+<div class="org-src-container">
+<pre class="src src-c">        pthread_mutex_lock(&amp;lock);
+        <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#36825;&#37324;&#26159;&#20462;&#25913;&#26465;&#20214;&#30340;&#20195;&#30721;&#65292;&#26159;&#26465;&#20214;&#25104;&#31435; </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
+        pthread_mutex_unlock(&amp;lock);
+
+        pthread_cond_signal(&amp;cond);
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb41ce12" class="outline-4">
+<h4 id="orgb41ce12">11.6.7 自旋锁（spin lock）</h4>
+<div class="outline-text-4" id="text-orgb41ce12">
+<p>
+自旋锁与互斥量类似，但它不是通过休眠使线程阻塞，而是在获取锁之前一致处于忙等待阻塞状态。自旋锁主要用于以下情况：锁被持有的时间短，而且线程并不希望在重新调度上花费太多的成本。
+</p>
+
+<p>
+自旋锁通过作为底层原语实现其他的类型的锁。
+</p>
+
+<p>
+当自旋锁用在非抢占式内核中时是非常有用的：除了提供互斥机制以外，它们会阻塞中断，这样中断处理程序就不会让系统陷入死锁状态，因为它需要获取已被加锁的自旋锁。
+</p>
+
+<p>
+但在用户层，自旋锁并不是非常有用，除非运行在不允许抢占的实时调度类中。运行在分时调度类中的用户层线程在两种情况下可以被取消调度：当它们的时间片到期时，或者具有更高调度优先级的线程就绪变成可运行时。在这些情况下，如果线程拥有自旋锁，它就会进入休眠状态，阻塞在锁上的其他线程自旋时间可能比预期的时间更长。
+</p>
+
+<p>
+很多互斥量的实现非常高效，以至于应用程序采用互斥锁的性能与曾经采用过的自旋锁的性能基本是相同的。事实上，有些互斥量的实现在试图获取互斥量的时候会自旋一小段时间，只有在自旋计数到达某一阈值的时候才会休眠。这些因素，加上现代处理的进步，使得上下文切换变得原来越快，也似地自旋锁只有在特定的情况下有用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_spin_init</span>(<span style="color: #00d7af;">pthread_spinlock_t</span> *<span style="color: #ff8700;">lock</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">pshared</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_spin_destroy</span>(<span style="color: #00d7af;">pthread_spinlock_t</span> *<span style="color: #ff8700;">lock</span>);
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_spin_lock</span>(<span style="color: #00d7af;">pthread_spinlock_t</span> *<span style="color: #ff8700;">lock</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_spin_trylock</span>(<span style="color: #00d7af;">pthread_spinlock_t</span> *<span style="color: #ff8700;">lock</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_spin_unlock</span>(<span style="color: #00d7af;">pthread_spinlock_t</span> *<span style="color: #ff8700;">lock</span>);
+</pre>
+</div>
+
+<p>
+注意：
+</p>
+<ol class="org-ol">
+<li>对已经加锁的自旋锁加锁结果是未定义的，调用 pthread_spin_lock 会返回 EDEADLK 错误（或其他错误），或者调用可能会永久自旋。具体行为依赖于实际的实现。</li>
+<li>试图对没有加锁的自旋锁解锁结果也是未定义的。</li>
+<li>不要调用在持有自旋锁的情况下可能会进入休眠状态的函数。如果调用了这些函数，会浪费 CPU 资源，因为其他线程需要自旋锁需要等待的时间就延长了。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org8c93f43" class="outline-4">
+<h4 id="org8c93f43">11.6.8 屏障（barrier）</h4>
+<div class="outline-text-4" id="text-org8c93f43">
+<p>
+屏障是用户协调多个进程并行工作的同步机制。屏障允许每个线程等待，直到所有的合作线程都到达某一点，然后从该点继续执行。
+</p>
+
+<p>
+简单来说：
+</p>
+<ul class="org-ul">
+<li>cond 情景：条件达到了，大家一起干，干完大家就没事了（pthread_exit）。</li>
+<li>barrier 情景：先大家干到统一进度，然后在各自干各自的。</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_barrier_init</span>(<span style="color: #00d7af;">pthread_barrier_t</span> *<span style="color: #ff8700;">barrier</span> , <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">pthread_barrierattr_t</span> *<span style="color: #ff8700;">attr</span>, <span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">count</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_barrier_destory</span>(<span style="color: #00d7af;">pthread_barrier_t</span> *<span style="color: #ff8700;">barrier</span>);
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">pthread_barrier_wait</span>(<span style="color: #00d7af;">pthread_barrier_t</span> *<span style="color: #ff8700;">barrier</span>);
+</pre>
+</div>
+
+<p>
+示例代码：
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/e9953870bf56a445b4aea05c41526266.js">https://gist.github.com/phenix3443/e9953870bf56a445b4aea05c41526266.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4b9668e" class="outline-2">
+<h2 id="org4b9668e">第十二章 线程控制</h2>
+<div class="outline-text-2" id="text-org4b9668e">
+</div>
+<div id="outline-container-org337b40f" class="outline-3">
+<h3 id="org337b40f">12.2 线程属性</h3>
+<div class="outline-text-3" id="text-org337b40f">
+<p>
+属性值不能直接设置，须使用相关函数进行操作，初始化的函数为 <code>pthread_attr_init</code> ，这个函数必须在 <code>pthread_create</code> 函数之前调用。之后须用 <code>pthread_attr_destroy</code> 函数来释放资源。线程属性主要包括如下属性：作用域（scope）、栈尺寸（stack size）、栈地址（stack address）、优先级（priority）、分离的状态（detached state）、调度策略和参数（scheduling policy and parameters）。默认的属性为非绑定、非分离、缺省 1M 的堆栈、与父进程同样级别的优先级。
+</p>
+
+<p>
+线程属性标识符：pthread_attr_t 包含在 pthread.h 头文件中。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#23646;&#24615;&#32467;&#26500;&#22914;&#19979;&#65306;</span>
+<span style="color: #a1db00;">typedef</span> <span style="color: #a1db00;">struct</span>
+{
+    <span style="color: #00d7af;">int</span>                   <span style="color: #ff8700;">detachstate</span>;      <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#30340;&#20998;&#31163;&#29366;&#24577;</span>
+    <span style="color: #00d7af;">int</span>                   <span style="color: #ff8700;">schedpolicy</span>;     <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#35843;&#24230;&#31574;&#30053;</span>
+    <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">sched_param</span>     <span style="color: #ff8700;">schedparam</span>;      <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#30340;&#35843;&#24230;&#21442;&#25968;</span>
+    <span style="color: #00d7af;">int</span>                   <span style="color: #ff8700;">inheritsched</span>;    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#30340;&#32487;&#25215;&#24615;</span>
+    <span style="color: #00d7af;">int</span>                   <span style="color: #ff8700;">scope</span>;           <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#30340;&#20316;&#29992;&#22495;</span>
+    <span style="color: #00d7af;">size_t</span>                <span style="color: #ff8700;">guardsize</span>;       <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#26632;&#26411;&#23614;&#30340;&#35686;&#25106;&#32531;&#20914;&#21306;&#22823;&#23567;</span>
+    <span style="color: #00d7af;">int</span>                   <span style="color: #ff8700;">stackaddr_set</span>;   <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#30340;&#26632;&#35774;&#32622;</span>
+    <span style="color: #00d7af;">void</span>*                 <span style="color: #ff8700;">stackaddr</span>;       <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#26632;&#30340;&#20301;&#32622;</span>
+    <span style="color: #00d7af;">size_t</span>                <span style="color: #ff8700;">stacksize</span>;       <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#26632;&#30340;&#22823;&#23567;</span>
+}<span style="color: #00d7af;">pthread_attr_t</span>;
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><p>
+线程的作用域（scope）
+</p>
+
+<p>
+作用域属性描述特定线程将与哪些线程竞争资源。线程可以在两种竞争域内竞争资源：
+</p>
+<ul class="org-ul">
+<li>进程域（process scope）：与同一进程内的其他线程。</li>
+<li>系统域（system scope）：与系统中的所有线程。一个具有系统域的线程将与整个系统中所有具有系统域的线程按照优先级竞争处理器资源，进行调度。</li>
+<li>Solaris 系统，实际上，从 Solaris 9 发行版开始，系统就不再区分这两个范围。</li>
+</ul></li>
+<li><p>
+线程的绑定状态（binding state）
+</p>
+
+<p>
+关于线程的绑定，牵涉到另外一个概念：轻进程（LWP：Light Weight Process）：轻进程可以理解为内核线程，它位于用户层和系统层之间。系统对线程资源的分配、对线程的控制是通过轻进程来实现的，一个轻进程可以控制一个或多个线程。
+</p>
+<ul class="org-ul">
+<li><p>
+非绑定状态
+</p>
+
+<p>
+默认状况下，启动多少轻进程、哪些轻进程来控制哪些线程是由系统来控制的，这种状况即称为非绑定的。
+</p></li>
+
+<li><p>
+绑定状态
+</p>
+
+<p>
+绑定状况下，则顾名思义，即某个线程固定的 "绑" 在一个轻进程之上。被绑定的线程具有较高的响应速度，这是因为 CPU 时间片的调度是面向轻进程的，绑定的线程可以保证在需要的时候它总有一个轻进程可用。通过设置被绑定的轻进程的优先级和调度级可以使得绑定的线程满足诸如实时反应之类的要求。
+</p></li>
+</ul></li>
+
+<li><p>
+线程的分离状态（detached state）
+</p>
+
+<p>
+线程的分离状态决定一个线程以什么样的方式来终止自己。
+</p>
+<ul class="org-ul">
+<li><p>
+非分离状态
+</p>
+
+<p>
+线程的默认属性是非分离状态，这种情况下，原有的线程等待创建的线程结束。只有当 pthread_join() 函数返回时，创建的线程才算终止，才能释放自己占用的系统资源。
+</p></li>
+
+<li><p>
+分离状态
+</p>
+
+<p>
+分离线程没有被其他的线程所等待，自己运行结束了，线程也就终止了，马上释放系统资源。应该根据自己的需要，选择适当的分离状态。
+</p></li>
+
+<li><p>
+线程分离状态的函数： <code>pthread_attr_setdetachstate（pthread_attr_t *attr, int detachstate）</code> 。第二个参数可选为 <code>PTHREAD_CREATE_DETACHED</code> （分离线程）和  <code>PTHREAD_CREATE_JOINABLE</code> （非分离线程）。
+</p>
+
+<p>
+这里要注意的一点是，如果设置一个线程为分离线程，而这个线程运行又非常快，它很可能在 <code>pthread_create</code> 函数返回之前就终止了，它终止以后就可能将线程号和系统资源移交给其他的线程使用，这样调用 <code>pthread_create</code> 的线程就得到了错误的线程号。要避免这种情况可以采取一定的同步措施，最简单的方法之一是可以在被创建的线程里调用 <code>pthread_cond_timewait</code> 函数，让这个线程等待一会儿，留出足够的时间让函数 <code>pthread_create</code> 返回。设置一段等待时间，是在多线程编程里常用的方法。但是注意不要使用诸如 <code>wait()</code> 之类的函数，它们是使整个进程睡眠，并不能解决线程同步的问题。
+</p></li>
+</ul></li>
+
+<li>线程的优先级（priority）
+<ul class="org-ul">
+<li>新线程的优先级为默认为 0。</li>
+<li>新线程不继承父线程调度优先级  <code>(PTHREAD_EXPLICIT_SCHED)</code> 。</li>
+<li>仅当调度策略为实时（即 <code>SCHED_RR</code> 或 <code>SCHED_FIFO</code> ）时才有效，并可以在运行时通过 <code>pthread_setschedparam()</code> 函数来改变，缺省为 0。</li>
+</ul></li>
+
+<li>线程的栈地址（stack address）
+<ul class="org-ul">
+<li>POSIX.1 定义了两个常量 <code>_POSIX_THREAD_ATTR_STACKADDR 和_POSIX_THREAD_ATTR_STACKSIZE</code> 检测系统是否支持栈属性。</li>
+<li>也可以给 sysconf 函数传递 <code>_SC_THREAD_ATTR_STACKADDR 或 _SC_THREAD_ATTR_STACKSIZE</code> 来进行检测。</li>
+<li>当进程栈地址空间不够用时，指定新建线程使用由 malloc 分配的空间作为自己的栈空间。通过  <code>pthread_attr_setstackaddr 和 pthread_attr_getstackaddr</code> 两个函数分别设置和获取线程的栈地址。传给 <code>pthread_attr_setstackaddr</code> 函数的地址是缓冲区的低地址（不一定是栈的开始地址，栈可能从高地址往低地址增长）。</li>
+</ul></li>
+
+<li>线程的栈大小（stack size）
+<ul class="org-ul">
+<li>当系统中有很多线程时，可能需要减小每个线程栈的默认大小，防止进程的地址空间不够用。</li>
+<li>当线程调用的函数会分配很大的局部变量或者函数调用层次很深时，可能需要增大线程栈的默认大小。</li>
+<li>函数 <code>pthread_attr_getstacksize 和 pthread_attr_setstacksize</code> 提供设置。</li>
+</ul></li>
+
+<li>线程的栈保护区大小（stack guard size）
+<ul class="org-ul">
+<li>在线程栈顶留出一段空间，防止栈溢出。</li>
+<li>当栈指针进入这段保护区时，系统会发出错误，通常是发送信号给线程。</li>
+<li>该属性默认值是 PAGESIZE 大小，该属性被设置时，系统会自动将该属性大小补齐为页大小的整数倍。</li>
+<li>当改变栈地址属性时，栈保护区大小通常清零。</li>
+</ul></li>
+
+<li>线程的调度策略（schedpolicy）
+POSIX 标准指定了三种调度策略：先入先出策略 (<code>SCHED_FIFO</code>)、循环策略 (<code>SCHED_RR</code>) 和自定义策略 (<code>SCHED_OTHER</code>)。 <code>SCHED_FIFO</code>  是基于队列的调度程序，对于每个优先级都会使用不同的队列。 <code>SCHED_RR</code> 与 FIFO 相似，不同的是前者的每个线程都有一个执行时间配额。 <code>SCHED_FIFO 和 SCHED_RR</code> 是对 POSIX Realtime 的扩展。 <code>SCHED_OTHER</code> 是缺省的调度策略。
+<ul class="org-ul">
+<li>新线程默认使用 <code>SCHED_OTHER</code> 调度策略。线程一旦开始运行，直到被抢占或者直到线程阻塞或停止为止。</li>
+
+<li><p>
+<code>SCHED_FIFO</code>
+</p>
+
+<p>
+如果调用进程具有有效的用户 ID 0，则争用范围为系统 <code>(PTHREAD_SCOPE_SYSTEM)</code> 的先入先出线程属于实时 (RT) 调度类。如果这些线程未被优先级更高的线程抢占，则会继续处理该线程，直到该线程放弃或阻塞为止。对于具有进程争用范围 (PTHREAD_SCOPE_PROCESS)) 的线程或其调用进程没有有效用户 ID 0 的线程，请使用 <code>SCHED_FIFO，SCHED_FIFO</code> 基于 TS 调度类。
+</p></li>
+
+<li><p>
+<code>SCHED_RR</code>
+</p>
+
+<p>
+如果调用进程具有有效的用户 ID 0，则争用范围为系统 (<code>PTHREAD_SCOPE_SYSTEM</code>) 的循环线程属于实时 (RT) 调度类。如果这些线程未被优先级更高的线程抢占，并且这些线程没有放弃或阻塞，则在系统确定的时间段内将一直执行这些线程。对于具有进程争用范围 (<code>PTHREAD_SCOPE_PROCESS</code>) 的线程，请使用 <code>SCHED_RR</code> (基于 TS 调度类)。此外，这些线程的调用进程没有有效的用户 ID 0。
+</p></li>
+</ul></li>
+
+<li><p>
+线程并行级别（concurrency）
+</p>
+
+<p>
+应用程序使用 <code>pthread_setconcurrency()</code> 通知系统其所需的并发级别。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org08c88f6" class="outline-3">
+<h3 id="org08c88f6">12.4 同步属性</h3>
+<div class="outline-text-3" id="text-org08c88f6">
+</div>
+<div id="outline-container-org5799df9" class="outline-4">
+<h4 id="org5799df9">12.4.1 互斥量属性</h4>
+<div class="outline-text-4" id="text-org5799df9">
+</div>
+<div id="outline-container-org9d92dc2" class="outline-5">
+<h5 id="org9d92dc2">共享属性</h5>
+<div class="outline-text-5" id="text-org9d92dc2">
+<p>
+从多个进程彼此间共享的内存数据块中分配的互斥量就可以用于这些进程的同步。
+</p>
+</div>
+</div>
+<div id="outline-container-org3520ed6" class="outline-5">
+<h5 id="org3520ed6">健壮属性</h5>
+<div class="outline-text-5" id="text-org3520ed6">
+<p>
+与在多个进程间共享的互斥量有关，当持有互斥量的进程终止时，解决互斥量状态恢复的问题。
+</p>
+
+<p>
+在创建 pthread mutex 的时候，指定为 ROBUST 模式。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">pthread_mutexattr_t</span> <span style="color: #ff8700;">ma</span>;
+
+pthread_mutexattr_init(&amp;ma);
+pthread_mutexattr_setpshared(&amp;ma, PTHREAD_PROCESS_SHARED);
+pthread_mutexattr_setrobust(&amp;ma, PTHREAD_MUTEX_ROBUST);
+
+pthread_mutex_init(&amp;c-&gt;lock, &amp;ma);
+</pre>
+</div>
+
+<p>
+需要注意的地方是：如果持有 mutex 的线程退出，另外一个线程在 <code>pthread_mutex_lock</code> 的时候会返回 EOWNERDEAD。这时候你需要调用 <code>pthread_mutex_consistent</code> 函数来清除这种状态，否则后果自负。
+</p>
+
+<p>
+写成代码就是这样子：
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #00d7af;">int</span> <span style="color: #ff8700;">r</span> = pthread_mutex_lock(lock);
+<span style="color: #a1db00;">if</span> (r == EOWNERDEAD)
+    pthread_mutex_consistent(lock);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org12996bf" class="outline-5">
+<h5 id="org12996bf">类型属性<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h5>
+<div class="outline-text-5" id="text-org12996bf">
+<p>
+控制互斥量的锁定特性，如错误检查，死锁检测，递归加锁等。
+</p>
+
+<p>
+L348: <code>pthread_cond_wait</code> 不要使用可递归的互斥互斥量。递归互斥量可能会导致死锁。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga5efa96" class="outline-4">
+<h4 id="orga5efa96">12.4.2 读写锁属性</h4>
+<div class="outline-text-4" id="text-orga5efa96">
+<p>
+只支持进程共享属性。
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa54aef" class="outline-4">
+<h4 id="orgfa54aef">12.4.3 条件变量属性</h4>
+<div class="outline-text-4" id="text-orgfa54aef">
+<p>
+支持进程共享属性和时钟属性。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdbc6f02" class="outline-4">
+<h4 id="orgdbc6f02">12.4.4 屏障属性</h4>
+<div class="outline-text-4" id="text-orgdbc6f02">
+<p>
+只支持进程共享属性。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd800725" class="outline-3">
+<h3 id="orgd800725">12.5 重入</h3>
+<div class="outline-text-3" id="text-orgd800725">
+<p>
+如果一个函数在相同的时间点可以被多个线程安全的调用，就称该函数是线程安全的。
+</p>
+
+<p>
+如果函数对异步信号处理程序的重入是安全的，那么就可以说函数是异步信号安全的。
+</p>
+
+<p>
+flockfile 以线程安全的方式来管理 FILE 对象。
+</p>
+
+<p>
+使用递归互斥量在异步信号中断的情况下阻止其他线程改变保护的数据结构。
+</p>
+</div>
+</div>
+<div id="outline-container-org86381f7" class="outline-3">
+<h3 id="org86381f7">12.6 线程特定数据</h3>
+<div class="outline-text-3" id="text-org86381f7">
+<p>
+为什么需要组织线程数据共享的接口呢？两个原因：
+</p>
+<ul class="org-ul">
+<li>有时候需要维护基于每线程的数据，而不需要担心与其他线程的同步访问问题。</li>
+<li><p>
+提供了让基于进程的接口适应多线程环境的机制。
+</p>
+
+<p>
+除了使用寄存器以外，一个线程没有办法阻止另一个线程访问它的数据。线程特定数据也不例外。虽然底层的实现部分并不能阻止这种访问能力，但管理线程特定数据的函数可以提高线程间的数据独立性，使得线程不太容易访问到其他线程的线程特定数据。
+</p></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;cstdio&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;cstring&gt;</span>
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">str</span>[] = <span style="color: #ff4ea3;">"hello,this is a test string"</span>;
+    <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">p</span> = strtok(str,<span style="color: #ff4ea3;">", "</span>);
+    <span style="color: #a1db00;">while</span>(p) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; p &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        p = strtok(<span style="color: #5fafd7;">NULL</span>, <span style="color: #ff4ea3;">" "</span>);
+    }
+    <span style="color: #a1db00;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+这里的 strtok 使用全局变量来保存要待分析的字符串，这是不是线程安全的。如果多线程同时使用这个函数会修改待分析的字符串。那么如何一个线程安全的 strtok 呢？这就是线程私有数据的作用了。
+</p>
+
+<p>
+线程私有变量的使用场景就是：像全局变量一样使用,但是各个线程各部相同的变量.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;pthread.h&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;unistd.h&gt;</span>
+<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">data</span>;
+
+<span style="color: #00d7af;">char</span> <span style="color: #ffd700;">RetChar</span>(<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">str</span>) {
+    <span style="color: #a1db00;">if</span>(str) {
+        data = str;
+    }
+    <span style="color: #a1db00;">return</span> *data++;
+}
+
+<span style="color: #00d7af;">void</span>* <span style="color: #ffd700;">ThreadFunc</span>(<span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">arg</span>) {
+    <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">c</span> = RetChar(<span style="color: #a1db00;">static_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(arg));
+    <span style="color: #a1db00;">while</span>(c) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; c &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        sleep(1);
+        c = RetChar(<span style="color: #5fafd7;">NULL</span>);
+    }
+    <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">NULL</span>;
+}
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid1</span>, <span style="color: #ff8700;">tid2</span>;
+    pthread_create(&amp;tid1, <span style="color: #5fafd7;">NULL</span>, ThreadFunc, <span style="color: #a1db00;">const_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(<span style="color: #ff4ea3;">"hello"</span>));
+    pthread_create(&amp;tid2, <span style="color: #5fafd7;">NULL</span>, ThreadFunc, <span style="color: #a1db00;">const_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(<span style="color: #ff4ea3;">"world"</span>));
+    pthread_join(tid1, <span style="color: #5fafd7;">NULL</span>);
+    pthread_join(tid2, <span style="color: #5fafd7;">NULL</span>);
+
+    <span style="color: #a1db00;">return</span> 0;
+}
+
+</pre>
+</div>
+<p>
+实现上面程序的线程安全版本
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;pthread.h&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;unistd.h&gt;</span>
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">pthread_key_t</span> <span style="color: #ff8700;">key</span>;
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">pthread_once_t</span> <span style="color: #ff8700;">initflag</span> = PTHREAD_ONCE_INIT;
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">KeyInit</span>(<span style="color: #00d7af;">void</span>) {
+    pthread_key_create(&amp;key, <span style="color: #5fafd7;">NULL</span>);
+}
+
+<span style="color: #00d7af;">char</span> <span style="color: #ffd700;">RetChar</span>(<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">str</span>) {
+    pthread_once(&amp;initflag, KeyInit);
+
+    <span style="color: #a1db00;">if</span>(<span style="color: #ff4b4b;">!</span>pthread_getspecific(key)) {
+        pthread_setspecific(key, str);
+    }
+
+    <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">c</span> = <span style="color: #a1db00;">static_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(pthread_getspecific(key));
+    <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">rval</span> = *c;
+    pthread_setspecific(key, ++c);
+    <span style="color: #a1db00;">return</span> rval;
+}
+
+<span style="color: #00d7af;">void</span>* <span style="color: #ffd700;">ThreadFunc</span>(<span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">arg</span>) {
+    <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">c</span> = RetChar(<span style="color: #a1db00;">static_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(arg));
+    <span style="color: #a1db00;">while</span>(c) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; c &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        sleep(1);
+        c = RetChar(<span style="color: #5fafd7;">NULL</span>);
+    }
+    <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">NULL</span>;
+}
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #00d7af;">pthread_t</span> <span style="color: #ff8700;">tid1</span>, <span style="color: #ff8700;">tid2</span>;
+    pthread_create(&amp;tid1, <span style="color: #5fafd7;">NULL</span>, ThreadFunc, <span style="color: #a1db00;">const_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(<span style="color: #ff4ea3;">"hello"</span>));
+    pthread_create(&amp;tid2, <span style="color: #5fafd7;">NULL</span>, ThreadFunc, <span style="color: #a1db00;">const_cast</span>&lt;<span style="color: #00d7af;">char</span>*&gt;(<span style="color: #ff4ea3;">"world"</span>));
+    pthread_join(tid1, <span style="color: #5fafd7;">NULL</span>);
+    pthread_join(tid2, <span style="color: #5fafd7;">NULL</span>);
+
+    <span style="color: #a1db00;">return</span> 0;
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0885b31" class="outline-3">
+<h3 id="org0885b31">12.7 取消选项</h3>
+</div>
+
+<div id="outline-container-org2fcf60b" class="outline-3">
+<h3 id="org2fcf60b">12.8 线程和信号</h3>
+<div class="outline-text-3" id="text-org2fcf60b">
+<p>
+每个线程都有自己的信号屏蔽字，但是信号的处理是进程中所有线程共享的。
+</p>
+
+<p>
+进程的信号是传递到单个线程的。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb97208d" class="outline-3">
+<h3 id="orgb97208d">12.9 线程和 fork</h3>
+<div class="outline-text-3" id="text-orgb97208d">
+<p>
+在子进程内部，只存在一个线程，它是 <b>由父进程中调用 fork 的线程的副本构成的</b> 。如果父进程中的线程占有锁，子进程将同样占有这些锁。子进程地址空间在创建时就得到了父进程定义的所有锁的副本。问题是 <b>子进程并不包含占有锁的那些线程的副本</b> ，所以子进程没有办法知道它占有了哪些锁、需要释放哪些锁。
+</p>
+
+<p>
+POSIX.1 声明，在 fork 返回和子进程调用其中一个 exec 函数之间，子进程只能调用异步信号安全的函数。
+</p>
+
+<p>
+L367:使用 <code>pthread_atfork</code> 来清除锁的状态。prepare 在 fork 前获得父进程所有的锁变量，这样 fork 的时候父子进程中所有锁的状态就是一致的。parent 在 fork 创建子进程后，返回之前在父进程上下文中定义，对所有锁进行解锁，child 在 fork 返回前在子进程上下文中对锁进行解锁。
+</p>
+
+<p>
+L368:那么这样看起来好像是父进程加锁一次，然后父子进程解锁两次。其实不是的，当父进程和子进程对它们的锁的副本解锁的死后哦，新的内存是分配给子进程的（写时复制），所以看起来执行序列应该是父加锁、子加锁、父解锁、子解锁。
+</p>
+
+<p>
+L368:可以多次调用 <code>pthread_atfork</code> 来设置多套 fork 处理程序。prepare 调用顺序与注册顺序相反，parent 和 child 按注册顺序调用。
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/a55b7bd260db4da66a8cd56d5b663b6e.js">https://gist.github.com/phenix3443/a55b7bd260db4da66a8cd56d5b663b6e.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+<p>
+<code>pthread_atfork</code> 机制的意图是使 fork 之后的锁状态一致，但还是存在有限的情况，比如不能处理复杂的同步机制，不能处理递归锁等。
+</p>
+
+<p>
+最后总结：在多线程环境里面尽量不要使用 fork，或者 fork 之后立刻执行 exec 系列函数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgff1fc05" class="outline-3">
+<h3 id="orgff1fc05">12.10 线程和 I/O</h3>
+<div class="outline-text-3" id="text-orgff1fc05">
+<p>
+使用 pread、pwrite 等原子操作来读写文件。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org04c9832" class="outline-2">
+<h2 id="org04c9832">第十三章 守护进程</h2>
+</div>
+<div id="outline-container-orgb7e530d" class="outline-2">
+<h2 id="orgb7e530d">第十四章 高级 I/O</h2>
+<div class="outline-text-2" id="text-orgb7e530d">
+</div>
+<div id="outline-container-org204c47f" class="outline-3">
+<h3 id="org204c47f">引言</h3>
+</div>
+<div id="outline-container-orgd55fd84" class="outline-3">
+<h3 id="orgd55fd84">非阻塞 I/O</h3>
+</div>
+<div id="outline-container-orge101e08" class="outline-3">
+<h3 id="orge101e08">记录锁</h3>
+</div>
+<div id="outline-container-orgdb71fa3" class="outline-3">
+<h3 id="orgdb71fa3">I/O 多路转接</h3>
+</div>
+<div id="outline-container-org6cf1c03" class="outline-3">
+<h3 id="org6cf1c03">异步 I/O</h3>
+</div>
+<div id="outline-container-org2f1864c" class="outline-3">
+<h3 id="org2f1864c">函数 readv 和 writev</h3>
+</div>
+<div id="outline-container-org1f0e5f4" class="outline-3">
+<h3 id="org1f0e5f4">函数 readn 和 writen</h3>
+</div>
+<div id="outline-container-org3ab3783" class="outline-3">
+<h3 id="org3ab3783">存储映射 I/O</h3>
+<div class="outline-text-3" id="text-org3ab3783">
+<p>
+L423:对指定映射存储区的保护要求不能超过文件 open 模式访问权限。映射存储区位于堆和栈之间：这属于实现袭击额，各种实现之间可能不同。
+</p>
+
+<p>
+L425:修改的页并不会立即写回到文件中。何时写回由内核的守护进程决定。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6550642" class="outline-2">
+<h2 id="org6550642">第十五章 进程间通信</h2>
+<div class="outline-text-2" id="text-org6550642">
+</div>
+<div id="outline-container-org64da88e" class="outline-3">
+<h3 id="org64da88e">管道</h3>
+<div class="outline-text-3" id="text-org64da88e">
+<p>
+管道的局限性：半双工和只能在具有公共祖先的两个进程间使用。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;unistd.h&gt;</span>
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+{
+    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">fd</span>[2];
+    <span style="color: #a1db00;">if</span> (pipe(fd)) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"create pipe error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        <span style="color: #a1db00;">return</span> 1;
+    }
+    <span style="color: #00d7af;">pid_t</span> <span style="color: #ff8700;">pid</span> = fork();
+    <span style="color: #a1db00;">if</span> (pid &lt; 0) {
+        <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"fork error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+        <span style="color: #a1db00;">return</span> 1;
+    }
+    <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> (pid &gt; 0) {
+        close(fd[0]);
+        <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">msg</span>[] = <span style="color: #ff4ea3;">"hello,pipe!\n"</span>;
+        write(fd[1], msg, <span style="color: #a1db00;">sizeof</span>(msg));
+    }
+    <span style="color: #a1db00;">else</span> {
+        close(fd[1]);
+        <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">msg</span>[128] = {0};
+        <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">n</span> = read(fd[0], msg, <span style="color: #a1db00;">sizeof</span>(msg));
+        write(STDOUT_FILENO, msg, n);
+    }
+    <span style="color: #a1db00;">return</span> 0;
+}
+<span style="color: #5fafd7;">L434</span>: &#26080;&#35770;&#20309;&#26102;&#35843;&#29992; dup2 &#21644; <span style="color: #00d7af;">close</span> <span style="color: #ff8700;">&#23558;&#19968;&#20010;&#25551;&#36848;&#31526;&#22797;&#21046;&#21040;&#21478;&#19968;&#20010;&#19978;</span>&#65292;&#20316;&#20026;&#19968;&#31181;&#20445;&#25252;&#24615;&#30340;&#32534;&#31243;&#25514;&#26045;&#65292;&#37117;&#35201;&#29616;&#23558;&#20004;&#20010;&#25551;&#36848;&#31526;&#36827;&#34892;&#27604;&#36739;&#12290;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd49e2ef" class="outline-3">
+<h3 id="orgd49e2ef">函数 popen 和 pclose</h3>
+</div>
+
+<div id="outline-container-orgd569b10" class="outline-3">
+<h3 id="orgd569b10">协同进程</h3>
+</div>
+
+<div id="outline-container-org14e60c6" class="outline-3">
+<h3 id="org14e60c6">FIFO</h3>
+</div>
+
+<div id="outline-container-org61886b7" class="outline-3">
+<h3 id="org61886b7">XSI IPC</h3>
+<div class="outline-text-3" id="text-org61886b7">
+<p>
+每个内核中的 IPC 结构都使用一个非负整数的标识符加以引用。标识符是 IPC 对象的内部名，与每个 IPC 对象关联的 key 是其外部名。
+</p>
+
+<p>
+XSI IPC 有下列问题：
+</p>
+<ul class="org-ul">
+<li>IPC 结构是在系统范围内起作用的，没有引用计数，释放不方便。</li>
+<li>这些 IPC 结构在文件系统中没有名字，不能使用常规的操作文件描述符的函数修改它们的属性。需要在内核中添加新的系统调用。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org93c8b0c" class="outline-3">
+<h3 id="org93c8b0c">消息队列</h3>
+<div class="outline-text-3" id="text-org93c8b0c">
+<p>
+最后总结：在新的应用程序中不要使用消息队列。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7280106" class="outline-3">
+<h3 id="org7280106">信号量</h3>
+<div class="outline-text-3" id="text-org7280106">
+<p>
+信号量是一个计数器，用于为多个进程提供对共享数据的访问。
+</p>
+
+<p>
+如果多个进程间共享一个资源，可以使用映射到两个进程地址空间中的信号量、记录锁或者互斥量。但是比较之下，最优的方法是使用文件锁。记录锁的性质确保当一个锁的持有者进程终止时，内核会自动释放该锁。不使用互斥量原因如下：首先，在多个进程间共享的内存中使用互斥量来恢复一个终止的进程更难。其次，进程共享的互斥量属性还没有得普遍支持。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org980afc5" class="outline-3">
+<h3 id="org980afc5">共享存储</h3>
+<div class="outline-text-3" id="text-org980afc5">
+<p>
+共享存储快是因为数据不需要在进程间复制。
+</p>
+</div>
+</div>
+<div id="outline-container-orgc37f0ab" class="outline-3">
+<h3 id="orgc37f0ab">POSIX 信号量</h3>
+</div>
+
+<div id="outline-container-orgdfd2344" class="outline-3">
+<h3 id="orgdfd2344">客户进程-服务器进程属性</h3>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://segmentfault.com/a/1190000000630435">关于在 Linux 下多个不相干的进程互斥访问同一片共享内存的问题</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

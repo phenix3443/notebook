@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VPN practices</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">VPN practices</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7e392b3">1. VPN 简介</a></li>
+<li><a href="#org2639918">2. VPN 协议对比</a>
+<ul>
+<li><a href="#org78cc368">2.1. PPTP</a></li>
+<li><a href="#org29e3b2f">2.2. L2TP</a></li>
+<li><a href="#org8f4bb89">2.3. IPSec</a></li>
+<li><a href="#org294cf1b">2.4. SSLVPN</a></li>
+</ul>
+</li>
+<li><a href="#org19eae73">3. 搭建 VPN 网络</a>
+<ul>
+<li><a href="#orgc0e9d1a">3.1. pptp</a></li>
+<li><a href="#org7f8c66e">3.2. openvpn</a>
+<ul>
+<li><a href="#org305490a">3.2.1. 加密</a></li>
+<li><a href="#org9f66a1e">3.2.2. 验证</a></li>
+<li><a href="#orgac4131a">3.2.3. 网络</a></li>
+<li><a href="#org6e2f474">3.2.4. 安全</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+手动设置每个 app 的代理比较繁琐，这时候就是 VPN 上场的时候了。
+</p>
+
+<p>
+当然，首先你需要有一台 VPS，参看《<a href="VPS-practices.html">VPS 实践</a>》。
+</p>
+
+<div id="outline-container-org7e392b3" class="outline-2">
+<h2 id="org7e392b3"><span class="section-number-2">1</span> VPN 简介</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+虚拟专用网络（Virtual Private Network，简称 VPN) 指的是在公用网络上建立专用网络的技术。它涵盖了跨共享网络或公共网络的封装、加密和身份验证链接的专用网络的扩展。VPN 主要采用了隧道技术、加解密技术、密钥管理技术和使用者与设备身份认证技术。
+</p>
+
+<p>
+VPN (虚拟专用网) 发展至今已经不在是一个单纯的经过加密的访问隧道了，它已经融合了访问控制、传输管理、加密、路由选择、可用性管理等多种功能，并在全球的 信息安全体系中发挥着重要的作用。也在网络上，有关各种 VPN 协议优缺点的比较是仁者见仁，智者见智，很多技术人员由于出于使用目的考虑，包括访问控制、 安全和用户简单易用，灵活扩展等各方面，权衡利弊，难以取舍; 尤其在 VOIP 语音环境中，网络安全显得尤为重要，因此现在越来越多的网络电话和语音网关支 持 VPN 协议。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2639918" class="outline-2">
+<h2 id="org2639918"><span class="section-number-2">2</span> VPN 协议对比<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org78cc368" class="outline-3">
+<h3 id="org78cc368"><span class="section-number-3">2.1</span> PPTP</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+点对点隧道协议 (PPTP) 是由包括微软和 3Com 等公司组成的 PPTP 论坛开发的一种点对点隧道协，基于拨号使用的 PPP 协议使用 PAP 或 CHAP 之类的加密算法，或者使用 Microsoft 的点对点加密算法 MPPE。其过通跨越基于 TCP/IP 的数据网络创建 VPN 实现了从远程客户端到专用企业服务器之间数据的安全传输。PPTP 支持通过公共网络 (例如 Internet) 建立按需的、多协议的、虚拟专用网络。PPTP 允许加密 IP 通讯，然后在要跨越公司 IP 网络或公共 IP 网络 (如 Internet) 发送的 IP 头中对其进行封装。
+</p>
+
+<div class="figure">
+<p><img src="file://img/vpn-practices/siteSite-to-site-pptp-example.jpg" alt="siteSite-to-site-pptp-example.jpg" />
+</p>
+<p><span class="figure-number">Figure 1: </span>PPTP</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org29e3b2f" class="outline-3">
+<h3 id="org29e3b2f"><span class="section-number-3">2.2</span> L2TP</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+L2TP 第 2 层隧道协议 (L2TP) 是 IETF 基于 L2F (Cisco 的第二层转发协议) 开发的 PPTP 的后续版本。是一种工业标准 Internet 隧道协议，其可以为跨越面向数据包的媒体发送点到点协议 (PPP) 框架提供封装。PPTP 和 L2TP 都使用 PPP 协议对数据进行封装，然后添加附加包头用于数据在互联网络上的传输。PPTP 只能在两端点间建立单一隧道。L2TP 支持在两端点间使用多隧道，用户可以针对不同的服务质量创建不同的隧道。L2TP 可以提供隧道验证，而 PPTP 则不支持隧道验证。但是当 L2TP 或 PPTP 与 IPSEC 共同使用时，可以由 IPSEC 提供隧道验证，不需要在第 2 层协议上验证隧道使用 L2TP。PPTP 要求互联网络为 IP 网络。L2TP 只要求隧道媒介提供面向数据包的点对点的连接，L2TP 可以在 IP(使用 UDP)，桢中继永久虚拟电路 (PVCs),X.25 虚拟电路 (VCs) 或 ATM VCs 网络上使用。
+</p>
+
+<div class="figure">
+<p><img src="file://img/vpn-practices/L2TP.jpg" alt="L2TP.jpg" />
+</p>
+<p><span class="figure-number">Figure 2: </span>L2TP</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8f4bb89" class="outline-3">
+<h3 id="org8f4bb89"><span class="section-number-3">2.3</span> IPSec<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+IPSec 隧道模式隧道是封装、路由与解封装的整个 过程。隧道将原始数据包隐藏 (或封装) 在新的数据包内部。该新的数据包可能会有新的寻址与路由信息，从而使其能够通 过网络传输。隧道与数据保密性结合使用时，在网络上窃听通讯的人将无法获取原始数据包数据 (以及原始的源和目标)。封装的数据包到达目的地后，会删除封装，原始数据包头用于将数据包路由到最终目的地。
+隧道本身是封装数据经过的逻辑数据路径，对原始的源和目的端，隧道是不可见的，而只能看到网络路径中的点对点连接。连接双方并不关心隧道起点和终点之间的任何路由器、交换机、代理服务器或其他安全网关。将隧道和数据保密性结合使用时，可用于提供 VPN。
+</p>
+
+<p>
+封装的数据包在网络中的隧道内部传输。在此示例中，该网络是 Internet。网关可以是外部 Internet 与专用网络间的周界网关。周界网关可以是路由器、防火墙、代理服务器或其他安全网关。另外，在专用网络内部可使用两个网关来保护网络中不信任的通讯。
+</p>
+
+<p>
+当以隧道模式使用 IPSec 时，其只为 IP 通讯提供封装。使用 IPSec 隧道模式主要是为了与其他不支持 IPSec 上的 L2TP 或 PPTP VPN 隧道技术的路由器、网关或终端系统之间的相互操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org294cf1b" class="outline-3">
+<h3 id="org294cf1b"><span class="section-number-3">2.4</span> SSLVPN<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup></h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+SSL 协议提供了数据私密性、端点验证、信息完整性等特性。SSL 协议由许多子协议组成，其中两个主要的子协议是握手协议和记录协议。握手协议允许服务器 和客户端在应用协议传输第一个数据字节以前，彼此确认，协商一种加密算法和密码钥匙。在数据传输期间，记录协议利用握手协议生成的密钥加密和解密后来交换 的数据。
+</p>
+
+<p>
+SSL 独立于应用，因此任何一个应用程序都可以享受它的安全性而不必理会执行细节。SSL 置身于网络结构体系的 传输层和应用层之间。此外，SSL 本身就被几乎所有的 Web 浏览器支持。这意味着客户端不需要为了支持 SSL 连接安装额外的软件。这两个特征就是 SSL 能 应用于 VPN 的关键点。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org19eae73" class="outline-2">
+<h2 id="org19eae73"><span class="section-number-2">3</span> 搭建 VPN 网络</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgc0e9d1a" class="outline-3">
+<h3 id="orgc0e9d1a"><span class="section-number-3">3.1</span> pptp<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup></h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+主要讨论 PPTP VPN 服务在 Ubuntu 上的安装和配置。
+</p>
+
+<ul class="org-ul">
+<li><p>
+使用 apt 源服务来安装 PPTPD 服务
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sudo apt-get update
+sudo apt-get install pptpd
+</pre>
+</div></li>
+
+<li><p>
+安装完成之后编辑 pptpd.conf 配置文件
+</p>
+<pre class="example">
+ option /etc/ppp/pptpd-option                    #指定 PPP 选项文件的位置
+ debug                                           #启用调试模式
+ #logwtmp
+ localip 192.168.0.1                             #VPN 服务器的虚拟 ip
+ remoteip 192.168.0.200-238,192.168.0.245        #分配给 VPN 客户端的虚拟 ip
+</pre></li>
+</ul>
+
+
+<ul class="org-ul">
+<li>编辑 PPP 选项配置文件</li>
+</ul>
+<pre class="example">
+ name pptpd                      #pptpd 服务的名称
+ refuse-pap                      #拒绝 pap 身份认证模式
+ refuse-chap                     #拒绝 chap 身份认证模式
+ refuse-mschap                   #拒绝 mschap 身份认证模式
+ require-mschap-v2               #允许 mschap-v2 身份认证模式
+ require-mppe-128                #允许 mppe 128 位加密身份认证模式
+ ms-dns 8.8.8.8                  #使用 Google DNS
+ ms-dns 8.8.4.4                  #使用 Google DNS
+ proxyarp                        #arp 代理
+ debug                           #调试模式
+ dump                            #服务启动时打印出所有配置信息
+ lock                            #锁定 TTY 设备
+ nobsdcomp                       #禁用 BSD 压缩模式
+ logfile /var/log/pptpd.log      #输出日志文件位置
+</pre>
+
+<ul class="org-ul">
+<li><p>
+编辑用户配置文件来添加用户
+</p>
+
+<pre class="example">
+ test    *    1234    *
+</pre>
+
+<p>
+第一个*代表服务可以是 PPTPD 也可以是 L2TPD，第二个*代表随机分配 ip。
+</p>
+
+<ul class="org-ul">
+<li>重启 PPTPD 服务</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-sh"> sudo service pptpd restart
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>配置网络和路由规则，设置 ipv4 转发</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-sh"> sudo sed -i <span style="color: #ff4ea3;">'s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g'</span> /etc/sysctl.conf
+ sudo sysctl -p
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>设置 iptables NAT 转发，注意这里 eth0 代表你的外网网卡，请用 ifconfig 查看或者咨询网络管理员</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-sh"> sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
+</pre>
+</div>
+
+<p>
+如果上面的命令报错,那么可以尝试以下的命令，其中 xxx.xxx.xxx.xxx 代表你的 VPS 外网 ip 地址
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"> sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j SNAT --to-source xxx.xxx.xxx.xxx
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>设置 MTU 来确保过大的包不会被丢弃（这个可以不做）</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-sh"> sudo iptables -I FORWARD -s 192.168.0.0/24 -p tcp --syn -i ppp+ -j TCPMSS --set-mss 1300
+</pre>
+</div>
+
+<p>
+iptables 的设置重启之后会取消，所以可以将上面的命令加入到 /etc/rc.local 来确保每次重启都会执行设置。
+</p>
+
+<p>
+至此设置全部完成，可以用任意一个客户端机器如 MAC、PC 或者手机来新建一个 VPN 连接使用用户 test，密码 1234 进行测试。另外网上提供一种自动安装脚本，可以参见如下操作：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"> wget -c http://small-script.googlecode.com/files/debian-pptpd.tar.gz
+ tar -zxf debian-pptpd.tar.gz
+ sudo sh pptpd.sh
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7f8c66e" class="outline-3">
+<h3 id="org7f8c66e"><span class="section-number-3">3.2</span> openvpn<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup></h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+典型的 SSL VPN 应用如 OpenVPN, 是一个比较好的开源软件。PPTP 主要为那些经常外出移动或家庭办公的用户考虑; 而 OpenVPN 主要是针对企业异地两地总分公司之间的 VPN 不间断按需连接，例如 ERP 在企业中的应用。
+</p>
+</div>
+
+<div id="outline-container-org305490a" class="outline-4">
+<h4 id="org305490a"><span class="section-number-4">3.2.1</span> 加密</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+OpenVPN 允许参与建立 VPN 的单点使用预设的私钥、第三方证书、或者用户名/密码来进行身份验证。它大量使用了 OpenSSL 加密库，以及 SSLv3/TLSv1 协议。OpenVPN 能在 Linux、xBSD、Mac OS X 与 Windows 2000/XP 上运行。它并不是一个基于 Web 的 VPN 软件，也不与 IPsec 及其他 VPN 软件包兼容。
+</p>
+
+<p>
+OpenVPN 使用 OpenSSL 库加密数据与控制信息：它使用了 OpesSSL 的加密以及验证功能，意味着，它能够使用任何 OpenSSL 支持的算法。它提供了可选的数据包 HMAC 功能以提高连接的安全性。此外，OpenSSL 的硬件加速也能提高它的性能。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9f66a1e" class="outline-4">
+<h4 id="org9f66a1e"><span class="section-number-4">3.2.2</span> 验证</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+OpenVPN 提供了多种身份验证方式，用以确认参与连接双方的身份，包括：预享私钥，第三方证书以及用户名 / 密码组合。预享密钥最为简单，但同时它 只能用于建立点对点的 VPN; 基于 PKI 的第三方证书提供了最完善的功能，但是需要额外的精力去维护一个 PKI 证书体系。OpenVPN2.0 后引入了用 户名 / 口令组合的身份验证方式，它可以省略客户端证书，但是仍有一份服务器证书需要被用作加密.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgac4131a" class="outline-4">
+<h4 id="orgac4131a"><span class="section-number-4">3.2.3</span> 网络</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+OpenVPN 所有的通信都基于一个单一的 IP 端口，默认且推荐使用 UDP 协议通讯，同时 TCP 也被支持。OpenVPN 连接能通过大多数的代理服务 器，并且能够在 NAT 的环境中很好地工作。服务端具有向客户端 “推送” 某些网络配置信息的功能，这些信息包括：IP 地址、路由设置等。OpenVPN 提供 了两种虚拟网络接口：通用 Tun/Tap 驱动，通过它们，可以建立三层 IP p 隧道，或者虚拟二层以太网，后者可以传送任何类型的二层以太网络数据。传送的数 据可通过 LZO 算法压缩。IANA(Internet Assigned Numbers Authority) 指定给 OpenVPN 的官方端口为 1194。OpenVPN 2.0 以后版本每个进程可以同时管理数个并发的隧道。
+OpenVPN 使用通用网络协议 (TCP 与 UDP) 的特点使它成为 IPsec 等协议的理想替代，尤其是在 ISP(Internet service provider) 过滤某些特定 VPN 协议的情况下。在选择协议时候，需要注意 2 个加密隧道之间的网络状况，如有高延迟或者丢包较多的情况下，请选择 TCP 协议作为底层协议，UDP 协议由于存在无连接和重传机制，导致要隧道上层的协议进行重传，效率非常低下。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e2f474" class="outline-4">
+<h4 id="org6e2f474"><span class="section-number-4">3.2.4</span> 安全</h4>
+<div class="outline-text-4" id="text-3-2-4">
+<p>
+OpenVPN 与生俱来便具备了许多安全特性：它在用户空间运行，无须对内核及网络协议栈作修改; 初始完毕后以 chroot 方式运行，放弃 root 权限; 使用 mlockall 以防止敏感数据交换到磁盘。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://www.wowrk.com/vpn-tunneling-protocol/">VPN 隧道协议 PPTP、L2TP、IPSec 和 SSLVPN 的区别</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://www.baike.com/wiki/IPsec+VPN&amp;prd=so_1_doc">IPsec on 互动百科</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://www.baike.com/wiki/SSL+VPN">SSLVPN 互动百科</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://blog.fens.me/ubuntu-vpn-pptp/">Ubuntu 上安装 PPTP VPN 服务</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://openvpn.net/">openVPN Home</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

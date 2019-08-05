@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>nginx 核心知识 100 讲 笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">nginx 核心知识 100 讲 笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0a1e872">1. 初识 nginx</a>
+<ul>
+<li><a href="#org36c69a3">1.1. 课程综述</a></li>
+<li><a href="#orgc99b16f">1.2. nginx 适用于哪些场景</a></li>
+<li><a href="#org23dfc4a">1.3. nginx 历史背景</a></li>
+<li><a href="#org836a70c">1.4. nginx 优点</a></li>
+<li><a href="#org0ff4bb9">1.5. nginx 四个主要组成部分</a></li>
+<li><a href="#orgce8673c">1.6. nginx 版本发布历史</a></li>
+<li><a href="#orgf40d3f9">1.7. nginx 版本选择</a></li>
+<li><a href="#org1f7269f">1.8. 编译适合自己的 nginx</a></li>
+<li><a href="#orgaa9baf0">1.9. nginx 配置文件通用语法</a></li>
+<li><a href="#org8a9bb74">1.10. nginx 命令行及演示</a></li>
+<li><a href="#org0863eff">1.11. nginx 搭建静态资源服务器</a></li>
+<li><a href="#orgda2c45d">1.12. nginx 搭建具备缓存功能的反向代理服务</a></li>
+<li><a href="#org54fd9ea">1.13. 用 GoAccess 实现可视化</a></li>
+<li><a href="#org08acd44">1.14. 从网络原理来看 SSL 安全协议</a></li>
+<li><a href="#org38f31cf">1.15. 对称加密与非对称加密</a></li>
+<li><a href="#orgf64d366">1.16. SSL 证书的公信力是如何保证的</a></li>
+<li><a href="#orga1d87eb">1.17. SSL 协议握手时 nginx 性能瓶颈在哪里</a></li>
+<li><a href="#orgda8d02f">1.18. 用免费 SSL 证书实现一个 HTTPS 站点</a></li>
+<li><a href="#orgb0618e7">1.19. 基于 OpenResty 用 Lua 语言实现简单服务</a></li>
+</ul>
+</li>
+<li><a href="#orgd5490fa">2. nginx 架构基础</a>
+<ul>
+<li><a href="#org89fbf89">2.1. nginx 的请求处理流程</a></li>
+<li><a href="#orgf957c56">2.2. nginx 的进程结构</a></li>
+<li><a href="#org14fd51e">2.3. nginx 进程结构实例演示</a></li>
+<li><a href="#org226a9c8">2.4. 使用信号管理 nginx 父子进程</a></li>
+<li><a href="#orgd52a73b">2.5. reload 重载配置文件的真相</a></li>
+<li><a href="#orge02fc87">2.6. 热升级的完整流程</a></li>
+<li><a href="#org8764ce1">2.7. 优雅的关闭 worker 进程</a></li>
+<li><a href="#orgdec285b">2.8. 网络收发与 nginx 事件间的对应关系</a></li>
+<li><a href="#orgf16d009">2.9. nginx 网络事件实例演示</a></li>
+<li><a href="#orgc3c561f">2.10. nginx 的事件驱动模型</a></li>
+<li><a href="#orgd9140a4">2.11. epoll 的优劣及原理</a></li>
+<li><a href="#org3f8095c">2.12. nginx 的请求切换</a></li>
+<li><a href="#orge6c3422">2.13. 同步与异步，阻塞与非阻塞</a></li>
+<li><a href="#orgff50878">2.14. nginx 的模块究竟是什么</a></li>
+<li><a href="#org2170887">2.15. nginx 模块分类</a></li>
+<li><a href="#org732e717">2.16. nginx 连接池</a></li>
+<li><a href="#org66dd388">2.17. 内存池对性能的影响</a></li>
+<li><a href="#orgb92183a">2.18. 所有 worker 进程协同工作</a></li>
+<li><a href="#org51f3a46">2.19. 共享内存工具：Slab 管理器</a></li>
+<li><a href="#orgd980ef4">2.20. 哈希表的 max_size 与 bucket_size 如何配置</a></li>
+<li><a href="#org110e4c7">2.21. nginx 中最常用的容器：红黑树</a></li>
+<li><a href="#orge7eb390">2.22. 使用动态模块提升运维效率</a></li>
+</ul>
+</li>
+<li><a href="#orgd07e77b">3. 详解 HTTP 模块</a>
+<ul>
+<li><a href="#org391fe60">3.1. 冲突的配置指令以谁为准</a></li>
+<li><a href="#orgcc9422a">3.2. Listen 指令的用法</a></li>
+<li><a href="#org0f66116">3.3. 处理 HTTP 请求头部的流程</a></li>
+<li><a href="#org3ff7460">3.4. nginx 中的正则表达式</a></li>
+<li><a href="#org22ec38a">3.5. 如何找到处理请求的 server_name 指令块</a></li>
+<li><a href="#orgaba819f">3.6. HTTP 请求处理时的 11 个阶段</a></li>
+<li><a href="#org56f44c7">3.7. 11 个阶段的顺序处理</a></li>
+<li><a href="#orgd9038eb">3.8. postread 阶段：获取真实客户端地址的 realip 模块</a></li>
+<li><a href="#org6007b30">3.9. rewrite 阶段的 rewrite 模块：return 指令</a></li>
+<li><a href="#org5ffda6d">3.10. rewrite 阶段的 rewrite 模块：重写 URL</a></li>
+<li><a href="#org038d9b8">3.11. rewrite 阶段的 rewrite 模块：条件判断</a></li>
+</ul>
+</li>
+<li><a href="#org293bd64">4. 反向代理与负载均衡</a></li>
+<li><a href="#orgd5bf082">5. nginx 的系统层性能优化</a></li>
+<li><a href="#org7ff640c">6. 从源码视角深入使用 Nginx 与 Openresty</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文极客时间<a href="https://time.geekbang.org/course/intro/138">《nginx 核心只是 100 讲》</a>学习笔记。
+</p>
+
+<div id="outline-container-org0a1e872" class="outline-2">
+<h2 id="org0a1e872"><span class="section-number-2">1</span> 初识 nginx</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org36c69a3" class="outline-3">
+<h3 id="org36c69a3"><span class="section-number-3">1.1</span> 课程综述</h3>
+</div>
+<div id="outline-container-orgc99b16f" class="outline-3">
+<h3 id="orgc99b16f"><span class="section-number-3">1.2</span> nginx 适用于哪些场景</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>静态资源服务</li>
+<li>反向代理服务：强大性能，缓存，负载均衡。</li>
+<li>API 服务</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org23dfc4a" class="outline-3">
+<h3 id="org23dfc4a"><span class="section-number-3">1.3</span> nginx 历史背景</h3>
+</div>
+<div id="outline-container-org836a70c" class="outline-3">
+<h3 id="org836a70c"><span class="section-number-3">1.4</span> nginx 优点</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>高并发，高性能</li>
+<li>可扩展性好</li>
+<li>高可靠性</li>
+<li>热部署</li>
+<li>BSD 许可证</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0ff4bb9" class="outline-3">
+<h3 id="org0ff4bb9"><span class="section-number-3">1.5</span> nginx 四个主要组成部分</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>可执行文件</li>
+<li>配置文件</li>
+<li>access.log</li>
+<li>error.log</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgce8673c" class="outline-3">
+<h3 id="orgce8673c"><span class="section-number-3">1.6</span> nginx 版本发布历史</h3>
+</div>
+<div id="outline-container-orgf40d3f9" class="outline-3">
+<h3 id="orgf40d3f9"><span class="section-number-3">1.7</span> nginx 版本选择</h3>
+</div>
+<div id="outline-container-org1f7269f" class="outline-3">
+<h3 id="org1f7269f"><span class="section-number-3">1.8</span> 编译适合自己的 nginx</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+使用 docker 创建测试环境：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">docker run --name nginx-build -v /home/lsl/Downloads/nginx-1.14.2:/nginx-1.14.2 -p 9000:80 ubuntu /bin/bash
+</pre>
+</div>
+<p>
+编译：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">apt update &amp;&amp; apt install -y build-essential perl libpcre3-dev zlib1g-dev libssl-dev
+<span style="color: #d18aff;">cd</span> /nginx-1.14.2 &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install
+/usr/local/nginx/sbin/nginx
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaa9baf0" class="outline-3">
+<h3 id="orgaa9baf0"><span class="section-number-3">1.9</span> nginx 配置文件通用语法</h3>
+<div class="outline-text-3" id="text-1-9">
+<ul class="org-ul">
+<li>指令，指令块</li>
+<li>$ 引用参数</li>
+<li>时间和空间有单位</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8a9bb74" class="outline-3">
+<h3 id="org8a9bb74"><span class="section-number-3">1.10</span> nginx 命令行及演示</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li><p>
+重新加载配置
+</p>
+<pre class="example">
+nginx -s reload
+</pre></li>
+<li>热部署
+<ol class="org-ol">
+<li>备份旧二进制文件。</li>
+<li>用新的二进制文件替换。</li>
+<li>通知原有 master 进程热部署: <code class="src src-shell"><span style="color: #d18aff;">kill</span> -USR2 old-master-pid</code></li>
+<li>新的 master，worker 进程启动。</li>
+<li>通知原有 master 进程关闭 worker 进程：<code class="src src-shell"><span style="color: #d18aff;">kill</span> -WINCH old-master-pid</code></li>
+<li>如果没有问题，关闭原有 master 进程：<code class="src src-shell"><span style="color: #d18aff;">kill</span> -QUIT old-master-pid</code></li>
+<li>如果需要回退：<code class="src src-shell"><span style="color: #d18aff;">kill</span> -USR1 old-master-pid</code></li>
+</ol></li>
+
+<li><p>
+日志切割
+</p>
+<ol class="org-ol">
+<li>重命名原有日志文件。在 linux 文件系统中，改名不会影响已经打开文件的写入操作，内核 inode 不变，就不会丢日志。</li>
+<li>给 master 进程发送 reopen 信号：<code class="src src-shell"><span style="color: #d18aff;">kill</span> -USR1 master-pid</code></li>
+</ol>
+
+<p>
+日志按时间切割：
+</p>
+<ol class="org-ol">
+<li>日志文件文件名使用日期变量名。（如何做？）</li>
+<li>定期发送 reopen 信号。</li>
+</ol></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0863eff" class="outline-3">
+<h3 id="org0863eff"><span class="section-number-3">1.11</span> nginx 搭建静态资源服务器</h3>
+<div class="outline-text-3" id="text-1-11">
+<p>
+使用 docker-openresty 建立测试环境：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker run -d --restart always --name nginx-test <span style="color: #ff4ea3;">\</span>
+-v $(<span style="color: #fa8072;">pwd</span>)/conf/vhosts:/etc/nginx/conf.d <span style="color: #ff4ea3;">\</span>
+-v $(<span style="color: #fa8072;">pwd</span>)/logs:/usr/local/openresty/nginx/logs <span style="color: #ff4ea3;">\</span>
+-v $(<span style="color: #fa8072;">pwd</span>)/html:/usr/local/openresty/nginx/html <span style="color: #ff4ea3;">\</span>
+-p 8080:80  openresty/openresty:1.13.6.2-centos
+</pre>
+</div>
+
+<p>
+相关指令：
+</p>
+<ul class="org-ul">
+<li>alias</li>
+<li>root</li>
+<li>gzip</li>
+<li>autoindex</li>
+<li>index</li>
+<li>limit_rate</li>
+<li>log_format</li>
+<li>access_log</li>
+<li>error_log</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgda2c45d" class="outline-3">
+<h3 id="orgda2c45d"><span class="section-number-3">1.12</span> nginx 搭建具备缓存功能的反向代理服务</h3>
+<div class="outline-text-3" id="text-1-12">
+<p>
+相关命令：
+</p>
+<ul class="org-ul">
+<li>upstream</li>
+<li>proxy_pass</li>
+<li>proxy_set_header</li>
+<li>$host</li>
+<li>$X-Real-IP</li>
+<li>$X-Forword-For</li>
+<li>$remote_addr</li>
+<li>$proxy_add_x_forward_for</li>
+<li>proxy_cache_path</li>
+<li>proxy_cache</li>
+<li>proxy_cache_valid</li>
+<li>stream 代理 tcp 时，使用 proxy_protocol 协议获取客户端 IP？</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org54fd9ea" class="outline-3">
+<h3 id="org54fd9ea"><span class="section-number-3">1.13</span> 用 GoAccess 实现可视化</h3>
+<div class="outline-text-3" id="text-1-13">
+<p>
+使用 goaccess 实时查看日志数据。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org08acd44" class="outline-3">
+<h3 id="org08acd44"><span class="section-number-3">1.14</span> 从网络原理来看 SSL 安全协议</h3>
+</div>
+<div id="outline-container-org38f31cf" class="outline-3">
+<h3 id="org38f31cf"><span class="section-number-3">1.15</span> 对称加密与非对称加密</h3>
+</div>
+<div id="outline-container-orgf64d366" class="outline-3">
+<h3 id="orgf64d366"><span class="section-number-3">1.16</span> SSL 证书的公信力是如何保证的</h3>
+<div class="outline-text-3" id="text-1-16">
+<p>
+tls 加密过程。
+</p>
+</div>
+</div>
+<div id="outline-container-orga1d87eb" class="outline-3">
+<h3 id="orga1d87eb"><span class="section-number-3">1.17</span> SSL 协议握手时 nginx 性能瓶颈在哪里</h3>
+<div class="outline-text-3" id="text-1-17">
+<ul class="org-ul">
+<li>小文件，交换秘钥。</li>
+<li>大文件，非对称加密过程。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgda8d02f" class="outline-3">
+<h3 id="orgda8d02f"><span class="section-number-3">1.18</span> 用免费 SSL 证书实现一个 HTTPS 站点</h3>
+<div class="outline-text-3" id="text-1-18">
+<p>
+可以使用 Let's Encrypte 生成免费的 SSL证书。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb0618e7" class="outline-3">
+<h3 id="orgb0618e7"><span class="section-number-3">1.19</span> 基于 OpenResty 用 Lua 语言实现简单服务</h3>
+</div>
+</div>
+<div id="outline-container-orgd5490fa" class="outline-2">
+<h2 id="orgd5490fa"><span class="section-number-2">2</span> nginx 架构基础</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org89fbf89" class="outline-3">
+<h3 id="org89fbf89"><span class="section-number-3">2.1</span> nginx 的请求处理流程</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+使用状态机来处理异步请求：
+</p>
+<ul class="org-ul">
+<li>传输层状态机</li>
+<li>HTTP 状态机</li>
+<li>MAIL 状态机</li>
+</ul>
+
+<p>
+静态资源可以缓存起来，还可以将代理转发到后端。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf957c56" class="outline-3">
+<h3 id="orgf957c56"><span class="section-number-3">2.2</span> nginx 的进程结构</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>多进程模型</li>
+<li>nginx 进程间使用共享内存通信。</li>
+<li>多个 worker 进程与 cpu 绑定，是为了减少 cpu 上缓存是失效的次数。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org14fd51e" class="outline-3">
+<h3 id="org14fd51e"><span class="section-number-3">2.3</span> nginx 进程结构实例演示</h3>
+</div>
+<div id="outline-container-org226a9c8" class="outline-3">
+<h3 id="org226a9c8"><span class="section-number-3">2.4</span> 使用信号管理 nginx 父子进程</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+master：
+</p>
+<ul class="org-ul">
+<li>CHLD</li>
+<li>TERM，INT</li>
+<li>QUIT</li>
+<li>HUP</li>
+<li>USR1</li>
+<li>USR2</li>
+<li>WINCH</li>
+</ul>
+
+<p>
+worker 进程：
+</p>
+<ul class="org-ul">
+<li>TERM，INT</li>
+<li>QUIT</li>
+<li>USR1</li>
+<li>WINCH</li>
+</ul>
+
+<p>
+涉及命令：
+</p>
+<ul class="org-ul">
+<li>iostat</li>
+<li>fio 测试服务器最大性能。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd52a73b" class="outline-3">
+<h3 id="orgd52a73b"><span class="section-number-3">2.5</span> reload 重载配置文件的真相</h3>
+</div>
+<div id="outline-container-orge02fc87" class="outline-3">
+<h3 id="orge02fc87"><span class="section-number-3">2.6</span> 热升级的完整流程</h3>
+</div>
+<div id="outline-container-org8764ce1" class="outline-3">
+<h3 id="org8764ce1"><span class="section-number-3">2.7</span> 优雅的关闭 worker 进程</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+主要针对 HTTP 请求：
+</p>
+<ul class="org-ul">
+<li>设置定时器。worker_shutdown_timeout。</li>
+<li>关闭监听句柄。</li>
+<li>关闭空闲链接。</li>
+<li>在循环中等待全部链接关闭。</li>
+<li>退出进程。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgdec285b" class="outline-3">
+<h3 id="orgdec285b"><span class="section-number-3">2.8</span> 网络收发与 nginx 事件间的对应关系</h3>
+</div>
+<div id="outline-container-orgf16d009" class="outline-3">
+<h3 id="orgf16d009"><span class="section-number-3">2.9</span> nginx 网络事件实例演示</h3>
+</div>
+<div id="outline-container-orgc3c561f" class="outline-3">
+<h3 id="orgc3c561f"><span class="section-number-3">2.10</span> nginx 的事件驱动模型</h3>
+</div>
+<div id="outline-container-orgd9140a4" class="outline-3">
+<h3 id="orgd9140a4"><span class="section-number-3">2.11</span> epoll 的优劣及原理</h3>
+</div>
+<div id="outline-container-org3f8095c" class="outline-3">
+<h3 id="org3f8095c"><span class="section-number-3">2.12</span> nginx 的请求切换</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+增加 nginx 进程优先级，使 cpu 分配较大的时间片。
+</p>
+
+<p>
+一个进程处理多个请求，在用户态做切换。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge6c3422" class="outline-3">
+<h3 id="orge6c3422"><span class="section-number-3">2.13</span> 同步与异步，阻塞与非阻塞</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+阻塞和非阻塞：业务执行流程。
+</p>
+
+<p>
+同步异步：编程方式，可以使用同步编写非阻塞流程。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgff50878" class="outline-3">
+<h3 id="orgff50878"><span class="section-number-3">2.14</span> nginx 的模块究竟是什么</h3>
+</div>
+<div id="outline-container-org2170887" class="outline-3">
+<h3 id="org2170887"><span class="section-number-3">2.15</span> nginx 模块分类</h3>
+<div class="outline-text-3" id="text-2-15">
+<ul class="org-ul">
+<li>NGX_CORE_MODULE
+<ul class="org-ul">
+<li>events</li>
+<li>http</li>
+<li>mail</li>
+<li>stream</li>
+<li>core</li>
+</ul></li>
+
+<li>NGX_CONF_MODULE</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org732e717" class="outline-3">
+<h3 id="org732e717"><span class="section-number-3">2.16</span> nginx 连接池</h3>
+<div class="outline-text-3" id="text-2-16">
+<ul class="org-ul">
+<li>worker_connections</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org66dd388" class="outline-3">
+<h3 id="org66dd388"><span class="section-number-3">2.17</span> 内存池对性能的影响</h3>
+<div class="outline-text-3" id="text-2-17">
+<ul class="org-ul">
+<li>链接内存池 connection_pool_size</li>
+<li>请求内存池 request_pool_size</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb92183a" class="outline-3">
+<h3 id="orgb92183a"><span class="section-number-3">2.18</span> 所有 worker 进程协同工作</h3>
+<div class="outline-text-3" id="text-2-18">
+<p>
+共享数据:
+</p>
+<ul class="org-ul">
+<li>共享内存</li>
+<li>自旋锁</li>
+</ul>
+
+<p>
+使用场景：
+</p>
+<ul class="org-ul">
+<li>红黑树</li>
+<li>单链表</li>
+<li>lua_share_dict</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org51f3a46" class="outline-3">
+<h3 id="org51f3a46"><span class="section-number-3">2.19</span> 共享内存工具：Slab 管理器</h3>
+</div>
+<div id="outline-container-orgd980ef4" class="outline-3">
+<h3 id="orgd980ef4"><span class="section-number-3">2.20</span> 哈希表的 max_size 与 bucket_size 如何配置</h3>
+</div>
+<div id="outline-container-org110e4c7" class="outline-3">
+<h3 id="org110e4c7"><span class="section-number-3">2.21</span> nginx 中最常用的容器：红黑树</h3>
+</div>
+
+<div id="outline-container-orge7eb390" class="outline-3">
+<h3 id="orge7eb390"><span class="section-number-3">2.22</span> 使用动态模块提升运维效率</h3>
+</div>
+</div>
+
+<div id="outline-container-orgd07e77b" class="outline-2">
+<h2 id="orgd07e77b"><span class="section-number-2">3</span> 详解 HTTP 模块</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org391fe60" class="outline-3">
+<h3 id="org391fe60"><span class="section-number-3">3.1</span> 冲突的配置指令以谁为准</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>值指令：配置可以合并；同一指令子模块覆盖父模块。</li>
+<li>动作指令。</li>
+</ul>
+
+<p>
+通过阅读源码来确定指令如何生效。
+</p>
+</div>
+</div>
+<div id="outline-container-orgcc9422a" class="outline-3">
+<h3 id="orgcc9422a"><span class="section-number-3">3.2</span> Listen 指令的用法</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>listen 指令</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0f66116" class="outline-3">
+<h3 id="org0f66116"><span class="section-number-3">3.3</span> 处理 HTTP 请求头部的流程</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li>client_pool_size：512 accept 分配链接内存池。</li>
+<li>client_header_timeout</li>
+<li>client_header_buffer_size：1K， 从链接内存池分配。</li>
+<li>request_pool_size:</li>
+<li>large_client_header_buffer: 4 8K， 当 header &gt; 1k 的时候，从请求内存池修改。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3ff7460" class="outline-3">
+<h3 id="org3ff7460"><span class="section-number-3">3.4</span> nginx 中的正则表达式</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+pcretest
+</p>
+</div>
+</div>
+<div id="outline-container-org22ec38a" class="outline-3">
+<h3 id="org22ec38a"><span class="section-number-3">3.5</span> 如何找到处理请求的 server_name 指令块</h3>
+<div class="outline-text-3" id="text-3-5">
+<ul class="org-ul">
+<li>主域名：server_name_in_redirect</li>
+<li>泛域名</li>
+<li>加~前缀</li>
+</ul>
+
+<p>
+server 匹配顺序：
+</p>
+<ul class="org-ul">
+<li>精确匹配</li>
+<li><code>*</code> 在前的泛域名</li>
+<li><code>*</code> 在后的泛域名</li>
+<li>在文件中的顺序 正则匹配表达式域名。</li>
+<li>default server</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaba819f" class="outline-3">
+<h3 id="orgaba819f"><span class="section-number-3">3.6</span> HTTP 请求处理时的 11 个阶段</h3>
+<div class="outline-text-3" id="text-3-6">
+<ul class="org-ul">
+<li>POST_READ：读取头部之后，realip</li>
+<li>SERVER_REWRITE：rewrite</li>
+<li>FIND_CONFIG</li>
+<li>REWRITE：rewrite</li>
+<li>POST_REWRITE</li>
+<li>PREACCESS：limit_conn, limit_req</li>
+<li>ACCESS:auth_basic,acess,auth_request</li>
+<li>POST_ACCESS:</li>
+<li>PRECONTENT：try_files</li>
+<li>CONTENT：index,autoindex,concat</li>
+<li>LOG：access_log</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org56f44c7" class="outline-3">
+<h3 id="org56f44c7"><span class="section-number-3">3.7</span> 11 个阶段的顺序处理</h3>
+</div>
+<div id="outline-container-orgd9038eb" class="outline-3">
+<h3 id="orgd9038eb"><span class="section-number-3">3.8</span> postread 阶段：获取真实客户端地址的 realip 模块</h3>
+<div class="outline-text-3" id="text-3-8">
+<ul class="org-ul">
+<li>set_real_ip_from</li>
+<li><p>
+real_ip_header
+</p>
+
+<p>
+要注意 realip 模块是如何从 x-forwarded-for 列表中获取真实 IP 的。
+</p></li>
+
+<li><p>
+real_ip_recursive
+</p>
+
+<p>
+If recursive search is disabled, the original client address that matches one of the trusted addresses is replaced by the last address sent in the request header field defined by the real_ip_header directive. If recursive search is enabled, the original client address that matches one of the trusted addresses is replaced by the last non-trusted address sent in the request header field.
+</p>
+
+<p>
+如果禁用递归搜索，匹配其中一个可信地址的原始客户端地址，将替换为 real_ip_header 指令定义的请求头字段中发送的最后一个地址。 如果启用了递归搜索，则匹配其中一个可信地址的原始客户端地址，将替换为请求头字段中发送的最后一个非信任地址。
+</p></li>
+</ul>
+
+
+<p>
+代理设置：
+</p>
+<ul class="org-ul">
+<li><p>
+proxy_add_x_forwarded_for
+</p>
+
+<p>
+the “X-Forwarded-For” client request header field with the $remote_addr variable appended to it, separated by a comma. If the “X-Forwarded-For” field is not present in the client request header, the $proxy_add_x_forwarded_for variable is equal to the $remote_addr variable.
+</p></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org6007b30" class="outline-3">
+<h3 id="org6007b30"><span class="section-number-3">3.9</span> rewrite 阶段的 rewrite 模块：return 指令</h3>
+<div class="outline-text-3" id="text-3-9">
+<ul class="org-ul">
+<li>return</li>
+<li>error_page</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5ffda6d" class="outline-3">
+<h3 id="org5ffda6d"><span class="section-number-3">3.10</span> rewrite 阶段的 rewrite 模块：重写 URL</h3>
+</div>
+<div id="outline-container-org038d9b8" class="outline-3">
+<h3 id="org038d9b8"><span class="section-number-3">3.11</span> rewrite 阶段的 rewrite 模块：条件判断</h3>
+</div>
+</div>
+
+<div id="outline-container-org293bd64" class="outline-2">
+<h2 id="org293bd64"><span class="section-number-2">4</span> 反向代理与负载均衡</h2>
+</div>
+<div id="outline-container-orgd5bf082" class="outline-2">
+<h2 id="orgd5bf082"><span class="section-number-2">5</span> nginx 的系统层性能优化</h2>
+</div>
+<div id="outline-container-org7ff640c" class="outline-2">
+<h2 id="org7ff640c"><span class="section-number-2">6</span> 从源码视角深入使用 Nginx 与 Openresty</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

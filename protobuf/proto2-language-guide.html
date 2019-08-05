@@ -1,0 +1,2443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protocol Buffers 开发者指南</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Protocol Buffers 开发者指南</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga6f9693">1. Defining A Message Type（定义消息类型）</a>
+<ul>
+<li><a href="#org396fd70">1.1. Specifying Field Types（指定字段类型）</a></li>
+<li><a href="#org9127945">1.2. Assigning Tags（分配标签）</a></li>
+<li><a href="#orgb20b9f5">1.3. Specifying Field Rules(指定字段规则)</a></li>
+<li><a href="#org212d023">1.4. Adding More Message Types（添加更多消息类型）</a></li>
+<li><a href="#org139c6d1">1.5. Adding Comments（添加注释）</a></li>
+<li><a href="#org7766849">1.6. Reserved Fields（保留字段）</a></li>
+<li><a href="#org04afaed">1.7. What's Generated From Your .proto?（从.proto 文件中生成了何物）</a></li>
+</ul>
+</li>
+<li><a href="#org5795de3">2. Scalar Value Types（标量值类型）</a></li>
+<li><a href="#orgefb7191">3. Optional Fields And Default Values（可选字段和默认值）</a></li>
+<li><a href="#org2199ebd">4. Enumerations（枚举）</a></li>
+<li><a href="#orgbbd9480">5. Using Other Message Types（使用其他消息类型）</a>
+<ul>
+<li><a href="#org3fea56b">5.1. Importing Definitions（导入定义）</a></li>
+<li><a href="#orgd0f029f">5.2. Using proto3 Message Types（使用 proto3 消息类型）</a></li>
+</ul>
+</li>
+<li><a href="#org8f531d1">6. Nested Types(嵌套类型)</a>
+<ul>
+<li><a href="#org31e8466">6.1. Groups（分组）</a></li>
+</ul>
+</li>
+<li><a href="#orgb801633">7. Updating A Message Type（更新消息类型）</a></li>
+<li><a href="#orga493c67">8. Extensions（扩展）</a>
+<ul>
+<li><a href="#org8276721">8.1. Nested Extensions（嵌套扩展）</a></li>
+<li><a href="#orgbdaf2ba">8.2. Choosing Extension Numbers（选择扩展编号）</a></li>
+</ul>
+</li>
+<li><a href="#org244e5b7">9. Oneof</a>
+<ul>
+<li><a href="#orgb847544">9.1. Using Oneof（使用 oneof）</a></li>
+<li><a href="#orgc5ede07">9.2. Oneof Features（oneof 特性）</a></li>
+<li><a href="#org7e35d1e">9.3. Backwards-compatibility issues（向后兼容问题）</a>
+<ul>
+<li><a href="#orgfa162b3">9.3.1. Tag Reuse Issues（标签重用问题）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgeca87a5">10. Maps</a>
+<ul>
+<li><a href="#org13c7ff0">10.1. Maps Features</a></li>
+<li><a href="#org5bc58e3">10.2. Backwards compatibility（向后兼容性）</a></li>
+</ul>
+</li>
+<li><a href="#org12d482d">11. Packages（包）</a>
+<ul>
+<li><a href="#org7f9fd10">11.1. Packages and Name Resolution（包和名字解析）</a></li>
+</ul>
+</li>
+<li><a href="#org8f4e48f">12. Defining Services（定义服务）</a></li>
+<li><a href="#org9e472cb">13. Options（选项）</a>
+<ul>
+<li><a href="#orgc61e845">13.1. Custom Options（定制选项）</a></li>
+</ul>
+</li>
+<li><a href="#org2d5e033">14. Generating Your Classes（生成自己的类）</a></li>
+<li><a href="#org9a52e7c">15. footnotes</a></li>
+</ul>
+</div>
+</div>
+<p>
+翻译自<a href="https://developers.google.com/protocol-buffers/docs/proto">Language Guide</a>
+</p>
+
+<p>
+This guide describes how to use the protocol buffer language to structure your protocol buffer data, including .proto file syntax and how to generate data access classes from your .proto files. It covers the proto2 version of the protocol buffers language: for information on the newer proto3 syntax, see the Proto3 Language Guide.
+</p>
+
+<p>
+该指南描述了如何使用 protocol buffer 语言结构化 protocol buffer 数据，包括.proto 文件语法和如何从.proto 文件生成数据访问类。它覆盖了 protocol buffers 语言的 proto2 版本：参看 Proto3 Language Guide 了解有关新的 proto3 语法。
+</p>
+
+<p>
+This is a reference guide – for a step by step example that uses many of the features described in this document, see the tutorial for your chosen language.
+</p>
+
+<p>
+这是一份参考指南&#x2013;如何一步步使用该文档中描述的许多功能的示例，参看相应语言的教程。
+</p>
+
+<div id="outline-container-orga6f9693" class="outline-2">
+<h2 id="orga6f9693"><span class="section-number-2">1</span> Defining A Message Type（定义消息类型）</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+First let's look at a very simple example. Let's say you want to define a search request message format, where each search request has a query string, the particular page of results you are interested in, and a number of results per page. Here's the .proto file you use to define the message type.
+</p>
+
+<p>
+首先看一个很简单的示例。假设想要定义一个搜索请求消息格式，每个搜索请求有一个查询字符串，结果中感兴趣的特殊页面，每个页面中结果的数量。使用下面的.proto 文件定义消息格式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchRequest</span> {
+  <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">query</span> = 1;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">page_number</span> = 2;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">result_per_page</span> = 3;
+}
+</pre>
+</div>
+
+<p>
+The SearchRequest message definition specifies three fields (name/value pairs), one for each piece of data that you want to include in this type of message. Each field has a name and a type.
+</p>
+
+<p>
+SearchRequest 消息定义指定了三个字段（名/值对），每个都是该类型消息中想要包含的数据。每个字段都有名字和类型。
+</p>
+</div>
+
+<div id="outline-container-org396fd70" class="outline-3">
+<h3 id="org396fd70"><span class="section-number-3">1.1</span> Specifying Field Types（指定字段类型）</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+In the above example, all the fields are scalar types: two integers ( <code>page_number</code> and <code>result_per_page</code>) and a string (query). However, you can also specify composite types for your fields, including enumerations and other message types.
+</p>
+
+<p>
+上面的例子中，所有的字段都是标量类型：两个整数（ <code>page_numer</code> 和 <code>result_per_page</code> ）和一个字符串（query）。然而也可以指定复合类型字段，包括枚举和其他消息类型。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9127945" class="outline-3">
+<h3 id="org9127945"><span class="section-number-3">1.2</span> Assigning Tags（分配标签）</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+As you can see, each field in the message definition has a unique numbered tag. These tags are used to identify your fields in the message binary format, and should not be changed once your message type is in use. Note that tags with values in the range 1 through 15 take one byte to encode, including the identifying number and the field's type (you can find out more about this in Protocol Buffer Encoding). Tags in the range 16 through 2047 take two bytes. So you should reserve the tags 1 through 15 for very frequently occurring message elements. Remember to leave some room for frequently occurring elements that might be added in the future.
+</p>
+
+<p>
+如你所见，消息定义中每个字段都有一个唯一的数字标签。这些标签用于在消息二进制格式中识别字段，一旦消息类型开始使用，就不应该改版。注意值为 1-15 的标签使用一个字节进行编码，包括识别数字和字段类型（可以 Protocol Buffer Encoding 中了解更多信息）。值为 16-2047 的标签使用两个字节编码。所以应该为字段中频繁出现的消息元素保留标 1-15 标签。记得为将来可能添加的频繁出现的元素保留一些空间。
+</p>
+
+<p>
+The smallest tag number you can specify is 1, and the largest is 2^29 - 1, or 536,870,911. You also cannot use the numbers 19000 though 19999 (FieldDescriptor::kFirstReservedNumber through FieldDescriptor::kLastReservedNumber), as they are reserved for the Protocol Buffers implementation - the protocol buffer compiler will complain if you use one of these reserved numbers in your .proto. Similarly, you cannot use any previously reserved tags.
+</p>
+
+<p>
+可以指定的最小的标签数字是 1，最大是 2^29-1，或者 536,870,911。也不能私用 19000 到 19999 (FieldDescriptor::kFirstReservedNumber 到 FieldDescriptor::kLastReservedNumber)，因为它们为 Protocol Buffers 实现保留。如果在.proto 中使用这些保留数字，protocol buffer 编译器将会警告。类似的，不能使用任何之前保留的标签。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb20b9f5" class="outline-3">
+<h3 id="orgb20b9f5"><span class="section-number-3">1.3</span> Specifying Field Rules(指定字段规则)</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+You specify that message fields are one of the following:
+</p>
+
+<p>
+可以指定消息字段为下列之一：
+</p>
+
+<ul class="org-ul">
+<li><p>
+required: a well-formed message must have exactly one of this field.
+</p>
+
+<p>
+required：格式好消息必须有且只有一个该字段。
+</p></li>
+
+<li><p>
+optional: a well-formed message can have zero or one of this field (but not more than one).
+</p>
+
+<p>
+optional：格式好的消息可以有 0 或 1 个该字段（但不能超过一个）。
+</p></li>
+
+<li><p>
+repeated: this field can be repeated any number of times (including zero) in a well-formed message. The order of the repeated values will be preserved.
+</p>
+
+<p>
+repeated：格式好之后的消息中该字段可以重复任意次数（包括 0 次）。重复值的顺序将会保留。
+</p></li>
+</ul>
+
+
+<p>
+For historical reasons, repeated fields of scalar numeric types aren't encoded as efficiently as they could be. New code should use the special option [packed=true] to get a more efficient encoding. For example:
+</p>
+
+<p>
+由于历史原因，标量数字类型的重复字段编码效率并没有达到应有效果。新代码应该使用特殊选项[packed=true]以获得更有效的编码。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">samples</span> = 4 [packed=<span style="color: #5fafd7;">true</span>];
+</pre>
+</div>
+
+<p>
+You can find out more about packed encoding in Protocol Buffer Encoding.
+</p>
+
+<p>
+在 Protocol Buffer Encoding 中了解更多打包编码的信息。
+</p>
+
+<p>
+Required Is Forever You should be very careful about marking fields as required. If at some point you wish to stop writing or sending a required field, it will be problematic to change the field to an optional field – old readers will consider messages without this field to be incomplete and may reject or drop them unintentionally. You should consider writing application-specific custom validation routines for your buffers instead. Some engineers at Google have come to the conclusion that using required does more harm than good; they prefer to use only optional and repeated. However, this view is not universal.
+</p>
+
+<p>
+将字段设为 Required 时候应该永远小心。如果某一时候打算停止写入或发送一个 required 字段，将其修改为 optional 字段可能会出问题&#x2014;旧的读入段将会认为该消息是不完整的，并拒收或无意中丢掉它们。相反应该考虑针对应用为 buffers 定制验证程序。google 的一些工程师认为使用 erequird 弊大于利；他们更愿意只使用 optional 和 repeated。然而，这种观点并不普遍。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org212d023" class="outline-3">
+<h3 id="org212d023"><span class="section-number-3">1.4</span> Adding More Message Types（添加更多消息类型）</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Multiple message types can be defined in a single .proto file. This is useful if you are defining multiple related messages – so, for example, if you wanted to define the reply message format that corresponds to your SearchResponse message type, you could add it to the same .proto:
+</p>
+
+<p>
+可以在.proto 文件中定义多种消息类型。这有利于定义个多个相关的消息&#x2014;所以，举例来说，如果想要定义响应 SearchResponse 消息类型的应答消息格式，可以将其添加到同样的.proto：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchRequest</span> {
+  <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">query</span> = 1;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">page_number</span> = 2;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">result_per_page</span> = 3;
+}
+
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchResponse</span> {
+ ...
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org139c6d1" class="outline-3">
+<h3 id="org139c6d1"><span class="section-number-3">1.5</span> Adding Comments（添加注释）</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+To add comments to your .proto files, use C/C++-style // syntax.
+</p>
+
+<p>
+在.proto 文件中添加注释，使用 C/C++风格的//语法。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchRequest</span> {
+  <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">query</span> = 1;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">page_number</span> = 2;<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Which page number do we want?</span>
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">result_per_page</span> = 3;<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Number of results to return per page.</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7766849" class="outline-3">
+<h3 id="org7766849"><span class="section-number-3">1.6</span> Reserved Fields（保留字段）</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+If you update a message type by entirely removing a field, or commenting it out, future users can reuse the tag number when making their own updates to the type. This can cause severe issues if they later load old versions of the same .proto, including data corruption, privacy bugs, and so on. One way to make sure this doesn't happen is to specify that the field tags (and/or names, which can also cause issues for JSON serialization) of your deleted fields are reserved. The protocol buffer compiler will complain if any future users try to use these field identifiers.
+</p>
+
+<p>
+如果通过删除或注释整个字段来更新消息类型，将来的用户自己更新类型时可以复用标签号码。如果他们之后加载同一.proto 文件的历史版本可能会引发严重问题，包括数据损坏，隐藏 bug 等。确保不发生此情况的方法是将删除字段的标签（和/或 可能导致 JSON 序列化导致出问题的名字）指定为保留。如果未来用户尝试使用这些字段标识符，protocol buffer 编译器将会给出警告。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Foo</span> {
+  <span style="color: #a1db00;">reserved</span> 2, 15, 9 <span style="color: #a1db00;">to</span> 11;
+  <span style="color: #a1db00;">reserved</span> <span style="color: #ff4ea3;">"foo"</span>, <span style="color: #ff4ea3;">"bar"</span>;
+}
+</pre>
+</div>
+
+
+<p>
+Note that you can't mix field names and tag numbers in the same reserved statement.
+注意，在同一个 reserved 声明中不能混用名字在和标签号码。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org04afaed" class="outline-3">
+<h3 id="org04afaed"><span class="section-number-3">1.7</span> What's Generated From Your .proto?（从.proto 文件中生成了何物）</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+When you run the protocol buffer compiler on a .proto, the compiler generates the code in your chosen language you'll need to work with the message types you've described in the file, including getting and setting field values, serializing your messages to an output stream, and parsing your messages from an input stream.
+</p>
+
+<p>
+proto buffer 编译器根据.proto 文件和所选语言生成代码，使用文件中描述的消息类型将会用到这些代码，包括获取和设置字段值，序列化消息到输出流，从输入流解析消息。
+</p>
+
+<p>
+For C++, the compiler generates a .h and .cc file from each .proto, with a class for each message type described in your file.
+</p>
+
+<p>
+对于 C++，编译器为每个.proto 生成一个.h 和.cc 文件，.proto 文件中描述的每个消息类型都会对应一个类。
+</p>
+
+<p>
+For Java, the compiler generates a .java file with a class for each message type, as well as a special Builder classes for creating message class instances.
+</p>
+
+<p>
+对于 Java，编译器生成一个.java 文件，每个消息类型对应一个类，还会生成一个构建类来创建消息类的实例。
+</p>
+
+<p>
+Python is a little different – the Python compiler generates a module with a static descriptor of each message type in your .proto, which is then used with a metaclass to create the necessary Python data access class at runtime.
+</p>
+
+<p>
+Python 有点不同，Python 编译器为.proto 中的每个消息会产生一个包含静态 描述符的模块，之后在运行时该模块使用元类创建必要的 Python 数据访问类。
+</p>
+
+<p>
+For Go, the compiler generates a .pb.go file with a type for each message type in your file.
+</p>
+
+<p>
+对于 Go，编译器为文件中的每个消息产生.pb.go 文件。
+</p>
+
+<p>
+You can find out more about using the APIs for each language by following the tutorial for your chosen language. For even more API details, see the relevant API reference.
+</p>
+
+<p>
+按照所选语言的教程可以查找更多关于如何使用语言 API 的信息。查看相关的 API 参考了解更多 API 的细节。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5795de3" class="outline-2">
+<h2 id="org5795de3"><span class="section-number-2">2</span> Scalar Value Types（标量值类型）</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+A scalar message field can have one of the following types – the table shows the type specified in the .proto file, and the corresponding type in the automatically generated class:
+</p>
+
+<p>
+标量消息字段可以是下列类型之一，下表显示了.proto 文件中指定的类型，以及自动生成的类中对应的类型：
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">.proto Type</td>
+<td class="org-left">Notes</td>
+<td class="org-left">C++ Type</td>
+<td class="org-left">Java Type</td>
+<td class="org-left">Python Type[2]</td>
+<td class="org-left">Go Type</td>
+</tr>
+
+<tr>
+<td class="org-left">double</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">double</td>
+<td class="org-left">double</td>
+<td class="org-left">float</td>
+<td class="org-left">*float64</td>
+</tr>
+
+<tr>
+<td class="org-left">float</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">float</td>
+<td class="org-left">float</td>
+<td class="org-left">float</td>
+<td class="org-left">*float32</td>
+</tr>
+
+<tr>
+<td class="org-left">int32</td>
+<td class="org-left">Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</td>
+<td class="org-left">int32</td>
+<td class="org-left">int</td>
+<td class="org-left">int</td>
+<td class="org-left">*int32</td>
+</tr>
+
+<tr>
+<td class="org-left">int64</td>
+<td class="org-left">Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</td>
+<td class="org-left">int64</td>
+<td class="org-left">long</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*int64</td>
+</tr>
+
+<tr>
+<td class="org-left">uint32</td>
+<td class="org-left">Uses variable-length encoding.</td>
+<td class="org-left">uint32</td>
+<td class="org-left">int[1]</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*uint32</td>
+</tr>
+
+<tr>
+<td class="org-left">uint64</td>
+<td class="org-left">Uses variable-length encoding.</td>
+<td class="org-left">uint64</td>
+<td class="org-left">long[1]</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*uint64</td>
+</tr>
+
+<tr>
+<td class="org-left">sint32</td>
+<td class="org-left">Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</td>
+<td class="org-left">int32</td>
+<td class="org-left">int</td>
+<td class="org-left">int</td>
+<td class="org-left">*int32</td>
+</tr>
+
+<tr>
+<td class="org-left">sint64</td>
+<td class="org-left">Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</td>
+<td class="org-left">int64</td>
+<td class="org-left">long</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*int64</td>
+</tr>
+
+<tr>
+<td class="org-left">fixed32</td>
+<td class="org-left">Always four bytes. More efficient than uint32 if values are often greater than 228.</td>
+<td class="org-left">uint32</td>
+<td class="org-left">int[1]</td>
+<td class="org-left">int</td>
+<td class="org-left">*uint32</td>
+</tr>
+
+<tr>
+<td class="org-left">fixed64</td>
+<td class="org-left">Always eight bytes. More efficient than uint64 if values are often greater than 256.</td>
+<td class="org-left">uint64</td>
+<td class="org-left">long[1]</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*uint64</td>
+</tr>
+
+<tr>
+<td class="org-left">sfixed32</td>
+<td class="org-left">Always four bytes.</td>
+<td class="org-left">int32</td>
+<td class="org-left">int</td>
+<td class="org-left">int</td>
+<td class="org-left">*int32</td>
+</tr>
+
+<tr>
+<td class="org-left">sfixed64</td>
+<td class="org-left">Always eight bytes.</td>
+<td class="org-left">int64</td>
+<td class="org-left">long</td>
+<td class="org-left">int/long[3]</td>
+<td class="org-left">*int64</td>
+</tr>
+
+<tr>
+<td class="org-left">bool</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">bool</td>
+<td class="org-left">boolean</td>
+<td class="org-left">bool</td>
+<td class="org-left">*bool</td>
+</tr>
+
+<tr>
+<td class="org-left">string</td>
+<td class="org-left">A string must always contain UTF-8 encoded or 7-bit ASCII text.</td>
+<td class="org-left">string</td>
+<td class="org-left">String</td>
+<td class="org-left">str/unicode[4]</td>
+<td class="org-left">*string</td>
+</tr>
+
+<tr>
+<td class="org-left">bytes</td>
+<td class="org-left">May contain any arbitrary sequence of bytes.</td>
+<td class="org-left">string</td>
+<td class="org-left">ByteString</td>
+<td class="org-left">str</td>
+<td class="org-left">[]byte</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+You can find out more about how these types are encoded when you serialize your message in Protocol Buffer Encoding.
+</p>
+
+<p>
+在 Protocol Buffer Encoding 中可以了解更多关于当序列化消息时如何编码这些类型。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgefb7191" class="outline-2">
+<h2 id="orgefb7191"><span class="section-number-2">3</span> Optional Fields And Default Values（可选字段和默认值）</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+As mentioned above, elements in a message description can be labeled optional. A well-formed message may or may not contain an optional element. When a message is parsed, if it does not contain an optional element, the corresponding field in the parsed object is set to the default value for that field. The default value can be specified as part of the message description. For example, let's say you want to provide a default value of 10 for a SearchRequest's result_per_page value.
+</p>
+
+<p>
+正如上面提到的，消息描述中的元素可以标记为可选。格式好的消息可能包含一个可选元素。解析消息时如果发现没有该可选元素，将解析对象的对应字段设置为该字段的默认值。可以将默认值作为消息描述的一部分。例如，假如想要将 10 作为 SearchRequest 的 result_per_page 字段的默认值：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">result_per_page</span> = 3 [<span style="color: #a1db00;">default</span> = 10];
+</pre>
+</div>
+
+<p>
+If the default value is not specified for an optional element, a type-specific default value is used instead: for strings, the default value is the empty string. For bools, the default value is false. For numeric types, the default value is zero. For enums, the default value is the first value listed in the enum's type definition. This means care must be taken when adding a value to the beginning of an enum value list. See the Updating A Message Type section for guidelines on how to safely change definitions.
+</p>
+
+<p>
+如果没有为可选元素指定默认值，使用类型特性的默认值代替，string 的默认值时空字符串。bool 默认值时 false，数字类型默认值是 0.枚举类型的默认值是枚举类型定义所列的第一个值。这意味着向枚举值列表开始处添加值的时候必须要小心。查看 Updating A Message Type section 了解如何安全的修改定义。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2199ebd" class="outline-2">
+<h2 id="org2199ebd"><span class="section-number-2">4</span> Enumerations（枚举）</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+When you're defining a message type, you might want one of its fields to only have one of a pre-defined list of values. For example, let's say you want to add a corpus field for each SearchRequest, where the corpus can be UNIVERSAL, WEB, IMAGES, LOCAL, NEWS, PRODUCTS or VIDEO. You can do this very simply by adding an enum to your message definition - a field with an enum type can only have one of a specified set of constants as its value (if you try to provide a different value, the parser will treat it like an unknown field). In the following example we've added an enum called Corpus with all the possible values, and a field of type Corpus:
+</p>
+
+<p>
+定义一个消息类型，可能希望它的某个字段取值只限于值预定义列表中的一个。例如，如果想给每个 SearchRequest 添加一个 corpus 字段，corpus 可以是 UNIVERSAL, WEB, IMAGES, LOCAL, NEWS, PRODUCTS or VIDEO。只需要在消息定义中添加一个枚举即可。枚举类型的字段只能取值为指定常量集合中的一个（如果尝试提供不同的值，解析器将会认为它是一个未知字段）。下面的列子中添加了一个包含所有可能的值、名为 Corpus 枚举，以及类型为 Corpus 的字段。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchRequest</span> {
+  <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">query</span> = 1;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">page_number</span> = 2;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">result_per_page</span> = 3 [<span style="color: #a1db00;">default</span> = 10];
+  <span style="color: #a1db00;">enum</span> <span style="color: #00d7af;">Corpus</span> {
+    UNIVERSAL = 0;
+    WEB = 1;
+    IMAGES = 2;
+    LOCAL = 3;
+    NEWS = 4;
+    PRODUCTS = 5;
+    VIDEO = 6;
+  }
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">Corpus</span> <span style="color: #ff8700;">corpus</span> = 4 [<span style="color: #a1db00;">default</span> = UNIVERSAL];
+}
+</pre>
+</div>
+
+<p>
+You can define aliases by assigning the same value to different enum constants. To do this you need to set the allow_alias option to true, otherwise protocol compiler will generate an error message when aliases are found.
+</p>
+
+<p>
+可以通过将相同的值赋给不同的枚举常量来定义别名，这么做需要将 allow_alias 选项设置为 true，否则 protocol 编译器在发现别名的时候将会产生错误信息。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">enum</span> <span style="color: #00d7af;">EnumAllowingAlias</span> {
+  <span style="color: #a1db00;">option</span> <span style="color: #ff8700;">allow_alias</span> = <span style="color: #5fafd7;">true</span>;
+  UNKNOWN = 0;
+  STARTED = 1;
+  RUNNING = 1;
+}
+<span style="color: #a1db00;">enum</span> <span style="color: #00d7af;">EnumNotAllowingAlias</span> {
+  UNKNOWN = 0;
+  STARTED = 1;
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">RUNNING = 1;  // Uncommenting this line will cause a compile error inside Google and a warning message outside.</span>
+}
+</pre>
+</div>
+
+<p>
+Enumerator constants must be in the range of a 32-bit integer. Since enum values use varint encoding on the wire, negative values are inefficient and thus not recommended. You can define enums within a message definition, as in the above example, or outside – these enums can be reused in any message definition in your .proto file. You can also use an enum type declared in one message as the type of a field in a different message, using the syntax MessageType.EnumType.
+</p>
+
+<p>
+枚举器常量必须在 32bit 整数范围之内。因为枚举变量使用了高级的 varint encoding，负数时无效的因而不推荐使用。可以在消息定义中定义枚举，就像上面的列子，也可以定义在外面，这些枚举可以被.proto 文件中所有消息定义使用。可以使用消息中声明的枚举类型作为不同消息字段的类型，使用语法 MessageType.EnumType。
+</p>
+
+<p>
+When you run the protocol buffer compiler on a .proto that uses an enum, the generated code will have a corresponding enum for Java or C++, or a special EnumDescriptor class for Python that's used to create a set of symbolic constants with integer values in the runtime-generated class.
+</p>
+
+<p>
+运行 protocol buffer 编译器编译使用了枚举的./proto 文件时，对于 Java 和 C++，生成的代码中包含对应的枚举类型，对于 Python 是一个特殊的枚举描述符类，该类使用运行时产生的类中的整数值创建符号常量的集合。
+</p>
+
+<p>
+For more information about how to work with message enums in your applications, see the generated code guide for your chosen language.
+</p>
+
+<p>
+参阅所选语言的生成代码指南，了解应用中如何使用消息常量的更多消息。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbbd9480" class="outline-2">
+<h2 id="orgbbd9480"><span class="section-number-2">5</span> Using Other Message Types（使用其他消息类型）</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+You can use other message types as field types. For example, let's say you wanted to include Result messages in each SearchResponse message – to do this, you can define a Result message type in the same .proto and then specify a field of type Result in SearchResponse:
+</p>
+
+<p>
+可以使用其他消息类型作为字段类型。例如，如果想在每个 SearchResponse 消息中包含 Result 消息，可以在同一个.proto 文件中定义一个 Result 消息，然后在 SearchResponse 中指定一个类型为 Result 的字段。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchResponse</span> {
+  <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">Result</span> <span style="color: #ff8700;">result</span> = 1;
+}
+
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Result</span> {
+  <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">url</span> = 1;
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">title</span> = 2;
+  <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">snippets</span> = 3;
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3fea56b" class="outline-3">
+<h3 id="org3fea56b"><span class="section-number-3">5.1</span> Importing Definitions（导入定义）</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+In the above example, the Result message type is defined in the same file as SearchResponse – what if the message type you want to use as a field type is already defined in another .proto file?
+</p>
+
+<p>
+上面的例子中，Result 消息类型与 SearchResponse 定义在同一个文件中，如果想要使用的消息类型定义在其他.proto 文件中怎么办？
+</p>
+
+<p>
+You can use definitions from other .proto files by importing them. To import another .proto's definitions, you add an import statement to the top of your file:
+</p>
+
+<p>
+通过导入其他.proto 文件可以使用其中的定义。导入其他.proto 文件定义需要在当前文件顶部添加 impor 声明：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"myproject/other_protos.proto"</span>;
+</pre>
+</div>
+
+<p>
+By default you can only use definitions from directly imported .proto files. However, sometimes you may need to move a .proto file to a new location. Instead of moving the .proto file directly and updating all the call sites in a single change, now you can put a dummy .proto file in the old location to forward all the imports to the new location using the import public notion. import public dependencies can be transitively relied upon by anyone importing the proto containing the import public statement. For example:
+</p>
+
+<p>
+默认情况下只能使用导入的.proto 文件中的定义。然而，有时，可能需要移动一个.proto 文件到新未知。除了直接移动.proto 文件，更新单个改变中的所有调用站点，现在可以在原位置放一个假的.proto 文件，使用 import public 概念将所有的导入转发到新位置。任何导入包含 import public 声明的 proto 文件都可以跟踪这种 import pubulic 依赖关系。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">new.proto</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">All definitions are moved here</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">old.proto</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">This is the proto that all clients are importing.</span>
+<span style="color: #a1db00;">import</span> <span style="color: #00d7af;">public</span> <span style="color: #ff4ea3;">"new.proto"</span>;
+<span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"other.proto"</span>;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">client.proto</span>
+<span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"old.proto"</span>;
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">You use definitions from old.proto and new.proto, but not other.proto</span>
+</pre>
+</div>
+
+<p>
+The protocol compiler searches for imported files in a set of directories specified on the protocol compiler command line using the -I/&#x2013;proto_path flag. If no flag was given, it looks in the directory in which the compiler was invoked. In general you should set the &#x2013;proto_path flag to the root of your project and use fully qualified names for all imports.
+</p>
+
+<p>
+protocol 编译器在一个目录集合中查找被导入的文件，该集合通过 protocol 编译器命令行使用-I/&#x2013;proto_path 标志指定。如果没有指定该标志，就在编译器调用的目录查找。一般来说，应该设置将&#x2013;proto_path 标志指定为程序所在根目录，为所有导入使用完全限定的名字。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd0f029f" class="outline-3">
+<h3 id="orgd0f029f"><span class="section-number-3">5.2</span> Using proto3 Message Types（使用 proto3 消息类型）</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+It's possible to import proto3 message types and use them in your proto2 messages, and vice versa. However, proto2 enums cannot be used in proto3 syntax.
+</p>
+
+<p>
+可能在 proto2 消息中导入和使用 proto3 消息类型，反之亦然。然而，proto2 的枚举不能用在 proto3 语法中。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8f531d1" class="outline-2">
+<h2 id="org8f531d1"><span class="section-number-2">6</span> Nested Types(嵌套类型)</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+You can define and use message types inside other message types, as in the following example – here the Result message is defined inside the SearchResponse message:
+</p>
+
+<p>
+可以在一个消息类型中定义和使用另一个消息类型，例如下面的例子，这里 Result 消息定义在 SearchResponse 消息里面：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchResponse</span> {
+  <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Result</span> {
+    <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">url</span> = 1;
+    <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">title</span> = 2;
+    <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">snippets</span> = 3;
+  }
+  <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">Result</span> <span style="color: #ff8700;">result</span> = 1;
+}
+</pre>
+</div>
+
+<p>
+If you want to reuse this message type outside its parent message type, you refer to it as Parent.Type:
+</p>
+
+<p>
+如果想要在该消息类型的父类型外面使用该消息，可以使用 Parent.Type 进行引用：
+</p>
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SomeOtherMessage</span> {
+  <span style="color: #a1db00;">optional</span> <span style="color: #5fafd7;">SearchResponse</span>.<span style="color: #00d7af;">Result</span> <span style="color: #ff8700;">result</span> = 1;
+}
+</pre>
+</div>
+
+<p>
+You can nest messages as deeply as you like:
+</p>
+
+<p>
+可以任意深度的进行消息嵌套：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Outer</span> {                  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Level 0</span>
+  <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MiddleAA</span> {  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Level 1</span>
+    <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Inner</span> {   <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Level 2</span>
+      <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">int64</span> <span style="color: #ff8700;">ival</span> = 1;
+      <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">bool</span>  <span style="color: #ff8700;">booly</span> = 2;
+    }
+  }
+  <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MiddleBB</span> {  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Level 1</span>
+    <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Inner</span> {   <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Level 2</span>
+      <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">ival</span> = 1;
+      <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">bool</span>  <span style="color: #ff8700;">booly</span> = 2;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org31e8466" class="outline-3">
+<h3 id="org31e8466"><span class="section-number-3">6.1</span> Groups（分组）</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Note that this feature is deprecated and should not be used when creating new message types – use nested message types instead.
+</p>
+
+<p>
+请注意，已经弃用该功能，创建新消息类型的时候不应该使用，使用嵌套消息替代。
+</p>
+
+<p>
+Groups are another way to nest information in your message definitions. For example, another way to specify a SearchResponse containing a number of Results is as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"> <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SearchResponse</span> {
+   <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">group</span> <span style="color: #ff8700;">Result</span> = 1 {
+     <span style="color: #a1db00;">required</span> <span style="color: #00d7af;">string</span> url = 2;
+     <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">title</span> = 3;
+     <span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">snippets</span> = 4;
+   }
+ }
+</pre>
+</div>
+
+<p>
+A group simply combines a nested message type and a field into a single declaration. In your code, you can treat this message just as if it had a Result type field called result (the latter name is converted to lower-case so that it does not conflict with the former). Therefore, this example is exactly equivalent to the SearchResponse above, except that the message has a different wire format.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb801633" class="outline-2">
+<h2 id="orgb801633"><span class="section-number-2">7</span> Updating A Message Type（更新消息类型）</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+If an existing message type no longer meets all your needs – for example, you'd like the message format to have an extra field – but you'd still like to use code created with the old format, don't worry! It's very simple to update message types without breaking any of your existing code. Just remember the following rules:
+</p>
+
+<p>
+如果先有消息类型不再满足需求&#x2014;例如，想要消息格式有一个额外字段&#x2014;但依旧喜欢用旧格式创建的代码，别担心。更新消息类型很简单，并且不会破坏现有代码。只需要记住下面的几条规则：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Don't change the numeric tags for any existing fields.
+</p>
+
+<p>
+不要修改任何现有字段的数字标签。
+</p></li>
+
+<li><p>
+Any new fields that you add should be optional or repeated. This means that any messages serialized by code using your "old" message format can be parsed by your new generated code, as they won't be missing any required elements. You should set up sensible default values for these elements so that new code can properly interact with messages generated by old code. Similarly, messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing. However, the unknown fields are not discarded, and if the message is later serialized, the unknown fields are serialized along with it – so if the message is passed on to new code, the new fields are still available.
+</p>
+
+<p>
+任何新添加的字段应该是 optional 或 repeated。这意味着任何使用旧版消息格式的代码序列化的消息都能被新生成的代码解析，不会丢失任何 required 字段。应该为这些元素设置合理的默认值，这样新代码可以正确的与旧代码产生的消息交互。类似的，新代码产生的消息能旧代码解析：旧二进制程序解析时简单忽略新字段。然而，不会丢弃未知字段，之后序列化消息，未知字段也会一起列化，所以传递给新代码的消息，新字段仍然可用。
+</p></li>
+
+<li><p>
+Non-required fields can be removed, as long as the tag number is not used again in your updated message type. You may want to rename the field instead, perhaps adding the prefix "OBSOLETE_", or make the tag reserved, so that future users of your .proto can't accidentally reuse the number.
+</p>
+
+<p>
+可以删除非 required 字段，只要不在更新的消息类型中再次使用该字段的标签编号。相反可能想重命名该字段，也许添加前缀“OBSOLETE_”，或者保留该标签，这样将来.proto 的用户不会意外的重用到该数字。
+</p></li>
+
+<li><p>
+A non-required field can be converted to an extension and vice versa, as long as the type and number stay the same.
+</p>
+
+<p>
+非 required 字段可以变为一个扩展，反之亦然，只要类型和编号不变即可。
+</p></li>
+
+<li><p>
+int32, uint32, int64, uint64, and bool are all compatible – this means you can change a field from one of these types to another without breaking forwards- or backwards-compatibility. If a number is parsed from the wire which doesn't fit in the corresponding type, you will get the same effect as if you had cast the number to that type in C++ (e.g. if a 64-bit number is read as an int32, it will be truncated to 32 bits).
+</p>
+
+<p>
+int32, uint32, int64, uint64, and bool 是全部兼容的&#x2014;这意味着在这些类型中进行转换不会破坏向前或向后兼容性。如果解析后得到的数字不符合相应的类型，将会得到类似 C++中数字被 cast 同样的效果（比如，如果 64 位数字被当作 int32 读，将被截断位 32 位）。
+</p></li>
+
+<li><p>
+sint32 and sint64 are compatible with each other but are not compatible with the other integer types.
+</p>
+
+<p>
+sint32 and sint64 两者是兼容的，但是不与其他整数类型兼容。
+</p></li>
+
+<li><p>
+string and bytes are compatible as long as the bytes are valid UTF-8.
+</p>
+
+<p>
+只要 bytes 是有效的 utf-8，string 和 bytes 就是兼容的。
+</p></li>
+
+<li><p>
+Embedded messages are compatible with bytes if the bytes contain an encoded version of the message.
+</p>
+
+<p>
+嵌入的消息是字节兼容的，如果字节包含一个消息的编码过的版本。
+</p></li>
+
+<li><p>
+fixed32 is compatible with sfixed32, and fixed64 with sfixed64.
+</p>
+
+<p>
+fixed32 和 sfixed32 是兼容的，fixed64 和 sfixed64 兼容。
+</p></li>
+
+<li><p>
+optional is compatible with repeated. Given serialized data of a repeated field as input, clients that expect this field to be optional will take the last input value if it's a primitive type field or merge all input elements if it's a message type field.
+</p>
+
+<p>
+optional 与 repeated 兼容。一个 repeated 字段序列化后数据作为输入，对于期望该字段是 optional 的客户端，如果最后一个输入值是原始类型字段就使用最后一个值，如果是一个消息类型字段就使用所有输入元素集合。
+</p></li>
+
+<li><p>
+Changing a default value is generally OK, as long as you remember that default values are never sent over the wire. Thus, if a program receives a message in which a particular field isn't set, the program will see the default value as it was defined in that program's version of the protocol. It will NOT see the default value that was defined in the sender's code.
+</p>
+
+<p>
+修改默认值通常没有问题，只要记住默认值绝对不会发送 over the wire。因而如果程序收到一个特定字段没有设置的消息，程序将会使用在该程序 protocol 版本中定义的默认值。它不会知道发送者的代码中定义的默认值。
+</p></li>
+
+<li><p>
+enum is compatible with int32, uint32, int64, and uint64 in terms of wire format (note that values will be truncated if they don't fit), but be aware that client code may treat them differently when the message is deserialized. Notably, unrecognized enum values are discarded when the message is deserialized, which makes the field's has.. accessor return false and its getter return the first value listed in the enum definition, or the default value if one is specified. In the case of repeated enum fields, any unrecognized values are stripped out of the list. However, an integer field will always preserve its value. Because of this, you need to be very careful when upgrading an integer to an enum in terms of receiving out of bounds enum values on the wire.
+</p>
+
+<p>
+在 wire 格式方面，枚举和 int32, uint32, int64, and uint64 兼容（如果值符合将会截断），但是请注意，反序列化消息时客户端代码可能以不同方式处理它们。值得注意的是，反序列化消息时将会丢弃未识别的枚举变量，这将会是该字段的 has。。accessor 访问器返回 false，getter 返回枚举定义的第一个值，或者已经指定的默认值。重复枚举字段中任何不识别的值将会从列表中剔除。然而整数字段总是会保留它的值。因此，将整数升级为枚举时要特别小心，因为线上接收到的数值可能会超出枚举变量的范围。
+</p></li>
+
+<li><p>
+In the current Java and C++ implementations, when unrecognized enum values are stripped out, they are stored along with other unknown fields. Note that this can result in strange behavior if this data is serialized and then reparsed by a client that recognizes these values. In the case of optional fields, even if a new value was written after the original message was deserialized, the old value will be still read by clients that recognize it. In the case of repeated fields, the old values will appear after any recognized and newly-added values, which means that order will not be preserved.
+</p>
+
+<p>
+当前 Java 或 C++实现中，未识别的枚举值被剔除后，会和其他未识别字段存储在一起。注意，如果该数据序列化后，被能识别这些值的客户端解析，可能会导致一些奇怪的行为。对于 optional 段，即使反序列化原有消息后写入新值，旧值仍然可被识别它的客户端读取。对于 repeated 字段，旧值将会出现在所有可识别以及新添加的值之后，这意味着不会保留原有顺序。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga493c67" class="outline-2">
+<h2 id="orga493c67"><span class="section-number-2">8</span> Extensions（扩展）</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Extensions let you declare that a range of field numbers in a message are available for third-party extensions. Other people can then declare new fields for your message type with those numeric tags in their own .proto files without having to edit the original file. Let's look at an example:
+</p>
+
+<p>
+通过 extensions 可以在消息中声明一系列的字段数字用于第三方 extensions。其他人可以在他们自己的.proto 文件使用这些数字标签为你的消息类型声明新字段，而不需要编辑原有的文件。看一个例子：
+</p>
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Foo</span> {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">...</span>
+  <span style="color: #a1db00;">extensions</span> 100 <span style="color: #a1db00;">to</span> 199;
+}
+</pre>
+</div>
+
+<p>
+This says that the range of field numbers [100, 199] in Foo is reserved for extensions. Other users can now add new fields to Foo in their own .proto files that import your .proto, using tags within your specified range – for example:
+</p>
+
+<p>
+这样在 Foo 中声明的[100，199]的字段数字为扩展保留。如果其他人的.proto 文件导入了该.proto,就可以使用你指定范围的数字作为标签给 Foo 添加新字段。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">extend</span> <span style="color: #ff8700;">Foo</span> {
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">bar</span> = 126;
+}
+</pre>
+</div>
+
+<p>
+This says that Foo now has an optional int32 field called bar.
+</p>
+
+<p>
+这表示 Foo 现在有一个 名为 bar 的 optional int32 字段。
+</p>
+
+<p>
+When your user's Foo messages are encoded, the wire format is exactly the same as if the user defined the new field inside Foo. However, the way you access extension fields in your application code is slightly different to accessing regular fields – your generated data access code has special accessors for working with extensions. So, for example, here's how you set the value of bar in C++:
+</p>
+
+<p>
+编码用户的 Foo 消息时，线上格式和用户在 Foo 中定义了新的字段完全一样。然而应用代码中访问扩展字段的方式和访问常规字段有点不同。生成的数据访问代码针对扩展有不同的访问器。比如，下面的例子显示如何使用 C++代码设置 bar 的值：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">Foo</span> <span style="color: #ff8700;">foo</span>;
+foo.SetExtension(bar, 15);
+</pre>
+</div>
+
+<p>
+Similarly, the Foo class defines templated accessors HasExtension(), ClearExtension(), GetExtension(), MutableExtension(), and AddExtension(). All have semantics matching the corresponding generated accessors for a normal field. For more information about working with extensions, see the generated code reference for your chosen language.
+</p>
+
+<p>
+同样，Foo class 定义了模板化访问器 HasExtension(), ClearExtension(), GetExtension(), MutableExtension(), and AddExtension()。针对正常字段，它们都有匹配对应的生成的访问器的语义。查看选定语言的生成代码的参考了解更多使用扩展的信息。
+</p>
+
+<p>
+Note that extensions can be of any field type, including message types, but cannot be oneofs or maps.
+</p>
+
+<p>
+请注意扩展可以是任何字段类型。包括消息类型，但不能是 oneofs 或者 map。
+</p>
+</div>
+
+<div id="outline-container-org8276721" class="outline-3">
+<h3 id="org8276721"><span class="section-number-3">8.1</span> Nested Extensions（嵌套扩展）</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+You can declare extensions in the scope of another type:
+</p>
+
+<p>
+可以在另一种类型的作用域中声明扩展：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Baz</span> {
+  <span style="color: #a1db00;">extend</span> <span style="color: #ff8700;">Foo</span> {
+    <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">bar</span> = 126;
+  }
+  ...
+}
+</pre>
+</div>
+
+<p>
+In this case, the C++ code to access this extension is:
+</p>
+
+<p>
+这种情况下，C++代码可以这样访问扩展：
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">Foo</span> <span style="color: #ff8700;">foo</span>;
+foo.SetExtension(<span style="color: #5fafd7;">Baz</span>::bar, 15);
+</pre>
+</div>
+
+<p>
+In other words, the only effect is that bar is defined within the scope of Baz.
+</p>
+
+<p>
+换句话说，唯一的效果就是 bar 定义在 Baz 的作用域内。
+</p>
+
+<p>
+This is a common source of confusion: Declaring an extend block nested inside a message type does not imply any relationship between the outer type and the extended type. In particular, the above example does not mean that Baz is any sort of subclass of Foo. All it means is that the symbol bar is declared inside the scope of Baz; it's simply a static member.
+</p>
+
+<p>
+这是一个常见的困惑：声明一个嵌套在消息类型中的扩展模块并不意味着外部的消息类型和扩展模块之间有任何关系。特别是,上面的例子并不意味着 Baz 是 Foo 的子类。只意味着符号 bar 声明于 Baz 作用域内部，它只是一个静态成员。
+</p>
+
+<p>
+A common pattern is to define extensions inside the scope of the extension's field type – for example, here's an extension to Foo of type Baz, where the extension is defined as part of Baz:
+</p>
+
+<p>
+常见的模式是在扩展的字段类型作用域定义扩展， 例如，这里 Foo 的扩展是 Baz 类型，将扩展定义为 Baz 的一部分
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Baz</span> {
+  <span style="color: #a1db00;">extend</span> <span style="color: #ff8700;">Foo</span> {
+    <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">Baz</span> <span style="color: #ff8700;">foo_ext</span> = 127;
+  }
+  ...
+}
+</pre>
+</div>
+
+
+<p>
+However, there is no requirement that an extension with a message type be defined inside that type. You can also do this:
+</p>
+
+<p>
+然而，消息类型的扩展不是非要定义在该类型内部。也可以这样做：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Baz</span> {
+  ...
+}
+
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">This can even be in a different file.</span>
+<span style="color: #a1db00;">extend</span> <span style="color: #ff8700;">Foo</span> {
+  <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">Baz</span> <span style="color: #ff8700;">foo_baz_ext</span> = 127;
+}
+</pre>
+</div>
+
+
+<p>
+In fact, this syntax may be preferred to avoid confusion. As mentioned above, the nested syntax is often mistaken for subclassing by users who are not already familiar with extensions.
+</p>
+
+<p>
+实际上，更应该使用这种语法类避免困惑。如上所述，对不熟悉扩展的用户来说，嵌套语法更容易误认为是子类型。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbdaf2ba" class="outline-3">
+<h3 id="orgbdaf2ba"><span class="section-number-3">8.2</span> Choosing Extension Numbers（选择扩展编号）</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+It's very important to make sure that two users don't add extensions to the same message type using the same numeric tag – data corruption can result if an extension is accidentally interpreted as the wrong type. You may want to consider defining an extension numbering convention for your project to prevent this happening.
+</p>
+
+<p>
+两个用户不要对同一消息使用同样编号的标签添加扩展，这个非常重要。如果扩展解释为错误类型会导致数据损坏。可以考虑两个项目间定义一个扩展编号约定避免发生此情况。
+</p>
+
+<p>
+If your numbering convention might involve extensions having very large numbers as tags, you can specify that your extension range goes up to the maximum possible field number using the max keyword:
+</p>
+
+<p>
+如果编码约定可能涉及非常大的数字作为标签，可以使用 max 关键字指定扩展范围到可能的最大的字段标签编号。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Foo</span> {
+  <span style="color: #a1db00;">extensions</span> 1000 <span style="color: #a1db00;">to</span> <span style="color: #a1db00;">max</span>;
+}
+</pre>
+</div>
+
+
+<p>
+max is 2^29 - 1, or 536,870,911.
+</p>
+
+<p>
+As when choosing tag numbers in general, your numbering convention also needs to avoid field numbers 19000 though 19999 (FieldDescriptor::kFirstReservedNumber through FieldDescriptor::kLastReservedNumber), as they are reserved for the Protocol Buffers implementation. You can define an extension range that includes this range, but the protocol compiler will not allow you to define actual extensions with these numbers.
+</p>
+
+<p>
+通常选择 tag 编号时，编码约定通常避免选择 19000 though 19999 (FieldDescriptor::kFirstReservedNumber through FieldDescriptor::kLastReservedNumber)，因为它们为 Protocol Buffers 使用。可以定义包含该范围的扩展的范围，但 protocol 编译器将不会允许定义使用这些 数字的实际扩展。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org244e5b7" class="outline-2">
+<h2 id="org244e5b7"><span class="section-number-2">9</span> Oneof</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+If you have a message with many optional fields and where at most one field will be set at the same time, you can enforce this behavior and save memory by using the oneof feature.
+</p>
+
+<p>
+如果有一个消息有很多 optional 字段，同一时间最多设置一个字段，可以使用 oneof 特性执行该行为，并节省内存。
+</p>
+
+<p>
+Oneof fields are like optional fields except all the fields in a oneof share memory, and at most one field can be set at the same time. Setting any member of the oneof automatically clears all the other members. You can check which value in a oneof is set (if any) using a special case() or WhichOneof() method, depending on your chosen language.
+</p>
+
+<p>
+Oneof 字段类似 optional 字段，除了所有字段在一个 oneof 共享内存中，同一时间最可以设置一个字段。设置 oneof 的任何数字都会自动清除其他数字。根据语言使用特殊的 case()或 whichOneof()方法可以检查设置了哪个 oneof 值。
+</p>
+</div>
+
+<div id="outline-container-orgb847544" class="outline-3">
+<h3 id="orgb847544"><span class="section-number-3">9.1</span> Using Oneof（使用 oneof）</h3>
+<div class="outline-text-3" id="text-9-1">
+<p>
+To define a oneof in your .proto you use the oneof keyword followed by your oneof name, in this case test_oneof:
+</p>
+
+<p>
+在.proto 文件中定义 oneof 时，使用 oneof 关键字紧跟 oneof 名字，下面例子中时 test_oneof：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"> <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">SampleMessage</span> {
+   <span style="color: #00d7af;">oneof</span> <span style="color: #ff8700;">test_oneof</span> {
+      <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">name</span> = 4;
+      <span style="color: #00d7af;">SubMessage</span> <span style="color: #ff8700;">sub_message</span> = 9;
+   }
+ }
+</pre>
+</div>
+
+
+<p>
+You then add your oneof fields to the oneof definition. You can add fields of any type, but cannot use the required, optional, or repeated keywords.
+</p>
+
+<p>
+然后在 oneof 定义中添加 oneof 字段。可以添加任何类型的字段，但是不能使用 required, optional, or repeated 关键字。
+</p>
+
+<p>
+In your generated code, oneof fields have the same getters and setters as regular optional methods. You also get a special method for checking which value (if any) in the oneof is set. You can find out more about the oneof API for your chosen language in the relevant API reference.
+</p>
+
+<p>
+生成的代码中，oneof 字段具有于常规 optional 一样的获取器和设置器方法。可以使用特殊的方法检查设置了 oneof 中的哪个值。可以在相关 API 参考中了解更多有关所选语言的 oneof API。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc5ede07" class="outline-3">
+<h3 id="orgc5ede07"><span class="section-number-3">9.2</span> Oneof Features（oneof 特性）</h3>
+<div class="outline-text-3" id="text-9-2">
+<ul class="org-ul">
+<li><p>
+Setting a oneof field will automatically clear all other members of the oneof. So if you set several oneof fields, only the last field you set will still have a value.
+</p>
+
+<p>
+设置一个 oneof 字段会自动清除该 oneof 的其他成员。所以如果设置多个 oneof 字段，只有最后设置的字段会有值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"> <span style="color: #00d7af;">SampleMessage</span> <span style="color: #ff8700;">message</span>;
+ message.set_name(<span style="color: #ff4ea3;">"name"</span>);
+ CHECK(message.has_name());
+ message.mutable_sub_message();   <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Will clear name field.</span>
+ CHECK(<span style="color: #ff4b4b;">!</span>message.has_name());
+</pre>
+</div></li>
+<li><p>
+If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
+</p>
+
+<p>
+如果解析器在线上遇到同一 oneof 的多个成员，只有最后成员会用于解析后的消息中。
+</p></li>
+
+<li><p>
+Extensions are not supported for oneof.
+</p>
+
+<p>
+oneof 不支持扩展。
+</p></li>
+
+<li><p>
+A oneof cannot be repeated.
+</p>
+
+<p>
+oneof 不能使用重复。
+</p></li>
+
+<li><p>
+Reflection APIs work for oneof fields.
+</p>
+
+<p>
+反射 API 可用在 oneof 字段。
+</p></li>
+
+<li><p>
+If you're using C++, make sure your code doesn't cause memory crashes. The following sample code will crash because sub_message was already deleted by calling the set_name() method.
+</p>
+
+<p>
+如果使用 C++，确保代码不会导致内存崩溃。下面的代码将会崩溃，因为 sub_message 由于调用 set_name()方法已经被删除。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">SampleMessage</span> <span style="color: #ff8700;">message</span>;
+<span style="color: #00d7af;">SubMessage</span>* <span style="color: #ff8700;">sub_message</span> = message.mutable_sub_message();
+message.set_name(<span style="color: #ff4ea3;">"name"</span>);      <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Will delete sub_message</span>
+sub_message-&gt;set_...            <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Crashes here</span>
+</pre>
+</div></li>
+
+<li><p>
+Again in C++, if you Swap() two messages with oneofs, each message will end up with the other’s oneof case: in the example below, msg1 will have a sub_message and msg2 will have a name.
+还是 C++，如果 Swap()两个包含 oneof 的消息，每个消息都会最终使用另外一个的 oneof，下面的例子中，msg1 将会有 sub_message，而 msg2 将会有 name。
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">SampleMessage</span> <span style="color: #ff8700;">msg1</span>;
+msg1.set_name(<span style="color: #ff4ea3;">"name"</span>);
+<span style="color: #00d7af;">SampleMessage</span> <span style="color: #ff8700;">msg2</span>;
+msg2.mutable_sub_message();
+msg1.swap(&amp;msg2);
+CHECK(msg1.has_sub_message());
+CHECK(msg2.has_name());
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7e35d1e" class="outline-3">
+<h3 id="org7e35d1e"><span class="section-number-3">9.3</span> Backwards-compatibility issues（向后兼容问题）</h3>
+<div class="outline-text-3" id="text-9-3">
+<p>
+Be careful when adding or removing oneof fields. If checking the value of a oneof returns None/NOT_SET, it could mean that the oneof has not been set or it has been set to a field in a different version of the oneof. There is no way to tell the difference, since there's no way to know if an unknown field on the wire is a member of the oneof.
+</p>
+
+<p>
+添加或删除 oneof 字段时候要小心。如果 oneof 的检查结果返回 None 或 NOT_SET，可能以为值 oneof 没有设置或已经被设置为不同版本的 oneof。没有办法区分着两者，因为没有方法知道线上的一个未知字段是否 时 oneof 的成员
+</p>
+</div>
+
+<div id="outline-container-orgfa162b3" class="outline-4">
+<h4 id="orgfa162b3"><span class="section-number-4">9.3.1</span> Tag Reuse Issues（标签重用问题）</h4>
+<div class="outline-text-4" id="text-9-3-1">
+<ul class="org-ul">
+<li><p>
+Move optional fields into or out of a oneof: You may lose some of your information (some fields will be cleared) after the message is serialized and parsed.
+</p>
+
+<p>
+将 optional 字段移入或逸出 oneof：消息序列化和解析之后可能会丢失一些信息（将清空一些字段）
+</p></li>
+
+<li><p>
+Delete a oneof field and add it back: This may clear your currently set oneof field after the message is serialized and parsed.
+</p>
+
+<p>
+删除一个 oneof 字段，然后添加回去：消息序列化和解析之后可能会清除当前 oneof 字段设置。
+</p></li>
+
+<li><p>
+Split or merge oneof: This has similar issues to moving regular optional fields.
+</p>
+
+<p>
+分割合并 oneof：和移动常用 optional 字段有同样问题。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeca87a5" class="outline-2">
+<h2 id="orgeca87a5"><span class="section-number-2">10</span> Maps</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+If you want to create an associative map as part of your data definition, protocol buffers provides a handy shortcut syntax:
+</p>
+
+<p>
+如果数据定义中想要创建一个关联映射 map，protocol buffers 提供了一个方便快捷的语法：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">map</span>&lt;key_type, value_type&gt; <span style="color: #ff8700;">map_field</span> = N;
+</pre>
+</div>
+
+<p>
+&#x2026;where the key_type can be any integral or string type (so, any scalar type except for floating point types and bytes). The value_type can be any type.
+</p>
+
+<p>
+key_type 可以时任何数字和字符类型（除了浮点类型和字节类型外的标量类型）。value_type 可以是任何类型。
+</p>
+
+<p>
+So, for example, if you wanted to create a map of projects where each Project message is associated with a string key, you could define it like this:
+</p>
+
+<p>
+例如，如果想创建一个 project 的映射，每个 project 消息与一个字符串 key 关联，可以如下定义：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">string</span>, Project&gt; <span style="color: #ff8700;">projects</span> = 3;
+</pre>
+</div>
+
+<p>
+The generated map API is currently available for all proto2 supported languages. You can find out more about the map API for your chosen language in the relevant API reference.
+</p>
+
+<p>
+生成 map　API 在所有 proto2 支持的语言中都是可用的。在相关 API 引用中了解更多关于所选语言 map API 的知识。
+</p>
+</div>
+
+<div id="outline-container-org13c7ff0" class="outline-3">
+<h3 id="org13c7ff0"><span class="section-number-3">10.1</span> Maps Features</h3>
+<div class="outline-text-3" id="text-10-1">
+<ul class="org-ul">
+<li><p>
+Extensions are not supported for maps.
+</p>
+
+<p>
+map 不支持扩展。
+</p></li>
+
+<li><p>
+Maps cannot be repeated, optional, or required.
+</p>
+
+<p>
+map 不可以是 repeated, optional, or required。
+</p></li>
+
+<li><p>
+Wire format ordering and map iteration ordering of map values is undefined, so you cannot rely on your map items being in a particular order.
+</p>
+
+<p>
+map 值的 wire 格式顺序和 map 迭代顺序是未定义的，所以不能依赖 map 项有一个特定顺序。
+</p></li>
+
+<li><p>
+When generating text format for a .proto, maps are sorted by key. Numeric keys are sorted numerically.
+</p>
+
+<p>
+.proto 生成文本格式时，map 按照 key 排序。数字键按数字大小排序。
+</p></li>
+
+<li><p>
+When parsing from the wire or when merging, if there are duplicate map keys the last key seen is used. When parsing a map from text format, parsing will fail if there are duplicate keys.
+</p>
+
+<p>
+当从 wire 解析或合并时，如果有多余的 map key，将使用最后一个。当从文本格式解析 map，如果有多余的 key，解析将会失败。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5bc58e3" class="outline-3">
+<h3 id="org5bc58e3"><span class="section-number-3">10.2</span> Backwards compatibility（向后兼容性）</h3>
+<div class="outline-text-3" id="text-10-2">
+<p>
+The map syntax is equivalent to the following on the wire, so protocol buffers implementations that do not support maps can still handle your data:
+</p>
+
+<p>
+wire 上的 map 语法相当于下面的代码，所有不支持 map 的实现也可以处理数据：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"> <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MapFieldEntry</span> {
+   <span style="color: #00d7af;">key_type</span> <span style="color: #ff8700;">key</span> = 1;
+   <span style="color: #00d7af;">value_type</span> <span style="color: #ff8700;">value</span> = 2;
+ }
+<span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">MapFieldEntry</span> <span style="color: #ff8700;">map_field</span> = N;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org12d482d" class="outline-2">
+<h2 id="org12d482d"><span class="section-number-2">11</span> Packages（包）</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+You can add an optional package specifier to a .proto file to prevent name clashes between protocol message types.
+</p>
+
+<p>
+在 proto 文件中添加可选包说明符组织 protocol 消息类型之间的命名冲突。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">package</span> <span style="color: #5fafd7;">foo</span>.<span style="color: #00d7af;">bar</span>;
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Open</span> { ... }
+</pre>
+</div>
+
+<p>
+You can then use the package specifier when defining fields of your message type:
+</p>
+
+<p>
+当定义消息类型的字段时候也可以使用包识别符：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Foo</span> {
+  ...
+  <span style="color: #a1db00;">required</span> <span style="color: #5fafd7;">foo</span>.<span style="color: #5fafd7;">bar</span>.Open open = 1;
+  ...
+}
+</pre>
+</div>
+
+<p>
+The way a package specifier affects the generated code depends on your chosen language:
+</p>
+
+<p>
+包识别符如何影响生成的代码取决于所选的语言：
+</p>
+
+<ul class="org-ul">
+<li><p>
+In C++ the generated classes are wrapped inside a C++ namespace. For example, Open would be in the namespace foo::bar.
+</p>
+
+<p>
+C++中，生成的类封装在 C++命名空间中。例如，open 将会处于 foo::bar 命名空间。
+</p></li>
+
+<li><p>
+In Java, the package is used as the Java package, unless you explicitly provide a option java_package in your .proto file.
+</p>
+
+<p>
+Java 中，package 被当作 Java package，除非在 proto 文件中显示提供可选的 java_package。
+</p></li>
+
+<li><p>
+In Python, the package directive is ignored, since Python modules are organized according to their location in the file system.
+</p>
+
+<p>
+Python 中，忽略 package 指令，因为 Python 模块通过它们在文件系统中的位置进行组织。
+</p></li>
+</ul>
+</div>
+
+<div id="outline-container-org7f9fd10" class="outline-3">
+<h3 id="org7f9fd10"><span class="section-number-3">11.1</span> Packages and Name Resolution（包和名字解析）</h3>
+<div class="outline-text-3" id="text-11-1">
+<p>
+Type name resolution in the protocol buffer language works like C++: first the innermost scope is searched, then the next-innermost, and so on, with each package considered to be "inner" to its parent package. A leading '.' (for example, .foo.bar.Baz) means to start from the outermost scope instead.
+</p>
+
+<p>
+protocol buffer 语言中的类型名称解析与 C++类似：首先搜索最内层的作用域，然后是次内层作用，以此类推。每个包都当作父包的内层。前缀‘.’（例如.foo.bar.Baz）表示从最外面的作用域开始。
+</p>
+
+<p>
+The protocol buffer compiler resolves all type names by parsing the imported .proto files. The code generator for each language knows how to refer to each type in that language, even if it has different scoping rules.
+</p>
+
+<p>
+protocol buffer 编译器通过分析导入的.proto 文件解析所有的类型名字。各语言的代码生成器知道如何引用每种类型，即使它们有不同的作用域规则。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8f4e48f" class="outline-2">
+<h2 id="org8f4e48f"><span class="section-number-2">12</span> Defining Services（定义服务）</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+If you want to use your message types with an RPC (Remote Procedure Call) system, you can define an RPC service interface in a .proto file and the protocol buffer compiler will generate service interface code and stubs in your chosen language. So, for example, if you want to define an RPC service with a method that takes your SearchRequest and returns a SearchResponse, you can define it in your .proto file as follows:
+</p>
+
+<p>
+如果想要在 RPC 系统中使用消息类型，可以在.proto 文件中定义一个 RPC 服务接口，protocol buffer 编译器将会生成所选语言的服务接口代码。例如，如果想要定义可以处理 SearchRequest，并返回 SearchResponse 的 RPC 服务，可以在.proto 文件中如下定义：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">service</span> <span style="color: #00d7af;">SearchService</span> {
+  <span style="color: #a1db00;">rpc</span> <span style="color: #ffd700;">Search</span> (SearchRequest) <span style="color: #a1db00;">returns</span> (SearchResponse);
+}
+</pre>
+</div>
+
+<p>
+By default, the protocol compiler will then generate an abstract interface called SearchService and a corresponding "stub" implementation. The stub forwards all calls to an RpcChannel, which in turn is an abstract interface that you must define yourself in terms of your own RPC system. For example, you might implement an RpcChannel which serializes the message and sends it to a server via HTTP. In other words, the generated stub provides a type-safe interface for making protocol-buffer-based RPC calls, without locking you into any particular RPC implementation. So, in C++, you might end up with code like this:
+</p>
+
+<p>
+默认，protocol 编译器将会产生名为 SearchService 的抽象接口，以及对应的 “stub”实现。stub 将所有的调用都转发到 RpcChannel，相反，它是必须在自身 RPC 系统中定义的一个抽象接口。例如，可能会实现 序列化消息并将其通过 HTTP 发送到别的服务器的 RpcChannel。换句话说，生成的 stub 提供类型安全的接口用以产生 protocol-buffer-based RCP 调用，而不会让你受限于任何特殊的 RPC 实现。所以，在 C++中，可能最终的代码如下：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #a1db00;">using</span> <span style="color: #5fafd7;">google</span>::<span style="color: #00d7af;">protobuf</span>;
+
+<span style="color: #5fafd7;">protobuf</span>::<span style="color: #00d7af;">RpcChannel</span>* <span style="color: #ff8700;">channel</span>;
+<span style="color: #5fafd7;">protobuf</span>::<span style="color: #00d7af;">RpcController</span>* <span style="color: #ff8700;">controller</span>;
+<span style="color: #00d7af;">SearchService</span>* <span style="color: #ff8700;">service</span>;
+<span style="color: #00d7af;">SearchRequest</span> <span style="color: #ff8700;">request</span>;
+<span style="color: #00d7af;">SearchResponse</span> <span style="color: #ff8700;">response</span>;
+
+<span style="color: #00d7af;">void</span> <span style="color: #ffd700;">DoSearch</span>() {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">You provide classes MyRpcChannel and MyRpcController, which implement</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">the abstract interfaces protobuf::RpcChannel and protobuf::RpcController.</span>
+  channel = <span style="color: #a1db00;">new</span> <span style="color: #00d7af;">MyRpcChannel</span>(<span style="color: #ff4ea3;">"somehost.example.com:1234"</span>);
+  controller = <span style="color: #a1db00;">new</span> <span style="color: #00d7af;">MyRpcController</span>;
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">The protocol compiler generates the SearchService class based on the</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">definition given above.</span>
+  service = <span style="color: #a1db00;">new</span> <span style="color: #5fafd7;">SearchService</span>::<span style="color: #00d7af;">Stub</span>(channel);
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Set up the request.</span>
+  request.set_query(<span style="color: #ff4ea3;">"protocol buffers"</span>);
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Execute the RPC.</span>
+  service-&gt;Search(controller, request, response, <span style="color: #5fafd7;">protobuf</span>::NewCallback(&amp;Done));
+}
+
+<span style="color: #00d7af;">void</span> <span style="color: #ffd700;">Done</span>() {
+  <span style="color: #a1db00;">delete</span> service;
+  <span style="color: #a1db00;">delete</span> channel;
+  <span style="color: #a1db00;">delete</span> controller;
+}
+</pre>
+</div>
+
+<p>
+All service classes also implement the Service interface, which provides a way to call specific methods without knowing the method name or its input and output types at compile time. On the server side, this can be used to implement an RPC server with which you could register services.
+</p>
+
+<p>
+所有服务类也实现服务接口， 提供一种不用知道指定方法名字，或者输入输出类型就可以进行调用的途径。在服务端，着可用于实现注册服务的 RPC 服务器。
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #a1db00;">using</span> <span style="color: #5fafd7;">google</span>::<span style="color: #00d7af;">protobuf</span>;
+
+<span style="color: #a1db00;">class</span> <span style="color: #00d7af;">ExampleSearchService</span> : <span style="color: #a1db00;">public</span> <span style="color: #00d7af;">SearchService</span> {
+ <span style="color: #a1db00;">public</span>:
+  <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">Search</span>(<span style="color: #5fafd7;">protobuf</span>::<span style="color: #00d7af;">RpcController</span>* <span style="color: #ff8700;">controller</span>,
+              <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">SearchRequest</span>* <span style="color: #ff8700;">request</span>,
+              <span style="color: #00d7af;">SearchResponse</span>* <span style="color: #ff8700;">response</span>,
+              <span style="color: #5fafd7;">protobuf</span>::<span style="color: #00d7af;">Closure</span>* <span style="color: #ff8700;">done</span>) {
+    <span style="color: #a1db00;">if</span> (request-&gt;query() == <span style="color: #ff4ea3;">"google"</span>) {
+      response-&gt;add_result()-&gt;set_url(<span style="color: #ff4ea3;">"http://www.google.com"</span>);
+    } <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> (request-&gt;query() == <span style="color: #ff4ea3;">"protocol buffers"</span>) {
+      response-&gt;add_result()-&gt;set_url(<span style="color: #ff4ea3;">"http://protobuf.googlecode.com"</span>);
+    }
+    done-&gt;Run();
+  }
+};
+
+<span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span>() {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">You provide class MyRpcServer.  It does not have to implement any</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">particular interface; this is just an example.</span>
+  <span style="color: #00d7af;">MyRpcServer</span> <span style="color: #ff8700;">server</span>;
+
+  <span style="color: #5fafd7;">protobuf</span>::<span style="color: #00d7af;">Service</span>* <span style="color: #ff8700;">service</span> = <span style="color: #a1db00;">new</span> <span style="color: #00d7af;">ExampleSearchService</span>;
+  server.ExportOnPort(1234, service);
+  server.Run();
+
+  <span style="color: #a1db00;">delete</span> service;
+  <span style="color: #a1db00;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+If you don't want to plug in your own existing RPC system, you can now use gRPC: a language- and platform-neutral open source RPC system developed at Google. gRPC works particularly well with protocol buffers and lets you generate the relevant RPC code directly from your .proto files using a special protocol buffer compiler plugin. However, as there are potential compatibility issues between clients and servers generated with proto2 and proto3, we recommend that you use proto3 for defining gRPC services. You can find out more about proto3 syntax in the Proto3 Language Guide. If you do want to use proto2 with gRPC, you need to use version 3.0.0 or higher of the protocol buffers compiler and libraries.
+</p>
+
+<p>
+如果不想插入到现有的 RPC 系统，可以使用 gRPC：Google 开发的一个语言和平台中立的开源 RPC 系统。gRPC 可以和 protocol buffers 很好的工作,特殊的 protocol buffer 编译器插件可以直接从.proto 文件中生成 RPC 代码。然而，使用 proto2 和 proto3 产生的客户端和服务器之间可能有潜在的兼容性问题，我们推荐使用 proto3 定义 gRPC 服务。在 Proto3 Language Guide 查找更多关于 proto3 的语法。
+</p>
+
+<p>
+In addition to gRPC, there are also a number of ongoing third-party projects to develop RPC implementations for Protocol Buffers. For a list of links to projects we know about, see the third-party add-ons wiki page.
+</p>
+
+<p>
+除了 gRPC，还有很多正在进行的第三方项目为 Protocol Buffers 开发 RPC 实现。参见 third-party add-ons wiki page。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e472cb" class="outline-2">
+<h2 id="org9e472cb"><span class="section-number-2">13</span> Options（选项）</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+Individual declarations in a .proto file can be annotated with a number of options. Options do not change the overall meaning of a declaration, but may affect the way it is handled in a particular context. The complete list of available options is defined in google/protobuf/descriptor.proto.
+</p>
+
+<p>
+.proto 文件中单独的声明可以使用很多选项进行注释。选项不会改变声明的整体含义，但是影响它们在上下文中的处理方式。可用选项的完整列表定义在 google/protobuf/descriptor.proto
+</p>
+
+<p>
+Some options are file-level options, meaning they should be written at the top-level scope, not inside any message, enum, or service definition. Some options are message-level options, meaning they should be written inside message definitions. Some options are field-level options, meaning they should be written inside field definitions. Options can also be written on enum types, enum values, service types, and service methods; however, no useful options currently exist for any of these.
+</p>
+
+<p>
+一些选项是文件级别的,意味着它们应该写在最外层作用域,而不是消息,枚举或服务定义的内部.一些选项时消息级别的,意味着它们应该写在消息定义的内部.一些选项是字段级别的。意味着它们应该写在字段定义内部。选项还可以处于枚举类型、枚举值、服务类型、服务方法；然而，当前这些还没有有用的选项
+</p>
+
+<p>
+Here are a few of the most commonly used options:
+</p>
+
+<p>
+这里是一些最常用的选项:
+</p>
+
+<ul class="org-ul">
+<li><p>
+java_package (file option): The package you want to use for your generated Java classes. If no explicit java_package option is given in the .proto file, then by default the proto package (specified using the "package" keyword in the .proto file) will be used. However, proto packages generally do not make good Java packages since proto packages are not expected to start with reverse domain names. If not generating Java code, this option has no effect.
+</p>
+
+<p>
+java_package(文件选项)：用来生成 Java 类使用的包。如果.proto 文件中没有显式指定 java_package 选项，默认使用 proto 包（在.proto 文件中使用“package”关键字指定）。然而，proto 包通常不会做出好的 Java 包，因为 proto 包不以反向域名开始，如果不生成 Java 代码，该选型无效。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">option</span> <span style="color: #ff8700;">java_package</span> = <span style="color: #ff4ea3;">"com.example.foo"</span>;
+</pre>
+</div></li>
+<li><p>
+java_outer_classname (file option): The class name for the outermost Java class (and hence the file name) you want to generate. If no explicit java_outer_classname is specified in the .proto file, the class name will be constructed by converting the .proto file name to camel-case (so foo_bar.proto becomes FooBar.java). If not generating Java code, this option has no effect.
+</p>
+
+<p>
+java_outer_classname（文件选项）：想要生成的最外层的 Java 类的名字（也就是文件名）。如果.proto 文件没有显式指定 java_outer_classname,将会通过转化.proto 文件名为驼峰式（foo_bar.proto 将变为 FooBar.java）来构建类名。如果不生成 Java 代码，该选项无效。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">option</span> <span style="color: #ff8700;">java_outer_classname</span> = <span style="color: #ff4ea3;">"Ponycopter"</span>;
+</pre>
+</div></li>
+<li><p>
+optimize_for (file option): Can be set to SPEED, CODE_SIZE, or LITE_RUNTIME. This affects the C++ and Java code generators (and possibly third-party generators) in the following ways:
+</p>
+
+<p>
+optimize_for（文件选项）：可设置为 SPEED, CODE_SIZE, or LITE_RUNTIME。通过以下方式影响 C++和 java 代码生成（可能还有第三方生成器）：
+</p>
+
+<ul class="org-ul">
+<li><p>
+SPEED (default): The protocol buffer compiler will generate code for serializing, parsing, and performing other common operations on your message types. This code is extremely highly optimized.
+</p>
+
+<p>
+SPEED（默认）：protocol buffer 编译器将为消息类型的序列化，解析，和其他常见操作产生代码。代码经过高度优化。
+</p></li>
+
+<li><p>
+CODE_SIZE: The protocol buffer compiler will generate minimal classes and will rely on shared, reflection-based code to implement serialialization, parsing, and various other operations. The generated code will thus be much smaller than with SPEED, but operations will be slower. Classes will still implement exactly the same public API as they do in SPEED mode. This mode is most useful in apps that contain a very large number .proto files and do not need all of them to be blindingly fast.
+</p>
+
+<p>
+CODE_SIZE：protocol buffer 编译器将会产生最小类，将会基于共享，反射的代码实现序列化，分析，其他草祖宗。因而生成的代码将会比 SPEED 小很多，但操作会比较慢。类将实现与 SPEED 模式同样的公共 API。在包含很多 proto 文件，但全部都很快绑定的应用中该模式很有用。
+</p></li>
+
+<li><p>
+LITE_RUNTIME: The protocol buffer compiler will generate classes that depend only on the "lite" runtime library (libprotobuf-lite instead of libprotobuf). The lite runtime is much smaller than the full library (around an order of magnitude smaller) but omits certain features like descriptors and reflection. This is particularly useful for apps running on constrained platforms like mobile phones. The compiler will still generate fast implementations of all methods as it does in SPEED mode. Generated classes will only implement the MessageLite interface in each language, which provides only a subset of the methods of the full Message interface.
+</p>
+
+<p>
+LITE_RUNTIME:protocol buffer 编译将会生成只依赖‘lite’运行时库的类（libprotobuf 而不是 libprotobuf）。lite 运行时比完整的库要小很多（大约一个数量级），但省略了一些特性，比如描述符和反射。这对于运行在受限平台，比如移动手机上面的应用很有用。编译器仍会生成类似 SPEED 模式中所有方法的快速实现。生成的类仅实现各语言的 MessageLite 接口，该接口提供完整消息接口的一个子集。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">option</span> <span style="color: #ff8700;">optimize_for</span> = CODE_SIZE;
+</pre>
+</div></li>
+</ul></li>
+
+<li><p>
+cc_generic_services, java_generic_services, py_generic_services (file options): Whether or not the protocol buffer compiler should generate abstract service code based on services definitions in C++, Java, and Python, respectively. For legacy reasons, these default to true. However, as of version 2.3.0 (January 2010), it is considered preferrable for RPC implementations to provide code generator plugins to generate code more specific to each system, rather than rely on the "abstract" services.
+</p>
+
+<p>
+cc_generic_services, java_generic_services, py_generic_services（文件选项）：protocol buffer 编译器是否会分别基于定义在 C++，java，Python 中的服务定义生成服务代码。由于遗留原因，这些选项默认是 true。然而，随着版本 2.3.0（2010 年一月），为 RPC 实现提供代码生成插件被认为更合适，这样生成特定与每个系统的代码，而不是依赖抽象接口。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">This file relies on plugins to generate service code.</span>
+<span style="color: #a1db00;">option</span> <span style="color: #ff8700;">cc_generic_services</span> = <span style="color: #5fafd7;">false</span>;
+<span style="color: #a1db00;">option</span> <span style="color: #ff8700;">java_generic_services</span> = <span style="color: #5fafd7;">false</span>;
+<span style="color: #a1db00;">option</span> <span style="color: #ff8700;">py_generic_services</span> = <span style="color: #5fafd7;">false</span>;
+</pre>
+</div></li>
+
+<li><p>
+cc_enable_arenas (file option): Enables arena allocation for C++ generated code.
+</p>
+
+<p>
+cc_enable_arenas（文件选项）：为 C++生成的代码启用区域分配。
+</p></li>
+
+<li><p>
+message_set_wire_format (message option): If set to true, the message uses a different binary format intended to be compatible with an old format used inside Google called MessageSet. Users outside Google will probably never need to use this option. The message must be declared exactly as follows:
+</p>
+
+<p>
+message_set_wire_format(消息选项)：如果设置为 true， 消息使用不同的二进制格式，以便和 google 内部使用的名为 MessageSet 的旧版格式兼容。google 外部用户可能觉不需要设置该选项。必须如下显式声明消息：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Foo</span> {
+  <span style="color: #a1db00;">option</span> <span style="color: #ff8700;">message_set_wire_format</span> = <span style="color: #5fafd7;">true</span>;
+  <span style="color: #a1db00;">extensions</span> 4 <span style="color: #a1db00;">to</span> <span style="color: #a1db00;">max</span>;
+}
+</pre>
+</div></li>
+
+<li><p>
+packed (field option): If set to true on a repeated field of a basic numeric type, a more compact encoding is used. There is no downside to using this option. However, note that prior to version 2.3.0, parsers that received packed data when not expected would ignore it. Therefore, it was not possible to change an existing field to packed format without breaking wire compatibility. In 2.3.0 and later, this change is safe, as parsers for packable fields will always accept both formats, but be careful if you have to deal with old programs using old protobuf versions.
+</p>
+
+<p>
+打包（字段选项）:如果一个基本数字类型的 repeated 字段设置为 true，将会使用欧冠更紧凑的编码。使用该选项没有缺点。然而，请注意，2.3.0 版本之前，收到意料之外的打包数据的解析器会忽略它。因而，不破坏线上兼容性将现有字段修改为打包格式是不可能的。2.3.0 及以后版本，这种改变是安全的。接受打包字段的解析器总是接受两种格式，如果处理使用旧版 protobuf 版本的旧程序要小心。
+</p>
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">repeated</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">samples</span> = 4 [packed=<span style="color: #5fafd7;">true</span>];
+</pre>
+</div></li>
+
+<li><p>
+deprecated (field option): If set to true, indicates that the field is deprecated and should not be used by new code. In most languages this has no actual effect. In Java, this becomes a @Deprecated annotation. In the future, other language-specific code generators may generate deprecation annotations on the field's accessors, which will in turn cause a warning to be emitted when compiling code which attempts to use the field. If the field is not used by anyone and you want to prevent new users from using it, consider replacing the field declaration with a reserved statement.
+废弃（标签选项）：如果设置为 true，指示该字段已被废弃，新代码不应该使用。大多数语言中没有实际效果。Java 中，这将变为一个@Deprecated 注释。将来，其他特定语言的代码生成器可能会在字段访问器生成标明弃用的注释，这反而会在编译使用该字段的代码时触发一个警告。如果没人使用该字段，可能想要新用户别使用它，考虑使用 reserved  statement 替换该字段声明。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">old_field</span> = 6 [deprecated=<span style="color: #5fafd7;">true</span>];
+</pre>
+</div></li>
+</ul>
+</div>
+
+<div id="outline-container-orgc61e845" class="outline-3">
+<h3 id="orgc61e845"><span class="section-number-3">13.1</span> Custom Options（定制选项）</h3>
+<div class="outline-text-3" id="text-13-1">
+<p>
+Protocol Buffers even allow you to define and use your own options. Note that this is an advanced feature which most people don't need. Since options are defined by the messages defined in google/protobuf/descriptor.proto (like FileOptions or FieldOptions), defining your own options is simply a matter of extending those messages. For example:
+</p>
+
+<p>
+Protocol Buffers 设置允许定义和使用自己的选项。注意，这是大多数人不会用到的一个高级特性。因为选项都是 google/protobuf/descriptor.proto 中定义的消息定义的（比如文件选项和字段选项），定义子集的选项只是简单扩展这些消息。比如：
+</p>
+<div class="org-src-container">
+<pre class="src src-protobuf"> <span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"google/protobuf/descriptor.proto"</span>;
+
+ <span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">MessageOptions</span> {
+   <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">my_option</span> = 51234;
+ }
+
+ <span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MyMessage</span> {
+   <span style="color: #a1db00;">option</span> (my_option) = <span style="color: #ff4ea3;">"Hello world!"</span>;
+ }
+</pre>
+</div>
+
+<p>
+Here we have defined a new message-level option by extending MessageOptions. When we then use the option, the option name must be enclosed in parentheses to indicate that it is an extension. We can now read the value of my_option in C++ like so:
+</p>
+
+<p>
+这里通过扩展 MessageOptions 定义了一个新的消息级别的选项。之后使用该选项的时候选项名字必须在括号中，以表明它是一个扩展。现在可以在 C++中这样读取 my_option 的值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #00d7af;">string</span> <span style="color: #ff8700;">value</span> = <span style="color: #5fafd7;">MyMessage</span>::descriptor()-&gt;options().GetExtension(my_option);
+</pre>
+</div>
+
+<p>
+Here, MyMessage::descriptor()-&gt;options() returns the MessageOptions protocol message for MyMessage. Reading custom options from it is just like reading any other extension.
+</p>
+
+<p>
+此处，MyMessage::descriptor()-&gt;options()为 MyMessage 返回 MessageOptions protocol 消息。从其中读取定制选项和读取其他扩展是一样的。
+</p>
+
+<p>
+Similarly, in Java we would write:
+</p>
+
+<p>
+类似，Java 中这样写：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-java"> <span style="color: #00d7af;">String</span> <span style="color: #ff8700;">value</span> = <span style="color: #5fafd7;">MyProtoFile</span>.MyMessage.getDescriptor().getOptions()
+   .getExtension(MyProtoFile.myOption);
+</pre>
+</div>
+
+<p>
+In Python it would be:
+</p>
+
+<p>
+Python 中是这样：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"> <span style="color: #ff8700;">value</span> = my_proto_file_pb2.MyMessage.DESCRIPTOR.GetOptions()
+   .Extensions[my_proto_file_pb2.my_option]
+</pre>
+</div>
+
+
+<p>
+Custom options can be defined for every kind of construct in the Protocol Buffers language. Here is an example that uses every kind of option:
+</p>
+
+<p>
+可以为 Protocol Buffers 语言中的每种结构体定义自定义选项。下面是使用各种选项的例子：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"google/protobuf/descriptor.proto"</span>;
+
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">FileOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">my_file_option</span> = 50000;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">MessageOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">my_message_option</span> = 50001;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">FieldOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">float</span> <span style="color: #ff8700;">my_field_option</span> = 50002;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">EnumOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">bool</span> <span style="color: #ff8700;">my_enum_option</span> = 50003;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">EnumValueOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">uint32</span> <span style="color: #ff8700;">my_enum_value_option</span> = 50004;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">ServiceOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">MyEnum</span> <span style="color: #ff8700;">my_service_option</span> = 50005;
+}
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">MethodOptions</span> {
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">MyMessage</span> <span style="color: #ff8700;">my_method_option</span> = 50006;
+}
+
+<span style="color: #a1db00;">option</span> (my_file_option) = <span style="color: #ff4ea3;">"Hello world!"</span>;
+
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MyMessage</span> {
+        <span style="color: #a1db00;">option</span> (my_message_option) = 1234;
+
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">foo</span> = 1 [(my_field_option) = 4.5];
+        <span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">bar</span> = 2;
+}
+
+<span style="color: #a1db00;">enum</span> <span style="color: #00d7af;">MyEnum</span> {
+        <span style="color: #a1db00;">option</span> (my_enum_option) = <span style="color: #5fafd7;">true</span>;
+
+        FOO = 1 [(my_enum_value_option) = 321];
+        BAR = 2;
+}
+
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">RequestType</span> {}
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">ResponseType</span> {}
+
+<span style="color: #a1db00;">service</span> <span style="color: #00d7af;">MyService</span> {
+        <span style="color: #a1db00;">option</span> (my_service_option) = FOO;
+
+        <span style="color: #a1db00;">rpc</span> <span style="color: #ffd700;">MyMethod</span>(RequestType) <span style="color: #a1db00;">returns</span>(ResponseType) {
+                <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Note:  my_method_option has type MyMessage.  We can set each field</span>
+                <span style="color: #6c6c6c; font-style: italic;">//   </span><span style="color: #6c6c6c; font-style: italic;">within it using a separate "option" line.</span>
+                <span style="color: #a1db00;">option</span> (my_method_option).foo = 567;
+                <span style="color: #a1db00;">option</span> (my_method_option).bar = <span style="color: #ff4ea3;">"Some string"</span>;
+        }
+}
+</pre>
+</div>
+
+
+<p>
+Note that if you want to use a custom option in a package other than the one in which it was defined, you must prefix the option name with the package name, just as you would for type names. For example:
+</p>
+
+<p>
+请注意，如果想要使用其他包中的定制选项，必须使用包名作为选项名字的前缀，就像类型名那样。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">foo.proto</span>
+<span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"google/protobuf/descriptor.proto"</span>;
+<span style="color: #a1db00;">package</span> <span style="color: #00d7af;">foo</span>;
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">MessageOptions</span> {
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">my_option</span> = 51234;
+}
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">bar.proto</span>
+<span style="color: #a1db00;">import</span> <span style="color: #ff4ea3;">"foo.proto"</span>;
+<span style="color: #a1db00;">package</span> <span style="color: #00d7af;">bar</span>;
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">MyMessage</span> {
+<span style="color: #a1db00;">option</span> (<span style="color: #5fafd7;">foo</span>.my_option) = <span style="color: #ff4ea3;">"Hello world!"</span>;
+}
+</pre>
+</div>
+
+<p>
+One last thing: Since custom options are extensions, they must be assigned field numbers like any other field or extension. In the examples above, we have used field numbers in the range 50000-99999. This range is reserved for internal use within individual organizations, so you can use numbers in this range freely for in-house applications. If you intend to use custom options in public applications, however, then it is important that you make sure that your field numbers are globally unique. To obtain globally unique field numbers, please send a request to protobuf-global-extension-registry@google.com. Simply provide your project name (e.g. Object-C plugin) and your project website (if available). Usually you only need one extension number. You can declare multiple options with only one extension number by putting them in a sub-message:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-protobuf"><span style="color: #a1db00;">message</span> <span style="color: #00d7af;">FooOptions</span> {
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">opt1</span> = 1;
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">string</span> <span style="color: #ff8700;">opt2</span> = 2;
+}
+
+<span style="color: #a1db00;">extend</span> <span style="color: #5fafd7;">google</span>.<span style="color: #5fafd7;">protobuf</span>.<span style="color: #ff8700;">FieldOptions</span> {
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">FooOptions</span> <span style="color: #ff8700;">foo_options</span> = 1234;
+}
+
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">usage:</span>
+<span style="color: #a1db00;">message</span> <span style="color: #00d7af;">Bar</span> {
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">a</span> = 1 [(foo_options).opt1 = 123, (foo_options).opt2 = <span style="color: #ff4ea3;">"baz"</span>];
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">alternative aggregate syntax (uses TextFormat):</span>
+<span style="color: #a1db00;">optional</span> <span style="color: #00d7af;">int32</span> <span style="color: #ff8700;">b</span> = 2 [(foo_options) = { opt1: 123 opt2: <span style="color: #ff4ea3;">"baz"</span> }];
+}
+</pre>
+</div>
+
+<p>
+Also, note that each option type (file-level, message-level, field-level, etc.) has its own number space, so e.g. you could declare extensions of FieldOptions and MessageOptions with the same number.
+</p>
+
+<p>
+同样，请注意，每个选项类型（文件级别，消息级别，字段级别等）有自己的数字可能构建。所以，可以使用相同的数字来定义字段选项和消息选项的扩展。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2d5e033" class="outline-2">
+<h2 id="org2d5e033"><span class="section-number-2">14</span> Generating Your Classes（生成自己的类）</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+To generate the Java, Python, or C++ code you need to work with the message types defined in a .proto file, you need to run the protocol buffer compiler protoc on the .proto. If you haven't installed the compiler, download the package and follow the instructions in the README.
+</p>
+
+<p>
+为了生成 Java, Python, or C++代码，需要和定义在.proto 文件中定义的消息类型打交道，需要运行 protocol buffer 编译器编译.proto 文件。如果没有安装编译器，下载安装包，按照 READEME 中的说明功能安装。
+</p>
+
+<p>
+The Protocol Compiler is invoked as follows:
+</p>
+
+<p>
+Protocol 编译器如下调用：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">protoc --proto_path=IMPORT_PATH --cpp_out=DST_DIR --java_out=DST_DIR --python_out=DST_DIR path/to/file.proto
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><p>
+IMPORT_PATH specifies a directory in which to look for .proto files when resolving import directives. If omitted, the current directory is used. Multiple import directories can be specified by passing the &#x2013;proto_path option multiple times; they will be searched in order. -I=IMPORT_PATH can be used as a short form of &#x2013;proto_path.
+</p>
+
+<p>
+IMPORT_PATH 指定解析 import 执行时查找.proto 文件的目录。如果省略，使用当前目录。可以通过传递 <code>--proto_path</code>  选项多次来指定多个导入目录；将会按序查找它们。可以用 <code>-I=IMPORT_PATH</code>  作为 <code>--proto_poath</code> 的简写形式。
+</p></li>
+
+<li><p>
+You can provide one or more output directives:
+</p>
+
+<p>
+可以提供一个或更多输出指令：
+</p>
+
+<ul class="org-ul">
+<li><p>
+&#x2013;cpp_out generates C++ code in DST_DIR. See the C++ generated code reference for more.
+</p>
+
+<p>
+&#x2013;cpp_out 在 DST_DIR 生成 C++代码。参阅 C++ generated code reference 了解更多。
+</p></li>
+
+<li>&#x2013;java_out generates Java code in DST_DIR. See the Java generated code reference for more.
+&#x2013;java_out 在 DST_DIR 生成 java 代码。参阅 Java generated code reference 了解更多。</li>
+
+<li><p>
+&#x2013;python_out generates Python code in DST_DIR. See the Python generated code reference for more.
+</p>
+
+<p>
+&#x2013;python_out 在 DST_DIR 生成 python 代码。参阅 Python generated code reference 了解更多。
+</p></li>
+</ul>
+
+<p>
+As an extra convenience, if the DST_DIR ends in .zip or .jar, the compiler will write the output to a single ZIP-format archive file with the given name. .jar outputs will also be given a manifest file as required by the Java JAR specification. Note that if the output archive already exists, it will be overwritten; the compiler is not smart enough to add files to an existing archive.
+</p>
+
+<p>
+作为额外的便利，如果 DST_DIR 以.zip 或.jar 结尾，编译器将会将输出写到一个使用给定名字的 ZIP 格式的打包文件。.jar 输出也会给出一个 Java JAR 规范要求的清单文件。注意，如果将会覆盖已经存在输出打包文件；编译器还没有聪明到向已有打包添加文件的底部。
+</p></li>
+
+<li><p>
+You must provide one or more .proto files as input. Multiple .proto files can be specified at once. Although the files are named relative to the current directory, each file must reside in one of the IMPORT_PATHs so that the compiler can determine its canonical name.
+</p>
+
+<p>
+必须提供至少一个.proto 文件作为输入。可以一次指定多个.proto 文件。虽然文件名可以相对于当前目录，每个文件位于 IMPORT_PATHs 中的路径之一中，这样编译器可以决定它的规范名字。
+</p></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org9a52e7c" class="outline-2">
+<h2 id="org9a52e7c"><span class="section-number-2">15</span> footnotes</h2>
+<div class="outline-text-2" id="text-15">
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

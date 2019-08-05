@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>photoshop cc 数码摄影后期处理完全自学手册</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">photoshop cc 数码摄影后期处理完全自学手册</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org441626a">1. 第一章 如何更有效的学习 Photoshop</a></li>
+<li><a href="#org45ab0b7">2. 第二章 在bridge 中浏览与管理照片</a></li>
+<li><a href="#org2d76742">3. 第三章 定制属于摄影师的 photoshop 工作界面</a></li>
+<li><a href="#org43be65f">4. 第四章 软件设置与色彩管理</a></li>
+<li><a href="#orgee42dc5">5. 第五章 在 Photoshop 中自如地浏览照片</a></li>
+<li><a href="#org4d9c1f9">6. 第六章 数码图像基础</a></li>
+<li><a href="#org31d6a85">7. 第七章 camera raw 与动态调整</a></li>
+<li><a href="#org406f2fb">8. 第八章 图层、选区与蒙版</a></li>
+<li><a href="#org93bc41f">9. 第九章 调整照片的影调</a></li>
+<li><a href="#orgc3865f6">10. 第十章 修饰照片的色彩</a></li>
+<li><a href="#org8ce6c3a">11. 第十一章 锐化与降噪技术</a></li>
+<li><a href="#org81c8eb7">12. 第十二章 黑白转换技巧</a></li>
+<li><a href="#org446f99e">13. 第十三章 关于内容识别的一切</a></li>
+<li><a href="#org409bb4b">14. 第十四章 影调与色彩的高级控制</a></li>
+<li><a href="#org1ce0aa9">15. 第十五章 高动态范围与全景合成</a></li>
+<li><a href="#org3390cfe">16. 第十六章 照片装饰基础</a></li>
+<li><a href="#org80c170b">17. 第十七章 我的 Photoshop 照片处理流程</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org441626a" class="outline-2">
+<h2 id="org441626a"><span class="section-number-2">1</span> 第一章 如何更有效的学习 Photoshop</h2>
+</div>
+
+<div id="outline-container-org45ab0b7" class="outline-2">
+<h2 id="org45ab0b7"><span class="section-number-2">2</span> 第二章 在bridge 中浏览与管理照片</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+bridge 快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C k</td>
+<td class="org-left">打开首选项</td>
+</tr>
+
+<tr>
+<td class="org-left">C F1</td>
+<td class="org-left">切换工作区</td>
+</tr>
+
+<tr>
+<td class="org-left">C 1-5</td>
+<td class="org-left">星标</td>
+</tr>
+
+<tr>
+<td class="org-left">C 0</td>
+<td class="org-left">取消星标</td>
+</tr>
+
+<tr>
+<td class="org-left">C 6-9</td>
+<td class="org-left">设置（取消）色标</td>
+</tr>
+
+<tr>
+<td class="org-left">C g</td>
+<td class="org-left">组成堆栈</td>
+</tr>
+
+<tr>
+<td class="org-left">C S g</td>
+<td class="org-left">取消堆栈</td>
+</tr>
+
+<tr>
+<td class="org-left">C S r</td>
+<td class="org-left">批量重命名</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org2d76742" class="outline-2">
+<h2 id="org2d76742"><span class="section-number-2">3</span> 第三章 定制属于摄影师的 photoshop 工作界面</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Photoshop 快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C M S k</td>
+<td class="org-left">快捷键菜单</td>
+</tr>
+
+<tr>
+<td class="org-left">f</td>
+<td class="org-left">切换屏幕模式</td>
+</tr>
+
+<tr>
+<td class="org-left">d</td>
+<td class="org-left">复位前景色/背景色</td>
+</tr>
+
+<tr>
+<td class="org-left">x</td>
+<td class="org-left">交换前景色/背景色</td>
+</tr>
+
+<tr>
+<td class="org-left">m</td>
+<td class="org-left">选框工具</td>
+</tr>
+
+<tr>
+<td class="org-left">l</td>
+<td class="org-left">套索工具</td>
+</tr>
+
+<tr>
+<td class="org-left">w</td>
+<td class="org-left">快速选择工具</td>
+</tr>
+
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">裁剪工具</td>
+</tr>
+
+<tr>
+<td class="org-left">i</td>
+<td class="org-left">吸管工具</td>
+</tr>
+
+<tr>
+<td class="org-left">j</td>
+<td class="org-left">修复画笔工具</td>
+</tr>
+
+<tr>
+<td class="org-left">k</td>
+<td class="org-left">油漆桶工具</td>
+</tr>
+
+<tr>
+<td class="org-left">h</td>
+<td class="org-left">手型工具</td>
+</tr>
+
+<tr>
+<td class="org-left">z</td>
+<td class="org-left">缩放工具</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-org43be65f" class="outline-2">
+<h2 id="org43be65f"><span class="section-number-2">4</span> 第四章 软件设置与色彩管理</h2>
+</div>
+
+<div id="outline-container-orgee42dc5" class="outline-2">
+<h2 id="orgee42dc5"><span class="section-number-2">5</span> 第五章 在 Photoshop 中自如地浏览照片</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Photoshop 快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C o</td>
+<td class="org-left">打开图片</td>
+</tr>
+
+<tr>
+<td class="org-left">C M o</td>
+<td class="org-left">在 bridge 与 photoshop 间切换</td>
+</tr>
+
+<tr>
+<td class="org-left">C ·</td>
+<td class="org-left">切换相邻图片</td>
+</tr>
+
+<tr>
+<td class="org-left">C S ·</td>
+<td class="org-left">反向切换相邻图片</td>
+</tr>
+
+<tr>
+<td class="org-left">M 鼠标滚轮</td>
+<td class="org-left">缩放图片</td>
+</tr>
+
+<tr>
+<td class="org-left">C spc</td>
+<td class="org-left">临时激活缩放工具</td>
+</tr>
+
+<tr>
+<td class="org-left">S</td>
+<td class="org-left">同步平移或缩放不同照片</td>
+</tr>
+
+<tr>
+<td class="org-left">C 0</td>
+<td class="org-left">图片缩放到合适尺寸</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org4d9c1f9" class="outline-2">
+<h2 id="org4d9c1f9"><span class="section-number-2">6</span> 第六章 数码图像基础</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Photoshop 裁剪照片快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">super</td>
+<td class="org-left">拉直</td>
+</tr>
+
+<tr>
+<td class="org-left">x</td>
+<td class="org-left">切换画幅方向</td>
+</tr>
+
+<tr>
+<td class="org-left">o</td>
+<td class="org-left">改变参考线</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org31d6a85" class="outline-2">
+<h2 id="org31d6a85"><span class="section-number-2">7</span> 第七章 camera raw 与动态调整</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+bridge 快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C r</td>
+<td class="org-left">在 camera raw 打开</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+bridge 快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">p</td>
+<td class="org-left">原图和效果图切换</td>
+</tr>
+
+<tr>
+<td class="org-left">q</td>
+<td class="org-left">原图和效果图对比</td>
+</tr>
+
+<tr>
+<td class="org-left">Shift</td>
+<td class="org-left">打开对象</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+智能对象提供了在 camera raw 和 photoshop 之间穿梭的能力。
+</p>
+
+<p>
+Photoshop 裁剪照片快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C S a</td>
+<td class="org-left">在 camera raw 中打开</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+智能滤镜是动态调整的关键步骤，只需要两步：酱当前图层转换为智能对象，为智能对象添加相应的滤镜。
+</p>
+
+<p>
+通过智能滤镜，可以随时随地对任何图层应用 camera raw 调整。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org406f2fb" class="outline-2">
+<h2 id="org406f2fb"><span class="section-number-2">8</span> 第八章 图层、选区与蒙版</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Photoshop 图层快捷键：
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">0-9</td>
+<td class="org-left">调整图层不透明度</td>
+</tr>
+
+<tr>
+<td class="org-left">C S M w</td>
+<td class="org-left">变换选区</td>
+</tr>
+
+<tr>
+<td class="org-left">C d</td>
+<td class="org-left">取消选区</td>
+</tr>
+
+<tr>
+<td class="org-left">ctrl</td>
+<td class="org-left">临时激活移动工具</td>
+</tr>
+
+<tr>
+<td class="org-left">C t</td>
+<td class="org-left">自由变换，shift 保持长宽比 ，alt以中心为参照变换</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+蒙版快捷键
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Shift 点击蒙版</td>
+<td class="org-left">隐藏蒙版显示</td>
+</tr>
+
+<tr>
+<td class="org-left">C i</td>
+<td class="org-left">反相</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+自由变换前将图层转换为智能对象，有助于保护原始图像。
+</p>
+
+<p>
+快速选择工具快捷键
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">alt</td>
+<td class="org-left">从选区中减去</td>
+</tr>
+
+<tr>
+<td class="org-left">C M r</td>
+<td class="org-left">调整边缘</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+魔棒工具
+</p>
+
+<p>
+色彩范围
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">alt</td>
+<td class="org-left">减去选区</td>
+</tr>
+
+<tr>
+<td class="org-left">shift</td>
+<td class="org-left">增加选区</td>
+</tr>
+
+<tr>
+<td class="org-left">C S i</td>
+<td class="org-left">反向，注意和反相作区分</td>
+</tr>
+
+<tr>
+<td class="org-left">[]</td>
+<td class="org-left">更改画笔大小</td>
+</tr>
+
+<tr>
+<td class="org-left">s []</td>
+<td class="org-left">更改画笔硬度</td>
+</tr>
+
+<tr>
+<td class="org-left">alt单击图层蒙版</td>
+<td class="org-left">整个窗口显示蒙版</td>
+</tr>
+
+<tr>
+<td class="org-left">C M r</td>
+<td class="org-left">调整蒙版边缘</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+画笔快捷键
+</p>
+</div>
+</div>
+
+<div id="outline-container-org93bc41f" class="outline-2">
+<h2 id="org93bc41f"><span class="section-number-2">9</span> 第九章 调整照片的影调</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Photoshop 直方图
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C l</td>
+<td class="org-left">色阶对话框</td>
+</tr>
+
+<tr>
+<td class="org-left">alt 点击色阶滑块</td>
+<td class="org-left">查看高光剪切和阴影剪切</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+camera raw 直方图
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">u</td>
+<td class="org-left">阴影剪切</td>
+</tr>
+
+<tr>
+<td class="org-left">o</td>
+<td class="org-left">高光剪切</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+camera raw 是影调调整的最好工具。
+</p>
+
+<p>
+Photoshop 调整图层
+</p>
+
+<p>
+亮度/对比度图层来调节曝光。
+</p>
+
+<p>
+阴影/高光在图像菜单中，是一个静态调整命令，需要和将图层智能对象才能动态使用。
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C j</td>
+<td class="org-left">复制智能对象</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+可能需要多个不同的 亮度/对比度图层，分别作用于单独的图层和整体的结果。
+</p>
+
+<p>
+曲线图层
+</p>
+
+<p>
+S 形曲线主要是为了增加中间调和对比度，由于曲线限制在了（0，0）（255.255）两个端点，因此理论上不会造成更多的阴影剪切与高光剪切。
+</p>
+
+<p>
+色阶其实是简化版的曲线命令。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc3865f6" class="outline-2">
+<h2 id="orgc3865f6"><span class="section-number-2">10</span> 第十章 修饰照片的色彩</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+Photoshop 中使用色阶中的设置灰场来设置白平衡。
+</p>
+
+<p>
+饱和度调整应该放在影调调整的后面。
+</p>
+
+<p>
+增加饱和度可能放大照片色差。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8ce6c3a" class="outline-2">
+<h2 id="org8ce6c3a"><span class="section-number-2">11</span> 第十一章 锐化与降噪技术</h2>
+</div>
+
+<div id="outline-container-org81c8eb7" class="outline-2">
+<h2 id="org81c8eb7"><span class="section-number-2">12</span> 第十二章 黑白转换技巧</h2>
+</div>
+
+<div id="outline-container-org446f99e" class="outline-2">
+<h2 id="org446f99e"><span class="section-number-2">13</span> 第十三章 关于内容识别的一切</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+污点修复画笔
+</p>
+
+<p>
+修复画笔
+</p>
+
+<p>
+仿制图章
+</p>
+
+<p>
+修补工具
+</p>
+
+<p>
+内容感知移动工具
+</p>
+</div>
+</div>
+
+<div id="outline-container-org409bb4b" class="outline-2">
+<h2 id="org409bb4b"><span class="section-number-2">14</span> 第十四章 影调与色彩的高级控制</h2>
+</div>
+
+<div id="outline-container-org1ce0aa9" class="outline-2">
+<h2 id="org1ce0aa9"><span class="section-number-2">15</span> 第十五章 高动态范围与全景合成</h2>
+</div>
+
+<div id="outline-container-org3390cfe" class="outline-2">
+<h2 id="org3390cfe"><span class="section-number-2">16</span> 第十六章 照片装饰基础</h2>
+</div>
+
+<div id="outline-container-org80c170b" class="outline-2">
+<h2 id="org80c170b"><span class="section-number-2">17</span> 第十七章 我的 Photoshop 照片处理流程</h2>
+<div class="outline-text-2" id="text-17">
+<ul class="org-ul">
+<li>设置相机配置文件</li>
+<li>启用镜头配置文件校正</li>
+<li>锐化和降噪</li>
+<li>白平衡</li>
+<li>高光 阴影溢出</li>
+<li>对比度</li>
+</ul>
+
+
+<p>
+快捷键
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C S M E</td>
+<td class="org-left">盖印图层</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

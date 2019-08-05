@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dockerfile reference</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Dockerfile reference</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9294e74">1. 概述</a></li>
+<li><a href="#orgb0e2d21">2. Usage</a></li>
+<li><a href="#orgb3ab82a">3. BuildKit</a></li>
+<li><a href="#org40f26ee">4. Format</a></li>
+<li><a href="#org5e5a53c">5. Parser directives</a>
+<ul>
+<li><a href="#org2f24985">5.1. syntax</a></li>
+<li><a href="#org9fc73bb">5.2. escape</a></li>
+</ul>
+</li>
+<li><a href="#orge83a6c9">6. Environment replacement</a></li>
+<li><a href="#org02a9d48">7. .dockerignore file</a></li>
+<li><a href="#orga1bcbf8">8. FROM</a></li>
+<li><a href="#orgb6e0c18">9. RUN</a></li>
+<li><a href="#org1ac8f87">10. CMD</a></li>
+<li><a href="#org7191d87">11. LABEL</a></li>
+<li><a href="#orgd34fff6">12. EXPOSE</a></li>
+<li><a href="#org0ebbd98">13. ENV</a></li>
+<li><a href="#org2afa061">14. ADD</a></li>
+<li><a href="#org17f4d4f">15. COPY</a></li>
+<li><a href="#org2306519">16. ENTRYPOINT</a></li>
+<li><a href="#org2f4a40f">17. VOLUME</a></li>
+<li><a href="#orgacc83a1">18. USER</a></li>
+<li><a href="#org4923d17">19. WORKDIR</a></li>
+<li><a href="#org5eac19c">20. ARG</a>
+<ul>
+<li><a href="#org8636820">20.1. Default values</a></li>
+<li><a href="#org2cf6a44">20.2. Scope</a></li>
+<li><a href="#orge918c04">20.3. Using ARG variables</a></li>
+<li><a href="#org1d16288">20.4. Predefined ARGs</a></li>
+<li><a href="#org5cd06ac">20.5. Automatic platform ARGs in the global scope</a></li>
+<li><a href="#org2279e6a">20.6. Impact on build caching</a></li>
+</ul>
+</li>
+<li><a href="#org7321993">21. STOPSIGNAL</a></li>
+<li><a href="#org11801d5">22. HEALTHCHECK</a></li>
+<li><a href="#org17be8f3">23. SHELL</a></li>
+<li><a href="#org43aecd4">24. External implementation features</a></li>
+<li><a href="#org8d17574">25. Dockerfile examples</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9294e74" class="outline-2">
+<h2 id="org9294e74"><span class="section-number-2">1</span> 概述</h2>
+</div>
+
+<div id="outline-container-orgb0e2d21" class="outline-2">
+<h2 id="orgb0e2d21"><span class="section-number-2">2</span> Usage</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+docker build 命令从 Dockerfile 和上下文构建映像。上下文是 PATH 或 URL 指定位置处的文件集。PATH 是本地文件系统上的目录。URL 是 Git 仓库位置。
+</p>
+
+<p>
+上下文被递归处理。因此，PATH 包括任何子目录，URL 包括存储库及其子模块。
+</p>
+
+<p>
+构建由 Docker 守护程序运行，而不是由 CLI 运行。构建过程所做的第一件事是将整个上下文（递归地）发送到守护进程。在大多数情况下，最好以空目录作为上下文，并将 Dockerfile 保存在该目录中。仅添加构建 Dockerfile 所需的文件。
+</p>
+
+<p>
+警告：不要将根目录用作 PATH，因为它会导致构建将硬盘驱动器的全部内容传输到 Docker 守护程序。
+</p>
+
+<p>
+Dockerfile 通过指令（例如 COPY 指令）中指定的文件，引用构建上下文中的文件。要提高构建的性能，请在 <code>.dockerignore</code> 添加要在上下文目录中排除的文件和目录。有关如何创建 <code>.dockerignore</code> 文件的信息，请参阅此页面上的文档。
+</p>
+
+<p>
+传统上，Dockerfile 称为 Dockerfile，位于上下文的根目录中。可以将 <code>-f</code> 标志与 docker build 一起使用，以指向文件系统中任何位置的 Dockerfile。
+</p>
+
+<p>
+Docker 守护程序逐个运行 Dockerfile 中的指令，在必要时将每条指令的结果提交为新的 image，最后输出新 image 的 ID。Docker 守护程序将自动清理发送的上下文。
+</p>
+
+<p>
+请注意，每条指令都是独立运行的，并且会导致创建新 imgme，因此 <code>RUN cd/tmp</code> 对下一条指令不会产生任何影响。
+</p>
+
+<p>
+只要有可能，Docker 将重新使用中间 image（缓存），以显着加速 docker 构建过程。 这由控制台输出中的 “Using cache” 消息指示。（有关更多信息，请参阅 Dockerfile 最佳实践指南中的 Build cache 部分）：
+</p>
+
+<p>
+构建缓存仅用于具有本地父链的 image。 这意味着这些 image 是由以前的版本创建的，或者整个图像链都使用 <code>docker load</code> 装载。如果希望使用特定 image 的构建缓存，可以使用 <code>--cache-from</code> 选项指定它。 使用 <code>=--cache-from</code> 指定的映像不需要具有父链，可以从其他 registries 中提取。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb3ab82a" class="outline-2">
+<h2 id="orgb3ab82a"><span class="section-number-2">3</span> BuildKit</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+从版本 18.09 开始，Docker 支持一个新的后端，用于执行 moby/buildkit 项目提供的构建。 与旧的实现相比，BuildKit 后端提供了许多好处。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org40f26ee" class="outline-2">
+<h2 id="org40f26ee"><span class="section-number-2">4</span> Format</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Dockerfile 的格式如下：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">Comment</span>
+INSTRUCTION arguments
+</pre>
+</div>
+
+<p>
+指令不区分大小写。但是，惯例是让它们成为大写，以便更容易将它们与参数区分开来。
+</p>
+
+<p>
+Docker 按顺序在 Dockerfile 中运行指令。Dockerfile 必须以 “FROM” 指令开头。FROM 指令指定要构建的基本映像。FROM 之前只能有一个或多个 ARG 指令，这些指令声明在 Dockerfile 中的 FROM 行中使用的参数。
+</p>
+
+<p>
+Docker 将以 <code>＃</code> 开头的行视为注释，除非该行是有效的解析器指令。行中任何其他位置的 <code>＃</code> 标记都被视为参数。 这允许这样的陈述：
+</p>
+
+<p>
+注释中不支持续行符。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5e5a53c" class="outline-2">
+<h2 id="org5e5a53c"><span class="section-number-2">5</span> Parser directives</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+解析器指令是可选的，并且会影响 Dockerfile 中其后续行的处理方式。解析器指令不会向构建添加层，也不会显示为构建步骤。解析器指令以 <code>＃directive = value</code> 的形式编写为特殊类型的注释。 单个指令只能使用一次。
+</p>
+
+<p>
+一旦处理了注释，空行或构建器指令，Docker 就不再寻找解析器指令。相反，它将格式为解析器指令的任何内容视为注释，并且不会尝试验证它是否可能是解析器指令。因此，所有解析器指令必须位于 Dockerfile 的最顶层。
+</p>
+
+<p>
+解析器指令不区分大小写。但是，惯例是它们是小写的。还约定任何解析器指令后面有空行。 解析器指令不支持行继续符。
+</p>
+
+<p>
+由于这些规则，以下示例均无效：
+</p>
+
+<p>
+由于行继续而无效：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">direc \</span>
+<span style="color: #ff8700;">tive</span>=value
+</pre>
+</div>
+
+<p>
+由于出现两次而无效：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive=value1</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive=value2</span>
+
+<span style="color: #a1db00;">FROM</span> <span style="color: #00d7af; font-weight: bold;">ImageName</span>
+</pre>
+</div>
+
+<p>
+由于在构建器指令后出现而被视为注释：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #a1db00;">FROM</span> <span style="color: #00d7af; font-weight: bold;">ImageName</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive=value</span>
+</pre>
+</div>
+
+<p>
+由于在不是解析器指令的注释之后出现而被视为注释：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">About my dockerfile</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive=value</span>
+<span style="color: #a1db00;">FROM</span> <span style="color: #00d7af; font-weight: bold;">ImageName</span>
+</pre>
+</div>
+
+<p>
+由于未被识别，未知指令被视为注释。此外，由于出现在不是解析器指令的注释之后，已知指令被视为注释。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">unknowndirective=value</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">knowndirective=value</span>
+</pre>
+</div>
+
+<p>
+解析器指令中允许使用非换行空格。因此，以下几行都是相同的处理：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">directive=value</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive =value</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">   directive= value</span>
+<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">directive = value</span>
+<span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">     dIrEcTiVe=value</span>
+</pre>
+</div>
+
+<p>
+支持以下解析器指令：
+</p>
+<ul class="org-ul">
+<li>syntax</li>
+<li>escape</li>
+</ul>
+</div>
+
+<div id="outline-container-org2f24985" class="outline-3">
+<h3 id="org2f24985"><span class="section-number-3">5.1</span> syntax</h3>
+</div>
+
+<div id="outline-container-org9fc73bb" class="outline-3">
+<h3 id="org9fc73bb"><span class="section-number-3">5.2</span> escape</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+请注意，无论 escape 解析器指令是否包含在 Dockerfile 中，都不会在 RUN 命令中执行转义，除非在行尾。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge83a6c9" class="outline-2">
+<h2 id="orge83a6c9"><span class="section-number-2">6</span> Environment replacement</h2>
+</div>
+
+<div id="outline-container-org02a9d48" class="outline-2">
+<h2 id="org02a9d48"><span class="section-number-2">7</span> .dockerignore file</h2>
+</div>
+
+<div id="outline-container-orga1bcbf8" class="outline-2">
+<h2 id="orga1bcbf8"><span class="section-number-2">8</span> FROM</h2>
+</div>
+
+<div id="outline-container-orgb6e0c18" class="outline-2">
+<h2 id="orgb6e0c18"><span class="section-number-2">9</span> RUN</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+exec form 可以避免 shell 字符串重写，并使用不包含指定 shell 可执行文件的基本镜像来运行 RUN 命令。
+</p>
+
+<p>
+exec form 被解析为 JSON 数组，这意味着必须使用双引号（“）来围绕单词而不是单引号（'）。
+</p>
+
+<p>
+注意：与 shell form 不同，exec form 不会调用命令 shell。这意味着不会发生正常的 shell 处理。 例如， <code>RUN [“echo”，“$HOME”]</code>  不会对 <code>$HOME</code> 执行变量替换。 如果你想要 shell 处理，那么要么使用 shell form，要么直接执行 shell，例如： <code>RUN [“sh”，“ -c”，“echo $HOME”]</code> 。 当使用 exec form 并直接执行 shell 时（如 shell 表单的情况），执行环境变量扩展的是 shell，而不是 docker。
+</p>
+
+
+<p>
+shell form 命令运行在 shell 中，exec from
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ac8f87" class="outline-2">
+<h2 id="org1ac8f87"><span class="section-number-2">10</span> CMD</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+CMD 的主要目的是为容器执行提供默认值。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7191d87" class="outline-2">
+<h2 id="org7191d87"><span class="section-number-2">11</span> LABEL</h2>
+</div>
+
+<div id="outline-container-orgd34fff6" class="outline-2">
+<h2 id="orgd34fff6"><span class="section-number-2">12</span> EXPOSE</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+EXPOSE 指令实际上不会发布端口。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ebbd98" class="outline-2">
+<h2 id="org0ebbd98"><span class="section-number-2">13</span> ENV</h2>
+</div>
+
+<div id="outline-container-org2afa061" class="outline-2">
+<h2 id="org2afa061"><span class="section-number-2">14</span> ADD</h2>
+</div>
+
+<div id="outline-container-org17f4d4f" class="outline-2">
+<h2 id="org17f4d4f"><span class="section-number-2">15</span> COPY</h2>
+</div>
+
+<div id="outline-container-org2306519" class="outline-2">
+<h2 id="org2306519"><span class="section-number-2">16</span> ENTRYPOINT</h2>
+</div>
+
+<div id="outline-container-org2f4a40f" class="outline-2">
+<h2 id="org2f4a40f"><span class="section-number-2">17</span> VOLUME</h2>
+<div class="outline-text-2" id="text-17">
+<p>
+VOLUME 指令创建具有指定名称的安装点，并将其标记为从本机主机或其他容器保存外部安装的卷。
+</p>
+
+<p>
+docker run 命令使用基本映像中指定位置存在的任何数据初始化新创建的卷。例如，请考虑以下 Dockerfile 片段：
+</p>
+</div>
+</div>
+<div id="outline-container-orgacc83a1" class="outline-2">
+<h2 id="orgacc83a1"><span class="section-number-2">18</span> USER</h2>
+</div>
+
+<div id="outline-container-org4923d17" class="outline-2">
+<h2 id="org4923d17"><span class="section-number-2">19</span> WORKDIR</h2>
+</div>
+
+<div id="outline-container-org5eac19c" class="outline-2">
+<h2 id="org5eac19c"><span class="section-number-2">20</span> ARG</h2>
+<div class="outline-text-2" id="text-20">
+<p>
+ARG 指令定义一个变量，用户可以使用带有 <code>--build-arg &lt;varname&gt;=&lt;value&gt;</code> 标志的 docker build 命令在构建时将该变量传递给构建器。
+</p>
+</div>
+
+<div id="outline-container-org8636820" class="outline-3">
+<h3 id="org8636820"><span class="section-number-3">20.1</span> Default values</h3>
+</div>
+
+<div id="outline-container-org2cf6a44" class="outline-3">
+<h3 id="org2cf6a44"><span class="section-number-3">20.2</span> Scope</h3>
+<div class="outline-text-3" id="text-20-2">
+<p>
+ARG 变量定义从 Dockerfile 中定义的行开始生效，而不是从命令行或其他地方的参数使用。
+</p>
+
+<p>
+ARG 指令在构建阶段结束时失效。要在多个阶段中使用 arg，每个阶段必须包含 ARG 指令。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge918c04" class="outline-3">
+<h3 id="orge918c04"><span class="section-number-3">20.3</span> Using ARG variables</h3>
+<div class="outline-text-3" id="text-20-3">
+<p>
+可以使用 ARG 或 ENV 指令指定 RUN 指令可用的变量。使用 ENV 指令定义的环境变量始终覆盖同名的 ARG 指令。
+</p>
+
+<p>
+变量扩展技术允许从命令行传递参数，并通过利用 ENV 指令将它们保存在最终 image 中。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d16288" class="outline-3">
+<h3 id="org1d16288"><span class="section-number-3">20.4</span> Predefined ARGs</h3>
+</div>
+
+<div id="outline-container-org5cd06ac" class="outline-3">
+<h3 id="org5cd06ac"><span class="section-number-3">20.5</span> Automatic platform ARGs in the global scope</h3>
+</div>
+
+<div id="outline-container-org2279e6a" class="outline-3">
+<h3 id="org2279e6a"><span class="section-number-3">20.6</span> Impact on build caching</h3>
+<div class="outline-text-3" id="text-20-6">
+<p>
+ARG 变量不会像 ENV 变量那样持久保存到构建的镜像中。但是，ARG 变量会以类似的方式影响构建缓存。 如果 Dockerfile 定义了一个值与先前构建不同的 ARG 变量，则在第一次使用时，而不是其定义时，会发生 “缓存未命中”。 特别是，ARG 指令之后的所有 RUN 指令都隐式地使用 ARG 变量（作为环境变量），因此可能导致缓存未命中。 除非 Dockerfile 中存在匹配的 ARG 语句，否则所有预定义的 ARG 变量都将免于缓存。
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7321993" class="outline-2">
+<h2 id="org7321993"><span class="section-number-2">21</span> STOPSIGNAL</h2>
+</div>
+
+<div id="outline-container-org11801d5" class="outline-2">
+<h2 id="org11801d5"><span class="section-number-2">22</span> HEALTHCHECK</h2>
+<div class="outline-text-2" id="text-22">
+<p>
+HEALTHCHECK 指令告诉 Docker 如何测试容器以检查它是否仍在工作。 这也可以检测到即使服务器进程仍在运行，但因陷入无限循环而无法处理新连接的 Web 服务器等情况。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org17be8f3" class="outline-2">
+<h2 id="org17be8f3"><span class="section-number-2">23</span> SHELL</h2>
+<div class="outline-text-2" id="text-23">
+<p>
+SHELL 指令允许覆盖用于 shell 形式命令的默认 shell。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org43aecd4" class="outline-2">
+<h2 id="org43aecd4"><span class="section-number-2">24</span> External implementation features</h2>
+</div>
+
+<div id="outline-container-org8d17574" class="outline-2">
+<h2 id="org8d17574"><span class="section-number-2">25</span> Dockerfile examples</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

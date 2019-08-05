@@ -1,0 +1,2565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>面试中遇到的代码</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">面试中遇到的代码</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9cb0cb3">1. C</a>
+<ul>
+<li><a href="#orge2ef88e">1.1. 定义一个宏，比较两个数 a、b 的大小，不能使用大于、小于、if 语句</a></li>
+</ul>
+</li>
+<li><a href="#org2f9ba33">2. C++</a>
+<ul>
+<li><a href="#org55c7b91">2.1. 函数重载中 name mangle 具体过程</a></li>
+<li><a href="#org43f8aed">2.2. auto_ptr 为什么不能作为容器的元素？</a></li>
+<li><a href="#orgf161b0d">2.3. 重载、覆盖、重写区别</a></li>
+<li><a href="#orgf84f908">2.4. C++内存模型</a></li>
+<li><a href="#org0eeac64">2.5. 实现字符串类</a></li>
+<li><a href="#orgf37859a">2.6. C++ 如何实现热加载？</a>
+<ul>
+<li><a href="#org1986201">2.6.1. Windows</a></li>
+<li><a href="#org081dc60">2.6.2. Linux</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org07a56ed">3. 库</a>
+<ul>
+<li><a href="#orgb6c296a">3.1. Clib</a>
+<ul>
+<li><a href="#org42bbad6">3.1.1. 数字字符串转换函数</a></li>
+<li><a href="#org4091039">3.1.2. 字符串函数</a></li>
+<li><a href="#org283f515">3.1.3. 内存拷贝函数</a></li>
+</ul>
+</li>
+<li><a href="#org10c687f">3.2. STL</a>
+<ul>
+<li><a href="#orgd9d2e3d">3.2.1. 容器底层实现方式</a></li>
+<li><a href="#org16a22f4">3.2.2. 为什么 auto_ptr 不能放在容器中。</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgf4f310c">4. 网络</a>
+<ul>
+<li><a href="#org1b39b39">4.1. 判断大小端</a></li>
+<li><a href="#org4138eca">4.2. TCP 和 UDP 区别，适用场景</a></li>
+<li><a href="#orgd474ca9">4.3. TCP</a>
+<ul>
+<li><a href="#org87665ad">4.3.1. 连接状态图</a></li>
+<li><a href="#orgda4c173">4.3.2. 为什么建立连接需要三次，而不是两次？</a></li>
+<li><a href="#orgf6244a7">4.3.3. 为什么断开连接需要四次？</a></li>
+<li><a href="#org0af6583">4.3.4. TIME_WAIT 作用：</a></li>
+<li><a href="#org6dc53ae">4.3.5. 粘包问题</a>
+<ul>
+<li><a href="#org56a53f8">4.3.5.1. 现象模拟</a></li>
+<li><a href="#org1909f81">4.3.5.2. 解决方法</a></li>
+</ul>
+</li>
+<li><a href="#org0aceede">4.3.6. 字符串编码问题</a>
+<ul>
+<li><a href="#org650a59e">4.3.6.1. 现象模拟</a></li>
+<li><a href="#orgeaada1d">4.3.6.2. 解决方法</a></li>
+</ul>
+</li>
+<li><a href="#orgb74d713">4.3.7. 长连接的保活问题</a>
+<ul>
+<li><a href="#orgea3f5db">4.3.7.1. 现象模拟</a></li>
+<li><a href="#org384b9d3">4.3.7.2. 解决方法</a></li>
+</ul>
+</li>
+<li><a href="#org6d71e57">4.3.8. 缓冲区脏数据问题</a>
+<ul>
+<li><a href="#org9c4fbf1">4.3.8.1. 现象模拟</a></li>
+<li><a href="#org07d3034">4.3.8.2. 解决方法</a></li>
+</ul>
+</li>
+<li><a href="#orgf9aedff">4.3.9. 内存碎片问题</a>
+<ul>
+<li><a href="#org38ff4cb">4.3.9.1. 现象模拟</a></li>
+<li><a href="#org788cd41">4.3.9.2. 解决方法</a></li>
+</ul>
+</li>
+<li><a href="#orgb1e8eb5">4.3.10. 乱序问题</a>
+<ul>
+<li><a href="#orga6fa0b2">4.3.10.1. 现象模拟</a></li>
+<li><a href="#org693b234">4.3.10.2. 解决方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org49b4cc5">4.4. UDP</a></li>
+<li><a href="#orgc83e6e3">4.5. 弱网络环境下如何保证数据传输？</a></li>
+<li><a href="#org3190dda">4.6. 描述一下浏览器输入网址之后发生了什么。</a></li>
+</ul>
+</li>
+<li><a href="#orgfea8e5b">5. 操作系统</a>
+<ul>
+<li><a href="#orgbc86bc3">5.1. 判断操作系统是 32 位还是 64 位</a></li>
+<li><a href="#orgad63649">5.2. 线程和进程的区别联系：</a></li>
+<li><a href="#org9720438">5.3. 如何系统调优</a></li>
+<li><a href="#org2b540f9">5.4. 进程间通信方式</a>
+<ul>
+<li><a href="#orgf2612ea">5.4.1. 管道</a></li>
+<li><a href="#org2aea904">5.4.2. 信号</a></li>
+<li><a href="#org1d428c3">5.4.3. 信号量</a></li>
+<li><a href="#org7731d0d">5.4.4. 消息队列</a></li>
+<li><a href="#orgc2e6603">5.4.5. 共享内存</a></li>
+<li><a href="#org70ac2ee">5.4.6. socket</a></li>
+</ul>
+</li>
+<li><a href="#org7d08b49">5.5. 常用命令</a></li>
+<li><a href="#orgce15ea6">5.6. 线程间通信方式</a>
+<ul>
+<li><a href="#org5349681">5.6.1. 信号量</a></li>
+<li><a href="#orgb8c318c">5.6.2. 互斥量</a></li>
+<li><a href="#orga635a9b">5.6.3. 读写锁</a></li>
+<li><a href="#org1944dad">5.6.4. 自旋锁</a></li>
+<li><a href="#org1179ca4">5.6.5. 条件变量</a></li>
+<li><a href="#org6a059a0">5.6.6. 屏障</a></li>
+</ul>
+</li>
+<li><a href="#org4c6c0ce">5.7. malloc 的底层实现。</a></li>
+<li><a href="#org3752267">5.8. deamon 进程如何实现。</a></li>
+</ul>
+</li>
+<li><a href="#org537751e">6. 数据库</a>
+<ul>
+<li><a href="#orgb7fdac9">6.1. MySQL</a>
+<ul>
+<li><a href="#org97e6a84">6.1.1. 查询语句如何调优</a></li>
+<li><a href="#org7378abf">6.1.2. 索引的用途、类型、建立方法</a></li>
+<li><a href="#org5ad0c70">6.1.3. 如何分表</a></li>
+<li><a href="#org4b15ca2">6.1.4. 如何调优</a></li>
+<li><a href="#org8289f98">6.1.5. 数据库应该先做记录还是先写日志？</a></li>
+</ul>
+</li>
+<li><a href="#orgc5f0695">6.2. NOSQL</a></li>
+</ul>
+</li>
+<li><a href="#orged0ec65">7. 设计模式</a>
+<ul>
+<li><a href="#org1425538">7.1. 单例模式</a></li>
+<li><a href="#orgcc788ad">7.2. 线程安全的单例模式</a></li>
+</ul>
+</li>
+<li><a href="#orgf44598a">8. 数据结构</a>
+<ul>
+<li><a href="#org759b48f">8.1. 字符串</a></li>
+<li><a href="#org67b669a">8.2. 链表</a>
+<ul>
+<li><a href="#org9793d35">8.2.1. 节点</a></li>
+<li><a href="#org81316d6">8.2.2. 在 O(1)时间删除链表节点</a></li>
+<li><a href="#orgd115c0e">8.2.3. 二级指针删除单链表</a></li>
+<li><a href="#orgde6cf01">8.2.4. 单链表反转</a>
+<ul>
+<li><a href="#orgab77af8">8.2.4.1. 递归</a></li>
+<li><a href="#orgf8de5a2">8.2.4.2. 非递归</a></li>
+</ul>
+</li>
+<li><a href="#orgb4b9c48">8.2.5. 判断单链表有环并找到环入口</a></li>
+<li><a href="#org05e7da9">8.2.6. 单链表排序</a></li>
+<li><a href="#org07fd90a">8.2.7. 判断单链表相交</a></li>
+</ul>
+</li>
+<li><a href="#org3ca8d85">8.3. 队列</a>
+<ul>
+<li><a href="#org028f9bc">8.3.1. 用两个栈实现队列</a></li>
+</ul>
+</li>
+<li><a href="#orgf4d8764">8.4. 哈希表</a>
+<ul>
+<li><a href="#orge800267">8.4.1. 解决 hash 冲突</a>
+<ul>
+<li><a href="#org5808114">8.4.1.1. 开放地址法</a></li>
+<li><a href="#org16d7850">8.4.1.2. 再 hash</a></li>
+<li><a href="#orgff0456a">8.4.1.3. 链地址法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7be44e4">8.5. 树</a>
+<ul>
+<li><a href="#org673fd67">8.5.1. 二叉树</a></li>
+<li><a href="#orgc0de3e2">8.5.2. B 树</a></li>
+<li><a href="#orgc3cf5fd">8.5.3. AVL 树</a></li>
+<li><a href="#org42d39b4">8.5.4. 红黑树</a></li>
+<li><a href="#org87b3c17">8.5.5. tri 树</a></li>
+<li><a href="#orgdb3e09c">8.5.6. 字典数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org54b4140">9. 算法</a>
+<ul>
+<li><a href="#orge6918e7">9.1. 排序</a>
+<ul>
+<li><a href="#org6677e93">9.1.1. 冒泡排序</a></li>
+<li><a href="#org5fb3234">9.1.2. 快速排序</a>
+<ul>
+<li><a href="#org0e1144c">9.1.2.1. 递归实现</a></li>
+<li><a href="#orga4e0de7">9.1.2.2. 栈非递归</a></li>
+</ul>
+</li>
+<li><a href="#orge3832f5">9.1.3. 插入排序</a>
+<ul>
+<li><a href="#org552064b">9.1.3.1. 交换位置的插入排序</a></li>
+<li><a href="#org5c45ed5">9.1.3.2. 带二分查找的插入排序</a></li>
+</ul>
+</li>
+<li><a href="#org7a2a927">9.1.4. 希尔排序</a></li>
+<li><a href="#org30a9a53">9.1.5. 选择排序</a>
+<ul>
+<li><a href="#org04f3b27">9.1.5.1. 简单选择排序</a></li>
+<li><a href="#orgd745c95">9.1.5.2. 递归简单选择排序</a></li>
+</ul>
+</li>
+<li><a href="#orgd5873cc">9.1.6. 堆排序</a></li>
+<li><a href="#org448f421">9.1.7. 归并排序</a>
+<ul>
+<li><a href="#org6689976">9.1.7.1. 递归实现</a></li>
+<li><a href="#org9a98a8e">9.1.7.2. 非递归实现</a></li>
+</ul>
+</li>
+<li><a href="#orgac697e2">9.1.8. 基数排序</a></li>
+<li><a href="#org7728142">9.1.9. 计数排序</a></li>
+<li><a href="#org56bc5b4">9.1.10. 桶排序</a></li>
+<li><a href="#orgd84bdee">9.1.11. 排序总结</a></li>
+</ul>
+</li>
+<li><a href="#org1e4795a">9.2. 查找</a>
+<ul>
+<li><a href="#orgfc12c7b">9.2.1. 二分查找</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgb864b77">10. 智力题</a>
+<ul>
+<li><a href="#org78eea32">10.1. 过桥问题</a></li>
+<li><a href="#org4acce84">10.2. 天平称重</a></li>
+<li><a href="#org0754067">10.3. 小白鼠与毒药</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org39df29b">10.3.0.1. 推广 1</a></li>
+<li><a href="#orgac1bedb">10.3.0.2. 推广 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6229a2c">11. Makefile 文件</a></li>
+<li><a href="#org1cfba91">12. 测试上面代码的 main 函数</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9cb0cb3" class="outline-2">
+<h2 id="org9cb0cb3"><span class="section-number-2">1</span> C</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orge2ef88e" class="outline-3">
+<h3 id="orge2ef88e"><span class="section-number-3">1.1</span> 定义一个宏，比较两个数 a、b 的大小，不能使用大于、小于、if 语句</h3>
+</div>
+</div>
+<div id="outline-container-org2f9ba33" class="outline-2">
+<h2 id="org2f9ba33"><span class="section-number-2">2</span> C++</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org55c7b91" class="outline-3">
+<h3 id="org55c7b91"><span class="section-number-3">2.1</span> 函数重载中 name mangle 具体过程</h3>
+</div>
+<div id="outline-container-org43f8aed" class="outline-3">
+<h3 id="org43f8aed"><span class="section-number-3">2.2</span> auto_ptr 为什么不能作为容器的元素？</h3>
+</div>
+<div id="outline-container-orgf161b0d" class="outline-3">
+<h3 id="orgf161b0d"><span class="section-number-3">2.3</span> 重载、覆盖、重写区别</h3>
+</div>
+<div id="outline-container-orgf84f908" class="outline-3">
+<h3 id="orgf84f908"><span class="section-number-3">2.4</span> C++内存模型</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="HTML">
+<p>
+
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org0eeac64" class="outline-3">
+<h3 id="org0eeac64"><span class="section-number-3">2.5</span> 实现字符串类</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+<pre class="src src-c++">       <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">MyString</span> {
+       <span style="color: #a1db00;">private</span>:
+           <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">m_data</span>;
+       <span style="color: #a1db00;">public</span>:
+           <span style="color: #ffd700;">MyString</span> () : m_data (<span style="color: #a1db00;">new</span> <span style="color: #00d7af;">char</span>[1]) { *m_data = <span style="color: #ff4ea3;">'\0'</span>; }
+
+           <span style="color: #ffd700;">MyString</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">str</span>) : m_data (<span style="color: #a1db00;">new</span> <span style="color: #00d7af;">char</span>[strlen (str) + 1]) {<span style="color: #6c6c6c; font-style: italic;">/*</span><span style="color: #6c6c6c; font-style: italic;">strcpy (m_data, str);*/</span> }
+
+           <span style="color: #ffd700;">MyString</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">MyString</span>&amp; <span style="color: #ff8700;">rhs</span>) : m_data (<span style="color: #a1db00;">new</span> <span style="color: #00d7af;">char</span>[rhs.size () + 1]) {<span style="color: #6c6c6c; font-style: italic;">/*</span><span style="color: #6c6c6c; font-style: italic;">strcpy (m_data, rhs.c_str ());*/</span> }
+
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Delegate constructor in C++11</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">MyString(const MyString&amp; rhs) : MyString(rhs.m_data)  {}</span>
+
+           <span style="color: #00d7af;">MyString</span>&amp; <span style="color: #a1db00;">operator</span><span style="color: #ffd700;">=</span>(<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">MyString</span>&amp; <span style="color: #ff8700;">rhs</span>) {
+               <span style="color: #00d7af;">MyString</span> <span style="color: #ff8700;">tmp</span> (rhs);
+               swap (tmp);
+               <span style="color: #a1db00;">return</span> *<span style="color: #a1db00;">this</span>;
+           }
+
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">in C++11</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">MyString&amp; operator=(MyString rhs) // yes, pass-by-value</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">{</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">swap (rhs);</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">return *this;</span>
+           <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">}</span>
+
+           <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">C++ 11 move</span>
+           <span style="color: #ffd700;">MyString</span> (<span style="color: #00d7af;">MyString</span>&amp;&amp; <span style="color: #ff8700;">rhs</span>) : m_data (rhs.m_data) { rhs.m_data = <span style="color: #5fafd7;">nullptr</span>; }
+
+           <span style="color: #00d7af;">MyString</span>&amp; <span style="color: #a1db00;">operator</span><span style="color: #ffd700;">=</span>(<span style="color: #00d7af;">MyString</span>&amp;&amp; <span style="color: #ff8700;">rhs</span>) {
+               swap (rhs);
+               <span style="color: #a1db00;">return</span> *<span style="color: #a1db00;">this</span>;
+           }
+
+           <span style="color: #00d7af;">size_t</span> <span style="color: #ffd700;">size</span> () <span style="color: #a1db00;">const</span> { <span style="color: #a1db00;">return</span> strlen (m_data); }
+
+           <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ffd700;">c_str</span> () <span style="color: #a1db00;">const</span> { <span style="color: #a1db00;">return</span> m_data; }
+
+           <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">swap</span> (<span style="color: #00d7af;">MyString</span>&amp; <span style="color: #ff8700;">rhs</span>) { <span style="color: #5fafd7;">std</span>::swap (m_data, rhs.m_data); }
+
+           ~<span style="color: #ffd700;">MyString</span> () { <span style="color: #a1db00;">delete</span>[] m_data; }
+
+       };
+<span style="color: #d18aff;">       #endif</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf37859a" class="outline-3">
+<h3 id="orgf37859a"><span class="section-number-3">2.6</span> C++ 如何实现热加载？</h3>
+<div class="outline-text-3" id="text-2-6">
+</div>
+<div id="outline-container-org1986201" class="outline-4">
+<h4 id="org1986201"><span class="section-number-4">2.6.1</span> Windows</h4>
+</div>
+<div id="outline-container-org081dc60" class="outline-4">
+<h4 id="org081dc60"><span class="section-number-4">2.6.2</span> Linux</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org07a56ed" class="outline-2">
+<h2 id="org07a56ed"><span class="section-number-2">3</span> 库</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgb6c296a" class="outline-3">
+<h3 id="orgb6c296a"><span class="section-number-3">3.1</span> Clib</h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-org42bbad6" class="outline-4">
+<h4 id="org42bbad6"><span class="section-number-4">3.1.1</span> 数字字符串转换函数</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;cstdio&gt;</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;cassert&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">my_atoi</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">str</span>)
+        {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">sign</span> = 0, <span style="color: #ff8700;">num</span> = 0;
+            assert (<span style="color: #5fafd7;">NULL</span> != str);
+            <span style="color: #a1db00;">while</span> ( *str == <span style="color: #ff4ea3;">' '</span> )
+            {
+                str++;
+            }
+            <span style="color: #a1db00;">if</span> ( <span style="color: #ff4ea3;">'-'</span> == *str )
+            {
+                sign = 1; str++;
+            }
+            <span style="color: #a1db00;">while</span> ( (*str &gt;= <span style="color: #ff4ea3;">'0'</span>) &amp;&amp; (*str &lt;= <span style="color: #ff4ea3;">'9'</span>) )
+            {
+                num = num * 10 + (*str - <span style="color: #ff4ea3;">'0'</span>); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#23601;&#26159;&#36825;&#19968;&#34892;&#65292;&#23558;&#23545;&#24212;&#23383;&#31526;&#36716;&#21270;&#20026;&#25968;&#23383;</span>
+
+                str++;
+            }
+            <span style="color: #a1db00;">if</span> ( sign == 1 )
+                <span style="color: #a1db00;">return</span> -num;
+            <span style="color: #a1db00;">else</span>
+                <span style="color: #a1db00;">return</span> num;
+        }
+
+
+        <span style="color: #00d7af;">double</span> <span style="color: #ffd700;">my_atof</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">str</span>)
+        {
+            <span style="color: #00d7af;">double</span> <span style="color: #ff8700;">val</span> = 0.0, <span style="color: #ff8700;">power</span> = 0.0;
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">sign</span> = 0;
+            assert (<span style="color: #5fafd7;">NULL</span> != str);
+            <span style="color: #a1db00;">while</span> ( *str == <span style="color: #ff4ea3;">' '</span> )
+            {
+                str++;
+            }
+            sign = (*str == <span style="color: #ff4ea3;">'-'</span>) ? -1 : 1;
+            <span style="color: #a1db00;">if</span> ( <span style="color: #ff4ea3;">'-'</span> == *str || <span style="color: #ff4ea3;">'+'</span> == *str )
+            {
+                str++;
+            }
+            <span style="color: #a1db00;">while</span> ( (*str &gt;= <span style="color: #ff4ea3;">'0'</span>) &amp;&amp; (*str &lt;= <span style="color: #ff4ea3;">'9'</span>) )
+            {
+                val = val* 10.0 + (*str - <span style="color: #ff4ea3;">'0'</span>); str++;
+            }
+            <span style="color: #a1db00;">if</span> ( <span style="color: #ff4ea3;">'.'</span> == *str )
+            {
+                str++;
+            }
+            power = 1.0;
+            <span style="color: #a1db00;">while</span> ( (*str &gt;= <span style="color: #ff4ea3;">'0'</span>) &amp;&amp; (*str &lt;= <span style="color: #ff4ea3;">'9'</span>) )
+            {
+                val = val* 10.0 + (*str - <span style="color: #ff4ea3;">'0'</span>);
+                power *= 10; str++;
+            }
+            <span style="color: #a1db00;">return</span> sign*val / power;
+        }
+
+
+        <span style="color: #00d7af;">char</span>* <span style="color: #ffd700;">my_itoa</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">val</span>, <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">buf</span>, <span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">radix</span>)
+        {
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">bufptr</span>;
+            <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">firstdig</span>;
+            <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">temp</span>;
+            <span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">digval</span>;
+            assert (buf != <span style="color: #5fafd7;">NULL</span>);
+            bufptr = buf;
+            <span style="color: #a1db00;">if</span> ( val &lt; 0 )
+            {
+                *bufptr++ = <span style="color: #ff4ea3;">'-'</span>; val = (<span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">int</span>)(-(<span style="color: #00d7af;">int</span>)val);
+            }
+            firstdig = bufptr;
+            <span style="color: #a1db00;">do</span>
+            {
+                digval = (<span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">int</span>)val % radix;    val /= radix;
+                <span style="color: #a1db00;">if</span> ( digval &gt; 9 )
+                {
+                    *bufptr++ = (<span style="color: #00d7af;">char</span>)(digval - 10 + <span style="color: #ff4ea3;">'a'</span>);
+                }
+                <span style="color: #a1db00;">else</span>
+                {
+                    *bufptr++ = (<span style="color: #00d7af;">char</span>)(digval + <span style="color: #ff4ea3;">'0'</span>);
+                }
+            } <span style="color: #a1db00;">while</span> ( val &gt; 0 );
+            *bufptr-- = <span style="color: #ff4ea3;">'\0'</span>;<span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#35774;&#32622;&#23383;&#31526;&#20018;&#26411;&#23614;&#65292;&#24182;&#23558;&#25351;&#38024;&#25351;&#21521;&#26368;&#21518;&#19968;&#20010;&#23383;&#31526;</span>
+            <span style="color: #a1db00;">do</span> <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#21453;&#36716;&#23383;&#31526;</span>
+            {
+                temp = *bufptr;     *bufptr = *firstdig;  *firstdig = temp;
+                --bufptr; ++firstdig;
+            } <span style="color: #a1db00;">while</span> ( firstdig &lt; bufptr );
+            <span style="color: #a1db00;">return</span> buf;
+        }
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4091039" class="outline-4">
+<h4 id="org4091039"><span class="section-number-4">3.1.2</span> 字符串函数</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">char</span>* <span style="color: #ffd700;">my_strcpy</span> (<span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">dst</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">src</span>)
+        {
+            assert (<span style="color: #5fafd7;">NULL</span> != dst &amp;&amp; <span style="color: #5fafd7;">NULL</span> != src);
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">p</span> = dst;
+            <span style="color: #a1db00;">while</span> ( *p++ = *src++ );
+            <span style="color: #a1db00;">return</span> dst;
+        }
+        <span style="color: #00d7af;">char</span>* <span style="color: #ffd700;">my_strcat</span> (<span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">dst</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">src</span>)
+        {
+            assert (<span style="color: #5fafd7;">NULL</span> != dst &amp;&amp; <span style="color: #5fafd7;">NULL</span> != src);
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">p</span> = dst;
+            <span style="color: #a1db00;">while</span> ( *p != <span style="color: #ff4ea3;">'\n'</span> )
+                ++p;
+            <span style="color: #a1db00;">while</span> ( *p++ = *src++ );
+
+            <span style="color: #a1db00;">return</span> dst;
+        }
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">my_strcmp</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">str1</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">str2</span>)
+        {
+            assert (<span style="color: #5fafd7;">NULL</span> != str1 &amp;&amp; <span style="color: #5fafd7;">NULL</span> != str2);
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">ret</span> = 0;
+            <span style="color: #a1db00;">while</span> ( <span style="color: #ff4b4b;">!</span>(ret = *(<span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">char</span>*)str1 - *(<span style="color: #00d7af;">unsigned</span> <span style="color: #00d7af;">char</span>*)str2) &amp;&amp; *str2 ) {
+                ++str1;
+                ++str2;
+            }
+            <span style="color: #a1db00;">if</span> ( ret &gt; 0 ) ret = 1;
+            <span style="color: #a1db00;">if</span> ( ret &lt; 0 ) ret = -1;
+            <span style="color: #a1db00;">return</span> ret;
+        }
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org283f515" class="outline-4">
+<h4 id="org283f515"><span class="section-number-4">3.1.3</span> 内存拷贝函数</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<div class="org-src-container">
+<pre class="src src-c++">
+
+        <span style="color: #00d7af;">void</span>* <span style="color: #ffd700;">my_memcpy</span> (<span style="color: #00d7af;">void</span>* <span style="color: #ff8700;">dst</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">void</span>* <span style="color: #ff8700;">src</span>, <span style="color: #00d7af;">size_t</span> <span style="color: #ff8700;">count</span>)
+        {
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">pbTo</span> = (<span style="color: #00d7af;">char</span>*)dst;
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">pbFrom</span> = (<span style="color: #00d7af;">char</span>*)src;
+            assert (dst != <span style="color: #5fafd7;">NULL</span> &amp;&amp; src != <span style="color: #5fafd7;">NULL</span>);
+            assert (pbTo &gt;= pbFrom + count || pbFrom &gt;= pbTo + count);<span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#38450;&#27490;&#20869;&#23384;&#37325;&#21472;(overlap)</span>
+            <span style="color: #a1db00;">while</span> ( count-- &gt; 0 )
+            {
+                *pbTo++ = *pbFrom++;
+            }
+            <span style="color: #a1db00;">return</span> dst;
+        }
+
+        <span style="color: #00d7af;">void</span>* <span style="color: #ffd700;">my_memmove</span> (<span style="color: #00d7af;">void</span>* <span style="color: #ff8700;">dst</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">void</span>* <span style="color: #ff8700;">src</span>, <span style="color: #00d7af;">size_t</span> <span style="color: #ff8700;">count</span>)
+        {
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">pbTo</span> = (<span style="color: #00d7af;">char</span>*)dst;
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">pbFrom</span> = (<span style="color: #00d7af;">char</span>*)src;
+            assert (dst != <span style="color: #5fafd7;">NULL</span> &amp;&amp; src != <span style="color: #5fafd7;">NULL</span>);
+            <span style="color: #a1db00;">if</span> ( dst &lt;= src || pbTo &gt;= pbFrom + count )
+            {
+                <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#27809;&#26377; overlap &#30340;&#24773;&#20917;&#65292;&#30452;&#25509;&#25335;&#36125;</span>
+                <span style="color: #a1db00;">while</span> ( count-- &gt; 0 )
+                {
+                    *pbTo++ = *pbFrom++;
+                }
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">overlap &#30340;&#24773;&#20917;&#65292;&#20174;&#39640;&#20301;&#22320;&#22336;&#21521;&#20302;&#20301;&#25335;&#36125;</span>
+                pbTo = pbTo + count - 1;
+                pbFrom = pbFrom + count - 1;
+                <span style="color: #a1db00;">while</span> ( count-- &gt; 0 )
+                {
+                    *pbTo-- = *pbFrom--;
+                }
+            }
+            <span style="color: #a1db00;">return</span> dst;
+        }
+
+        <span style="color: #00d7af;">void</span>* <span style="color: #ffd700;">my_memset</span> (<span style="color: #00d7af;">void</span>* <span style="color: #ff8700;">buf</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">c</span>, <span style="color: #00d7af;">size_t</span> <span style="color: #ff8700;">count</span>)
+        {
+            <span style="color: #00d7af;">char</span>* <span style="color: #ff8700;">pvTo</span> = (<span style="color: #00d7af;">char</span>*)buf;
+            assert (buf != <span style="color: #5fafd7;">NULL</span>);
+            <span style="color: #a1db00;">while</span> ( count-- &gt;0 )
+            {
+                *pvTo++ = (<span style="color: #00d7af;">char</span>)c;
+            }
+            <span style="color: #a1db00;">return</span> buf;
+        }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org10c687f" class="outline-3">
+<h3 id="org10c687f"><span class="section-number-3">3.2</span> STL</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-orgd9d2e3d" class="outline-4">
+<h4 id="orgd9d2e3d"><span class="section-number-4">3.2.1</span> 容器底层实现方式</h4>
+</div>
+<div id="outline-container-org16a22f4" class="outline-4">
+<h4 id="org16a22f4"><span class="section-number-4">3.2.2</span> 为什么 auto_ptr 不能放在容器中。</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf4f310c" class="outline-2">
+<h2 id="orgf4f310c"><span class="section-number-2">4</span> 网络</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org1b39b39" class="outline-3">
+<h3 id="org1b39b39"><span class="section-number-3">4.1</span> 判断大小端</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;gtest\gtest.h&gt;</span>
+
+       <span style="color: #a1db00;">namespace</span> <span style="color: #5fafd7;">phenix3443</span> {
+           <span style="color: #a1db00;">enum</span> <span style="color: #00d7af;">kOrderType</span> { <span style="color: #ff8700;">unknown_error</span> = -1, <span style="color: #ff8700;">little_endian</span> = 0, <span style="color: #ff8700;">big_endian</span> = 1 };
+
+           <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">ByteOrder</span> () {
+               <span style="color: #a1db00;">union</span> {
+                   <span style="color: #00d7af;">short</span> <span style="color: #ff8700;">val</span>;
+                   <span style="color: #00d7af;">char</span> <span style="color: #ff8700;">bytes</span>[<span style="color: #a1db00;">sizeof</span> (<span style="color: #00d7af;">short</span>)];
+               } <span style="color: #ff8700;">test</span>;
+               test.val = 0x0102;
+               <span style="color: #a1db00;">if</span> ( (2 == test.bytes[0]) &amp;&amp; (1 == test.bytes[1]) ) {
+                   <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"Little Endian"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+                   <span style="color: #a1db00;">return</span> little_endian;
+               }
+               <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> ( 1 == (test.bytes[0]) &amp;&amp; (2 == test.bytes[2]) ) {
+                   <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"Big Endian"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+                   <span style="color: #a1db00;">return</span> big_endian;
+               }
+               <span style="color: #a1db00;">else</span> {
+                   <span style="color: #5fafd7;">std</span>::cout &lt;&lt; <span style="color: #ff4ea3;">"Unknown Error"</span> &lt;&lt; <span style="color: #5fafd7;">std</span>::endl;
+                   <span style="color: #a1db00;">return</span> unknown_error;
+               }
+           }
+
+
+           <span style="color: #ffd700;">TEST</span> (TestByteOrder, LocalHostTest) {
+               EXPECT_EQ (little_endian, ByteOrder ());
+           }
+       }
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4138eca" class="outline-3">
+<h3 id="org4138eca"><span class="section-number-3">4.2</span> TCP 和 UDP 区别，适用场景</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>TCP 提供面向连接、可靠的字节流服务。
+<ul class="org-ul">
+<li>面向连接是指：使用 TCP 协议通信的双方必须先建立连接，然后才能开始数据的读写。双方必须为该连接分配必要的内核资源，以管理连接的状态和连接上的数据传输。TCP 连接是全双工的，即双方的数据读写可以通过一个连接进行。完成数据交换后，通信双方都必须断开连接以释放系统资源。TCP 协议的这种连接是一对一的，所以基于广播和多播的应用程序不能使用 TCP 服务，而无连接协议 UDP 则非常适合广播和多播。</li>
+<li>TCP 通过发送应答、超时重传、报文重组等方法保证数据的可靠传输。</li>
+<li>字节流服务体现在实际编程上表现为通信双方各自的读写操作次数没有固定的数量关系，双方应用程序对数据的发送和接收是没有边界的。另外 TCP 模块发送 TCP 报文段的个数和应用程序执行的读写操作的次数之间没有固定的数量关系。</li>
+</ul></li>
+<li>UDP 数据报协议。
+<ul class="org-ul">
+<li>UDP 不需要建立连接，所以发送速度较快。</li>
+<li>UDP 协议和 IP 协议一样，它们都需要上层协议来处理数据确认和超时重传。</li>
+<li>发送端应用程序每执行一次写操作，UDP 模块就将其封装为一个 UDP 数据报并发送。接受端必须及时针对每一个 UDP 数据报执行读操作，否则就会发生丢包。并且，如果用户没有指定足够的应程序缓冲区来读取 UDP 数据，则 UDP 数据将被截断。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd474ca9" class="outline-3">
+<h3 id="orgd474ca9"><span class="section-number-3">4.3</span> TCP</h3>
+<div class="outline-text-3" id="text-4-3">
+</div>
+<div id="outline-container-org87665ad" class="outline-4">
+<h4 id="org87665ad"><span class="section-number-4">4.3.1</span> 连接状态图</h4>
+</div>
+<div id="outline-container-orgda4c173" class="outline-4">
+<h4 id="orgda4c173"><span class="section-number-4">4.3.2</span> 为什么建立连接需要三次，而不是两次？</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<p>
+三次是最少的握手次数，因为只有两次握手的话，客户端和服务端都不能确信连接是否建立，只有收到客户端的响应后，双方才能确认连接已经建立。如果只有两次握手，有可能发生死锁：假如服务端应答分组在传输过程中丢失，服务端以为已经成功建立连接，可以开始发送数据。而客户端不知道连接已经建立，甚至怀疑服务端是否收到自己的连接请求分组，此时将忽略服务端发来的任何数据，只等待连接确认应答分组。这样就形成了死锁。
+</p>
+
+<p>
+其实换个角度解释：为了保证服务端能接收到客户端的信息并做成正确的应答而进行前两次握手，为了保证客户端能够接收到服务器的信息并能作出正确的应答而进行后两次握手，中间的两次握手合并在一个消息发送。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf6244a7" class="outline-4">
+<h4 id="orgf6244a7"><span class="section-number-4">4.3.3</span> 为什么断开连接需要四次？</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<p>
+因为 TCP 是全双工的，每个方向上都可以单独进行关闭，这种单方向的关闭叫半关闭，表示发送 FIN 这一端不再发送数据，但是还可以接收数据。
+</p>
+</div>
+</div>
+<div id="outline-container-org0af6583" class="outline-4">
+<h4 id="org0af6583"><span class="section-number-4">4.3.4</span> TIME_WAIT 作用：</h4>
+<div class="outline-text-4" id="text-4-3-4">
+<p>
+****　TIME_WAIT 状态过多如何解决
+</p>
+</div>
+</div>
+<div id="outline-container-org6dc53ae" class="outline-4">
+<h4 id="org6dc53ae"><span class="section-number-4">4.3.5</span> 粘包问题</h4>
+<div class="outline-text-4" id="text-4-3-5">
+</div>
+<div id="outline-container-org56a53f8" class="outline-5">
+<h5 id="org56a53f8"><span class="section-number-5">4.3.5.1</span> 现象模拟</h5>
+</div>
+<div id="outline-container-org1909f81" class="outline-5">
+<h5 id="org1909f81"><span class="section-number-5">4.3.5.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-5-2">
+<ul class="org-ul">
+<li>TCP 提供了强制数据立即传送的操作指令 push，TCP 软件收到该操作指令后，就立即将本段数据发送出去，而不必等待发送缓冲区满；</li>
+<li>发送固定长度的消息</li>
+<li>把消息的尺寸与消息一块发送</li>
+<li>双方约定每次传送的大小</li>
+<li>双方约定使用特殊标记来区分消息间隔</li>
+<li>标准协议按协议规则处理，如 Sip 协议</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0aceede" class="outline-4">
+<h4 id="org0aceede"><span class="section-number-4">4.3.6</span> 字符串编码问题</h4>
+<div class="outline-text-4" id="text-4-3-6">
+</div>
+<div id="outline-container-org650a59e" class="outline-5">
+<h5 id="org650a59e"><span class="section-number-5">4.3.6.1</span> 现象模拟</h5>
+<div class="outline-text-5" id="text-4-3-6-1">
+<p>
+将中文字符串用 utf8 编码格式转换为字节数组发送时，一个中文字符可能会占用 2～4 个字节（假设为 3 个字节），这 3 个字节可能分 3 次接收，接收端每次接收完后用 utf8 编码格式转换为字符串，就会出现乱码，并导致接收长度计算错误的情况。
+</p>
+</div>
+</div>
+<div id="outline-container-orgeaada1d" class="outline-5">
+<h5 id="orgeaada1d"><span class="section-number-5">4.3.6.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-6-2">
+<ul class="org-ul">
+<li>以字节数做为消息长度的计算单位，而不是字符个数。</li>
+<li>发送方和接收方都采用 unicode 编码格式。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb74d713" class="outline-4">
+<h4 id="orgb74d713"><span class="section-number-4">4.3.7</span> 长连接的保活问题</h4>
+<div class="outline-text-4" id="text-4-3-7">
+</div>
+<div id="outline-container-orgea3f5db" class="outline-5">
+<h5 id="orgea3f5db"><span class="section-number-5">4.3.7.1</span> 现象模拟</h5>
+</div>
+<div id="outline-container-org384b9d3" class="outline-5">
+<h5 id="org384b9d3"><span class="section-number-5">4.3.7.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-7-2">
+<p>
+标准 TCP 层协议里把对方超时设为 2 小时，若服务器端超过了 2 小时还没收到客户的信息，它就发送探测报文段，若发送了 10 个探测报文段（每一个相隔 75S）还没有收到响应，就假定客户出了故障，并终止这个连接。因此应对 tcp 长连接进行保活。
+</p>
+
+<p>
+以下是异步通信时会遇到的问题：
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6d71e57" class="outline-4">
+<h4 id="org6d71e57"><span class="section-number-4">4.3.8</span> 缓冲区脏数据问题</h4>
+<div class="outline-text-4" id="text-4-3-8">
+</div>
+<div id="outline-container-org9c4fbf1" class="outline-5">
+<h5 id="org9c4fbf1"><span class="section-number-5">4.3.8.1</span> 现象模拟</h5>
+<div class="outline-text-5" id="text-4-3-8-1">
+<p>
+同步发送的拷贝，是直接拷贝数据到基础系统缓冲区，拷贝完成后返回；
+</p>
+
+<p>
+异步发送消息的拷贝，是将 Socket 自带的 Buffer 空间内的所有数据，拷贝到基础系统发送缓冲区，并立即返回；
+</p>
+
+<p>
+因此异步发送时缓冲区设置不好会导致接收到脏数据的问题，如下所示：
+</p>
+
+<p>
+第一次发送数据：1234567890
+</p>
+
+<p>
+第一次接受数据：1234567890
+</p>
+
+<p>
+第二次发送数据：abc
+</p>
+
+<p>
+第二次接受数据：abc4567890
+</p>
+</div>
+</div>
+
+<div id="outline-container-org07d3034" class="outline-5">
+<h5 id="org07d3034"><span class="section-number-5">4.3.8.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-8-2">
+<ul class="org-ul">
+<li>将缓冲区的大小设置为实际发送数据的大小。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf9aedff" class="outline-4">
+<h4 id="orgf9aedff"><span class="section-number-4">4.3.9</span> 内存碎片问题</h4>
+<div class="outline-text-4" id="text-4-3-9">
+</div>
+<div id="outline-container-org38ff4cb" class="outline-5">
+<h5 id="org38ff4cb"><span class="section-number-5">4.3.9.1</span> 现象模拟</h5>
+<div class="outline-text-5" id="text-4-3-9-1">
+<p>
+频繁的申请缓冲区会导致内存碎片的问题。
+</p>
+</div>
+</div>
+<div id="outline-container-org788cd41" class="outline-5">
+<h5 id="org788cd41"><span class="section-number-5">4.3.9.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-9-2">
+<ul class="org-ul">
+<li>使用对象池和内存池。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb1e8eb5" class="outline-4">
+<h4 id="orgb1e8eb5"><span class="section-number-4">4.3.10</span> 乱序问题</h4>
+<div class="outline-text-4" id="text-4-3-10">
+</div>
+<div id="outline-container-orga6fa0b2" class="outline-5">
+<h5 id="orga6fa0b2"><span class="section-number-5">4.3.10.1</span> 现象模拟</h5>
+<div class="outline-text-5" id="text-4-3-10-1">
+<p>
+多个线程使用异步通信方式向同一个接收端(socket)同时发送数据，会导致接收端接收的数据混乱。如下所示：
+</p>
+
+<p>
+线程 1 第一次发送：123456789，假设未发送完，只发送了 123
+</p>
+
+<p>
+线程 2 第一次发送：abcdefgh，假设未发送完，只发送了 abc
+</p>
+
+<p>
+线程 1 第二次发送：456789，发送完成
+</p>
+
+<p>
+线程 2 第二次发送：defgh，发送完成
+</p>
+
+<p>
+接收端最终接收的数据为：123abc456789defgh。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org693b234" class="outline-5">
+<h5 id="org693b234"><span class="section-number-5">4.3.10.2</span> 解决方法</h5>
+<div class="outline-text-5" id="text-4-3-10-2">
+<ul class="org-ul">
+<li>一个连接的发送端线程排队发送数据。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org49b4cc5" class="outline-3">
+<h3 id="org49b4cc5"><span class="section-number-3">4.4</span> UDP</h3>
+</div>
+<div id="outline-container-orgc83e6e3" class="outline-3">
+<h3 id="orgc83e6e3"><span class="section-number-3">4.5</span> 弱网络环境下如何保证数据传输？</h3>
+</div>
+<div id="outline-container-org3190dda" class="outline-3">
+<h3 id="org3190dda"><span class="section-number-3">4.6</span> 描述一下浏览器输入网址之后发生了什么。</h3>
+</div>
+</div>
+
+<div id="outline-container-orgfea8e5b" class="outline-2">
+<h2 id="orgfea8e5b"><span class="section-number-2">5</span> 操作系统</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgbc86bc3" class="outline-3">
+<h3 id="orgbc86bc3"><span class="section-number-3">5.1</span> 判断操作系统是 32 位还是 64 位</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;cstdio&gt;</span>
+
+       <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">DetectOSArchi</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">argv</span>[])
+       {
+           <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">method 1</span>
+           printf(<span style="color: #ff4ea3;">"os is %d\n"</span>,<span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">void</span>*));
+           <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">method 2</span>
+           printf(<span style="color: #ff4ea3;">"%d \n"</span>, __SIZEOF_POINTER__);
+
+           <span style="color: #a1db00;">return</span> 0;
+       }
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgad63649" class="outline-3">
+<h3 id="orgad63649"><span class="section-number-3">5.2</span> 线程和进程的区别联系：</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>进程：子进程是父进程的复制品。子进程获得父进程数据空间、堆和栈的复制品。</li>
+<li>线程：相对与进程而言，线程是一个更加接近与执行体的概念，它可以与同进程的其他线程共享数据，但拥有自己的栈空间，拥有独立的执行序列。</li>
+</ul>
+
+<p>
+根本区别就一点：用多进程每个进程有自己的地址空间 (address space)，线程则共享地址空间。所有其它区别都是由此而来的：
+</p>
+<ul class="org-ul">
+<li>速度：线程产生的速度快，线程间的通讯快、切换快等，因为他们在同一个地址空间内。</li>
+<li>资源利用率：线程的资源利用率比较好也是因为他们在同一个地址空间内。</li>
+<li>同步问题：线程使用公共变量/内存时需要使用同步机制还是因为他们在同一个地址空间内。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9720438" class="outline-3">
+<h3 id="org9720438"><span class="section-number-3">5.3</span> 如何系统调优</h3>
+</div>
+<div id="outline-container-org2b540f9" class="outline-3">
+<h3 id="org2b540f9"><span class="section-number-3">5.4</span> 进程间通信方式</h3>
+<div class="outline-text-3" id="text-5-4">
+</div>
+<div id="outline-container-orgf2612ea" class="outline-4">
+<h4 id="orgf2612ea"><span class="section-number-4">5.4.1</span> 管道</h4>
+</div>
+<div id="outline-container-org2aea904" class="outline-4">
+<h4 id="org2aea904"><span class="section-number-4">5.4.2</span> 信号</h4>
+</div>
+<div id="outline-container-org1d428c3" class="outline-4">
+<h4 id="org1d428c3"><span class="section-number-4">5.4.3</span> 信号量</h4>
+</div>
+<div id="outline-container-org7731d0d" class="outline-4">
+<h4 id="org7731d0d"><span class="section-number-4">5.4.4</span> 消息队列</h4>
+</div>
+<div id="outline-container-orgc2e6603" class="outline-4">
+<h4 id="orgc2e6603"><span class="section-number-4">5.4.5</span> 共享内存</h4>
+</div>
+<div id="outline-container-org70ac2ee" class="outline-4">
+<h4 id="org70ac2ee"><span class="section-number-4">5.4.6</span> socket</h4>
+</div>
+</div>
+<div id="outline-container-org7d08b49" class="outline-3">
+<h3 id="org7d08b49"><span class="section-number-3">5.5</span> 常用命令</h3>
+</div>
+<div id="outline-container-orgce15ea6" class="outline-3">
+<h3 id="orgce15ea6"><span class="section-number-3">5.6</span> 线程间通信方式</h3>
+<div class="outline-text-3" id="text-5-6">
+</div>
+<div id="outline-container-org5349681" class="outline-4">
+<h4 id="org5349681"><span class="section-number-4">5.6.1</span> 信号量</h4>
+</div>
+<div id="outline-container-orgb8c318c" class="outline-4">
+<h4 id="orgb8c318c"><span class="section-number-4">5.6.2</span> 互斥量</h4>
+</div>
+<div id="outline-container-orga635a9b" class="outline-4">
+<h4 id="orga635a9b"><span class="section-number-4">5.6.3</span> 读写锁</h4>
+</div>
+<div id="outline-container-org1944dad" class="outline-4">
+<h4 id="org1944dad"><span class="section-number-4">5.6.4</span> 自旋锁</h4>
+</div>
+<div id="outline-container-org1179ca4" class="outline-4">
+<h4 id="org1179ca4"><span class="section-number-4">5.6.5</span> 条件变量</h4>
+</div>
+<div id="outline-container-org6a059a0" class="outline-4">
+<h4 id="org6a059a0"><span class="section-number-4">5.6.6</span> 屏障</h4>
+</div>
+</div>
+
+<div id="outline-container-org4c6c0ce" class="outline-3">
+<h3 id="org4c6c0ce"><span class="section-number-3">5.7</span> malloc 的底层实现。</h3>
+</div>
+<div id="outline-container-org3752267" class="outline-3">
+<h3 id="org3752267"><span class="section-number-3">5.8</span> deamon 进程如何实现。</h3>
+</div>
+</div>
+<div id="outline-container-org537751e" class="outline-2">
+<h2 id="org537751e"><span class="section-number-2">6</span> 数据库</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgb7fdac9" class="outline-3">
+<h3 id="orgb7fdac9"><span class="section-number-3">6.1</span> MySQL</h3>
+<div class="outline-text-3" id="text-6-1">
+</div>
+<div id="outline-container-org97e6a84" class="outline-4">
+<h4 id="org97e6a84"><span class="section-number-4">6.1.1</span> 查询语句如何调优</h4>
+</div>
+<div id="outline-container-org7378abf" class="outline-4">
+<h4 id="org7378abf"><span class="section-number-4">6.1.2</span> 索引的用途、类型、建立方法</h4>
+</div>
+<div id="outline-container-org5ad0c70" class="outline-4">
+<h4 id="org5ad0c70"><span class="section-number-4">6.1.3</span> 如何分表</h4>
+</div>
+<div id="outline-container-org4b15ca2" class="outline-4">
+<h4 id="org4b15ca2"><span class="section-number-4">6.1.4</span> 如何调优</h4>
+</div>
+<div id="outline-container-org8289f98" class="outline-4">
+<h4 id="org8289f98"><span class="section-number-4">6.1.5</span> 数据库应该先做记录还是先写日志？</h4>
+</div>
+</div>
+<div id="outline-container-orgc5f0695" class="outline-3">
+<h3 id="orgc5f0695"><span class="section-number-3">6.2</span> NOSQL</h3>
+</div>
+</div>
+<div id="outline-container-orged0ec65" class="outline-2">
+<h2 id="orged0ec65"><span class="section-number-2">7</span> 设计模式</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org1425538" class="outline-3">
+<h3 id="org1425538"><span class="section-number-3">7.1</span> 单例模式</h3>
+</div>
+<div id="outline-container-orgcc788ad" class="outline-3">
+<h3 id="orgcc788ad"><span class="section-number-3">7.2</span> 线程安全的单例模式</h3>
+<div class="outline-text-3" id="text-7-2">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;gtest\gtest.h&gt;</span>
+
+       <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#32447;&#31243;&#23433;&#20840;&#30340;&#21333;&#20363;&#27169;&#24335;</span>
+       <span style="color: #a1db00;">namespace</span> <span style="color: #5fafd7;">phenix3443</span> {
+           <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">Singleton</span> {
+           <span style="color: #a1db00;">public</span>:
+               <span style="color: #a1db00;">static</span> <span style="color: #00d7af;">Singleton</span>&amp; <span style="color: #ffd700;">GetInstance</span> () {
+                   <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Lock(); //C++11 &#35201;&#27714;&#32534;&#35793;&#22120;&#20445;&#35777;&#23616;&#37096;&#38745;&#24577;&#21464;&#37327;&#30340;&#32447;&#31243;&#23433;&#20840;&#24615;&#65292;&#25152;&#20197; 11 &#20043;&#21069;&#30340;&#29256;&#26412;&#27492;&#22788;&#38656;&#35201;&#21152;&#38145;</span>
+                   <span style="color: #a1db00;">static</span> <span style="color: #00d7af;">Singleton</span> <span style="color: #ff8700;">instance_</span>;
+                   <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">Unlock() //&#21516;&#19978;</span>
+                   <span style="color: #a1db00;">return</span> instance_;
+               }
+           <span style="color: #a1db00;">private</span>:
+               <span style="color: #ffd700;">Singleton</span> () { }
+               <span style="color: #ffd700;">Singleton</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">Singleton</span>&amp;) = <span style="color: #a1db00;">delete</span>;
+               <span style="color: #00d7af;">Singleton</span>&amp; <span style="color: #a1db00;">operator</span><span style="color: #ffd700;">=</span>(<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">Singleton</span>&amp;) = <span style="color: #a1db00;">delete</span>;
+               <span style="color: #a1db00;">virtual</span> ~<span style="color: #ffd700;">Singleton</span> () { }
+           };
+
+           <span style="color: #ffd700;">TEST</span> (TestSingleton, SameAddr) {
+               <span style="color: #00d7af;">Singleton</span>&amp; <span style="color: #ff8700;">a</span> = <span style="color: #5fafd7;">Singleton</span>::GetInstance ();
+               <span style="color: #00d7af;">Singleton</span>&amp; <span style="color: #ff8700;">b</span> = <span style="color: #5fafd7;">Singleton</span>::GetInstance ();
+               EXPECT_EQ (&amp;a, &amp;b);
+           }
+       }
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf44598a" class="outline-2">
+<h2 id="orgf44598a"><span class="section-number-2">8</span> 数据结构</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org759b48f" class="outline-3">
+<h3 id="org759b48f"><span class="section-number-3">8.1</span> 字符串</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+在一篇英文文章中查找指定的人名，人名使用二十六个英文字母（可以是大写或小写）、空格以及两个通配符组成（*、?），通配符 “*” 表示零个或多个任意字母，通配符 “?” 表示一个任意字母。
+如：“J* Smi??” 可以匹配 “John Smith” .
+请用 C 语言实现如下函数：
+void scan(const char* pszText, const char* pszName);
+注：pszText 为整个文章字符，pszName 为要求匹配的英文名。
+请完成些函数实现输出所有匹配的英文名，除了 printf 外，不能用第三方的库函数等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67b669a" class="outline-3">
+<h3 id="org67b669a"><span class="section-number-3">8.2</span> 链表</h3>
+<div class="outline-text-3" id="text-8-2">
+</div>
+<div id="outline-container-org9793d35" class="outline-4">
+<h4 id="org9793d35"><span class="section-number-4">8.2.1</span> 节点</h4>
+<div class="outline-text-4" id="text-8-2-1">
+<div class="org-src-container">
+<pre class="src src-c++">       <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">Node</span> {
+           <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">next</span>;
+           <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">val</span>;
+       };
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org81316d6" class="outline-4">
+<h4 id="org81316d6"><span class="section-number-4">8.2.2</span> 在 O(1)时间删除链表节点</h4>
+<div class="outline-text-4" id="text-8-2-2">
+<p>
+题目描述：给定链表的头指针和一个节点指针，在 O(1)时间删除该节点。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">"forwart_list.h"</span>
+<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;gtest\gtest.h&gt;</span>
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">DeleteRandomNode</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">head</span>, <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">del</span>) {
+            <span style="color: #a1db00;">if</span> (<span style="color: #ff4b4b;">!</span>head || <span style="color: #ff4b4b;">!</span>del) <span style="color: #a1db00;">return</span> -1;
+            <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">nextNode</span> = del-&gt;next;
+            del-&gt;data = nextNode-&gt;data;
+            del-&gt;next = nextNode-&gt;next;
+            <span style="color: #a1db00;">delete</span> nextNode;
+            <span style="color: #a1db00;">return</span> 0;
+        }
+
+        <span style="color: #ffd700;">TEST</span>(ListTest,DeleteRandomNode) {
+
+        }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd115c0e" class="outline-4">
+<h4 id="orgd115c0e"><span class="section-number-4">8.2.3</span> 二级指针删除单链表</h4>
+<div class="outline-text-4" id="text-8-2-3">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">"forward_list.h"</span>
+
+       <span style="color: #00d7af;">Node</span> *<span style="color: #ffd700;">DeleteNode</span>(<span style="color: #00d7af;">Node</span> **<span style="color: #ff8700;">head</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">e</span>) {
+           <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">Node</span> **<span style="color: #ff8700;">curr</span> = head; <span style="color: #5fafd7;">NULL</span> != *curr; curr = &amp;((*curr)-&gt;next)) {
+               <span style="color: #a1db00;">if</span> ((*curr)-&gt;val == e) {
+                   <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">del</span> = *curr;
+                   *curr = (*curr)-&gt;next;
+                   <span style="color: #a1db00;">delete</span> del;
+               }
+           }
+       }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgde6cf01" class="outline-4">
+<h4 id="orgde6cf01"><span class="section-number-4">8.2.4</span> 单链表反转</h4>
+<div class="outline-text-4" id="text-8-2-4">
+</div>
+<div id="outline-container-orgab77af8" class="outline-5">
+<h5 id="orgab77af8"><span class="section-number-5">8.2.4.1</span> 递归</h5>
+<div class="outline-text-5" id="text-8-2-4-1">
+<p>
+此种方法还可用来解决“逆序打印链表”的问题。
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">         #include</span> <span style="color: #ff4ea3;">"forward_list.h"</span>
+         <span style="color: #00d7af;">Node</span> *<span style="color: #ffd700;">RReverse</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">head</span>) {
+             <span style="color: #a1db00;">if</span> (<span style="color: #5fafd7;">NULL</span> == head-&gt;next) {
+                 <span style="color: #a1db00;">return</span> head;
+             }
+             <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">preNode</span> = Reverse(head-&gt;next);
+             <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">nextNode</span> = head-&gt;next;
+             head-&gt;next = <span style="color: #5fafd7;">NULL</span>;
+             nextNode-&gt;next = head;
+             <span style="color: #a1db00;">return</span> preNode;
+         }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf8de5a2" class="outline-5">
+<h5 id="orgf8de5a2"><span class="section-number-5">8.2.4.2</span> 非递归</h5>
+<div class="outline-text-5" id="text-8-2-4-2">
+<p>
+也就是所谓的插头法：从头到尾遍历原链表，每遍历一个结点，将其摘下放在新链表的最前端。时间复杂度为 O（n）
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">         #include</span> <span style="color: #ff4ea3;">"forward_list.h"</span>
+         <span style="color: #00d7af;">Node</span> *<span style="color: #ffd700;">Reverse</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">head</span>) {
+             <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">preNode</span> = <span style="color: #5fafd7;">NULL</span>, *<span style="color: #ff8700;">nextNode</span> = <span style="color: #5fafd7;">NULL</span>;
+             <span style="color: #a1db00;">while</span>(<span style="color: #5fafd7;">NULL</span> != head) {
+                 nextNode = head-&gt;next;
+                 head-next = preNode;
+                 preNode = head;
+                 head = nextNode;
+             }
+             <span style="color: #a1db00;">return</span> preNode;
+         }
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb4b9c48" class="outline-4">
+<h4 id="orgb4b9c48"><span class="section-number-4">8.2.5</span> 判断单链表有环并找到环入口</h4>
+<div class="outline-text-4" id="text-8-2-5">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">"forward_list.h"</span>
+
+       <span style="color: #00d7af;">Node</span> *<span style="color: #ffd700;">FindLoop</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">head</span>) {
+           <span style="color: #00d7af;">bool</span> <span style="color: #ff8700;">loop</span> = <span style="color: #5fafd7;">false</span>;
+           <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">fast</span> = head, *<span style="color: #ff8700;">slow</span> = head;
+           <span style="color: #a1db00;">while</span>(fast &amp;&amp; fast-&gt;next) {
+               fast = fast-&gt;next-&gt;next;
+               slow = slow-&gt;next;
+               <span style="color: #a1db00;">if</span> (fast == slow) {
+                   loop = <span style="color: #5fafd7;">true</span>;
+                   <span style="color: #a1db00;">break</span>;
+               }
+           }
+           <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#26597;&#25214;&#29615;&#20837;&#21475;</span>
+           <span style="color: #a1db00;">if</span> (loop) {
+               slow = head;
+               <span style="color: #a1db00;">while</span> (slow != fast) {
+                   slow = slow-&gt;next;
+                   fast = fast-&gt;next;
+               }
+               <span style="color: #a1db00;">return</span> slow;
+           }
+           <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">NULL</span>;
+       }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org05e7da9" class="outline-4">
+<h4 id="org05e7da9"><span class="section-number-4">8.2.6</span> 单链表排序</h4>
+<div class="outline-text-4" id="text-8-2-6">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">"forward_list.h"</span>
+<span style="color: #d18aff;">       #include</span> <span style="color: #ff4ea3;">&lt;cassert&gt;</span>
+
+       <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">split</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">head</span>, <span style="color: #00d7af;">Node</span> **<span style="color: #ff8700;">l</span>, <span style="color: #00d7af;">Node</span> **<span style="color: #ff8700;">r</span>) {
+           assert(head != <span style="color: #5fafd7;">NULL</span>);
+           <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">slow</span> = head, *<span style="color: #ff8700;">fast</span> = head;
+           <span style="color: #a1db00;">while</span>(fast &amp;&amp; fast-&gt;next) {
+               slow = slow-&gt;next;
+               fast = fast-&gt;next-&gt;next;
+           }
+           l = head;
+           r = slow-&gt;next;
+           slow-&gt;next = <span style="color: #5fafd7;">NULL</span>;
+       }
+
+       <span style="color: #00d7af;">Node</span> *<span style="color: #ffd700;">Merge</span>(<span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">l</span>, <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">r</span>) {
+           <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">h</span> = <span style="color: #a1db00;">new</span> <span style="color: #00d7af;">Node</span>, *<span style="color: #ff8700;">p</span> = h;
+           <span style="color: #a1db00;">while</span> (l &amp;&amp; r) {
+               <span style="color: #a1db00;">if</span> (l-&gt;val &lt; r-&gt;val) {
+                   p-&gt;next = l; p = l; l = l-&gt;next;
+               }
+               <span style="color: #a1db00;">else</span> {
+                   p-&gt;next = r; p = r; r = r-&gt;next;
+               }
+           }
+           <span style="color: #a1db00;">if</span>(l) p-&gt;next = l;
+           <span style="color: #a1db00;">if</span>(r) p-&gt;next = r;
+
+           p = h-&gt;next;
+           <span style="color: #a1db00;">delete</span> h;
+           <span style="color: #a1db00;">return</span> p;
+       }
+
+       <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">MergeSort</span>(<span style="color: #00d7af;">Node</span> **<span style="color: #ff8700;">head</span>) {
+           <span style="color: #00d7af;">Node</span> *<span style="color: #ff8700;">l</span>, *<span style="color: #ff8700;">r</span>;
+           split(head, &amp;l, &amp;r);
+           MergeSort(&amp;l);
+           MergeSort(&amp;r);
+           *head = Merge(l,r)
+       }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org07fd90a" class="outline-4">
+<h4 id="org07fd90a"><span class="section-number-4">8.2.7</span> 判断单链表相交</h4>
+<div class="outline-text-4" id="text-8-2-7">
+<p>
+有两种解法：
+</p>
+<ul class="org-ul">
+<li>将一个链表首尾相连，然后判断另一个链表是否存在环。</li>
+<li>假设 len(a)-len(b)= k，那么让链表 a 先走 k 布，然后两个链表一起遍历，查看是否有相同的节点。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3ca8d85" class="outline-3">
+<h3 id="org3ca8d85"><span class="section-number-3">8.3</span> 队列</h3>
+<div class="outline-text-3" id="text-8-3">
+</div>
+<div id="outline-container-org028f9bc" class="outline-4">
+<h4 id="org028f9bc"><span class="section-number-4">8.3.1</span> 用两个栈实现队列</h4>
+</div>
+</div>
+<div id="outline-container-orgf4d8764" class="outline-3">
+<h3 id="orgf4d8764"><span class="section-number-3">8.4</span> 哈希表</h3>
+<div class="outline-text-3" id="text-8-4">
+</div>
+<div id="outline-container-orge800267" class="outline-4">
+<h4 id="orge800267"><span class="section-number-4">8.4.1</span> 解决 hash 冲突</h4>
+<div class="outline-text-4" id="text-8-4-1">
+</div>
+<div id="outline-container-org5808114" class="outline-5">
+<h5 id="org5808114"><span class="section-number-5">8.4.1.1</span> 开放地址法</h5>
+</div>
+<div id="outline-container-org16d7850" class="outline-5">
+<h5 id="org16d7850"><span class="section-number-5">8.4.1.2</span> 再 hash</h5>
+</div>
+<div id="outline-container-orgff0456a" class="outline-5">
+<h5 id="orgff0456a"><span class="section-number-5">8.4.1.3</span> 链地址法</h5>
+</div>
+</div>
+</div>
+<div id="outline-container-org7be44e4" class="outline-3">
+<h3 id="org7be44e4"><span class="section-number-3">8.5</span> 树</h3>
+<div class="outline-text-3" id="text-8-5">
+</div>
+<div id="outline-container-org673fd67" class="outline-4">
+<h4 id="org673fd67"><span class="section-number-4">8.5.1</span> 二叉树</h4>
+</div>
+<div id="outline-container-orgc0de3e2" class="outline-4">
+<h4 id="orgc0de3e2"><span class="section-number-4">8.5.2</span> B 树</h4>
+</div>
+<div id="outline-container-orgc3cf5fd" class="outline-4">
+<h4 id="orgc3cf5fd"><span class="section-number-4">8.5.3</span> AVL 树</h4>
+</div>
+<div id="outline-container-org42d39b4" class="outline-4">
+<h4 id="org42d39b4"><span class="section-number-4">8.5.4</span> 红黑树</h4>
+</div>
+<div id="outline-container-org87b3c17" class="outline-4">
+<h4 id="org87b3c17"><span class="section-number-4">8.5.5</span> tri 树</h4>
+</div>
+<div id="outline-container-orgdb3e09c" class="outline-4">
+<h4 id="orgdb3e09c"><span class="section-number-4">8.5.6</span> 字典数</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org54b4140" class="outline-2">
+<h2 id="org54b4140"><span class="section-number-2">9</span> 算法</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-orge6918e7" class="outline-3">
+<h3 id="orge6918e7"><span class="section-number-3">9.1</span> 排序</h3>
+<div class="outline-text-3" id="text-9-1">
+</div>
+<div id="outline-container-org6677e93" class="outline-4">
+<h4 id="org6677e93"><span class="section-number-4">9.1.1</span> 冒泡排序</h4>
+<div class="outline-text-4" id="text-9-1-1">
+</div>
+<ol class="org-ol">
+<li><a id="org2d35474"></a>基本<br />
+<div class="outline-text-6" id="text-9-1-1-0-1">
+<div class="org-src-container">
+<pre class="src src-c++">          <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">bubbleSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+          {
+              <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+              {
+                  printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                  <span style="color: #a1db00;">return</span> -1;
+              }
+              <span style="color: #a1db00;">else</span>
+              {
+                  <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt; end; idx++)
+                  {
+                      <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = start; j &lt; end - idx; j++)
+                      {
+                          <span style="color: #a1db00;">if</span> (data[j]&gt;data[j + 1])
+                          {
+                              swapTwoNumValue (&amp;data[j], &amp;data[j + 1]);
+                          }
+                      }
+                  }
+                  <span style="color: #a1db00;">return</span> 0;
+              }
+          }
+
+
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org091b29a"></a>优化 1<br />
+<div class="outline-text-6" id="text-9-1-1-0-2">
+<div class="org-src-container">
+<pre class="src src-c++">          <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#20882;&#27873;&#25490;&#24207;&#20248;&#21270;, &#35774;&#32622;&#20132;&#25442;&#26631;&#24535; */</span>
+          <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">bubbleSortWithSwapFlag</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+          {
+              <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+              {
+                  printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                  <span style="color: #a1db00;">return</span> -1;
+              }
+              <span style="color: #a1db00;">else</span>
+              {
+                  <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span>, <span style="color: #ff8700;">j</span>;
+                  <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">swapFlag</span> = 1; <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#19978;&#27425;&#26159;&#21542;&#26377;&#20132;&#25442; */</span>
+                  <span style="color: #a1db00;">for</span> (i = start + 1; (swapFlag) &amp;&amp; (i &lt;= end - start); i++)
+                  {
+                      swapFlag = 0;
+                      <span style="color: #a1db00;">for</span> (j = start; j &lt;= end - i; j++)
+                      {
+                          <span style="color: #a1db00;">if</span> (data[j] &gt; data[j + 1])
+                          {
+                              swapTwoNumValue (&amp;data[j], &amp;data[j + 1]);
+                              swapFlag = 1;
+                          }
+                      }
+                  }
+                  <span style="color: #a1db00;">return</span> 0;
+              }
+          }
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org5cf9b4b"></a>优化 2<br />
+<div class="outline-text-6" id="text-9-1-1-0-3">
+<div class="org-src-container">
+<pre class="src src-c++">          <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#20882;&#27873;&#25490;&#24207;&#20248;&#21270; 2 */</span>
+          <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">bubbleSortWithSwapPosition</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+          {
+              <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+              {
+                  printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                  <span style="color: #a1db00;">return</span> -1;
+              }
+              <span style="color: #a1db00;">else</span>
+              {
+                  <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">swapPos</span> = end -1; <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#26368;&#21518;&#19968;&#27425;&#20132;&#25442;&#20301;&#32622; */</span>
+                  <span style="color: #a1db00;">while</span> (swapPos)
+                  {
+                      <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">swapFlag</span> = swapPos;
+                      swapPos = 0;
+                      <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = start; j &lt;= swapFlag; j++)
+                      {
+                          <span style="color: #a1db00;">if</span> (data[j] &gt; data[j + 1])
+                          {
+                              swapTwoNumValue (&amp;data[j], &amp;data[j + 1]);
+                              swapPos = j;
+                          }
+                      }
+                  }
+                  <span style="color: #a1db00;">return</span> 0;
+              }
+          }
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org5fb3234" class="outline-4">
+<h4 id="org5fb3234"><span class="section-number-4">9.1.2</span> 快速排序</h4>
+<div class="outline-text-4" id="text-9-1-2">
+</div>
+<div id="outline-container-org0e1144c" class="outline-5">
+<h5 id="org0e1144c"><span class="section-number-5">9.1.2.1</span> 递归实现</h5>
+<div class="outline-text-5" id="text-9-1-2-1">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #a1db00;">extern</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">swap</span>(<span style="color: #00d7af;">int</span>*, <span style="color: #00d7af;">int</span>*);
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">partion</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">a</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">left</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">right</span>) {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = right;
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">small</span> = left - 1, <span style="color: #ff8700;">big</span> = left;
+            <span style="color: #a1db00;">while</span>(big &lt; right) {
+                <span style="color: #a1db00;">if</span> (a[big] &lt; a[idx]) {
+                    ++ small;
+                    <span style="color: #a1db00;">if</span> (small != big) {
+                        swap(&amp;a[small],&amp;a[big]);
+                    }
+                }
+                ++ big;
+            }
+            ++ small;
+            swap(&amp;a[small], &amp;a[idx]);
+
+            <span style="color: #a1db00;">return</span> small;
+        }
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">QuickSort</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">a</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">left</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">right</span>) {
+            <span style="color: #a1db00;">if</span> (left &lt; right) {
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">povit</span> = partion(a, left, right);
+                QuickSort(a, left, povit -1);
+                QuickSort(a, povit + 1, right);
+            }
+        }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga4e0de7" class="outline-5">
+<h5 id="orga4e0de7"><span class="section-number-5">9.1.2.2</span> 栈非递归</h5>
+<div class="outline-text-5" id="text-9-1-2-2">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">QuickSortWithStack</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+         {
+             <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">mystack</span>[32] = { 0 };
+             <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">top</span> = -1;
+             mystack[++top] = start;
+             mystack[++top] = end;
+
+             <span style="color: #a1db00;">while</span> (top &gt; 0)
+             {
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">large</span> = mystack[top--];
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">small</span> = mystack[top--];
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">povit</span> = partition (data, len, small, large);
+
+                 <span style="color: #a1db00;">if</span> (small &lt; povit - 1)
+                 {
+                     mystack[++top] = small;
+                     mystack[++top] = povit - 1;
+                 }
+                 <span style="color: #a1db00;">if</span> (large &gt; povit + 1)
+                 {
+                     mystack[++top] = povit + 1;
+                     mystack[++top] = large;
+                 }
+             }
+             <span style="color: #a1db00;">return</span> 0;
+         }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge3832f5" class="outline-4">
+<h4 id="orge3832f5"><span class="section-number-4">9.1.3</span> 插入排序</h4>
+<div class="outline-text-4" id="text-9-1-3">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">insertSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">insert</span> = start + 1; insert &lt;= end; insert++)
+                {
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">key</span> = data[insert];
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = insert - 1;
+                    <span style="color: #a1db00;">for</span> (; idx &gt; start - 1 &amp;&amp; data[idx] &gt; key; idx--)
+                    {
+                        data[idx + 1] = data[idx];
+                    }
+                    data[idx + 1] = key;
+                }
+                <span style="color: #a1db00;">return</span> 0;
+            }
+        }
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org552064b" class="outline-5">
+<h5 id="org552064b"><span class="section-number-5">9.1.3.1</span> 交换位置的插入排序</h5>
+<div class="outline-text-5" id="text-9-1-3-1">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">insertSortSwapPos</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+         {
+             <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+             {
+                 printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                 <span style="color: #a1db00;">return</span> -1;
+             }
+             <span style="color: #a1db00;">else</span>
+             {
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">insert</span>, <span style="color: #ff8700;">idx</span>, <span style="color: #ff8700;">tmp</span>;
+                 <span style="color: #a1db00;">for</span> (insert = start + 1; insert &lt;= end; insert++)
+                 {
+                     <span style="color: #a1db00;">for</span> (idx = insert; idx &gt; start &amp;&amp; data[idx] &lt; data[idx - 1]; idx--)
+                     {
+                         swapTwoNumValue (&amp;data[idx], &amp;data[idx - 1]);
+                     }
+                 }
+             }
+         }
+
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5c45ed5" class="outline-5">
+<h5 id="org5c45ed5"><span class="section-number-5">9.1.3.2</span> 带二分查找的插入排序</h5>
+<div class="outline-text-5" id="text-9-1-3-2">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #a1db00;">extern</span> <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">BinSearch</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">n</span>);
+
+         <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">InsertSortWithBinSearch</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>)
+         {
+             <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">insert</span> = start + 1; insert &lt;= end; insert++)
+             {
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">key</span> = data[insert];
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">pos</span> = binarySearch (data, start, insert - 1, key);
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = insert;
+                 <span style="color: #a1db00;">for</span> (; idx &gt; pos; idx--)
+                 {
+                     data[idx] = data[idx - 1];
+                 }
+                 data[idx] = key;
+             }
+
+         }
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7a2a927" class="outline-4">
+<h4 id="org7a2a927"><span class="section-number-4">9.1.4</span> 希尔排序</h4>
+<div class="outline-text-4" id="text-9-1-4">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">shellSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">gap</span> = len / 2; gap &gt; 0; gap /= 2)
+                {
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = gap; i &lt;= end; i++)
+                    {
+                        <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = i - gap; j &gt;= start &amp;&amp; data[j] &gt; data[j + gap]; j -= gap)
+                        {
+                            swapTwoNumValue (&amp;data[j], &amp;data[j + gap]);
+                        }
+                    }
+                }
+                <span style="color: #a1db00;">return</span> 0;
+            }
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org30a9a53" class="outline-4">
+<h4 id="org30a9a53"><span class="section-number-4">9.1.5</span> 选择排序</h4>
+<div class="outline-text-4" id="text-9-1-5">
+</div>
+<div id="outline-container-org04f3b27" class="outline-5">
+<h5 id="org04f3b27"><span class="section-number-5">9.1.5.1</span> 简单选择排序</h5>
+<div class="outline-text-5" id="text-9-1-5-1">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">simpleSelectionSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt; end; idx++)
+                {
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">min</span> = idx;
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = idx + 1; j &lt;= end; j++)
+                    {
+                        min = (data[j] &lt; data[min]) ? j : min;
+                    }
+                    swapTwoNumValue (&amp;data[idx], &amp;data[min]);
+                }
+                <span style="color: #a1db00;">return</span> 0;
+            }
+        }
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd745c95" class="outline-5">
+<h5 id="orgd745c95"><span class="section-number-5">9.1.5.2</span> 递归简单选择排序</h5>
+<div class="outline-text-5" id="text-9-1-5-2">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">RecurSimpleSelectionSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span>  <span style="color: #ff8700;">end</span>)
+         {
+             <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+             {
+                 printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                 <span style="color: #a1db00;">return</span> -1;
+             }
+             <span style="color: #a1db00;">else</span>
+             {
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">max</span> = start;
+                 <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt; end; ++idx)
+                 {
+                     max = (data[idx] &gt; data[idx + 1]) ? idx : idx + 1;
+                 }
+                 <span style="color: #a1db00;">if</span> (max != end)
+                 {
+                     swapTwoNumValue (&amp;data[max], &amp;data[end]);
+                 }
+                 <span style="color: #a1db00;">if</span> (start &lt; end - 1)
+                 {
+                     recurSimpleSelectionSort (data, len, start, end - 1);
+                 }
+                 <span style="color: #a1db00;">return</span> 0;
+             }
+         }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd5873cc" class="outline-4">
+<h4 id="orgd5873cc"><span class="section-number-4">9.1.6</span> 堆排序</h4>
+<div class="outline-text-4" id="text-9-1-6">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">adjustMaxHeap</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">pos</span>)
+        {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">left</span> = pos * 2 + 1;
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">right</span> = 2 * (pos + 1);
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">largest</span> = pos;
+            <span style="color: #a1db00;">if</span> ((left &lt;= end) &amp;&amp; (data[left] &gt; data[largest]))
+            {
+                largest = left;
+            }
+            <span style="color: #a1db00;">if</span> ((right &lt;= end) &amp;&amp; (data[right] &gt; data[largest]))
+            {
+                largest = right;
+            }
+            <span style="color: #a1db00;">if</span> (largest != pos)
+            {
+                swapTwoNumValue (&amp;data[pos], &amp;data[largest]);
+                adjustMaxHeap (data, start, end, largest);
+            }
+        }
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">heapSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">build max root heap */</span>
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = (start + end) / 2; idx &gt;= start; idx--)
+                {
+                    adjustMaxHeap (data, start, end, idx);
+                }
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">heap sort */</span>
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = end; idx &gt;= start + 1; idx--)
+                {
+                    swapTwoNumValue (&amp;data[start], &amp;data[idx]);
+                    adjustMaxHeap (data, start, idx - 1, start);
+                }
+                <span style="color: #a1db00;">return</span> 0;
+            }
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org448f421" class="outline-4">
+<h4 id="org448f421"><span class="section-number-4">9.1.7</span> 归并排序</h4>
+<div class="outline-text-4" id="text-9-1-7">
+</div>
+<div id="outline-container-org6689976" class="outline-5">
+<h5 id="org6689976"><span class="section-number-5">9.1.7.1</span> 递归实现</h5>
+<div class="outline-text-5" id="text-9-1-7-1">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">Merge</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">longArray</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len1</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">shortArray</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len2</span>)
+         {
+             <span style="color: #a1db00;">if</span> (longArray == <span style="color: #5fafd7;">NULL</span> || shortArray == <span style="color: #5fafd7;">NULL</span> || longArray == shortArray || len1 &lt; 0 || len2 &lt; 0)
+             {
+                 printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                 <span style="color: #a1db00;">return</span> -1;
+             }
+             <span style="color: #a1db00;">else</span>
+             {
+                 <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">copy shortArray to tmp array */</span>
+                 <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">tmpArray</span> = (<span style="color: #00d7af;">int</span> *) malloc (<span style="color: #00d7af;">len2</span> * <span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+                 <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = 0; idx &lt; len2; idx++)
+                 {
+                     tmpArray[idx] = shortArray[idx];
+                 }
+
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = len1 - 1;
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = len2 - 1;
+                 <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">k</span> = len1 + len2 - 1;
+                 <span style="color: #a1db00;">while</span> (i &gt; -1 &amp;&amp; j &gt; -1)
+                 {
+                     longArray[k--] = (longArray[i] &gt; tmpArray[j]) ? longArray[i--] : tmpArray[j--];
+                 }
+                 <span style="color: #a1db00;">if</span> (<span style="color: #00d7af;">i</span> &lt; 0 &amp;&amp; j &gt; -1)
+                 {
+                     <span style="color: #a1db00;">while</span> (k &gt; -1)
+                     {
+                         longArray[k--] = tmpArray[j--];
+                     }
+                 }
+                 free (tmpArray);
+                 <span style="color: #a1db00;">return</span> 0;
+             }
+         }
+
+         <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">RMergeSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+         {
+             <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+             {
+                 printf (<span style="color: #ff4ea3;">"[%s, %s] Invalid input\n"</span>, __FILE__, __LINE__);
+                 <span style="color: #a1db00;">return</span> -1;
+             }
+             <span style="color: #a1db00;">else</span>
+             {
+                 <span style="color: #a1db00;">if</span> (start &lt; end)
+                 {
+                     <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">mid</span> = (start + end) / 2;
+                     RMergeSort (data, len, start, mid);
+                     RMergeSort (data, len, mid + 1, end);
+                     Merge (&amp;data[start], mid - start + 1, &amp;data[mid + 1], end - mid);
+                 }
+                 <span style="color: #a1db00;">return</span> 0;
+             }
+         }
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9a98a8e" class="outline-5">
+<h5 id="org9a98a8e"><span class="section-number-5">9.1.7.2</span> 非递归实现</h5>
+<div class="outline-text-5" id="text-9-1-7-2">
+<div class="org-src-container">
+<pre class="src src-c++">         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#38750;&#36882;&#24402;&#23454;&#29616; --&#36845;&#20195;</span>
+         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#38750;&#36882;&#24402;&#24605;&#24819;: &#23558;&#25968;&#32452;&#20013;&#30340;&#30456;&#37051;&#20803;&#32032;&#20004;&#20004;&#37197;&#23545;&#12290;&#29992; merge &#20989;&#25968;&#23558;&#20182;&#20204;&#25490;&#24207;&#65292;</span>
+         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#26500;&#25104; n/2 &#32452;&#38271;&#24230;&#20026; 2 &#30340;&#25490;&#24207;&#22909;&#30340;&#23376;&#25968;&#32452;&#27573;&#65292;&#28982;&#21518;&#20877;&#23558;&#20182;&#20204;&#25490;&#24207;&#25104;&#38271;&#24230;&#20026; 4 &#30340;&#23376;&#25968;&#32452;&#27573;&#65292;</span>
+         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#22914;&#27492;&#32487;&#32493;&#19979;&#21435;&#65292;&#30452;&#33267;&#25972;&#20010;&#25968;&#32452;&#25490;&#22909;&#24207;&#12290;</span>
+
+         <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">MergeSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+         {
+             <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">step</span>, <span style="color: #ff8700;">idx</span>;    <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#27493;&#38271;,&#24320;&#22987; */</span>
+             <span style="color: #a1db00;">for</span> (step = 2; start + step - 1 &lt;= end; step *= 2)
+             {
+                 <span style="color: #a1db00;">for</span> (idx = start; idx + step - 1 &lt;= end; idx += step)
+                 {
+                     mergeTwoSortedArray (&amp;data[idx], step / 2, &amp;data[idx + step / 2], step / 2);
+                 }
+                 <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#22788;&#29702;&#26411;&#23614;&#22855;&#25968;&#21097;&#20313; */</span>
+                 <span style="color: #a1db00;">if</span> (idx &lt;= end &amp;&amp; idx + step - 1 &gt; end)
+                 {
+                     mergeTwoSortedArray (&amp;data[idx - step], step, &amp;data[idx], end - idx + 1);
+                 }
+             }
+         }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgac697e2" class="outline-4">
+<h4 id="orgac697e2"><span class="section-number-4">9.1.8</span> 基数排序</h4>
+<div class="outline-text-4" id="text-9-1-8">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">getDigitOfNum</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">digit</span> = 1;
+            <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt;= end; idx++)
+            {
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">c</span> = 1;
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">num</span> = data[idx]; num / 10; ++c, num /= 10)
+                {
+                }
+                digit = (digit &lt; c) ? c : digit;
+            }
+            <span style="color: #a1db00;">return</span> digit;
+        }
+
+        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">radixSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">digit</span> = getDigitOfNum (data, start, end);
+
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#21033;&#29992;&#35745;&#25968;&#25490;&#24207;&#23545;&#27599;&#19968;&#20301;&#36827;&#34892;&#25490;&#24207; */</span>
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = 1; i &lt;= digit; ++i)
+                {
+                    <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">sortedArray</span> = (<span style="color: #00d7af;">int</span>*) malloc (<span style="color: #00d7af;">len</span> * <span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">countArray</span>[10] = { 0 };
+
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt;= end; ++idx)
+                    {
+                        <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">dataInCountArray</span> = (data[idx] / ((<span style="color: #00d7af;">int</span>) pow (10, i - 1))) % 10;
+                        countArray[dataInCountArray]++;
+                    }
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">j</span> = 1; j &lt; 10; ++j)
+                    {
+                        countArray[j] += countArray[j - 1];
+                    }
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = end; idx &gt;= start; idx--)
+                    {
+                        <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">dataInCountArray</span> = (data[idx] / ((<span style="color: #00d7af;">int</span>) pow (10, i - 1))) % 10;
+                        sortedArray[countArray[dataInCountArray] - 1] = data[idx];
+                        countArray[dataInCountArray]--;
+                    }
+                    <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt;= end; idx++)
+                    {
+                        data[idx] = sortedArray[idx];
+                    }
+                    free (sortedArray);
+                }
+                <span style="color: #a1db00;">return</span> 0;
+            }
+
+        }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7728142" class="outline-4">
+<h4 id="org7728142"><span class="section-number-4">9.1.9</span> 计数排序</h4>
+<div class="outline-text-4" id="text-9-1-9">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">coutingSort</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">data</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">start</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">end</span>)
+        {
+            <span style="color: #a1db00;">if</span> (data == <span style="color: #5fafd7;">NULL</span> || len &lt;= 0 || start &lt; 0 || end &gt;= len)
+            {
+                printf (<span style="color: #ff4ea3;">"[%s, %d] Invalid input\n"</span>, __FILE__, __LINE__);
+                <span style="color: #a1db00;">return</span> -1;
+            }
+            <span style="color: #a1db00;">else</span>
+            {
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">step 1 */</span>
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">min</span> = data[start];
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">max</span> = data[start];
+
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start + 1; idx &lt;= end; ++idx)
+                {
+                    min = (data[idx] &lt; min) ? data[idx] : min;
+                    max = (data[idx] &gt; max) ? data[idx] : max;
+                }
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">step 2 */</span>
+                <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">countArray</span> = (<span style="color: #00d7af;">int</span>*) malloc ((max - min + 1) *<span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = 0; idx &lt;= max - min; ++idx)
+                {
+                    <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">when init count array, do not use memset */</span>
+                    countArray[idx] = 0;
+                }
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt;= end; idx++)
+                {
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">dataInCountArray</span> = data[idx] - min;
+                    countArray[dataInCountArray]++;
+                }
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">step 3 */</span>
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = 1; idx &lt;= max - min; idx++)
+                {
+                    countArray[idx] += countArray[idx - 1];
+                }
+                <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">step 4 */</span>
+                <span style="color: #00d7af;">int</span> *<span style="color: #ff8700;">sortedArray</span> = (<span style="color: #00d7af;">int</span> *) malloc (<span style="color: #00d7af;">len</span>*<span style="color: #a1db00;">sizeof</span>(<span style="color: #00d7af;">int</span>));
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = end; idx &gt;= start; idx--)
+                {
+                    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">dataInCountArray</span> = data[idx] - min;
+                    <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#27880;&#24847;&#25968;&#32452;&#26159;&#20174; 0 &#24320;&#22987;&#30340;&#65292;&#25152;&#20197; countArray[data[idx-1]]&#24517;&#39035;&#35201;&#20943; 1 */</span>
+                    sortedArray[countArray[dataInCountArray] - 1] = data[idx];
+                    --countArray[dataInCountArray];
+                }
+                <span style="color: #a1db00;">for</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">idx</span> = start; idx &lt;= end; idx++)
+                {
+                    data[idx] = sortedArray[idx];
+                }
+                free (sortedArray);
+                free (countArray);
+            }
+            <span style="color: #a1db00;">return</span> 0;
+        }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org56bc5b4" class="outline-4">
+<h4 id="org56bc5b4"><span class="section-number-4">9.1.10</span> 桶排序</h4>
+<div class="outline-text-4" id="text-9-1-10">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">BucketSort</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">a</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">len</span>) {
+
+        }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd84bdee" class="outline-4">
+<h4 id="orgd84bdee"><span class="section-number-4">9.1.11</span> 排序总结</h4>
+<div class="outline-text-4" id="text-9-1-11">
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+<caption class="t-above"><span class="table-number">Table 1:</span> 排序总结</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">类别</th>
+<th scope="col" class="org-left">名称</th>
+<th scope="col" class="org-left">最差</th>
+<th scope="col" class="org-left">最好</th>
+<th scope="col" class="org-left">平均</th>
+<th scope="col" class="org-left">空间</th>
+<th scope="col" class="org-left">稳定性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">交换</td>
+<td class="org-left">冒泡排序</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">稳定</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">快速排序</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">不稳定</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">插入</td>
+<td class="org-left">插入排序</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">稳定</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">希尔排序</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N1.3)</td>
+<td class="org-left">O(N*lgN)-O(N2)</td>
+<td class="org-left">O(K)</td>
+<td class="org-left">不稳定</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">选择</td>
+<td class="org-left">选择排序</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(N2)</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">稳定</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">堆排序</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">不稳定</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">合并</td>
+<td class="org-left">归并排序</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N*lgN)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">稳定</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">其他</td>
+<td class="org-left">基数排序</td>
+<td class="org-left">O(K*N)</td>
+<td class="org-left">O(K*N)</td>
+<td class="org-left">O(K*N)</td>
+<td class="org-left">O(K*N)</td>
+<td class="org-left">稳定</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">计数排序</td>
+<td class="org-left">O(K+N)</td>
+<td class="org-left">O(K+N)</td>
+<td class="org-left">O(K+N)</td>
+<td class="org-left">O(K+N)</td>
+<td class="org-left">稳定</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">桶排序</td>
+<td class="org-left">O(N+C)</td>
+<td class="org-left">O(N+C)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">O(N)</td>
+<td class="org-left">稳定</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1e4795a" class="outline-3">
+<h3 id="org1e4795a"><span class="section-number-3">9.2</span> 查找</h3>
+<div class="outline-text-3" id="text-9-2">
+</div>
+<div id="outline-container-orgfc12c7b" class="outline-4">
+<h4 id="orgfc12c7b"><span class="section-number-4">9.2.1</span> 二分查找</h4>
+<div class="outline-text-4" id="text-9-2-1">
+<div class="org-src-container">
+<pre class="src src-c++">        <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">BinSearch</span>(<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">a</span>[], <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">n</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">val</span>) {
+            <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">left</span> = 0, <span style="color: #ff8700;">right</span> = n-1;
+            <span style="color: #a1db00;">while</span> (left &lt;= right) {
+                <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">mid</span> = left + ((right - left) &gt;&gt; 2);
+                <span style="color: #a1db00;">if</span> (a[mid] &gt; val) {
+                    right = mid - 1;
+                }
+                <span style="color: #a1db00;">else</span> <span style="color: #a1db00;">if</span> (a[mid] &lt; val) {
+                    left = mid + 1;
+                }
+                <span style="color: #a1db00;">else</span> {
+                    <span style="color: #a1db00;">return</span> mid;
+                }
+            }
+            <span style="color: #a1db00;">return</span> -1;
+        }
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb864b77" class="outline-2">
+<h2 id="orgb864b77"><span class="section-number-2">10</span> 智力题</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-org78eea32" class="outline-3">
+<h3 id="org78eea32"><span class="section-number-3">10.1</span> 过桥问题</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+有 A、B、C、D 四个人，要在夜里过一座桥。他们通过这座桥分别需要耗时 1、2、5、10 分钟，只有一支手电，并且同时最多只能两个人一起过桥。请问，如何安排，能够在 17 分钟内这四个人都过桥？
+</p>
+</div>
+</div>
+<div id="outline-container-org4acce84" class="outline-3">
+<h3 id="org4acce84"><span class="section-number-3">10.2</span> 天平称重</h3>
+<div class="outline-text-3" id="text-10-2">
+<p>
+有 12 个小球, 外形相同, 其中一个小球的质量与其他 11 个不同，给一个天平, 问如何用 3 次把这个小球找出来，并且求出这个小球是比其他的轻还是重。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0754067" class="outline-3">
+<h3 id="org0754067"><span class="section-number-3">10.3</span> 小白鼠与毒药<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
+<div class="outline-text-3" id="text-10-3">
+<p>
+大家应该都听说过这个老题目：有 1000 个一模一样的瓶子，其中有 999 瓶是普通的水，有一瓶是毒药。任何喝下毒药的生物都会在一星期之后死亡。现在，你只有 10 只小白鼠和一星期的时间，如何检验出哪个瓶子里有毒药？
+</p>
+
+<p>
+这个问题的答案也堪称经典：把瓶子从 0 到 999 依次编号，然后全部转换为 10 位二进制数。让第一只老鼠喝掉所有二进制数右起第一位是 1 的瓶子，让第二只老鼠喝掉所有二进制数右起第二位是 1 的瓶子，等等。一星期后，如果第一只老鼠死了，就知道毒药瓶子的二进制编号中，右起第一位是 1；如果第二只老鼠没死，就知道毒药瓶子的二进制编号中，右起第二位是 0 ⋯⋯ <b>每只老鼠的死活都能确定出 10 位二进制数的其中一位</b> ，由此便可知道毒药瓶子的编号了。
+</p>
+</div>
+<div id="outline-container-org39df29b" class="outline-5">
+<h5 id="org39df29b"><span class="section-number-5">10.3.0.1</span> 推广 1</h5>
+<div class="outline-text-5" id="text-10-3-0-1">
+<p>
+现在，有意思的问题来了：如果你有两个星期的时间（换句话说你可以做两轮实验），为了从 1000 个瓶子中找出毒药，你最少需要几只老鼠？注意，在第一轮实验中死掉的老鼠，就无法继续参与第二次实验了。
+</p>
+
+<p>
+答案：7 只老鼠就足够了。事实上，7 只老鼠足以从 3^7 = 2187 个瓶子中找出毒药来。首先，把所有瓶子从 0 到 2186 编号，然后全部转换为 7 位三进制数。现在，让第一只老鼠喝掉所有三进制数右起第一位是 2 的瓶子，让第二只老鼠喝掉所有三进制数右起第二位是 2 的瓶子，等等。一星期之后，如果第一只老鼠死了，就知道毒药瓶子的三进制编号中，右起第一位是 2；如果第二只老鼠没死，就知道毒药瓶子的三进制编号中，右起第二位不是 2，只可能是 0 或者 1 ⋯⋯也就是说，每只死掉的老鼠都用自己的生命确定出了，三进制编号中自己负责的那一位是 2；但每只活着的老鼠都只能确定，它所负责的那一位不是 2。于是，问题就归约到了只剩一个星期时的情况。在第二轮实验里，让每只活着的老鼠继续自己未完成的任务，喝掉它负责的那一位是 1 的所有瓶子。再过一星期，毒药瓶子的三进制编号便能全部揭晓了。
+</p>
+
+<p>
+类似地，我们可以证明，n 只小白鼠 t 周的时间可以从 (t+1)n 个瓶子中检验出毒药来。
+</p>
+</div>
+</div>
+<div id="outline-container-orgac1bedb" class="outline-5">
+<h5 id="orgac1bedb"><span class="section-number-5">10.3.0.2</span> 推广 2</h5>
+<div class="outline-text-5" id="text-10-3-0-2">
+<p>
+还是 1000 个瓶，但是 2 瓶有毒，10 个老鼠，一周时间，最多可以确定多少瓶没有毒？据说是高盛的面试题。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org6229a2c" class="outline-2">
+<h2 id="org6229a2c"><span class="section-number-2">11</span> Makefile 文件</h2>
+</div>
+<div id="outline-container-org1cfba91" class="outline-2">
+<h2 id="org1cfba91"><span class="section-number-2">12</span> 测试上面代码的 main 函数</h2>
+<div class="outline-text-2" id="text-12">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;vector&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;list&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;forward_list&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;deque&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;array&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;string&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;map&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;set&gt;</span>
+<span style="color: #d18aff;">      #include</span> <span style="color: #ff4ea3;">&lt;gtest/gtest.h&gt;</span>
+
+
+      <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">main</span> (<span style="color: #00d7af;">int</span> <span style="color: #ff8700;">argc</span>, <span style="color: #00d7af;">char</span>** <span style="color: #ff8700;">argv</span>)
+      {
+          <span style="color: #5fafd7;">testing</span>::FLAGS_gtest_filter = <span style="color: #ff4ea3;">"TestConst*"</span>;
+          <span style="color: #5fafd7;">testing</span>::InitGoogleTest (&amp;argc, argv);
+          RUN_ALL_TESTS ();
+
+          system (<span style="color: #ff4ea3;">"pause"</span>);
+          <span style="color: #a1db00;">return</span> 0;
+      }
+</pre>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://www.matrix67.com/blog/archives/4361">趣题：老鼠与毒药问题的推广</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

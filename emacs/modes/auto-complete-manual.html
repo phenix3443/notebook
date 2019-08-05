@@ -1,0 +1,3380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Auto-Complete manual</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Auto-Complete manual</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org27e48f9">1 Introduction</a></li>
+<li><a href="#org8a59cd0">2 Downloads</a></li>
+<li><a href="#orgecaac67">3 Installation</a>
+<ul>
+<li><a href="#org719882c">3.1 Requirements</a></li>
+<li><a href="#org0d4affa">3.2 Automatic Installation</a></li>
+<li><a href="#orga4bceb9">3.3 Manual Installation</a></li>
+<li><a href="#org872b12c">3.4 After-Installation Check</a></li>
+</ul>
+</li>
+<li><a href="#orgda4f6c8">4 Basic Usage</a>
+<ul>
+<li><a href="#orgc4ed173">4.1 Input Characters</a></li>
+<li><a href="#org4d4f08c">4.2 Completion by TAB</a></li>
+<li><a href="#org9e9c5bd">4.3 Completion by RET</a></li>
+<li><a href="#org193387b">4.4 Candidate Selection</a></li>
+<li><a href="#org10cc704">4.5 Help</a></li>
+<li><a href="#org546eb98">4.6 Summary</a></li>
+</ul>
+</li>
+<li><a href="#org408ce18">5 Advanced Usage</a>
+<ul>
+<li><a href="#orga613206">5.1 auto-complete command</a></li>
+<li><a href="#orgb7792fe">5.2 Completion by Fuzzy Matching</a></li>
+<li><a href="#orgc740814">5.3 Filtering Completion Candidates</a></li>
+<li><a href="#org8aea7e7">5.4 Trigger Key</a></li>
+<li><a href="#org4b56107">5.5 Candidate Suggestion</a></li>
+<li><a href="#orge42047b">5.6 Completion by Dictionary</a>
+<ul>
+<li><a href="#orgc1ba9c4">5.6.1 User Defined Dictionary</a></li>
+<li><a href="#orgefe6d5d">5.6.2 Major Mode Dictionary and Extension Dictionary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1742ab0">6 Source</a>
+<ul>
+<li><a href="#org930bd06">6.1 Using Source</a></li>
+<li><a href="#orged1ad60">6.2 Builtin Sources</a>
+<ul>
+<li><a href="#orgbcc0933">6.2.1 ac-source-abbrev</a></li>
+<li><a href="#org2a18104">6.2.2 ac-source-css-property</a></li>
+<li><a href="#org14b92cb">6.2.3 ac-source-dictionary</a></li>
+<li><a href="#org7335d30">6.2.4 ac-source-eclim</a></li>
+<li><a href="#orge04c639">6.2.5 ac-source-features</a></li>
+<li><a href="#orga2fdbff">6.2.6 ac-source-filename</a></li>
+<li><a href="#orgbf9e7c4">6.2.7 ac-source-files-in-current-dir</a></li>
+<li><a href="#orgbf44e36">6.2.8 ac-source-functions</a></li>
+<li><a href="#org95ad3ea">6.2.9 ac-source-ghc-mod</a></li>
+<li><a href="#orgedae0d0">6.2.10 ac-source-gtags</a></li>
+<li><a href="#org3e66b98">6.2.11 ac-source-imenu</a></li>
+<li><a href="#orgc9c78c4">6.2.12 ac-source-semantic</a></li>
+<li><a href="#orgc791861">6.2.13 ac-source-slime</a></li>
+<li><a href="#orge46c389">6.2.14 ac-source-semantic-raw</a></li>
+<li><a href="#org5919cd2">6.2.15 ac-source-symbols</a></li>
+<li><a href="#orgee1b0b2">6.2.16 ac-source-variables</a></li>
+<li><a href="#orgbfd2463">6.2.17 ac-source-words-in-all-buffer</a></li>
+<li><a href="#org217b28c">6.2.18 ac-source-words-in-buffer</a></li>
+<li><a href="#orgee5342e">6.2.19 ac-source-words-in-same-mode-buffers</a></li>
+<li><a href="#orgd873e70">6.2.20 ac-source-yasnippet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org375df6d">7 Tips</a>
+<ul>
+<li><a href="#org7415a2f">7.1 Not to complete automatically</a></li>
+<li><a href="#orgbb09860">7.2 Not to show completion menu automatically</a></li>
+<li><a href="#orge36294d">7.3 Stop completion</a></li>
+<li><a href="#org42afea0">7.4 Finish completion by TAB</a></li>
+<li><a href="#org39710a9">7.5 Select candidates with C-n/C-p only when completion menu is displayed</a></li>
+<li><a href="#orgd9b6cd5">7.6 Not to use quick help</a></li>
+<li><a href="#org54a985d">7.7 Change a height of completion menu</a></li>
+<li><a href="#orga6e3173">7.8 Enable auto-complete-mode automatically for specific modes</a></li>
+<li><a href="#org25d9fc5">7.9 Ignore case</a></li>
+<li><a href="#org4dbb213">7.10 Stop completion automatically after inserting specific words</a></li>
+<li><a href="#org32a1ea1">7.11 Change colors</a></li>
+<li><a href="#orgd9bec93">7.12 Change default sources</a></li>
+<li><a href="#org169d7cd">7.13 Change sources for specific major modes</a></li>
+<li><a href="#org5a2d0bf">7.14 Completion with specific source</a></li>
+<li><a href="#orgcae92e9">7.15 Show help persistently</a></li>
+<li><a href="#org6f76175">7.16 Show a lastly completed candidate help</a></li>
+<li><a href="#org46d63a0">7.17 Show help beautifully</a></li>
+</ul>
+</li>
+<li><a href="#org0f0d4c4">8 Third-party Extensions</a>
+<ul>
+<li><a href="#orgb8815f6">8.1 SLIME</a></li>
+<li><a href="#org11e0272">8.2 Scala</a></li>
+</ul>
+</li>
+<li><a href="#org731d36e">9 Configuration</a>
+<ul>
+<li><a href="#orgde0a3ed">9.1 ac-delay</a></li>
+<li><a href="#orge8d9f78">9.2 ac-auto-show-menu</a></li>
+<li><a href="#org8efcd3c">9.3 ac-show-menu-immediately-on-auto-complete</a></li>
+<li><a href="#orgfadcea1">9.4 ac-expand-on-auto-complete</a></li>
+<li><a href="#org0abb96d">9.5 ac-disable-faces</a></li>
+<li><a href="#orgc9396b7">9.6 ac-stop-flymake-on-completing</a></li>
+<li><a href="#org6fd250c">9.7 ac-use-fuzzy</a></li>
+<li><a href="#org17d21a5">9.8 ac-fuzzy-cursor-color</a></li>
+<li><a href="#org93863b2">9.9 ac-use-comphist</a></li>
+<li><a href="#orgf2d0558">9.10 ac-comphist-threshold</a></li>
+<li><a href="#org3a3172e">9.11 ac-comphist-file</a></li>
+<li><a href="#org8f058ee">9.12 ac-use-quick-help</a></li>
+<li><a href="#orgaec45e0">9.13 ac-quick-help-delay</a></li>
+<li><a href="#org4e42369">9.14 ac-menu-height</a></li>
+<li><a href="#org73570c1">9.15 ac-quick-help-height</a></li>
+<li><a href="#org54a1266">9.16 ac-quick-help-prefer-pos-tip</a></li>
+<li><a href="#org41350d2">9.17 ac-candidate-limit</a></li>
+<li><a href="#orge1566b8">9.18 ac-modes</a></li>
+<li><a href="#orga73fa04">9.19 ac-compatible-packages-regexp</a></li>
+<li><a href="#org95857ca">9.20 ac-non-trigger-commands</a></li>
+<li><a href="#orgf9d2b6a">9.21 ac-trigger-commands</a></li>
+<li><a href="#orgbadaea4">9.22 ac-trigger-commands-on-completing</a></li>
+<li><a href="#orgddb60ba">9.23 ac-trigger-key</a></li>
+<li><a href="#orgcc2759d">9.24 ac-auto-start</a></li>
+<li><a href="#orgd1dc93b">9.25 ac-stop-words</a></li>
+<li><a href="#orgfd0c355">9.26 ac-use-dictionary-as-stop-words</a></li>
+<li><a href="#org1c70bf8">9.27 ac-ignore-case</a></li>
+<li><a href="#org7414f4c">9.28 ac-dwim</a></li>
+<li><a href="#orgf9adfca">9.29 ac-use-menu-map</a></li>
+<li><a href="#org5555424">9.30 ac-use-overriding-local-map</a></li>
+<li><a href="#orge29db1e">9.31 ac-completion-face</a></li>
+<li><a href="#org104b593">9.32 ac-candidate-face</a></li>
+<li><a href="#orgb254f38">9.33 ac-selection-face</a></li>
+<li><a href="#org6e0e776">9.34 global-auto-complete-mode</a></li>
+<li><a href="#org99e8585">9.35 ac-user-dictionary</a></li>
+<li><a href="#org560c2b6">9.36 ac-user-dictionary-files</a></li>
+<li><a href="#org402ae26">9.37 ac-dictionary-directories</a></li>
+<li><a href="#orga1df7ec">9.38 ac-sources</a></li>
+<li><a href="#org2c57273">9.39 ac-completing-map</a></li>
+<li><a href="#orgc531880">9.40 ac-menu-map</a></li>
+<li><a href="#orgb8f4f37">9.41 ac-mode-map</a></li>
+</ul>
+</li>
+<li><a href="#org9b1fd8a">10 Extend</a>
+<ul>
+<li><a href="#org702c637">10.1 Prototype</a></li>
+<li><a href="#org34b816d">10.2 Example</a></li>
+<li><a href="#orgd39fcde">10.3 Initialization</a></li>
+<li><a href="#orgf02585e">10.4 Cache</a>
+<ul>
+<li><a href="#org6781742">10.4.1 Cache Expiration</a></li>
+</ul>
+</li>
+<li><a href="#org57852e0">10.5 Action</a></li>
+<li><a href="#orgf187d93">10.6 Omni Completion</a></li>
+<li><a href="#orga330b51">10.7 ac-define-source</a>
+<ul>
+<li><a href="#orgc52665a">10.7.1 Source Properties</a>
+<ul>
+<li><a href="#org287e3ce">10.7.1.1 init</a></li>
+<li><a href="#org2f81f17">10.7.1.2 candidates</a></li>
+</ul>
+</li>
+<li><a href="#orge30f304">10.7.2 prefix</a></li>
+<li><a href="#org78e96cc">10.7.3 requires</a></li>
+<li><a href="#org7c21452">10.7.4 action</a></li>
+<li><a href="#orgc432f48">10.7.5 limit</a></li>
+<li><a href="#org45529be">10.7.6 symbol</a></li>
+<li><a href="#org0bdfeb7">10.7.7 summary</a></li>
+<li><a href="#orgc453dac">10.7.8 cache</a></li>
+<li><a href="#org5177d3e">10.7.9 require</a></li>
+<li><a href="#org8741c07">10.7.10 candidate-face</a></li>
+<li><a href="#orgbce5ad6">10.7.11 selection-face</a></li>
+<li><a href="#org86643fd">10.7.12 depends</a></li>
+<li><a href="#org00f1010">10.7.13 available</a></li>
+<li><a href="#orgaf813b8">10.7.14 document</a></li>
+</ul>
+</li>
+<li><a href="#org9611296">10.8 Variables</a>
+<ul>
+<li><a href="#org10228eb">10.8.1 ac-buffer</a></li>
+<li><a href="#orga84a9f9">10.8.2 ac-point</a></li>
+<li><a href="#org70aff1c">10.8.3 ac-prefix</a></li>
+<li><a href="#orgf904964">10.8.4 ac-limit</a></li>
+<li><a href="#org10dcb1d">10.8.5 ac-candidates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org00c0459">11 Trouble Shooting</a>
+<ul>
+<li><a href="#orgd51d451">11.1 Response Latency</a>
+<ul>
+<li><a href="#org318fba7">11.1.1 ac-auto-start</a></li>
+<li><a href="#orgaef0f4c">11.1.2 ac-delay</a></li>
+<li><a href="#org1102d14">11.1.3 ac-auto-show-menu</a></li>
+<li><a href="#org08c0fdd">11.1.4 ac-use-comphist</a></li>
+<li><a href="#org61d4ca6">11.1.5 ac-candidate-limit</a></li>
+</ul>
+</li>
+<li><a href="#org780449a">11.2 Completion menu is disrupted</a>
+<ul>
+<li><a href="#orgc0987cd">11.2.1 Column Computation Case</a></li>
+<li><a href="#org856c7e7">11.2.2 Font Case</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org4f1583f">12 Known Bugs</a>
+<ul>
+<li><a href="#org110ac35">12.1 Auto completion will not be started in a buffer flyspell-mode enabled</a></li>
+<li><a href="#orgdc60992">12.2 linum-mode tries to display the line numbers even for the comletion menu</a></li>
+</ul>
+</li>
+<li><a href="#org38c4391">13 Reporting Bugs</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org27e48f9" class="outline-2">
+<h2 id="org27e48f9">1 Introduction</h2>
+<div class="outline-text-2" id="text-org27e48f9">
+<p>
+Auto-Complete (a.k.a auto-complete.el, auto-complete-mode) is an extension that automates and advances the completion-system of GNU Emacs. It is superior to the old system. Features include:
+</p>
+
+<p>
+Autocomplete(也叫 auto-complete.el，auto-complete-mode)是一个扩展，进一步完善和提高了 GNU Emacs 补全系统。它优于旧系统。功能包括：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Visual interface
+</p>
+
+<p>
+可视化界面。
+</p></li>
+
+<li><p>
+Reduce overhead of completion by using a statistical method
+</p>
+
+<p>
+通过统计方法减少补全的开销。
+</p></li>
+
+<li><p>
+Extensibility
+</p>
+
+<p>
+可扩展性。
+</p></li>
+</ul>
+
+<p>
+This user manual covers from how to install and use to how to extend. Please contact me if you have any questions.
+</p>
+
+<p>
+本手册内容包括如何安装，如何扩展。如果有任何问题请联系我。
+</p>
+
+<p>
+Auto Complete Mode is licensed under the terms of GPLv3. And this document is licensed under the term of GFDL.
+</p>
+
+<p>
+Auto Complete Mode 使用 GPLv3 协议授权。本文档给予 GFDL 许可。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8a59cd0" class="outline-2">
+<h2 id="org8a59cd0">2 Downloads</h2>
+<div class="outline-text-2" id="text-org8a59cd0">
+<p>
+You can download the latest auto-complete from the official site.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgecaac67" class="outline-2">
+<h2 id="orgecaac67">3 Installation</h2>
+<div class="outline-text-2" id="text-orgecaac67">
+</div>
+<div id="outline-container-org719882c" class="outline-3">
+<h3 id="org719882c">3.1 Requirements</h3>
+<div class="outline-text-3" id="text-org719882c">
+<ul class="org-ul">
+<li>800MHz or higher CPU</li>
+<li>256MB or higher RAM</li>
+<li>GNU Emacs 22 or later</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0d4affa" class="outline-3">
+<h3 id="org0d4affa">3.2 Automatic Installation</h3>
+<div class="outline-text-3" id="text-org0d4affa">
+<p>
+It is easy to install by using an installation script called etc/install.el that is located in the package directory.
+</p>
+
+<p>
+Type M-x load-file RET in a running or newly-launched Emacs. Note that if you want to upgrade auto-complete-mode, you have to install in a newly launched Emacs with the -q option. Then input a file name to load which is a path string with adding /etc/install.el to the package directory. For example, if the package directory is ~/tmp/auto-complete-1.2, the file name will be ~/tmp/auto-complete-1.2/etc/install.el.
+</p>
+
+<p>
+Then input a directory where Auto Complete will be installed. You need to add a directory to load-path later if load-path doesn't include the directory. The directory is to be ~/.emacs.d by default.
+</p>
+
+<p>
+Finally type RET to start installation. After installation, you may see the following buffer and follow instructions to edit .emacs.
+</p>
+
+<p>
+You can also install from terminal like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ make install
+$ <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">or with directory specified</span>
+$ make install <span style="color: #ff8700;">DIR</span>=$<span style="color: #ff8700;">HOME</span>/.emacs.d/
+</pre>
+</div>
+
+<p>
+If you don't have GNU Make, run emacs like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ emacs -batch -l etc/install.el
+</pre>
+</div>
+
+<p>
+Example message after installation (<b>Installation Result</b> Buffer)
+</p>
+
+<p>
+Successfully installed!
+</p>
+
+<p>
+Add the following code to your .emacs:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-to-list 'load-path <span style="color: #ff4ea3;">"~/.emacs.d"</span>)    <span style="color: #6c6c6c; font-style: italic;">; </span><span style="color: #6c6c6c; font-style: italic;">This may not be appeared if you have already added.</span>
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">auto-complete-config</span>)
+(add-to-list 'ac-dictionary-directories <span style="color: #ff4ea3;">"~/.emacs.d/ac-dict"</span>)
+(ac-config-default)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga4bceb9" class="outline-3">
+<h3 id="orga4bceb9">3.3 Manual Installation</h3>
+<div class="outline-text-3" id="text-orga4bceb9">
+<p>
+It is also possible to install manually if you follow a directory configuration. First, byte-compile all .el files in the package directory. You may use Makefile in UNIX OS.
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ make byte-compile
+</pre>
+</div>
+
+<p>
+If you can't use Makefile, open the directory from Emacs by C-x d and type * . el RET B RET to do byte-compile.
+</p>
+
+<p>
+Then copy all .el files and .elc files to a directory which is added to load-path. You may do such the following command if the directory is ~/.emacs.d
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ cp *.el *.elc ~/.emacs.d
+</pre>
+</div>
+
+<p>
+And then install dictionary files. They are optional to run Auto Complete Mode, but you should install if you don't have any reason. Dictionary files are located in called dict directory, it is needed that they are installed to a directory which is auto-complete.el has been installed. If you installed auto-complete.el to a directory called ~/.emacs.d, you also have to install dictionary files to ~/.emacs.d. Please be careful not to overwrite existed files. It may be a rare case, but the installation script above avoids overwrite by renaming dict directory to ac-dict directory.
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ cp -r dict ~/.emacs.d
+</pre>
+</div>
+
+<p>
+Finally add the following code to .emacs:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(add-to-list 'ac-dictionary-directories <span style="color: #ff4ea3;">"~/.emacs.d/dict"</span>)
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">auto-complete-config</span>)
+(ac-config-default)
+</pre>
+</div>
+
+<p>
+If you haven't added the directory to load-path, you need to add the following code too.
+</p>
+
+<p>
+如果没有将目录添加到 load-path，还需要添加下面的代码。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-to-list 'load-path <span style="color: #ff4ea3;">"~/.emacs.d"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org872b12c" class="outline-3">
+<h3 id="org872b12c">3.4 After-Installation Check</h3>
+<div class="outline-text-3" id="text-org872b12c">
+<p>
+Type some characters in <b>scratch</b> buffer in a restarted or newly-launched Emacs. Installation has been successful if you see a completion menu. If you have an error or no completion is started, it could be a failure. Please contact me in such case with confirmation following:
+</p>
+
+<ul class="org-ul">
+<li><p>
+Using correct load-path?
+</p>
+
+<p>
+A directory which auto-complete.el is installed to is in load-path.
+</p></li>
+
+<li><p>
+Characters AC in mode-line?
+</p>
+
+<p>
+If you don't see characters AC in mode-line (a gray line of bottom of buffer), auto-complete-mode is not enabled. Type M-x auto-complete-mode to enable and try again.
+</p></li>
+
+<li><p>
+Error occurred
+</p>
+
+<p>
+If you have <b>Backtrace</b> with errors or errors in minibuffer (bottom of frame), please contact me with the errors.
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgda4f6c8" class="outline-2">
+<h2 id="orgda4f6c8">4 Basic Usage</h2>
+<div class="outline-text-2" id="text-orgda4f6c8">
+<p>
+First, in a meaning, auto-complete-mode has no "usage". Because auto-complete-mode is designed to fade into the Emacs editing system. Users will receive a highly-developed completion system automatically without any difficulty. Ultimately, a goal of auto-complete-mode is to provide a system that does what users want without any command, but it is impossible to accomplish 100% accuracy actually. So there is "usage" to cover those points.
+</p>
+
+<p>
+首先，在某种意义上来说，auto-complete-mode 没有“使用”。因为 auto-complete-mode 旨在淡入 Emacs 编辑系统。用户将会毫无困难的得到高度开发的自动不全系统。auto-complete-mode 的最终目的是提供一个用户不需要任何命令就能得到所想的系统，但实际上达到 100%的准确率是不可能的。所以有一些使用来覆盖这一点。
+</p>
+</div>
+
+<div id="outline-container-orgc4ed173" class="outline-3">
+<h3 id="orgc4ed173">4.1 Input Characters</h3>
+<div class="outline-text-3" id="text-orgc4ed173">
+<p>
+Inputting characters is basic. Completions will never be shown without any character. So when completion will be started, what character causes completion to be started? It is a good question but it is difficult to answer here. In simple words, completion will be started when a character is inserted. See ac-trigger-commands for more details.
+</p>
+
+<p>
+最基本的是输入字符。没有字符就不会产生补全。那么补全何时发生，什么字符引发补全？这是一个好问题，但是现在很难回答。简而言之，当输入字符的时候发生补全。参见 ac-trigger-command 了解更多信息。
+</p>
+
+
+<div class="figure">
+<p><img src="http://auto-complete.org/doc/ac.png" alt="ac.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Inputting Characters</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4d4f08c" class="outline-3">
+<h3 id="org4d4f08c">4.2 Completion by TAB</h3>
+<div class="outline-text-3" id="text-org4d4f08c">
+<p>
+After completion is started, completion by TAB will be enabled temporarily. Completion by TAB is the most important and most frequent used command. TAB has several meanings.
+</p>
+
+<p>
+补全开始后，将会临时开始 TAB 补全。通过 TAB 进行补全是最重要也是最常用的命令。TAB 有几个意思：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Case that only one candidate remains
+</p>
+
+<p>
+只有一个候选的情况：
+</p>
+
+<p>
+If only one candidate remains, the candidate will be used to complete.
+</p>
+
+<p>
+如果真有一个候选，该候选将会用于补全。
+</p></li>
+
+<li><p>
+Case that there is a common part among candidates
+</p>
+
+<p>
+如果所有候选者有共同部分的情况。
+</p>
+
+<p>
+For example, if all candidates start with "set", it means they have a common part "set". So TAB completes "set" at first.
+</p>
+
+<p>
+例如，如果所有的候选都以“set”开始，就是说他们有一个共同的“set”部分，所以 TAB 命令首选补全“set”部分。
+</p></li>
+
+<li><p>
+Otherwise
+</p>
+
+<p>
+其他情况。
+</p>
+
+<p>
+Otherwise, select candidates in cycle by typing TAB.
+</p>
+
+<p>
+其余情况使用 TAB 在候选者中进行循环。
+</p></li>
+</ul>
+
+<p>
+It may be a little different according to settings, but basically completion by TAB works as we wrote above. A reason why TAB has several meanings is that we want users to do anything with TAB.
+</p>
+
+<p>
+根据设置可能会有不同，但使用 TAB 进行补全基本上如何上面所说。为何 TAB 会有几个含义的原因就是我们希望用户只用 TAB 就能做任何事情。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e9c5bd" class="outline-3">
+<h3 id="org9e9c5bd">4.3 Completion by RET</h3>
+<div class="outline-text-3" id="text-org9e9c5bd">
+<p>
+Like completion by TAB but some points are different:
+</p>
+
+<p>
+类似使用 TAB 补全但是有些不同：
+</p>
+
+<ul class="org-ul">
+<li><p>
+Complete a selected candidate immediately
+</p>
+
+<p>
+立即使用选中的候选进行补全。
+</p></li>
+
+<li><p>
+Execute an action if a selected candidate has the action
+</p>
+
+<p>
+如果选中的候选项有动作立刻执行。
+</p></li>
+</ul>
+
+<p>
+It is necessary to type TAB a few times for completion by TAB. Completion by RET instead complete a selected candidate immediately, so when you see a candidate you want, just type RET. If the candidate has an action, the action will be executed. Take a example of builtin abbrev completion. In completion by TAB, an abbrev which expands "www" to "World Wide Web" will be completed to "www", but in completion by RET, the abbrev will be expanded to "World Wide Web" as completion.
+</p>
+
+<p>
+使用 TAB 补全有必要多次按下 TAB 键。但是 RET 使用选中的候选者立即进行补全。所以如果看到想要的候选者就可以直接按下回车键。如果候选者有一个行为，该行为将会执行。以自带的 abbrev 补全为例，缩写 www 会扩展为“world wide web”，如果使用 TAB 进行补全，www 将会补全为 www，但是使用 RET 补全，www 会补全为“world wide web”。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org193387b" class="outline-3">
+<h3 id="org193387b">4.4 Candidate Selection</h3>
+<div class="outline-text-3" id="text-org193387b">
+<p>
+Following the auto-complete-mode philosophy, it is not recommended to manually select candidates. That means it has been failed to guess the completion, and also it requires users to do candidate selection which is a high cost operation. We think there are so many cases that requires to do candidate selection, because completion by TAB will help candidate selection somehow and in recent versions, a statistical method contributes to make a candidate suggestion more accurate. However, actually, this is such cases. So we also think it is not bad idea to remember how to select candidates.
+</p>
+
+<p>
+按照 auto-complete-mode 的哲学，不推荐手动选择候选项。那就意味着猜测补全失败，而且要求用户选择也是高成本操作。我们认为有很多情况下需要用户做选择，因为通过 TAB 某种程度上会有助于选择，在最近的版本中，一个统计方法有助于使选择更精确。然而实际上我们说的就是这种情况。所以我们也不认为记住如何选择候选项是个好主意。
+</p>
+
+<p>
+Selecting candidates is not a complex operation. You can select candidates forward or backward by cursor key or M-p and M-n. According to settings, a behavior of completion by TAB will be changed as a behavior of completion by RET. See ac-dwim for more details.
+</p>
+
+<p>
+选择候选项并不是个复杂操作。可以通过光标键或 M-n 和 M-n 向前向后选择。根据设置，TAB 进行补全的行为可以设置成 RET 补全的行为一样。参见 ac-dwin 了解更过细节。
+</p>
+
+<p>
+There are other ways to select candidates. M-1 to select candidate 1, M-2 to select candidate 2, and so on.
+</p>
+
+<p>
+还有其他方法选择候选项。M-1 选择候选项 1，M-2 选择候选项 2，以此类推。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org10cc704" class="outline-3">
+<h3 id="org10cc704">4.5 Help</h3>
+<div class="outline-text-3" id="text-org10cc704">
+<p>
+auto-complete-mode has two types of help functionalities called Quick Help and Buffer Help. They are different in a point of displaying. Quick help will appear at the side of completion menu, so you can easily see that, but there is a problem if there is no space to display the help. Quick help will be shown automatically. To use quick help, you need to set ac-use-quick-help to t. Delay time to show quick help is given by ac-quick-help-delay.
+</p>
+
+<p>
+auto-complete-mode 有两种类型的帮助功能，Quick help 和 Buffer help。它们显示不同。Quick help 将显示在补全菜单旁，可以很容易的看到，但问题是可能没有足够的空间来显示帮助信息。Quick help 会自动显示。为了使用 Quick help 需要将 ac-use-quick-help 设置为 t。显示 quick help 的延时时间有 ac-quick-help-delay 控制。
+</p>
+
+<p>
+On the other side, buffer help will not be shown without any instructions from users. Buffer help literally displays help in a buffer in another window. It costs more to see than quick help, but it has more readability. To show buffer help, press C-? or f1. By pressing C-M-v or C-M-S-v after showing buffer help, you can scroll forward or backward through the help buffer. Other commands will be fallbacked and buffer help will be closed.
+</p>
+
+<p>
+另一方面，如果用户没有任何指示，buffer help 不会显示。buffer help 会在另外一个窗口的 buffer 显示。相比 quick help 它花销更大，但是更可读。为了显示 buffer help，按 C-?或 f1。显示 buffer help 之后，使用 C-M-v 或 C-S-v 向前或向后滚动。其他的命令将会返回，buffer help 将会关闭。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org546eb98" class="outline-3">
+<h3 id="org546eb98">4.6 Summary</h3>
+<div class="outline-text-3" id="text-org546eb98">
+<p>
+Completion will be started by inserting characters. After completion is started, operations in the following table will be enabled temporarily. After completion is finished, these operations will be disabled.
+</p>
+
+<p>
+插入字符时将会触发补全。补全开始后，下面表中的操作就临时可用。补全结束后，这些操作也就禁用了。
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Key</td>
+<td class="org-left">Command</td>
+<td class="org-left">Description</td>
+</tr>
+
+<tr>
+<td class="org-left">TAB, C-i</td>
+<td class="org-left">ac-expand</td>
+<td class="org-left">Completion by TAB</td>
+</tr>
+
+<tr>
+<td class="org-left">RET, C-m</td>
+<td class="org-left">ac-complete</td>
+<td class="org-left">Completion by RET</td>
+</tr>
+
+<tr>
+<td class="org-left">down, M-n</td>
+<td class="org-left">ac-next</td>
+<td class="org-left">Select next candidate</td>
+</tr>
+
+<tr>
+<td class="org-left">up, M-p</td>
+<td class="org-left">ac-previous</td>
+<td class="org-left">Select previous candidate</td>
+</tr>
+
+<tr>
+<td class="org-left">C-?, f1</td>
+<td class="org-left">ac-help</td>
+<td class="org-left">Show buffer help</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+To stop completion, simply use C-g.
+</p>
+
+<p>
+使用 C-g 停止补全。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org408ce18" class="outline-2">
+<h2 id="org408ce18">5 Advanced Usage</h2>
+<div class="outline-text-2" id="text-org408ce18">
+</div>
+<div id="outline-container-orga613206" class="outline-3">
+<h3 id="orga613206">5.1 auto-complete command</h3>
+<div class="outline-text-3" id="text-orga613206">
+<p>
+Basically there is an assumption that auto-complete-mode will be started automatically, but there is also exception. For example, that is a case that an user wants to complete without inserting any character or a case not to start auto-complete-mode automatically by settings. A command called auto-complete is useful in such cases, which is used with key binding in general. The following code changes a default completion command to more advanced feature that auto-complete-mode provides.
+</p>
+
+<p>
+一般假设 auto-complete-mode 会自动开始，但也有例外。例如，用户希望补全不要插入任何字符或者通过设置禁止自动启动 auto-complete-mode。这种情况下 auto-complete 命令就很有用，通常绑定到按键上。下面的代码将默认的补全命令更改为 auto-complete-mode 提供的更高级的功能。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(define-key ac-mode-map (kbd <span style="color: #ff4ea3;">"M-TAB"</span>) 'auto-complete)
+</pre>
+</div>
+
+<p>
+So, as of auto-complete command, it is a little different from an original automatic completion.
+</p>
+
+<p>
+正如 auto-complete-mode，这和原先的自动补全命令有点不同。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Case that only one candidate remains
+</p>
+
+<p>
+只有剩余一个补全的情况。
+</p>
+
+<p>
+Complete immediately without showing completion menu.
+</p>
+
+<p>
+不显示补全菜单立即补全。
+</p></li>
+
+<li><p>
+Case that no candidates remains
+</p>
+
+<p>
+没有候选项剩余。
+</p>
+
+<p>
+Attempt to complete with fuzzy matching. See Completion by Fuzzy Matching for more details.
+</p>
+
+<p>
+尝试使用模糊匹配进行补全。
+</p></li>
+
+<li><p>
+Otherwise
+</p>
+
+<p>
+其他。
+</p>
+
+<p>
+Otherwise start completion with/without expanding a whole common part and showing completion menu. See also ac-show-menu-immediately-on-auto-complete and ac-expand-on-auto-complete.
+</p>
+
+<p>
+否则扩展公共部分，显示补全菜单。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb7792fe" class="outline-3">
+<h3 id="orgb7792fe">5.2 Completion by Fuzzy Matching</h3>
+<div class="outline-text-3" id="text-orgb7792fe">
+<p>
+In a case that there are no candidates by auto-complete command or the case where ac-fuzzy-complete command is executed, auto-complete-mode attempts to complete with fuzzy matching instead of the usual exact matching. Parameters of fuzzy matching have already been optimized for use, so users don't need to change them. However if you want to know the internals, see fuzzy.el. Using completion by fuzzy matching, typos will be fixed as a series of completion. For instance, input "messaeg" in a buffer, and then do M-x auto-complete or M-x ac-fuzzy-complete. The cursor color will be changed to red if completion has been successful, and then you can continue to complete, regarding "messaeg" as "message". It is not a bad idea to bind auto-complete command to some key to handle such cases.
+</p>
+
+<p>
+如果 auto-complete 命令没有候选项的，或者执行了 ac-fuzzy-complete 命令，auto-complete-mode 会尝试使用模糊匹配而不是正常的准确匹配进行补全。为了使用，模糊匹配的参数已经优化过，所以用户不需要改变它们。但是如果想知道内部，查看 fuzzy.el。使用模糊匹配进行补全，输入将会根据补全进行修正。例如，在 buffer 中输入“messaeg”，然后执行 M-x auto-complete 或 M-x ac-fuzzy-complete。如果补全成功，光标的颜色将会变为红色，然后可以把“messaeg”当做“message”继续补全。将 auto-complete 命令绑定到按键来处理这样的情况不是个坏主意。
+</p>
+
+
+<div class="figure">
+<p><img src="http://auto-complete.org/doc/ac-fuzzy.png" alt="ac-fuzzy.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Fuzzy matching</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc740814" class="outline-3">
+<h3 id="orgc740814">5.3 Filtering Completion Candidates</h3>
+<div class="outline-text-3" id="text-orgc740814">
+<p>
+You can start filtering by C-s. The cursor color will change to blue. Then input characters to filter. It is possible to do completion by TAB or select candidates, which changes the cursor color to original so that telling filtering completion candidates has done. The filtering string will be restored when C-s again. To delete the filter string, press DEL or C-h. Other general operations is not allowed there.
+</p>
+
+<p>
+可以通过 C-s 开始过滤。光标颜色将会变为蓝色。然后输入字符来进行过滤。可以通过 TAB 完成补全或者选择候选项，这将光标颜色变为原来的颜色，同时也说明过滤候选项已经完成。再次使用 c-s 时过滤的字符串将会被保存起来。使用 DEL 或 C-h 删除过滤字符串。这里其他的操作是不允许的。
+</p>
+
+<div class="figure">
+<p><img src="http://auto-complete.org/doc/ac-isearch.png" alt="ac-isearch.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Filtering</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8aea7e7" class="outline-3">
+<h3 id="org8aea7e7">5.4 Trigger Key</h3>
+<div class="outline-text-3" id="text-org8aea7e7">
+<p>
+It is difficult what key auto-complete command is bound to. It should be bound to a key which is easy to press as much as possible because completion operation is often happened. However, it is a major problem that there is no empty key to press easily. auto-complete-mode provides a feature called Trigger Key that handles such the problem. Using trigger key, you can use an arbitrary key temporarily if necessary. The following code uses TAB as trigger key.
+</p>
+
+<p>
+很难决定将 auto-complete 命令绑定在哪个按键上。应该将其尽可能的绑定在容易按到的键上，因为经常发生补全操作。然而，主要的问题是没有空余的按键。auto-complete-mode 提供了一个叫做触发键的功能来解决这个问题。使用触发键，如果必要的话可以临时使用任何按键。下面的代码使用 TAB 作为触发键。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(ac-set-trigger-key <span style="color: #ff4ea3;">"TAB"</span>)
+</pre>
+</div>
+
+<p>
+Trigger key will be enabled after inserting characters. Otherwise it is dealt as an usual command (TAB will be indent). Generally, trigger key is used with ac-auto-start being nil.
+</p>
+
+<p>
+插入字符之后触发键就会启用。否则还是按照普通的命令处理了（TAB 将会缩进）。一般来说使用触发键的时候 ac-auto-start 设置为 nil。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-auto-start nil)
+</pre>
+</div>
+
+<p>
+As of ac-auto-start, see Not to complete automatically or ac-auto-start for more details.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4b56107" class="outline-3">
+<h3 id="org4b56107">5.5 Candidate Suggestion</h3>
+<div class="outline-text-3" id="text-org4b56107">
+<p>
+auto-complete-mode analyzes completion operations one by one and reduces overheads of completion as much as possible. For example, having a candidate "foobar" been completed few times, auto-complete-mode arranges it to top of the candidates next time and make a situation that allows users to complete the word with one time TAB or few times TAB. It is called comphist internally, and you can use it by setting ac-use-comphist to t. It is enabled by default. Collection operations data will be stored in user-emacs-directory or ~/.emacs.d/ with a name ac-comphist.dat.
+</p>
+
+<p>
+auto-complete-mode 会一个一个分析补全结果，尽力减少补全的过度开销。例如，使用“foobar”补全几次之后，auto-complete-mode 就会把它放在补全列表的前面，这样用户就能通过一次 TAB 或几次 TAB 来进行补全。这就是内部 comphist，可以通过将 ac-use-comphist 来使用它。默认是启用的。搜集的操作数据将会放在 use-emacs-directory 或者~/.emacs.d/下的 ac-comphist.dat 文件中。
+</p>
+
+<p>
+auto-complete-mode collects two types of data to accomplish accurate candidate suggestion.
+</p>
+
+<p>
+auto-complete-mode 搜集两种类型的数据来完成精确补全的建议。
+</p>
+
+<ul class="org-ul">
+<li><p>
+Count of completion
+</p>
+
+<p>
+补全的次数。
+</p></li>
+
+<li><p>
+Position of completion
+</p>
+
+<p>
+补全的位置。
+</p></li>
+</ul>
+
+<p>
+Simply saying, it collects not only a completion count but also a position of completion. A completion candidate will be scored with the count and the point. If you complete find-file with a word f few times, in next time find-file will be arranged to top of candidates. However it is too simple. Actually find-file with find- will not have the same score, because a distance between f and find- will reduce a weight of scoring. It means that if you often complete find-library after find-, find-library will get high score than find-file at that position. So auto-complete-mode can guess find-file will be top after f and find-library will be top after find- as it seems to learn from users' operations.
+</p>
+
+<p>
+简单来说，不仅搜集补全数量，还搜集补全位置。补全候选项将会使用数量和位置来打分。如果使用 f 补全 find-file 多次，下次，find-file 将会安排在补全列表的前面。但是，这太简单了。实际上包含 find-的 find-file 将会有不同的得分，因为 f 和 find-之间的差别将会减少得分的比重。也就是说如果经常在 find-后使用 find-library 补全，find-library 在该位置将会比 find-file 有更好的得分。所以 auto-complete-mode 从用户的操作中学到了 f 之后应该是要输入 find-file，find-之后应该是要输入 find-library。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge42047b" class="outline-3">
+<h3 id="orge42047b">5.6 Completion by Dictionary</h3>
+<div class="outline-text-3" id="text-orge42047b">
+<p>
+Dictionary is a simple list of string. There is three types of dictionary: user defined dictionary, major mode dictionary, and extension dictionary. You need to add ac-source-dictionary to ac-sources (default). See Source for more details.
+</p>
+
+<p>
+字典是字符串的简单列表。有三种类型的字典：用户自定义字典，主模式字典和扩展字典。需要将 ac-source-dictory 添加到 ac-sources（默认）。参看 Source 了解更多消息。
+</p>
+</div>
+
+<div id="outline-container-orgc1ba9c4" class="outline-4">
+<h4 id="orgc1ba9c4">5.6.1 User Defined Dictionary</h4>
+<div class="outline-text-4" id="text-orgc1ba9c4">
+<p>
+User defined dictionary is composed of a list of string specified ac-user-dictionary and dictionary files specified by ac-user-dictionary-files. Dictionary file is a word list separated with newline. User defined dictionary is shared with all buffers. Here is example adding your mail address to dictionary.
+</p>
+
+<p>
+用户自定义字典由 ac-user-dictonary 和 ac-user-dictionary-files 指定的字典文件中的字符串列表组成。字典文件是一个由换行符分割的单词列表。所有 buffer 共享用户字典文件。下面将将邮箱地址添加到字典的例子。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-to-list 'ac-user-dictionary <span style="color: #ff4ea3;">"foobar@example.com"</span>)
+</pre>
+</div>
+
+<p>
+Setting will be applied immediately. Try to input "foo" in a buffer. You may see foobar@example.com as a completion candidate. This setting will be cleared if Emacs will quit. You need to write the following code to keep setting in next Emacs launching.
+</p>
+
+<p>
+设置会立即启用，在 buffer 中尝试使用输入“foo”，可以看到 foobar@example.com 在补全列表中。Emacs 退出时将会清楚该设置。要想下次 Emacs 启动还使用设置需要以下代码。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-user-dictionary '(<span style="color: #ff4ea3;">"foobar@example.com"</span> <span style="color: #ff4ea3;">"hogehoge@example.com"</span>))
+</pre>
+</div>
+
+<p>
+There is more easy way to add word to dictionary. Files specified by ac-user-dictionary-files will be treated as dictionary files. By default, ~/.dict will be a dictionary file, so edit ~/.dict like:
+</p>
+
+<p>
+更简单的方法是将单词添加到字典。ac-user-dictionay-files 指定的文件作为字典文件。默认，~/.dict 将会是字典文件，所以可以如下编辑~/.dict：
+</p>
+
+<pre class="example">
+foobar@example.com
+hogehoge@example.com
+</pre>
+
+<p>
+As we said, words are separated with newline. They are not applied immediately, because auto-complete-mode uses cache not to load every time from a dictionary file. It may be high cost. To clear cache, do M-x ac-clear-dictionary-cache. After that, dictionary files will be load absolutely.
+</p>
+
+<p>
+正如前面所说，单词使用换行分割。它们不会立即启用，因为 auto-complete-mode 使用缓存而不是每次都加载字典文件。你可能代价较高。使用 M-x ac-clear-dictionary-cache 清除缓存。之后，字典文件就会被加载。
+</p>
+
+<p>
+No need to say perhaps, you can use other files as dictionary file by adding to ac-user-dictionary-files.
+</p>
+
+<p>
+没必要说可能，可用通过向 ac-use-dictionary-files 添加文件来使用其他字典文件。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgefe6d5d" class="outline-4">
+<h4 id="orgefe6d5d">5.6.2 Major Mode Dictionary and Extension Dictionary</h4>
+<div class="outline-text-4" id="text-orgefe6d5d">
+<p>
+You can use other dictionaries for every major-modes and extensions. A dictionary will loaded from a directory specified with ac-dictionary-directories. ac-dictionary-directories may be the following setting if you followed Installation instructions.
+</p>
+
+<p>
+可以为各主模式和扩展使用不同的字典。从 ac-dictionary-directories 指定的目录中加载字典文件。。如果使用安装指南，ac-dictionary-directories 可能是如下设置。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-to-list 'ac-dictionary-directories <span style="color: #ff4ea3;">"~/.emacs.d/ac-dict"</span>)
+</pre>
+</div>
+
+<p>
+A dictionary named c++-mode for specific major-mode and a dictionary named txt for specific extension will be stored in the directory. For instance, you complete in a buffer named a.cpp with dictionary completion, following the setting above, ~/.emacs.d/ac-dict/c++-mode and ~/.emacs.d/ac-dict/cpp will be loaded as dictionary file. You can edit the dictionary files and make a new one. In addition, you can add a new dictionary file to a directory that has same configuration.
+</p>
+
+<p>
+该目录中包含一个用于主指定主模式的 c++-mode 字典和用于扩展的 txt 字典。例如，根据上面的设置，如果在名为 a.cpp 的 buffer 中使用字典补全，~/.emacs.d/ac-dict/c++-mode 和~/.emacs.d/ac-dict/cpp 文件将会作为字典文件加载。可以编辑字典文件来生成新字典。另外，可以将字典文件添加到有相同配置的目录中。
+</p>
+
+<p>
+As same as user defined dictionary, after editing and adding dictionary, you should do M-x ac-clear-dictionary-cache to apply changes.
+</p>
+
+<p>
+正如用户自定义字典，编辑和添加字典后，应该使用 M-x ac-clear-dirctory-cache 来应用改变。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1742ab0" class="outline-2">
+<h2 id="org1742ab0">6 Source</h2>
+<div class="outline-text-2" id="text-org1742ab0">
+<p>
+Source is a concept that ensures the extensibility of auto-complete-mode. Simply saying, source is a description of:
+</p>
+
+<p>
+source 是一个用来确保 auto-complete-mode 的概念，简单来说可以描述为：
+</p>
+
+<ul class="org-ul">
+<li><p>
+How to generate completion candidates
+</p>
+
+<p>
+如何生成候选候选项。
+</p></li>
+
+<li><p>
+How to complete
+</p>
+
+<p>
+如何补全。
+</p></li>
+
+<li><p>
+How to show
+</p>
+
+<p>
+如何显示。
+</p></li>
+</ul>
+
+<p>
+Anybody who knows a little Emacs Lisp can define a source easily. See Extend for how to define a source. Here we will explain how to use built-in sources.
+</p>
+
+<p>
+任何了解一点 Emacs Lisp 的人都可以容易的定义一个 source。参见 Extend 了解如何定义一个 source。这里解释如何使用内置的 sources。
+</p>
+
+<p>
+Usually a source name starts with ac-source-. So you can list sources with apropos (M-x apropos RET ^ac-source-). You may see ac-source-filename and ac-source-dictionary which are entities of sources.
+</p>
+
+<p>
+通常 source 名字以 ac-source-开始。所以开始用 apropos 来列出所有源（M-x apropos RET ^ac-source-）。可以看到 source 中的条目 ac-source-filename 和 ac-source-dictionary。
+</p>
+</div>
+
+<div id="outline-container-org930bd06" class="outline-3">
+<h3 id="org930bd06">6.1 Using Source</h3>
+<div class="outline-text-3" id="text-org930bd06">
+<p>
+If you wrote (ac-config-default) in your .emacs, it is rare to change a source setting because it is already optimized to use. Here is a short explanation about source however. Sources will be used by setting ac-sources to a list of sources. You can see the setting by evaluating ac-sources in <b>scratch</b> buffer:
+</p>
+
+<p>
+如果将(ac-config-default)写在.emacs 中，将很少改变 source 设定，因为已经为了使用优化过了。然而这里有一个关于 source 的简短解释。source 将会被使用，通过将 ac-sources 设定为 sources 的列表。可以通过在 <b>scratch</b> buffer 中计算 ac-sources 来看到设置。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Formatted</span>
+(ac-source-filename
+ ac-source-functions
+ ac-source-yasnippet
+ ac-source-variables
+ ac-source-symbols
+ ac-source-features
+ ac-source-abbrev
+ ac-source-words-in-same-mode-buffers
+ ac-source-dictionary)
+</pre>
+</div>
+
+<p>
+As you see, ac-sources in <b>scratch</b> buffer has six sources. We explain each source for detail, you can guess meanings of sources. It is worth to remember that ac-sources is a buffer local variable, which means each ac-sources for buffers will be different.
+</p>
+
+<p>
+正如所见，*scratch* buffer 中的 ac-sources 有六个 source。我们将详细解释每个 source，可以猜测 source 的含义。值得记住的是 ac-sources 是一个 buffer local 变量，也就是说每个 buffer 的 ac-sources 是不同的。
+</p>
+
+<p>
+Here is an example. Imagine you are at the <b>scratch</b> buffer. As we said, this buffer has many sources. Some people think there are too many. So try to change ac-sources to reduce functionality. It is easy to change. Just evaluate the following code in the <b>scratch</b> buffer or with M-::
+</p>
+
+<p>
+这里是一个例子，想象你在 <b>scratch</b> buffer。正如所说，该 buffer 有很多 srouce。有些人认为太多了。所以尝试修改 ac-sources 来减少功能。很容易改变。只需要在 <b>scratch</b> buffer 中计算下面的表达式即可：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
+</pre>
+</div>
+
+<p>
+This example changes ac-source setting and enable only symbol completion and word completion among same major modes. Then, how can we enable this setting in next Emacs launching? We can change settings by adding a hook which is called when <b>scratch</b> buffer is created.
+</p>
+
+<p>
+这个例子改变了 ac-source 设置，只在相同的主模式中启用了符号补全和单词补全。那么，如何在以后启动的 Emacs 中也保持这样的设置呢？它会在创建*scratch* buffer 的时候添加沟子荠函数来改变设置。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">my-ac-emacs-lisp-mode</span> ()
+  (<span style="color: #a1db00;">setq</span> ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers)))
+
+(add-hook 'emacs-lisp-mode-hook 'my-ac-emacs-lisp-mode)
+</pre>
+</div>
+
+<p>
+If the code (ac-config-default) is written in .emacs, the code above may not work correctly. This is because (ac-config-default) will overwrite the setting. In such case, you can redefine a function which is used in (ac-config-default). The function name is ac-emacs-lisp-mode-setup in emacs-lisp-mode. See auto-complete-config.el for more details.
+</p>
+
+<p>
+如果代码(ac-config-default)写入到.emacs 当中，上面的代码就不能正确运行。这种情况下，应该重新定义(ac-config-default)中使用的函数。emacs-lisp-mode 中该函数名字是 ac-emacs-lisp-mode-setup。参见 auto-complete-config.el 了解更多详细信息。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">ac-emacs-lisp-mode-setup</span> ()
+  (<span style="color: #a1db00;">setq</span> ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers)))
+</pre>
+</div>
+
+<p>
+So, now you know how to change sources in a specific major mode. Summary is:
+</p>
+
+<p>
+现在，知道了如何在指定的主模式中改变 source。总的来说：
+</p>
+
+<ol class="org-ol">
+<li><p>
+Define a function changing ac-sources
+</p>
+
+<p>
+定义修改 ac-sources 的函数。
+</p></li>
+
+<li>Register the function to proper mode hooks (c++-mode-hook, ruby-mode-hook, and python-mode-hook, etc)</li>
+</ol>
+
+<p>
+将函数注册合适的模式钩子上（c++-mode-hook，ruby-mode-hook 和 python-mode-hook 等等）。
+</p>
+
+<p>
+By the way, how can we change a setting for all buffers? We use setq-default to change ac-sources instead of setq in such case. Then the default value of ac-sources will be changed to the value you specified.
+</p>
+
+<p>
+那么，如何改变所有 buffer 中的设置呢？这种情况下使用 setq-default 而不是 setq 来修改。然后 ac-sources 的默认值将会改变为指定的值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq-default</span> ac-sources '(ac-source-words-in-all-buffer))
+</pre>
+</div>
+
+<p>
+There are other ways to do that. (ac-config-default) changes the default value of ac-sources by registering a hook for auto-complete-mode. The registered function is ac-common-setup that adds ac-source-filename to the first of ac-sources by default. So all auto-complete-mode enabled buffer will have ac-source-filename at the first of ac-sources. A reason why adding to the first is relating to Omni Completion. Anyway you don't care about it here. So if you want to change ac-sources of all buffer, you can redefine ac-common-setup function to do that.
+</p>
+
+<p>
+还有其他方法可以做到。（ac-config-default）为 auto-complete-mode 注册了一个钩子，从而改变了 ac-sources 的默认值。注册的函数就是 ac-common-setup，该函数默认将 ac-source-filename 添加为 ac-sources o 第一个元素。这样所有的启用 auto-complete-mode 的 buffer 都会将 ac-source-filename 放在 ac-sources 的第一个。为什么将其放在第一位是和 Omni 补全有关系的。不管怎么说现在没必要关系这个。所以如果想修改所有 buffer 的 ac-sources，可以重新定义 ac-common-setup 函数。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Add ac-source-dictionary to ac-sources of all buffer</span>
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">ac-common-setup</span> ()
+  (<span style="color: #a1db00;">setq</span> ac-sources (append ac-sources '(ac-source-dictionary))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orged1ad60" class="outline-3">
+<h3 id="orged1ad60">6.2 Builtin Sources</h3>
+<div class="outline-text-3" id="text-orged1ad60">
+<p>
+Here are defined sources in auto-complete.el and auto-complete-config.el.
+</p>
+
+<p>
+下面是 auto-complete.el 和 auto-complete-config.el 中定义的 source。
+</p>
+</div>
+
+<div id="outline-container-orgbcc0933" class="outline-4">
+<h4 id="orgbcc0933">6.2.1 ac-source-abbrev</h4>
+<div class="outline-text-4" id="text-orgbcc0933">
+<p>
+A source for Emacs abbreviation function. See info emacs Abbrevs about abbreviation function.
+</p>
+
+<p>
+Emacs 缩写函数使用的 source，查看 emacs Abbrevs 了解。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a18104" class="outline-4">
+<h4 id="org2a18104">6.2.2 ac-source-css-property</h4>
+<div class="outline-text-4" id="text-org2a18104">
+<p>
+A source for CSS property.
+</p>
+
+<p>
+CSS 属性的 source。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org14b92cb" class="outline-4">
+<h4 id="org14b92cb">6.2.3 ac-source-dictionary</h4>
+<div class="outline-text-4" id="text-org14b92cb">
+<p>
+A source for dictionary. See Completion by Dictionary about dictionary.
+</p>
+
+<p>
+字典 source。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7335d30" class="outline-4">
+<h4 id="org7335d30">6.2.4 ac-source-eclim</h4>
+<div class="outline-text-4" id="text-org7335d30">
+<p>
+A source for Emacs-eclim.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge04c639" class="outline-4">
+<h4 id="orge04c639">6.2.5 ac-source-features</h4>
+<div class="outline-text-4" id="text-orge04c639">
+<p>
+A source for completing features which are available with (require '.
+</p>
+
+<p>
+补全功能的 source，可用于(require ')。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga2fdbff" class="outline-4">
+<h4 id="orga2fdbff">6.2.6 ac-source-filename</h4>
+<div class="outline-text-4" id="text-orga2fdbff">
+<p>
+A source for completing file name. Completion will be started after inserting /.
+</p>
+
+<p>
+用于补全文件名的 source，在插入/之后开始补全。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbf9e7c4" class="outline-4">
+<h4 id="orgbf9e7c4">6.2.7 ac-source-files-in-current-dir</h4>
+<div class="outline-text-4" id="text-orgbf9e7c4">
+<p>
+A source for completing files in a current directory. It may be useful with eshell.
+</p>
+
+<p>
+补全当前目录中的文件。可能用于 eshell。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbf44e36" class="outline-4">
+<h4 id="orgbf44e36">6.2.8 ac-source-functions</h4>
+<div class="outline-text-4" id="text-orgbf44e36">
+<p>
+A source for completing Emacs Lisp functions. It is available only after (.
+补全 Emacs Lisp 函数。只在（之后可用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org95ad3ea" class="outline-4">
+<h4 id="org95ad3ea">6.2.9 ac-source-ghc-mod</h4>
+<div class="outline-text-4" id="text-org95ad3ea">
+<p>
+A source for ghc-mod.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgedae0d0" class="outline-4">
+<h4 id="orgedae0d0">6.2.10 ac-source-gtags</h4>
+<div class="outline-text-4" id="text-orgedae0d0">
+<p>
+A source for completing tags of Global.
+</p>
+
+<p>
+补全 global 的 tags。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3e66b98" class="outline-4">
+<h4 id="org3e66b98">6.2.11 ac-source-imenu</h4>
+<div class="outline-text-4" id="text-org3e66b98">
+<p>
+A source for completing imenu nodes. See info emacs imenu for details.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgc9c78c4" class="outline-4">
+<h4 id="orgc9c78c4">6.2.12 ac-source-semantic</h4>
+<div class="outline-text-4" id="text-orgc9c78c4">
+<p>
+A source for Semantic. It can be used for completing member name for C/C++.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc791861" class="outline-4">
+<h4 id="orgc791861">6.2.13 ac-source-slime</h4>
+<div class="outline-text-4" id="text-orgc791861">
+<p>
+A source for SLIME.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge46c389" class="outline-4">
+<h4 id="orge46c389">6.2.14 ac-source-semantic-raw</h4>
+<div class="outline-text-4" id="text-orge46c389">
+<p>
+Unlike ac-source-semantic, this source is for completing symbols in a raw namespace.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5919cd2" class="outline-4">
+<h4 id="org5919cd2">6.2.15 ac-source-symbols</h4>
+<div class="outline-text-4" id="text-org5919cd2">
+<p>
+A source for completing Emacs Lisp symbols.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgee1b0b2" class="outline-4">
+<h4 id="orgee1b0b2">6.2.16 ac-source-variables</h4>
+<div class="outline-text-4" id="text-orgee1b0b2">
+<p>
+A source for completing Emacs Lisp symbols.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbfd2463" class="outline-4">
+<h4 id="orgbfd2463">6.2.17 ac-source-words-in-all-buffer</h4>
+<div class="outline-text-4" id="text-orgbfd2463">
+<p>
+A source for completing words in all buffer. Unlikely ac-source-words-in-same-mode-buffers, it doesn't regard major-mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org217b28c" class="outline-4">
+<h4 id="org217b28c">6.2.18 ac-source-words-in-buffer</h4>
+<div class="outline-text-4" id="text-org217b28c">
+<p>
+A source for completing words in a current buffer.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgee5342e" class="outline-4">
+<h4 id="orgee5342e">6.2.19 ac-source-words-in-same-mode-buffers</h4>
+<div class="outline-text-4" id="text-orgee5342e">
+<p>
+A source for completing words which are collected over buffers whom major-mode is same to of a current buffer. For example, words will shared among a.cpp and b.cpp, but not shared among a.pl and b.cpp because they are different major-mode buffers. Usually this source is more useful than ac-source-words-in-all-buffer.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd873e70" class="outline-4">
+<h4 id="orgd873e70">6.2.20 ac-source-yasnippet</h4>
+<div class="outline-text-4" id="text-orgd873e70">
+<p>
+A source for Yasnippet to complete and expand snippets.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org375df6d" class="outline-2">
+<h2 id="org375df6d">7 Tips</h2>
+<div class="outline-text-2" id="text-org375df6d">
+</div>
+<div id="outline-container-org7415a2f" class="outline-3">
+<h3 id="org7415a2f">7.1 Not to complete automatically</h3>
+<div class="outline-text-3" id="text-org7415a2f">
+<p>
+If you are being annoyed with displaying completion menu, you can disable automatic starting completion by setting ac-auto-start to nil.
+</p>
+
+<p>
+如果觉得显示的补全菜单很烦人，可以将 ac-auto-start 设置为 nil 关闭补全菜单。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-auto-start nil)
+</pre>
+</div>
+
+<p>
+You need to bind some key to auto-complete command (because you need to complete anyway). For example, bind to ac-mode-map, which is a key map for auto-complete-mode enabled buffer:
+</p>
+
+<p>
+需要将 auto-complete 命令绑定到某个按键（因为无路如何都需要补全）。例如，绑定到 ac-mode-mamp。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(define-key ac-mode-map (kbd <span style="color: #ff4ea3;">"M-TAB"</span>) 'auto-complete)
+</pre>
+</div>
+
+<p>
+Or bind to global key map.
+</p>
+
+<p>
+或者绑定到全局键映射。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(global-set-key <span style="color: #ff4ea3;">"\M-/"</span> 'auto-complete)
+</pre>
+</div>
+
+<p>
+In addition, if you allow to start completion automatically but also want to be silent as much as possible, you can do it by setting ac-auto-start to an prefix length integer. For example, if you want to start completion automatically when you has inserted 4 or more characters, just set ac-auto-start to 4:
+</p>
+
+<p>
+此外，如果允许自动补全，但是希望它能够尽可能的安静，那就需要将 ac-auto-start 设置为前缀的合适长度。例如，如果想要插入 4 个或更多字符以后才开始补全，只需要将 ac-auto-start 设置为 4：
+</p>
+
+<p>
+(setq ac-auto-start 4)
+</p>
+
+<p>
+Setting ac-auto-start to large number will result in good for performance. Lesser ac-auto-start, more high cost to produce completion candidates, because there will be so many candidates necessarily. If you feel auto-complete-mode is stalling, change ac-auto-start to a larger number or nil.
+</p>
+
+<p>
+将 ac-auto-start 设置为比较大的数字将会有更好的性能。比较小的 ac-auto-start 产生补全候选项的时候有更多的消耗，因为将会有很多的必要候选项。如果 auto-complete-mode 变慢了，将 ac-auto-start 修改为大点的数字或 nil。
+</p>
+
+<p>
+See ac-auto-start for more details.
+</p>
+
+<p>
+And consider to use Trigger Key.
+</p>
+
+<p>
+考虑使用 Trigger Key。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbb09860" class="outline-3">
+<h3 id="orgbb09860">7.2 Not to show completion menu automatically</h3>
+<div class="outline-text-3" id="text-orgbb09860">
+<p>
+There is another approach to solve the annoying problem is that not to show completion menu automatically. Not to show completion menu automatically, set ac-auto-show-menu to nil.
+</p>
+
+<p>
+解决这个烦人问题的另一个方法是不自动显示补全菜单。将 ac-auto-show-menu 设置为 nil 可以不自动显示补全菜单。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-auto-show-menu nil)
+</pre>
+</div>
+
+<p>
+When you select or filter candidates, completion menu will be shown.
+</p>
+
+<p>
+当选择或过滤候选项的时候，补全菜单将会显示。
+</p>
+
+<p>
+In other way, you can delay showing completion menu by setting ac-auto-show-menu to seconds in real number.
+</p>
+
+<p>
+另一种方式是延迟显示补全菜单，这需要将 ac-auto-show-menu 设置为延迟的秒数。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Show 0.8 second later</span>
+(<span style="color: #a1db00;">setq</span> ac-auto-show-menu 0.8)
+</pre>
+</div>
+
+<p>
+This interface has both good points of completely automatic completion and completely non-automatic completion. This may be default in the future.
+</p>
+
+<p>
+该接口兼具自动补全和非自动补全的优点。将来可能会设为默认。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge36294d" class="outline-3">
+<h3 id="orge36294d">7.3 Stop completion</h3>
+<div class="outline-text-3" id="text-orge36294d">
+<p>
+You can stop completion by pressing C-g. However you won't press C-g while defining a macro. In such case, it is a good idea to bind some key to ac-completing-map.
+</p>
+
+<p>
+可以使用 C-g 停止自动补全。但是定义宏的时候可能不希望使用 C-g。这种情况下，绑定一些健到 ac-completing-map 是个好主意。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(define-key ac-completing-map <span style="color: #ff4ea3;">"\M-/"</span> 'ac-stop)
+</pre>
+</div>
+
+<p>
+Now you can stop completion by pressing M-/.
+</p>
+
+<p>
+现在可以使用 M-/停止补全了。
+</p>
+</div>
+</div>
+<div id="outline-container-org42afea0" class="outline-3">
+<h3 id="org42afea0">7.4 Finish completion by TAB</h3>
+<div class="outline-text-3" id="text-org42afea0">
+<p>
+As we described above, there is many behaviors in TAB. You need to use TAB and RET properly, but there is a simple interface that bind RET to original and TAB to finish completion:
+</p>
+
+<p>
+正如前面所讲，TAB 有很多行为。可能需要正确使用 TAB 和 RET，但是有一个简单的借口可以将 RET 绑定为原本的设置，而使用 TAB 来完成补全。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(define-key ac-completing-map <span style="color: #ff4ea3;">"\t"</span> 'ac-complete)
+(define-key ac-completing-map <span style="color: #ff4ea3;">"\r"</span> nil)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org39710a9" class="outline-3">
+<h3 id="org39710a9">7.5 Select candidates with C-n/C-p only when completion menu is displayed</h3>
+<div class="outline-text-3" id="text-org39710a9">
+<p>
+By evaluating the following code, you can select candidates with C-n/C-p, but it might be annoying sometimes.
+</p>
+
+<p>
+通过计算下面的代码，可以使用 C-n/C-p 选择候选项，但是有时候可能有些烦人。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Bad config</span>
+(define-key ac-completing-map <span style="color: #ff4ea3;">"\C-n"</span> 'ac-next)
+(define-key ac-completing-map <span style="color: #ff4ea3;">"\C-p"</span> 'ac-previous)
+</pre>
+</div>
+
+<p>
+In this case, it is better that selecting candidates is enabled only when completion menu is displayed so that the key input will not be taken as much as possible. ac-menu-map is a keymap for completion on completion menu which is enabled when ac-use-menu-map is t.
+</p>
+
+<p>
+这种情况下，更好的选择是只有在显示补全菜单的时候启用选择候选项，这样就可以尽可能少的减少按键。ac-menu-map 是补全菜单上的键映射，但此时需要将 ac-use-menu-map 设置为 t。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-use-menu-map t)
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Default settings</span>
+(define-key ac-menu-map <span style="color: #ff4ea3;">"\C-n"</span> 'ac-next)
+(define-key ac-menu-map <span style="color: #ff4ea3;">"\C-p"</span> 'ac-previous)
+</pre>
+</div>
+
+<p>
+See ac-use-menu-map and ac-menu-map for more details.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd9b6cd5" class="outline-3">
+<h3 id="orgd9b6cd5">7.6 Not to use quick help</h3>
+<div class="outline-text-3" id="text-orgd9b6cd5">
+<p>
+A tooltip help that is shown when completing is called quick help. You can disable it if you don't want to use it:
+</p>
+
+<p>
+补全时显示工具提示叫做快速帮助，如果不想使用可以禁用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-use-quick-help nil)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org54a985d" class="outline-3">
+<h3 id="org54a985d">7.7 Change a height of completion menu</h3>
+<div class="outline-text-3" id="text-org54a985d">
+<p>
+Set ac-menu-height to number of lines.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">20 lines</span>
+(<span style="color: #a1db00;">setq</span> ac-menu-height 20)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga6e3173" class="outline-3">
+<h3 id="orga6e3173">7.8 Enable auto-complete-mode automatically for specific modes</h3>
+<div class="outline-text-3" id="text-orga6e3173">
+<p>
+auto-complete-mode won't be enabled automatically for modes that are not in ac-modes. So you need to set if necessary:
+</p>
+
+<p>
+不会为不在 ac-modes 中的 modes 自动启用 auto-complete-mode。因此必要的话需要如下设置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">   (add-to-list 'ac-modes 'brandnew-mode)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25d9fc5" class="outline-3">
+<h3 id="org25d9fc5">7.9 Ignore case</h3>
+<div class="outline-text-3" id="text-org25d9fc5">
+<p>
+There is three ways to distinguish upper case and lower case.
+</p>
+
+<p>
+有三种方法来区分大小写。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Just ignore case</span>
+(<span style="color: #a1db00;">setq</span> ac-ignore-case t)
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Ignore case if completion target string doesn't include upper characters</span>
+(<span style="color: #a1db00;">setq</span> ac-ignore-case 'smart)
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Distinguish case</span>
+(<span style="color: #a1db00;">setq</span> ac-ignore-case nil)
+</pre>
+</div>
+
+<p>
+Default is smart.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4dbb213" class="outline-3">
+<h3 id="org4dbb213">7.10 Stop completion automatically after inserting specific words</h3>
+<div class="outline-text-3" id="text-org4dbb213">
+<p>
+Set ac-stop-words to words that stops completion automatically. In ruby, some people want to stop completion automatically after inserting "end":
+</p>
+
+<p>
+将 ac-stop-words 设置为停止不全的单词。在 ruby 中，一些人希望能够在插入“end”后自动停止补全。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'ruby-mode-hook
+          (<span style="color: #a1db00;">lambda</span> ()
+            (make-local-variable 'ac-stop-words)
+            (add-to-list 'ac-stop-words <span style="color: #ff4ea3;">"end"</span>)))
+</pre>
+</div>
+
+<p>
+Note that ac-stop-words is not a buffer local variable, so you need to make it buffer local with make-local-variable if it is buffer specific setting.
+</p>
+
+<p>
+注意，ac-stop-words 不是一个 buffer local 变量，所以如果是特定 buffer 蛇形，需要使用 make-local-variable 将其变为 buffer local。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org32a1ea1" class="outline-3">
+<h3 id="org32a1ea1">7.11 Change colors</h3>
+<div class="outline-text-3" id="text-org32a1ea1">
+<p>
+Colors settings are following:
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Face</td>
+<td class="org-left">Description</td>
+</tr>
+
+<tr>
+<td class="org-left">ac-completion-face</td>
+<td class="org-left">Foreground color of inline completion</td>
+</tr>
+
+<tr>
+<td class="org-left">ac-candidate-face</td>
+<td class="org-left">Color of completion menu</td>
+</tr>
+
+<tr>
+<td class="org-left">ac-selection-face</td>
+<td class="org-left">Selection color of completion menu</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+To change face background color, use set-face-background. To change face foreground color, use set-face-foreground. To set underline, use set-face-underline.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Examples</span>
+(set-face-background 'ac-candidate-face <span style="color: #ff4ea3;">"lightgray"</span>)
+(set-face-underline 'ac-candidate-face <span style="color: #ff4ea3;">"darkgray"</span>)
+(set-face-background 'ac-selection-face <span style="color: #ff4ea3;">"steelblue"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd9bec93" class="outline-3">
+<h3 id="orgd9bec93">7.12 Change default sources</h3>
+<div class="outline-text-3" id="text-orgd9bec93">
+<p>
+Read Source first if you don't familiar with sources. To change default of sources, use setq-default:
+</p>
+
+<p>
+如果对 source 不了解的话先阅读 Source。使用 setq-default 改变 source 的默认值：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq-default</span> ac-sources '(ac-source-words-in-all-buffer))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org169d7cd" class="outline-3">
+<h3 id="org169d7cd">7.13 Change sources for specific major modes</h3>
+<div class="outline-text-3" id="text-org169d7cd">
+<p>
+For example, you may want to use specific sources for C++ buffers. To do that, register a hook by add-hook and change ac-sources properly:
+</p>
+
+<p>
+如果想为 C++ buffer 使用指定的 source，使用 add-hook 注册钩子来正确改变 ac-sources：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'c++-mode (<span style="color: #a1db00;">lambda</span> () (add-to-list 'ac-sources 'ac-source-semantic)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5a2d0bf" class="outline-3">
+<h3 id="org5a2d0bf">7.14 Completion with specific source</h3>
+<div class="outline-text-3" id="text-org5a2d0bf">
+<p>
+You can start completion with specific source. For example, if you want to complete file name, do M-x ac-complete-filename at point. Or if you want to complete C/C++ member name, do M-x ac-complete-semantic at point. Usually, you may bind them to some key like:
+</p>
+
+<p>
+可以使用指定的 source 补全。例如，如果想补全文件名，可以在 point 处使用 M-x ac-complete-filename。如果想补全 C/C++成员名，在 point 处使用 M-x ac-complete-semantic。通常应该将它们绑定在一下按键上，比如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Complete member name by C-c . for C++ mode.</span>
+(add-hook 'c++-mode-hook
+          (<span style="color: #a1db00;">lambda</span> ()
+            (local-set-key (kbd <span style="color: #ff4ea3;">"C-c ."</span>) 'ac-complete-semantic)))
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">Complete file name by C-c /</span>
+(global-set-key (kbd <span style="color: #ff4ea3;">"C-c /"</span>) 'ac-complete-filename)
+</pre>
+</div>
+
+<p>
+Generally, such commands will be automatically available when sources are defined. Assume that a source named ac-source-foobar is being defined for example, a command called ac-complete-foobar will be also defined automatically. See also Builtin Sources for available commands.
+</p>
+
+<p>
+通常，当定义好 source 之后这样的命令是自动可用的。假设已经定义好一个名为 ac-source-foobar 的 source，名字 ac-complete-foobar 的命令也是自动定义的。查看 Builtin Sources 了解可用的命令。
+</p>
+
+<p>
+If you want to use multiple sources for a command, you need to define a command for it like:
+</p>
+
+<p>
+如果想在一个命令中使用多个 source，需要类似如下的命令：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">semantic-and-gtags-complete</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (auto-complete '(ac-source-semantic ac-source-gtags)))
+</pre>
+</div>
+
+<p>
+auto-complete function can take an alternative of ac-sources.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcae92e9" class="outline-3">
+<h3 id="orgcae92e9">7.15 Show help persistently</h3>
+<div class="outline-text-3" id="text-orgcae92e9">
+<p>
+Use ac-persist-help instead of ac-help, which is bound to M-&lt;f1&gt; and C-M-?.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6f76175" class="outline-3">
+<h3 id="org6f76175">7.16 Show a lastly completed candidate help</h3>
+<div class="outline-text-3" id="text-org6f76175">
+<p>
+ac-last-help command shows a lastly completed candidate help in a ac-help (buffer help) form. If you give an argument by C-u or just call ac-last-persist-help, its help buffer will not disappear automatically.
+</p>
+
+<p>
+ac-last-help 在 ac-help（buffer-help）表中显示上次补全候选项的帮助。如果使用 C-u 参数或调用 ac-last-persist-help，它的帮助 buffer 不会自动消失。
+</p>
+
+<p>
+ac-last-quick-help command show a lastly completed candidate help in a ac-quick-help (quick help) form. It is useful if you want to see a function documentation, for example.
+</p>
+
+<p>
+ac-last-quick-help 命令显示在 ac-quick-help 中显示上一个补全候选项帮助。这有助于看到函数文档。
+</p>
+
+<p>
+You may bind keys to these command like:
+</p>
+
+<p>
+将这些命令绑定到按键，比如:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(define-key ac-mode-map (kbd <span style="color: #ff4ea3;">"C-c h"</span>) 'ac-last-quick-help)
+(define-key ac-mode-map (kbd <span style="color: #ff4ea3;">"C-c H"</span>) 'ac-last-help)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org46d63a0" class="outline-3">
+<h3 id="org46d63a0">7.17 Show help beautifully</h3>
+<div class="outline-text-3" id="text-org46d63a0">
+<p>
+If pos-tip.el is installed, auto-complete-mode uses its native rendering engine for displaying quick help instead of legacy one.
+</p>
+
+<p>
+如果安装 pos-tip.el，auto-complete-mode 使用它的渲染引擎来显示快速帮助。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0f0d4c4" class="outline-2">
+<h2 id="org0f0d4c4">8 Third-party Extensions</h2>
+<div class="outline-text-2" id="text-org0f0d4c4">
+</div>
+<div id="outline-container-orgb8815f6" class="outline-3">
+<h3 id="orgb8815f6">8.1 SLIME</h3>
+<div class="outline-text-3" id="text-orgb8815f6">
+<p>
+See ac-slime page.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org11e0272" class="outline-3">
+<h3 id="org11e0272">8.2 Scala</h3>
+<div class="outline-text-3" id="text-org11e0272">
+<p>
+See ENSIME page.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org731d36e" class="outline-2">
+<h2 id="org731d36e">9 Configuration</h2>
+<div class="outline-text-2" id="text-org731d36e">
+<p>
+Any configuration item will be set in .emacs or with M-x customize-group RET auto-complete RET.
+</p>
+
+<p>
+任何配置项都可以在.emacs 中或通过 M-x customize-group RET auto-complete RET 设置。
+</p>
+</div>
+
+<div id="outline-container-orgde0a3ed" class="outline-3">
+<h3 id="orgde0a3ed">9.1 ac-delay</h3>
+<div class="outline-text-3" id="text-orgde0a3ed">
+<p>
+Delay time to start completion in real number seconds. It is a trade-off of responsiveness and performance.
+</p>
+
+<p>
+延迟补全的秒数。这是响应能力和性能的权衡。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge8d9f78" class="outline-3">
+<h3 id="orge8d9f78">9.2 ac-auto-show-menu</h3>
+<div class="outline-text-3" id="text-orge8d9f78">
+<p>
+Show completion menu automatically if t specified. t means always automatically showing completion menu. nil means never showing completion menu. Real number means delay time in seconds.
+</p>
+
+<p>
+如果设置为 t 自动显示补全菜单。t 表示着总是显示补全菜单。nil 表示绝不显示补全菜单。实数表示延迟显示的秒数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8efcd3c" class="outline-3">
+<h3 id="org8efcd3c">9.3 ac-show-menu-immediately-on-auto-complete</h3>
+<div class="outline-text-3" id="text-org8efcd3c">
+<p>
+Whether or not to show completion menu immediately on auto-complete command. If inline completion has already been showed, this configuration will be ignored.
+</p>
+
+<p>
+是否在补全命令上立即显示补全菜单，如果行内补全已经显示，忽略该配置。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfadcea1" class="outline-3">
+<h3 id="orgfadcea1">9.4 ac-expand-on-auto-complete</h3>
+<div class="outline-text-3" id="text-orgfadcea1">
+<p>
+Whether or not to expand a common part of whole candidates.
+</p>
+
+<p>
+是否扩展所有候选项的公共部分。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0abb96d" class="outline-3">
+<h3 id="org0abb96d">9.5 ac-disable-faces</h3>
+<div class="outline-text-3" id="text-org0abb96d">
+<p>
+Specify a list of face symbols for disabling auto completion. Auto completion will not be started if a face text property at a point is included in the list.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc9396b7" class="outline-3">
+<h3 id="orgc9396b7">9.6 ac-stop-flymake-on-completing</h3>
+<div class="outline-text-3" id="text-orgc9396b7">
+<p>
+Whether or not to stop Flymake on completion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6fd250c" class="outline-3">
+<h3 id="org6fd250c">9.7 ac-use-fuzzy</h3>
+<div class="outline-text-3" id="text-org6fd250c">
+<p>
+Whether or not to use fuzzy matching.
+</p>
+
+<p>
+是否使用模糊补全。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org17d21a5" class="outline-3">
+<h3 id="org17d21a5">9.8 ac-fuzzy-cursor-color</h3>
+<div class="outline-text-3" id="text-org17d21a5">
+<p>
+Change cursor color to specified color when Completion by Fuzzy Matching is started. nil means never changed. Available colors can be seen with M-x list-colors-display.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org93863b2" class="outline-3">
+<h3 id="org93863b2">9.9 ac-use-comphist</h3>
+<div class="outline-text-3" id="text-org93863b2">
+<p>
+Whether or not to use Candidate Suggestion. nil means never using it and get performance better maybe.
+</p>
+
+<p>
+是否使用补全建议。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf2d0558" class="outline-3">
+<h3 id="orgf2d0558">9.10 ac-comphist-threshold</h3>
+<div class="outline-text-3" id="text-orgf2d0558">
+<p>
+Specify a percentage of limiting lower scored candidates. 100% for whole scores.
+</p>
+
+<p>
+指定显示低分数候选项的百分比。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3a3172e" class="outline-3">
+<h3 id="org3a3172e">9.11 ac-comphist-file</h3>
+<div class="outline-text-3" id="text-org3a3172e">
+<p>
+Specify a file stores data of Candidate Suggestion.
+</p>
+
+<p>
+指定用来保存候选项建议的文件。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8f058ee" class="outline-3">
+<h3 id="org8f058ee">9.12 ac-use-quick-help</h3>
+<div class="outline-text-3" id="text-org8f058ee">
+<p>
+Whether or not to use quick help.
+</p>
+
+<p>
+是否使用快速帮助。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaec45e0" class="outline-3">
+<h3 id="orgaec45e0">9.13 ac-quick-help-delay</h3>
+<div class="outline-text-3" id="text-orgaec45e0">
+<p>
+Delay time to show quick help in real number seconds.
+</p>
+
+<p>
+显示快速帮助的延迟时间。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4e42369" class="outline-3">
+<h3 id="org4e42369">9.14 ac-menu-height</h3>
+<div class="outline-text-3" id="text-org4e42369">
+<p>
+Specify an integer of lines of completion menu.
+</p>
+
+<p>
+指定补全菜单的行数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73570c1" class="outline-3">
+<h3 id="org73570c1">9.15 ac-quick-help-height</h3>
+<div class="outline-text-3" id="text-org73570c1">
+<p>
+Specify an integer of lines of quick help.
+</p>
+
+<p>
+指定快速帮助的行数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org54a1266" class="outline-3">
+<h3 id="org54a1266">9.16 ac-quick-help-prefer-pos-tip</h3>
+<div class="outline-text-3" id="text-org54a1266">
+<p>
+Whether or not auto-complete prefers native tooltip with pos-tip than overlap popup for displaying quick help. If non-nil, you also need to install pos-tip.el so that displaying tooltip can work well.
+</p>
+
+<p>
+auto-complete 显示快速帮助时更偏向于使用 pos-tip 带的原生工具而不是 popup。如果非 nil，需要安装 pos-tip.el，这样显示工具条才能正常工作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org41350d2" class="outline-3">
+<h3 id="org41350d2">9.17 ac-candidate-limit</h3>
+<div class="outline-text-3" id="text-org41350d2">
+<p>
+Limit a number of candidates. Specifying an integer, the value will be a limit of candidates. nil means no limit.
+</p>
+
+<p>
+限制候选项数量。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1566b8" class="outline-3">
+<h3 id="orge1566b8">9.18 ac-modes</h3>
+<div class="outline-text-3" id="text-orge1566b8">
+<p>
+Specify major modes as a list of symbols that will be enabled automatically if global-auto-complete-mode is enabled.
+</p>
+
+<p>
+如果 global-auto-complete-mode 启动，该值指定可以自动启用的主模式列表。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga73fa04" class="outline-3">
+<h3 id="orga73fa04">9.19 ac-compatible-packages-regexp</h3>
+<div class="outline-text-3" id="text-orga73fa04">
+<p>
+Specify a regexp that identifies starting completion or not for that package.
+</p>
+
+<p>
+指定是否为该包启动补全的正则表达式。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org95857ca" class="outline-3">
+<h3 id="org95857ca">9.20 ac-non-trigger-commands</h3>
+<div class="outline-text-3" id="text-org95857ca">
+<p>
+Specify commands as a list of symbols that does NOT starts completion automatically.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf9d2b6a" class="outline-3">
+<h3 id="orgf9d2b6a">9.21 ac-trigger-commands</h3>
+<div class="outline-text-3" id="text-orgf9d2b6a">
+<p>
+Specify commands as a list of symbols that starts completion automatically. self-insert-command is one of default.
+</p>
+
+<p>
+将命令作为符号的列表，用来表示可以自动补全的命令。默认 self-insert-command 是其中之一。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbadaea4" class="outline-3">
+<h3 id="orgbadaea4">9.22 ac-trigger-commands-on-completing</h3>
+<div class="outline-text-3" id="text-orgbadaea4">
+<p>
+Same as ac-trigger-commands expect this will be used on completing.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgddb60ba" class="outline-3">
+<h3 id="orgddb60ba">9.23 ac-trigger-key</h3>
+<div class="outline-text-3" id="text-orgddb60ba">
+<p>
+Specify a Trigger Key.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcc2759d" class="outline-3">
+<h3 id="orgcc2759d">9.24 ac-auto-start</h3>
+<div class="outline-text-3" id="text-orgcc2759d">
+<p>
+Specify how completion will be started. t means always starting completion automatically. nil means never started automatically. An integer means completion will not be started until the value is more than a length of the completion target string.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd1dc93b" class="outline-3">
+<h3 id="orgd1dc93b">9.25 ac-stop-words</h3>
+<div class="outline-text-3" id="text-orgd1dc93b">
+<p>
+Specify a list of strings that stops completion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfd0c355" class="outline-3">
+<h3 id="orgfd0c355">9.26 ac-use-dictionary-as-stop-words</h3>
+<div class="outline-text-3" id="text-orgfd0c355">
+<p>
+Specify whether auto-complete uses dictionaries as stop words.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1c70bf8" class="outline-3">
+<h3 id="org1c70bf8">9.27 ac-ignore-case</h3>
+<div class="outline-text-3" id="text-org1c70bf8">
+<p>
+Specify how distinguish case. t means always ignoring case. nil means never ignoring case. smart in symbol means ignoring case only when the completion target string doesn't include upper characters.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7414f4c" class="outline-3">
+<h3 id="org7414f4c">9.28 ac-dwim</h3>
+<div class="outline-text-3" id="text-org7414f4c">
+<p>
+"Do What I Mean" function. t means:
+</p>
+<ul class="org-ul">
+<li>After selecting candidates, TAB will behave as RET</li>
+<li>TAB will behave as RET only on candidate remains</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf9adfca" class="outline-3">
+<h3 id="orgf9adfca">9.29 ac-use-menu-map</h3>
+<div class="outline-text-3" id="text-orgf9adfca">
+<p>
+Specify a special keymap (ac-menu-map) should be enabled when completion menu is displayed. ac-menu-map will be enabled when it is t and satisfy one of the following conditions:
+</p>
+
+<p>
+   ac-auto-start and ac-auto-show-menu are not nil, and completion menu is displayed after starting completion
+Completion menu is displayed by auto-complete command
+Completion menu is displayed by ac-isearch command
+</p>
+</div>
+</div>
+<div id="outline-container-org5555424" class="outline-3">
+<h3 id="org5555424">9.30 ac-use-overriding-local-map</h3>
+<div class="outline-text-3" id="text-org5555424">
+<p>
+Use only when operations is not affected. Internally it uses overriding-local-map, which is too powerful to use with keeping orthogonality. So don't use as much as possible.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge29db1e" class="outline-3">
+<h3 id="orge29db1e">9.31 ac-completion-face</h3>
+<div class="outline-text-3" id="text-orge29db1e">
+<p>
+Face of inline completion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org104b593" class="outline-3">
+<h3 id="org104b593">9.32 ac-candidate-face</h3>
+<div class="outline-text-3" id="text-org104b593">
+<p>
+Face of completion menu background.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb254f38" class="outline-3">
+<h3 id="orgb254f38">9.33 ac-selection-face</h3>
+<div class="outline-text-3" id="text-orgb254f38">
+<p>
+Face of completion menu selection.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e0e776" class="outline-3">
+<h3 id="org6e0e776">9.34 global-auto-complete-mode</h3>
+<div class="outline-text-3" id="text-org6e0e776">
+<p>
+Whether or not to use auto-complete-mode globally. It is t in general.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org99e8585" class="outline-3">
+<h3 id="org99e8585">9.35 ac-user-dictionary</h3>
+<div class="outline-text-3" id="text-org99e8585">
+<p>
+Specify a dictionary as a list of string for Completion by Dictionary.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org560c2b6" class="outline-3">
+<h3 id="org560c2b6">9.36 ac-user-dictionary-files</h3>
+<div class="outline-text-3" id="text-org560c2b6">
+<p>
+Specify a dictionary files as a list of string for Completion by Dictionary.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org402ae26" class="outline-3">
+<h3 id="org402ae26">9.37 ac-dictionary-directories</h3>
+<div class="outline-text-3" id="text-org402ae26">
+<p>
+Specify a dictionary directories as a list of string for Completion by Dictionary.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga1df7ec" class="outline-3">
+<h3 id="orga1df7ec">9.38 ac-sources</h3>
+<div class="outline-text-3" id="text-orga1df7ec">
+<p>
+Specify sources as a list of Source. This is a buffer local variable.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2c57273" class="outline-3">
+<h3 id="org2c57273">9.39 ac-completing-map</h3>
+<div class="outline-text-3" id="text-org2c57273">
+<p>
+Keymap for completion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc531880" class="outline-3">
+<h3 id="orgc531880">9.40 ac-menu-map</h3>
+<div class="outline-text-3" id="text-orgc531880">
+<p>
+Keymap for completion on completion menu. See also ac-use-menu-map.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb8f4f37" class="outline-3">
+<h3 id="orgb8f4f37">9.41 ac-mode-map</h3>
+<div class="outline-text-3" id="text-orgb8f4f37">
+<p>
+Keymap for auto-complete-mode enabled buffers.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9b1fd8a" class="outline-2">
+<h2 id="org9b1fd8a">10 Extend</h2>
+<div class="outline-text-2" id="text-org9b1fd8a">
+<p>
+A meaning to extend auto-complete-mode is just defining a Source. This section describe how to define a source.
+</p>
+</div>
+
+<div id="outline-container-org702c637" class="outline-3">
+<h3 id="org702c637">10.1 Prototype</h3>
+<div class="outline-text-3" id="text-org702c637">
+<p>
+Source basically takes a form of the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource1</span>
+  '((prop . value)
+    ...))
+</pre>
+</div>
+
+<p>
+As you see, source is just an associate list. You can define a source by combining pairs of defined property and its value.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org34b816d" class="outline-3">
+<h3 id="org34b816d">10.2 Example</h3>
+<div class="outline-text-3" id="text-org34b816d">
+<p>
+The most important property for source is candidates property. This property describes how to generate completion candidates by giving a function, an expression, or a variable. A result of evaluation should be a list of strings. Here is an example to generate candidates "Foo", "Bar", and "Baz":
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource1</span>
+  '((candidates . (list <span style="color: #ff4ea3;">"Foo"</span> <span style="color: #ff4ea3;">"Bar"</span> <span style="color: #ff4ea3;">"Baz"</span>))))
+</pre>
+</div>
+
+<p>
+Then add this source to ac-sources and use:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> ac-sources '(ac-source-mysource1))
+</pre>
+</div>
+
+<p>
+It is successful if you have "Bar" and "Baz" by inserting "B". The example above has an expression (list &#x2026;) in candidates property. The expression specified there will not be byte-compiled, so you should not use an expression unless it is too simple, because it has a bad affection on performance. You should use a function instead maybe:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">mysource1-candidates</span> ()
+  '(<span style="color: #ff4ea3;">"Foo"</span> <span style="color: #ff4ea3;">"Bar"</span> <span style="color: #ff4ea3;">"Baz"</span>))
+
+(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource1</span>
+  '((candidates . mysource1-candidates)))
+</pre>
+</div>
+
+<p>
+The function specified in candidates property will be called without any arguments on every time candidates updated. There is another way: a variable.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd39fcde" class="outline-3">
+<h3 id="orgd39fcde">10.3 Initialization</h3>
+<div class="outline-text-3" id="text-orgd39fcde">
+<p>
+You may want to initialize a source at first time to complete. Use init property in these cases. As same as candidates property, specify a function without any parameters or an expression. Here is an example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">mysource2-cache</span> nil)
+
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">mysource2-init</span> ()
+  (<span style="color: #a1db00;">setq</span> mysource2-cache '(<span style="color: #ff4ea3;">"Huge"</span> <span style="color: #ff4ea3;">"Processing"</span> <span style="color: #ff4ea3;">"Is"</span> <span style="color: #ff4ea3;">"Done"</span> <span style="color: #ff4ea3;">"Here"</span>)))
+
+(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource2</span>
+  '((init . mysource2-init)
+    (candidates . mysource2-cache)))
+</pre>
+</div>
+
+<p>
+In this example, mysource2-init function does huge processing, and stores the result into mysource2-cache variable. Then specifying the variable in candidates property, this source prevents huge processing on every time update completions. There are possible usage:
+</p>
+
+<ul class="org-ul">
+<li>Do require</li>
+<li>Open buffers first of all</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf02585e" class="outline-3">
+<h3 id="orgf02585e">10.4 Cache</h3>
+<div class="outline-text-3" id="text-orgf02585e">
+<p>
+Caching strategy is important for auto-complete-mode. There are two major ways: init property and cache property that is described in this section. Specifying cache property in source definition, a result of evaluation of candidates property will be cached and reused the result as the result of evaluation of candidates property next time.
+</p>
+
+<p>
+Rewrite the example in previous section by using cache property.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">mysource2-candidates</span> ()
+  '(<span style="color: #ff4ea3;">"Huge"</span> <span style="color: #ff4ea3;">"Processing"</span> <span style="color: #ff4ea3;">"Is"</span> <span style="color: #ff4ea3;">"Done"</span> <span style="color: #ff4ea3;">"Here"</span>))
+
+(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource2</span>
+  '((candidates . mysource2-candidates)
+    (cache)))
+</pre>
+</div>
+
+<p>
+There is no performance problem because this source has cache property even if candidates property will do huge processing.
+</p>
+</div>
+
+<div id="outline-container-org6781742" class="outline-4">
+<h4 id="org6781742">10.4.1 Cache Expiration</h4>
+<div class="outline-text-4" id="text-org6781742">
+<p>
+It is possible to keep among more wider scope than init property and cache property. It may be useful for remembering all function names which is rarely changed. In these cases, how can we clear cache property not at the expense of performance? This is true time use that functionality.
+</p>
+
+<p>
+Use ac-clear-variable-after-save to clear cache every time a buffer saved. Here is an example:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">mysource3-cache</span> nil)
+
+(ac-clear-variable-after-save 'mysource3-cache)
+
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">mysource3-candidates</span> ()
+  (<span style="color: #a1db00;">or</span> mysource3-cache
+      (<span style="color: #a1db00;">setq</span> mysource3-cache (list (format <span style="color: #ff4ea3;">"Time %s"</span> (current-time-string))))))
+
+(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource3</span>
+  '((candidates . mysource3-candidates)))
+</pre>
+</div>
+
+<p>
+Add this source to ac-sources and complete with "Time". You may see a time when completion has been started. After that, you also see the same time, because mysource3-candidates returns the cache as much as possible. Then, save the buffer once and complete with "Time" again. In this time, you may find a new time. An essence of this source is to use ac-clear-variable-after-save to manage a variable for cache.
+</p>
+
+<p>
+It is also possible to clear cache periodically. Use ac-clear-variable-every-minute to do that. A way to use is same to ac-clear-variable-after-save except its cache will be cleared every minutes. A builtin source ac-source-functions uses this functionality.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org57852e0" class="outline-3">
+<h3 id="org57852e0">10.5 Action</h3>
+<div class="outline-text-3" id="text-org57852e0">
+<p>
+Completion by RET will evaluate a function or an expression specified in action property. A builtin sources ac-source-abbrev and ac-source-yasnippet use this property.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf187d93" class="outline-3">
+<h3 id="orgf187d93">10.6 Omni Completion</h3>
+<div class="outline-text-3" id="text-orgf187d93">
+<p>
+Omni Completion is a type of completion which regards of a context of editing. A file name completion which completes with slashed detected and a member name completion in C/C++ with dots detected are omni completions. To make a source support for omni completion, use prefix property. A result of evaluation of prefix property must be a beginning point of completion target string. Retuning nil means the source is disabled within the context.
+</p>
+
+<p>
+Consider a source that completes mail addresses only after "To:". First of all, define a mail address completion source as same as above.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-to-mailaddr</span>
+  '((candidates . (list <span style="color: #ff4ea3;">"foo1@example.com"</span>
+                        <span style="color: #ff4ea3;">"foo2@example.com"</span>
+                        <span style="color: #ff4ea3;">"foo3@example.com"</span>))))
+
+(<span style="color: #a1db00;">setq</span> ac-sources '(ac-source-to-mailaddr))
+</pre>
+</div>
+
+<p>
+Then enable completions only after "To:" by using prefix property. prefix property must be one of:
+</p>
+<ul class="org-ul">
+<li>Regexp</li>
+<li>Function</li>
+<li>Expression</li>
+</ul>
+
+<p>
+Specifying a regexp, auto-complete-mode thinks of a point of start of group 1 or group 0 as a beginning point of completion target string by doing re-search-backward1 with the regexp. If you want to do more complicated, use a function or an expression instead. The beginning point that is evaluated here will be stored into ac-point. In above example, regexp is enough.
+</p>
+<pre class="example">
+   ^To: \(.*\)
+</pre>
+
+<p>
+A reason why capturing group 1 is skipping "To:". By adding this into the source definition, the source looks like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-to-mailaddr</span>
+  '((candidates . (list <span style="color: #ff4ea3;">"foo1@example.com"</span>
+                        <span style="color: #ff4ea3;">"foo2@example.com"</span>
+                        <span style="color: #ff4ea3;">"foo3@example.com"</span>))
+    (prefix . <span style="color: #ff4ea3;">"^To: </span><span style="color: #fce94f;">\\</span><span style="color: #d18aff;">(</span><span style="color: #ff4ea3;">.*</span><span style="color: #fce94f;">\\</span><span style="color: #d18aff;">)</span><span style="color: #ff4ea3;">"</span>)))
+</pre>
+</div>
+
+<p>
+Add this source to ac-sources and then type "To:". You will be able to complete mail addresses.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga330b51" class="outline-3">
+<h3 id="orga330b51">10.7 ac-define-source</h3>
+<div class="outline-text-3" id="text-orga330b51">
+<p>
+You may use an utility macro called ac-define-source which defines a source and a command.
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(ac-define-source mysource3
+  '((candidates . (list <span style="color: #ff4ea3;">"Foo"</span> <span style="color: #ff4ea3;">"Bar"</span> <span style="color: #ff4ea3;">"Baz"</span>))))
+</pre>
+</div>
+
+<p>
+This expression will be expanded like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">ac-source-mysource3</span>
+  '((candidates . (list <span style="color: #ff4ea3;">"Foo"</span> <span style="color: #ff4ea3;">"Bar"</span> <span style="color: #ff4ea3;">"Baz"</span>))))
+
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">ac-complete-mysource3</span> ()
+  (<span style="color: #a1db00;">interactive</span>)
+  (auto-complete '(ac-source-mysource3)))
+</pre>
+</div>
+
+<p>
+A source will be defined as usual and in addition a command that completes with the source will be defined. Calling auto-complete without arguments will use ac-sources as default sources and with arguments will use the arguments as default sources. Considering compatibility, it is difficult to answer which you should use defvar and ac-define-source. Builtin sources are defined with ac-define-sources, so you can use them alone by binding some key to these commands such like ac-complete-filename. See also Completion with specific source.
+</p>
+</div>
+
+<div id="outline-container-orgc52665a" class="outline-4">
+<h4 id="orgc52665a">10.7.1 Source Properties</h4>
+<div class="outline-text-4" id="text-orgc52665a">
+</div>
+<div id="outline-container-org287e3ce" class="outline-5">
+<h5 id="org287e3ce">10.7.1.1 init</h5>
+<div class="outline-text-5" id="text-org287e3ce">
+<p>
+Specify a function or an expression that is evaluated only once when completion is started.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2f81f17" class="outline-5">
+<h5 id="org2f81f17">10.7.1.2 candidates</h5>
+<div class="outline-text-5" id="text-org2f81f17">
+<p>
+Specify a function, an expression, or a variable to calculate candidates. Candidates should be a list of string. If cache property is enabled, this property will be ignored twice or later.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge30f304" class="outline-4">
+<h4 id="orge30f304">10.7.2 prefix</h4>
+<div class="outline-text-4" id="text-orge30f304">
+<p>
+Specify a regexp, a function, or an expression to find a point of completion target string for Omni Completion. This source will be ignored when nil returned. If a regexp is specified, a start point of group 1 or group 2 will be used as a value.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78e96cc" class="outline-4">
+<h4 id="org78e96cc">10.7.3 requires</h4>
+<div class="outline-text-4" id="text-org78e96cc">
+<p>
+Specify a required number of characters of completion target string. If nothing is specified, auto-complete-mode uses ac-auto-start instead.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7c21452" class="outline-4">
+<h4 id="org7c21452">10.7.4 action</h4>
+<div class="outline-text-4" id="text-org7c21452">
+<p>
+Specify a function or an expression that is executed on Completion by RET.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc432f48" class="outline-4">
+<h4 id="orgc432f48">10.7.5 limit</h4>
+<div class="outline-text-4" id="text-orgc432f48">
+<p>
+Specify a limit of candidates. It overrides ac-candidate-limit partially.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org45529be" class="outline-4">
+<h4 id="org45529be">10.7.6 symbol</h4>
+<div class="outline-text-4" id="text-org45529be">
+<p>
+Specify a symbol of candidate meaning in one character string. The symbol will be any character, but you should follow the rule:
+</p>
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Symbol</td>
+<td class="org-left">Meaning</td>
+</tr>
+
+<tr>
+<td class="org-left">s</td>
+<td class="org-left">Symbol</td>
+</tr>
+
+<tr>
+<td class="org-left">f</td>
+<td class="org-left">Function, Method</td>
+</tr>
+
+<tr>
+<td class="org-left">v</td>
+<td class="org-left">Variable</td>
+</tr>
+
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">Constant</td>
+</tr>
+
+<tr>
+<td class="org-left">a</td>
+<td class="org-left">Abbreviation</td>
+</tr>
+
+<tr>
+<td class="org-left">d</td>
+<td class="org-left">Dictionary</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org0bdfeb7" class="outline-4">
+<h4 id="org0bdfeb7">10.7.7 summary</h4>
+<div class="outline-text-4" id="text-org0bdfeb7">
+<p>
+Specify a summary of candidate in string. It should be used for summarizing the candidate in short string.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc453dac" class="outline-4">
+<h4 id="orgc453dac">10.7.8 cache</h4>
+<div class="outline-text-4" id="text-orgc453dac">
+<p>
+Use Cache.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5177d3e" class="outline-4">
+<h4 id="org5177d3e">10.7.9 require</h4>
+<div class="outline-text-4" id="text-org5177d3e">
+<p>
+Specify an integer or nil. This source will be ignored when the integer value is lager than a length of completion target string. nil means nothing ignored.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8741c07" class="outline-4">
+<h4 id="org8741c07">10.7.10 candidate-face</h4>
+<div class="outline-text-4" id="text-org8741c07">
+<p>
+Specify a face of candidate. It overrides ac-candidate-face partially.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbce5ad6" class="outline-4">
+<h4 id="orgbce5ad6">10.7.11 selection-face</h4>
+<div class="outline-text-4" id="text-orgbce5ad6">
+<p>
+Specify a face of selection. It overrides ac-selection-face partially.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org86643fd" class="outline-4">
+<h4 id="org86643fd">10.7.12 depends</h4>
+<div class="outline-text-4" id="text-org86643fd">
+<p>
+Specify a list of features (which are required) that the source is depending.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org00f1010" class="outline-4">
+<h4 id="org00f1010">10.7.13 available</h4>
+<div class="outline-text-4" id="text-org00f1010">
+<p>
+Specify a function or an expression that describe the source is available or not.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf813b8" class="outline-4">
+<h4 id="orgaf813b8">10.7.14 document</h4>
+<div class="outline-text-4" id="text-orgaf813b8">
+<p>
+Specify a function or an expression that returns documentation of the candidate.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9611296" class="outline-3">
+<h3 id="org9611296">10.8 Variables</h3>
+<div class="outline-text-3" id="text-org9611296">
+<p>
+Here is a list of often used variables.
+</p>
+</div>
+
+<div id="outline-container-org10228eb" class="outline-4">
+<h4 id="org10228eb">10.8.1 ac-buffer</h4>
+<div class="outline-text-4" id="text-org10228eb">
+<p>
+A buffer where completion started.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga84a9f9" class="outline-4">
+<h4 id="orga84a9f9">10.8.2 ac-point</h4>
+<div class="outline-text-4" id="text-orga84a9f9">
+<p>
+A start point of completion target string.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org70aff1c" class="outline-4">
+<h4 id="org70aff1c">10.8.3 ac-prefix</h4>
+<div class="outline-text-4" id="text-org70aff1c">
+<p>
+A string of completion target.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf904964" class="outline-4">
+<h4 id="orgf904964">10.8.4 ac-limit</h4>
+<div class="outline-text-4" id="text-orgf904964">
+<p>
+A limit of candidates. Its value may be one of ac-candidate-limit and limit property.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org10dcb1d" class="outline-4">
+<h4 id="org10dcb1d">10.8.5 ac-candidates</h4>
+<div class="outline-text-4" id="text-org10dcb1d">
+<p>
+A list of candidates.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org00c0459" class="outline-2">
+<h2 id="org00c0459">11 Trouble Shooting</h2>
+<div class="outline-text-2" id="text-org00c0459">
+</div>
+<div id="outline-container-orgd51d451" class="outline-3">
+<h3 id="orgd51d451">11.1 Response Latency</h3>
+<div class="outline-text-3" id="text-orgd51d451">
+<p>
+To keep much responsibility is very important for auto-complete-mode. However it is well known fact that a performance is a trade off of functionalities. List up options related to the performance.
+</p>
+</div>
+
+<div id="outline-container-org318fba7" class="outline-4">
+<h4 id="org318fba7">11.1.1 ac-auto-start</h4>
+<div class="outline-text-4" id="text-org318fba7">
+<p>
+For a larger number, it reduces a cost of generating completion candidates. Or you can remove the cost by setting nil and you can use when you truly need. See Not to complete automatically for more details.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaef0f4c" class="outline-4">
+<h4 id="orgaef0f4c">11.1.2 ac-delay</h4>
+<div class="outline-text-4" id="text-orgaef0f4c">
+<p>
+For a larger number, it reduces a cost of starting completion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1102d14" class="outline-4">
+<h4 id="org1102d14">11.1.3 ac-auto-show-menu</h4>
+<div class="outline-text-4" id="text-org1102d14">
+<p>
+For a larger number, it reduces a displaying cost of completion menu.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org08c0fdd" class="outline-4">
+<h4 id="org08c0fdd">11.1.4 ac-use-comphist</h4>
+<div class="outline-text-4" id="text-org08c0fdd">
+<p>
+Setting ac-use-comphist to nil to disable Candidate Suggestion, it reduces a cost of suggestion.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org61d4ca6" class="outline-4">
+<h4 id="org61d4ca6">11.1.5 ac-candidate-limit</h4>
+<div class="outline-text-4" id="text-org61d4ca6">
+<p>
+For a property number, it reduces much computation of generating candidates.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org780449a" class="outline-3">
+<h3 id="org780449a">11.2 Completion menu is disrupted</h3>
+<div class="outline-text-3" id="text-org780449a">
+<p>
+There is two major cases.
+</p>
+</div>
+
+<div id="outline-container-orgc0987cd" class="outline-4">
+<h4 id="orgc0987cd">11.2.1 Column Computation Case</h4>
+<div class="outline-text-4" id="text-orgc0987cd">
+<p>
+auto-complete-mode tries to reduce a cost of computation of columns to show completion menu correctly by using a optimized function at the expense of accuracy. However, it probably causes a menu to be disrupted. Not to use the optimized function, evaluate the following code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> popup-use-optimized-column-computation nil)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org856c7e7" class="outline-4">
+<h4 id="org856c7e7">11.2.2 Font Case</h4>
+<div class="outline-text-4" id="text-org856c7e7">
+<p>
+There is a problem when render IPA font with Xft in Ubuntu 9.10. Use VL gothic, which renders more suitably. Or disable Xft, then it can render correctly.
+</p>
+
+<p>
+We don't good answers now, but you may shot the troubles by changing font size with set-face-font. For instance, completion menu may be disrupted when displaying the menu including Japanese in NTEmacs. In such case, it is worth to try to evaluate the following code to fix it:
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(set-face-font 'ac-candidate-face <span style="color: #ff4ea3;">"MS Gothic 11"</span>)
+(set-face-font 'ac-selection-face <span style="color: #ff4ea3;">"MS Gothic 11"</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4f1583f" class="outline-2">
+<h2 id="org4f1583f">12 Known Bugs</h2>
+<div class="outline-text-2" id="text-org4f1583f">
+</div>
+<div id="outline-container-org110ac35" class="outline-3">
+<h3 id="org110ac35">12.1 Auto completion will not be started in a buffer flyspell-mode enabled</h3>
+<div class="outline-text-3" id="text-org110ac35">
+<p>
+A way of delaying processes of flyspell-mode disables auto completion. You can avoid this problem by M-x ac-flyspell-workaround. You can write the following code into your ~/.emacs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(ac-flyspell-workaround)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdc60992" class="outline-3">
+<h3 id="orgdc60992">12.2 linum-mode tries to display the line numbers even for the comletion menu</h3>
+<div class="outline-text-3" id="text-orgdc60992">
+<p>
+linum-mode tries to add the line numbers even for the comletion menu. To stop that annoying behavior, do M-x ac-linum-workaround or add the following code into your ~/.emacs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(ac-linum-workaround)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org38c4391" class="outline-2">
+<h2 id="org38c4391">13 Reporting Bugs</h2>
+<div class="outline-text-2" id="text-org38c4391">
+<p>
+Visit Auto-Complete Issue Tracker and create a new issue.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

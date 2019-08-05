@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>org2blog-mode</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">org2blog-mode</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3901aa6">1. 安装（Installation）</a></li>
+<li><a href="#orgba66434">2. 依赖关系（Dependencies）</a></li>
+<li><a href="#org8efd914">3. 使用（Usage）</a>
+<ul>
+<li><a href="#org83aac64">3.1. 自定义 blog 配置（Defining your blog setup）</a>
+<ul>
+<li><a href="#org8546e8d">3.1.1. 登陆博客（Logging In）</a></li>
+<li><a href="#org9dcfbca">3.1.2. 编写 post（Writing a new post）</a></li>
+<li><a href="#orgd467687">3.1.3. 使用文章模板（Using post templates）</a></li>
+<li><a href="#org62aeaa8">3.1.4. 更新已有文章（Updating an existing post）</a></li>
+<li><a href="#orgaea0edf">3.1.5. 发布（Publishing）</a></li>
+<li><a href="#org8fd8cf0">3.1.6. 发布已有的 org 文件（Post your existing org-files too）</a></li>
+<li><a href="#orgeb8903c">3.1.7. 发布子树（Posting a subtree）</a></li>
+<li><a href="#org0685ae1">3.1.8. 发布代码块（Posting source code blocks）</a>
+<ul>
+<li><a href="#org0bd58ca">3.1.8.1. 代码高亮（Syntax Highlight）</a></li>
+</ul>
+</li>
+<li><a href="#org7001238">3.1.9. 删除文章或页面（Delete an entry or a page）</a></li>
+<li><a href="#org1d23bbf">3.1.10. 启动 org2blog 模式（Enabling org2blog mode (defines key-bindings)）</a></li>
+<li><a href="#orgd4f4d2b">3.1.11. 上传图片或文件（Uploading Images or Files）</a></li>
+<li><a href="#org1576ced">3.1.12. 列出所有文章（"Dashboard" of all posts）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orge2d5d99">4. 其他（Miscellaneous）</a></li>
+<li><a href="#org9bac41a">5. FAQ</a></li>
+</ul>
+</div>
+</div>
+<p>
+<a href="https://github.com/punchagan/org2blog">org2blog</a> 包括两个部分: org2blog/wp 能将 org-mode 中写的东西发布到 wordpress org2blog/atom 则是 Tom Breton 写的一个 g-client 扩展 。理想情况下，org2blog/wp 能够和任何支持 xml-rpc 的平台协同工作，但也有一些 WordPress 的特定功能可能无法支持。
+</p>
+
+<p>
+作者从 <a href="http://www.emacswiki.org/emacs/AshishShukla">Ashish Shukla</a> 所著的《a wordpress posting client for muse-mode》受到启发，并基于该文章完成了 org2blog。
+</p>
+
+<p>
+org2blog 基于 GPLv3 授权。
+</p>
+
+<div id="outline-container-org3901aa6" class="outline-2">
+<h2 id="org3901aa6"><span class="section-number-2">1</span> 安装（Installation）</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Emacs 可以通过 elpa 进行安装或者自行从 github 下载安装，建议使用前者进行扩展的统一安装与更新。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">git clone http://github.com/punchagan/org2blog.git
+</pre>
+</div>
+<p>
+加载 org2blog 目录到 load-path，并作相应配置。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> load-path (cons <span style="color: #ff4ea3;">"~/.emacs.d/org2blog/"</span> load-path))
+(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">org2blog-autoloads</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgba66434" class="outline-2">
+<h2 id="orgba66434"><span class="section-number-2">2</span> 依赖关系（Dependencies）</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+org2blog 依赖于:
+</p>
+<ol class="org-ol">
+<li>xml-rpc、metaweblog</li>
+<li>确保安装最新的 org-mode。可能和版本 7 之上 都能正常工作，但是如果可以还是使用最新版本吧。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org8efd914" class="outline-2">
+<h2 id="org8efd914"><span class="section-number-2">3</span> 使用（Usage）</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org83aac64" class="outline-3">
+<h3 id="org83aac64"><span class="section-number-3">3.1</span> 自定义 blog 配置（Defining your blog setup）</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+注意：下面的安装只适用 0.3 以上版本的 org2blog，低版本的请参看 commit e37126e 的 README 文档。通过变量 <b>org2blog/wp-blog-alist</b> 来自定义所有 blog 的位置以及一些特殊配置。例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> org2blog/wp-blog-alist
+      '((<span style="color: #ff4ea3;">"wordpress"</span>
+         <span style="color: #d18aff;">:url</span> <span style="color: #ff4ea3;">"http://username.wordpress.com/xmlrpc.php"</span>
+         <span style="color: #d18aff;">:username</span> <span style="color: #ff4ea3;">"username"</span>
+         <span style="color: #d18aff;">:default-title</span> <span style="color: #ff4ea3;">"Hello World"</span>
+         <span style="color: #d18aff;">:default-categories</span> (<span style="color: #ff4ea3;">"org2blog"</span> <span style="color: #ff4ea3;">"emacs"</span>)
+         <span style="color: #d18aff;">:tags-as-categories</span> nil)
+        (<span style="color: #ff4ea3;">"my-blog"</span>
+         <span style="color: #d18aff;">:url</span> <span style="color: #ff4ea3;">"http://username.server.com/xmlrpc.php"</span>
+         <span style="color: #d18aff;">:username</span> <span style="color: #ff4ea3;">"admin"</span>)))
+</pre>
+</div>
+<p>
+这里定义了 WordPress 和 my-blog 两个博客。每个 plist 中的变量将会覆盖相应的全局变量。除了 url 和 username 其他都是可选的。参看变量 <b>org2blog/wp-blog-alist</b> 了解每个属性的详细信息。
+</p>
+
+<p>
+也可以使用 .netrc 或者 .authinfo 文件来保存 blog 的用户名和密码。.netrc 文件看起来是这个样子的：
+</p>
+<div class="org-src-container">
+<pre class="src src-text" id="orgab0a805">     machine myblog login myusername password myrealpassword
+</pre>
+</div>
+
+<p>
+然后如下使用上面的配置：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">auth-source</span>) <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">or nothing if already in the load-path</span>
+
+(<span style="color: #a1db00;">let</span> (credentials)
+  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">only required if your auth file is not already in the list of auth-sources</span>
+  (add-to-list 'auth-sources <span style="color: #ff4ea3;">"~/.netrc"</span>)
+  (<span style="color: #a1db00;">setq</span> credentials (auth-source-user-and-password <span style="color: #ff4ea3;">"myblog"</span>))
+  (<span style="color: #a1db00;">setq</span> org2blog/wp-blog-alist
+        `((<span style="color: #ff4ea3;">"my-blog"</span>
+           <span style="color: #d18aff;">:url</span> <span style="color: #ff4ea3;">"http://username.server.com/xmlrpc.php"</span>
+           <span style="color: #d18aff;">:username</span> ,(car credentials)
+           <span style="color: #d18aff;">:password</span> ,(cadr credentials)))))
+</pre>
+</div>
+
+<p>
+若想查看和定制其他选项，使用 customize-group 命令： <code>M-x customize-group org2blog/wp RET</code>
+</p>
+</div>
+
+<div id="outline-container-org8546e8d" class="outline-4">
+<h4 id="org8546e8d"><span class="section-number-4">3.1.1</span> 登陆博客（Logging In）</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+使用 <code>M-x org2blog/wp-login</code> 登陆。首先会询问将要登陆的 blog 名字，然后是登陆密码。相应的，使用 <b>M-x org2blog/wp-logout</b> 退出正在登陆的 blog。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9dcfbca" class="outline-4">
+<h4 id="org9dcfbca"><span class="section-number-4">3.1.2</span> 编写 post（Writing a new post）</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+使用 M-x org2blog/wp-new-entry
+</p>
+<ul class="org-ul">
+<li>多个标签和分类用逗号或空格分隔，通过 C-c 进行补全，如果正在使用的分类是全新的，会提示添加。</li>
+<li>#+DESCRIPTION 是文章摘要。</li>
+<li>#+PERMALINK 是文章固定连接。</li>
+<li>#+PARENT 指定了一个 page 的上级，使用 C-c t 同样可以补全 page name。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd467687" class="outline-4">
+<h4 id="orgd467687"><span class="section-number-4">3.1.3</span> 使用文章模板（Using post templates）</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+通过修改变量 org2blog/wp-buffer-template 和 org2blog/wp-buffer-format-function 定制文章模板，例如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> org2blog/wp-buffer-template
+      <span style="color: #ff4ea3;">"-----------------------</span>
+<span style="color: #ff4ea3;">      #+TITLE: %s</span>
+<span style="color: #ff4ea3;">      #+DATE: %s</span>
+<span style="color: #ff4ea3;">      -----------------------\n"</span>)
+
+(<span style="color: #a1db00;">defun</span> <span style="color: #ffd700;">my-format-function</span> (format-string)
+  (format format-string
+          org2blog/wp-default-title
+          (format-time-string <span style="color: #ff4ea3;">"%d-%m-%Y"</span> (current-time)))))
+      (<span style="color: #a1db00;">setq</span> org2blog/wp-buffer-format-function 'my-format-function)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org62aeaa8" class="outline-4">
+<h4 id="org62aeaa8"><span class="section-number-4">3.1.4</span> 更新已有文章（Updating an existing post）</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+如要更新一个博客文章，只需编辑对应的 org 文件然后使用 org2blog 重新发布即可。之前保存在文件中的 POSTID 确保更新的是同一篇文章，而不是新建文章。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaea0edf" class="outline-4">
+<h4 id="orgaea0edf"><span class="section-number-4">3.1.5</span> 发布（Publishing）</h4>
+<div class="outline-text-4" id="text-3-1-5">
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">post buffer as draft</td>
+<td class="org-left">C-c d  M-x</td>
+<td class="org-left">org2blog/wp-post-buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">publish buffer</td>
+<td class="org-left">C-c p  C-u M-x</td>
+<td class="org-left">org2blog/wp-post-buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">post buffer as page draft</td>
+<td class="org-left">C-c D  M-x</td>
+<td class="org-left">org2blog/wp-post-buffer-as-page</td>
+</tr>
+
+<tr>
+<td class="org-left">publish buffer as page</td>
+<td class="org-left">C-c P  C-u M-x</td>
+<td class="org-left">org2blog/wp-post-buffer-as-page</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org8fd8cf0" class="outline-4">
+<h4 id="org8fd8cf0"><span class="section-number-4">3.1.6</span> 发布已有的 org 文件（Post your existing org-files too）</h4>
+<div class="outline-text-4" id="text-3-1-6">
+<ul class="org-ul">
+<li>在文件中添加 #+TITLE, #+OPTIONS, #+TAGS, #+CATEGORY, #+DESCRIPTION, #+DATE，这些标签都是可选的。</li>
+<li>如果编辑已有文章，需指定 #+POSTID。</li>
+<li>使用上面的函数发布文章。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgeb8903c" class="outline-4">
+<h4 id="orgeb8903c"><span class="section-number-4">3.1.7</span> 发布子树（Posting a subtree）</h4>
+<div class="outline-text-4" id="text-3-1-7">
+<ul class="org-ul">
+<li>使用 <b>M-x org2blog/wp-post-subtree</b></li>
+<li>子树的标签页会归类到 blog 的标签。</li>
+<li>其他属性可以使用属性抽屉设置，属性与 buffer 变量同名。</li>
+<li>POST_DATE 设置文章日期，如果没有，就使用 SCHEDULED, DEADLINE 等其他时间戳。</li>
+<li>首行将会文章的标题，TITLE 也能指定标题。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0685ae1" class="outline-4">
+<h4 id="org0685ae1"><span class="section-number-4">3.1.8</span> 发布代码块（Posting source code blocks）</h4>
+<div class="outline-text-4" id="text-3-1-8">
+<p>
+代码块将会自动放在 &lt;pre&gt; 标签中。通过设置变量 org2blog/wp-use-sourcecode-shortcode 和使用 htmlize.el 也可以要求 org2blog 使用 WordPress 的源码简标。WordPress 代码简标提供了很多<a href="http://en.support.wordpress.com/code/posting-source-code/#configuration-parameters">配置参数</a> 。变量 org2blog/wp-sourcecode-default-params 也可以修改传递给源码块的默认参数。
+</p>
+</div>
+<div id="outline-container-org0bd58ca" class="outline-5">
+<h5 id="org0bd58ca"><span class="section-number-5">3.1.8.1</span> 代码高亮（Syntax Highlight）</h5>
+<div class="outline-text-5" id="text-3-1-8-1">
+<p>
+org2blog 有两种方式实现代码高亮：
+</p>
+<ul class="org-ul">
+<li>如果 org2blog/wp-use-sourcecode-shortcode 设置为 nil，通过 org-mode 的 export 接口，结合 htmlize.el  将代码块包裹在 &lt;pre&gt; 标签中，代码上传到 blog；</li>
+<li>如果该值非 nil，同样利用 org-mode 的 export 接口，将代码块包裹在 sourcecode 标签中，然后上传到 WordPress 后由 syntax highlighting 进行高亮。</li>
+<li>如果该值非 nil，同样利用 org-mode 的 export 接口，将代码块包裹在 sourcecode 标签中，然后上传到 WordPress 后由 syntax highlighting 进行高亮。</li>
+</ul>
+
+<p>
+变量 org2blog/wp-sourcecode-langs 定义了 org2blog 支持语法高亮的语言，该变量支持范围与 syntaxHighlight 基本相同，但更为重要的是变量 org2blog/wp-shortcode-langs-map，它起到了沟通 org2blog、org、syntaxHighlight 三者的作用，如果一种语言 org2blog 不支持高亮，但被 syntaxHightlight 支持，同 org-mode 也支持编辑，则可以在这个变量中定义（syntaxHight，org-mode）的映射，兼顾代码高亮和 org-mode 中的代码编辑。具体参看该变量的说明。
+</p>
+
+<p>
+SyntaxHighlight 支持的<a href="http://en.support.wordpress.com/code/posting-source-code/#configuration-parameters">语言里列表</a>。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7001238" class="outline-4">
+<h4 id="org7001238"><span class="section-number-4">3.1.9</span> 删除文章或页面（Delete an entry or a page）</h4>
+<div class="outline-text-4" id="text-3-1-9">
+<ul class="org-ul">
+<li>如果正处于文章或页面的编辑 buffer，并且 #+POSTID 存在，执行
+M-x org2blog/wp-delete-entry or M-x org2blog/wp-delete-page</li>
+<li>如果想删除不在 buffer 中的文章，文章 id 已知，执行
+C-u post-id M-x org2blog/wp-delete-entry</li>
+</ul>
+<p>
+删除页面类似。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d23bbf" class="outline-4">
+<h4 id="org1d23bbf"><span class="section-number-4">3.1.10</span> 启动 org2blog 模式（Enabling org2blog mode (defines key-bindings)）</h4>
+<div class="outline-text-4" id="text-3-1-10">
+<p>
+使用  M-x org2blog/wp-mode，定义的键绑定如下：
+</p>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C-c p</td>
+<td class="org-left">publish buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c d</td>
+<td class="org-left">post as draft</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c t</td>
+<td class="org-left">complete tag or parent page name</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgd4f4d2b" class="outline-4">
+<h4 id="orgd4f4d2b"><span class="section-number-4">3.1.11</span> 上传图片或文件（Uploading Images or Files）</h4>
+<div class="outline-text-4" id="text-3-1-11">
+<p>
+网上或者使用 <a href="file://">file://</a> 链接的图片或文件将会上传到媒体库，链接同样会更新。上传的文件信息将会作为文章本身的注释存在。
+</p>
+
+<p>
+org-mode 中定义的标题和属性将保留，但不会随图片保存到库。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1576ced" class="outline-4">
+<h4 id="org1576ced"><span class="section-number-4">3.1.12</span> 列出所有文章（"Dashboard" of all posts）</h4>
+<div class="outline-text-4" id="text-3-1-12">
+<p>
+org2blog 会跟踪所有使用它创建的 blog 文章，这样可以很容易的管理这些文章。默认的他会在 org-directory 中的 .org2blog.org 文件，改属性可以被关闭。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge2d5d99" class="outline-2">
+<h2 id="orge2d5d99"><span class="section-number-2">4</span> 其他（Miscellaneous）</h2>
+<div class="outline-text-2" id="text-4">
+<ol class="org-ol">
+<li>可能需要看一下 org mode 手册中 HMTL export 中的导出选项。</li>
+<li>如果想从 org mode 向 blogger 发送文章，参考如下：
+<ul class="org-ul">
+<li>Tom Breton 写的 org2blog/atom。</li>
+<li>Richard Riley 写的 <a href="https://github.com/rileyrg/org-googlecl">org-googlecl</a>,</li>
+</ul></li>
+<li>写信给作者前请先阅读 README 和 FAQ。</li>
+<li>如果有疑问、bug、功能要求，使用 git 的时间跟踪或者发邮件到 punchagan+org2blog[at]gmail[dot]com。作者很高兴收到补丁、建议来改进文档。当然也欢迎随意评论。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9bac41a" class="outline-2">
+<h2 id="org9bac41a"><span class="section-number-2">5</span> FAQ</h2>
+<div class="outline-text-2" id="text-5">
+<ol class="org-ol">
+<li>org2blog 可以配置多少 blog？
+可以配置任意数量的 blog，使用变量 org2blog/wp-blog-alis 对每个 blog 进行详细配置。但是请注意一次只能登陆一个 blog。</li>
+<li><p>
+如何更改新文章的默认标题
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">setq</span> org2blog/wp-default-title <span style="color: #ff4ea3;">"My New Title"</span>)
+</pre>
+</div></li>
+<li>如何只改变某个 blog 默认文章标题？
+在变量 org2blog/wp-blog-alist 中设置对应的变量 :default-title。</li>
+<li><p>
+如何将标签当做文章分类使用？
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">       (<span style="color: #a1db00;">setq</span> org2blog/wp-use-tags-as-categories t)
+</pre>
+</div></li>
+<li><p>
+如何配置 org2blog 在发布文章前自动确认？
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">      (<span style="color: #a1db00;">setq</span> org2blog/wp-confirm-post t)
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

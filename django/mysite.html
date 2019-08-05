@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-05 一 20:29 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>第一个Django项目-mysite</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">第一个Django项目-mysite</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2b7edaa">1. 目标</a></li>
+<li><a href="#org808b21a">2. 创建项目</a></li>
+<li><a href="#org03df608">3. 启动项目</a>
+<ul>
+<li><a href="#orgad7389d">3.1. 更换端口</a></li>
+<li><a href="#org8a28602">3.2. 重新加载</a></li>
+</ul>
+</li>
+<li><a href="#org1a44226">4. 添加应用</a></li>
+<li><a href="#orga97c8e7">5. 启动</a></li>
+<li><a href="#orgcb05230">6. 附录</a>
+<ul>
+<li><a href="#orgb565ad3">6.1. path</a></li>
+<li><a href="#orge70db11">6.2. include</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2b7edaa" class="outline-2">
+<h2 id="org2b7edaa"><span class="section-number-2">1</span> 目标</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+创建一个返回欢迎信息的网页。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org808b21a" class="outline-2">
+<h2 id="org808b21a"><span class="section-number-2">2</span> 创建项目</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">django-admin startproject mysite
+</pre>
+</div>
+<p>
+会在当前目录下创建一个 <code>mysite</code> 目录，目录结构：
+</p>
+
+<pre class="example">
+   mysite/
+   ├── manage.py
+   └── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org03df608" class="outline-2">
+<h2 id="org03df608"><span class="section-number-2">3</span> 启动项目</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-sh">python3 manage.py runserver
+</pre>
+</div>
+
+
+<div id="org23f76ff" class="figure">
+<p><img src="../img/django/runserver-1.png" alt="runserver-1.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>第一次runserver日志</p>
+</div>
+
+<p>
+现在，服务器正在运行，浏览器访问 <a href="https://127.0.0.1:8000/">https://127.0.0.1:8000/</a>。 你将会看到一个 “祝贺” 页面，随着一只火箭发射，服务器已经运行了。
+</p>
+
+
+<div id="orga82242a" class="figure">
+<p><img src="../img/django/web-1.png" alt="web-1.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>第一次runserve浏览器</p>
+</div>
+</div>
+
+<div id="outline-container-orgad7389d" class="outline-3">
+<h3 id="orgad7389d"><span class="section-number-3">3.1</span> 更换端口</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+默认情况下，runserver 命令会将服务器设置为监听本机内部 IP 的 8000 端口。
+</p>
+
+<p>
+如果你想更换服务器的监听端口，请使用命令行参数。举个例子，下面的命令会使服务器监听 8080 端口：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">python3 manage.py runserver 8080
+</pre>
+</div>
+
+<p>
+如果你想要修改服务器监听的 IP，在端口之前输入新的。比如，为了监听所有服务器的公开 IP（这你运行 Vagrant 或想要向网络上的其它电脑展示你的成果时很有用），使用：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">python3 manage.py runserver 0:8000
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8a28602" class="outline-3">
+<h3 id="org8a28602"><span class="section-number-3">3.2</span> 重新加载</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+用于开发的服务器在需要的情况下会对每一次的访问请求重新载入一遍 Python 代码。所以你不需要为了让修改的代码生效而频繁的重新启动服务器。然而，一些动作，比如添加新文件，将不会触发自动重新加载，这时你得自己手动重启服务器。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1a44226" class="outline-2">
+<h2 id="org1a44226"><span class="section-number-2">4</span> 添加应用</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-sh">python3 manage.py startapp hello
+</pre>
+</div>
+
+<p>
+新的目录结构：
+</p>
+<pre class="example">
+   mysite/
+   ├── db.sqlite3
+   ├── hello
+   │   ├── admin.py
+   │   ├── apps.py
+   │   ├── __init__.py
+   │   ├── migrations
+   │   │   └── __init__.py
+   │   ├── models.py
+   │   ├── tests.py
+   │   └── views.py
+   ├── manage.py
+   └── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+
+</pre>
+
+<p>
+设置返回内容。 hello/views.py
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/658960c558fe379bafc6a35a09afe833.js">https://gist.github.com/phenix3443/658960c558fe379bafc6a35a09afe833.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+需要url指向该视图。hello/urls.py
+</p>
+
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/c220106689e7fff52f0cfb9e3d6627d9.js">https://gist.github.com/phenix3443/c220106689e7fff52f0cfb9e3d6627d9.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+hello目录结构：
+</p>
+<pre class="example">
+   hello
+   ├── admin.py
+   ├── apps.py
+   ├── __init__.py
+   ├── migrations
+   │   └── __init__.py
+   ├── models.py
+   ├── tests.py
+   ├── urls.py
+   ├── views.py
+</pre>
+
+<p>
+在项目的根URLconf文件中导入创建的hello.urls模块。mysite/mysite/urls.py
+</p>
+
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/1fa08b91baeb170988459e1143bfb989.js">https://gist.github.com/phenix3443/1fa08b91baeb170988459e1143bfb989.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+函数 include() 允许引用其它 URLconfs。每当 Django 遇到  <code>:func：~django.urls.include</code> 时，它会截断与此项匹配的 URL 的部分，并将剩余的字符串发送到 URLconf 以供进一步处理。
+</p>
+</div>
+</div>
+<div id="outline-container-orga97c8e7" class="outline-2">
+<h2 id="orga97c8e7"><span class="section-number-2">5</span> 启动</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+<pre class="src src-python">python3 manage.py runserver
+</pre>
+</div>
+
+
+<div id="orgde314f4" class="figure">
+<p><img src="../img/django/runserver-hello.png" alt="runserver-hello.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>访问hello页面后台日志</p>
+</div>
+
+<p>
+用浏览器访问 <a href="http://localhost:8000/hello">http://localhost:8000/hello</a> ，看到浏览器返回index函数中内容。
+</p>
+
+
+
+<div id="org6912f76" class="figure">
+<p><img src="../img/django/hello.png" alt="hello.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>返回hello信息</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgcb05230" class="outline-2">
+<h2 id="orgcb05230"><span class="section-number-2">6</span> 附录</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgb565ad3" class="outline-3">
+<h3 id="orgb565ad3"><span class="section-number-3">6.1</span> path<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
+</div>
+<div id="outline-container-orge70db11" class="outline-3">
+<h3 id="orge70db11"><span class="section-number-3">6.2</span> include<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></h3>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://docs.djangoproject.com/zh-hans/2.0/ref/urls/#django.urls.path">path函数</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://docs.djangoproject.com/zh-hans/2.0/ref/urls/#django.urls.include">include函数</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
