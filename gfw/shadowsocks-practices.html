@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-05 一 20:28 -->
+<!-- 2019-08-13 二 10:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ShadowSocks Practices</title>
@@ -313,13 +313,13 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org33ea801">1. 简介</a></li>
 <li><a href="#orgff704e8">2. 安装</a></li>
-<li><a href="#org25a9d13">3. ss-server</a></li>
-<li><a href="#org531e354">4. ss-local</a></li>
+<li><a href="#orgd096673">3. ss-server</a></li>
+<li><a href="#org4eaf7c7">4. ss-local</a></li>
 <li><a href="#org729f106">5. 基本配置</a></li>
 <li><a href="#org66b94d3">6. 开机自启动</a>
 <ul>
-<li><a href="#org383c04e">6.1. ss-server</a></li>
-<li><a href="#orgb02ab9f">6.2. ss-local</a></li>
+<li><a href="#orgd3a7009">6.1. ss-server</a></li>
+<li><a href="#orge20e875">6.2. ss-local</a></li>
 </ul>
 </li>
 <li><a href="#org5fe678c">7. 优化</a>
@@ -366,11 +366,11 @@ ShadowSocks 主要由三个模块组成:
 </div>
 </div>
 </div>
-<div id="outline-container-org25a9d13" class="outline-2">
-<h2 id="org25a9d13"><span class="section-number-2">3</span> ss-server</h2>
+<div id="outline-container-orgd096673" class="outline-2">
+<h2 id="orgd096673"><span class="section-number-2">3</span> ss-server</h2>
 </div>
-<div id="outline-container-org531e354" class="outline-2">
-<h2 id="org531e354"><span class="section-number-2">4</span> ss-local</h2>
+<div id="outline-container-org4eaf7c7" class="outline-2">
+<h2 id="org4eaf7c7"><span class="section-number-2">4</span> ss-local</h2>
 </div>
 <div id="outline-container-org729f106" class="outline-2">
 <h2 id="org729f106"><span class="section-number-2">5</span> 基本配置</h2>
@@ -458,8 +458,8 @@ ss-server 与 ss-local 配置文件是 json 格式的，默认名字是 config.j
 使用 systemd 控制启动：
 </p>
 </div>
-<div id="outline-container-org383c04e" class="outline-3">
-<h3 id="org383c04e"><span class="section-number-3">6.1</span> ss-server</h3>
+<div id="outline-container-orgd3a7009" class="outline-3">
+<h3 id="orgd3a7009"><span class="section-number-3">6.1</span> ss-server</h3>
 <div class="outline-text-3" id="text-6-1">
 <pre class="example">
     [Unit]
@@ -491,8 +491,8 @@ systemctl status ss-server.service
 </div>
 </div>
 </div>
-<div id="outline-container-orgb02ab9f" class="outline-3">
-<h3 id="orgb02ab9f"><span class="section-number-3">6.2</span> ss-local</h3>
+<div id="outline-container-orge20e875" class="outline-3">
+<h3 id="orge20e875"><span class="section-number-3">6.2</span> ss-local</h3>
 <div class="outline-text-3" id="text-6-2">
 <pre class="example">
     [Unit]
@@ -625,7 +625,7 @@ sysctl net.ipv4.tcp_congestion_control
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="date">Created: 2019-08-13 二 10:40</p>
 <p class="validation"></p>
 </div>
 </body>

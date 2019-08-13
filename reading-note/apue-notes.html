@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-05 一 20:29 -->
+<!-- 2019-08-13 二 10:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>《UNIX 高级环境编程（第三版）》笔记</title>
@@ -324,12 +324,12 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#org8642721">第七章 进程环境</a></li>
-<li><a href="#org0de5814">第八章 进程控制</a></li>
-<li><a href="#org06b24fc">第八章 进程控制</a></li>
+<li><a href="#org46e06ec">第八章 进程控制</a></li>
+<li><a href="#org36eeedf">第八章 进程控制</a></li>
 <li><a href="#org1da8c69">第九章 进程关系</a></li>
 <li><a href="#org8880484">第十章 信号</a>
 <ul>
-<li><a href="#orgaced9f8">引言</a></li>
+<li><a href="#org9049d4a">引言</a></li>
 <li><a href="#org286da8b">信号概念</a></li>
 <li><a href="#orge105c38">函数 signal</a></li>
 <li><a href="#org6184077">不可靠的信号</a></li>
@@ -399,7 +399,7 @@ for the JavaScript code in this tag.
 <li><a href="#org04c9832">第十三章 守护进程</a></li>
 <li><a href="#orgb7e530d">第十四章 高级 I/O</a>
 <ul>
-<li><a href="#org204c47f">引言</a></li>
+<li><a href="#org3301750">引言</a></li>
 <li><a href="#orgd55fd84">非阻塞 I/O</a></li>
 <li><a href="#orge101e08">记录锁</a></li>
 <li><a href="#orgdb71fa3">I/O 多路转接</a></li>
@@ -965,9 +965,9 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org0de5814" class="outline-2">
-<h2 id="org0de5814">第八章 进程控制</h2>
-<div class="outline-text-2" id="text-org0de5814">
+<div id="outline-container-org46e06ec" class="outline-2">
+<h2 id="org46e06ec">第八章 进程控制</h2>
+<div class="outline-text-2" id="text-org46e06ec">
 <ol class="org-ol">
 <li>子进程获得父进程数据空间、堆、栈的副本。使用写时复制技术，这些由父子进程共享，内核将他们的访问权限改变为只读。如果父子进程试图修改这些区域，则内核只为修改区域的那块内存制作一个副本。</li>
 <li>父子进程共享的属性。（L185）不继承：进程 ID，父进程 PID，tms_utime、tms_stime、tms_cutime、tms_ustime、文件锁、未处理的闹钟、未处理信号集。</li>
@@ -977,8 +977,8 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org06b24fc" class="outline-2">
-<h2 id="org06b24fc">第八章 进程控制</h2>
+<div id="outline-container-org36eeedf" class="outline-2">
+<h2 id="org36eeedf">第八章 进程控制</h2>
 </div>
 <div id="outline-container-org1da8c69" class="outline-2">
 <h2 id="org1da8c69">第九章 进程关系</h2>
@@ -987,8 +987,8 @@ By default, file descriptors remain open across an execve(). File descriptors th
 <h2 id="org8880484">第十章 信号</h2>
 <div class="outline-text-2" id="text-org8880484">
 </div>
-<div id="outline-container-orgaced9f8" class="outline-3">
-<h3 id="orgaced9f8">引言</h3>
+<div id="outline-container-org9049d4a" class="outline-3">
+<h3 id="org9049d4a">引言</h3>
 </div>
 <div id="outline-container-org286da8b" class="outline-3">
 <h3 id="org286da8b">信号概念</h3>
@@ -2161,8 +2161,8 @@ L368:可以多次调用 <code>pthread_atfork</code> 来设置多套 fork 处理�
 <h2 id="orgb7e530d">第十四章 高级 I/O</h2>
 <div class="outline-text-2" id="text-orgb7e530d">
 </div>
-<div id="outline-container-org204c47f" class="outline-3">
-<h3 id="org204c47f">引言</h3>
+<div id="outline-container-org3301750" class="outline-3">
+<h3 id="org3301750">引言</h3>
 </div>
 <div id="outline-container-orgd55fd84" class="outline-3">
 <h3 id="orgd55fd84">非阻塞 I/O</h3>
@@ -2320,7 +2320,7 @@ XSI IPC 有下列问题：
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-05 一 20:29</p>
+<p class="date">Created: 2019-08-13 二 10:43</p>
 <p class="validation"></p>
 </div>
 </body>

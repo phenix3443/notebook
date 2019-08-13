@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-05 一 20:28 -->
+<!-- 2019-08-13 二 10:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>同步-异步-阻塞-非阻塞详解</title>
@@ -312,6 +312,7 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org7447312">1. 概述</a></li>
+<li><a href="#org130913b">2. Unix系统IO模型</a></li>
 </ul>
 </div>
 </div>
@@ -327,13 +328,12 @@ for the JavaScript code in this tag.
 </ul>
 
 <p>
-阻塞和非阻塞是一种业务流程处理方式。关注点在于调用发生时 <b>调用者状态</b> 和 <b>被调用着返回结果</b> 之间的关系。 <b>描述的是调用者的状态。</b> 此时结果可能是同步返回的，也能是异步返回。
+阻塞和非阻塞是一种业务流程处理方式。关注点在于调用发生时 <b>调用者状态</b> 和 <b>被调用着返回结果</b> 之间的关系。 <b>描述的是等待结果时候调用者的状态</b> 。 此时结果可能是同步返回的，也能是异步返回。
 </p>
 <ul class="org-ul">
 <li>阻塞( Blocking )：在结果返回之前，当前流程被挂起，后续代码只有在结果返回后才能执行。</li>
 <li>非阻塞( Nonblocking)：在不能立刻获取结果前，该调用不会阻塞当前进程。</li>
 </ul>
-
 
 <p>
 用去书店借书来举例说明：
@@ -351,13 +351,42 @@ for the JavaScript code in this tag.
 <li>异步阻塞：打电话问老板有没有某书（调用），老板说你先挂电话，有了结果通知你（异步），你挂了电话后（结束调用）, 除了等老板电话通知结果，什么事情也不做（阻塞）。</li>
 <li>异步非阻塞：打电话问老板有没有某书（调用），老板说你先挂电话，有了结果通知你（异步），你挂电话后（结束调用），一遍等电话，一遍嗑瓜子。（非阻塞）</li>
 </ul>
+
+
+<p>
+要清楚理解这四个概念，首要要名表的是，同步异步/阻塞非阻塞描述对象是不同的，这点我比较同意 <a href="https://www.zhihu.com/question/19732473/answer/117012135">怎样理解阻塞非阻塞与同步异步的区别？ - 灵剑的回答 - 知乎</a> 的说法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org130913b" class="outline-2">
+<h2 id="org130913b"><span class="section-number-2">2</span> Unix系统IO模型</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+《UNIX网络编程：卷一》书中提及了5 种类UNIX下可用的I/O模型：
+</p>
+<ul class="org-ul">
+<li>阻塞式I/O</li>
+<li>非阻塞式I/O</li>
+<li>I/O复用（select，poll，epoll&#x2026;）</li>
+<li>信号驱动式I/O（SIGIO）</li>
+<li>异步I/O（POSIX的aio_系列函数）</li>
+</ul>
+
+<p>
+正如知乎上 <a href="https://www.zhihu.com/question/19732473/answer/26091478">怎样理解阻塞非阻塞与同步异步的区别？ - 陈硕的回答 - 知乎</a> 所说，“在处理IO的时候，阻塞和非阻塞都是同步IO”，因为它们结果都是在调用结束的时候返回的。
+</p>
+
+<p>
+只有使用了特殊API才是异步IO，例如linux的 aio和windows的 IOCP。
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-05 一 20:28</p>
+<p class="date">Created: 2019-08-13 二 10:41</p>
 <p class="validation"></p>
 </div>
 </body>
