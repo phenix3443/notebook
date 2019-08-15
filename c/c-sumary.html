@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:41 -->
+<!-- 2019-08-15 四 17:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>C 语言总结</title>
@@ -319,138 +319,30 @@ for the JavaScript code in this tag.
 <li><a href="#orgf521616">1.4. 语言文化</a></li>
 </ul>
 </li>
-<li><a href="#org4881ed7">2. 程序结构</a>
+<li><a href="#orgf6392cd">2. 语言特性</a></li>
+<li><a href="#orgfa9dc0c">3. 编码规范</a></li>
+<li><a href="#orgfcec52d">4. 标准库</a></li>
+<li><a href="#org4bd54aa">5. 第三方库</a></li>
+<li><a href="#orgb3f7286">6. 参考书籍</a>
 <ul>
-<li><a href="#org7982c34">2.1. 注释</a></li>
-<li><a href="#orgf602cfb">2.2. token</a>
-<ul>
-<li><a href="#org7b70219">2.2.1. 字面量</a>
-<ul>
-<li><a href="#org3cd8e03">2.2.1.1. 整数常量</a></li>
-<li><a href="#orgfeace67">2.2.1.2. 浮点常量</a></li>
-<li><a href="#org811448b">2.2.1.3. 字符常量</a></li>
-<li><a href="#orgfacd32c">2.2.1.4. 字符串常量</a></li>
+<li><a href="#org1c0f5b5">6.1. 入门</a></li>
+<li><a href="#orge1cb7e5">6.2. 高级</a></li>
+<li><a href="#orgbaf6cd6">6.3. 实践</a></li>
+<li><a href="#orgdbc8a37">6.4. 原理</a></li>
 </ul>
 </li>
-<li><a href="#orgd5ef358">2.2.2. 标识符</a>
+<li><a href="#orgb05dd49">7. 相关工具</a>
 <ul>
-<li><a href="#org8427609">2.2.2.1. 常量变量</a></li>
-<li><a href="#org23f2645">2.2.2.2. 作用域</a></li>
-<li><a href="#org024f4a4">2.2.2.3. 生存期</a></li>
-</ul>
-</li>
-<li><a href="#orgc788ef7">2.2.3. 关键字</a></li>
-<li><a href="#org7de3403">2.2.4. 运算符</a>
-<ul>
-<li><a href="#org5e1aeba">2.2.4.1. 算数运算符</a></li>
-<li><a href="#orgec19773">2.2.4.2. 位运算符</a></li>
-<li><a href="#orgd42b768">2.2.4.3. 关系运算符</a></li>
-<li><a href="#org8f6a297">2.2.4.4. 逻辑运算符</a></li>
-<li><a href="#orga9c2b5f">2.2.4.5. 赋值运算符</a></li>
-<li><a href="#org107c510">2.2.4.6. 其他</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org49f3bfd">2.3. 表达式</a></li>
-<li><a href="#org3ab48ee">2.4. 语句</a>
-<ul>
-<li><a href="#org9084fac">2.4.1. 声明与定义</a></li>
-<li><a href="#org9f14916">2.4.2. 赋值</a></li>
-<li><a href="#orge0051c5">2.4.3. 分支控制</a>
-<ul>
-<li><a href="#orgdc6a755">2.4.3.1. 分支</a></li>
-<li><a href="#orga864353">2.4.3.2. 循环</a></li>
-<li><a href="#orga4e28b0">2.4.3.3. 跳转</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org18cc73c">2.5. 函数</a>
-<ul>
-<li><a href="#orgaad6889">2.5.1. 可变参数</a></li>
-<li><a href="#org156067c">2.5.2. 内联</a></li>
-</ul>
-</li>
-<li><a href="#org255973a">2.6. 模块</a></li>
-</ul>
-</li>
-<li><a href="#orgc95eec6">3. 类型系统</a>
-<ul>
-<li><a href="#orgd854961">3.1. 整型</a></li>
-<li><a href="#org9955869">3.2. 浮点型</a></li>
-<li><a href="#orgba944f7">3.3. 复数</a></li>
-<li><a href="#orgf07666f">3.4. 字符</a></li>
-<li><a href="#orga47ed47">3.5. 布尔</a></li>
-<li><a href="#org3eeef2d">3.6. 空类型</a></li>
-<li><a href="#orgef552f1">3.7. 存储类型</a></li>
-<li><a href="#org36d95c8">3.8. 复合类型</a></li>
-<li><a href="#orgae1271d">3.9. 自定义</a>
-<ul>
-<li><a href="#org33f8395">3.9.1. 类型别名</a></li>
-</ul>
-</li>
-<li><a href="#org4afa47c">3.10. 类型转换</a>
-<ul>
-<li><a href="#org4fcb057">3.10.1. 自动转换</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgebd0fb9">4. 数据结构</a>
-<ul>
-<li><a href="#orgd4dc5ee">4.1. 顺序</a></li>
-<li><a href="#org40d04a1">4.2. 关联</a></li>
-<li><a href="#org15c049a">4.3. 迭代</a></li>
-</ul>
-</li>
-<li><a href="#org657ea8d">5. 错误处理</a></li>
-<li><a href="#orgfa9dc0c">6. 编码规范</a></li>
-<li><a href="#org0dd35d1">7. 高级特性</a></li>
-<li><a href="#orgb8742de">8. 编译器相关</a>
-<ul>
-<li><a href="#org1aca6f6">8.1. 预处理指令</a></li>
-<li><a href="#org46edf4f">8.2. 内建宏</a></li>
-</ul>
-</li>
-<li><a href="#org618373b">9. 程序库</a>
-<ul>
-<li><a href="#orgf953e43">9.1. 通用函数</a></li>
-<li><a href="#org9b8087a">9.2. 数据类型</a></li>
-<li><a href="#org8030d3e">9.3. 字符串</a></li>
-<li><a href="#orgcd657b3">9.4. 输入输出</a></li>
-<li><a href="#org06ba20a">9.5. 时间</a></li>
-<li><a href="#org76a9c73">9.6. 日志</a></li>
-<li><a href="#org550a0a3">9.7. 数学</a></li>
-</ul>
-</li>
-<li><a href="#orgb3f7286">10. 参考书籍</a>
-<ul>
-<li><a href="#org1c0f5b5">10.1. 入门</a></li>
-<li><a href="#orge1cb7e5">10.2. 高级</a></li>
-<li><a href="#orgbaf6cd6">10.3. 实践</a></li>
-<li><a href="#orgdbc8a37">10.4. 原理</a></li>
-</ul>
-</li>
-<li><a href="#org20f09ee">11. 安装运行</a>
-<ul>
-<li><a href="#org61aeff7">11.1. 安装</a></li>
-<li><a href="#org768959d">11.2. 运行</a></li>
-</ul>
-</li>
-<li><a href="#orgb05dd49">12. 相关工具</a>
-<ul>
-<li><a href="#org22059ad">12.1. 标准命令</a></li>
-<li><a href="#org2603c32">12.2. 集成开发</a></li>
-<li><a href="#orgfdf5f52">12.3. 静态检查</a></li>
-<li><a href="#org273e7ab">12.4. 构建编译</a></li>
-<li><a href="#org703dd9e">12.5. 代码调试</a></li>
-<li><a href="#org1c9fea8">12.6. 内存检查</a></li>
-<li><a href="#orgd1b28a5">12.7. 性能分析</a></li>
-<li><a href="#org093b82e">12.8. 自动测试</a></li>
-<li><a href="#org382811f">12.9. 文档系统</a></li>
-<li><a href="#orgdc655be">12.10. 包管理</a></li>
-<li><a href="#org12263e9">12.11. 其他工具</a></li>
+<li><a href="#org22059ad">7.1. 标准命令</a></li>
+<li><a href="#org2603c32">7.2. 集成开发</a></li>
+<li><a href="#orgfdf5f52">7.3. 静态检查</a></li>
+<li><a href="#org273e7ab">7.4. 构建编译</a></li>
+<li><a href="#org703dd9e">7.5. 代码调试</a></li>
+<li><a href="#orgd1b28a5">7.6. 性能分析</a></li>
+<li><a href="#org093b82e">7.7. 自动测试</a></li>
+<li><a href="#org382811f">7.8. 文档系统</a></li>
+<li><a href="#orgdc655be">7.9. 包管理</a></li>
+<li><a href="#org12263e9">7.10. 其他工具</a></li>
 </ul>
 </li>
 </ul>
@@ -474,584 +366,123 @@ for the JavaScript code in this tag.
 <h3 id="orgf521616"><span class="section-number-3">1.4</span> 语言文化</h3>
 </div>
 </div>
-
-<div id="outline-container-org4881ed7" class="outline-2">
-<h2 id="org4881ed7"><span class="section-number-2">2</span> 程序结构</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org7982c34" class="outline-3">
-<h3 id="org7982c34"><span class="section-number-3">2.1</span> 注释</h3>
-<div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">/*</span><span style="color: #6c6c6c; font-style: italic;">*/</span>
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgf602cfb" class="outline-3">
-<h3 id="orgf602cfb"><span class="section-number-3">2.2</span> token</h3>
-<div class="outline-text-3" id="text-2-2">
-</div>
-<div id="outline-container-org7b70219" class="outline-4">
-<h4 id="org7b70219"><span class="section-number-4">2.2.1</span> 字面量</h4>
-<div class="outline-text-4" id="text-2-2-1">
-</div>
-<div id="outline-container-org3cd8e03" class="outline-5">
-<h5 id="org3cd8e03"><span class="section-number-5">2.2.1.1</span> 整数常量</h5>
-<div class="outline-text-5" id="text-2-2-1-1">
-<p>
-前缀后缀，进制表示
-</p>
-</div>
-</div>
-<div id="outline-container-orgfeace67" class="outline-5">
-<h5 id="orgfeace67"><span class="section-number-5">2.2.1.2</span> 浮点常量</h5>
-</div>
-<div id="outline-container-org811448b" class="outline-5">
-<h5 id="org811448b"><span class="section-number-5">2.2.1.3</span> 字符常量</h5>
-<div class="outline-text-5" id="text-2-2-1-3">
-<p>
-字符编码，转义字符
-</p>
-</div>
-</div>
-<div id="outline-container-orgfacd32c" class="outline-5">
-<h5 id="orgfacd32c"><span class="section-number-5">2.2.1.4</span> 字符串常量</h5>
-<div class="outline-text-5" id="text-2-2-1-4">
-<p>
-单双引号区别
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgd5ef358" class="outline-4">
-<h4 id="orgd5ef358"><span class="section-number-4">2.2.2</span> 标识符</h4>
-<div class="outline-text-4" id="text-2-2-2">
-<p>
-标识符是用来标识变量、函数或其他 <b>用户自定义</b> 项目的名称。如常量名、变量名、函数名。
-</p>
-</div>
-
-<div id="outline-container-org8427609" class="outline-5">
-<h5 id="org8427609"><span class="section-number-5">2.2.2.1</span> 常量变量</h5>
-<div class="outline-text-5" id="text-2-2-2-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">const</span> <span style="color: #a1db00;">volatile</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org23f2645" class="outline-5">
-<h5 id="org23f2645"><span class="section-number-5">2.2.2.2</span> 作用域</h5>
-<div class="outline-text-5" id="text-2-2-2-2">
-</div>
-<ol class="org-ol">
-<li><a id="orgc4c364d"></a>块作用域<br /></li>
-
-<li><a id="org38f94d6"></a>全局作用域<br />
-<div class="outline-text-6" id="text-2-2-2-2-2">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">extern</span>
-</pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-
-<div id="outline-container-org024f4a4" class="outline-5">
-<h5 id="org024f4a4"><span class="section-number-5">2.2.2.3</span> 生存期</h5>
-<div class="outline-text-5" id="text-2-2-2-3">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">static</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgc788ef7" class="outline-4">
-<h4 id="orgc788ef7"><span class="section-number-4">2.2.3</span> 关键字</h4>
-<div class="outline-text-4" id="text-2-2-3">
-<p>
-语言保留，不能做标识符。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org7de3403" class="outline-4">
-<h4 id="org7de3403"><span class="section-number-4">2.2.4</span> 运算符</h4>
-<div class="outline-text-4" id="text-2-2-4">
-</div>
-<div id="outline-container-org5e1aeba" class="outline-5">
-<h5 id="org5e1aeba"><span class="section-number-5">2.2.4.1</span> 算数运算符</h5>
-<div class="outline-text-5" id="text-2-2-4-1">
-<div class="org-src-container">
-<pre class="src src-c">+ - * / % ++ --
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgec19773" class="outline-5">
-<h5 id="orgec19773"><span class="section-number-5">2.2.4.2</span> 位运算符</h5>
-<div class="outline-text-5" id="text-2-2-4-2">
-<div class="org-src-container">
-<pre class="src src-c">&amp; | ^  ~ &lt;&lt; &gt;&gt;
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgd42b768" class="outline-5">
-<h5 id="orgd42b768"><span class="section-number-5">2.2.4.3</span> 关系运算符</h5>
-<div class="outline-text-5" id="text-2-2-4-3">
-<div class="org-src-container">
-<pre class="src src-c">== != &gt; &gt;= &lt; &lt;=
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8f6a297" class="outline-5">
-<h5 id="org8f6a297"><span class="section-number-5">2.2.4.4</span> 逻辑运算符</h5>
-<div class="outline-text-5" id="text-2-2-4-4">
-<div class="org-src-container">
-<pre class="src src-c">&amp;&amp;  || !
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga9c2b5f" class="outline-5">
-<h5 id="orga9c2b5f"><span class="section-number-5">2.2.4.5</span> 赋值运算符</h5>
-<div class="outline-text-5" id="text-2-2-4-5">
-<div class="org-src-container">
-<pre class="src src-c">= += -= *= /= %= &lt;&lt;= &gt;&gt;= &amp;= ^= |=
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org107c510" class="outline-5">
-<h5 id="org107c510"><span class="section-number-5">2.2.4.6</span> 其他</h5>
-<div class="outline-text-5" id="text-2-2-4-6">
-<div class="org-src-container">
-<pre class="src src-c">?:
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org49f3bfd" class="outline-3">
-<h3 id="org49f3bfd"><span class="section-number-3">2.3</span> 表达式</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-表达式可以求值。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org3ab48ee" class="outline-3">
-<h3 id="org3ab48ee"><span class="section-number-3">2.4</span> 语句</h3>
-<div class="outline-text-3" id="text-2-4">
-<p>
-语句是程序执行的最小逻辑单位。
-</p>
-</div>
-<div id="outline-container-org9084fac" class="outline-4">
-<h4 id="org9084fac"><span class="section-number-4">2.4.1</span> 声明与定义</h4>
-</div>
-<div id="outline-container-org9f14916" class="outline-4">
-<h4 id="org9f14916"><span class="section-number-4">2.4.2</span> 赋值</h4>
-</div>
-<div id="outline-container-orge0051c5" class="outline-4">
-<h4 id="orge0051c5"><span class="section-number-4">2.4.3</span> 分支控制</h4>
-<div class="outline-text-4" id="text-2-4-3">
-</div>
-<div id="outline-container-orgdc6a755" class="outline-5">
-<h5 id="orgdc6a755"><span class="section-number-5">2.4.3.1</span> 分支</h5>
-<div class="outline-text-5" id="text-2-4-3-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">if</span>-<span style="color: #a1db00;">else</span> <span style="color: #a1db00;">switch</span>-<span style="color: #a1db00;">case</span>-<span style="color: #a1db00;">default</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga864353" class="outline-5">
-<h5 id="orga864353"><span class="section-number-5">2.4.3.2</span> 循环</h5>
-<div class="outline-text-5" id="text-2-4-3-2">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">for</span> <span style="color: #a1db00;">while</span> <span style="color: #a1db00;">do</span>-<span style="color: #a1db00;">while</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga4e28b0" class="outline-5">
-<h5 id="orga4e28b0"><span class="section-number-5">2.4.3.3</span> 跳转</h5>
-<div class="outline-text-5" id="text-2-4-3-3">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">break</span> <span style="color: #a1db00;">continue</span> <span style="color: #a1db00;">goto</span> <span style="color: #a1db00;">return</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org18cc73c" class="outline-3">
-<h3 id="org18cc73c"><span class="section-number-3">2.5</span> 函数</h3>
-<div class="outline-text-3" id="text-2-5">
-</div>
-<div id="outline-container-orgaad6889" class="outline-4">
-<h4 id="orgaad6889"><span class="section-number-4">2.5.1</span> 可变参数</h4>
-</div>
-<div id="outline-container-org156067c" class="outline-4">
-<h4 id="org156067c"><span class="section-number-4">2.5.2</span> 内联</h4>
-<div class="outline-text-4" id="text-2-5-2">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">inline</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org255973a" class="outline-3">
-<h3 id="org255973a"><span class="section-number-3">2.6</span> 模块</h3>
-<div class="outline-text-3" id="text-2-6">
-<p>
-头文件
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgc95eec6" class="outline-2">
-<h2 id="orgc95eec6"><span class="section-number-2">3</span> 类型系统</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-orgd854961" class="outline-3">
-<h3 id="orgd854961"><span class="section-number-3">3.1</span> 整型</h3>
-<div class="outline-text-3" id="text-3-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">short</span> <span style="color: #00d7af;">int</span> <span style="color: #00d7af;">long</span>  <span style="color: #00d7af;">signed</span>, <span style="color: #00d7af;">unsigned</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org9955869" class="outline-3">
-<h3 id="org9955869"><span class="section-number-3">3.2</span> 浮点型</h3>
-<div class="outline-text-3" id="text-3-2">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">float</span> <span style="color: #00d7af;">double</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgba944f7" class="outline-3">
-<h3 id="orgba944f7"><span class="section-number-3">3.3</span> 复数</h3>
-<div class="outline-text-3" id="text-3-3">
-<div class="org-src-container">
-<pre class="src src-c">_complex
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgf07666f" class="outline-3">
-<h3 id="orgf07666f"><span class="section-number-3">3.4</span> 字符</h3>
-<div class="outline-text-3" id="text-3-4">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">char</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga47ed47" class="outline-3">
-<h3 id="orga47ed47"><span class="section-number-3">3.5</span> 布尔</h3>
-<div class="outline-text-3" id="text-3-5">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">_Bool</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org3eeef2d" class="outline-3">
-<h3 id="org3eeef2d"><span class="section-number-3">3.6</span> 空类型</h3>
-<div class="outline-text-3" id="text-3-6">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">void</span> <span style="color: #5fafd7;">NULL</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgef552f1" class="outline-3">
-<h3 id="orgef552f1"><span class="section-number-3">3.7</span> 存储类型</h3>
-<div class="outline-text-3" id="text-3-7">
-<div class="org-src-container">
-<pre class="src src-c">&amp; * <span style="color: #a1db00;">register</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org36d95c8" class="outline-3">
-<h3 id="org36d95c8"><span class="section-number-3">3.8</span> 复合类型</h3>
-<div class="outline-text-3" id="text-3-8">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #a1db00;">union</span> <span style="color: #a1db00;">enum</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgae1271d" class="outline-3">
-<h3 id="orgae1271d"><span class="section-number-3">3.9</span> 自定义</h3>
-<div class="outline-text-3" id="text-3-9">
-</div>
-<div id="outline-container-org33f8395" class="outline-4">
-<h4 id="org33f8395"><span class="section-number-4">3.9.1</span> 类型别名</h4>
-<div class="outline-text-4" id="text-3-9-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">typedef</span>
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org4afa47c" class="outline-3">
-<h3 id="org4afa47c"><span class="section-number-3">3.10</span> 类型转换</h3>
-<div class="outline-text-3" id="text-3-10">
-</div>
-<div id="outline-container-org4fcb057" class="outline-4">
-<h4 id="org4fcb057"><span class="section-number-4">3.10.1</span> 自动转换</h4>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgebd0fb9" class="outline-2">
-<h2 id="orgebd0fb9"><span class="section-number-2">4</span> 数据结构</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-orgd4dc5ee" class="outline-3">
-<h3 id="orgd4dc5ee"><span class="section-number-3">4.1</span> 顺序</h3>
-<div class="outline-text-3" id="text-4-1">
-<p>
-数组
-</p>
-<div class="org-src-container">
-<pre class="src src-c">    []
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org40d04a1" class="outline-3">
-<h3 id="org40d04a1"><span class="section-number-3">4.2</span> 关联</h3>
-</div>
-
-<div id="outline-container-org15c049a" class="outline-3">
-<h3 id="org15c049a"><span class="section-number-3">4.3</span> 迭代</h3>
-</div>
-</div>
-
-<div id="outline-container-org657ea8d" class="outline-2">
-<h2 id="org657ea8d"><span class="section-number-2">5</span> 错误处理</h2>
+<div id="outline-container-orgf6392cd" class="outline-2">
+<h2 id="orgf6392cd"><span class="section-number-2">2</span> 语言特性</h2>
 </div>
 
 <div id="outline-container-orgfa9dc0c" class="outline-2">
-<h2 id="orgfa9dc0c"><span class="section-number-2">6</span> 编码规范</h2>
+<h2 id="orgfa9dc0c"><span class="section-number-2">3</span> 编码规范</h2>
 </div>
 
-<div id="outline-container-org0dd35d1" class="outline-2">
-<h2 id="org0dd35d1"><span class="section-number-2">7</span> 高级特性</h2>
-</div>
-<div id="outline-container-orgb8742de" class="outline-2">
-<h2 id="orgb8742de"><span class="section-number-2">8</span> 编译器相关</h2>
-<div class="outline-text-2" id="text-8">
-</div>
-<div id="outline-container-org1aca6f6" class="outline-3">
-<h3 id="org1aca6f6"><span class="section-number-3">8.1</span> 预处理指令</h3>
-<div class="outline-text-3" id="text-8-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #d18aff;">#define #include</span>
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org46edf4f" class="outline-3">
-<h3 id="org46edf4f"><span class="section-number-3">8.2</span> 内建宏</h3>
-<div class="outline-text-3" id="text-8-2">
-<div class="org-src-container">
-<pre class="src src-c">   <span style="color: #00d7af;">__DATE__</span> <span style="color: #ff8700;">&#24403;&#21069;&#26085;&#26399;</span>&#65292;&#19968;&#20010;&#20197; <span style="color: #ff4ea3;">"MMM DD YYYY"</span> &#26684;&#24335;&#34920;&#31034;&#30340;&#23383;&#31526;&#24120;&#37327;&#12290;
-   __TIME__ &#24403;&#21069;&#26102;&#38388;&#65292;&#19968;&#20010;&#20197; <span style="color: #ff4ea3;">"HH:MM:SS"</span> &#26684;&#24335;&#34920;&#31034;&#30340;&#23383;&#31526;&#24120;&#37327;&#12290;
-   __FILE__ &#36825;&#20250;&#21253;&#21547;&#24403;&#21069;&#25991;&#20214;&#21517;&#65292;&#19968;&#20010;&#23383;&#31526;&#20018;&#24120;&#37327;&#12290;
-   __LINE__ &#36825;&#20250;&#21253;&#21547;&#24403;&#21069;&#34892;&#21495;&#65292;&#19968;&#20010;&#21313;&#36827;&#21046;&#24120;&#37327;&#12290;
-   __STDC__ &#24403;&#32534;&#35793;&#22120;&#20197; ANSI &#26631;&#20934;&#32534;&#35793;&#26102;&#65292;&#21017;&#23450;&#20041;&#20026; 1&#12290;
-</pre>
-</div>
-</div>
-</div>
+<div id="outline-container-orgfcec52d" class="outline-2">
+<h2 id="orgfcec52d"><span class="section-number-2">4</span> 标准库</h2>
 </div>
 
-<div id="outline-container-org618373b" class="outline-2">
-<h2 id="org618373b"><span class="section-number-2">9</span> 程序库</h2>
-<div class="outline-text-2" id="text-9">
-</div>
-<div id="outline-container-orgf953e43" class="outline-3">
-<h3 id="orgf953e43"><span class="section-number-3">9.1</span> 通用函数</h3>
-<div class="outline-text-3" id="text-9-1">
+<div id="outline-container-org4bd54aa" class="outline-2">
+<h2 id="org4bd54aa"><span class="section-number-2">5</span> 第三方库</h2>
+<div class="outline-text-2" id="text-5">
 <p>
-stdlib.h
+参见 <a href="https://github.com/kozross/awesome-c">awesome-c</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9b8087a" class="outline-3">
-<h3 id="org9b8087a"><span class="section-number-3">9.2</span> 数据类型</h3>
-<div class="outline-text-3" id="text-9-2">
-<p>
-ctype.h
-</p>
-
-<p>
-stddef.h 头文件定义了各种变量类型和宏
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8030d3e" class="outline-3">
-<h3 id="org8030d3e"><span class="section-number-3">9.3</span> 字符串</h3>
-<div class="outline-text-3" id="text-9-3">
-<p>
-string.h
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcd657b3" class="outline-3">
-<h3 id="orgcd657b3"><span class="section-number-3">9.4</span> 输入输出</h3>
-<div class="outline-text-3" id="text-9-4">
-<p>
-stdio.h
-</p>
-</div>
-</div>
-
-<div id="outline-container-org06ba20a" class="outline-3">
-<h3 id="org06ba20a"><span class="section-number-3">9.5</span> 时间</h3>
-<div class="outline-text-3" id="text-9-5">
-<p>
-time.h
-</p>
-</div>
-</div>
-
-<div id="outline-container-org76a9c73" class="outline-3">
-<h3 id="org76a9c73"><span class="section-number-3">9.6</span> 日志</h3>
-</div>
-
-<div id="outline-container-org550a0a3" class="outline-3">
-<h3 id="org550a0a3"><span class="section-number-3">9.7</span> 数学</h3>
-<div class="outline-text-3" id="text-9-7">
-<p>
-math.h
-</p>
-</div>
-</div>
-</div>
 <div id="outline-container-orgb3f7286" class="outline-2">
-<h2 id="orgb3f7286"><span class="section-number-2">10</span> 参考书籍</h2>
-<div class="outline-text-2" id="text-10">
+<h2 id="orgb3f7286"><span class="section-number-2">6</span> 参考书籍</h2>
+<div class="outline-text-2" id="text-6">
 </div>
 <div id="outline-container-org1c0f5b5" class="outline-3">
-<h3 id="org1c0f5b5"><span class="section-number-3">10.1</span> 入门</h3>
+<h3 id="org1c0f5b5"><span class="section-number-3">6.1</span> 入门</h3>
 </div>
 <div id="outline-container-orge1cb7e5" class="outline-3">
-<h3 id="orge1cb7e5"><span class="section-number-3">10.2</span> 高级</h3>
+<h3 id="orge1cb7e5"><span class="section-number-3">6.2</span> 高级</h3>
 </div>
 <div id="outline-container-orgbaf6cd6" class="outline-3">
-<h3 id="orgbaf6cd6"><span class="section-number-3">10.3</span> 实践</h3>
+<h3 id="orgbaf6cd6"><span class="section-number-3">6.3</span> 实践</h3>
 </div>
 <div id="outline-container-orgdbc8a37" class="outline-3">
-<h3 id="orgdbc8a37"><span class="section-number-3">10.4</span> 原理</h3>
+<h3 id="orgdbc8a37"><span class="section-number-3">6.4</span> 原理</h3>
 </div>
 </div>
-<div id="outline-container-org20f09ee" class="outline-2">
-<h2 id="org20f09ee"><span class="section-number-2">11</span> 安装运行</h2>
-<div class="outline-text-2" id="text-11">
-</div>
-<div id="outline-container-org61aeff7" class="outline-3">
-<h3 id="org61aeff7"><span class="section-number-3">11.1</span> 安装</h3>
-</div>
-<div id="outline-container-org768959d" class="outline-3">
-<h3 id="org768959d"><span class="section-number-3">11.2</span> 运行</h3>
-</div>
-</div>
+
 <div id="outline-container-orgb05dd49" class="outline-2">
-<h2 id="orgb05dd49"><span class="section-number-2">12</span> 相关工具</h2>
-<div class="outline-text-2" id="text-12">
+<h2 id="orgb05dd49"><span class="section-number-2">7</span> 相关工具</h2>
+<div class="outline-text-2" id="text-7">
 </div>
 <div id="outline-container-org22059ad" class="outline-3">
-<h3 id="org22059ad"><span class="section-number-3">12.1</span> 标准命令</h3>
+<h3 id="org22059ad"><span class="section-number-3">7.1</span> 标准命令</h3>
 </div>
 <div id="outline-container-org2603c32" class="outline-3">
-<h3 id="org2603c32"><span class="section-number-3">12.2</span> 集成开发</h3>
-<div class="outline-text-3" id="text-12-2">
+<h3 id="org2603c32"><span class="section-number-3">7.2</span> 集成开发</h3>
+<div class="outline-text-3" id="text-7-2">
 <p>
 clang-format
 </p>
 </div>
 </div>
 <div id="outline-container-orgfdf5f52" class="outline-3">
-<h3 id="orgfdf5f52"><span class="section-number-3">12.3</span> 静态检查</h3>
+<h3 id="orgfdf5f52"><span class="section-number-3">7.3</span> 静态检查</h3>
+<div class="outline-text-3" id="text-7-3">
+<ul class="org-ul">
+<li>cppcheck</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-org273e7ab" class="outline-3">
-<h3 id="org273e7ab"><span class="section-number-3">12.4</span> 构建编译</h3>
+<h3 id="org273e7ab"><span class="section-number-3">7.4</span> 构建编译</h3>
+<div class="outline-text-3" id="text-7-4">
+<ul class="org-ul">
+<li>gcc</li>
+<li>clang</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-org703dd9e" class="outline-3">
-<h3 id="org703dd9e"><span class="section-number-3">12.5</span> 代码调试</h3>
+<h3 id="org703dd9e"><span class="section-number-3">7.5</span> 代码调试</h3>
+<div class="outline-text-3" id="text-7-5">
+<ul class="org-ul">
+<li>gdb</li>
+</ul>
 </div>
-<div id="outline-container-org1c9fea8" class="outline-3">
-<h3 id="org1c9fea8"><span class="section-number-3">12.6</span> 内存检查</h3>
 </div>
+
 <div id="outline-container-orgd1b28a5" class="outline-3">
-<h3 id="orgd1b28a5"><span class="section-number-3">12.7</span> 性能分析</h3>
+<h3 id="orgd1b28a5"><span class="section-number-3">7.6</span> 性能分析</h3>
 </div>
+
 <div id="outline-container-org093b82e" class="outline-3">
-<h3 id="org093b82e"><span class="section-number-3">12.8</span> 自动测试</h3>
+<h3 id="org093b82e"><span class="section-number-3">7.7</span> 自动测试</h3>
+<div class="outline-text-3" id="text-7-7">
+<ul class="org-ul">
+<li>cmockery</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-org382811f" class="outline-3">
-<h3 id="org382811f"><span class="section-number-3">12.9</span> 文档系统</h3>
-<div class="outline-text-3" id="text-12-9">
-<p>
-doxygen
-</p>
+<h3 id="org382811f"><span class="section-number-3">7.8</span> 文档系统</h3>
+<div class="outline-text-3" id="text-7-8">
+<ul class="org-ul">
+<li>doxygen</li>
+</ul>
 </div>
 </div>
+
 <div id="outline-container-orgdc655be" class="outline-3">
-<h3 id="orgdc655be"><span class="section-number-3">12.10</span> 包管理</h3>
+<h3 id="orgdc655be"><span class="section-number-3">7.9</span> 包管理</h3>
 </div>
+
 <div id="outline-container-org12263e9" class="outline-3">
-<h3 id="org12263e9"><span class="section-number-3">12.11</span> 其他工具</h3>
+<h3 id="org12263e9"><span class="section-number-3">7.10</span> 其他工具</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:41</p>
+<p class="date">Created: 2019-08-15 四 17:05</p>
 <p class="validation"></p>
 </div>
 </body>

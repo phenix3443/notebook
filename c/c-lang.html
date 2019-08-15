@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-15 四 17:05 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>c 语言特性</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">c 语言特性</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgb6f84ac">1. 程序结构</a>
+<ul>
+<li><a href="#org984fc3b">1.1. 注释</a></li>
+<li><a href="#org3be0ee8">1.2. token</a>
+<ul>
+<li><a href="#orgaeedc8b">1.2.1. 字面量</a>
+<ul>
+<li><a href="#orgc7928de">1.2.1.1. 整数常量</a></li>
+<li><a href="#orge941baf">1.2.1.2. 浮点常量</a></li>
+<li><a href="#orgf534f57">1.2.1.3. 字符常量</a></li>
+<li><a href="#org90bfbe5">1.2.1.4. 字符串常量</a></li>
+</ul>
+</li>
+<li><a href="#orgddebf41">1.2.2. 标识符</a>
+<ul>
+<li><a href="#org6e839ed">1.2.2.1. 常量变量</a></li>
+<li><a href="#org6464b14">1.2.2.2. 作用域</a></li>
+<li><a href="#org52a1b7d">1.2.2.3. 生存期</a></li>
+</ul>
+</li>
+<li><a href="#org383d198">1.2.3. 关键字</a></li>
+<li><a href="#orgb9fe313">1.2.4. 运算符</a>
+<ul>
+<li><a href="#orgeb83133">1.2.4.1. 算数运算符</a></li>
+<li><a href="#org6356131">1.2.4.2. 位运算符</a></li>
+<li><a href="#org875f1de">1.2.4.3. 关系运算符</a></li>
+<li><a href="#org028a90c">1.2.4.4. 逻辑运算符</a></li>
+<li><a href="#org1f9ce64">1.2.4.5. 赋值运算符</a></li>
+<li><a href="#orgf60dd48">1.2.4.6. 其他</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga5bf7c9">1.3. 表达式</a></li>
+<li><a href="#org7717fcf">1.4. 语句</a>
+<ul>
+<li><a href="#org9e16555">1.4.1. 声明与定义</a></li>
+<li><a href="#org93f0577">1.4.2. 赋值</a></li>
+<li><a href="#orgfecd7f7">1.4.3. 分支控制</a>
+<ul>
+<li><a href="#orgfd99ef7">1.4.3.1. 分支</a></li>
+<li><a href="#org553323c">1.4.3.2. 循环</a></li>
+<li><a href="#org537ae7a">1.4.3.3. 跳转</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org0af0b8e">1.5. 函数</a>
+<ul>
+<li><a href="#org3fdd3c7">1.5.1. 可变参数</a></li>
+<li><a href="#org735a45a">1.5.2. 内联</a></li>
+</ul>
+</li>
+<li><a href="#org32e534a">1.6. 模块</a></li>
+</ul>
+</li>
+<li><a href="#org7874ba6">2. 类型系统</a>
+<ul>
+<li><a href="#orgc286522">2.1. 整型</a></li>
+<li><a href="#org4e1dcd3">2.2. 浮点型</a></li>
+<li><a href="#orgecd1d09">2.3. 复数</a></li>
+<li><a href="#org7b319e2">2.4. 字符</a></li>
+<li><a href="#org483f0cd">2.5. 布尔</a></li>
+<li><a href="#org4498328">2.6. 空类型</a></li>
+<li><a href="#org8794f52">2.7. 存储类型</a></li>
+<li><a href="#orgd424c7a">2.8. 复合类型</a></li>
+<li><a href="#org155bbe0">2.9. 自定义</a>
+<ul>
+<li><a href="#org70362ec">2.9.1. 类型别名</a></li>
+</ul>
+</li>
+<li><a href="#orgde7ac8c">2.10. 类型转换</a>
+<ul>
+<li><a href="#orgc09b3be">2.10.1. 自动转换</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org47b15e7">3. 数据结构</a>
+<ul>
+<li><a href="#org2dd1be0">3.1. 顺序</a></li>
+<li><a href="#orgd1d5dd1">3.2. 关联</a></li>
+<li><a href="#org3e12d73">3.3. 迭代</a></li>
+</ul>
+</li>
+<li><a href="#orgbda1f79">4. 错误处理</a></li>
+<li><a href="#org14fc97f">5. 高级特性</a></li>
+<li><a href="#orgae93354">6. 其他</a>
+<ul>
+<li><a href="#org8984b0d">6.1. 内建宏</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb6f84ac" class="outline-2">
+<h2 id="orgb6f84ac"><span class="section-number-2">1</span> 程序结构</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org984fc3b" class="outline-3">
+<h3 id="org984fc3b"><span class="section-number-3">1.1</span> 注释</h3>
+</div>
+<div id="outline-container-org3be0ee8" class="outline-3">
+<h3 id="org3be0ee8"><span class="section-number-3">1.2</span> token</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-orgaeedc8b" class="outline-4">
+<h4 id="orgaeedc8b"><span class="section-number-4">1.2.1</span> 字面量</h4>
+<div class="outline-text-4" id="text-1-2-1">
+</div>
+<div id="outline-container-orgc7928de" class="outline-5">
+<h5 id="orgc7928de"><span class="section-number-5">1.2.1.1</span> 整数常量</h5>
+<div class="outline-text-5" id="text-1-2-1-1">
+<p>
+前缀后缀，进制表示
+</p>
+</div>
+</div>
+<div id="outline-container-orge941baf" class="outline-5">
+<h5 id="orge941baf"><span class="section-number-5">1.2.1.2</span> 浮点常量</h5>
+</div>
+<div id="outline-container-orgf534f57" class="outline-5">
+<h5 id="orgf534f57"><span class="section-number-5">1.2.1.3</span> 字符常量</h5>
+<div class="outline-text-5" id="text-1-2-1-3">
+<p>
+字符编码，转义字符
+</p>
+</div>
+</div>
+<div id="outline-container-org90bfbe5" class="outline-5">
+<h5 id="org90bfbe5"><span class="section-number-5">1.2.1.4</span> 字符串常量</h5>
+<div class="outline-text-5" id="text-1-2-1-4">
+<p>
+单双引号区别
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgddebf41" class="outline-4">
+<h4 id="orgddebf41"><span class="section-number-4">1.2.2</span> 标识符</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+标识符是用来标识变量、函数或其他 <b>用户自定义</b> 项目的名称。如常量名、变量名、函数名。
+</p>
+</div>
+
+<div id="outline-container-org6e839ed" class="outline-5">
+<h5 id="org6e839ed"><span class="section-number-5">1.2.2.1</span> 常量变量</h5>
+<div class="outline-text-5" id="text-1-2-2-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">const</span> <span style="color: #a1db00;">volatile</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6464b14" class="outline-5">
+<h5 id="org6464b14"><span class="section-number-5">1.2.2.2</span> 作用域</h5>
+<div class="outline-text-5" id="text-1-2-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="org0ec7524"></a>块作用域<br /></li>
+
+<li><a id="org0c65f2a"></a>全局作用域<br />
+<div class="outline-text-6" id="text-1-2-2-2-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">extern</span>
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org52a1b7d" class="outline-5">
+<h5 id="org52a1b7d"><span class="section-number-5">1.2.2.3</span> 生存期</h5>
+<div class="outline-text-5" id="text-1-2-2-3">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org383d198" class="outline-4">
+<h4 id="org383d198"><span class="section-number-4">1.2.3</span> 关键字</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+语言保留，不能做标识符。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb9fe313" class="outline-4">
+<h4 id="orgb9fe313"><span class="section-number-4">1.2.4</span> 运算符</h4>
+<div class="outline-text-4" id="text-1-2-4">
+</div>
+<div id="outline-container-orgeb83133" class="outline-5">
+<h5 id="orgeb83133"><span class="section-number-5">1.2.4.1</span> 算数运算符</h5>
+<div class="outline-text-5" id="text-1-2-4-1">
+<div class="org-src-container">
+<pre class="src src-c">+ - * / % ++ --
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6356131" class="outline-5">
+<h5 id="org6356131"><span class="section-number-5">1.2.4.2</span> 位运算符</h5>
+<div class="outline-text-5" id="text-1-2-4-2">
+<div class="org-src-container">
+<pre class="src src-c">&amp; | ^  ~ &lt;&lt; &gt;&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org875f1de" class="outline-5">
+<h5 id="org875f1de"><span class="section-number-5">1.2.4.3</span> 关系运算符</h5>
+<div class="outline-text-5" id="text-1-2-4-3">
+<div class="org-src-container">
+<pre class="src src-c">== != &gt; &gt;= &lt; &lt;=
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org028a90c" class="outline-5">
+<h5 id="org028a90c"><span class="section-number-5">1.2.4.4</span> 逻辑运算符</h5>
+<div class="outline-text-5" id="text-1-2-4-4">
+<div class="org-src-container">
+<pre class="src src-c">&amp;&amp;  || !
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1f9ce64" class="outline-5">
+<h5 id="org1f9ce64"><span class="section-number-5">1.2.4.5</span> 赋值运算符</h5>
+<div class="outline-text-5" id="text-1-2-4-5">
+<div class="org-src-container">
+<pre class="src src-c">= += -= *= /= %= &lt;&lt;= &gt;&gt;= &amp;= ^= |=
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf60dd48" class="outline-5">
+<h5 id="orgf60dd48"><span class="section-number-5">1.2.4.6</span> 其他</h5>
+<div class="outline-text-5" id="text-1-2-4-6">
+<div class="org-src-container">
+<pre class="src src-c">?:
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga5bf7c9" class="outline-3">
+<h3 id="orga5bf7c9"><span class="section-number-3">1.3</span> 表达式</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+表达式可以求值。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7717fcf" class="outline-3">
+<h3 id="org7717fcf"><span class="section-number-3">1.4</span> 语句</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+语句是程序执行的最小逻辑单位。
+</p>
+</div>
+<div id="outline-container-org9e16555" class="outline-4">
+<h4 id="org9e16555"><span class="section-number-4">1.4.1</span> 声明与定义</h4>
+</div>
+<div id="outline-container-org93f0577" class="outline-4">
+<h4 id="org93f0577"><span class="section-number-4">1.4.2</span> 赋值</h4>
+</div>
+<div id="outline-container-orgfecd7f7" class="outline-4">
+<h4 id="orgfecd7f7"><span class="section-number-4">1.4.3</span> 分支控制</h4>
+<div class="outline-text-4" id="text-1-4-3">
+</div>
+<div id="outline-container-orgfd99ef7" class="outline-5">
+<h5 id="orgfd99ef7"><span class="section-number-5">1.4.3.1</span> 分支</h5>
+<div class="outline-text-5" id="text-1-4-3-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">if</span>-<span style="color: #a1db00;">else</span> <span style="color: #a1db00;">switch</span>-<span style="color: #a1db00;">case</span>-<span style="color: #a1db00;">default</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org553323c" class="outline-5">
+<h5 id="org553323c"><span class="section-number-5">1.4.3.2</span> 循环</h5>
+<div class="outline-text-5" id="text-1-4-3-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">for</span> <span style="color: #a1db00;">while</span> <span style="color: #a1db00;">do</span>-<span style="color: #a1db00;">while</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org537ae7a" class="outline-5">
+<h5 id="org537ae7a"><span class="section-number-5">1.4.3.3</span> 跳转</h5>
+<div class="outline-text-5" id="text-1-4-3-3">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">break</span> <span style="color: #a1db00;">continue</span> <span style="color: #a1db00;">goto</span> <span style="color: #a1db00;">return</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0af0b8e" class="outline-3">
+<h3 id="org0af0b8e"><span class="section-number-3">1.5</span> 函数</h3>
+<div class="outline-text-3" id="text-1-5">
+</div>
+<div id="outline-container-org3fdd3c7" class="outline-4">
+<h4 id="org3fdd3c7"><span class="section-number-4">1.5.1</span> 可变参数</h4>
+</div>
+<div id="outline-container-org735a45a" class="outline-4">
+<h4 id="org735a45a"><span class="section-number-4">1.5.2</span> 内联</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">inline</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org32e534a" class="outline-3">
+<h3 id="org32e534a"><span class="section-number-3">1.6</span> 模块</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+头文件
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7874ba6" class="outline-2">
+<h2 id="org7874ba6"><span class="section-number-2">2</span> 类型系统</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc286522" class="outline-3">
+<h3 id="orgc286522"><span class="section-number-3">2.1</span> 整型</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">short</span> <span style="color: #00d7af;">int</span> <span style="color: #00d7af;">long</span>  <span style="color: #00d7af;">signed</span>, <span style="color: #00d7af;">unsigned</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4e1dcd3" class="outline-3">
+<h3 id="org4e1dcd3"><span class="section-number-3">2.2</span> 浮点型</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">float</span> <span style="color: #00d7af;">double</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgecd1d09" class="outline-3">
+<h3 id="orgecd1d09"><span class="section-number-3">2.3</span> 复数</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-c">_complex
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7b319e2" class="outline-3">
+<h3 id="org7b319e2"><span class="section-number-3">2.4</span> 字符</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">char</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org483f0cd" class="outline-3">
+<h3 id="org483f0cd"><span class="section-number-3">2.5</span> 布尔</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">_Bool</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4498328" class="outline-3">
+<h3 id="org4498328"><span class="section-number-3">2.6</span> 空类型</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">void</span> <span style="color: #5fafd7;">NULL</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8794f52" class="outline-3">
+<h3 id="org8794f52"><span class="section-number-3">2.7</span> 存储类型</h3>
+<div class="outline-text-3" id="text-2-7">
+<div class="org-src-container">
+<pre class="src src-c">&amp; * <span style="color: #a1db00;">register</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd424c7a" class="outline-3">
+<h3 id="orgd424c7a"><span class="section-number-3">2.8</span> 复合类型</h3>
+<div class="outline-text-3" id="text-2-8">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #a1db00;">union</span> <span style="color: #a1db00;">enum</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org155bbe0" class="outline-3">
+<h3 id="org155bbe0"><span class="section-number-3">2.9</span> 自定义</h3>
+<div class="outline-text-3" id="text-2-9">
+</div>
+<div id="outline-container-org70362ec" class="outline-4">
+<h4 id="org70362ec"><span class="section-number-4">2.9.1</span> 类型别名</h4>
+<div class="outline-text-4" id="text-2-9-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">typedef</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgde7ac8c" class="outline-3">
+<h3 id="orgde7ac8c"><span class="section-number-3">2.10</span> 类型转换</h3>
+<div class="outline-text-3" id="text-2-10">
+</div>
+<div id="outline-container-orgc09b3be" class="outline-4">
+<h4 id="orgc09b3be"><span class="section-number-4">2.10.1</span> 自动转换</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org47b15e7" class="outline-2">
+<h2 id="org47b15e7"><span class="section-number-2">3</span> 数据结构</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org2dd1be0" class="outline-3">
+<h3 id="org2dd1be0"><span class="section-number-3">3.1</span> 顺序</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+数组
+</p>
+<div class="org-src-container">
+<pre class="src src-c">    []
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd1d5dd1" class="outline-3">
+<h3 id="orgd1d5dd1"><span class="section-number-3">3.2</span> 关联</h3>
+</div>
+
+<div id="outline-container-org3e12d73" class="outline-3">
+<h3 id="org3e12d73"><span class="section-number-3">3.3</span> 迭代</h3>
+</div>
+</div>
+
+<div id="outline-container-orgbda1f79" class="outline-2">
+<h2 id="orgbda1f79"><span class="section-number-2">4</span> 错误处理</h2>
+</div>
+<div id="outline-container-org14fc97f" class="outline-2">
+<h2 id="org14fc97f"><span class="section-number-2">5</span> 高级特性</h2>
+</div>
+<div id="outline-container-orgae93354" class="outline-2">
+<h2 id="orgae93354"><span class="section-number-2">6</span> 其他</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org8984b0d" class="outline-3">
+<h3 id="org8984b0d"><span class="section-number-3">6.1</span> 内建宏</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-c">   <span style="color: #00d7af;">__DATE__</span> <span style="color: #ff8700;">&#24403;&#21069;&#26085;&#26399;</span>&#65292;&#19968;&#20010;&#20197; <span style="color: #ff4ea3;">"MMM DD YYYY"</span> &#26684;&#24335;&#34920;&#31034;&#30340;&#23383;&#31526;&#24120;&#37327;&#12290;
+   __TIME__ &#24403;&#21069;&#26102;&#38388;&#65292;&#19968;&#20010;&#20197; <span style="color: #ff4ea3;">"HH:MM:SS"</span> &#26684;&#24335;&#34920;&#31034;&#30340;&#23383;&#31526;&#24120;&#37327;&#12290;
+   __FILE__ &#36825;&#20250;&#21253;&#21547;&#24403;&#21069;&#25991;&#20214;&#21517;&#65292;&#19968;&#20010;&#23383;&#31526;&#20018;&#24120;&#37327;&#12290;
+   __LINE__ &#36825;&#20250;&#21253;&#21547;&#24403;&#21069;&#34892;&#21495;&#65292;&#19968;&#20010;&#21313;&#36827;&#21046;&#24120;&#37327;&#12290;
+   __STDC__ &#24403;&#32534;&#35793;&#22120;&#20197; ANSI &#26631;&#20934;&#32534;&#35793;&#26102;&#65292;&#21017;&#23450;&#20041;&#20026; 1&#12290;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-15 四 17:05</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
