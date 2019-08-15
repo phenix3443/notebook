@@ -3,10 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2019-08-15 四 16:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>version 使用</title>
+<title>version</title>
 <meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -304,33 +306,35 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">version 使用</h1>
+<h1 class="title">version</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgff14ef1">概述</a></li>
-<li><a href="#org1c1da6c">安装</a></li>
-<li><a href="#orgf92402c">api</a>
+<li><a href="#orgff14ef1">1. 概述</a></li>
+<li><a href="#org1c1da6c">2. 安装</a></li>
+<li><a href="#orgf92402c">3. api</a>
 <ul>
-<li><a href="#org251651c">new(v)</a></li>
-<li><a href="#orgb511ce3">ver:semver (v)</a></li>
-<li><a href="#org18c88af">range (v1, v2)</a></li>
-<li><a href="#orgdd99ff5">range:matches (v)</a></li>
-<li><a href="#org2810549">set (v1, v2)</a></li>
-<li><a href="#org7052292">set:allowed (v1, v2)</a></li>
-<li><a href="#org6ae1100">set:disallowed (v1, v2)</a></li>
-<li><a href="#orgbbf0835">set:matches (v1)</a></li>
-<li><a href="#orgcd4af36">strict</a></li>
+<li><a href="#org251651c">3.1. new(v)</a></li>
+<li><a href="#orgb511ce3">3.2. ver:semver (v)</a></li>
+<li><a href="#org18c88af">3.3. range (v1, v2)</a></li>
+<li><a href="#orgdd99ff5">3.4. range:matches (v)</a></li>
+<li><a href="#org2810549">3.5. set (v1, v2)</a></li>
+<li><a href="#org7052292">3.6. set:allowed (v1, v2)</a></li>
+<li><a href="#org6ae1100">3.7. set:disallowed (v1, v2)</a></li>
+<li><a href="#orgbbf0835">3.8. set:matches (v1)</a></li>
+<li><a href="#orgcd4af36">3.9. strict</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-
+<p>
+pe
+</p>
 <div id="outline-container-orgff14ef1" class="outline-2">
-<h2 id="orgff14ef1">概述</h2>
-<div class="outline-text-2" id="text-orgff14ef1">
+<h2 id="orgff14ef1"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 <a href="https://github.com/Kong/version.lua">version</a> 是 Lua 的版本比较库。在版本号（version），版本范围（range）和版本集合（set）之间进行简单比较。包括基本的 <a href="https://semver.org/lang/zh-CN/">SemVer</a> 支持。
 </p>
@@ -338,8 +342,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org1c1da6c" class="outline-2">
-<h2 id="org1c1da6c">安装</h2>
-<div class="outline-text-2" id="text-org1c1da6c">
+<h2 id="org1c1da6c"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-sh">luarocks install version
 </pre>
@@ -348,15 +352,15 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgf92402c" class="outline-2">
-<h2 id="orgf92402c">api</h2>
-<div class="outline-text-2" id="text-orgf92402c">
+<h2 id="orgf92402c"><span class="section-number-2">3</span> api</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 参见工程下的 doc 目录。
 </p>
 </div>
 <div id="outline-container-org251651c" class="outline-3">
-<h3 id="org251651c">new(v)</h3>
-<div class="outline-text-3" id="text-org251651c">
+<h3 id="org251651c"><span class="section-number-3">3.1</span> new(v)</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
 创建 version 对象，版本号中缺失的字段用 0 替代。
 </p>
@@ -386,8 +390,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="outline-container-orgb511ce3" class="outline-3">
-<h3 id="orgb511ce3">ver:semver (v)</h3>
-<div class="outline-text-3" id="text-orgb511ce3">
+<h3 id="orgb511ce3"><span class="section-number-3">3.2</span> ver:semver (v)</h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
 基于语义版本控制规范（semver）提供版本匹配。 该实现不支持预发布或 build meta，仅比较主要（major），次要（minor）和补丁级别（patch）。
 </p>
@@ -401,8 +405,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org18c88af" class="outline-3">
-<h3 id="org18c88af">range (v1, v2)</h3>
-<div class="outline-text-3" id="text-org18c88af">
+<h3 id="org18c88af"><span class="section-number-3">3.3</span> range (v1, v2)</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
 创建一个代表版本号范围的 range 对象。
 </p>
@@ -416,8 +420,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="outline-container-orgdd99ff5" class="outline-3">
-<h3 id="orgdd99ff5">range:matches (v)</h3>
-<div class="outline-text-3" id="text-orgdd99ff5">
+<h3 id="orgdd99ff5"><span class="section-number-3">3.4</span> range:matches (v)</h3>
+<div class="outline-text-3" id="text-3-4">
 <p>
 判断版本号是否在范围内。
 </p>
@@ -432,8 +436,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org2810549" class="outline-3">
-<h3 id="org2810549">set (v1, v2)</h3>
-<div class="outline-text-3" id="text-org2810549">
+<h3 id="org2810549"><span class="section-number-3">3.5</span> set (v1, v2)</h3>
+<div class="outline-text-3" id="text-3-5">
 <p>
 创建版本号集合对象。该集合包含可用和禁用的版本号。可以链式的添加版本号或版本范围到集合中。
 </p>
@@ -460,8 +464,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org7052292" class="outline-3">
-<h3 id="org7052292">set:allowed (v1, v2)</h3>
-<div class="outline-text-3" id="text-org7052292">
+<h3 id="org7052292"><span class="section-number-3">3.6</span> set:allowed (v1, v2)</h3>
+<div class="outline-text-3" id="text-3-6">
 <p>
 添加可用的版本号，或版本范围到集合中。
 </p>
@@ -469,8 +473,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org6ae1100" class="outline-3">
-<h3 id="org6ae1100">set:disallowed (v1, v2)</h3>
-<div class="outline-text-3" id="text-org6ae1100">
+<h3 id="org6ae1100"><span class="section-number-3">3.7</span> set:disallowed (v1, v2)</h3>
+<div class="outline-text-3" id="text-3-7">
 <p>
 添加禁用的版本号，或版本范围到集合中。
 </p>
@@ -478,8 +482,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgbbf0835" class="outline-3">
-<h3 id="orgbbf0835">set:matches (v1)</h3>
-<div class="outline-text-3" id="text-orgbbf0835">
+<h3 id="orgbbf0835"><span class="section-number-3">3.8</span> set:matches (v1)</h3>
+<div class="outline-text-3" id="text-3-8">
 <p>
 根据可用和禁用的版本集匹配版本。 注意：disallowed 具有更高的优先级，因此与同时存在与可用和禁用集合中的版本将返回 false。
 </p>
@@ -487,8 +491,8 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-orgcd4af36" class="outline-3">
-<h3 id="orgcd4af36">strict</h3>
-<div class="outline-text-3" id="text-orgcd4af36">
+<h3 id="orgcd4af36"><span class="section-number-3">3.9</span> strict</h3>
+<div class="outline-text-3" id="text-3-9">
 <p>
 类似的模块，但具有更严格的解析规则。version.strict 与版本模块本身相同，但它需要精确的版本字符串，而常规解析器只需从字符串中获取第一个数字和点的序列。
 </p>
@@ -512,7 +516,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-15 四 16:27</p>
 <p class="validation"></p>
 </div>
 </body>

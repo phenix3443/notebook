@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-15 四 16:27 -->
+<!-- 2019-08-15 四 16:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>plantuml</title>
+<title>todo list</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="lsl" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,139 +306,112 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">plantuml</h1>
+<h1 class="title">todo list</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org942aa31">1. 概述</a></li>
-<li><a href="#orgbe94188">2. 在线使用</a></li>
-<li><a href="#orgd4a7c0e">3. 管理器安装</a></li>
-<li><a href="#orgc9506a3">4. 手动最新安装</a></li>
-<li><a href="#orge02fce9">5. 与 Emacs 集成</a>
+<li><a href="#org44f9e68">1. emacs</a>
 <ul>
-<li><a href="#org27e496e">5.1. org-mode</a></li>
-<li><a href="#org2971411">5.2. org-babel</a></li>
+<li><a href="#org2248103">1.1. auto-header 自动添加文件头部信息</a></li>
+<li><a href="#orgdb0db42">1.2. 自动给函数添加注释信息 doxgen</a></li>
+<li><a href="#org24cd99c">1.3. yasnippet 代码补全功能</a></li>
+<li><a href="#orge25bdcc">1.4. 代码风格的自动格式化</a></li>
+<li><a href="#org59b6b70">1.5. 自动编译</a></li>
+<li><a href="#orgd6e1db5">1.6. emacs25 不能使用现有配置文件</a></li>
+<li><a href="#orgc708b29">1.7. windows gnutls maralade 更新</a></li>
+</ul>
+</li>
+<li><a href="#org89090a6">2. org-mode</a></li>
+<li><a href="#orgb0f7237">3. xfce</a>
+<ul>
+<li><a href="#org13f7322">3.1. 了解基本功能模块，快捷键</a></li>
+<li><a href="#orgce70bf1">3.2. 学习配置</a></li>
+</ul>
+</li>
+<li><a href="#org8ae4079">4. git</a>
+<ul>
+<li><a href="#org03c4250">4.1. 了解 git log 的使用</a></li>
+<li><a href="#org6b5ae33">4.2. 跨平台的 gui git client</a></li>
+<li><a href="#org00419ab">4.3. 了解 git config 命令</a></li>
+</ul>
+</li>
+<li><a href="#org43247ec">5. HHKB</a>
+<ul>
+<li><a href="#org9f210f5">5.1. 整理配置</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org942aa31" class="outline-2">
-<h2 id="org942aa31"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org44f9e68" class="outline-2">
+<h2 id="org44f9e68"><span class="section-number-2">1</span> emacs</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-<a href="http://plantuml.com/">plantuml</a> 是一个开源软件项目，支持快速绘制：时序图、用例图、类图、活动图等。
-</p>
+</div>
+<div id="outline-container-org2248103" class="outline-3">
+<h3 id="org2248103"><span class="section-number-3">1.1</span> auto-header 自动添加文件头部信息</h3>
+</div>
+<div id="outline-container-orgdb0db42" class="outline-3">
+<h3 id="orgdb0db42"><span class="section-number-3">1.2</span> 自动给函数添加注释信息 doxgen</h3>
+</div>
+<div id="outline-container-org24cd99c" class="outline-3">
+<h3 id="org24cd99c"><span class="section-number-3">1.3</span> yasnippet 代码补全功能</h3>
+</div>
+<div id="outline-container-orge25bdcc" class="outline-3">
+<h3 id="orge25bdcc"><span class="section-number-3">1.4</span> 代码风格的自动格式化</h3>
+</div>
+<div id="outline-container-org59b6b70" class="outline-3">
+<h3 id="org59b6b70"><span class="section-number-3">1.5</span> 自动编译</h3>
+</div>
+<div id="outline-container-orgd6e1db5" class="outline-3">
+<h3 id="orgd6e1db5"><span class="section-number-3">1.6</span> emacs25 不能使用现有配置文件</h3>
+</div>
+<div id="outline-container-orgc708b29" class="outline-3">
+<h3 id="orgc708b29"><span class="section-number-3">1.7</span> windows gnutls maralade 更新</h3>
+</div>
+</div>
+<div id="outline-container-org89090a6" class="outline-2">
+<h2 id="org89090a6"><span class="section-number-2">2</span> org-mode</h2>
+</div>
 
-<p>
-<a href="https://usermanual.wiki/Pdf/PlantUMLLanguageReferenceGuideZH.1851971531/help">这里</a> 有中文 manual。
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgbe94188" class="outline-2">
-<h2 id="orgbe94188"><span class="section-number-2">2</span> 在线使用</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-尝试 PlantUML 最简单快捷的方法就是使用在线服务。例如, 访问 <a href="http://www.plantuml.com/plantuml">在线 server</a> 。
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd4a7c0e" class="outline-2">
-<h2 id="orgd4a7c0e"><span class="section-number-2">3</span> 管理器安装</h2>
+<div id="outline-container-orgb0f7237" class="outline-2">
+<h2 id="orgb0f7237"><span class="section-number-2">3</span> xfce</h2>
 <div class="outline-text-2" id="text-3">
-<p>
-直接安装：
-</p>
-<pre class="example">
-sudo apt install plantuml
-</pre>
+</div>
+<div id="outline-container-org13f7322" class="outline-3">
+<h3 id="org13f7322"><span class="section-number-3">3.1</span> 了解基本功能模块，快捷键</h3>
+</div>
+<div id="outline-container-orgce70bf1" class="outline-3">
+<h3 id="orgce70bf1"><span class="section-number-3">3.2</span> 学习配置</h3>
 </div>
 </div>
-
-<div id="outline-container-orgc9506a3" class="outline-2">
-<h2 id="orgc9506a3"><span class="section-number-2">4</span> 手动最新安装</h2>
+<div id="outline-container-org8ae4079" class="outline-2">
+<h2 id="org8ae4079"><span class="section-number-2">4</span> git</h2>
 <div class="outline-text-2" id="text-4">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y graphviz default-jre
-</pre>
 </div>
-
-<p>
-然后下载<a href="http://sourceforge.net/projects/plantuml/files/plantuml.jar/download">plantuml.jar</a> 文件，保存到本地指定目录，添加执行权限：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">chmod +x plantuml.jar
-</pre>
+<div id="outline-container-org03c4250" class="outline-3">
+<h3 id="org03c4250"><span class="section-number-3">4.1</span> 了解 git log 的使用</h3>
 </div>
-
-<p>
-双击 plantuml.jar 文件, 启动 plantUML 界面。可以点击 "Change Directory" 按钮来重新指定工作目录。保持界面处于打开状态, 不要关闭。
-</p>
-
-<p>
-这时候, 就可以尝试绘制您的第一个本地 UML 图了。在工作目录中建立一个 sequenceDiagram.txt, 内容如下:
-</p>
-
-
-<div class="figure">
-<p><img src="tryout.png" alt="tryout.png" />
-</p>
+<div id="outline-container-org6b5ae33" class="outline-3">
+<h3 id="org6b5ae33"><span class="section-number-3">4.2</span> 跨平台的 gui git client</h3>
 </div>
-
-<p>
-PlantUML 会扫描和检测工作目录中的文件修改, 并且自动生成 UML 图像文件, 例如 sequenceDiagram.png。
-</p>
-
-<p>
-当然 PlantUML 也可以通过命令行的方式来执行：
-</p>
-
-<pre class="example">
-java -jar plantuml.jar sequenceDiagram.txt
-</pre>
+<div id="outline-container-org00419ab" class="outline-3">
+<h3 id="org00419ab"><span class="section-number-3">4.3</span> 了解 git config 命令</h3>
 </div>
 </div>
-
-<div id="outline-container-orge02fce9" class="outline-2">
-<h2 id="orge02fce9"><span class="section-number-2">5</span> 与 Emacs 集成</h2>
+<div id="outline-container-org43247ec" class="outline-2">
+<h2 id="org43247ec"><span class="section-number-2">5</span> HHKB</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org27e496e" class="outline-3">
-<h3 id="org27e496e"><span class="section-number-3">5.1</span> org-mode</h3>
-<div class="outline-text-3" id="text-5-1">
-<p>
-plantuml-mode 提供了代码补全，高亮，预览等作用，可以用来编辑 plantuml 代码。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2971411" class="outline-3">
-<h3 id="org2971411"><span class="section-number-3">5.2</span> org-babel<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
-<div class="outline-text-3" id="text-5-2">
-<p>
-<a href="http://zhangweize.wordpress.com/2010/08/25/creating-uml-images-by-using-plantuml-and-org-babel-in-emacs">Zhang Weize</a>为 plantuml mode 添加了 org-babel，使得可以直接从 org 代码导出图片。奇怪的是，使用该功能后，代码块必须携带 file header。
-</p>
+<div id="outline-container-org9f210f5" class="outline-3">
+<h3 id="org9f210f5"><span class="section-number-3">5.1</span> 整理配置</h3>
 </div>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-<a href="https://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html">integrate plantuml support</a>
-</p></div></div>
-
-
-</div>
-</div></div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-15 四 16:27</p>
+<p class="author">Author: lsl</p>
+<p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
+<p class="date">Created: 2019-08-15 四 16:28</p>
 <p class="validation"></p>
 </div>
 </body>

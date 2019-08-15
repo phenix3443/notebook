@@ -6,9 +6,9 @@
 <!-- 2019-08-15 四 16:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>plantuml</title>
+<title>ShadowSocks</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,121 +306,308 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">plantuml</h1>
+<h1 class="title">ShadowSocks</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org942aa31">1. 概述</a></li>
-<li><a href="#orgbe94188">2. 在线使用</a></li>
-<li><a href="#orgd4a7c0e">3. 管理器安装</a></li>
-<li><a href="#orgc9506a3">4. 手动最新安装</a></li>
-<li><a href="#orge02fce9">5. 与 Emacs 集成</a>
+<li><a href="#orgba3a4f9">1. 简介</a></li>
+<li><a href="#org9142f8d">2. 安装</a></li>
+<li><a href="#orgb2b49e9">3. ss-server</a></li>
+<li><a href="#orgf8b3227">4. ss-local</a></li>
+<li><a href="#orgec9fffa">5. 基本配置</a></li>
+<li><a href="#org6581188">6. 开机自启动</a>
 <ul>
-<li><a href="#org27e496e">5.1. org-mode</a></li>
-<li><a href="#org2971411">5.2. org-babel</a></li>
+<li><a href="#org902ab2f">6.1. ss-server</a></li>
+<li><a href="#orgccddbb3">6.2. ss-local</a></li>
+</ul>
+</li>
+<li><a href="#org7c96a9f">7. 优化</a>
+<ul>
+<li><a href="#orgc2ac0ed">7.1. 内核 TCP 优化</a></li>
+<li><a href="#org98c941d">7.2. bbr</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org942aa31" class="outline-2">
-<h2 id="org942aa31"><span class="section-number-2">1</span> 概述</h2>
+<p>
+当然，首先你需要有一台 VPS，参看《<a href="VPS-practices.html">VPS 实践</a>》。
+</p>
+
+<div id="outline-container-orgba3a4f9" class="outline-2">
+<h2 id="orgba3a4f9"><span class="section-number-2">1</span> 简介</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="http://plantuml.com/">plantuml</a> 是一个开源软件项目，支持快速绘制：时序图、用例图、类图、活动图等。
+<a href="https://github.com/shadowsocks">Shadowsocks</a> 是由 <a href="https://github.com/clowwindy">clowwindy</a> 编写的轻量级服务器中转包传输工具。
 </p>
 
 <p>
-<a href="https://usermanual.wiki/Pdf/PlantUMLLanguageReferenceGuideZH.1851971531/help">这里</a> 有中文 manual。
+ShadowSocks 主要由三个模块组成:
+</p>
+<ul class="org-ul">
+<li>ss-local：工作在本地的命令行客户端。</li>
+<li>ss-redirect:</li>
+<li>ss-server：工作在远程主机上的服务器端。</li>
+</ul>
+
+<p>
+传输的时候，本地网络客户端首先使用 SOCKS5 连接到 ss-local，这里面的流量传输都是明文的，然后 ss-local 将流量打包传输到 ss-server 上，这里的流量是加密的，然后 ss-server 解码 SOCKS5 数据包，访问目的服务器。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgbe94188" class="outline-2">
-<h2 id="orgbe94188"><span class="section-number-2">2</span> 在线使用</h2>
+<div id="outline-container-org9142f8d" class="outline-2">
+<h2 id="org9142f8d"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
-<p>
-尝试 PlantUML 最简单快捷的方法就是使用在线服务。例如, 访问 <a href="http://www.plantuml.com/plantuml">在线 server</a> 。
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd4a7c0e" class="outline-2">
-<h2 id="orgd4a7c0e"><span class="section-number-2">3</span> 管理器安装</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-直接安装：
-</p>
-<pre class="example">
-sudo apt install plantuml
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgc9506a3" class="outline-2">
-<h2 id="orgc9506a3"><span class="section-number-2">4</span> 手动最新安装</h2>
-<div class="outline-text-2" id="text-4">
 <div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y graphviz default-jre
-</pre>
-</div>
-
-<p>
-然后下载<a href="http://sourceforge.net/projects/plantuml/files/plantuml.jar/download">plantuml.jar</a> 文件，保存到本地指定目录，添加执行权限：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">chmod +x plantuml.jar
-</pre>
-</div>
-
-<p>
-双击 plantuml.jar 文件, 启动 plantUML 界面。可以点击 "Change Directory" 按钮来重新指定工作目录。保持界面处于打开状态, 不要关闭。
-</p>
-
-<p>
-这时候, 就可以尝试绘制您的第一个本地 UML 图了。在工作目录中建立一个 sequenceDiagram.txt, 内容如下:
-</p>
-
-
-<div class="figure">
-<p><img src="tryout.png" alt="tryout.png" />
-</p>
-</div>
-
-<p>
-PlantUML 会扫描和检测工作目录中的文件修改, 并且自动生成 UML 图像文件, 例如 sequenceDiagram.png。
-</p>
-
-<p>
-当然 PlantUML 也可以通过命令行的方式来执行：
-</p>
-
-<pre class="example">
-java -jar plantuml.jar sequenceDiagram.txt
+<pre class="src src-sh">sudo apt install -y shadowsocks-libev
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orge02fce9" class="outline-2">
-<h2 id="orge02fce9"><span class="section-number-2">5</span> 与 Emacs 集成</h2>
+</div>
+<div id="outline-container-orgb2b49e9" class="outline-2">
+<h2 id="orgb2b49e9"><span class="section-number-2">3</span> ss-server</h2>
+</div>
+<div id="outline-container-orgf8b3227" class="outline-2">
+<h2 id="orgf8b3227"><span class="section-number-2">4</span> ss-local</h2>
+</div>
+<div id="outline-container-orgec9fffa" class="outline-2">
+<h2 id="orgec9fffa"><span class="section-number-2">5</span> 基本配置</h2>
 <div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-org27e496e" class="outline-3">
-<h3 id="org27e496e"><span class="section-number-3">5.1</span> org-mode</h3>
-<div class="outline-text-3" id="text-5-1">
 <p>
-plantuml-mode 提供了代码补全，高亮，预览等作用，可以用来编辑 plantuml 代码。
+ss-server 与 ss-local 配置文件是 json 格式的，默认名字是 config.json，服务器和客户端配置差不多，甚至可以共用一份配置文件。
 </p>
+<div class="org-src-container">
+<pre class="src src-json">{
+    <span style="color: #a1db00;">"server"</span>:<span style="color: #ff4ea3;">"server-ip"</span>,
+    <span style="color: #a1db00;">"server_port"</span>:<span style="color: #5fafd7;">443</span>,
+    <span style="color: #a1db00;">"local_address"</span>:<span style="color: #ff4ea3;">"127.0.0.1"</span>,
+    <span style="color: #a1db00;">"local_port"</span>:<span style="color: #5fafd7;">1080</span>,
+    <span style="color: #a1db00;">"password"</span>:<span style="color: #ff4ea3;">"your-password"</span>,
+    <span style="color: #a1db00;">"timeout"</span>:<span style="color: #5fafd7;">300</span>,
+    <span style="color: #a1db00;">"method"</span>:<span style="color: #ff4ea3;">"rc4-md5"</span>,
+    <span style="color: #a1db00;">"fast_open"</span>:<span style="color: #5fafd7;">true</span>,
+}
+</pre>
+</div>
+
+<table border="1" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="auto">
+<caption class="t-above"><span class="table-number">Table 1:</span> 配置的说明</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-left">Explaination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">server</td>
+<td class="org-left">the address your server listens（服务器 IP）</td>
+</tr>
+
+<tr>
+<td class="org-left">local_address</td>
+<td class="org-left">the address your local listens（本地代理地址）</td>
+</tr>
+
+<tr>
+<td class="org-left">local_port</td>
+<td class="org-left">local port（本地代理端口）</td>
+</tr>
+
+<tr>
+<td class="org-left">port_password</td>
+<td class="org-left">password used for encryption(自己设定的服务器端口和密码，可以支持多个用户)</td>
+</tr>
+
+<tr>
+<td class="org-left">timeout</td>
+<td class="org-left">in seconds（超时断开，以秒为单位）</td>
+</tr>
+
+<tr>
+<td class="org-left">method</td>
+<td class="org-left">加密方式</td>
+</tr>
+
+<tr>
+<td class="org-left">fast_open</td>
+<td class="org-left">use TCP_FASTOPEN, true/false，如果客户端和服务器都是 on Linux 3.7+，可以开启 <code>fast_open</code> 来减少延迟。</td>
+</tr>
+
+<tr>
+<td class="org-left">workers</td>
+<td class="org-left">number of workers, available on Unix/Linux（支持类似 nginx 一样使用多个子进程，这个只在 Unix 和 Linux 下有用，可不设置）</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
-<div id="outline-container-org2971411" class="outline-3">
-<h3 id="org2971411"><span class="section-number-3">5.2</span> org-babel<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-org6581188" class="outline-2">
+<h2 id="org6581188"><span class="section-number-2">6</span> 开机自启动</h2>
+<div class="outline-text-2" id="text-6">
 <p>
-<a href="http://zhangweize.wordpress.com/2010/08/25/creating-uml-images-by-using-plantuml-and-org-babel-in-emacs">Zhang Weize</a>为 plantuml mode 添加了 org-babel，使得可以直接从 org 代码导出图片。奇怪的是，使用该功能后，代码块必须携带 file header。
+使用 systemd 控制启动：
 </p>
+</div>
+<div id="outline-container-org902ab2f" class="outline-3">
+<h3 id="org902ab2f"><span class="section-number-3">6.1</span> ss-server</h3>
+<div class="outline-text-3" id="text-6-1">
+<pre class="example">
+    [Unit]
+    Description=ShadowSocks Server Daemon
+    After=network.target
+
+    [Service]
+    User=root
+    Group=root
+    ExecStart=/usr/bin/ss-server -c /etc/ShadowSocks-libev/server.json
+    ExecReload=/bin/kill -HUP $MAINPID
+    KillMode=process
+    Restart=on-failure
+    RestartSec=5s
+
+    [Install]
+    WantedBy=multi-user.target
+</pre>
+
+<p>
+执行以下命令启动服务，并设置开机启动
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">systemctl start ss-server.service
+systemctl enable ss-server.service
+systemctl status ss-server.service
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgccddbb3" class="outline-3">
+<h3 id="orgccddbb3"><span class="section-number-3">6.2</span> ss-local</h3>
+<div class="outline-text-3" id="text-6-2">
+<pre class="example">
+    [Unit]
+    Description=ShadowSocks client daemon
+    After=network.target
+
+    [Service]
+    User=root
+    Group=root
+    ExecStart=/usr/bin/ss-local -c  /etc/ShadowSocks-libev/local.json
+    ExecReload=/bin/kill -HUP $MAINPID
+    KillMode=process
+    Restart=on-failure
+    RestartSec=5s
+
+    [Install]
+    WantedBy=multi-user.target
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-sh">systemctl start ss-local.service
+systemctl enable ss-local.service
+systemctl status ss-local.service
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7c96a9f" class="outline-2">
+<h2 id="org7c96a9f"><span class="section-number-2">7</span> 优化<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-orgc2ac0ed" class="outline-3">
+<h3 id="orgc2ac0ed"><span class="section-number-3">7.1</span> 内核 TCP 优化</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+如果出现
+</p>
+<pre class="example">
+   error: too many open files
+</pre>
+
+<p>
+那么应该对系统做一些优化:
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/89ad4733748e8925ac1d2d1f2a1d1301.js">https://gist.github.com/phenix3443/89ad4733748e8925ac1d2d1f2a1d1301.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+
+<p>
+应用更新：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sysctl --system
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org98c941d" class="outline-3">
+<h3 id="org98c941d"><span class="section-number-3">7.2</span> bbr</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+使用 google 的 bbr 用塞控制算法，查看内核 &gt;= 4.9
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">uname -r
+</pre>
+</div>
+
+<p>
+切换到 root 权限：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sudo su
+</pre>
+</div>
+<p>
+查看 bbr 是否已安装：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">lsmod | grep bbr
+</pre>
+</div>
+<p>
+没有的话安装：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">modprobe tcp_bbr
+<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"tcp_bbr"</span> &gt;&gt; /etc/modules-load.d/modules.conf
+<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"net.core.default_qdisc=fq"</span> &gt;&gt; /etc/sysctl.conf
+<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"net.ipv4.tcp_congestion_control=bbr"</span> &gt;&gt; /etc/sysctl.conf
+</pre>
+</div>
+
+<p>
+应用更新：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sysctl --system
+</pre>
+</div>
+
+<p>
+验证安装生效：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">sysctl net.ipv4.tcp_available_congestion_control
+sysctl net.ipv4.tcp_congestion_control
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -429,15 +616,15 @@ plantuml-mode 提供了代码补全，高亮，预览等作用，可以用来编
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-<a href="https://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html">integrate plantuml support</a>
+<a href="https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks">Optimizing ShadowSocks</a>
 </p></div></div>
 
 
 </div>
 </div></div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
 <p class="date">Created: 2019-08-15 四 16:27</p>
 <p class="validation"></p>
 </div>

@@ -6,9 +6,9 @@
 <!-- 2019-08-15 四 16:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>plantuml</title>
+<title>Resilio</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,138 +306,38 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">plantuml</h1>
+<h1 class="title">Resilio</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org942aa31">1. 概述</a></li>
-<li><a href="#orgbe94188">2. 在线使用</a></li>
-<li><a href="#orgd4a7c0e">3. 管理器安装</a></li>
-<li><a href="#orgc9506a3">4. 手动最新安装</a></li>
-<li><a href="#orge02fce9">5. 与 Emacs 集成</a>
-<ul>
-<li><a href="#org27e496e">5.1. org-mode</a></li>
-<li><a href="#org2971411">5.2. org-babel</a></li>
-</ul>
-</li>
+<li><a href="#org1e75893">1. 概述</a></li>
+<li><a href="#org5141c11">2. 安装</a></li>
+<li><a href="#org4dc8bee">3. 配置的文件</a></li>
+<li><a href="#org8e52221">4. 附录</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org942aa31" class="outline-2">
-<h2 id="org942aa31"><span class="section-number-2">1</span> 概述</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-<a href="http://plantuml.com/">plantuml</a> 是一个开源软件项目，支持快速绘制：时序图、用例图、类图、活动图等。
-</p>
 
-<p>
-<a href="https://usermanual.wiki/Pdf/PlantUMLLanguageReferenceGuideZH.1851971531/help">这里</a> 有中文 manual。
-</p>
-</div>
+<div id="outline-container-org1e75893" class="outline-2">
+<h2 id="org1e75893"><span class="section-number-2">1</span> 概述</h2>
 </div>
 
-<div id="outline-container-orgbe94188" class="outline-2">
-<h2 id="orgbe94188"><span class="section-number-2">2</span> 在线使用</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-尝试 PlantUML 最简单快捷的方法就是使用在线服务。例如, 访问 <a href="http://www.plantuml.com/plantuml">在线 server</a> 。
-</p>
-</div>
+<div id="outline-container-org5141c11" class="outline-2">
+<h2 id="org5141c11"><span class="section-number-2">2</span> 安装</h2>
 </div>
 
-<div id="outline-container-orgd4a7c0e" class="outline-2">
-<h2 id="orgd4a7c0e"><span class="section-number-2">3</span> 管理器安装</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-直接安装：
-</p>
-<pre class="example">
-sudo apt install plantuml
-</pre>
-</div>
+<div id="outline-container-org4dc8bee" class="outline-2">
+<h2 id="org4dc8bee"><span class="section-number-2">3</span> 配置的文件</h2>
 </div>
 
-<div id="outline-container-orgc9506a3" class="outline-2">
-<h2 id="orgc9506a3"><span class="section-number-2">4</span> 手动最新安装</h2>
-<div class="outline-text-2" id="text-4">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y graphviz default-jre
-</pre>
-</div>
-
-<p>
-然后下载<a href="http://sourceforge.net/projects/plantuml/files/plantuml.jar/download">plantuml.jar</a> 文件，保存到本地指定目录，添加执行权限：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">chmod +x plantuml.jar
-</pre>
-</div>
-
-<p>
-双击 plantuml.jar 文件, 启动 plantUML 界面。可以点击 "Change Directory" 按钮来重新指定工作目录。保持界面处于打开状态, 不要关闭。
-</p>
-
-<p>
-这时候, 就可以尝试绘制您的第一个本地 UML 图了。在工作目录中建立一个 sequenceDiagram.txt, 内容如下:
-</p>
-
-
-<div class="figure">
-<p><img src="tryout.png" alt="tryout.png" />
-</p>
-</div>
-
-<p>
-PlantUML 会扫描和检测工作目录中的文件修改, 并且自动生成 UML 图像文件, 例如 sequenceDiagram.png。
-</p>
-
-<p>
-当然 PlantUML 也可以通过命令行的方式来执行：
-</p>
-
-<pre class="example">
-java -jar plantuml.jar sequenceDiagram.txt
-</pre>
+<div id="outline-container-org8e52221" class="outline-2">
+<h2 id="org8e52221"><span class="section-number-2">4</span> 附录</h2>
 </div>
 </div>
-
-<div id="outline-container-orge02fce9" class="outline-2">
-<h2 id="orge02fce9"><span class="section-number-2">5</span> 与 Emacs 集成</h2>
-<div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-org27e496e" class="outline-3">
-<h3 id="org27e496e"><span class="section-number-3">5.1</span> org-mode</h3>
-<div class="outline-text-3" id="text-5-1">
-<p>
-plantuml-mode 提供了代码补全，高亮，预览等作用，可以用来编辑 plantuml 代码。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2971411" class="outline-3">
-<h3 id="org2971411"><span class="section-number-3">5.2</span> org-babel<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
-<div class="outline-text-3" id="text-5-2">
-<p>
-<a href="http://zhangweize.wordpress.com/2010/08/25/creating-uml-images-by-using-plantuml-and-org-babel-in-emacs">Zhang Weize</a>为 plantuml mode 添加了 org-babel，使得可以直接从 org 代码导出图片。奇怪的是，使用该功能后，代码块必须携带 file header。
-</p>
-</div>
-</div>
-</div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-<a href="https://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html">integrate plantuml support</a>
-</p></div></div>
-
-
-</div>
-</div></div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
 <p class="date">Created: 2019-08-15 四 16:27</p>
 <p class="validation"></p>
 </div>
