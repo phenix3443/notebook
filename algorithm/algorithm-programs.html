@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:43 -->
+<!-- 2019-08-15 四 15:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>常见算法题目解析</title>
@@ -321,7 +321,7 @@ for the JavaScript code in this tag.
 <li><a href="#orge93c104">1.6. 找出出现奇数次的元素</a></li>
 <li><a href="#org11960f0">1.7. 求有序数组中满足给定和的数对</a></li>
 <li><a href="#org10fe913">1.8. 数组循环移位</a></li>
-<li><a href="#orgc599447">1.9. 字符串逆序</a></li>
+<li><a href="#orgcd80860">1.9. 字符串逆序</a></li>
 <li><a href="#org0426f11">1.10. 组合问题</a></li>
 <li><a href="#orgc0bad67">1.11. 合并两个数组</a></li>
 <li><a href="#org2645174">1.12. 重排问题</a></li>
@@ -389,7 +389,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgba54f0f">8. String</a>
 <ul>
-<li><a href="#orgcd80860">8.1. 字符串逆序</a></li>
+<li><a href="#orgbbc5dd8">8.1. 字符串逆序</a></li>
 <li><a href="#org483d420">8.2. 单词逆序</a></li>
 </ul>
 </li>
@@ -512,8 +512,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc599447" class="outline-3">
-<h3 id="orgc599447"><span class="section-number-3">1.9</span> 字符串逆序</h3>
+<div id="outline-container-orgcd80860" class="outline-3">
+<h3 id="orgcd80860"><span class="section-number-3">1.9</span> 字符串逆序</h3>
 <div class="outline-text-3" id="text-1-9">
 <p>
 将一个含有 n 个元素的数组向右循环移动 k 位，要求时间复杂度是 O(n)，且只能使用两个额外的变量。
@@ -997,115 +997,7 @@ LIS(i) = max{LIS(j)+1} j&lt;i and a[j]&lt;a[i]
 <h4 id="orgf54d715"><span class="section-number-4">7.0.1</span> 大数加法</h4>
 <div class="outline-text-4" id="text-7-0-1">
 <div class="org-src-container">
-<pre class="src src-c++"><span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;vector&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;string&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;map&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;memory&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;algorithm&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;cassert&gt;</span>
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;functional&gt;</span>
-
-<span style="color: #d18aff;">        #include</span> <span style="color: #ff4ea3;">&lt;gtest\gtest.h&gt;</span>
-
-        <span style="color: #a1db00;">namespace</span> <span style="color: #5fafd7;">phenix3443</span> {
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#24314;&#31435;&#36827;&#21046;&#23545;&#24212;&#30340;&#21704;&#24076;&#34920;</span>
-            <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">shared_ptr</span>&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">char</span>, <span style="color: #00d7af;">short</span>&gt;&gt; <span style="color: #ffd700;">Map_10</span> () {
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">r_map</span> = <span style="color: #5fafd7;">std</span>::make_shared&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">char</span>, <span style="color: #00d7af;">short</span>&gt;&gt; ();
-
-                <span style="color: #a1db00;">for</span> ( <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = 0; i &lt; 10; ++i ) {
-                    (*r_map)[<span style="color: #ff4ea3;">'0'</span> + i] = i;
-                }
-                <span style="color: #a1db00;">return</span> r_map;
-            }
-            <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">shared_ptr</span>&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">char</span>, <span style="color: #00d7af;">short</span>&gt;&gt; <span style="color: #ffd700;">Map_16</span> () {
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">r_map</span> = <span style="color: #5fafd7;">std</span>::make_shared&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">char</span>, <span style="color: #00d7af;">short</span>&gt;&gt; ();
-
-                <span style="color: #a1db00;">for</span> ( <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = 0; i &lt; 10; ++i ) {
-                    (*r_map)[<span style="color: #ff4ea3;">'0'</span> + i] = i;
-                }
-                <span style="color: #a1db00;">for</span> ( <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = 10; i &lt; 16; ++i ) {
-                    (*r_map)[<span style="color: #ff4ea3;">'A'</span> + i - 10] = i;
-                }
-                <span style="color: #a1db00;">return</span> r_map;
-            }
-            <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">short</span>, <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">function</span>&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">shared_ptr</span>&lt;<span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">char</span>, <span style="color: #00d7af;">short</span>&gt;&gt; ()&gt;&gt; <span style="color: #ff8700;">build_randix_map</span> = {
-                { 10,Map_10 },
-                { 16,Map_16 },
-            };
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#23558; std::string &#34920;&#31034;&#30340;&#22823;&#25968;&#23384;&#25918;&#22312; std::vector&lt;short&gt;&#20013;</span>
-            <span style="color: #a1db00;">inline</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">str_to_vc</span> (<span style="color: #a1db00;">const</span> <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span>&amp; <span style="color: #ff8700;">str</span>, <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">vector</span>&lt;<span style="color: #00d7af;">short</span>&gt;&amp; <span style="color: #ff8700;">vs</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">base</span> = 10) {
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">r_map</span> = build_randix_map[base] ();
-
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">function</span>&lt;<span style="color: #00d7af;">bool</span> (<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>&amp;)&gt; <span style="color: #ff8700;">f</span> = [&amp;](<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>&amp; <span style="color: #ff8700;">c</span>) {<span style="color: #a1db00;">return</span> (*r_map).count (c) != 0; };
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">first_dig</span> = find_if (str.begin (), str.end (), f);
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">last_dig</span> = find_if_not (first_dig, str.end (), f);
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">sign_at</span> = find (str.begin (), first_dig, <span style="color: #ff4ea3;">'-'</span>);
-                <span style="color: #00d7af;">short</span> <span style="color: #ff8700;">sign</span> = (sign_at != first_dig) ? -1 : 1;
-
-                for_each (first_dig, last_dig, [&amp;](<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span>&amp; <span style="color: #ff8700;">e</span>) {vs.push_back (sign*((*r_map)[e])); });
-            }
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#23558; std::vector&lt;short&gt;&#20013;&#23384;&#25918;&#30340;&#22823;&#25968;&#25918;&#22238; std::string &#20013;</span>
-            <span style="color: #a1db00;">inline</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">vc_to_str</span> (<span style="color: #a1db00;">const</span> <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">vector</span>&lt;<span style="color: #00d7af;">short</span>&gt;&amp; <span style="color: #ff8700;">vs</span>, <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span>&amp; <span style="color: #ff8700;">str</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">base</span> = 10) {
-                <span style="color: #a1db00;">auto</span> <span style="color: #ff8700;">r_map</span> = build_randix_map[base] ();
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">map</span>&lt;<span style="color: #00d7af;">short</span>, <span style="color: #00d7af;">char</span>&gt; <span style="color: #ff8700;">tmp_map</span>;
-                <span style="color: #a1db00;">for</span> ( <span style="color: #a1db00;">auto</span>&amp; <span style="color: #ff8700;">e</span> : *r_map )
-                    tmp_map.insert ({ e.second,e.first });
-                for_each (vs.begin (), vs.end (), [&amp;](<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">short</span>&amp; <span style="color: #ff8700;">e</span>) {str.push_back (tmp_map[(e + base) % base]); });
-                <span style="color: #a1db00;">if</span> ( vs[0] &lt; 0 ) str.insert (str.begin (), <span style="color: #ff4ea3;">'-'</span>);
-            }
-
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#22823;&#25972;&#25968;&#21152;&#27861;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#32771;&#34385;&#65306;    1.&#26377;&#25928;&#36755;&#20837;&#65292;&#21253;&#21547;&#27491;&#36127;&#21495;&#65292;&#23383;&#31526;&#20018;&#20013;&#38750;&#25968;&#23383;&#23383;&#31526;,&#23383;&#31526;&#20018;&#24320;&#22987;&#30340;&#36830;&#32493;&#31354;&#26684;&#65292;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//      </span><span style="color: #6c6c6c; font-style: italic;">2.&#23384;&#25918;&#30340;&#25968;&#25454;&#32467;&#26500; std::vector &#19982; std::string</span>
-            <span style="color: #6c6c6c; font-style: italic;">//      </span><span style="color: #6c6c6c; font-style: italic;">3.&#22914;&#20309;&#22788;&#29702;&#36827;&#20301;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//      </span><span style="color: #6c6c6c; font-style: italic;">4.&#38543;&#24847;&#36755;&#20837;&#22823;&#25968;&#23383;&#30340;&#38271;&#24230;&#22823;&#23567;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//      </span><span style="color: #6c6c6c; font-style: italic;">5.&#36827;&#21046;</span>
-
-            <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#30693;&#35782;&#28857;&#65306;1.&#23383;&#31526;&#19982;&#25968;&#23383;&#20043;&#38388;&#30340;&#36716;&#25442;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//       </span><span style="color: #6c6c6c; font-style: italic;">2.const &#22312;&#21442;&#25968;&#21015;&#34920;&#22788;&#30340;&#20351;&#29992;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//       </span><span style="color: #6c6c6c; font-style: italic;">3.STL &#31639;&#27861;&#24211;&#20351;&#29992; find &#31995;&#21015; for_each</span>
-            <span style="color: #6c6c6c; font-style: italic;">//       </span><span style="color: #6c6c6c; font-style: italic;">4.lamda &#20989;&#25968;&#30340;&#20351;&#29992;&#65292;&#20540;&#25429;&#33719;&#19982;&#24341;&#29992;&#25429;&#33719;</span>
-            <span style="color: #6c6c6c; font-style: italic;">//       </span><span style="color: #6c6c6c; font-style: italic;">5.&#36127;&#25968;&#21462;&#27169;&#36816;&#31639;</span>
-
-            <span style="color: #00d7af;">int</span> <span style="color: #ffd700;">BigSum</span> (<span style="color: #a1db00;">const</span> <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span>&amp; <span style="color: #ff8700;">num1</span>, <span style="color: #a1db00;">const</span> <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span>&amp; <span style="color: #ff8700;">num2</span>, <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span>&amp; <span style="color: #ff8700;">sum</span>, <span style="color: #a1db00;">const</span> <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">base</span> = 10) {
-                assert (<span style="color: #ff4b4b;">!</span>num1.empty () &amp;&amp; <span style="color: #ff4b4b;">!</span>num2.empty () &amp;&amp; sum.empty ());
-                <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#23558; std::string &#27599;&#19968;&#20301;&#36716;&#25442;&#20026; voctor&lt;short&gt;&#23545;&#24212;&#30340;&#25968;&#23383;</span>
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">vector</span>&lt;<span style="color: #00d7af;">short</span>&gt; <span style="color: #ff8700;">vbig</span>, <span style="color: #ff8700;">vsmall</span>;
-
-                str_to_vc (num1, vbig);
-                str_to_vc (num2, vsmall);
-
-                <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#20445;&#35777; vbig &#20445;&#23384;&#20102;&#36739;&#22823;&#30340;&#25968;</span>
-                <span style="color: #a1db00;">if</span> ( vbig.size () &lt; vsmall.size () ) swap (vbig, vsmall);
-                <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">vbig vsmall &#25353;&#20301;&#32047;&#21152;&#65292;&#19981;&#32771;&#34385;&#36827;&#20301;</span>
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">vector</span>&lt;<span style="color: #00d7af;">short</span>&gt; <span style="color: #ff8700;">vsum</span> (vbig.size (), 0);
-                <span style="color: #a1db00;">for</span> ( <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = vbig.size () - 1, <span style="color: #ff8700;">j</span> = vsmall.size () - 1; i &gt;= 0; --i ) {
-                    vsum[i] = vbig[i] + ((j &gt;= 0) ? vsmall[j--] : 0);
-                }
-                <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#22788;&#29702;&#36827;&#20301;</span>
-                <span style="color: #a1db00;">for</span> ( <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">i</span> = vsum.size () - 1; i &gt;= 0; --i ) {
-                    <span style="color: #a1db00;">if</span> ( vsum[i] &gt; base ) {
-                        vsum[i] -= base;
-                        <span style="color: #a1db00;">if</span> ( i &gt; 0 )
-                            ++vsum[i - 1];
-                        <span style="color: #a1db00;">else</span>
-                            vsum.insert (vsum.begin (), 1);
-                    }
-                }
-                <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#31532;&#19968;&#27493;&#30340;&#36870;&#36716;&#25442;</span>
-                vc_to_str (vsum, sum);
-                <span style="color: #a1db00;">return</span> 0;
-            }
-
-            <span style="color: #ffd700;">TEST</span>(TestBigSum,mul){
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span> <span style="color: #ff8700;">a</span> = <span style="color: #ff4ea3;">"-2222"</span>;
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span> <span style="color: #ff8700;">b</span> = <span style="color: #ff4ea3;">"1111"</span>;
-                <span style="color: #5fafd7;">std</span>::<span style="color: #00d7af;">string</span> <span style="color: #ff8700;">sum</span>;
-                BigSum (b, a, sum);
-                EXPECT_STREQ (<span style="color: #ff4ea3;">"-9999"</span>, sum.c_str ());
-            }
-        }
+<pre class="src src-c++">
 </pre>
 </div>
 </div>
@@ -1123,8 +1015,8 @@ LIS(i) = max{LIS(j)+1} j&lt;i and a[j]&lt;a[i]
 <h2 id="orgba54f0f"><span class="section-number-2">8</span> String</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-orgcd80860" class="outline-3">
-<h3 id="orgcd80860"><span class="section-number-3">8.1</span> 字符串逆序</h3>
+<div id="outline-container-orgbbc5dd8" class="outline-3">
+<h3 id="orgbbc5dd8"><span class="section-number-3">8.1</span> 字符串逆序</h3>
 </div>
 <div id="outline-container-org483d420" class="outline-3">
 <h3 id="org483d420"><span class="section-number-3">8.2</span> 单词逆序</h3>
@@ -1173,7 +1065,7 @@ LIS(i) = max{LIS(j)+1} j&lt;i and a[j]&lt;a[i]
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:43</p>
+<p class="date">Created: 2019-08-15 四 15:45</p>
 <p class="validation"></p>
 </div>
 </body>

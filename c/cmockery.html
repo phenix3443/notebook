@@ -6,7 +6,7 @@
 <!-- 2019-08-15 四 15:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>homebrew 使用</title>
+<title>cmockery</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,93 +306,45 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">homebrew 使用</h1>
+<h1 class="title">cmockery</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3f9d8b5">1. 概述</a></li>
-<li><a href="#org03db425">2. 安装</a></li>
-<li><a href="#org1b9afb7">3. 常用命令</a></li>
+<li><a href="#org9219123">1. 概述</a></li>
+<li><a href="#org3c33b09">2. 安装</a></li>
+<li><a href="#org201820b">3. 使用</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org3f9d8b5" class="outline-2">
-<h2 id="org3f9d8b5"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org9219123" class="outline-2">
+<h2 id="org9219123"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 macOS 的软件包管理器。
+Cmockery 是一个轻量级库，用于创建 C 单元测试。
 </p>
-</div>
-</div>
-<div id="outline-container-org03db425" class="outline-2">
-<h2 id="org03db425"><span class="section-number-2">2</span> 安装</h2>
-<div class="outline-text-2" id="text-2">
-<div class="org-src-container">
-<pre class="src src-sh">/usr/bin/ruby -e <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">curl</span><span style="color: #ff4ea3;"> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span>
-</pre>
-</div>
+
+<p>
+<a href="https://github.com/google/cmockery">cmockery</a> 测试被编译为独立的可执行文件，并可将 Cmockery 库，标准 C 库和正在测试的模块链接。在测试应用程序中，被测模块外部的任何符号都应该被模拟 - 替换为返回测试确定的值的函数。尽管代码模块的目标执行环境与用于测试代码的环境之间可能存在显着差异，但单元测试仍然有效，因为其目标是在功能级别测试代码模块的逻辑，而不是所有它与目标执行环境的交互。
+</p>
+
+<p>
+如果不进行一些修改，可能无法将模块编译到测试应用程序中;因此，应该在编译 Cmockery 单元测试应用程序时定义预处理程序符号 =UNIT_TESTING=，以便可以有条件地编译模块中的代码以进行测试。
+</p>
+
+<p>
+有关使用 Cmockery 编写测试的机制的更多详细信息，请参阅 <a href="https://github.com/google/cmockery/blob/master/docs/user_guide.md">docs/user_guide.md</a>.
+</p>
 </div>
 </div>
 
-<div id="outline-container-org1b9afb7" class="outline-2">
-<h2 id="org1b9afb7"><span class="section-number-2">3</span> 常用命令</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-以安装 wget 为例：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew search wget
-brew info wget
-brew install wget
-brew reinstall wget
-brew uninstall wget
-</pre>
+<div id="outline-container-org3c33b09" class="outline-2">
+<h2 id="org3c33b09"><span class="section-number-2">2</span> 安装</h2>
 </div>
 
-<p>
-查看 wget 的 homepage：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew home wget
-</pre>
-</div>
-
-<p>
-查看 brew 安装的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew list
-</pre>
-</div>
-
-<p>
-查看过期的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew outdated
-</pre>
-</div>
-
-<p>
-删除无用的旧包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew cleanup
-</pre>
-</div>
-
-<p>
-更新所有软件包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-brew upgrade
-</pre>
-</div>
-</div>
+<div id="outline-container-org201820b" class="outline-2">
+<h2 id="org201820b"><span class="section-number-2">3</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">

@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-15 四 15:49 -->
+<!-- 2019-08-15 四 15:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>homebrew 使用</title>
+<title>cjson</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,99 +306,103 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">homebrew 使用</h1>
+<h1 class="title">cjson</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3f9d8b5">1. 概述</a></li>
-<li><a href="#org03db425">2. 安装</a></li>
-<li><a href="#org1b9afb7">3. 常用命令</a></li>
+<li><a href="#orgeea6b7a">1. 概述</a></li>
+<li><a href="#org420d9d5">2. 编译</a></li>
+<li><a href="#org35aa874">3. 使用</a>
+<ul>
+<li><a href="#org741dd14">3.1. 数据结构</a></li>
+<li><a href="#orge328b83">3.2. 解析 json</a></li>
+<li><a href="#org86ac28f">3.3. 打印 json</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org3f9d8b5" class="outline-2">
-<h2 id="org3f9d8b5"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-orgeea6b7a" class="outline-2">
+<h2 id="orgeea6b7a"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 macOS 的软件包管理器。
+<a href="https://github.com/DaveGamble/cJSON">cjson</a> 是用 ANSI C 编写的超轻量级 JSON 解析器。
 </p>
 </div>
 </div>
-<div id="outline-container-org03db425" class="outline-2">
-<h2 id="org03db425"><span class="section-number-2">2</span> 安装</h2>
+
+<div id="outline-container-org420d9d5" class="outline-2">
+<h2 id="org420d9d5"><span class="section-number-2">2</span> 编译</h2>
 <div class="outline-text-2" id="text-2">
+<p>
+使用 cmake 进行编译。
+</p>
 <div class="org-src-container">
-<pre class="src src-sh">/usr/bin/ruby -e <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">curl</span><span style="color: #ff4ea3;"> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span>
+<pre class="src src-sh">mkdir build
+<span style="color: #d18aff;">cd</span> build
+cmake ..
+make
 </pre>
 </div>
+
+<p>
+可以传递给 CMake 的不同选项列表来更改构建过程。使用 <code>On and Off</code> 打开和关闭：
+</p>
 </div>
 </div>
 
-<div id="outline-container-org1b9afb7" class="outline-2">
-<h2 id="org1b9afb7"><span class="section-number-2">3</span> 常用命令</h2>
+<div id="outline-container-org35aa874" class="outline-2">
+<h2 id="org35aa874"><span class="section-number-2">3</span> 使用</h2>
 <div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org741dd14" class="outline-3">
+<h3 id="org741dd14"><span class="section-number-3">3.1</span> 数据结构</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
-以安装 wget 为例：
+cJSON 使用 cJSON 结构数据类型表示 JSON 数据：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">brew search wget
-brew info wget
-brew install wget
-brew reinstall wget
-brew uninstall wget
+<pre class="src src-c"><span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">The cJSON structure: </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
+<span style="color: #a1db00;">typedef</span> <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">cJSON</span>
+{
+    <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">cJSON</span> *<span style="color: #ff8700;">next</span>;
+    <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">cJSON</span> *<span style="color: #ff8700;">prev</span>;
+    <span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">cJSON</span> *<span style="color: #ff8700;">child</span>;
+    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">type</span>;
+    <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">valuestring</span>;
+    <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">writing to valueint is DEPRECATED, use cJSON_SetNumberValue instead </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
+    <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">valueint</span>;
+    <span style="color: #00d7af;">double</span> <span style="color: #ff8700;">valuedouble</span>;
+    <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">string</span>;
+} <span style="color: #00d7af;">cJSON</span>;
 </pre>
 </div>
 
 <p>
-查看 wget 的 homepage：
+此类型的项表示 JSON 值。类型作为位标志存储在 <code>type</code> 中（这意味着只通过比较类型的值找不到类型）。要检查项目的类型，请使用相应的 <code>cJSON_Is ...</code> 函数。它执行 <code>NULL</code> 检查，然后进行类型检查，如果项目属于此类型，则返回布尔值。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">brew home wget
-</pre>
-</div>
 
 <p>
-查看 brew 安装的包：
+对于每个值类型，都有一个 <code>cJSON_Create ...</code> 函数，可用于创建该类型的项目。所有这些都将分配一个 cJSON 结构，以后可以使用 cJSON_Delete 删除它。请注意，必须在某个时候删除它们，否则会出现内存泄漏。要点：如果已将项添加到数组或对象中，则不得使用 cJSON_Delete 将其删除。将它添加到数组或对象会转移其所有权，以便在该数组或对象删除时，其中的项也会删除。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">brew list
-</pre>
+</div>
 </div>
 
-<p>
-查看过期的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew outdated
-</pre>
+<div id="outline-container-orge328b83" class="outline-3">
+<h3 id="orge328b83"><span class="section-number-3">3.2</span> 解析 json</h3>
 </div>
 
-<p>
-删除无用的旧包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew cleanup
-</pre>
-</div>
-
-<p>
-更新所有软件包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-brew upgrade
-</pre>
-</div>
+<div id="outline-container-org86ac28f" class="outline-3">
+<h3 id="org86ac28f"><span class="section-number-3">3.3</span> 打印 json</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-15 四 15:49</p>
+<p class="date">Created: 2019-08-15 四 15:48</p>
 <p class="validation"></p>
 </div>
 </body>

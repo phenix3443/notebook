@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:41 -->
+<!-- 2019-08-15 四 15:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Linux 高性能服务器编程</title>
@@ -762,6 +762,11 @@ typedef void (*__singhandler_t)(int)
 
 <div id="outline-container-org177cc9f" class="outline-4">
 <h4 id="org177cc9f">中断系统调用</h4>
+<div class="outline-text-4" id="text-org177cc9f">
+<p>
+程序处于阻塞状态下的系统调用时接收到信号，并且为该信号设置了信号处理函数，默认情况下系统调用将会中断，并且 errno 设置为 EINTER。可以使用 sigaction 函数为信号设置 SA_RESTART 标志咦自动重启被该信号中断的系统调用。
+</p>
+</div>
 </div>
 </div>
 
@@ -818,7 +823,7 @@ typedef void (*__singhandler_t)(int)
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:41</p>
+<p class="date">Created: 2019-08-15 四 15:45</p>
 <p class="validation"></p>
 </div>
 </body>

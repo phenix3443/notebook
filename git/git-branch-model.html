@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:43 -->
+<!-- 2019-08-15 四 15:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>git分支模型介绍</title>
+<title>git 分支模型介绍</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,7 +306,7 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">git分支模型介绍</h1>
+<h1 class="title">git 分支模型介绍</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -315,9 +315,9 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgb8ff96e">1.1. master</a></li>
 <li><a href="#orgf749b7b">1.2. master/develop</a></li>
-<li><a href="#org9d522d8">1.3. master/develop/featrue</a></li>
-<li><a href="#orgd52e509">1.4. master/develop/featrue/release</a></li>
-<li><a href="#org0e2c5fd">1.5. master/develop/featrue/release/bugfix</a></li>
+<li><a href="#orge4b39a3">1.3. master/develop/feature</a></li>
+<li><a href="#org98150d8">1.4. master/develop/feature/release</a></li>
+<li><a href="#org0098ec8">1.5. master/develop/feature/release/bugfix</a></li>
 <li><a href="#orgcdf2341">1.6. 总结：</a></li>
 </ul>
 </li>
@@ -339,7 +339,7 @@ for the JavaScript code in this tag.
 <h2 id="org555ea72"><span class="section-number-2">1</span> branch model</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-分支（brach）是git很重要的一个特性，通过分支可以同时并行开发多个featrue，但同时也带来一个问题：不同的分支间应该如何合并？下面将逐步介绍一下git 分支模型的演化过程。
+分支（brach）是 git 很重要的一个特性，通过分支可以同时并行开发多个 feature，但同时也带来一个问题：不同的分支间应该如何合并？下面将逐步介绍一下 git 分支模型的演化过程。
 </p>
 </div>
 
@@ -347,7 +347,7 @@ for the JavaScript code in this tag.
 <h3 id="orgb8ff96e"><span class="section-number-3">1.1</span> master</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-所有工作在master分支。
+所有工作在 master 分支。
 </p>
 
 <p>
@@ -366,14 +366,14 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-缺点：master上开发影响其上的构建。
+缺点：master 上开发影响其上的构建。
 </p>
 
 <p>
 适用：
 </p>
 <ul class="org-ul">
-<li>单featrue。</li>
+<li>单 feature。</li>
 <li>项目无构建过程。</li>
 </ul>
 </div>
@@ -383,8 +383,8 @@ for the JavaScript code in this tag.
 <h3 id="orgf749b7b"><span class="section-number-3">1.2</span> master/develop</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
-<li>master是主分支。</li>
-<li>develop是开发分支，开发完成后合并到master分支。</li>
+<li>master 是主分支。</li>
+<li>develop 是开发分支，开发完成后合并到 master 分支。</li>
 </ul>
 
 <p>
@@ -407,33 +407,33 @@ git branch --delete develop
 优点：
 </p>
 <ul class="org-ul">
-<li>develop分支上开发不会影响到master分支的构建过程。</li>
+<li>develop 分支上开发不会影响到 master 分支的构建过程。</li>
 </ul>
 
 <p>
 缺点：
 </p>
 <ul class="org-ul">
-<li>不利于同时开发多个feature，所有featrue都工作在develop分支，相互之间会干扰。</li>
+<li>不利于同时开发多个 feature，所有 feature 都工作在 develop 分支，相互之间会干扰。</li>
 </ul>
 
 <p>
 适用：
 </p>
 <ul class="org-ul">
-<li>单feature。</li>
-<li>项目需要从master构建。</li>
+<li>单 feature。</li>
+<li>项目需要从 master 构建。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9d522d8" class="outline-3">
-<h3 id="org9d522d8"><span class="section-number-3">1.3</span> master/develop/featrue</h3>
+<div id="outline-container-orge4b39a3" class="outline-3">
+<h3 id="orge4b39a3"><span class="section-number-3">1.3</span> master/develop/feature</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
-<li>master和develop是主分支。</li>
-<li>开发人员工作在各自的feature分支上，经过开发、模块测试后合并到develop分支。</li>
-<li>develop分支代码经过系统测试，release之后合并到master分支。</li>
+<li>master 和develop 是主分支。</li>
+<li>开发人员工作在各自的 feature 分支上，经过开发、模块测试后合并到 develop 分支。</li>
+<li>develop 分支代码经过系统测试，release 之后合并到 master 分支。</li>
 </ul>
 
 <p>
@@ -459,31 +459,31 @@ git merge develop
 优点：
 </p>
 <ul class="org-ul">
-<li>develop结合多个featrue分支有利于多人合作。</li>
+<li>develop 结合多个 feature 分支有利于多人合作。</li>
 </ul>
 
 <p>
 缺点：
 </p>
 <ul class="org-ul">
-<li>由于release从develop构建，而develop是不断变化的，所以release过程中出现的bug修复和develop分支上来自正在进行的feature代码变更会相互影响。</li>
+<li>由于 release 从develop 构建，而 develop 是不断变化的，所以 release 过程中出现的 bug 修复和 develop 分支上来自正在进行的 feature 代码变更会相互影响。</li>
 </ul>
 
 <p>
 适用：
 </p>
 <ul class="org-ul">
-<li>多feature。</li>
-<li>develop在release过程中不能修改。</li>
+<li>多 feature。</li>
+<li>develop 在release 过程中不能修改。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd52e509" class="outline-3">
-<h3 id="orgd52e509"><span class="section-number-3">1.4</span> master/develop/featrue/release</h3>
+<div id="outline-container-org98150d8" class="outline-3">
+<h3 id="org98150d8"><span class="section-number-3">1.4</span> master/develop/feature/release</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
-<li>release版本的构建和bug修复在单独的release分支上进行。</li>
+<li>release 版本的构建和 bug 修复在单独的 release 分支上进行。</li>
 </ul>
 
 <p>
@@ -517,34 +517,34 @@ git branch --delete release
 优点：
 </p>
 <ul class="org-ul">
-<li>release版本的工作不会影响develop上正在进行的开发。</li>
+<li>release 版本的工作不会影响 develop 上正在进行的开发。</li>
 
-<li>如果线上线上bugfix可能会和develop冲突。如果release版本出现bug，如果基于develop创建分支，此时develop分支可能与master分支已经不一致。</li>
+<li>如果线上线上 bugfix 可能会和 develop 冲突。如果 release 版本出现 bug，如果基于 develop 创建分支，此时 develop 分支可能与 master 分支已经不一致。</li>
 </ul>
 
 <p>
 适用：
 </p>
 <ul class="org-ul">
-<li>多featrue同时开发</li>
-<li>develop的功能不受release影响。</li>
+<li>多 feature 同时开发</li>
+<li>develop 的功能不受 release 影响。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0e2c5fd" class="outline-3">
-<h3 id="org0e2c5fd"><span class="section-number-3">1.5</span> master/develop/featrue/release/bugfix</h3>
+<div id="outline-container-org0098ec8" class="outline-3">
+<h3 id="org0098ec8"><span class="section-number-3">1.5</span> master/develop/feature/release/bugfix</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 考虑这样一直情况：
 </p>
 <ul class="org-ul">
-<li>线上正在运行的0.1版本出现了问题，需要进行修复</li>
-<li>我们正在测试release版本是1.0</li>
+<li>线上正在运行的 0.1 版本出现了问题，需要进行修复</li>
+<li>我们正在测试 release 版本是 1.0</li>
 </ul>
 
 <p>
-这是应该从master新建一个bugfix分支进行修复，那么bugfix分支应该如何与其他分支进行合并呢？
+这是应该从 master 新建一个 bugfix 分支进行修复，那么 bugfix 分支应该如何与其他分支进行合并呢？
 </p>
 
 <p>
@@ -581,15 +581,15 @@ git branch --delete release
 优点：
 </p>
 <ul class="org-ul">
-<li>解决了bugfix和develop版本冲突的问题。</li>
+<li>解决了 bugfix 和develop 版本冲突的问题。</li>
 </ul>
 
 <p>
 适用：
 </p>
 <ul class="org-ul">
-<li>多feature开发。</li>
-<li>release不受线上版本bugfix影响。</li>
+<li>多 feature 开发。</li>
+<li>release 不受线上版本 bugfix 影响。</li>
 </ul>
 </div>
 </div>
@@ -598,10 +598,10 @@ git branch --delete release
 <h3 id="orgcdf2341"><span class="section-number-3">1.6</span> 总结：</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
-上面介绍的这些git branch model的演化过程中，问题的出现归根结底来来自于：
+上面介绍的这些 git branch model 的演化过程中，问题的出现归根结底来来自于：
 </p>
 <ul class="org-ul">
-<li>feature开发、develop上更新、release发布、bugfix修复都是异步进行的。</li>
+<li>feature 开发、develop 上更新、release 发布、bugfix 修复都是异步进行的。</li>
 </ul>
 </div>
 </div>
@@ -611,18 +611,18 @@ git branch --delete release
 <h2 id="org68f53d1"><span class="section-number-2">2</span> git-flow</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Vincent Driessen 为了解决分支管理的问题，写了一篇文章<a href="http://nvie.com/posts/a-successful-git-branching-model/">《A Successful Git Branching Modelgit-flow》</a>，这就是git-flow的来源。
+Vincent Driessen 为了解决分支管理的问题，写了一篇文章<a href="http://nvie.com/posts/a-successful-git-branching-model/">《A Successful Git Branching Modelgit-flow》</a>，这就是 git-flow 的来源。
 </p>
 
 <p>
-git-flow也是基于master/develop/featrue/release/bugfix模型，它并不是为了替代git，只是把上面分支操作中繁多的命令做了组合。
+git-flow 也是基于 master/develop/feature/release/bugfix 模型，它并不是为了替代 git，只是把上面分支操作中繁多的命令做了组合。
 </p>
 
 
 <div id="org4a6da3c" class="figure">
 <p><img src="http://nvie.com/img/git-model@2x.png" alt="git-model@2x.png" />
 </p>
-<p><span class="figure-number">Figure 1: </span>git-flow流程图</p>
+<p><span class="figure-number">Figure 1: </span>git-flow 流程图</p>
 </div>
 
 <p>
@@ -631,13 +631,13 @@ git-flow 要点：
 <ul class="org-ul">
 <li>master 只能用来包括产品代码。 <b>不能直接工作在 master 分支上</b> ，而是在其他指定的、独立的特性分支中。不直接提交改动到 master 分支上也是很多工作流程的一个共同的规则。</li>
 <li>develop 是 <b>进行任何新的开发的基础分支</b> 。当开始一个新的功能分支时，它将是开发的基础。另外，该分支也汇集所有已经完成的功能，并等待被整合到 master 分支中。</li>
-<li>develop代码来自于feature，release和bugfix分支。</li>
+<li>develop 代码来自于 feature，release 和bugfix 分支。</li>
 <li><p>
-master代码来自于release和bugfix分支。
+master 代码来自于 release 和bugfix 分支。
 </p>
 
 <p>
-master和develop被称作为 长期分支。它们会存活在项目的整个生命周期中。而其他的分支，例如针对功能的分支，针对发行的分支，仅仅只是临时存在的。它们是根据需要来创建的，当它们完成了自己的任务之后就会被删除掉。
+master 和develop 被称作为 长期分支。它们会存活在项目的整个生命周期中。而其他的分支，例如针对功能的分支，针对发行的分支，仅仅只是临时存在的。它们是根据需要来创建的，当它们完成了自己的任务之后就会被删除掉。
 </p></li>
 </ul>
 </div>
@@ -647,7 +647,7 @@ master和develop被称作为 长期分支。它们会存活在项目的整个生
 <h2 id="org56b1060"><span class="section-number-2">3</span> 安装</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-使用<a href="https://github.com/petervanderdoes/gitflow-avh">gitflow-avh</a> 这个版本，该版本功能更加丰富，还增加了support分支支持。
+使用<a href="https://github.com/petervanderdoes/gitflow-avh">gitflow-avh</a> 这个版本，该版本功能更加丰富，还增加了 support 分支支持。
 </p>
 <div class="org-src-container">
 <pre class="src src-sh">sudo apt install git-flow
@@ -655,7 +655,7 @@ master和develop被称作为 长期分支。它们会存活在项目的整个生
 </div>
 
 <p>
-另外还有<a href="https://github.com/petervanderdoes/git-flow-completion">git-flow-complete </a>项目提供git-flow命令行补全。
+另外还有<a href="https://github.com/petervanderdoes/git-flow-completion">git-flow-complete </a>项目提供 git-flow 命令行补全。
 </p>
 <div class="org-src-container">
 <pre class="src src-sh">sudo apt install git-core bash-completion
@@ -721,7 +721,7 @@ Now, start committing on your feature. When done, use:
 </pre>
 
 <p>
-现在就可以进行开发和feature测试了。此处新建一个readme.md文件，并提交。
+现在就可以进行开发和 feature 测试了。此处新建一个 readme.md 文件，并提交。
 </p>
 
 <pre class="example">
@@ -734,7 +734,7 @@ $ git commit -m "add readme"
 </pre>
 
 <p>
-提交feature。
+提交 feature。
 </p>
 <pre class="example">
 $ git flow feature finish readme
@@ -752,7 +752,7 @@ Summary of actions:
 - You are now on branch 'develop'
 </pre>
 <p>
-这时已经切换到develop分支，需要进一步做的工作：
+这时已经切换到 develop 分支，需要进一步做的工作：
 </p>
 <ul class="org-ul">
 <li>进行系统测试，检测多模块的合作是否有问题。</li>
@@ -783,7 +783,7 @@ Follow-up actions:
 </pre>
 
 <p>
-提交release：
+提交 release：
 </p>
 <pre class="example">
 $ git flow release finish 0.1
@@ -824,7 +824,7 @@ Summary of actions:
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:43</p>
+<p class="date">Created: 2019-08-15 四 15:44</p>
 <p class="validation"></p>
 </div>
 </body>

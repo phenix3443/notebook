@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:42 -->
+<!-- 2019-08-15 四 15:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Flycheck</title>
@@ -311,12 +311,12 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc7fa2b7">1. Introduction</a></li>
-<li><a href="#org268bd4c">2. Installation</a>
+<li><a href="#orgb845f71">1. 概述</a></li>
+<li><a href="#orgb402ccd">2. Installation</a>
 <ul>
 <li><a href="#org04433d7">2.1. Prerequisites</a></li>
 <li><a href="#org7fcfa9a">2.2. Syntax checking tools</a></li>
-<li><a href="#orge862b7d">2.3. Installation</a></li>
+<li><a href="#org268bd4c">2.3. Installation</a></li>
 <li><a href="#org792ddf1">2.4. Cask</a></li>
 </ul>
 </li>
@@ -325,11 +325,8 @@ for the JavaScript code in this tag.
 <li><a href="#org7796787">3.1. Install and enable Flycheck</a></li>
 <li><a href="#orga14736e">3.2. Install syntax checker tools</a></li>
 <li><a href="#org2f6e740">3.3. Check syntax in a buffer</a></li>
-<li><a href="#orgf37a13b">3.4. Navigate and list errors</a>
-<ul>
-<li><a href="#org3acb212">3.4.1. More features</a></li>
-</ul>
-</li>
+<li><a href="#orgf37a13b">3.4. Navigate and list errors</a></li>
+<li><a href="#org3acb212">3.5. More features</a></li>
 </ul>
 </li>
 <li><a href="#org748945d">4. Usage</a>
@@ -352,160 +349,48 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<p>
-<a href="https://github.com/flycheck/flycheck">Flycheck</a> is a modern on-the-fly syntax checking extension for GNU Emacs 24, intended as replacement for the older Flymake extension which is part of GNU Emacs.
-</p>
 
-<p>
-Flycheck 是 GNUE macs24 的动态语法检查扩展，目的是取代 GNU Emacs 中旧的 Flymake 扩展。
-</p>
-
-<p>
-It uses various syntax checking and linting tools to check the contents of buffers, and reports warnings and errors directly in the buffer or in an optional error list (see <a href="http://www.flycheck.org/manual/latest/index.html">Flycheck manual</a> for more information):
-</p>
-
-<p>
-通过各种语法检查和 lint 工具检查 buffer 内容，直接在 buffer 或可选的错误列表中报告警告和错误。
-</p>
-
-<p>
-Out of the box Flycheck supports over 40 different programming languages with more than 80 different syntax checking tools, and comes with a simple interface to define new syntax checkers.
-</p>
-
-<p>
-开箱即用的 Flycheck 支持超过 40 中不同的编程语言和超过 80 种不同的语法检查工具，并带有一个简单的接口可以定义新的语法检查器。
-</p>
-
-<p>
-Many <a href="http://www.flycheck.org/extensions.html">3rd party extensions</a> provide new syntax checkers and other features like alternative error displays or mode line indicators.
-</p>
-
-<p>
-许多第三方扩展提供新的语法检查和其他功能，比如替代的错误显示和模式行指示符。
-</p>
-
-
-<div id="outline-container-orgc7fa2b7" class="outline-2">
-<h2 id="orgc7fa2b7"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-orgb845f71" class="outline-2">
+<h2 id="orgb845f71"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Flycheck provides modern on-the-fly syntax checking extension for GNU Emacs 24, intended as replacement for the older Flymake extension which is part of GNU Emacs.
-</p>
-
-
-<p>
-Flycheck 为 GNU Emacs 24 提供现代的动态语法检查，目的是取代 GNU Emacs 中的 Flymake 扩展。
+<a href="https://github.com/flycheck/flycheck">Flycheck</a>  是 GNU Emacs 的现代动态语法检查扩展，旨在取代旧版的 Flymake 扩展，它是 GNU Emacs 的一部分。有关 Flymake 的详细比较，请参阅 Flycheck 与 Flymake。
 </p>
 
 <p>
-Flycheck runs various linting tools and services to automatically check the contents of buffers while you are typing, and reports warnings and errors directly in the buffer, in the mode line and in an optional error list. You can navigate errors and warnings in the current buffer, show the corresponding messages, and copy errors to the kill ring.
+它使用各种语法检查和 linting 工具在键入时自动检查缓冲区的内容，并直接在缓冲区或可选的错误列表中报告警告和错误：
 </p>
 
 <p>
-Flycheck 运行各种 linting 工具和服务自动检查输入到 buffer 中的内容，在 buffer、模式行或可选的 error 列表中报告错误。可以在当前 buffer 中浏览错误和警告，显示相应的信息，拷贝错误到 kill ring 中。
+开箱即用的 Flycheck 支持超过 40 中不同的编程语言和超过 80 种不同的语法检查工具，并带有一个简单的接口可以定义新的语法检查器。See <a href="http://www.flycheck.org/manual/latest/Supported-languages.html#Supported-languages">Supported languages</a>.
+</p>
+
+<p>
+很多 <a href="http://www.flycheck.org/extensions.html">3rd party extensions</a> 提供新的语法检查和其他功能，比如替代的错误显示和模式行指示符。
 </p>
 
 <ul class="org-ul">
-<li><p>
-Over 40 languages with more than 70 checkers. See <a href="http://www.flycheck.org/manual/latest/Supported-languages.html#Supported-languages">Supported languages</a>.
-</p>
-
-<p>
-超过 40 种语言和 70 款检查器。
-</p></li>
-
-<li><p>
-Fully automatic, fail-safe, on-the-fly syntax checking in buffers
-</p>
-
-<p>
-全自动、防故障、动态检查 buffer。
-</p></li>
-
-<li><p>
-In-buffer error highlighting, with fringe indicators
-</p>
-
-<p>
-buffer 中使用边缘标识高亮错误
-</p></li>
-
-<li><p>
-Error navigation
-</p>
-
-<p>
-浏览错误
-</p></li>
-
-<li><p>
-Auto-updating error list
-</p>
-
-<p>
-自动更新错误列表
-</p></li>
-
-<li><p>
-Many customisation options
-</p>
-
-<p>
-许多定制选项。
-</p></li>
-
-<li><p>
-A comprehensive manual
-</p>
-
-<p>
-全面的手册。
-</p></li>
-
-<li><p>
-A simple API to add support for new languages and tools
-</p>
-
-<p>
-使用简单的 API 就可以添加新语言和工具。
-</p></li>
-
-<li><p>
-A “doesn’t get in your way guarantee”
-</p>
-
-<p>
-不以你的方式得到保证。（啥意思）
-</p></li>
+<li>超过 40 种语言和 70 款检查器。</li>
+<li>全自动、防故障、动态检查 buffer。</li>
+<li>buffer 中使用边缘标识高亮错误。</li>
+<li>错误导航。</li>
+<li>自动更新错误列表</li>
+<li>许多定制选项。</li>
+<li>全面的手册。</li>
+<li>使用简单的 API 就可以添加新语言和工具。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org268bd4c" class="outline-2">
-<h2 id="org268bd4c"><span class="section-number-2">2</span> Installation</h2>
+<div id="outline-container-orgb402ccd" class="outline-2">
+<h2 id="orgb402ccd"><span class="section-number-2">2</span> Installation</h2>
 <div class="outline-text-2" id="text-2">
 </div>
 <div id="outline-container-org04433d7" class="outline-3">
 <h3 id="org04433d7"><span class="section-number-3">2.1</span> Prerequisites</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-Flycheck needs GNU Emacs 24. Older releases of GNU Emacs or other flavours of Emacs (e.g. XEmacs, Aquamacs, etc.) are not supported.
-</p>
-
-<p>
-Flycheck 需要 GNU Emacs24。旧版 GNU Emacs 和其他种类的 Emacs 不受支持。
-</p>
-
-<p>
-Flycheck works best on Unix-like operating systems. It is extensively tested on Linux and OS X.
-</p>
-
-<p>
-Flycheck 在类 Unix 操作系统中工作良好。在 Linux 和 OS X 上经过广泛测试。
-</p>
-
-<p>
-Flycheck does not explicitly support Windows, but tries to maintain Windows compatibility and should generally work fine on Windows, too. However, we can neither answer questions about Windows nor fix bugs that only occur on Windows without the help of active Windows users. Please watch out for known Windows issues!
+Flycheck 需要 GNU Emacs 24.3+，并且在 Linux 或 macOS 等类 Unix 系统上运行得最好。它不支持较旧版本的 GNU Emacs 或其他版本的 Emacs（例如 XEmacs，Aquamacs 等）。
 </p>
 
 <p>
@@ -518,15 +403,7 @@ Flycheck 没有明确支持 windows，但试图维护 windows 兼容性，在 wi
 <h3 id="org7fcfa9a"><span class="section-number-3">2.2</span> Syntax checking tools</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-Flycheck does not check buffers itself. It relies on external programs to check buffers, which need to be installed separately. See Supported languages, for a list of required programs for each language supported by Flycheck.
-</p>
-
-<p>
-Flycheck 并不自己检查 buffer。它以来那些需要单独安装的外部工具检查 buffer。
-</p>
-
-<p>
-Most of these programs are available in the package repositories of Linux distributions, or with the standard package managers of specific programming languages (e.g. Rubygems, NPM, Cabal, etc.)
+Flycheck 并不自己检查 buffer。它依赖那些需要单独安装的外部工具检查 buffer。
 </p>
 
 <p>
@@ -535,13 +412,9 @@ Most of these programs are available in the package repositories of Linux distri
 </div>
 </div>
 
-<div id="outline-container-orge862b7d" class="outline-3">
-<h3 id="orge862b7d"><span class="section-number-3">2.3</span> Installation</h3>
+<div id="outline-container-org268bd4c" class="outline-3">
+<h3 id="org268bd4c"><span class="section-number-3">2.3</span> Installation</h3>
 <div class="outline-text-3" id="text-2-3">
-<p>
-Install Flycheck via Emacs’ built-in package manager, from the MELPA Stable repository:
-</p>
-
 <p>
 通过 Emacs 自带的包管理器或 MELPA 标准容器安装 Flycheck。
 </p>
@@ -551,15 +424,7 @@ Install Flycheck via Emacs’ built-in package manager, from the MELPA Stable re
 </pre>
 
 <p>
-Alternatively, you may use the MELPA repository, which hosts the most recent development version. Note that these repositories are not included in GNU Emacs by default.
-</p>
-
-<p>
 也可以使用 MELPA 容器，上次有最近的开发版本。注意 GNU Emacs 默认不包括这些容器。
-</p>
-
-<p>
-You need to enable them explicitly, by adding the following to your init file:
 </p>
 
 <p>
@@ -586,7 +451,6 @@ If you use Cask to manage your packages, add the following to your Cask file:
 (source melpa-stable)
 
 (depends-on <span style="color: #ff4ea3;">"flycheck"</span>)
-
 </pre>
 </div>
 </div>
@@ -601,16 +465,12 @@ If you use Cask to manage your packages, add the following to your Cask file:
 <h3 id="org7796787"><span class="section-number-3">3.1</span> Install and enable Flycheck</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-To get started with Flycheck, enable it by adding the following to your init file:
+在 <a href="https://www.flycheck.org/en/latest/glossary.html#term-init-file">emacs init 文件</a> 中添加以下代码启用 flycheck。
 </p>
 <div class="org-src-container">
 <pre class="src src-elisp">(add-hook 'after-init-hook #'global-flycheck-mode)
 </pre>
 </div>
-
-<p>
-If you don’t know where your init file is take a look at the value of the variable user-init-file with C-h v user-init-file.
-</p>
 </div>
 </div>
 
@@ -618,30 +478,17 @@ If you don’t know where your init file is take a look at the value of the vari
 <h3 id="orga14736e"><span class="section-number-3">3.2</span> Install syntax checker tools</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-Next you need to install syntax checking tools for the major modes you are using. For instance, for Python you may want to install Pylint:
+现在，需要为要使用 Flycheck 的语言安装语法检查程序。<a href="https://www.flycheck.org/en/latest/languages.html#flycheck-languages">支持的语言列表</a> 显示了 Flycheck 支持哪些语言以及它使用哪些程序。
 </p>
 
 <p>
-下一步需要安装正在使用的 major mode 对应的语法检查工具。
+例如，您可以为 Python 安装 Pylint，为 Javascript 安装 ESLint：
 </p>
-
 <div class="org-src-container">
 <pre class="src src-sh">$ pip install pylint
+$ npm install eslint
 </pre>
 </div>
-
-<p>
-For Ruby, you might want to use Rubocop and ruby-lint:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh">gem install rubocop ruby-lint
-</pre>
-</div>
-
-<p>
-See Supported languages, for a complete list of all languages that Flycheck supports.
-</p>
 </div>
 </div>
 
@@ -649,24 +496,11 @@ See Supported languages, for a complete list of all languages that Flycheck supp
 <h3 id="org2f6e740"><span class="section-number-3">3.3</span> Check syntax in a buffer</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
-Now switch to a Python or Ruby Mode buffer and run M-x flycheck-verify-setup to check whether Flycheck is correctly setup.
+现在您已准备好在 Python 或 Javascript 缓冲区中使用 Flycheck。访问 Python 或 Javascript 文件，使用 <code>C-c ! v</code> 检查 Flycheck 是否完成设置。
 </p>
 
 <p>
-现在在 Python 或者 Ruby 模式 buff 中使用 flycheck-verif-setup 来检查是否正确设置了 Flycheck。
-</p>
-
-<p>
-If everything is fine Flycheck will now check syntax using these tools, when you visit a buffer in any of these languages. Syntax checking happens automatically when you save the buffer or make any changes. Flycheck highlights errors and warnings in the buffer, indicates them in the fringe, and reports their numbers in the mode line.
-</p>
-
-<p>
-一切设置好之后，当访问这些语言的任何 buffer 时，Flycheck 将会使用这些工具进行代码检查。当保存 buffer 或作出改变时会自动检查。Flycheck 高亮 buffer 中的错误和警告，使用边缘标记指示它们，并在模式行显示它们的数字。
-</p>
-
-<p>
-You can also manually check a buffer with C-c ! c (flycheck-buffer).
-可以使用 C-c！c 手动检查 buffer。
+如果一切都是绿色，Flycheck 现在将在您编辑时立即开始检查缓冲区。每当你犯下 eslint 或 Pylint 可以捕获的错误时，Flycheck 会突出显示缓冲区中相应的位置，并带有错误下划线，其颜色反映了问题的严重性。此外，Flycheck 会在受影响的行的边缘放置一个符号，并在模式行中显示缓冲区中的错误和警告总数。
 </p>
 </div>
 </div>
@@ -675,52 +509,34 @@ You can also manually check a buffer with C-c ! c (flycheck-buffer).
 <h3 id="orgf37a13b"><span class="section-number-3">3.4</span> Navigate and list errors</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
-Use C-c ! n (flycheck-next-error) and C-c ! p (flycheck-previous-error) to navigate between error locations. If you keep the point at an error location, Flycheck will show the error message in the echo area after a short delay. You can also hover error locations with the mouse and see the error message in a tooltip.
+使用 <code>C-c ! n (flycheck-next-error)</code> and <code>C-c ! p (flycheck-previous-error)</code> 在错误位置间进行导航。如果光标在 error 位置短暂延迟后 Flycheck 会在回显区显示错误消息。也可以你使用鼠标悬位置，在 tooltip 中查看错误消息。
 </p>
 
 <p>
-使用 C-c ! n (flycheck-next-error) and C-c ! p (flycheck-previous-error)在错误位置间进行导航。如果光标在 error 位置，短暂延迟后 Flycheck 会在回显区显示错误消息。也可以你使用鼠标悬位置，在 tooltip 中查看错误消息。
+使用 <code>C-c ! l(flycheck-list-error)</code> 来弹出当前 buffer 中所有错误的列表。当修正错误、引入新错误、或切换到新的 buff 时列表会自动更新。如果选中了错误列表，则可以键入 n 和 p 以在错误之间上下移动并跳转到缓冲区中的相应位置。
 </p>
+</div>
+</div>
 
+<div id="outline-container-org3acb212" class="outline-3">
+<h3 id="org3acb212"><span class="section-number-3">3.5</span> More features</h3>
+<div class="outline-text-3" id="text-3-5">
 <p>
-To get an overview of all errors and warnings in the current buffer, type C-c ! l (flycheck-list-errors) to pop up a list of all errors in your current buffer. The error list updates automatically when you fix errors or introduce new ones, or when you switch to another buffer.
+所有 Flycheck 命令都在 Emacs Tools 菜单下 “Syntax checking” 菜单中。
 </p>
+</div>
+</div>
+</div>
 
-<p>
-为了得到当前 buffer 中所有错误和警告的概述，使用 C-c ! l(flycheck-list-error)来弹出当前 buffer 中所有错误的列表。当修正错误、引入新错误、或切换到新的 buff 时列表会自动更新。
-</p>
-</div>
-<div id="outline-container-org3acb212" class="outline-4">
-<h4 id="org3acb212"><span class="section-number-4">3.4.1</span> More features</h4>
-<div class="outline-text-4" id="text-3-4-1">
-<p>
-All Flycheck commands are available in the Emacs menu at ‘Syntax checking’ in the ‘Tools’ menu.
-</p>
-
-<p>
-所有 Flycheck 命令都在 Emacs Tools 菜单下“Syntax checking”菜单中。
-</p>
-</div>
-</div>
-</div>
-</div>
 <div id="outline-container-org748945d" class="outline-2">
 <h2 id="org748945d"><span class="section-number-2">4</span> Usage</h2>
 <div class="outline-text-2" id="text-4">
-<p>
-This chapter explains the usage of Flycheck in-depth.
-</p>
-
 <p>
 本章深入讲解 Flycheck 的用法。
 </p>
 
 <p>
-Note: All commands in this chapter are documented with their default key prefix C-c !. You can customise this prefix with flycheck-keymap-prefix, but remember your custom prefix while reading this chapter.
-</p>
-
-<p>
-注意：本章的所有命令都是。可以通过 flycheck-keymap-prefix 定制该前缀，但是阅读本章的时候请记得定制的前缀。
+注意：本章的所有命令都是使用 <code>C-c !</code> 命令前缀。可以通过 flycheck-keymap-prefix 定制该前缀，但是阅读本章的时候请记得定制的前缀。
 </p>
 </div>
 
@@ -728,23 +544,11 @@ Note: All commands in this chapter are documented with their default key prefix 
 <h3 id="orgab0f26b"><span class="section-number-3">4.1</span> Checking buffers</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-The minor mode flycheck-mode enables syntax checking in a single buffer. global-flycheck-mode automatically enables flycheck-mode all buffers whenever possible. You can exclude specific major modes from global-flycheck-mode with flycheck-global-modes.
-</p>
-
-<p>
 flycheck-mode 辅助模式在单独的 buffer 中启用语法检查。globa-flycheck-mode 自动在所有 buffer 中启用 flycheck-mode。可用 flycheck-global-modes 从 global-flycheck-mode 中排除特定的主模式。
 </p>
 
 <p>
-Note: global-flycheck-mode does not enable flycheck-mode for remote or encrypted files. The former is flaky and might be very slow, and the latter would leak confidential data to temporary directories. You may still check syntax in these buffers by manually enabling flycheck-mode with M-x flycheck-mode. However, this is not recommended for said reasons.
-</p>
-
-<p>
-注意：global-flycheck-mode 不会远程或加密文件启用 flycheck-mode。前者可能是片段，并且非常慢。后者可能会泄露机密数据到临时目录。可以在这些目录中通过 M-x flycheck-mode 手动启用 flycheck-mode。然而，正如刚才所说原因并不推荐这样做。
-</p>
-
-<p>
-Add the following code to your init file to enable syntax checking permanently:
+注意：global-flycheck-mode 不会为远程文件或加密文件启用 flycheck-mode。前者可能是片段，并且非常慢。后者可能会泄露机密数据到临时目录。可以在这些目录中通过 M-x flycheck-mode 手动启用 flycheck-mode。然而，正如刚才所说原因并不推荐这样做。
 </p>
 
 <p>
@@ -757,7 +561,6 @@ Add the following code to your init file to enable syntax checking permanently:
 </div>
 
 <p>
-When flycheck-mode is enabled, Flycheck automatically checks a buffer whenever
 启动 flycheck-mode 后，下面这些情况，Flycheck 会自动检查 buffer：
 </p>
 
@@ -766,10 +569,6 @@ When flycheck-mode is enabled, Flycheck automatically checks a buffer whenever
 <li>new lines are inserted,</li>
 <li>or a short time after you stopped to make changes to the buffer.</li>
 </ul>
-
-<p>
-You can customise this behaviour by changing flycheck-check-syntax-automatically:
-</p>
 
 <p>
 可以通过改变 flycheck-check-syntax-automatically 定制这种行为:
@@ -793,19 +592,11 @@ save
 </p>
 
 <p>
-Check the buffer immediately after it was saved.
-</p>
-
-<p>
 保存 buffer 后立即检查。
 </p></li>
 
 <li><p>
 idle-change
-</p>
-
-<p>
-Check the buffer a short time after the last change to the buffer. The delay is customisable with flycheck-idle-change-delay.
 </p>
 
 <p>
@@ -817,10 +608,6 @@ new-line
 </p>
 
 <p>
-Check the buffer immediately after a new line was inserted.
-</p>
-
-<p>
 插入新行后立刻检查缓冲区。
 </p></li>
 
@@ -829,17 +616,9 @@ mode-enabled
 </p>
 
 <p>
-Check the buffer immediately after Flycheck Mode was enabled.
-</p>
-
-<p>
 Flycheck mode 启用后立即检查。
 </p></li>
 </ul>
-
-<p>
-For instance, with the following code in your init file Flycheck will only check the buffer when it is saved, but never while you are making changes to the buffer:
-</p>
 
 <p>
 例如，如果 init 文件中是下面的代码，只有在保存 buffer 的时候才会检查，更改 buffer 不会检查。
@@ -849,9 +628,6 @@ For instance, with the following code in your init file Flycheck will only check
 </pre>
 </div>
 
-<p>
-In addition to automatic syntax checking you can always check the current buffer manually:
-</p>
 
 <p>
 除了自动语法检查，还可以手动检查当前 buffer：
@@ -868,10 +644,6 @@ Check syntax in the current buffer.
 </ul>
 
 <p>
-Note: If syntax checking does not work, please check your setup:
-</p>
-
-<p>
 注意：如果语法检查不工作，请检查设置：
 </p>
 
@@ -882,25 +654,13 @@ M-x flycheck-verify-setup
 </p>
 
 <p>
-Popup a buffer with information about the Flycheck setup for the current buffer.
-</p>
-
-<p>
 弹出显示当前 buffer 的 Flycheck 设置信息的 buffer。
-</p>
-
-<p>
-Lists the syntax checkers available for the current buffer, together with potential problems in their setup.
 </p>
 
 <p>
 显示可用于当前 buffer 的语法检查器，以及它们设置中可能存在的问题。
 </p></li>
 </ul>
-
-<p>
-During syntax checks Flycheck creates temporary files to feed to contents of the current buffer to external programs. You can change the prefix used for the names of these temporary files with flycheck-temp-prefix.
-</p>
 
 <p>
 语法检查过程中 Flycheck 创建临时文件将当前 buffer 内容传递给外部程序。可通过 flycheck-mtp-prefix 改变这些临时文件名字的前缀。
@@ -912,19 +672,11 @@ During syntax checks Flycheck creates temporary files to feed to contents of the
 <h3 id="org4de4743"><span class="section-number-3">4.2</span> Syntax checkers</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
-Flycheck does not check buffers by itself, but relies on external syntax checkers. When checking a buffer Flycheck automatically selects the best syntax checker from flycheck-checkers:
-</p>
-
-<p>
 Flycheck 本身不会检查 buffer，而是依赖外部的语法检查器。检查时 Flycheck 自动从 flycheck-checkers 中选择最好的语法检查器：
 </p>
 
 <p>
 User Option: flycheck-checkers
-</p>
-
-<p>
-A list of all syntax checkers available for syntax checking.
 </p>
 
 <p>
@@ -1521,7 +1273,7 @@ Copy the IDs of the errors at point.
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:42</p>
+<p class="date">Created: 2019-08-15 四 15:49</p>
 <p class="validation"></p>
 </div>
 </body>
