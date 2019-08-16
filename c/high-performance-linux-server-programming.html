@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-15 四 15:45 -->
+<!-- 2019-08-16 五 21:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Linux 高性能服务器编程</title>
@@ -325,7 +325,16 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#org890514c">第六章 高级 IO 函数</a></li>
-<li><a href="#org5e87c5e">第七章 Linux 服务器程序规范</a></li>
+<li><a href="#org5e87c5e">第七章 Linux 服务器程序规范</a>
+<ul>
+<li><a href="#org8fcd6d8">日志</a></li>
+<li><a href="#org910fe49">用户信息</a></li>
+<li><a href="#orgf9b574b">进程间关系</a></li>
+<li><a href="#orgeffb25d">系统资源限制</a></li>
+<li><a href="#orgf5ff182">改编工作目录和根目录</a></li>
+<li><a href="#org65366c3">服务器程序后台话</a></li>
+</ul>
+</li>
 <li><a href="#org0e24133">第八章 高性能服务器编程框架</a>
 <ul>
 <li><a href="#org7114f18">8.1 服务器模型</a></li>
@@ -406,7 +415,7 @@ for the JavaScript code in this tag.
 <h3 id="orgef26601">字节序</h3>
 <div class="outline-text-3" id="text-orgef26601">
 <p>
-大端（人类书写习惯），小端。参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/endianness.c">字节序判断示例</a>
+大端（人类书写习惯），小端。参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/endianness.c">endianness.c</a>
 </p>
 </div>
 </div>
@@ -415,7 +424,7 @@ for the JavaScript code in this tag.
 <h3 id="org6b368eb">socket 地址 API</h3>
 <div class="outline-text-3" id="text-org6b368eb">
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/addr_api.c">addr_api.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/addr_api.c">addr_api.c</a>
 </p>
 </div>
 </div>
@@ -486,7 +495,7 @@ for the JavaScript code in this tag.
 </ul>
 
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/sock_api.c">sock_api.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/sock_api.c">sock_api.c</a>
 </p>
 
 <ul class="org-ul">
@@ -495,7 +504,7 @@ for the JavaScript code in this tag.
 </ul>
 
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/get_remote_addr_by_getpeername.c">get_remote_addr_by_getpeername.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/get_remote_addr_by_getpeername.c">get_remote_addr_by_getpeername.c</a>
 </p>
 </div>
 </div>
@@ -537,7 +546,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/netinfo_api.c">netinfo.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/netinfo_api.c">netinfo.c</a>
 </p>
 </div>
 </div>
@@ -545,12 +554,43 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-org890514c" class="outline-2">
 <h2 id="org890514c">第六章 高级 IO 函数</h2>
+<div class="outline-text-2" id="text-org890514c">
+<ul class="org-ul">
+<li>pipe：创建管道，实现进程间通信。</li>
+<li>dup 和 dup2：创建指向同一文件的描述符。</li>
+<li>readv 和 writev：分散读和集中写。</li>
+<li>sendfile：在两个文件描述符间传递数据，几乎是专门为在网络上传输文件而设计的。</li>
+<li>mmap 和 munmap： 设置进程间通信的共享内存。</li>
+<li>splice： 两个文件描述符之间移动数据，零拷贝操作。</li>
+<li>tee： 两个管道描述符间复制数据，但它不消耗数据。</li>
+<li>fcntl：对文件描述符的各种控制操作。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org5e87c5e" class="outline-2">
 <h2 id="org5e87c5e">第七章 Linux 服务器程序规范</h2>
+<div class="outline-text-2" id="text-org5e87c5e">
 </div>
-
+<div id="outline-container-org8fcd6d8" class="outline-3">
+<h3 id="org8fcd6d8">日志</h3>
+</div>
+<div id="outline-container-org910fe49" class="outline-3">
+<h3 id="org910fe49">用户信息</h3>
+</div>
+<div id="outline-container-orgf9b574b" class="outline-3">
+<h3 id="orgf9b574b">进程间关系</h3>
+</div>
+<div id="outline-container-orgeffb25d" class="outline-3">
+<h3 id="orgeffb25d">系统资源限制</h3>
+</div>
+<div id="outline-container-orgf5ff182" class="outline-3">
+<h3 id="orgf5ff182">改编工作目录和根目录</h3>
+</div>
+<div id="outline-container-org65366c3" class="outline-3">
+<h3 id="org65366c3">服务器程序后台话</h3>
+</div>
+</div>
 <div id="outline-container-org0e24133" class="outline-2">
 <h2 id="org0e24133">第八章 高性能服务器编程框架</h2>
 <div class="outline-text-2" id="text-org0e24133">
@@ -572,8 +612,11 @@ for the JavaScript code in this tag.
 <li>IO 处理单元</li>
 <li>逻辑单元</li>
 <li>网络存储单元</li>
-<li>请求队列</li>
 </ul>
+
+<p>
+各个单元之间通过 <b>请求队列</b> 进行解耦。
+</p>
 </div>
 </div>
 
@@ -660,7 +703,7 @@ IO 复用是的程序能够同时监听多个描述符，这对提高程序的�
 </p>
 
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/echo_server_block.c">echo_server_block.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/echo_server_block.c">echo_server_block.c</a>
 </p>
 </div>
 
@@ -668,7 +711,7 @@ IO 复用是的程序能够同时监听多个描述符，这对提高程序的�
 <h3 id="org140048c">9.1 select</h3>
 <div class="outline-text-3" id="text-org140048c">
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/echo_server_select.c">echo_server_select.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/echo_server_select.c">echo_server_select.c</a>
 </p>
 </div>
 </div>
@@ -677,7 +720,7 @@ IO 复用是的程序能够同时监听多个描述符，这对提高程序的�
 <h3 id="orge6eda03">9.2 poll</h3>
 <div class="outline-text-3" id="text-orge6eda03">
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/echo_server_poll.c">echo_server_poll.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/echo_server_poll.c">echo_server_poll.c</a>
 </p>
 </div>
 </div>
@@ -690,7 +733,7 @@ IO 复用是的程序能够同时监听多个描述符，这对提高程序的�
 </p>
 
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/src/network/echo_server_epoll.c">echo_server_epoll.c</a>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/network/echo_server_epoll.c">echo_server_epoll.c</a>
 </p>
 </div>
 
@@ -746,9 +789,9 @@ select 的手册有如下内容：
 <div id="outline-container-orga35016b" class="outline-4">
 <h4 id="orga35016b">信号处理方式</h4>
 <div class="outline-text-4" id="text-orga35016b">
-<p>
-typedef void (*__singhandler_t)(int)
-</p>
+<ul class="org-ul">
+<li>typedef void (*__singhandler_t)(int)</li>
+</ul>
 
 <p>
 信号处理函数应该可重入的，否则容易引发一些竟态条件。所以在信号的处理函数中严禁调用一些不安全的函数。
@@ -776,6 +819,11 @@ typedef void (*__singhandler_t)(int)
 </div>
 <div id="outline-container-org0c35361" class="outline-4">
 <h4 id="org0c35361">signal 函数</h4>
+<div class="outline-text-4" id="text-org0c35361">
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/system/signal.c">signal.c</a>
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgb44ca29" class="outline-4">
@@ -789,15 +837,40 @@ typedef void (*__singhandler_t)(int)
 
 <div id="outline-container-orgbc27fc4" class="outline-3">
 <h3 id="orgbc27fc4">统一事件源</h3>
+<div class="outline-text-3" id="text-orgbc27fc4">
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/system/all_events.c">all_events.c</a>
+</p>
+</div>
 </div>
 </div>
 
 <div id="outline-container-org53b9b45" class="outline-2">
 <h2 id="org53b9b45">第十一章 定时器</h2>
+<div class="outline-text-2" id="text-org53b9b45">
+<p>
+三种定时方法：
+</p>
+<ul class="org-ul">
+<li>socket 选项</li>
+<li>SIGALARM 信号：alarm 和 settimer</li>
+<li>IO 复用系统调用的超时参数。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org27bca22" class="outline-2">
 <h2 id="org27bca22">第十二章 高性能 I/O 框架 Libevent</h2>
+<div class="outline-text-2" id="text-org27bca22">
+<p>
+reactor 模式的 IO 框架组件：
+</p>
+<ul class="org-ul">
+<li>句柄：当内核检测到就绪事件时，它将通过句柄来通知应用程序这一事件。</li>
+<li>事件多路分发器：IO 复用技术。</li>
+<li>事件处理器和具体事件处理器</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org01e2f8b" class="outline-2">
@@ -823,7 +896,7 @@ typedef void (*__singhandler_t)(int)
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-15 四 15:45</p>
+<p class="date">Created: 2019-08-16 五 21:14</p>
 <p class="validation"></p>
 </div>
 </body>

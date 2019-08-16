@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-08-16 五 21:14 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>libev manual</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">libev manual</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org55e6273">1. 示例</a></li>
+<li><a href="#org852d837">2. 关于 LIBEV</a></li>
+<li><a href="#org7a352c1">3. 特征</a></li>
+<li><a href="#orgb226db5">4. 约定</a></li>
+<li><a href="#orgb961d24">5. 时间表示</a></li>
+<li><a href="#org5518101">6. 错误处理</a></li>
+<li><a href="#org0bb2dce">7. 全局函数</a></li>
+<li><a href="#org7e75365">8. 控制时间循环的函数</a></li>
+<li><a href="#org1791b5c">9. 解剖观察者</a></li>
+<li><a href="#org79dc8b5">10. 通用观察者函数</a></li>
+<li><a href="#org7378492">11. 观察者状态</a></li>
+<li><a href="#orgbb5a52b">12. 观察者优先模型</a></li>
+<li><a href="#org609c5e4">13. 观察者类型</a></li>
+<li><a href="#org1a62399">14. 其他函数</a></li>
+<li><a href="#org61a882f">15. 通用或有用的模型</a></li>
+<li><a href="#org3e15d96">16. 模拟 libevent</a></li>
+<li><a href="#org25926cc">17. C++ 支持</a></li>
+<li><a href="#orgccde55e">18. 其他语言绑定</a></li>
+<li><a href="#orgde1f929">19. 宏魔法</a></li>
+<li><a href="#org1ff8b6c">20. 嵌套</a></li>
+<li><a href="#orgac4e6b2">21. 与其他程序、库或者环境交互</a></li>
+<li><a href="#orgb7113dc">22. 可移植性注意事项</a></li>
+<li><a href="#org13ac23a">23. 算法复杂度</a></li>
+<li><a href="#orgf01218e">24. 从 LIBEV 3.X 到 4.X 的移植</a></li>
+<li><a href="#org50d7756">25. 词汇表</a></li>
+<li><a href="#org26ec51e">26. 作者</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文是 <a href="http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod">原手册</a> 的翻译。
+</p>
+
+<div id="outline-container-org55e6273" class="outline-2">
+<h2 id="org55e6273"><span class="section-number-2">1</span> 示例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/libev/tutor.c">tutor.c</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org852d837" class="outline-2">
+<h2 id="org852d837"><span class="section-number-2">2</span> 关于 LIBEV</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Libev 是一个事件循环：注册某些感兴趣事件（例如文件描述符可读或发生超时），它将管理这些事件源并为您的程序提供事件。
+</p>
+
+<p>
+要做到这一点，它必须通过执行事件循环处理程序或多或少完全控制您的进程（或线程），然后通过回调机制传递事件。
+</p>
+
+<p>
+通过注册所谓的事件观察者（event watcher）来注册某些感兴趣的事件，这些事件观察者是使用事件的详细信息初始化的相对较小的 C 结构，然后通过启动观察者将其交给 libev。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7a352c1" class="outline-2">
+<h2 id="org7a352c1"><span class="section-number-2">3</span> 特征</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Libev 支持 select，poll，特定于 Linux 的 aio 和 epoll 接口，特定于 BSD 的 kqueue 和用于文件描述符事件的 Solaris 特定事件端口机制（ev_io），Linux inotify 接口（用于 ev_stat），Linux eventfd/signalfd （用于更快和更清晰的线程间唤醒（ev_async）/信号处理（ev_signal））相对定时器（ev_timer），具有定制重新调度（ev_periodic）的绝对定时器，同步信号（ev_signal），过程状态改变事件（ev_child）和事件观察器处理事件循环机制本身（ev_idle，ev_embed，ev_prepare 和 ev_check 观察者）以及文件观察者（ev_stat）甚至对 fork 事件（ev_fork）的有限支持。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb226db5" class="outline-2">
+<h2 id="orgb226db5"><span class="section-number-2">4</span> 约定</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Libev 非常易于配置。在本手册中，将描述默认（和最常见）配置，它支持多个事件循环。有关各种配置选项的更多信息，请参阅本手册中的 EMBED 部分。如果配置 libev 不支持多个事件循环，则所有带有名称为 loop 的初始参数的函数（loop 类型为 struct ev_loop *）将不具有此参数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb961d24" class="outline-2">
+<h2 id="orgb961d24"><span class="section-number-2">5</span> 时间表示</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Libev 将时间表示为单个浮点数，表示自（POSIX）时代以来的秒数（分数）（实际上在 1970 年初的某个地方，细节很复杂，不要问）。这种类型称为 ev_tstamp，这也是你应该使用的。它通常是 C 中的 double 类型的别名。当需要对其进行任何计算时，应将其视为某个浮点值。
+</p>
+
+<p>
+与名称组件标记可能指示的不同，它还用于整个 libev 中的时间间隔（例如延迟）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5518101" class="outline-2">
+<h2 id="org5518101"><span class="section-number-2">6</span> 错误处理</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Libev 知道三类错误：操作系统错误，使用错误和内部错误（错误）。
+</p>
+
+<p>
+当 libev 捕获到无法处理的操作系统错误时（例如 libev 无法修复的系统调用），它会通过 ev_set_syserr_cb 调用回调集，这应该可以解决问题或中止。默认设置是打印诊断消息并调用 abort（）。
+</p>
+
+<p>
+当 libev 检测到使用错误（例如负计时器间隔）时，它将打印诊断消息并中止（通过断言机制，因此 NDEBUG 将禁用此检查）：这些是 libev 调用者中的编程错误，需要在那里修复。
+</p>
+
+<p>
+通过 EV_FREQUENT 宏，您可以编译和/或在 libev 中启用广泛的一致性检查代码，该代码可用于检查内部不一致，这通常是由应用程序错误引起的。
+</p>
+
+<p>
+Libev 还有一些内部错误检查断言。这些在正常情况下不会触发，因为它们表示 libev 的 bug 或更糟的错误。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0bb2dce" class="outline-2">
+<h2 id="org0bb2dce"><span class="section-number-2">7</span> 全局函数</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+即使在以任何方式初始化库之前，也可以随时调用这些函数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7e75365" class="outline-2">
+<h2 id="org7e75365"><span class="section-number-2">8</span> 控制时间循环的函数</h2>
+</div>
+
+<div id="outline-container-org1791b5c" class="outline-2">
+<h2 id="org1791b5c"><span class="section-number-2">9</span> 解剖观察者</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+在下面的描述中，名称中的大写 TYPE 代表观察者类型，例如， ev_TYPE_start 可以表示定时器观察器的 ev_timer_start 和 I/O 观察器的 ev_io_start。
+</p>
+
+<p>
+观察者是一种不透明的结构，您可以分配并注册以记录某些感兴趣的事件的兴趣。举一个具体的例子，假设您想等待 STDIN 变得可读，您将为此创建一个 ev_io 观察器：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">my_cb</span>(<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span>, <span style="color: #00d7af;">ev_io</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  ev_io_stop(w);
+  ev_break(loop, EVBREAK_ALL);
+}
+
+<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span> = ev_default_loop(0);
+
+<span style="color: #00d7af;">ev_io</span> <span style="color: #ff8700;">stdin_watcher</span>;
+
+ev_init(&amp;stdin_watcher, my_cb);
+ev_io_set(&amp;stdin_watcher, STDIN_FILENO, EV_READ);
+<span style="color: #ffd700;">ev_io_start</span>(loop, &amp;stdin_watcher);
+
+<span style="color: #ffd700;">ev_run</span>(loop, 0);
+</pre>
+</div>
+
+<p>
+如您所见，您负责为您的观察器结构分配内存（在堆栈上执行此操作通常是个坏主意）。
+</p>
+
+<p>
+每个观察者都有一个相关的观察者结构（称为 struct ev_TYPE 或简称为 ev_TYPE，因为所有观察者结构使用 typedef）。
+</p>
+
+<p>
+必须通过调用 <code>ev_init（watcher *，callback）</code> 来初始化每个观察者结构，以及提供回调。 每次事件发生时都会调用此回调（或者，在 I / O 观察器的情况下，每次事件循环检测到给定的文件描述符是可读和/或可写的）。
+</p>
+
+<p>
+每个观察者类型还具有自己的 <code>ev_TYPE_set（watcher *，...）</code> 宏来配置它，有特定于观察者类型的参数。在一个调用中还有一个用于组合初始化和设置的宏： <code>ev_TYPE_init(watcher *，callback，...)</code> 。
+</p>
+
+<p>
+为了让观察者真正监测事件，必须使用观察者特定的启动函数（ <code>ev_TYPE_start（loop，watcher *）</code> ）启动它，你可以通过调用相应的停止功能随时停止观察事件（ <code>ev_TYPE_stop(loop，watcher*)</code> )。
+</p>
+
+<p>
+只要您的观察者处于活动状态（已启动但未停止），您就不能访问存储在其中的值。最重要的是，您必须永远不要重新初始化它或调用它的 ev_TYPE_set 宏。
+</p>
+
+<p>
+每个回调接收事件循环指针作为第一个，注册的观察者结构作为第二个，并且接收的事件的比特集作为第三个参数。收到的事件通常包括每个事件类型接收一个位（您可以同时接收多个事件）。可能的位掩码是：
+</p>
+
+<ul class="org-ul">
+<li>EV_READ</li>
+<li><p>
+EV_WRITE
+</p>
+
+<p>
+ev_io 观察器中的文件描述符已变得可读和/或可写。
+</p></li>
+
+<li><p>
+EV_TIMER
+</p>
+
+<p>
+ev_timer 观察者已经超时了。
+</p></li>
+
+<li><p>
+EV_PERIODIC
+</p>
+
+<p>
+ev_periodic 观察者已超时。
+</p></li>
+
+<li><p>
+EV_SIGNAL
+</p>
+
+<p>
+ev_signal 观察器中指定的信号已被线程接收。
+</p></li>
+
+<li><p>
+EV_CHILD
+</p>
+
+<p>
+ev_child 观察程序中指定的 pid 已收到状态更改。
+</p></li>
+
+<li><p>
+EV_STAT
+</p>
+
+<p>
+ev_stat 观察器中指定的路径以某种方式更改了其属性。
+</p></li>
+
+<li><p>
+EV_IDLE
+</p>
+
+<p>
+ev_idle 观察者已经确定你没有更好的事情要做。
+</p></li>
+
+<li>EV_PREPARE</li>
+<li><p>
+EV_CHECK
+</p>
+
+<p>
+所有 ev_prepare 观察者都在 ev_run 开始收集新事件之前调用，并且所有 ev_check 观察者在 ev_run 收集它们之后排队（未调用），但在它排队任何接收到的事件的回调之前。这意味着 ev_prepare 观察者是在事件循环休眠或轮询新事件之前调用的最后一个观察者，并且 ev_check 观察者将在事件循环迭代中的任何其他具有相同或较低优先级的观察者之前被调用。
+</p>
+
+<p>
+两种观察者类型的回调可以像他们想要的那样开始和停止所有观察者，并且所有观察者都将被考虑在内（例如，ev_prepare 观察者可能启动空闲观察者以防止 ev_run 阻止）。
+</p></li>
+
+<li><p>
+EV_EMBED
+</p>
+
+<p>
+ev_embed 观察者中指定的嵌入式事件循环需要引起注意。
+</p></li>
+
+<li><p>
+EV_FORK
+</p>
+
+<p>
+在 fork 之后，子进程中的事件循环已恢复（请参阅 ev_fork）。
+</p></li>
+
+<li><p>
+EV_CLEANUP
+</p>
+
+<p>
+事件循环即将被销毁（参见 ev_cleanup）。
+</p></li>
+
+<li><p>
+EV_ASYNC
+</p>
+
+<p>
+已异步通知给定的异步观察器（请参阅 ev_async）。
+</p></li>
+
+<li><p>
+EV_CUSTOM
+</p>
+
+<p>
+libev 本身并未发送（或以其他方式使用），但 libev 用户可以自由地使用它来发信号通知观察者（例如通过 ev_feed_event）。
+</p></li>
+
+<li><p>
+EV_ERROR
+</p>
+
+<p>
+发生了未指定的错误，观察者已停止。这可能是因为观察者无法正常启动，因为 libev 内存不足，发现文件描述符已关闭或任何其他问题。 Libev 考虑了这些应用程序错误。
+</p>
+
+<p>
+你最好通过报告问题并以某种方式应对被拦截的观察者来采取行动。请注意，编写良好的程序不应该收到任何错误，所以当您的观察者收到它时，这通常表示您的程序中存在错误。
+</p>
+
+<p>
+Libev 通常会发出一些“虚假”事件和一个错误信号，例如它可能表明 fd 是可读写的，如果你的回调写得很好，它只能尝试操作并处理 read() 或者 write()。但是，这在多线程程序中不起作用，因为 fd 已经可以关闭并重新用于其他事情，所以要小心。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org79dc8b5" class="outline-2">
+<h2 id="org79dc8b5"><span class="section-number-2">10</span> 通用观察者函数</h2>
+</div>
+
+<div id="outline-container-org7378492" class="outline-2">
+<h2 id="org7378492"><span class="section-number-2">11</span> 观察者状态</h2>
+</div>
+
+<div id="outline-container-orgbb5a52b" class="outline-2">
+<h2 id="orgbb5a52b"><span class="section-number-2">12</span> 观察者优先模型</h2>
+</div>
+
+<div id="outline-container-org609c5e4" class="outline-2">
+<h2 id="org609c5e4"><span class="section-number-2">13</span> 观察者类型</h2>
+</div>
+
+<div id="outline-container-org1a62399" class="outline-2">
+<h2 id="org1a62399"><span class="section-number-2">14</span> 其他函数</h2>
+</div>
+
+<div id="outline-container-org61a882f" class="outline-2">
+<h2 id="org61a882f"><span class="section-number-2">15</span> 通用或有用的模型</h2>
+</div>
+
+<div id="outline-container-org3e15d96" class="outline-2">
+<h2 id="org3e15d96"><span class="section-number-2">16</span> 模拟 libevent</h2>
+</div>
+
+<div id="outline-container-org25926cc" class="outline-2">
+<h2 id="org25926cc"><span class="section-number-2">17</span> C++ 支持</h2>
+</div>
+
+<div id="outline-container-orgccde55e" class="outline-2">
+<h2 id="orgccde55e"><span class="section-number-2">18</span> 其他语言绑定</h2>
+</div>
+
+<div id="outline-container-orgde1f929" class="outline-2">
+<h2 id="orgde1f929"><span class="section-number-2">19</span> 宏魔法</h2>
+</div>
+
+<div id="outline-container-org1ff8b6c" class="outline-2">
+<h2 id="org1ff8b6c"><span class="section-number-2">20</span> 嵌套</h2>
+</div>
+
+<div id="outline-container-orgac4e6b2" class="outline-2">
+<h2 id="orgac4e6b2"><span class="section-number-2">21</span> 与其他程序、库或者环境交互</h2>
+</div>
+
+<div id="outline-container-orgb7113dc" class="outline-2">
+<h2 id="orgb7113dc"><span class="section-number-2">22</span> 可移植性注意事项</h2>
+</div>
+
+<div id="outline-container-org13ac23a" class="outline-2">
+<h2 id="org13ac23a"><span class="section-number-2">23</span> 算法复杂度</h2>
+</div>
+
+<div id="outline-container-orgf01218e" class="outline-2">
+<h2 id="orgf01218e"><span class="section-number-2">24</span> 从 LIBEV 3.X 到 4.X 的移植</h2>
+</div>
+
+<div id="outline-container-org50d7756" class="outline-2">
+<h2 id="org50d7756"><span class="section-number-2">25</span> 词汇表</h2>
+</div>
+
+<div id="outline-container-org26ec51e" class="outline-2">
+<h2 id="org26ec51e"><span class="section-number-2">26</span> 作者</h2>
+<div class="outline-text-2" id="text-26">
+<p>
+作者 Marc Lehmann &lt;libev@schmorp.de&gt;，由 Mikael Magnusson 和 Emanuele Giaquinta 反复修正，以及许多其他人的小修正。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-08-16 五 21:14</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:41 -->
+<!-- 2019-08-16 五 21:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>libev</title>
@@ -312,6 +312,14 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org8bfc98f">1. 概述</a></li>
+<li><a href="#org89d224d">2. 配置</a>
+<ul>
+<li><a href="#orgc035614">2.1. event</a></li>
+<li><a href="#orged5ba53">2.2. event watcher</a></li>
+<li><a href="#org462b9fd">2.3. event loop</a></li>
+</ul>
+</li>
+<li><a href="#org040f3fc">3. 使用</a></li>
 </ul>
 </div>
 </div>
@@ -320,15 +328,67 @@ for the JavaScript code in this tag.
 <h2 id="org8bfc98f"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="http://software.schmorp.de/pkg/libev.html">libev</a> 是一个功能齐全且高性能的事件循环，在libevent之后被松散地建模，但没有它的限制和bug。
+<a href="http://software.schmorp.de/pkg/libev.html">libev</a> 是一个功能齐全且高性能的事件循环，在 libevent 之后被松散地建模，但没有它的限制和 bug。
 </p>
 
 <p>
-Blurb 功能包括 child/pid观察者，基于wallclock（绝对）时间的定期计时器（除了使用相对超时的计时器），以及epoll/kqueue/event ports/inotify/eventfd/signalfd支持，快速计时器管理，时间跳转检测和纠正，以及易用性。
+Blurb 功能包括 child/pid 观察者，基于 wallclock（绝对）时间的定期计时器（除了使用相对超时的计时器），以及 epoll/kqueue/event ports/inotify/eventfd/signalfd 支持，快速计时器管理，时间跳转检测和纠正，以及易用性。
 </p>
 
 <p>
-它可以使用其仿真API作为libevent的替代品，或直接嵌入到您的程序中，而无需复杂的配置支持。还提供功能齐全且记录完备的perl界面。
+它可以使用其仿真 API 作为 libevent 的替代品，或直接嵌入到您的程序中，而无需复杂的配置支持。还提供功能齐全且记录完备的 perl 界面。
+</p>
+
+<p>
+libev 的特有的一些功能：
+</p>
+<ul class="org-ul">
+<li>广泛而详细，可读的文档。</li>
+<li>完全支持 fork，可以通过各种方式检测 fork，并自动重新支持不支持 fork 的内核机制。</li>
+<li>高度优化的 select，poll，epoll，kqueue 和 event ports 后端。</li>
+<li>文件系统对象（路径）观察（通过可选的 linux inotify 支持）。</li>
+<li>基于 wallclock 的时间（使用绝对时间，类似 cron）。</li>
+<li>相对定时器/超时（处理时间跳跃）。</li>
+<li>多个事件循环之间的快速线程内通信（可选的快速 linux eventfd 后端）。</li>
+<li>非常容易嵌入（完全记录，没有依赖，支持 autoconf）。</li>
+<li>非常小的代码库，没有臃肿的库，简单的代码。</li>
+<li>通过插入事件循环，集成其他事件循环，集成其他事件循环用户，可以完全扩展。</li>
+<li>内存使用非常少（观察者小，事件循环数据小）。</li>
+<li>可选的 允许方法和函数回调 C++ 接口，无需额外的内存或运行时开销。</li>
+<li>具有类似特性的可选 Perl 接口（能够在 libev 上运行 Glib / Gtk2）。</li>
+<li>支持第三方提供的其他语言（多个 C++ 接口，D，Ruby，Python）。</li>
+</ul>
+
+<p>
+使用 libev 的程序示例：EV perl 模块，node.js，auditd，rxvt-unicode，gvpe（GNU 虚拟专用以太网），Deliantra MMORPG 服务器，Rubinius（下一代 Ruby VM），Ebb Web 服务器， Rev 事件工具包。
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-org89d224d" class="outline-2">
+<h2 id="org89d224d"><span class="section-number-2">2</span> 配置</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc035614" class="outline-3">
+<h3 id="orgc035614"><span class="section-number-3">2.1</span> event</h3>
+</div>
+
+<div id="outline-container-orged5ba53" class="outline-3">
+<h3 id="orged5ba53"><span class="section-number-3">2.2</span> event watcher</h3>
+</div>
+
+<div id="outline-container-org462b9fd" class="outline-3">
+<h3 id="org462b9fd"><span class="section-number-3">2.3</span> event loop</h3>
+</div>
+</div>
+
+<div id="outline-container-org040f3fc" class="outline-2">
+<h2 id="org040f3fc"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<a href="http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod">手册</a>
 </p>
 </div>
 </div>
@@ -336,7 +396,7 @@ Blurb 功能包括 child/pid观察者，基于wallclock（绝对）时间的定�
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:41</p>
+<p class="date">Created: 2019-08-16 五 21:14</p>
 <p class="validation"></p>
 </div>
 </body>

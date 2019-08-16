@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:41 -->
+<!-- 2019-08-16 五 21:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>c99 features</title>
+<title>c99</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,7 +306,7 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">c99 features</h1>
+<h1 class="title">c99</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -320,7 +320,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgb54c0e8">2.4. inline 函数</a></li>
 <li><a href="#org4450608">2.5. bool 类型</a></li>
 <li><a href="#org3a7ebf5">2.6. 复合常量（Compound Literals）</a></li>
-<li><a href="#org634b2a9">2.7. for循环变量初始化（for loop intializers）</a></li>
+<li><a href="#orga4a5e27">2.7. for 循环变量初始化（for loop intializers）</a></li>
 <li><a href="#orgb2a9813">2.8. 新增头文件</a></li>
 </ul>
 </li>
@@ -334,11 +334,11 @@ for the JavaScript code in this tag.
 <h2 id="org26f4066"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-C89是最早的C语言规范，于1989年提出，1990年先由ANSI(美国国家标准委员会，American National Standards Institute)推出ANSI版本，后来被接纳为ISO国际标准(ISO/IEC9899:1990)，因而有时也称为C90，最经典的C语言教材[K&amp;R]就是基于这个版本的。
+C89 是最早的 C语言规范，于 1989 年提出，1990 年先由 ANSI(美国国家标准委员会，American National Standards Institute)推出 ANSI 版本，后来被接纳为 ISO 国际标准(ISO/IEC9899:1990)，因而有时也称为 C90，最经典的 C语言教材[K&amp;R]就是基于这个版本的。
 </p>
 
 <p>
-C99(ISO/IEC9899:1999）是在1999年推出的，加入了许多新的特性，这里主要介绍常用的一些特性。
+C99(ISO/IEC9899:1999）是在 1999 年推出的，加入了许多新的特性，这里主要介绍常用的一些特性。
 </p>
 </div>
 </div>
@@ -381,23 +381,23 @@ C99(ISO/IEC9899:1999）是在1999年推出的，加入了许多新的特性，�
 </div>
 </div>
 
-<div id="outline-container-org634b2a9" class="outline-3">
-<h3 id="org634b2a9"><span class="section-number-3">2.7</span> for循环变量初始化（for loop intializers）</h3>
+<div id="outline-container-orga4a5e27" class="outline-3">
+<h3 id="orga4a5e27"><span class="section-number-3">2.7</span> for 循环变量初始化（for loop intializers）</h3>
 </div>
 
 <div id="outline-container-orgb2a9813" class="outline-3">
 <h3 id="orgb2a9813"><span class="section-number-3">2.8</span> 新增头文件</h3>
 <div class="outline-text-3" id="text-2-8">
 <p>
-C89中标准的头文件：
+C89 中标准的头文件：
 </p>
 <ul class="org-ul">
-<li>&lt;assert.h&gt;           定义宏assert()</li>
+<li>&lt;assert.h&gt;           定义宏 assert()</li>
 <li>&lt;ctype.h&gt;            字符处理</li>
 <li>&lt;errno.h&gt;            错误报告</li>
 <li>&lt;float.h&gt;            定义与实现相关的浮点值勤</li>
 <li>&lt;limits.h&gt;           定义与实现相关的各种极限值</li>
-<li>&lt;locale.h&gt;           支持函数setlocale()</li>
+<li>&lt;locale.h&gt;           支持函数 setlocale()</li>
 <li>&lt;math.h&gt;             数学函数库使用的各种定义</li>
 <li>&lt;setjmp.h&gt;           支持非局部跳转</li>
 <li>&lt;signal.h&gt;           定义信号值</li>
@@ -410,18 +410,18 @@ C89中标准的头文件：
 </ul>
 
 <p>
-C99新增的头文件
+C99 新增的头文件
 </p>
 <ul class="org-ul">
 <li>&lt;complex.h&gt;          支持复杂算法</li>
 <li>&lt;fenv.h&gt;             给出对浮点状态标记和浮点环境的其他方面的访问</li>
 <li>&lt;inttypes.h&gt;         定义标准的、可移植的整型类型集合,也支持处理最大宽度整数的函数</li>
-<li>&lt;iso646.h&gt;           首先在此1995年第一次修订时引进,用于定义对应各种运算符的宏</li>
-<li>&lt;stdbool.h&gt;          支持布尔数据类型类型,定义宏bool,以便兼容于C++</li>
+<li>&lt;iso646.h&gt;           首先在此 1995 年第一次修订时引进,用于定义对应各种运算符的宏</li>
+<li>&lt;stdbool.h&gt;          支持布尔数据类型类型,定义宏 bool,以便兼容于 C++</li>
 <li>&lt;stdint.h&gt;           定义标准的、可移植的整型类型集合,该文件包含在&lt;inttypes.h&gt;中</li>
 <li>&lt;tgmath.h&gt;           定义一般类型的浮点宏</li>
-<li>&lt;wchar.h&gt;            首先在1995年第一次修订时引进,用于支持多字节和宽字节函数</li>
-<li>&lt;wctype.h&gt;           首先在1995年第一次修订时引进,用于支持多字节和宽字节分类函数</li>
+<li>&lt;wchar.h&gt;            首先在 1995 年第一次修订时引进,用于支持多字节和宽字节函数</li>
+<li>&lt;wctype.h&gt;           首先在 1995 年第一次修订时引进,用于支持多字节和宽字节分类函数</li>
 </ul>
 </div>
 </div>
@@ -454,7 +454,7 @@ C99新增的头文件
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:41</p>
+<p class="date">Created: 2019-08-16 五 21:14</p>
 <p class="validation"></p>
 </div>
 </body>
