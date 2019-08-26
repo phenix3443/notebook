@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:41 -->
+<!-- 2019-08-26 一 17:38 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>libevent</title>
@@ -312,6 +312,9 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org032fe52">1. 概述</a></li>
+<li><a href="#orgd7b1145">2. 安装</a></li>
+<li><a href="#orgc63282e">3. 文档</a></li>
+<li><a href="#org65c3b23">4. 使用</a></li>
 </ul>
 </div>
 </div>
@@ -332,7 +335,38 @@ libevent 旨在替换事件驱动的网络服务器中的事件循环。应用�
 </p>
 
 <p>
-Libevent 还为缓冲网络 IO 提供了一个复杂的框架，支持套接字，过滤器，速率限制，SSL，零拷贝文件传输和 IOCP。 Libevent 包括对几种有用协议的支持，包括DNS，HTTP和最小的RPC框架。
+Libevent 还为缓冲网络 IO 提供了一个复杂的框架，支持套接字，过滤器，速率限制，SSL，零拷贝文件传输和 IOCP。 Libevent 包括对几种有用协议的支持，包括 DNS，HTTP 和最小的 RPC 框架。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgd7b1145" class="outline-2">
+<h2 id="orgd7b1145"><span class="section-number-2">2</span> 安装</h2>
+</div>
+
+<div id="outline-container-orgc63282e" class="outline-2">
+<h2 id="orgc63282e"><span class="section-number-2">3</span> 文档</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-sh">doxygen Doxyfile
+</pre>
+</div>
+<p>
+然后打开浏览器 <code>&lt;path-to-libevent&gt;/doxygen/html/index.html</code> ,就能看到 doxygen 生成的文档
+</p>
+</div>
+</div>
+
+<div id="outline-container-org65c3b23" class="outline-2">
+<h2 id="org65c3b23"><span class="section-number-2">4</span> 使用</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+参见 <a href="https://www.jianguoyun.com/p/DRJ5LBAQvdqoBxjQ0OgB">libevent 参考手册</a> ，该文档是官网推荐手册的中文版。
+</p>
+
+<p>
+代码参见 <a href="https://github.com/phenix3443/test/tree/master/c/libevent">https://github.com/phenix3443/test/tree/master/c/libevent</a>
 </p>
 </div>
 </div>
@@ -340,7 +374,7 @@ Libevent 还为缓冲网络 IO 提供了一个复杂的框架，支持套接字�
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:41</p>
+<p class="date">Created: 2019-08-26 一 17:38</p>
 <p class="validation"></p>
 </div>
 </body>
