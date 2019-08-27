@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-16 五 21:14 -->
+<!-- 2019-08-27 二 20:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Linux 高性能服务器编程</title>
@@ -839,7 +839,7 @@ select 的手册有如下内容：
 <h3 id="orgbc27fc4">统一事件源</h3>
 <div class="outline-text-3" id="text-orgbc27fc4">
 <p>
-参见 <a href="https://github.com/phenix3443/test/blob/master/c/system/all_events.c">all_events.c</a>
+信号处理 <a href="https://github.com/phenix3443/test/blob/master/c/network/signal_as_event.c">signal_as_events.c</a>
 </p>
 </div>
 </div>
@@ -879,6 +879,15 @@ reactor 模式的 IO 框架组件：
 
 <div id="outline-container-org3cc04b1" class="outline-2">
 <h2 id="org3cc04b1">第十四章 多线程编程</h2>
+<div class="outline-text-2" id="text-org3cc04b1">
+<p>
+内核线程由内核调用，用户线程由线程库调用。
+</p>
+
+<p>
+单进程单线程-&gt;单进程多线程-&gt;多进程多线程
+</p>
+</div>
 </div>
 
 <div id="outline-container-org89a7d00" class="outline-2">
@@ -896,7 +905,7 @@ reactor 模式的 IO 框架组件：
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-16 五 21:14</p>
+<p class="date">Created: 2019-08-27 二 20:43</p>
 <p class="validation"></p>
 </div>
 </body>

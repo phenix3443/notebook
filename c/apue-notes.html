@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-27 二 20:44 -->
+<!-- 2019-08-27 二 20:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>《UNIX 高级环境编程（第三版）》笔记</title>
@@ -311,129 +311,129 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org827172e">第一章 UNIX 基础知识</a>
+<li><a href="#orgfe1d7f5">第一章 UNIX 基础知识</a>
 <ul>
-<li><a href="#org10708ce">1.2 UNIX 体系结构</a></li>
-<li><a href="#org05e56dc">1.4 文件和目录</a></li>
-<li><a href="#org5e6b0da">1.6 程序和进程</a>
+<li><a href="#org6687511">1.2 UNIX 体系结构</a></li>
+<li><a href="#org00e69e9">1.4 文件和目录</a></li>
+<li><a href="#org155d59c">1.6 程序和进程</a>
 <ul>
-<li><a href="#org8903604">fork</a></li>
-<li><a href="#org5cf3a7a">execve</a></li>
+<li><a href="#org2717b5a">fork</a></li>
+<li><a href="#org2a462b1">execve</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org8642721">第七章 进程环境</a></li>
-<li><a href="#org36eeedf">第八章 进程控制</a></li>
-<li><a href="#org08de552">第八章 进程控制</a></li>
-<li><a href="#org1da8c69">第九章 进程关系</a></li>
-<li><a href="#org8880484">第十章 信号</a>
+<li><a href="#org7c16a2b">第七章 进程环境</a></li>
+<li><a href="#orgd499c30">第八章 进程控制</a></li>
+<li><a href="#org0ef8ad0">第八章 进程控制</a></li>
+<li><a href="#org432036c">第九章 进程关系</a></li>
+<li><a href="#orga7cd988">第十章 信号</a>
 <ul>
-<li><a href="#org3301750">引言</a></li>
-<li><a href="#org286da8b">信号概念</a></li>
-<li><a href="#orge105c38">函数 signal</a></li>
-<li><a href="#org6184077">不可靠的信号</a></li>
-<li><a href="#org3058878">中断的系统调用</a></li>
-<li><a href="#org6b42e2d">可重入函数</a></li>
-<li><a href="#org32ba98f">SIGCLD 语义</a></li>
-<li><a href="#orgb122230">可靠信号术语和语义</a></li>
-<li><a href="#orgaf79910">函数 kill 和 raise</a></li>
-<li><a href="#orge03bca4">函数 alerm 和 pause</a></li>
-<li><a href="#orgf41e6b6">信号集</a></li>
-<li><a href="#org87eb9d0">函数 sigprocmask</a></li>
-<li><a href="#org19ec796">函数 sigpending</a></li>
-<li><a href="#orgf692d10">函数 sigaction</a></li>
-<li><a href="#org485d4a3">函数 sigsetjump 和 siglongjmp</a></li>
-<li><a href="#org3886846">函数 sigsuspend</a></li>
-<li><a href="#org8b30d6a">函数 abort</a></li>
-<li><a href="#orgfadc913">函数 system</a></li>
-<li><a href="#org5f9fb12">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></a></li>
-<li><a href="#org3820d32">函数 sigqueue</a></li>
-<li><a href="#org1dce7e9">作业控制信号</a></li>
-<li><a href="#org3b2a03a">信号名和编号</a></li>
+<li><a href="#org0485e7c">引言</a></li>
+<li><a href="#orgaaf012f">信号概念</a></li>
+<li><a href="#orgdad5c46">函数 signal</a></li>
+<li><a href="#org066046a">不可靠的信号</a></li>
+<li><a href="#orgb8ea7a8">中断的系统调用</a></li>
+<li><a href="#orgd655b00">可重入函数</a></li>
+<li><a href="#org151228c">SIGCLD 语义</a></li>
+<li><a href="#org5ce65cc">可靠信号术语和语义</a></li>
+<li><a href="#orga885b40">函数 kill 和 raise</a></li>
+<li><a href="#orgf1ca4fa">函数 alerm 和 pause</a></li>
+<li><a href="#orgdb92ae3">信号集</a></li>
+<li><a href="#orgc01a5c4">函数 sigprocmask</a></li>
+<li><a href="#org4a31329">函数 sigpending</a></li>
+<li><a href="#org388896f">函数 sigaction</a></li>
+<li><a href="#org5188c60">函数 sigsetjump 和 siglongjmp</a></li>
+<li><a href="#org00a1ace">函数 sigsuspend</a></li>
+<li><a href="#org38cf052">函数 abort</a></li>
+<li><a href="#org6c00845">函数 system</a></li>
+<li><a href="#org2207168">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></a></li>
+<li><a href="#org01bcdd1">函数 sigqueue</a></li>
+<li><a href="#org8cd9136">作业控制信号</a></li>
+<li><a href="#org1d5890d">信号名和编号</a></li>
 </ul>
 </li>
-<li><a href="#orgc43ab1b">第十一章 线程</a>
+<li><a href="#orgfa8c04b">第十一章 线程</a>
 <ul>
-<li><a href="#org08163a5">11.2 线程概念</a></li>
-<li><a href="#org8a293b4">11.3 线程标识</a></li>
-<li><a href="#org0d94613">11.4 线程创建</a></li>
-<li><a href="#orgda672c1">11.5 线程终止</a></li>
-<li><a href="#org6ca2e66">11.6 线程同步</a>
+<li><a href="#orgc1a47f6">11.2 线程概念</a></li>
+<li><a href="#orgef79075">11.3 线程标识</a></li>
+<li><a href="#org63b2ead">11.4 线程创建</a></li>
+<li><a href="#org474de0a">11.5 线程终止</a></li>
+<li><a href="#orga24a393">11.6 线程同步</a>
 <ul>
-<li><a href="#org0fd469f">11.6.1 互斥量（mutex）</a></li>
-<li><a href="#org853c412">11.6.2 避免死锁</a></li>
-<li><a href="#org3edf818">11.6.4 读写锁</a></li>
-<li><a href="#org5a57c81">11.6.6 条件变量（condition）</a></li>
-<li><a href="#orgb41ce12">11.6.7 自旋锁（spin lock）</a></li>
-<li><a href="#org8c93f43">11.6.8 屏障（barrier）</a></li>
+<li><a href="#org3a2b92d">11.6.1 互斥量（mutex）</a></li>
+<li><a href="#orgdc37e29">11.6.2 避免死锁</a></li>
+<li><a href="#org5c5909d">11.6.4 读写锁</a></li>
+<li><a href="#orgb1dff97">11.6.6 条件变量（condition）</a></li>
+<li><a href="#org3501fa0">11.6.7 自旋锁（spin lock）</a></li>
+<li><a href="#orgff0cdc8">11.6.8 屏障（barrier）</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org4b9668e">第十二章 线程控制</a>
+<li><a href="#org5b0d5a3">第十二章 线程控制</a>
 <ul>
-<li><a href="#org337b40f">12.2 线程属性</a></li>
-<li><a href="#org08c88f6">12.4 同步属性</a>
+<li><a href="#org83e951a">12.2 线程属性</a></li>
+<li><a href="#org0c17b3f">12.4 同步属性</a>
 <ul>
-<li><a href="#org5799df9">12.4.1 互斥量属性</a>
+<li><a href="#org221e499">12.4.1 互斥量属性</a>
 <ul>
-<li><a href="#org9d92dc2">共享属性</a></li>
-<li><a href="#org3520ed6">健壮属性</a></li>
-<li><a href="#org12996bf">类型属性</a></li>
+<li><a href="#org802267e">共享属性</a></li>
+<li><a href="#org262c162">健壮属性</a></li>
+<li><a href="#org85b419a">类型属性</a></li>
 </ul>
 </li>
-<li><a href="#orga5efa96">12.4.2 读写锁属性</a></li>
-<li><a href="#orgfa54aef">12.4.3 条件变量属性</a></li>
-<li><a href="#orgdbc6f02">12.4.4 屏障属性</a></li>
+<li><a href="#org378aa7c">12.4.2 读写锁属性</a></li>
+<li><a href="#org80b1d60">12.4.3 条件变量属性</a></li>
+<li><a href="#orgab2d4ef">12.4.4 屏障属性</a></li>
 </ul>
 </li>
-<li><a href="#orgd800725">12.5 重入</a></li>
-<li><a href="#org86381f7">12.6 线程特定数据</a></li>
-<li><a href="#org0885b31">12.7 取消选项</a></li>
-<li><a href="#org2fcf60b">12.8 线程和信号</a></li>
-<li><a href="#orgb97208d">12.9 线程和 fork</a></li>
-<li><a href="#orgff1fc05">12.10 线程和 I/O</a></li>
+<li><a href="#org64ad328">12.5 重入</a></li>
+<li><a href="#org22319df">12.6 线程特定数据</a></li>
+<li><a href="#org65b200d">12.7 取消选项</a></li>
+<li><a href="#orge4800c1">12.8 线程和信号</a></li>
+<li><a href="#orgb5ee8aa">12.9 线程和 fork</a></li>
+<li><a href="#orgadb0224">12.10 线程和 I/O</a></li>
 </ul>
 </li>
-<li><a href="#org04c9832">第十三章 守护进程</a></li>
-<li><a href="#orgb7e530d">第十四章 高级 I/O</a>
+<li><a href="#org8407a05">第十三章 守护进程</a></li>
+<li><a href="#orgff9b08f">第十四章 高级 I/O</a>
 <ul>
-<li><a href="#orgac67eb7">引言</a></li>
-<li><a href="#orgd55fd84">非阻塞 I/O</a></li>
-<li><a href="#orge101e08">记录锁</a></li>
-<li><a href="#orgdb71fa3">I/O 多路转接</a></li>
-<li><a href="#org6cf1c03">异步 I/O</a></li>
-<li><a href="#org2f1864c">函数 readv 和 writev</a></li>
-<li><a href="#org1f0e5f4">函数 readn 和 writen</a></li>
-<li><a href="#org3ab3783">存储映射 I/O</a></li>
+<li><a href="#org98ba13c">引言</a></li>
+<li><a href="#orgad93821">非阻塞 I/O</a></li>
+<li><a href="#org079b1b6">记录锁</a></li>
+<li><a href="#orgd99bcfc">I/O 多路转接</a></li>
+<li><a href="#org0209fbe">异步 I/O</a></li>
+<li><a href="#org7da3d3c">函数 readv 和 writev</a></li>
+<li><a href="#org7cb19fe">函数 readn 和 writen</a></li>
+<li><a href="#orgbe44af4">存储映射 I/O</a></li>
 </ul>
 </li>
-<li><a href="#org6550642">第十五章 进程间通信</a>
+<li><a href="#org8c7aa9f">第十五章 进程间通信</a>
 <ul>
-<li><a href="#org64da88e">管道</a></li>
-<li><a href="#orgd49e2ef">函数 popen 和 pclose</a></li>
-<li><a href="#orgd569b10">协同进程</a></li>
-<li><a href="#org14e60c6">FIFO</a></li>
-<li><a href="#org61886b7">XSI IPC</a></li>
-<li><a href="#org93c8b0c">消息队列</a></li>
-<li><a href="#org7280106">信号量</a></li>
-<li><a href="#org980afc5">共享存储</a></li>
-<li><a href="#orgc37f0ab">POSIX 信号量</a></li>
-<li><a href="#orgdfd2344">客户进程-服务器进程属性</a></li>
+<li><a href="#orge9b3afd">管道</a></li>
+<li><a href="#orgeabd45d">函数 popen 和 pclose</a></li>
+<li><a href="#orgfebdac0">协同进程</a></li>
+<li><a href="#orgf7bde1e">FIFO</a></li>
+<li><a href="#org83b4345">XSI IPC</a></li>
+<li><a href="#org7636396">消息队列</a></li>
+<li><a href="#org64b8d2a">信号量</a></li>
+<li><a href="#orge4d726e">共享存储</a></li>
+<li><a href="#org2aeec10">POSIX 信号量</a></li>
+<li><a href="#org4e800be">客户进程-服务器进程属性</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org827172e" class="outline-2">
-<h2 id="org827172e">第一章 UNIX 基础知识</h2>
-<div class="outline-text-2" id="text-org827172e">
+<div id="outline-container-orgfe1d7f5" class="outline-2">
+<h2 id="orgfe1d7f5">第一章 UNIX 基础知识</h2>
+<div class="outline-text-2" id="text-orgfe1d7f5">
 </div>
-<div id="outline-container-org10708ce" class="outline-3">
-<h3 id="org10708ce">1.2 UNIX 体系结构</h3>
-<div class="outline-text-3" id="text-org10708ce">
+<div id="outline-container-org6687511" class="outline-3">
+<h3 id="org6687511">1.2 UNIX 体系结构</h3>
+<div class="outline-text-3" id="text-org6687511">
 <p>
 操作系统是一种软件，它控制计算机硬件资源，提供程序运行环境。我们称之为“内核（kernel）”。
 </p>
@@ -455,21 +455,21 @@ shell 是一个特殊的 <b>应用程序</b> ，为运行其他应用程序提�
 </p>
 </div>
 </div>
-<div id="outline-container-org05e56dc" class="outline-3">
-<h3 id="org05e56dc">1.4 文件和目录</h3>
-<div class="outline-text-3" id="text-org05e56dc">
+<div id="outline-container-org00e69e9" class="outline-3">
+<h3 id="org00e69e9">1.4 文件和目录</h3>
+<div class="outline-text-3" id="text-org00e69e9">
 <p>
 UNIX 文件系统的大多数实现并不在目录项中存放属性，这是因为当一个文件具有多个硬链接时，很难保持多个属性副本之间的同步。（理解这段话？）
 </p>
 </div>
 </div>
-<div id="outline-container-org5e6b0da" class="outline-3">
-<h3 id="org5e6b0da">1.6 程序和进程</h3>
-<div class="outline-text-3" id="text-org5e6b0da">
+<div id="outline-container-org155d59c" class="outline-3">
+<h3 id="org155d59c">1.6 程序和进程</h3>
+<div class="outline-text-3" id="text-org155d59c">
 </div>
-<div id="outline-container-org8903604" class="outline-4">
-<h4 id="org8903604">fork</h4>
-<div class="outline-text-4" id="text-org8903604">
+<div id="outline-container-org2717b5a" class="outline-4">
+<h4 id="org2717b5a">fork</h4>
+<div class="outline-text-4" id="text-org2717b5a">
 <p>
 The fork() function shall create a new process. The new process (child process) shall be an exact copy of the calling process (parent process) except as detailed below:
 </p>
@@ -727,9 +727,9 @@ After fork(), both the parent and the child processes shall be capable of execut
 </div>
 </div>
 
-<div id="outline-container-org5cf3a7a" class="outline-4">
-<h4 id="org5cf3a7a">execve</h4>
-<div class="outline-text-4" id="text-org5cf3a7a">
+<div id="outline-container-org2a462b1" class="outline-4">
+<h4 id="org2a462b1">execve</h4>
+<div class="outline-text-4" id="text-org2a462b1">
 <p>
 All process attributes are preserved during an execve(), except the following:
 </p>
@@ -952,9 +952,9 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 </div>
-<div id="outline-container-org8642721" class="outline-2">
-<h2 id="org8642721">第七章 进程环境</h2>
-<div class="outline-text-2" id="text-org8642721">
+<div id="outline-container-org7c16a2b" class="outline-2">
+<h2 id="org7c16a2b">第七章 进程环境</h2>
+<div class="outline-text-2" id="text-org7c16a2b">
 <ol class="org-ol">
 <li>main 函数的执行流程（程序员的自我修养）(todo)</li>
 <li>_exit 直接进入内核，exit 先执行标准 I/O 库的清理操作：对所有打开流调用 fclose 函数。</li>
@@ -965,9 +965,9 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org36eeedf" class="outline-2">
-<h2 id="org36eeedf">第八章 进程控制</h2>
-<div class="outline-text-2" id="text-org36eeedf">
+<div id="outline-container-orgd499c30" class="outline-2">
+<h2 id="orgd499c30">第八章 进程控制</h2>
+<div class="outline-text-2" id="text-orgd499c30">
 <ol class="org-ol">
 <li>子进程获得父进程数据空间、堆、栈的副本。使用写时复制技术，这些由父子进程共享，内核将他们的访问权限改变为只读。如果父子进程试图修改这些区域，则内核只为修改区域的那块内存制作一个副本。</li>
 <li>父子进程共享的属性。（L185）不继承：进程 ID，父进程 PID，tms_utime、tms_stime、tms_cutime、tms_ustime、文件锁、未处理的闹钟、未处理信号集。</li>
@@ -977,31 +977,31 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org08de552" class="outline-2">
-<h2 id="org08de552">第八章 进程控制</h2>
+<div id="outline-container-org0ef8ad0" class="outline-2">
+<h2 id="org0ef8ad0">第八章 进程控制</h2>
 </div>
-<div id="outline-container-org1da8c69" class="outline-2">
-<h2 id="org1da8c69">第九章 进程关系</h2>
+<div id="outline-container-org432036c" class="outline-2">
+<h2 id="org432036c">第九章 进程关系</h2>
 </div>
-<div id="outline-container-org8880484" class="outline-2">
-<h2 id="org8880484">第十章 信号</h2>
-<div class="outline-text-2" id="text-org8880484">
+<div id="outline-container-orga7cd988" class="outline-2">
+<h2 id="orga7cd988">第十章 信号</h2>
+<div class="outline-text-2" id="text-orga7cd988">
 </div>
-<div id="outline-container-org3301750" class="outline-3">
-<h3 id="org3301750">引言</h3>
+<div id="outline-container-org0485e7c" class="outline-3">
+<h3 id="org0485e7c">引言</h3>
 </div>
-<div id="outline-container-org286da8b" class="outline-3">
-<h3 id="org286da8b">信号概念</h3>
-<div class="outline-text-3" id="text-org286da8b">
+<div id="outline-container-orgaaf012f" class="outline-3">
+<h3 id="orgaaf012f">信号概念</h3>
+<div class="outline-text-3" id="text-orgaaf012f">
 <p>
 L250:SIGKILL 和 SIGSTOP 是不能被忽略和捕捉的。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orge105c38" class="outline-3">
-<h3 id="orge105c38">函数 signal</h3>
-<div class="outline-text-3" id="text-orge105c38">
+<div id="outline-container-orgdad5c46" class="outline-3">
+<h3 id="orgdad5c46">函数 signal</h3>
+<div class="outline-text-3" id="text-orgdad5c46">
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #ffd700;">script</span> <span style="color: #ff8700;">src</span>=<span style="color: #ff4ea3;">"https://gist.github.com/phenix3443/4b2bad69799ba85096688570f0873f2d.js"</span>&gt;&lt;/<span style="color: #ffd700;">script</span>&gt;
 </pre>
@@ -1016,17 +1016,17 @@ signal 函数的限制：不改变信号的处理方式就不能确定信号的�
 </p>
 </div>
 </div>
-<div id="outline-container-org6184077" class="outline-3">
-<h3 id="org6184077">不可靠的信号</h3>
-<div class="outline-text-3" id="text-org6184077">
+<div id="outline-container-org066046a" class="outline-3">
+<h3 id="org066046a">不可靠的信号</h3>
+<div class="outline-text-3" id="text-org066046a">
 <p>
 不可靠是指信号可能会丢失。
 </p>
 </div>
 </div>
-<div id="outline-container-org3058878" class="outline-3">
-<h3 id="org3058878">中断的系统调用</h3>
-<div class="outline-text-3" id="text-org3058878">
+<div id="outline-container-orgb8ea7a8" class="outline-3">
+<h3 id="orgb8ea7a8">中断的系统调用</h3>
+<div class="outline-text-3" id="text-orgb8ea7a8">
 <p>
 为什么系统调用会被中断？哪些系统调用会被中断？
 </p>
@@ -1058,9 +1058,9 @@ Posix 要求只有中断信号的 <code>SA_RESTART</code> 标识有效时，实�
 </div>
 </div>
 
-<div id="outline-container-org6b42e2d" class="outline-3">
-<h3 id="org6b42e2d">可重入函数</h3>
-<div class="outline-text-3" id="text-org6b42e2d">
+<div id="outline-container-orgd655b00" class="outline-3">
+<h3 id="orgd655b00">可重入函数</h3>
+<div class="outline-text-3" id="text-orgd655b00">
 <p>
 L262:信号处理程序会临时中断正在执行的正常指令序列，等从信号处理函数返回后，继续执行捕获时中断的正常指令序列。
 </p>
@@ -1092,12 +1092,12 @@ L263: 每个线程中 errno 只有一个，因此，作为一个通用的规则�
 </div>
 </div>
 
-<div id="outline-container-org32ba98f" class="outline-3">
-<h3 id="org32ba98f">SIGCLD 语义</h3>
+<div id="outline-container-org151228c" class="outline-3">
+<h3 id="org151228c">SIGCLD 语义</h3>
 </div>
-<div id="outline-container-orgb122230" class="outline-3">
-<h3 id="orgb122230">可靠信号术语和语义</h3>
-<div class="outline-text-3" id="text-orgb122230">
+<div id="outline-container-org5ce65cc" class="outline-3">
+<h3 id="org5ce65cc">可靠信号术语和语义</h3>
+<div class="outline-text-3" id="text-org5ce65cc">
 <p>
 L266: 内核在递送一个原来被阻塞的信号给进程时（而不是在产生该信号时），才决定对他的处理方式。
 </p>
@@ -1115,17 +1115,17 @@ L267:每个进程都有一个信号屏蔽字，它规定了当前要阻塞传递
 </p>
 </div>
 </div>
-<div id="outline-container-orgaf79910" class="outline-3">
-<h3 id="orgaf79910">函数 kill 和 raise</h3>
-<div class="outline-text-3" id="text-orgaf79910">
+<div id="outline-container-orga885b40" class="outline-3">
+<h3 id="orga885b40">函数 kill 和 raise</h3>
+<div class="outline-text-3" id="text-orga885b40">
 <p>
 L268:如果调用 kill 为调用进程产生信号，而且此信号是不被阻塞的，那么在 kill 返回之前，signo 或者其他的未决的、非阻塞信号被传递至该进程。
 </p>
 </div>
 </div>
-<div id="outline-container-orge03bca4" class="outline-3">
-<h3 id="orge03bca4">函数 alerm 和 pause</h3>
-<div class="outline-text-3" id="text-orge03bca4">
+<div id="outline-container-orgf1ca4fa" class="outline-3">
+<h3 id="orgf1ca4fa">函数 alerm 和 pause</h3>
+<div class="outline-text-3" id="text-orgf1ca4fa">
 <p>
 L268:每个进程只能有一个闹钟时间。注意 alarm 函数的参数和返回值的不同配置。
 </p>
@@ -1135,20 +1135,20 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </p>
 </div>
 </div>
-<div id="outline-container-orgf41e6b6" class="outline-3">
-<h3 id="orgf41e6b6">信号集</h3>
+<div id="outline-container-orgdb92ae3" class="outline-3">
+<h3 id="orgdb92ae3">信号集</h3>
 </div>
-<div id="outline-container-org87eb9d0" class="outline-3">
-<h3 id="org87eb9d0">函数 sigprocmask</h3>
-<div class="outline-text-3" id="text-org87eb9d0">
+<div id="outline-container-orgc01a5c4" class="outline-3">
+<h3 id="orgc01a5c4">函数 sigprocmask</h3>
+<div class="outline-text-3" id="text-orgc01a5c4">
 <p>
 设置当前阻塞不能传递给进程的信号集。
 </p>
 </div>
 </div>
-<div id="outline-container-org19ec796" class="outline-3">
-<h3 id="org19ec796">函数 sigpending</h3>
-<div class="outline-text-3" id="text-org19ec796">
+<div id="outline-container-org4a31329" class="outline-3">
+<h3 id="org4a31329">函数 sigpending</h3>
+<div class="outline-text-3" id="text-org4a31329">
 <div class="org-src-container">
 <pre class="src src-c++"><span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;iostream&gt;</span>
 <span style="color: #d18aff;">#include</span> <span style="color: #ff4ea3;">&lt;signal.h&gt;</span>
@@ -1202,9 +1202,9 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </p>
 </div>
 </div>
-<div id="outline-container-orgf692d10" class="outline-3">
-<h3 id="orgf692d10">函数 sigaction</h3>
-<div class="outline-text-3" id="text-orgf692d10">
+<div id="outline-container-org388896f" class="outline-3">
+<h3 id="org388896f">函数 sigaction</h3>
+<div class="outline-text-3" id="text-org388896f">
 <p>
 检查或修改预指定信号相关的处理动作。深入了解 sigaction 结构的 sa_mask 字段。
 </p>
@@ -1238,17 +1238,17 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </div>
 </div>
 </div>
-<div id="outline-container-org485d4a3" class="outline-3">
-<h3 id="org485d4a3">函数 sigsetjump 和 siglongjmp</h3>
-<div class="outline-text-3" id="text-org485d4a3">
+<div id="outline-container-org5188c60" class="outline-3">
+<h3 id="org5188c60">函数 sigsetjump 和 siglongjmp</h3>
+<div class="outline-text-3" id="text-org5188c60">
 <p>
 当捕捉到一个信号时，进入信号捕捉函数，此时当前信号被自动地加入到进程的信号屏蔽字当中。这阻止了后来产生的这种信号中断该信号处理程序。
 </p>
 </div>
 </div>
-<div id="outline-container-org3886846" class="outline-3">
-<h3 id="org3886846">函数 sigsuspend</h3>
-<div class="outline-text-3" id="text-org3886846">
+<div id="outline-container-org00a1ace" class="outline-3">
+<h3 id="org00a1ace">函数 sigsuspend</h3>
+<div class="outline-text-3" id="text-org00a1ace">
 <p>
 如果希望对一个信号解阻塞，然后 pause 等待以前被阻塞的信号发生，该如何作合？使用 sigsuspend 函数可以在一个原子操作中先恢复信号屏蔽字，然后使进程休眠。
 </p>
@@ -1259,32 +1259,32 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </div>
 </div>
 
-<div id="outline-container-org8b30d6a" class="outline-3">
-<h3 id="org8b30d6a">函数 abort</h3>
+<div id="outline-container-org38cf052" class="outline-3">
+<h3 id="org38cf052">函数 abort</h3>
 </div>
-<div id="outline-container-orgfadc913" class="outline-3">
-<h3 id="orgfadc913">函数 system</h3>
+<div id="outline-container-org6c00845" class="outline-3">
+<h3 id="org6c00845">函数 system</h3>
 </div>
-<div id="outline-container-org5f9fb12" class="outline-3">
-<h3 id="org5f9fb12">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></h3>
+<div id="outline-container-org2207168" class="outline-3">
+<h3 id="org2207168">函数 sleep、nanosleep、和 <code>clock_nanosleep</code></h3>
 </div>
-<div id="outline-container-org3820d32" class="outline-3">
-<h3 id="org3820d32">函数 sigqueue</h3>
+<div id="outline-container-org01bcdd1" class="outline-3">
+<h3 id="org01bcdd1">函数 sigqueue</h3>
 </div>
-<div id="outline-container-org1dce7e9" class="outline-3">
-<h3 id="org1dce7e9">作业控制信号</h3>
+<div id="outline-container-org8cd9136" class="outline-3">
+<h3 id="org8cd9136">作业控制信号</h3>
 </div>
-<div id="outline-container-org3b2a03a" class="outline-3">
-<h3 id="org3b2a03a">信号名和编号</h3>
+<div id="outline-container-org1d5890d" class="outline-3">
+<h3 id="org1d5890d">信号名和编号</h3>
 </div>
 </div>
-<div id="outline-container-orgc43ab1b" class="outline-2">
-<h2 id="orgc43ab1b">第十一章 线程</h2>
-<div class="outline-text-2" id="text-orgc43ab1b">
+<div id="outline-container-orgfa8c04b" class="outline-2">
+<h2 id="orgfa8c04b">第十一章 线程</h2>
+<div class="outline-text-2" id="text-orgfa8c04b">
 </div>
-<div id="outline-container-org08163a5" class="outline-3">
-<h3 id="org08163a5">11.2 线程概念</h3>
-<div class="outline-text-3" id="text-org08163a5">
+<div id="outline-container-orgc1a47f6" class="outline-3">
+<h3 id="orgc1a47f6">11.2 线程概念</h3>
+<div class="outline-text-3" id="text-orgc1a47f6">
 <p>
 多个进程需要使用系统提供的复杂机制才能实现内存和文件描述符的共享，而多个线程自动的可以放问相同的存储地址和文件描述符。
 </p>
@@ -1295,9 +1295,9 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </div>
 </div>
 
-<div id="outline-container-org8a293b4" class="outline-3">
-<h3 id="org8a293b4">11.3 线程标识</h3>
-<div class="outline-text-3" id="text-org8a293b4">
+<div id="outline-container-orgef79075" class="outline-3">
+<h3 id="orgef79075">11.3 线程标识</h3>
+<div class="outline-text-3" id="text-orgef79075">
 <ul class="org-ul">
 <li>int pthread_equal(pthread_t t1, pthread_t t2);</li>
 <li>pthread_t pthread_self(void);</li>
@@ -1305,9 +1305,9 @@ L273:在信号处理函数中使用 longjump 要预防它可能和其他信号�
 </div>
 </div>
 
-<div id="outline-container-org0d94613" class="outline-3">
-<h3 id="org0d94613">11.4 线程创建</h3>
-<div class="outline-text-3" id="text-org0d94613">
+<div id="outline-container-org63b2ead" class="outline-3">
+<h3 id="org63b2ead">11.4 线程创建</h3>
+<div class="outline-text-3" id="text-org63b2ead">
 <ul class="org-ul">
 <li>int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
 <ul class="org-ul">
@@ -1343,9 +1343,9 @@ A thread may either be joinable or detached.  If a thread is  joinable, then  an
 </div>
 </div>
 
-<div id="outline-container-orgda672c1" class="outline-3">
-<h3 id="orgda672c1">11.5 线程终止</h3>
-<div class="outline-text-3" id="text-orgda672c1">
+<div id="outline-container-org474de0a" class="outline-3">
+<h3 id="org474de0a">11.5 线程终止</h3>
+<div class="outline-text-3" id="text-org474de0a">
 <ul class="org-ul">
 <li>void pthread_exit(void *rval_ptr);
 <ul class="org-ul">
@@ -1460,9 +1460,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 
 
-<div id="outline-container-org6ca2e66" class="outline-3">
-<h3 id="org6ca2e66">11.6 线程同步</h3>
-<div class="outline-text-3" id="text-org6ca2e66">
+<div id="outline-container-orga24a393" class="outline-3">
+<h3 id="orga24a393">11.6 线程同步</h3>
+<div class="outline-text-3" id="text-orga24a393">
 <p>
 当变量修改时间多于一个存储器访问周期的处理器结构中，当存储器读与写这两个周期交叉时，这种不一致就会出现。（什么是存储器周期？）
 </p>
@@ -1472,9 +1472,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </p>
 </div>
 
-<div id="outline-container-org0fd469f" class="outline-4">
-<h4 id="org0fd469f">11.6.1 互斥量（mutex）</h4>
-<div class="outline-text-4" id="text-org0fd469f">
+<div id="outline-container-org3a2b92d" class="outline-4">
+<h4 id="org3a2b92d">11.6.1 互斥量（mutex）</h4>
+<div class="outline-text-4" id="text-org3a2b92d">
 <p>
 思考：一个线程对资源加锁了，另一个线程不加锁可以访问么？
 </p>
@@ -1505,9 +1505,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 
-<div id="outline-container-org853c412" class="outline-4">
-<h4 id="org853c412">11.6.2 避免死锁</h4>
-<div class="outline-text-4" id="text-org853c412">
+<div id="outline-container-orgdc37e29" class="outline-4">
+<h4 id="orgdc37e29">11.6.2 避免死锁</h4>
+<div class="outline-text-4" id="text-orgdc37e29">
 <p>
 对已有互斥量再次加锁可能会导致死锁。
 </p>
@@ -1522,9 +1522,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 
-<div id="outline-container-org3edf818" class="outline-4">
-<h4 id="org3edf818">11.6.4 读写锁</h4>
-<div class="outline-text-4" id="text-org3edf818">
+<div id="outline-container-org5c5909d" class="outline-4">
+<h4 id="org5c5909d">11.6.4 读写锁</h4>
+<div class="outline-text-4" id="text-org5c5909d">
 <p>
 有三种状态：加读锁，加写锁，不加锁。与互斥量相比，读写锁具有更高的并行性。非常适合于对数据结构读的次数大于写的情况。
 </p>
@@ -1551,9 +1551,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 
-<div id="outline-container-org5a57c81" class="outline-4">
-<h4 id="org5a57c81">11.6.6 条件变量（condition）</h4>
-<div class="outline-text-4" id="text-org5a57c81">
+<div id="outline-container-orgb1dff97" class="outline-4">
+<h4 id="orgb1dff97">11.6.6 条件变量（condition）</h4>
+<div class="outline-text-4" id="text-orgb1dff97">
 <p>
 条件变量是线程可用的另一种 <b>同步机制</b> （不是互斥机制）。条件变量与互斥量一起使用时，允许线程 <b>以无竞争的方式等待特定的条件发生</b> 。
 </p>
@@ -1621,9 +1621,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 </div>
-<div id="outline-container-orgb41ce12" class="outline-4">
-<h4 id="orgb41ce12">11.6.7 自旋锁（spin lock）</h4>
-<div class="outline-text-4" id="text-orgb41ce12">
+<div id="outline-container-org3501fa0" class="outline-4">
+<h4 id="org3501fa0">11.6.7 自旋锁（spin lock）</h4>
+<div class="outline-text-4" id="text-org3501fa0">
 <p>
 自旋锁与互斥量类似，但它不是通过休眠使线程阻塞，而是在获取锁之前一致处于忙等待阻塞状态。自旋锁主要用于以下情况：锁被持有的时间短，而且线程并不希望在重新调度上花费太多的成本。
 </p>
@@ -1665,9 +1665,9 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 
-<div id="outline-container-org8c93f43" class="outline-4">
-<h4 id="org8c93f43">11.6.8 屏障（barrier）</h4>
-<div class="outline-text-4" id="text-org8c93f43">
+<div id="outline-container-orgff0cdc8" class="outline-4">
+<h4 id="orgff0cdc8">11.6.8 屏障（barrier）</h4>
+<div class="outline-text-4" id="text-orgff0cdc8">
 <p>
 屏障是用户协调多个进程并行工作的同步机制。屏障允许每个线程等待，直到所有的合作线程都到达某一点，然后从该点继续执行。
 </p>
@@ -1701,13 +1701,13 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </div>
 </div>
 
-<div id="outline-container-org4b9668e" class="outline-2">
-<h2 id="org4b9668e">第十二章 线程控制</h2>
-<div class="outline-text-2" id="text-org4b9668e">
+<div id="outline-container-org5b0d5a3" class="outline-2">
+<h2 id="org5b0d5a3">第十二章 线程控制</h2>
+<div class="outline-text-2" id="text-org5b0d5a3">
 </div>
-<div id="outline-container-org337b40f" class="outline-3">
-<h3 id="org337b40f">12.2 线程属性</h3>
-<div class="outline-text-3" id="text-org337b40f">
+<div id="outline-container-org83e951a" class="outline-3">
+<h3 id="org83e951a">12.2 线程属性</h3>
+<div class="outline-text-3" id="text-org83e951a">
 <p>
 属性值不能直接设置，须使用相关函数进行操作，初始化的函数为 <code>pthread_attr_init</code> ，这个函数必须在 <code>pthread_create</code> 函数之前调用。之后须用 <code>pthread_attr_destroy</code> 函数来释放资源。线程属性主要包括如下属性：作用域（scope）、栈尺寸（stack size）、栈地址（stack address）、优先级（priority）、分离的状态（detached state）、调度策略和参数（scheduling policy and parameters）。默认的属性为非绑定、非分离、缺省 1M 的堆栈、与父进程同样级别的优先级。
 </p>
@@ -1865,25 +1865,25 @@ POSIX 标准指定了三种调度策略：先入先出策略 (<code>SCHED_FIFO</
 </div>
 </div>
 
-<div id="outline-container-org08c88f6" class="outline-3">
-<h3 id="org08c88f6">12.4 同步属性</h3>
-<div class="outline-text-3" id="text-org08c88f6">
+<div id="outline-container-org0c17b3f" class="outline-3">
+<h3 id="org0c17b3f">12.4 同步属性</h3>
+<div class="outline-text-3" id="text-org0c17b3f">
 </div>
-<div id="outline-container-org5799df9" class="outline-4">
-<h4 id="org5799df9">12.4.1 互斥量属性</h4>
-<div class="outline-text-4" id="text-org5799df9">
+<div id="outline-container-org221e499" class="outline-4">
+<h4 id="org221e499">12.4.1 互斥量属性</h4>
+<div class="outline-text-4" id="text-org221e499">
 </div>
-<div id="outline-container-org9d92dc2" class="outline-5">
-<h5 id="org9d92dc2">共享属性</h5>
-<div class="outline-text-5" id="text-org9d92dc2">
+<div id="outline-container-org802267e" class="outline-5">
+<h5 id="org802267e">共享属性</h5>
+<div class="outline-text-5" id="text-org802267e">
 <p>
 从多个进程彼此间共享的内存数据块中分配的互斥量就可以用于这些进程的同步。
 </p>
 </div>
 </div>
-<div id="outline-container-org3520ed6" class="outline-5">
-<h5 id="org3520ed6">健壮属性</h5>
-<div class="outline-text-5" id="text-org3520ed6">
+<div id="outline-container-org262c162" class="outline-5">
+<h5 id="org262c162">健壮属性</h5>
+<div class="outline-text-5" id="text-org262c162">
 <p>
 与在多个进程间共享的互斥量有关，当持有互斥量的进程终止时，解决互斥量状态恢复的问题。
 </p>
@@ -1918,9 +1918,9 @@ pthread_mutex_init(&amp;c-&gt;lock, &amp;ma);
 </div>
 </div>
 
-<div id="outline-container-org12996bf" class="outline-5">
-<h5 id="org12996bf">类型属性<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h5>
-<div class="outline-text-5" id="text-org12996bf">
+<div id="outline-container-org85b419a" class="outline-5">
+<h5 id="org85b419a">类型属性<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h5>
+<div class="outline-text-5" id="text-org85b419a">
 <p>
 控制互斥量的锁定特性，如错误检查，死锁检测，递归加锁等。
 </p>
@@ -1931,34 +1931,34 @@ L348: <code>pthread_cond_wait</code> 不要使用可递归的互斥互斥量。�
 </div>
 </div>
 </div>
-<div id="outline-container-orga5efa96" class="outline-4">
-<h4 id="orga5efa96">12.4.2 读写锁属性</h4>
-<div class="outline-text-4" id="text-orga5efa96">
+<div id="outline-container-org378aa7c" class="outline-4">
+<h4 id="org378aa7c">12.4.2 读写锁属性</h4>
+<div class="outline-text-4" id="text-org378aa7c">
 <p>
 只支持进程共享属性。
 </p>
 </div>
 </div>
-<div id="outline-container-orgfa54aef" class="outline-4">
-<h4 id="orgfa54aef">12.4.3 条件变量属性</h4>
-<div class="outline-text-4" id="text-orgfa54aef">
+<div id="outline-container-org80b1d60" class="outline-4">
+<h4 id="org80b1d60">12.4.3 条件变量属性</h4>
+<div class="outline-text-4" id="text-org80b1d60">
 <p>
 支持进程共享属性和时钟属性。
 </p>
 </div>
 </div>
-<div id="outline-container-orgdbc6f02" class="outline-4">
-<h4 id="orgdbc6f02">12.4.4 屏障属性</h4>
-<div class="outline-text-4" id="text-orgdbc6f02">
+<div id="outline-container-orgab2d4ef" class="outline-4">
+<h4 id="orgab2d4ef">12.4.4 屏障属性</h4>
+<div class="outline-text-4" id="text-orgab2d4ef">
 <p>
 只支持进程共享属性。
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd800725" class="outline-3">
-<h3 id="orgd800725">12.5 重入</h3>
-<div class="outline-text-3" id="text-orgd800725">
+<div id="outline-container-org64ad328" class="outline-3">
+<h3 id="org64ad328">12.5 重入</h3>
+<div class="outline-text-3" id="text-org64ad328">
 <p>
 如果一个函数在相同的时间点可以被多个线程安全的调用，就称该函数是线程安全的。
 </p>
@@ -1976,9 +1976,9 @@ flockfile 以线程安全的方式来管理 FILE 对象。
 </p>
 </div>
 </div>
-<div id="outline-container-org86381f7" class="outline-3">
-<h3 id="org86381f7">12.6 线程特定数据</h3>
-<div class="outline-text-3" id="text-org86381f7">
+<div id="outline-container-org22319df" class="outline-3">
+<h3 id="org22319df">12.6 线程特定数据</h3>
+<div class="outline-text-3" id="text-org22319df">
 <p>
 为什么需要组织线程数据共享的接口呢？两个原因：
 </p>
@@ -2106,13 +2106,13 @@ flockfile 以线程安全的方式来管理 FILE 对象。
 </div>
 </div>
 
-<div id="outline-container-org0885b31" class="outline-3">
-<h3 id="org0885b31">12.7 取消选项</h3>
+<div id="outline-container-org65b200d" class="outline-3">
+<h3 id="org65b200d">12.7 取消选项</h3>
 </div>
 
-<div id="outline-container-org2fcf60b" class="outline-3">
-<h3 id="org2fcf60b">12.8 线程和信号</h3>
-<div class="outline-text-3" id="text-org2fcf60b">
+<div id="outline-container-orge4800c1" class="outline-3">
+<h3 id="orge4800c1">12.8 线程和信号</h3>
+<div class="outline-text-3" id="text-orge4800c1">
 <p>
 每个线程都有自己的信号屏蔽字，但是信号的处理是进程中所有线程共享的。
 </p>
@@ -2122,9 +2122,9 @@ flockfile 以线程安全的方式来管理 FILE 对象。
 </p>
 </div>
 </div>
-<div id="outline-container-orgb97208d" class="outline-3">
-<h3 id="orgb97208d">12.9 线程和 fork</h3>
-<div class="outline-text-3" id="text-orgb97208d">
+<div id="outline-container-orgb5ee8aa" class="outline-3">
+<h3 id="orgb5ee8aa">12.9 线程和 fork</h3>
+<div class="outline-text-3" id="text-orgb5ee8aa">
 <p>
 在子进程内部，只存在一个线程，它是 <b>由父进程中调用 fork 的线程的副本构成的</b> 。如果父进程中的线程占有锁，子进程将同样占有这些锁。子进程地址空间在创建时就得到了父进程定义的所有锁的副本。问题是 <b>子进程并不包含占有锁的那些线程的副本</b> ，所以子进程没有办法知道它占有了哪些锁、需要释放哪些锁。
 </p>
@@ -2160,9 +2160,9 @@ L368:可以多次调用 <code>pthread_atfork</code> 来设置多套 fork 处理�
 </div>
 </div>
 
-<div id="outline-container-orgff1fc05" class="outline-3">
-<h3 id="orgff1fc05">12.10 线程和 I/O</h3>
-<div class="outline-text-3" id="text-orgff1fc05">
+<div id="outline-container-orgadb0224" class="outline-3">
+<h3 id="orgadb0224">12.10 线程和 I/O</h3>
+<div class="outline-text-3" id="text-orgadb0224">
 <p>
 使用 pread、pwrite 等原子操作来读写文件。
 </p>
@@ -2170,37 +2170,37 @@ L368:可以多次调用 <code>pthread_atfork</code> 来设置多套 fork 处理�
 </div>
 </div>
 
-<div id="outline-container-org04c9832" class="outline-2">
-<h2 id="org04c9832">第十三章 守护进程</h2>
+<div id="outline-container-org8407a05" class="outline-2">
+<h2 id="org8407a05">第十三章 守护进程</h2>
 </div>
-<div id="outline-container-orgb7e530d" class="outline-2">
-<h2 id="orgb7e530d">第十四章 高级 I/O</h2>
-<div class="outline-text-2" id="text-orgb7e530d">
+<div id="outline-container-orgff9b08f" class="outline-2">
+<h2 id="orgff9b08f">第十四章 高级 I/O</h2>
+<div class="outline-text-2" id="text-orgff9b08f">
 </div>
-<div id="outline-container-orgac67eb7" class="outline-3">
-<h3 id="orgac67eb7">引言</h3>
+<div id="outline-container-org98ba13c" class="outline-3">
+<h3 id="org98ba13c">引言</h3>
 </div>
-<div id="outline-container-orgd55fd84" class="outline-3">
-<h3 id="orgd55fd84">非阻塞 I/O</h3>
+<div id="outline-container-orgad93821" class="outline-3">
+<h3 id="orgad93821">非阻塞 I/O</h3>
 </div>
-<div id="outline-container-orge101e08" class="outline-3">
-<h3 id="orge101e08">记录锁</h3>
+<div id="outline-container-org079b1b6" class="outline-3">
+<h3 id="org079b1b6">记录锁</h3>
 </div>
-<div id="outline-container-orgdb71fa3" class="outline-3">
-<h3 id="orgdb71fa3">I/O 多路转接</h3>
+<div id="outline-container-orgd99bcfc" class="outline-3">
+<h3 id="orgd99bcfc">I/O 多路转接</h3>
 </div>
-<div id="outline-container-org6cf1c03" class="outline-3">
-<h3 id="org6cf1c03">异步 I/O</h3>
+<div id="outline-container-org0209fbe" class="outline-3">
+<h3 id="org0209fbe">异步 I/O</h3>
 </div>
-<div id="outline-container-org2f1864c" class="outline-3">
-<h3 id="org2f1864c">函数 readv 和 writev</h3>
+<div id="outline-container-org7da3d3c" class="outline-3">
+<h3 id="org7da3d3c">函数 readv 和 writev</h3>
 </div>
-<div id="outline-container-org1f0e5f4" class="outline-3">
-<h3 id="org1f0e5f4">函数 readn 和 writen</h3>
+<div id="outline-container-org7cb19fe" class="outline-3">
+<h3 id="org7cb19fe">函数 readn 和 writen</h3>
 </div>
-<div id="outline-container-org3ab3783" class="outline-3">
-<h3 id="org3ab3783">存储映射 I/O</h3>
-<div class="outline-text-3" id="text-org3ab3783">
+<div id="outline-container-orgbe44af4" class="outline-3">
+<h3 id="orgbe44af4">存储映射 I/O</h3>
+<div class="outline-text-3" id="text-orgbe44af4">
 <p>
 L423:对指定映射存储区的保护要求不能超过文件 open 模式访问权限。映射存储区位于堆和栈之间：这属于实现袭击额，各种实现之间可能不同。
 </p>
@@ -2211,13 +2211,13 @@ L425:修改的页并不会立即写回到文件中。何时写回由内核的守
 </div>
 </div>
 </div>
-<div id="outline-container-org6550642" class="outline-2">
-<h2 id="org6550642">第十五章 进程间通信</h2>
-<div class="outline-text-2" id="text-org6550642">
+<div id="outline-container-org8c7aa9f" class="outline-2">
+<h2 id="org8c7aa9f">第十五章 进程间通信</h2>
+<div class="outline-text-2" id="text-org8c7aa9f">
 </div>
-<div id="outline-container-org64da88e" class="outline-3">
-<h3 id="org64da88e">管道</h3>
-<div class="outline-text-3" id="text-org64da88e">
+<div id="outline-container-orge9b3afd" class="outline-3">
+<h3 id="orge9b3afd">管道</h3>
+<div class="outline-text-3" id="text-orge9b3afd">
 <p>
 管道的局限性：半双工和只能在具有公共祖先的两个进程间使用。
 </p>
@@ -2255,21 +2255,21 @@ L425:修改的页并不会立即写回到文件中。何时写回由内核的守
 </div>
 </div>
 </div>
-<div id="outline-container-orgd49e2ef" class="outline-3">
-<h3 id="orgd49e2ef">函数 popen 和 pclose</h3>
+<div id="outline-container-orgeabd45d" class="outline-3">
+<h3 id="orgeabd45d">函数 popen 和 pclose</h3>
 </div>
 
-<div id="outline-container-orgd569b10" class="outline-3">
-<h3 id="orgd569b10">协同进程</h3>
+<div id="outline-container-orgfebdac0" class="outline-3">
+<h3 id="orgfebdac0">协同进程</h3>
 </div>
 
-<div id="outline-container-org14e60c6" class="outline-3">
-<h3 id="org14e60c6">FIFO</h3>
+<div id="outline-container-orgf7bde1e" class="outline-3">
+<h3 id="orgf7bde1e">FIFO</h3>
 </div>
 
-<div id="outline-container-org61886b7" class="outline-3">
-<h3 id="org61886b7">XSI IPC</h3>
-<div class="outline-text-3" id="text-org61886b7">
+<div id="outline-container-org83b4345" class="outline-3">
+<h3 id="org83b4345">XSI IPC</h3>
+<div class="outline-text-3" id="text-org83b4345">
 <p>
 每个内核中的 IPC 结构都使用一个非负整数的标识符加以引用。标识符是 IPC 对象的内部名，与每个 IPC 对象关联的 key 是其外部名。
 </p>
@@ -2284,18 +2284,18 @@ XSI IPC 有下列问题：
 </div>
 </div>
 
-<div id="outline-container-org93c8b0c" class="outline-3">
-<h3 id="org93c8b0c">消息队列</h3>
-<div class="outline-text-3" id="text-org93c8b0c">
+<div id="outline-container-org7636396" class="outline-3">
+<h3 id="org7636396">消息队列</h3>
+<div class="outline-text-3" id="text-org7636396">
 <p>
 最后总结：在新的应用程序中不要使用消息队列。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org7280106" class="outline-3">
-<h3 id="org7280106">信号量</h3>
-<div class="outline-text-3" id="text-org7280106">
+<div id="outline-container-org64b8d2a" class="outline-3">
+<h3 id="org64b8d2a">信号量</h3>
+<div class="outline-text-3" id="text-org64b8d2a">
 <p>
 信号量是一个计数器，用于为多个进程提供对共享数据的访问。
 </p>
@@ -2306,20 +2306,20 @@ XSI IPC 有下列问题：
 </div>
 </div>
 
-<div id="outline-container-org980afc5" class="outline-3">
-<h3 id="org980afc5">共享存储</h3>
-<div class="outline-text-3" id="text-org980afc5">
+<div id="outline-container-orge4d726e" class="outline-3">
+<h3 id="orge4d726e">共享存储</h3>
+<div class="outline-text-3" id="text-orge4d726e">
 <p>
 共享存储快是因为数据不需要在进程间复制。
 </p>
 </div>
 </div>
-<div id="outline-container-orgc37f0ab" class="outline-3">
-<h3 id="orgc37f0ab">POSIX 信号量</h3>
+<div id="outline-container-org2aeec10" class="outline-3">
+<h3 id="org2aeec10">POSIX 信号量</h3>
 </div>
 
-<div id="outline-container-orgdfd2344" class="outline-3">
-<h3 id="orgdfd2344">客户进程-服务器进程属性</h3>
+<div id="outline-container-org4e800be" class="outline-3">
+<h3 id="org4e800be">客户进程-服务器进程属性</h3>
 </div>
 </div>
 <div id="footnotes">
@@ -2336,7 +2336,7 @@ XSI IPC 有下列问题：
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-27 二 20:44</p>
+<p class="date">Created: 2019-08-27 二 20:50</p>
 <p class="validation"></p>
 </div>
 </body>
