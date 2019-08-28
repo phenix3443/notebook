@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-27 二 20:43 -->
+<!-- 2019-08-28 三 09:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>thpool</title>
@@ -318,7 +318,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org9d40363">4.1. 为什么 pthread_exit()不用于退出线程？</a></li>
 <li><a href="#org4ab410f">4.2. 为什么在调用 thpool_destroy()之后使用 sleep()？</a></li>
-<li><a href="#orgb972553">4.3. 为什么 wait()使用我所有的 CPU？</a></li>
+<li><a href="#orgb19d97c">4.3. 为什么 wait()使用所有的 CPU？</a></li>
 </ul>
 </li>
 </ul>
@@ -379,8 +379,8 @@ thread_do 曾经使用过 pthread_exit()，但这使得难于测试内存泄漏�
 </div>
 </div>
 
-<div id="outline-container-orgb972553" class="outline-3">
-<h3 id="orgb972553"><span class="section-number-3">4.3</span> 为什么 wait()使用我所有的 CPU？</h3>
+<div id="outline-container-orgb19d97c" class="outline-3">
+<h3 id="orgb19d97c"><span class="section-number-3">4.3</span> 为什么 wait()使用所有的 CPU？</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 注意：截至 2015 年 12 月 11 日，wait()不再使用轮询。而是使用条件变量，因此理论上不应该有任何 CPU 开销。
@@ -405,7 +405,7 @@ wait()以这种方式工作的原因是，有时它用于想要等待一些计�
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-27 二 20:43</p>
+<p class="date">Created: 2019-08-28 三 09:48</p>
 <p class="validation"></p>
 </div>
 </body>

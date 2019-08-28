@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:43 -->
+<!-- 2019-08-28 三 09:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>golang mysql实践</title>
+<title>mysql</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="刘尚亮" />
 <style type="text/css">
@@ -306,7 +306,7 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">golang mysql实践</h1>
+<h1 class="title">mysql</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -322,7 +322,7 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#orgf478c7a">6. 事务</a></li>
-<li><a href="#org53fd848">7. Null处理</a></li>
+<li><a href="#org387bec7">7. Null 处理</a></li>
 </ul>
 </div>
 </div>
@@ -331,7 +331,7 @@ for the JavaScript code in this tag.
 <h2 id="org893ddac"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-golang中的数据库主要是用到了database/sql包，但是这个包指示提供了sql的操作接口，具体的sql驱动还需要额外的包提供，比如github.com/go-sql-driver/mysql。
+golang 中的数据库主要是用到了 database/sql 包，但是这个包指示提供了 sql 的操作接口，具体的 sql 驱动还需要额外的包提供，比如 github.com/go-sql-driver/mysql。
 </p>
 </div>
 </div>
@@ -347,7 +347,7 @@ golang中的数据库主要是用到了database/sql包，但是这个包指示�
 </pre>
 </div>
 <p>
-分别导入sql操作接口和mysql驱动。
+分别导入 sql 操作接口和 mysql 驱动。
 </p>
 </div>
 </div>
@@ -373,7 +373,7 @@ golang中的数据库主要是用到了database/sql包，但是这个包指示�
 </div>
 
 <p>
-DB对象代表了和数据数据库的连接池。sql包会自动创建和释放链接。   open接口仅验证参数是否正确，并不会创建和数据库的链接。为了确认可以进行链接，需要调用Ping命令。
+DB 对象代表了和数据数据库的连接池。sql 包会自动创建和释放链接。   open 接口仅验证参数是否正确，并不会创建和数据库的链接。为了确认可以进行链接，需要调用 Ping 命令。
 </p>
 </div>
 </div>
@@ -391,7 +391,7 @@ count, _ := res.<span style="color: #ffd700;">RowsAffected</span>()
 </pre>
 </div>
 <p>
-(*DB).Exec处理不需要任何返回的查询，例如INSERT, UPDATE, DELETE。
+(*DB).Exec 处理不需要任何返回的查询，例如 INSERT, UPDATE, DELETE。
 </p>
 </div>
 </div>
@@ -444,7 +444,7 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 </p>
 <ul class="org-ul">
 <li>检查遍历是否有 error</li>
-<li>defer rows.Close()非常重要。结果集 (rows) 未关闭前，底层的连接处于繁忙状态。当遍历读到最后一条记录时，会发生一个内部 EOF 错误，自动调用rows.Close()，但是如果提前退出循环，rows 不会关闭，连接不会回到连接池中，连接也不会关闭。所以手动关闭非常重要。rows.Close()可以多次调用，是无害操作。</li>
+<li>defer rows.Close()非常重要。结果集 (rows) 未关闭前，底层的连接处于繁忙状态。当遍历读到最后一条记录时，会发生一个内部 EOF 错误，自动调用 rows.Close()，但是如果提前退出循环，rows 不会关闭，连接不会回到连接池中，连接也不会关闭。所以手动关闭非常重要。rows.Close()可以多次调用，是无害操作。</li>
 </ul>
 </div>
 </div>
@@ -461,11 +461,11 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 </div>
 
 
-<div id="outline-container-org53fd848" class="outline-2">
-<h2 id="org53fd848"><span class="section-number-2">7</span> Null处理</h2>
+<div id="outline-container-org387bec7" class="outline-2">
+<h2 id="org387bec7"><span class="section-number-2">7</span> Null 处理</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-自定义了数据类型，比如，NullBool表示该字段是bool类型，但是有可能设置为null。简单说就是设计数据库的时候不要出现 null，处理起来非常费力。Null 的 type 很有限，例如没有sql.NullUint64; null 值没有默认零值。
+自定义了数据类型，比如，NullBool 表示该字段是 bool 类型，但是有可能设置为 null。简单说就是设计数据库的时候不要出现 null，处理起来非常费力。Null 的 type 很有限，例如没有 sql.NullUint64; null 值没有默认零值。
 </p>
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #a1db00;">var</span> content sql.NullString
@@ -486,7 +486,7 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:43</p>
+<p class="date">Created: 2019-08-28 三 09:49</p>
 <p class="validation"></p>
 </div>
 </body>
