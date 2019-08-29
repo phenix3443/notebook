@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-28 三 09:48 -->
+<!-- 2019-08-28 三 10:32 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>《UNIX 高级环境编程（第三版）》笔记</title>
@@ -324,12 +324,11 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#org7c16a2b">第七章 进程环境</a></li>
-<li><a href="#org0ef8ad0">第八章 进程控制</a></li>
 <li><a href="#org13fbf24">第八章 进程控制</a></li>
 <li><a href="#org432036c">第九章 进程关系</a></li>
 <li><a href="#orga7cd988">第十章 信号</a>
 <ul>
-<li><a href="#org98ba13c">引言</a></li>
+<li><a href="#orgd52a1cb">引言</a></li>
 <li><a href="#orgaaf012f">信号概念</a></li>
 <li><a href="#orgdad5c46">函数 signal</a></li>
 <li><a href="#org066046a">不可靠的信号</a></li>
@@ -399,7 +398,7 @@ for the JavaScript code in this tag.
 <li><a href="#org8407a05">第十三章 守护进程</a></li>
 <li><a href="#orgff9b08f">第十四章 高级 I/O</a>
 <ul>
-<li><a href="#orgd52a1cb">引言</a></li>
+<li><a href="#orgd1b0d64">引言</a></li>
 <li><a href="#orgad93821">非阻塞 I/O</a></li>
 <li><a href="#org079b1b6">记录锁</a></li>
 <li><a href="#orgd99bcfc">I/O 多路转接</a></li>
@@ -965,9 +964,9 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org0ef8ad0" class="outline-2">
-<h2 id="org0ef8ad0">第八章 进程控制</h2>
-<div class="outline-text-2" id="text-org0ef8ad0">
+<div id="outline-container-org13fbf24" class="outline-2">
+<h2 id="org13fbf24">第八章 进程控制</h2>
+<div class="outline-text-2" id="text-org13fbf24">
 <ol class="org-ol">
 <li>子进程获得父进程数据空间、堆、栈的副本。使用写时复制技术，这些由父子进程共享，内核将他们的访问权限改变为只读。如果父子进程试图修改这些区域，则内核只为修改区域的那块内存制作一个副本。</li>
 <li>父子进程共享的属性。（L185）不继承：进程 ID，父进程 PID，tms_utime、tms_stime、tms_cutime、tms_ustime、文件锁、未处理的闹钟、未处理信号集。</li>
@@ -977,9 +976,6 @@ By default, file descriptors remain open across an execve(). File descriptors th
 </div>
 </div>
 
-<div id="outline-container-org13fbf24" class="outline-2">
-<h2 id="org13fbf24">第八章 进程控制</h2>
-</div>
 <div id="outline-container-org432036c" class="outline-2">
 <h2 id="org432036c">第九章 进程关系</h2>
 </div>
@@ -987,8 +983,8 @@ By default, file descriptors remain open across an execve(). File descriptors th
 <h2 id="orga7cd988">第十章 信号</h2>
 <div class="outline-text-2" id="text-orga7cd988">
 </div>
-<div id="outline-container-org98ba13c" class="outline-3">
-<h3 id="org98ba13c">引言</h3>
+<div id="outline-container-orgd52a1cb" class="outline-3">
+<h3 id="orgd52a1cb">引言</h3>
 </div>
 <div id="outline-container-orgaaf012f" class="outline-3">
 <h3 id="orgaaf012f">信号概念</h3>
@@ -1579,24 +1575,20 @@ Either  pthread_join(3)  or  pthread_detach() should be called for each thread t
 </p>
 
 <p>
-<code>pthread_cond_wait</code> 返回时，线程需要重新计算条件，所以互斥量再次被锁住。
-</p>
-
-<p>
-上面线程代码使用了 pthread_cond_wait(&amp;cond,&amp;mutex); 在条件变量上休眠等待主线程发送信号过来。 那么就存在一个问题：假想一下，当主线程发送信号过来后。在子线程 在 <code>pthread_cond_wait</code> 上等待发现信号发过来了，那么子线程将醒来并运行（注意这个时候 pthread_cond_wait 还未返回，那么锁是释放的，因为 <code>pthread_cond_wait</code> 在等待是会释放锁，返回时才会重新获得锁），那么如果这时候另一个线程改变了 i，但是切换到子线程时他并不知情，它会仍旧认为条件是满足的。也就是说我们不应该仅仅依靠 <code>pthread_cond_wait</code> 的返回就认为条件满足。
+上面线程代码使用了 pthread_cond_wait(&amp;cond,&amp;mutex); 在条件变量上休眠等待主线程发送信号过来。 那么就存在一个问题：假想一下，当主线程发送信号过来后。在子线程 在 <code>pthread_cond_wait</code> 上等待发现信号发过来了，那么子线程将醒来并运行（注意这个时候 pthread_cond_wait 还未返回，那么锁是释放的，因为 <code>pthread_cond_wait</code> 在等待时会释放锁，返回时才会重新获得锁），那么如果这时候另一个线程改变了 i，但是切换到子线程时他并不知情，它会仍旧认为条件是满足的。也就是说我们不应该仅仅依靠 <code>pthread_cond_wait</code> 的返回就认为条件满足。 * <code>pthread_cond_wait</code> 返回时，线程需要重新计算条件，所以互斥量再次被锁住。*
 </p>
 
 <p>
 等待信号端代码：
 </p>
 <div class="org-src-container">
-<pre class="src src-c">        pthread_mutex_lock(&amp;mutex); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#24517;&#39035;&#20808;&#38145;&#20303;&#26465;&#20214;&#65292;&#28982;&#21518;&#25165;&#33021;&#21028;&#26029;</span>
-        <span style="color: #a1db00;">while</span>(condition is <span style="color: #00d7af;">not</span> <span style="color: #ff8700;">match</span>) { <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#36827;&#34892;&#26465;&#20214;&#19981;&#28385;&#36275;&#21028;&#26029;&#65292;&#27880;&#24847;&#19981;&#35201;&#20351;&#29992; if&#65292;&#20174; wait &#36820;&#22238;&#20043;&#21518;&#36824;&#38656;&#35201;&#36827;&#34892;&#26465;&#20214;&#21028;&#26029;</span>
-                pthread_cond_wait(&amp;cond, &amp;mutex);
-        }
-        <span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#22312;&#36825;&#37324;&#20570;&#19968;&#20123;&#20462;&#25913;&#26465;&#20214;&#30340;&#25805;&#20316; </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
+<pre class="src src-c">pthread_mutex_lock(&amp;mutex); <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#24517;&#39035;&#20808;&#38145;&#20303;&#26465;&#20214;&#65292;&#28982;&#21518;&#25165;&#33021;&#21028;&#26029;</span>
+<span style="color: #a1db00;">while</span>(condition is <span style="color: #00d7af;">not</span> <span style="color: #ff8700;">match</span>) { <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">&#36827;&#34892;&#26465;&#20214;&#19981;&#28385;&#36275;&#21028;&#26029;&#65292;&#27880;&#24847;&#19981;&#35201;&#20351;&#29992; if&#65292;&#20174; wait &#36820;&#22238;&#20043;&#21518;&#36824;&#38656;&#35201;&#36827;&#34892;&#26465;&#20214;&#21028;&#26029;</span>
+    pthread_cond_wait(&amp;cond, &amp;mutex);
+ }
+<span style="color: #6c6c6c; font-style: italic;">/* </span><span style="color: #6c6c6c; font-style: italic;">&#22312;&#36825;&#37324;&#20570;&#19968;&#20123;&#20462;&#25913;&#26465;&#20214;&#30340;&#25805;&#20316; </span><span style="color: #6c6c6c; font-style: italic;">*/</span>
 
-        pthread_mutex_unlock(&amp;mutex);
+pthread_mutex_unlock(&amp;mutex);
 </pre>
 </div>
 
@@ -1686,7 +1678,6 @@ pthread_cond_signal(&amp;cond);
 </div>
 </div>
 </div>
-
 
 <div id="outline-container-org5b0d5a3" class="outline-2">
 <h2 id="org5b0d5a3">第十二章 线程控制</h2>
@@ -2164,8 +2155,8 @@ L368:可以多次调用 <code>pthread_atfork</code> 来设置多套 fork 处理�
 <h2 id="orgff9b08f">第十四章 高级 I/O</h2>
 <div class="outline-text-2" id="text-orgff9b08f">
 </div>
-<div id="outline-container-orgd52a1cb" class="outline-3">
-<h3 id="orgd52a1cb">引言</h3>
+<div id="outline-container-orgd1b0d64" class="outline-3">
+<h3 id="orgd1b0d64">引言</h3>
 </div>
 <div id="outline-container-orgad93821" class="outline-3">
 <h3 id="orgad93821">非阻塞 I/O</h3>
@@ -2323,7 +2314,7 @@ XSI IPC 有下列问题：
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-28 三 09:48</p>
+<p class="date">Created: 2019-08-28 三 10:32</p>
 <p class="validation"></p>
 </div>
 </body>

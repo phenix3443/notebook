@@ -6,7 +6,7 @@
 <!-- 2019-08-29 四 16:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>libcurl</title>
+<title>httpbin</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,150 +306,48 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">libcurl</h1>
+<h1 class="title">httpbin</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5e7cb9f">1. 概述</a></li>
-<li><a href="#orgc3c0ddf">2. 使用</a>
-<ul>
-<li><a href="#org5f70b58">2.1. curl_global_init</a></li>
-<li><a href="#orgecdf4f4">2.2. curl_global_cleanup</a></li>
-<li><a href="#orge125e3a">2.3. curl_global_sslset</a></li>
-</ul>
-</li>
-<li><a href="#org3086fb9">3. easy interface</a>
-<ul>
-<li><a href="#org07c96f3">3.1. curl_easy_init</a></li>
-<li><a href="#orgd7844a3">3.2. curl_easy_setopt</a></li>
-<li><a href="#orge0a77b3">3.3. curl_easy_perform</a></li>
-<li><a href="#org79a39d0">3.4. curl_easy_reset</a></li>
-</ul>
-</li>
-<li><a href="#org6553179">4. multi interface</a></li>
-<li><a href="#org1eb8185">5. share interface</a></li>
+<li><a href="#orge932c0d">1. 概述</a></li>
+<li><a href="#org42ecd43">2. 使用</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org5e7cb9f" class="outline-2">
-<h2 id="org5e7cb9f"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-orge932c0d" class="outline-2">
+<h2 id="orge932c0d"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://curl.haxx.se/libcurl/">libcurl</a> 是一个免费且易于使用的客户端 URL 传输库，支持 DICT，FILE，FTP，FTPS，Gopher，HTTP，HTTPS，IMAP，IMAPS，LDAP，LDAPS，POP3，POP3S，RTMP，RTSP，SCP， SFTP，SMTP ，SMTPS，Telnet 和 TFTP。 libcurl 支持 SSL 证书，HTTP POST，HTTP PUT，FTP 上传，基于 HTTP 表单的上传，代理，cookie，用户 密码验证（基本，摘要，NTLM，协商，Kerberos），文件传输恢复，http 代理隧道等等！
-</p>
-
-<p>
-libcurl 具有高度可移植性，可在多种平台上构建和工作，包括 Solaris，NetBSD，FreeBSD，OpenBSD，Darwin，HPUX，IRIX，AIX，Tru64，Linux，UnixWare，HURD，Windows，Amiga，OS / 2， BeOs，Mac OS X，Ultrix，QNX，OpenVMS，RISC OS，Novell NetWare，DOS 等&#x2026;&#x2026;
-</p>
-
-<p>
-libcurl 是免费的，线程安全的，IPv6 兼容的，功能丰富的，支持良好的，快速的，完整的文档，并且已经被许多已知的，大型和成功的公司使用。
-</p>
-
-<p>
-libcurl 首先引入了所谓的 easy 接口。 easy 接口中的所有操作都以'curl_easy'为前缀。 easy 接口允许您使用同步和阻塞函数调用进行单次传输。
-</p>
-
-<p>
-libcurl 还提供了另一个接口，允许在单个线程中进行多个同时传输，即所谓的 multi 接口。
+<a href="https://httpbin.org/">httpbin</a> 可以返回自己请求的参数，类似 echo 服务器，但是功能更加强大。不仅可以查看所有的 http 动作，还可以查看 url 跳转等。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc3c0ddf" class="outline-2">
-<h2 id="orgc3c0ddf"><span class="section-number-2">2</span> 使用</h2>
+<div id="outline-container-org42ecd43" class="outline-2">
+<h2 id="org42ecd43"><span class="section-number-2">2</span> 使用</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-示例代码放在 <a href="https://curl.haxx.se/libcurl/c/example.html">https://curl.haxx.se/libcurl/c/example.html</a>
+使用 docker 安装，
 </p>
-</div>
-
-<div id="outline-container-org5f70b58" class="outline-3">
-<h3 id="org5f70b58"><span class="section-number-3">2.1</span> curl_global_init</h3>
-</div>
-
-<div id="outline-container-orgecdf4f4" class="outline-3">
-<h3 id="orgecdf4f4"><span class="section-number-3">2.2</span> curl_global_cleanup</h3>
-</div>
-
-<div id="outline-container-orge125e3a" class="outline-3">
-<h3 id="orge125e3a"><span class="section-number-3">2.3</span> curl_global_sslset</h3>
-</div>
-</div>
-
-
-<div id="outline-container-org3086fb9" class="outline-2">
-<h2 id="org3086fb9"><span class="section-number-2">3</span> easy interface</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-当使用 libcurl 的“easy”接口时，可以初始化会话并获得一个句柄（通常称为“简单句柄”），可以将其用作使用的 easy 接口函数的输入。使用 curl_easy_init 获取句柄。
-</p>
+<pre class="example">
+docker pull kennethreitz/httpbin
+docker run -d --restart=always --name=httpbin -p 1234:80 kennethreitz/httpbin
+</pre>
 
 <p>
-继续在即将进行的传输中设置所需的所有选项，其中最重要的是 URL 本身（如果没有指定的 URL，无法传输任何内容）。可能还想设置一些回调，这些回调将在数据可用时从库中调用等等。所有这些都使用了 curl_easy_setopt。
+然后配置 <code>/etc/hosts</code> 本地域名
 </p>
+<pre class="example">
+127.0.0.1 myhttpbin.org
+</pre>
 
-<p>
-CURLOPT_URL 是必须设置的唯一选项，否则无法进行传输。另一个常用的选项是 CURLOPT_VERBOSE，它可以帮助了解 libcurl 正在做什么，在调试时非常有用。 curl_easy_setopt 手册页包含 200 多个可用选项的完整索引。
-</p>
-
-<p>
-如果在任何时候想要删除所有先前设置的单个简易句柄选项，可以调用 curl_easy_reset，还可以使用 curl_easy_duphandle 复制一个简单句柄（包含所有设置选项）。
-</p>
-
-<p>
-当时设置完成后，告诉 libcurl 使用 curl_easy_perform 执行传输。然后它将完成整个操作，并且在完成之前不会返回（成功与否）。
-</p>
-
-<p>
-传输完成后，可以设置新选项并进行另一次传输，或者如果已完成传输，请通过调用 curl_easy_cleanup 来清理会话。如果想要持久连接，则不要立即清理，而是使用相同的简单句柄继续运行并执行其他传输。
-</p>
+<div class="org-src-container">
+<pre class="src src-sh">curl -i http://myhttpbin.org:1234/get
+</pre>
 </div>
-
-<div id="outline-container-org07c96f3" class="outline-3">
-<h3 id="org07c96f3"><span class="section-number-3">3.1</span> curl_easy_init</h3>
-</div>
-
-<div id="outline-container-orgd7844a3" class="outline-3">
-<h3 id="orgd7844a3"><span class="section-number-3">3.2</span> curl_easy_setopt</h3>
-</div>
-
-<div id="outline-container-orge0a77b3" class="outline-3">
-<h3 id="orge0a77b3"><span class="section-number-3">3.3</span> curl_easy_perform</h3>
-</div>
-
-<div id="outline-container-org79a39d0" class="outline-3">
-<h3 id="org79a39d0"><span class="section-number-3">3.4</span> curl_easy_reset</h3>
-</div>
-</div>
-
-<div id="outline-container-org6553179" class="outline-2">
-<h2 id="org6553179"><span class="section-number-2">4</span> multi interface</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-multi 接口提供了 easy 接口不具备的多种功能。主要是：
-</p>
-<ol class="org-ol">
-<li>启用“pull”接口。使用 libcurl 的应用程序决定在何时何地要求 libcurl 获取/发送数据。</li>
-<li>在同一个线程中同时启用多个传输，而不会使应用程序变得复杂。</li>
-<li>使应用程序同时等待其自己的文件描述符和 curl 的文件描述符上的操作。</li>
-<li>启用基于事件的处理和扩展传输，最多可达数千个并行连接。</li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-org1eb8185" class="outline-2">
-<h2 id="org1eb8185"><span class="section-number-2">5</span> share interface</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-share 接口用于 curl“句柄”之间的数据共享。
-</p>
-
-<p>
-可以在多个 easy 句柄之间共享数据。更新并使用相同的 cookie 数据库，DNS 缓存，TLS 会话缓存和/或连接缓存！这样，每次传输都将利用其他传输所做的数据更新。
-</p>
 </div>
 </div>
 </div>
