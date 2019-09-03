@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-15 四 17:05 -->
+<!-- 2019-09-03 二 11:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>c 语言特性</title>
@@ -339,7 +339,7 @@ for the JavaScript code in this tag.
 <li><a href="#org875f1de">1.2.4.3. 关系运算符</a></li>
 <li><a href="#org028a90c">1.2.4.4. 逻辑运算符</a></li>
 <li><a href="#org1f9ce64">1.2.4.5. 赋值运算符</a></li>
-<li><a href="#orgf60dd48">1.2.4.6. 其他</a></li>
+<li><a href="#orgae93354">1.2.4.6. 其他</a></li>
 </ul>
 </li>
 </ul>
@@ -371,22 +371,12 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgc286522">2.1. 整型</a></li>
 <li><a href="#org4e1dcd3">2.2. 浮点型</a></li>
-<li><a href="#orgecd1d09">2.3. 复数</a></li>
-<li><a href="#org7b319e2">2.4. 字符</a></li>
-<li><a href="#org483f0cd">2.5. 布尔</a></li>
-<li><a href="#org4498328">2.6. 空类型</a></li>
-<li><a href="#org8794f52">2.7. 存储类型</a></li>
-<li><a href="#orgd424c7a">2.8. 复合类型</a></li>
-<li><a href="#org155bbe0">2.9. 自定义</a>
-<ul>
-<li><a href="#org70362ec">2.9.1. 类型别名</a></li>
-</ul>
-</li>
-<li><a href="#orgde7ac8c">2.10. 类型转换</a>
-<ul>
-<li><a href="#orgc09b3be">2.10.1. 自动转换</a></li>
-</ul>
-</li>
+<li><a href="#org8930921">2.3. 指针</a></li>
+<li><a href="#orgd424c7a">2.4. 复合类型</a></li>
+<li><a href="#orgecd1d09">2.5. 复数</a></li>
+<li><a href="#org8794f52">2.6. 存储类型</a></li>
+<li><a href="#org822023f">2.7. 作用域</a></li>
+<li><a href="#orgde7ac8c">2.8. 类型转换</a></li>
 </ul>
 </li>
 <li><a href="#org47b15e7">3. 数据结构</a>
@@ -398,7 +388,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgbda1f79">4. 错误处理</a></li>
 <li><a href="#org14fc97f">5. 高级特性</a></li>
-<li><a href="#orgae93354">6. 其他</a>
+<li><a href="#orgf89f99b">6. 其他</a>
 <ul>
 <li><a href="#org8984b0d">6.1. 内建宏</a></li>
 </ul>
@@ -561,8 +551,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf60dd48" class="outline-5">
-<h5 id="orgf60dd48"><span class="section-number-5">1.2.4.6</span> 其他</h5>
+<div id="outline-container-orgae93354" class="outline-5">
+<h5 id="orgae93354"><span class="section-number-5">1.2.4.6</span> 其他</h5>
 <div class="outline-text-5" id="text-1-2-4-6">
 <div class="org-src-container">
 <pre class="src src-c">?:
@@ -666,106 +656,74 @@ for the JavaScript code in this tag.
 <div id="outline-container-orgc286522" class="outline-3">
 <h3 id="orgc286522"><span class="section-number-3">2.1</span> 整型</h3>
 <div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">short</span> <span style="color: #00d7af;">int</span> <span style="color: #00d7af;">long</span>  <span style="color: #00d7af;">signed</span>, <span style="color: #00d7af;">unsigned</span>
-</pre>
-</div>
+<ul class="org-ul">
+<li>char int  bool</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org4e1dcd3" class="outline-3">
 <h3 id="org4e1dcd3"><span class="section-number-3">2.2</span> 浮点型</h3>
 <div class="outline-text-3" id="text-2-2">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">float</span> <span style="color: #00d7af;">double</span>
-</pre>
-</div>
+<ul class="org-ul">
+<li>double float</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orgecd1d09" class="outline-3">
-<h3 id="orgecd1d09"><span class="section-number-3">2.3</span> 复数</h3>
+<div id="outline-container-org8930921" class="outline-3">
+<h3 id="org8930921"><span class="section-number-3">2.3</span> 指针</h3>
 <div class="outline-text-3" id="text-2-3">
-<div class="org-src-container">
-<pre class="src src-c">_complex
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org7b319e2" class="outline-3">
-<h3 id="org7b319e2"><span class="section-number-3">2.4</span> 字符</h3>
-<div class="outline-text-3" id="text-2-4">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">char</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org483f0cd" class="outline-3">
-<h3 id="org483f0cd"><span class="section-number-3">2.5</span> 布尔</h3>
-<div class="outline-text-3" id="text-2-5">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">_Bool</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org4498328" class="outline-3">
-<h3 id="org4498328"><span class="section-number-3">2.6</span> 空类型</h3>
-<div class="outline-text-3" id="text-2-6">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #00d7af;">void</span> <span style="color: #5fafd7;">NULL</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8794f52" class="outline-3">
-<h3 id="org8794f52"><span class="section-number-3">2.7</span> 存储类型</h3>
-<div class="outline-text-3" id="text-2-7">
-<div class="org-src-container">
-<pre class="src src-c">&amp; * <span style="color: #a1db00;">register</span>
-</pre>
-</div>
+<ul class="org-ul">
+<li>NULL</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-orgd424c7a" class="outline-3">
-<h3 id="orgd424c7a"><span class="section-number-3">2.8</span> 复合类型</h3>
-<div class="outline-text-3" id="text-2-8">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #a1db00;">union</span> <span style="color: #a1db00;">enum</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org155bbe0" class="outline-3">
-<h3 id="org155bbe0"><span class="section-number-3">2.9</span> 自定义</h3>
-<div class="outline-text-3" id="text-2-9">
-</div>
-<div id="outline-container-org70362ec" class="outline-4">
-<h4 id="org70362ec"><span class="section-number-4">2.9.1</span> 类型别名</h4>
-<div class="outline-text-4" id="text-2-9-1">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #a1db00;">typedef</span>
-</pre>
-</div>
-</div>
+<h3 id="orgd424c7a"><span class="section-number-3">2.4</span> 复合类型</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>struct union enum typedef</li>
+</ul>
 </div>
 </div>
 
+<div id="outline-container-orgecd1d09" class="outline-3">
+<h3 id="orgecd1d09"><span class="section-number-3">2.5</span> 复数</h3>
+<div class="outline-text-3" id="text-2-5">
+<ul class="org-ul">
+<li>_complex</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8794f52" class="outline-3">
+<h3 id="org8794f52"><span class="section-number-3">2.6</span> 存储类型</h3>
+<div class="outline-text-3" id="text-2-6">
+<ul class="org-ul">
+<li>long</li>
+<li>short signed unsigned</li>
+<li>register</li>
+<li>const</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org822023f" class="outline-3">
+<h3 id="org822023f"><span class="section-number-3">2.7</span> 作用域</h3>
+<div class="outline-text-3" id="text-2-7">
+<ul class="org-ul">
+<li>static extern</li>
+<li></li>
+</ul>
+</div>
+</div>
 <div id="outline-container-orgde7ac8c" class="outline-3">
-<h3 id="orgde7ac8c"><span class="section-number-3">2.10</span> 类型转换</h3>
-<div class="outline-text-3" id="text-2-10">
-</div>
-<div id="outline-container-orgc09b3be" class="outline-4">
-<h4 id="orgc09b3be"><span class="section-number-4">2.10.1</span> 自动转换</h4>
+<h3 id="orgde7ac8c"><span class="section-number-3">2.8</span> 类型转换</h3>
 </div>
 </div>
-</div>
+
 
 <div id="outline-container-org47b15e7" class="outline-2">
 <h2 id="org47b15e7"><span class="section-number-2">3</span> 数据结构</h2>
@@ -798,8 +756,8 @@ for the JavaScript code in this tag.
 <div id="outline-container-org14fc97f" class="outline-2">
 <h2 id="org14fc97f"><span class="section-number-2">5</span> 高级特性</h2>
 </div>
-<div id="outline-container-orgae93354" class="outline-2">
-<h2 id="orgae93354"><span class="section-number-2">6</span> 其他</h2>
+<div id="outline-container-orgf89f99b" class="outline-2">
+<h2 id="orgf89f99b"><span class="section-number-2">6</span> 其他</h2>
 <div class="outline-text-2" id="text-6">
 </div>
 <div id="outline-container-org8984b0d" class="outline-3">
@@ -820,7 +778,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-15 四 17:05</p>
+<p class="date">Created: 2019-09-03 二 11:12</p>
 <p class="validation"></p>
 </div>
 </body>
