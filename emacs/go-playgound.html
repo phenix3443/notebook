@@ -3,10 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2019-09-05 四 21:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>c 和指针</title>
+<title>go-playground</title>
 <meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -304,252 +306,67 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">c 和指针</h1>
+<h1 class="title">go-playground</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6901c11">第一章 快速上手</a></li>
-<li><a href="#org01b93e1">第二章 基本概念</a></li>
-<li><a href="#org7161295">第三章 数据</a>
-<ul>
-<li><a href="#org5c33294">3.5 作用域</a></li>
-<li><a href="#org6483fa9">3.6 链接属性</a></li>
-<li><a href="#org152c8bf">3.7 存储类型</a></li>
-</ul>
-</li>
-<li><a href="#org3b4b5a5">第四章 语句</a>
-<ul>
-<li><a href="#org1b8016f">4.8 switch</a></li>
-</ul>
-</li>
-<li><a href="#org3f06c29">第五章 操作符和表达式</a>
-<ul>
-<li><a href="#org6aedebd">5.1 操作符</a></li>
-</ul>
-</li>
-<li><a href="#org6bf7f59">第六章 指针</a></li>
-<li><a href="#org9ffe966">第七章 函数</a></li>
-<li><a href="#org6825b8f">第八章</a></li>
-<li><a href="#orgbdc0d74">第九章</a></li>
-<li><a href="#orgd8c118d">第十章</a></li>
+<li><a href="#org7b585ce">1. 概述</a></li>
+<li><a href="#org96cc707">2. 特性</a></li>
+<li><a href="#orgdf2acbd">3. 安装</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org6901c11" class="outline-2">
-<h2 id="org6901c11">第一章 快速上手</h2>
-<div class="outline-text-2" id="text-org6901c11">
+<div id="outline-container-org7b585ce" class="outline-2">
+<h2 id="org7b585ce"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-使用 <code>#if</code> 指令从逻辑上删除一段代码。
+<a href="https://github.com/grafov/go-playground">go-playerground</a> 是 GNU / Emacs 的简单模式，用于在本地 设置 Go 语言游乐场，功能类似 play.golang.org 上的服务，且在 go-mode 的帮助下甚至超越！。你可以把它当做 go 版本的 REPL。这不是在 Emacs 中使用来 play.golang.org 的包装器（它已经通过原始的 go-mode 完成），这是在 Emacs 中设置本地游乐场而不使用浏览器进行代码片段实验的完全替代方案。
 </p>
 
 <p>
-NUL 是 ASCII 字符集中 <code>\0</code> 字符的名字，它的字节模式为全 0，NULL 只一个其值为 0 的指针。它们都是整型值，其值也相同，所以它们可以互换使用。然而，还是应该使用适当的常量，因为它能告诉使用这个值的目的。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org01b93e1" class="outline-2">
-<h2 id="org01b93e1">第二章 基本概念</h2>
-</div>
-
-<div id="outline-container-org7161295" class="outline-2">
-<h2 id="org7161295">第三章 数据</h2>
-<div class="outline-text-2" id="text-org7161295">
-<p>
-作用域、链接属性、存储类型 -&gt; 可视性和生命期
-</p>
-
-<p>
-基本数据类型：整型、浮点型、指针和聚合类型。
-</p>
-
-<p>
-缺省 char 是 signed 还是 unsigned 取决于编译器。
-</p>
-
-<p>
-八进制、十进制、十六进制缺省情况下是最短但能完全容纳这个值的类型。。
-</p>
-
-<p>
-浮点数字面值缺省情况下都是 double 类型的。
-</p>
-
-<p>
-之所以选择 NUL 作为终止符，是因为它不是一个可打印的字符。
-</p>
-
-<p>
-应该使用 typedef 而不是 define 定义新的类型，因为后者无法正确处理指针。
-</p>
-</div>
-
-<div id="outline-container-org5c33294" class="outline-3">
-<h3 id="org5c33294">3.5 作用域</h3>
-<div class="outline-text-3" id="text-org5c33294">
-<p>
-编译器可以确认 4 中不同类型的作用域：文件作用域、函数作用域、代码块作用域和原型作用域。
-</p>
-
-<p>
-标识符声明 <b>位置</b> 决定了它的作用域。
+play.golang.org 上的网络游乐场是个不错的主意。它不需要设置，它可以在一个不会损坏系统的受限环境中执行代码。但它也带来了很多限制，特别是当你想使用额外的助手来处理你的代码时：格式化程序，代码完成程序等.Emacs 为 Go 开发提供了许多这样的工具，所以它是最舒适的用 Emacs 内部的片段而不是粗鲁的 webeditor。当然，当地游乐场需要你设置 Go 环境，但如果你在 Go 中开发（或者你想要这样做），你无论如何都需要设置 go-mode 和 helper 工具以便以舒适的方式处理代码。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6483fa9" class="outline-3">
-<h3 id="org6483fa9">3.6 链接属性</h3>
-<div class="outline-text-3" id="text-org6483fa9">
-<p>
-标识符的链接属性（linkage）决定如何处理不同文件中出现的标识符。标识符的作用域与它的链接属性有关，但这两个属性并不相同。
-</p>
-
-<p>
-链接属性一共有 3 种：external（外部）、internal（内部）和 none（无）。
-</p>
-
-<p>
-没有链接属性地标识符（none） 总是被当做单独的个体，也就是说该标识符的多个声明被当做独立不同的个体。比如同一文件的全局变量和局部变量。
-</p>
-
-<p>
-属于 internal 链接属性的标识符在 <b>同一个源文件地所有声明</b> 都指同一个体，但位于不同源文件的多个声明则分属不同的实体。所以：
-</p>
-
+<div id="outline-container-org96cc707" class="outline-2">
+<h2 id="org96cc707"><span class="section-number-2">2</span> 特性</h2>
+<div class="outline-text-2" id="text-2">
 <ul class="org-ul">
-<li>头文件中 <b>不要定义</b> static 变量。因为被 include 到不同文件中的 static 变量都是不同的实体。<a href="https://github.com/phenix3443/test/tree/master/c/lang/static_var_in_h">示例代码</a> 头文件中应该只有声明，没有定义。</li>
-</ul>
-
-<p>
-属于 extern 链接属性的标识符不管声明多少次、位于几个源文件都表示同一个体。
-</p>
-
-<p>
-关键字 extern 和 static 用于在声明中修改标识符的链接属性。
-</p>
-
-<p>
-文件作用域的变量默认是 extern 链接属性。
-</p>
-
-<p>
-如果某个声明在正常情况下具有 extern 链接属性（比如文件作用域的变量），在它前面添加 static 关键字可以使他的链接属性变为 internal。
-</p>
-
-<p>
-static 只有对 <b>缺省链接属性为 extern</b> 的声明才有改变链接属性的效果。反例：函数中没有链接属性关键字的表示符链接属性石 none。
-</p>
-
-<p>
-从技术来说，这两个关键字只有在声明中才是必须的。最佳实践：只用 extern 和 static 来定义声明。
-</p>
-
-<p>
-extern 关键字只有在标识符第一次声明的时候有效，标识符 2 及以上声明中的 extern 没有效果。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org152c8bf" class="outline-3">
-<h3 id="org152c8bf">3.7 存储类型</h3>
-<div class="outline-text-3" id="text-org152c8bf">
-<p>
-有三个地方可以用于存储变量：普通内存、运行时堆栈、硬件寄存器。
-</p>
-
-<p>
-变量的缺省存储类型取决于它的声明位置：
-</p>
-<ul class="org-ul">
-<li>凡是在任何代码块之外声明的变量总是存储于静态内存中，也就是不属于堆栈的内存，称之为静态变量。（静态于堆栈的动态分配相对应）</li>
-<li>在代码块内部声明的变量的缺省存储类型是自动的（自动表示堆栈上内存的自动分配），auto 关键字可用于修饰此类变量。</li>
-<li>对于代码块内声明的变量，如果给它加上 static 关键字，它的存储类型就从自动变成静态。但是注意： 这并不改变变量的作用域。</li>
-<li>函数的形参不能声明为静态，因为实在总是在堆栈中传递给函数，用于支持递归。</li>
-<li>register 声明自动变量的声明， <b>提示</b> 它们应该被存储在寄存器中，但是编译器可以不管。</li>
+<li>它在 go-mode 下工作，并可使用安装的所有插件（如自动补全，linters 等）</li>
+<li>在 GOPATH 下的子目录中保存 playground 文件，这有助于保留有用的片段库</li>
+<li>它可以将代码分成任意数量的文件</li>
+<li>它可以从你的 GOPATH 导入任何外部包</li>
+<li>在您的代码段目录中使用 vendored packages</li>
 </ul>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org3b4b5a5" class="outline-2">
-<h2 id="org3b4b5a5">第四章 语句</h2>
-<div class="outline-text-2" id="text-org3b4b5a5">
+<div id="outline-container-orgdf2acbd" class="outline-2">
+<h2 id="orgdf2acbd"><span class="section-number-2">3</span> 安装</h2>
+<div class="outline-text-2" id="text-3">
 <p>
-c 并不具备专门的复制语句，而是统一使用“表达式语句”代替。
-</p>
-</div>
-
-<div id="outline-container-org1b8016f" class="outline-3">
-<h3 id="org1b8016f">4.8 switch</h3>
-<div class="outline-text-3" id="text-org1b8016f">
-<p>
-switch 中的 case 标签并不把语句列表划分为几个部分，它们只是确定语句列表的进入点。 参见<a href="https://github.com/phenix3443/test/blob/master/c/lang/switch.c">switch.c</a>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org3f06c29" class="outline-2">
-<h2 id="org3f06c29">第五章 操作符和表达式</h2>
-<div class="outline-text-2" id="text-org3f06c29">
-</div>
-<div id="outline-container-org6aedebd" class="outline-3">
-<h3 id="org6aedebd">5.1 操作符</h3>
-<div class="outline-text-3" id="text-org6aedebd">
-<p>
-移位操作符：逻辑移位和算术移位。标准说明无符号值执行的所有移位操作都是逻辑移位，但对于有符号值，取决于编译器。
+首先安装 go-mode 和 gotest - 这些都是强制性的。为 Golang 设置你想要的任何其他工具（参见 Emacs Wiki 获取指南或 google 获取“emacs + golang”）。我个人建议使用 goimports 自动将导入子句添加到你的片段。因为通常当您测试一些想法时，您希望尽快获得工作代码。而 goimports 帮助它。
 </p>
 
 <p>
-sizeof 的操作数既可以是表达式，也可以是两边加上括号的类型名。（注意类型名必需加上括号）
-</p>
-
-<p>
-判断表达式的长度并不需要对表达式进行求值，所以 <code>sizeof(a=b+1)</code> 并没有向 a 赋值。参见<a href="https://github.com/phenix3443/test/blob/master/c/lang/sizeof.c">sizeof.c</a> （什么情况下需要判断表达式的长度？）
-</p>
-
-<p>
-抽象的说，前缀和后缀形式的增值操作符都复制了一份变量值的 <b>拷贝</b> 。用于周围表达式的值正是这份拷贝。前缀操作符在进行赋值之前增加变量的值，后缀操作符在进行赋值之后才增加变量的值。 <b>这些操作符的结果不是被它们所修改的变量，而是变量值的拷贝</b> 。认识这点非常重要，因为它解释了为什么不能向下面这样使用这些操作符：
+从 MELPA 安装游乐场：
 </p>
 <div class="org-src-container">
-<pre class="src src-c">++i = 10;
+<pre class="src src-sh">M-x package-install RET go-playground
 </pre>
 </div>
-
 <p>
-关系操作符的结果是整型值，因而可以赋值给整型变量。
-</p>
-
-<p>
-逗号操作符
+如果你想要共享片段，请从 go-mode 使用 go-play-buffer。如果你想在 github.com 上发布 gists，请从 MELPA 安装 gist-buffer。
 </p>
 </div>
-</div>
-</div>
-<div id="outline-container-org6bf7f59" class="outline-2">
-<h2 id="org6bf7f59">第六章 指针</h2>
-</div>
-
-<div id="outline-container-org9ffe966" class="outline-2">
-<h2 id="org9ffe966">第七章 函数</h2>
-</div>
-
-<div id="outline-container-org6825b8f" class="outline-2">
-<h2 id="org6825b8f">第八章</h2>
-</div>
-
-<div id="outline-container-orgbdc0d74" class="outline-2">
-<h2 id="orgbdc0d74">第九章</h2>
-</div>
-
-<div id="outline-container-orgd8c118d" class="outline-2">
-<h2 id="orgd8c118d">第十章</h2>
 </div>
 </div>
 <div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-09-05 四 21:27</p>
 <p class="validation"></p>
 </div>
 </body>
