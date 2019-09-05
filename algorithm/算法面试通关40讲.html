@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>c 和指针</title>
+<title>算法面试通关 40 讲</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -304,163 +304,43 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">c 和指针</h1>
+<h1 class="title">算法面试通关 40 讲</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6901c11">第一章 快速上手</a></li>
-<li><a href="#org01b93e1">第二章 基本概念</a></li>
-<li><a href="#org7161295">第三章 数据</a>
-<ul>
-<li><a href="#org5c33294">3.5 作用域</a></li>
-<li><a href="#org6483fa9">3.6 链接属性</a></li>
-<li><a href="#org152c8bf">3.7 存储类型</a></li>
-</ul>
-</li>
-<li><a href="#orgb38dc3b">第四章</a></li>
+<li><a href="#org3dd65a4">01 合格程序员的第一步</a></li>
+<li><a href="#orgef98cab">02 如何有效学习算法与数据结构</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org6901c11" class="outline-2">
-<h2 id="org6901c11">第一章 快速上手</h2>
-<div class="outline-text-2" id="text-org6901c11">
+<div id="outline-container-org3dd65a4" class="outline-2">
+<h2 id="org3dd65a4">01 合格程序员的第一步</h2>
+<div class="outline-text-2" id="text-org3dd65a4">
 <p>
-使用 <code>#if</code> 指令从逻辑上删除一段代码。
-</p>
-
-<p>
-NUL 是 ASCII 字符集中 <code>\0</code> 字符的名字，它的字节模式为全 0，NULL 只一个其值为 0 的指针。它们都是整型值，其值也相同，所以它们可以互换使用。然而，还是应该使用适当的常量，因为它能告诉使用这个值的目的。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org01b93e1" class="outline-2">
-<h2 id="org01b93e1">第二章 基本概念</h2>
-</div>
-
-<div id="outline-container-org7161295" class="outline-2">
-<h2 id="org7161295">第三章 数据</h2>
-<div class="outline-text-2" id="text-org7161295">
-<p>
-作用域、链接属性、存储类型 -&gt; 可视性和生命期
-</p>
-
-<p>
-基本数据类型：整型、浮点型、指针和聚合类型。
-</p>
-
-<p>
-缺省 char 是 signed 还是 unsigned 取决于编译器。
-</p>
-
-<p>
-八进制、十进制、十六进制缺省情况下是最短但能完全容纳这个值的类型。。
-</p>
-
-<p>
-浮点数字面值缺省情况下都是 double 类型的。
-</p>
-
-<p>
-之所以选择 NUL 作为终止符，是因为它不是一个可打印的字符。
-</p>
-
-<p>
-应该使用 typedef 而不是 define 定义新的类型，因为后者无法正确处理指针。
-</p>
-</div>
-
-<div id="outline-container-org5c33294" class="outline-3">
-<h3 id="org5c33294">3.5 作用域</h3>
-<div class="outline-text-3" id="text-org5c33294">
-<p>
-编译器可以确认 4 中不同类型的作用域：文件作用域、函数作用域、代码块作用域和原型作用域。
-</p>
-
-<p>
-标识符声明 <b>位置</b> 决定了它的作用域。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org6483fa9" class="outline-3">
-<h3 id="org6483fa9">3.6 链接属性</h3>
-<div class="outline-text-3" id="text-org6483fa9">
-<p>
-标识符的链接属性（linkage）决定如何处理不同文件中出现的标识符。标识符的作用域与它的链接属性有关，但这两个属性并不相同。
-</p>
-
-<p>
-链接属性一共有 3 种：external（外部）、internal（内部）和 none（无）。
-</p>
-
-<p>
-没有链接属性地标识符（none） 总是被当做单独的个体，也就是说该标识符的多个声明被当做独立不同的个体。比如同一文件的全局变量和局部变量。
-</p>
-
-<p>
-属于 internal 链接属性的标识符在 <b>同一个源文件地所有声明</b> 都指同一个体，但位于不同源文件的多个声明则分属不同的实体。所以：
-</p>
-
-<ul class="org-ul">
-<li>头文件中 <b>不要定义</b> static 变量。因为被 include 到不同文件中的 static 变量都是不同的实体。<a href="https://github.com/phenix3443/test/tree/master/c/lang/static_var_in_h">示例代码</a> 头文件中应该只有声明，没有定义。</li>
-</ul>
-
-<p>
-属于 extern 链接属性的标识符不管声明多少次、位于几个源文件都表示同一个体。
-</p>
-
-<p>
-关键字 extern 和 static 用于在声明中修改标识符的链接属性。
-</p>
-
-<p>
-文件作用域的变量默认是 extern 链接属性。
-</p>
-
-<p>
-如果某个声明在正常情况下具有 extern 链接属性（比如文件作用域的变量），在它前面添加 static 关键字可以使他的链接属性变为 internal。
-</p>
-
-<p>
-static 只有对 <b>缺省链接属性为 extern</b> 的声明才有改变链接属性的效果。反例：函数中没有链接属性关键字的表示符链接属性石 none。
-</p>
-
-<p>
-从技术来说，这两个关键字只有在声明中才是必须的。最佳实践：只用 extern 和 static 来定义声明。
-</p>
-
-<p>
-extern 关键字只有在标识符第一次声明的时候有效，标识符 2 及以上声明中的 extern 没有效果。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org152c8bf" class="outline-3">
-<h3 id="org152c8bf">3.7 存储类型</h3>
-<div class="outline-text-3" id="text-org152c8bf">
-<p>
-有三个地方可以用于存储变量：普通内存、运行时堆栈、硬件寄存器。
-</p>
-
-<p>
-变量的缺省存储类型取决于它的声明位置：
+国内比较好的公司：
 </p>
 <ul class="org-ul">
-<li>凡是在任何代码块之外声明的变量总是存储于静态内存中，也就是不属于堆栈的内存，称之为静态变量。（静态于堆栈的动态分配相对应）</li>
-<li>在代码块内部声明的变量的缺省存储类型是自动的（自动表示堆栈上内存的自动分配），auto 关键字可用于修饰此类变量。</li>
-<li>对于代码块内声明的变量，如果给它加上 static 关键字，它的存储类型就从自动变成静态。但是注意： 这并不改变变量的作用域。</li>
-<li>函数的形参不能声明为静态，因为实在总是在堆栈中传递给函数，用于支持递归。</li>
-<li>register 声明自动变量的声明， <b>提示</b> 它们应该被存储在寄存器中，但是编译器可以不管。</li>
+<li>快手、头条、airbnb（北京）、snapchat（深圳）</li>
+<li>微信、地平线及机器人、第四范式、小米、musically、face++</li>
+<li>BAT、微软、Google、小红书、饿了么、网易 等等</li>
+<li>新美大、滴滴</li>
+</ul>
+
+
+<p>
+电话面试编程：
+</p>
+<ul class="org-ul">
+<li>collabedit.com</li>
+<li>coderpad.io</li>
 </ul>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orgb38dc3b" class="outline-2">
-<h2 id="orgb38dc3b">第四章</h2>
+<div id="outline-container-orgef98cab" class="outline-2">
+<h2 id="orgef98cab">02 如何有效学习算法与数据结构</h2>
 </div>
 </div>
 <div id="postamble" class="status">
