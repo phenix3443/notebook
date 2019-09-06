@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-05 四 21:28 -->
+<!-- 2019-09-06 五 17:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang summary</title>
@@ -342,74 +342,15 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#org35e9c8b">4. 命令行工具</a>
 <ul>
-<li><a href="#orge971c38">4.1. 集成开发</a>
-<ul>
-<li><a href="#orgb9b07c4">4.1.1. go get</a></li>
-<li><a href="#orgdca9143">4.1.2. gocode</a></li>
-<li><a href="#orgfd576d1">4.1.3. godef</a></li>
-<li><a href="#org193dd77">4.1.4. editor</a></li>
-<li><a href="#orgfc39ab6">4.1.5. Guru</a></li>
-<li><a href="#org742513f">4.1.6. goimports</a></li>
-</ul>
-</li>
-<li><a href="#org1d94475">4.2. 代码检查</a>
-<ul>
-<li><a href="#org7be3e9c">4.2.1. gofmt</a></li>
-<li><a href="#org6bc23fd">4.2.2. oracle</a></li>
-<li><a href="#orgdaac45f">4.2.3. vet</a></li>
-<li><a href="#org0e1e8dd">4.2.4. golint</a></li>
-<li><a href="#org8f25f55">4.2.5. errcheck</a></li>
-<li><a href="#orgd3924c3">4.2.6. goreporter</a></li>
-</ul>
-</li>
-<li><a href="#org64319d9">4.3. 构建编译</a>
-<ul>
-<li><a href="#org77de8e7">4.3.1. go fix</a></li>
-<li><a href="#org63f4e4f">4.3.2. go env</a></li>
-<li><a href="#org045e831">4.3.3. go build</a></li>
-<li><a href="#org9e6610a">4.3.4. go run</a></li>
-<li><a href="#org10fb88d">4.3.5. go install</a></li>
-<li><a href="#org2fa8fb8">4.3.6. go clean</a></li>
-<li><a href="#org90def53">4.3.7. cmake</a></li>
-</ul>
-</li>
-<li><a href="#org36d5e83">4.4. 代码调试</a>
-<ul>
-<li><a href="#orgc4a280b">4.4.1. gdb</a></li>
-<li><a href="#org51ed9ad">4.4.2. dlv</a></li>
-</ul>
-</li>
-<li><a href="#orgc079920">4.5. 自动测试</a>
-<ul>
-<li><a href="#org4e495c4">4.5.1. gb</a></li>
-<li><a href="#org499af1b">4.5.2. go test</a></li>
-<li><a href="#org1dccc4b">4.5.3. gotests</a></li>
-<li><a href="#org2ca1c27">4.5.4. gocheck</a></li>
-</ul>
-</li>
-<li><a href="#org737b7be">4.6. 性能分析</a>
-<ul>
-<li><a href="#orgb43727c">4.6.1. go tool pprof</a></li>
-</ul>
-</li>
-<li><a href="#org7fb1349">4.7. 文档系统</a>
-<ul>
-<li><a href="#org0b08e98">4.7.1. godoc</a></li>
-</ul>
-</li>
+<li><a href="#orge971c38">4.1. 集成开发</a></li>
+<li><a href="#org1d94475">4.2. 代码检查</a></li>
+<li><a href="#org64319d9">4.3. 构建编译</a></li>
+<li><a href="#org36d5e83">4.4. 代码调试</a></li>
+<li><a href="#orgc079920">4.5. 自动测试</a></li>
+<li><a href="#org737b7be">4.6. 性能分析</a></li>
+<li><a href="#org7fb1349">4.7. 文档系统</a></li>
 <li><a href="#org839c53f">4.8. 包管理系统</a></li>
-<li><a href="#org884baac">4.9. 其他工具</a>
-<ul>
-<li><a href="#orgb6b848e">4.9.1. go list</a></li>
-<li><a href="#org3f53a24">4.9.2. go tool</a>
-<ul>
-<li><a href="#org92fd98e">4.9.2.1. pprof</a></li>
-<li><a href="#orgb0b7726">4.9.2.2. vet</a></li>
-<li><a href="#org696e4b0">4.9.2.3. trace</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a href="#org884baac">4.9. 其他工具</a></li>
 </ul>
 </li>
 <li><a href="#org733168a">5. 参考书籍</a>
@@ -582,15 +523,7 @@ func 注释
 <h4 id="orgea347b5"><span class="section-number-4">2.2.1</span> GOPATH</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
-GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src、pkg 三个目录。
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">mkdir ~/gospace
-</pre>
-</div>
-
-<p>
-在~/.profile 中修改如下环境变量。
+GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src、pkg 三个目录。默认的 gopath 路径是 <code>$HOME/go</code> ，可以在 <code>~/.profile</code> 中修改如下环境变量。
 </p>
 
 <div class="org-src-container">
@@ -601,6 +534,10 @@ GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src
 
 <p>
 GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安装到这个目录下，而且应该将该目录下的 bin 加入到 PATH 中。
+</p>
+
+<p>
+更多信息参见 <a href="https://golang.org/cmd/go/#hdr-GOPATH_environment_variable">GOPATH env</a>
 </p>
 </div>
 </div>
@@ -682,41 +619,7 @@ test
 hello.go
 </p>
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">package</span> main
-
-<span style="color: #a1db00;">import</span> (
-    <span style="color: #ff4ea3;">"fmt"</span>
-
-    <span style="color: #ff4ea3;">"github.com/phenix3443/go_test_lib/stringutils"</span>
-)
-
-<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
-    str := <span style="color: #ff4ea3;">"hello,&#19990;&#30028;"</span>
-    fmt.<span style="color: #ffd700;">Println</span>(stringutils.<span style="color: #ffd700;">Reverse</span>(str))
-}
-</pre>
-</div>
-
-<p>
-buiild.sh
-</p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">!/bin/</span><span style="color: #a1db00;">bash</span>
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#39033;&#30446;&#26500;&#24314;&#33050;&#26412;</span>
-<span style="color: #ff8700;">project_name</span>=hello
-
-<span style="color: #a1db00;">if</span> [ <span style="color: #ff4b4b;">!</span> -d <span style="color: #ff4ea3;">"src/${project_name}"</span> ]; <span style="color: #a1db00;">then</span>
-    <span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"&#39033;&#30446;&#20195;&#30721;&#24517;&#39035;&#25918;&#22312; src/${project_name}&#19979;"</span>
-    <span style="color: #a1db00;">exit</span> 1
-<span style="color: #a1db00;">fi</span>
-
-<span style="color: #ff8700;">script_dir</span>=$(<span style="color: #fa8072;">cd</span> $(<span style="color: #fa8072;">dirname</span> <span style="color: #ff4ea3;">"$0"</span>); <span style="color: #d18aff;">pwd</span>)
-<span style="color: #ff8700;">project_dir</span>=$(<span style="color: #fa8072;">realpath</span> ${<span style="color: #ff8700;">script_dir</span>})
-<span style="color: #d18aff;">export</span> <span style="color: #ff8700;">GOPATH</span>=${<span style="color: #ff8700;">GOPATH</span>}:${<span style="color: #ff8700;">project_dir</span>} <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#23558;&#24403;&#21069;&#30446;&#24405;&#28155;&#21152;&#21040;</span>
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">echo ${GOPATH}</span>
-
-go get -v -x ${<span style="color: #ff8700;">project_name</span>}/...
-go install ${<span style="color: #ff8700;">project_name</span>}
+<pre class="src src-go">
 </pre>
 </div></li>
 </ul>
@@ -735,255 +638,112 @@ go install ${<span style="color: #ff8700;">project_name</span>}
 <div id="outline-container-orge971c38" class="outline-3">
 <h3 id="orge971c38"><span class="section-number-3">4.1</span> 集成开发</h3>
 <div class="outline-text-3" id="text-4-1">
-</div>
-<div id="outline-container-orgb9b07c4" class="outline-4">
-<h4 id="orgb9b07c4"><span class="section-number-4">4.1.1</span> go get</h4>
-</div>
-
-<div id="outline-container-orgdca9143" class="outline-4">
-<h4 id="orgdca9143"><span class="section-number-4">4.1.2</span> gocode</h4>
-<div class="outline-text-4" id="text-4-1-2">
-<p>
-golang 可以配合编辑器做自动补全。配置文件位于 <code>~/.config/gocode</code> ，可用于定制 gocode 行为。
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">go get -u github.com/nsf/gocode
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgfd576d1" class="outline-4">
-<h4 id="orgfd576d1"><span class="section-number-4">4.1.3</span> godef</h4>
-<div class="outline-text-4" id="text-4-1-3">
-<p>
-用于查找定义。
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">go get github.com/rogpeppe/godef
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org193dd77" class="outline-4">
-<h4 id="org193dd77"><span class="section-number-4">4.1.4</span> editor</h4>
-<div class="outline-text-4" id="text-4-1-4">
-<p>
-一些编辑器以及相应的扩展。 <a href="http://go-lang.cat-v.org/text-editors/">text-editor</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgfc39ab6" class="outline-4">
-<h4 id="orgfc39ab6"><span class="section-number-4">4.1.5</span> <a href="https://godoc.org/golang.org/x/tools/cmd/guru">Guru</a></h4>
-<div class="outline-text-4" id="text-4-1-5">
-<p>
-代码导航工具。这里有 <a href="http://www.jianshu.com/p/994e85e21135">说明</a> 。
-</p>
-</div>
-</div>
-<div id="outline-container-org742513f" class="outline-4">
-<h4 id="org742513f"><span class="section-number-4">4.1.6</span> <a href="https://godoc.org/golang.org/x/tools/cmd/goimports">goimports</a></h4>
-<div class="outline-text-4" id="text-4-1-6">
-<p>
-命令 goimports 更新您的 Go 导入行，添加缺失的行并删除未引用的行。
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh">go get -u golang.org/x/tools/cmd/goimports
-</pre>
-</div>
-
-<p>
-除了修复导入之外，goimports 还以与 gofmt 相同的样式格式化您的代码，因此它可以用作编辑器的 gofmt-on-save 挂钩的替代品。对于 emacs，请确保您拥有最新的 go-mode.el：
-</p>
-</div>
+<ul class="org-ul">
+<li>go get</li>
+<li>goimports</li>
+<li>gocode</li>
+<li>godef</li>
+<li>guru</li>
+<li>oracle  找到所有函数方法的调用者。</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org1d94475" class="outline-3">
 <h3 id="org1d94475"><span class="section-number-3">4.2</span> 代码检查</h3>
 <div class="outline-text-3" id="text-4-2">
-</div>
-<div id="outline-container-org7be3e9c" class="outline-4">
-<h4 id="org7be3e9c"><span class="section-number-4">4.2.1</span> gofmt</h4>
-</div>
-<div id="outline-container-org6bc23fd" class="outline-4">
-<h4 id="org6bc23fd"><span class="section-number-4">4.2.2</span> oracle</h4>
-<div class="outline-text-4" id="text-4-2-2">
-<p>
-找到所有函数方法的调用者。
-</p>
-</div>
-</div>
-<div id="outline-container-orgdaac45f" class="outline-4">
-<h4 id="orgdaac45f"><span class="section-number-4">4.2.3</span> vet</h4>
-</div>
-<div id="outline-container-org0e1e8dd" class="outline-4">
-<h4 id="org0e1e8dd"><span class="section-number-4">4.2.4</span> golint</h4>
-</div>
-<div id="outline-container-org8f25f55" class="outline-4">
-<h4 id="org8f25f55"><span class="section-number-4">4.2.5</span> errcheck</h4>
-</div>
-<div id="outline-container-orgd3924c3" class="outline-4">
-<h4 id="orgd3924c3"><span class="section-number-4">4.2.6</span> <a href="https://github.com/360EntSecGroup-Skylar/goreporter">goreporter</a></h4>
-<div class="outline-text-4" id="text-4-2-6">
-<p>
-整合其他工具，做代码质量检测，生成网页版报告。
-</p>
-</div>
+<ul class="org-ul">
+<li>gofmt 检查语法。</li>
+<li>go-vet 检查可疑代码。</li>
+<li>golint 检查代码风格。</li>
+<li>errcheck 检查返回但没有处理的 error。</li>
+<li>unconvert 检查不必要的类型转换。</li>
+<li>staticcheck 静态检查和 lint 工具</li>
+<li>goreporter</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org64319d9" class="outline-3">
 <h3 id="org64319d9"><span class="section-number-3">4.3</span> 构建编译</h3>
 <div class="outline-text-3" id="text-4-3">
-</div>
-<div id="outline-container-org77de8e7" class="outline-4">
-<h4 id="org77de8e7"><span class="section-number-4">4.3.1</span> go fix</h4>
-<div class="outline-text-4" id="text-4-3-1">
-<p>
-用于将你的 Go 代码从旧的发行版迁移到最新的发行版，它主要负责简单的、重复的、枯燥无味的修改工作，如果像 API 等复杂的函数修改，工具则会给出文件名和代码行数的提示以便让开发人员快速定位并升级代码。Go 开发团队一般也使用这个工具升级 Go 内置工具以及 谷歌内部项目的代码。go fix 之所以能够正常工作是因为 Go 在标准库就提供生成抽象语法树和通过抽象语法树对代码进行还原的功能。该工具会尝试更新当前目录下的所有 Go 源文件，并在完成代码更新后在控制台输出相关的文件名称。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org63f4e4f" class="outline-4">
-<h4 id="org63f4e4f"><span class="section-number-4">4.3.2</span> go env</h4>
-<div class="outline-text-4" id="text-4-3-2">
-<p>
-打印 go 环境变量。
-</p>
-</div>
-</div>
-<div id="outline-container-org045e831" class="outline-4">
-<h4 id="org045e831"><span class="section-number-4">4.3.3</span> go build</h4>
-</div>
-<div id="outline-container-org9e6610a" class="outline-4">
-<h4 id="org9e6610a"><span class="section-number-4">4.3.4</span> go run</h4>
-</div>
-<div id="outline-container-org10fb88d" class="outline-4">
-<h4 id="org10fb88d"><span class="section-number-4">4.3.5</span> go install</h4>
-</div>
-<div id="outline-container-org2fa8fb8" class="outline-4">
-<h4 id="org2fa8fb8"><span class="section-number-4">4.3.6</span> go clean</h4>
-<div class="outline-text-4" id="text-4-3-6">
+<ul class="org-ul">
+<li>go fix</li>
+<li>go env    打印 go 环境变量。</li>
+<li>go build</li>
+<li>go run</li>
+<li>go install</li>
+<li>go clean
 <ul class="org-ul">
 <li>-i 选项删除 go install 安装的文件。</li>
 <li>-r 选项递归清理依赖项。</li>
+</ul></li>
+<li>gb</li>
+<li>cmake</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org90def53" class="outline-4">
-<h4 id="org90def53"><span class="section-number-4">4.3.7</span> cmake</h4>
-</div>
-</div>
+
 <div id="outline-container-org36d5e83" class="outline-3">
 <h3 id="org36d5e83"><span class="section-number-3">4.4</span> 代码调试</h3>
 <div class="outline-text-3" id="text-4-4">
-</div>
-<div id="outline-container-orgc4a280b" class="outline-4">
-<h4 id="orgc4a280b"><span class="section-number-4">4.4.1</span> gdb</h4>
-</div>
-<div id="outline-container-org51ed9ad" class="outline-4">
-<h4 id="org51ed9ad"><span class="section-number-4">4.4.2</span> dlv</h4>
-<div class="outline-text-4" id="text-4-4-2">
-<p>
-出现错误：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">Could not attach to pid 6814: set /proc/sys/kernel/yama/ptrace_scope to 0
-</pre>
-</div>
-<p>
-原因：
-<a href="https://www.kernel.org/doc/Documentation/security/Yama.txt">https://www.kernel.org/doc/Documentation/security/Yama.txt</a>, you will need to set that to 0 in order to attach to a running process.
-解决办法：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">echo</span> 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-</pre>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-orgc079920" class="outline-3">
-<h3 id="orgc079920"><span class="section-number-3">4.5</span> 自动测试</h3>
-<div class="outline-text-3" id="text-4-5">
-</div>
-<div id="outline-container-org4e495c4" class="outline-4">
-<h4 id="org4e495c4"><span class="section-number-4">4.5.1</span> <a href="http://getgb.io/">gb</a></h4>
-</div>
-<div id="outline-container-org499af1b" class="outline-4">
-<h4 id="org499af1b"><span class="section-number-4">4.5.2</span> go test</h4>
-</div>
-<div id="outline-container-org1dccc4b" class="outline-4">
-<h4 id="org1dccc4b"><span class="section-number-4">4.5.3</span> <a href="https://github.com/cweill/gotests">gotests</a></h4>
-<div class="outline-text-4" id="text-4-5-3">
-<p>
-根据源码自动编写测试代码。
-</p>
+<ul class="org-ul">
+<li>gdb</li>
+<li>dlv</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org2ca1c27" class="outline-4">
-<h4 id="org2ca1c27"><span class="section-number-4">4.5.4</span> <a href="https://godoc.org/gopkg.in/check.v1">gocheck</a></h4>
-<div class="outline-text-4" id="text-4-5-4">
-<p>
-丰富的测试用例包。
-</p>
-</div>
+<div id="outline-container-orgc079920" class="outline-3">
+<h3 id="orgc079920"><span class="section-number-3">4.5</span> 自动测试</h3>
+<div class="outline-text-3" id="text-4-5">
+<ul class="org-ul">
+<li>go test</li>
+<li>gotests</li>
+<li>gocheck</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org737b7be" class="outline-3">
 <h3 id="org737b7be"><span class="section-number-3">4.6</span> 性能分析</h3>
 <div class="outline-text-3" id="text-4-6">
+<ul class="org-ul">
+<li>go tool pprof</li>
+</ul>
 </div>
-<div id="outline-container-orgb43727c" class="outline-4">
-<h4 id="orgb43727c"><span class="section-number-4">4.6.1</span> go tool pprof</h4>
 </div>
-</div>
+
 <div id="outline-container-org7fb1349" class="outline-3">
 <h3 id="org7fb1349"><span class="section-number-3">4.7</span> 文档系统</h3>
 <div class="outline-text-3" id="text-4-7">
-</div>
-<div id="outline-container-org0b08e98" class="outline-4">
-<h4 id="org0b08e98"><span class="section-number-4">4.7.1</span> godoc</h4>
-<div class="outline-text-4" id="text-4-7-1">
-<p>
-查找 package 和函数文档。
-</p>
+<ul class="org-ul">
+<li>godoc 查找 package 和函数文档。</li>
+</ul>
 </div>
 </div>
-</div>
+
 <div id="outline-container-org839c53f" class="outline-3">
 <h3 id="org839c53f"><span class="section-number-3">4.8</span> 包管理系统</h3>
 <div class="outline-text-3" id="text-4-8">
-<p>
-go get
-</p>
+<ul class="org-ul">
+<li>go get</li>
+</ul>
 </div>
 </div>
+
 <div id="outline-container-org884baac" class="outline-3">
 <h3 id="org884baac"><span class="section-number-3">4.9</span> 其他工具</h3>
 <div class="outline-text-3" id="text-4-9">
-</div>
-<div id="outline-container-orgb6b848e" class="outline-4">
-<h4 id="orgb6b848e"><span class="section-number-4">4.9.1</span> go list</h4>
-</div>
-<div id="outline-container-org3f53a24" class="outline-4">
-<h4 id="org3f53a24"><span class="section-number-4">4.9.2</span> go tool</h4>
-<div class="outline-text-4" id="text-4-9-2">
-</div>
-<div id="outline-container-org92fd98e" class="outline-5">
-<h5 id="org92fd98e"><span class="section-number-5">4.9.2.1</span> pprof</h5>
-</div>
-<div id="outline-container-orgb0b7726" class="outline-5">
-<h5 id="orgb0b7726"><span class="section-number-5">4.9.2.2</span> vet</h5>
-</div>
-<div id="outline-container-org696e4b0" class="outline-5">
-<h5 id="org696e4b0"><span class="section-number-5">4.9.2.3</span> trace</h5>
-</div>
+<ul class="org-ul">
+<li>go list</li>
+<li>go tool
+<ul class="org-ul">
+<li>pprof</li>
+<li>vet</li>
+<li>trace</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>
@@ -1033,7 +793,7 @@ go get
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-09-05 四 21:28</p>
+<p class="date">Created: 2019-09-06 五 17:01</p>
 <p class="validation"></p>
 </div>
 </body>

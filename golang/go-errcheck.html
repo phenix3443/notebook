@@ -6,7 +6,7 @@
 <!-- 2019-09-06 五 17:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>算法面试通关 40 讲</title>
+<title>go-errcheck</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,79 +306,38 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">算法面试通关 40 讲</h1>
+<h1 class="title">go-errcheck</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3dd65a4">01 合格程序员的第一步</a></li>
-<li><a href="#orgef98cab">02 如何有效学习算法与数据结构</a></li>
-<li><a href="#org1888d4e">03 如何计算算法的复杂度</a></li>
-<li><a href="#org1766e7c">04 如何通过 LeetCode 来进行算法练习</a></li>
-<li><a href="#org709156b">05 理论讲解：数组&amp;链表</a></li>
+<li><a href="#org94a77b8">1. 概述</a></li>
+<li><a href="#org6288479">2. 安装</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3dd65a4" class="outline-2">
-<h2 id="org3dd65a4">01 合格程序员的第一步</h2>
-<div class="outline-text-2" id="text-org3dd65a4">
+<div id="outline-container-org94a77b8" class="outline-2">
+<h2 id="org94a77b8"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-国内比较好的公司：
+<a href="https://github.com/kisielk/errcheck">errcheck</a> 是一个用于检查 go 程序中未经处理的错误的程序。
 </p>
-<ul class="org-ul">
-<li>快手、头条、airbnb（北京）、snapchat（深圳）</li>
-<li>微信、地平线及机器人、第四范式、小米、musically、face++</li>
-<li>BAT、微软、Google、小红书、饿了么、网易 等等</li>
-<li>新美大、滴滴</li>
-</ul>
-
-
-<p>
-电话面试编程：
-</p>
-<ul class="org-ul">
-<li>collabedit.com</li>
-<li>coderpad.io</li>
-</ul>
 </div>
 </div>
 
-<div id="outline-container-orgef98cab" class="outline-2">
-<h2 id="orgef98cab">02 如何有效学习算法与数据结构</h2>
-<div class="outline-text-2" id="text-orgef98cab">
-<p>
-《异类：不一样的成功启示录》
-</p>
-
-<ol class="org-ol">
-<li>知识分解</li>
-<li>可以练习</li>
-<li>及时反馈</li>
-</ol>
+<div id="outline-container-org6288479" class="outline-2">
+<h2 id="org6288479"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">go get -u github.com/kisielk/errcheck
+</pre>
+</div>
 
 <p>
-切题四件套：
+errcheck 需要 Go 1.9 或更高版本，并且取决于 golang.org/x/tools 存储库中的包 go / packages。
 </p>
-<ul class="org-ul">
-<li>理解题目</li>
-<li>可能解法</li>
-<li>编写代码</li>
-<li>测试用例</li>
-</ul>
 </div>
-</div>
-
-<div id="outline-container-org1888d4e" class="outline-2">
-<h2 id="org1888d4e">03 如何计算算法的复杂度</h2>
-</div>
-
-<div id="outline-container-org1766e7c" class="outline-2">
-<h2 id="org1766e7c">04 如何通过 LeetCode 来进行算法练习</h2>
-</div>
-
-<div id="outline-container-org709156b" class="outline-2">
-<h2 id="org709156b">05 理论讲解：数组&amp;链表</h2>
 </div>
 </div>
 <div id="postamble" class="status">

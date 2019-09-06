@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-05 四 21:28 -->
+<!-- 2019-09-06 五 17:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>gb</title>
@@ -312,6 +312,14 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org7ec80b5">1. 概述</a></li>
+<li><a href="#org4ad7ad7">2. 安装</a></li>
+<li><a href="#org9b1afbc">3. 使用</a>
+<ul>
+<li><a href="#org1cceeb6">3.1. gb（doc）</a></li>
+<li><a href="#orgb77d663">3.2. gb-vendor</a></li>
+<li><a href="#org0690f75">3.3. gitlab CI</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -320,15 +328,65 @@ for the JavaScript code in this tag.
 <h2 id="org7ec80b5"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="http://getgb.io/">gb</a>
+<a href="http://getgb.io/">gb</a> 将单个项目当做 workspace，与 $GOPATH 无关。
 </p>
+
+<p>
+gb 两个重要的目录
+</p>
+<ul class="org-ul">
+<li>src/ 业务代码</li>
+<li>vendor/src/ 第三方的依赖</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4ad7ad7" class="outline-2">
+<h2 id="org4ad7ad7"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">go get github.com/constabulary/gb/...
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9b1afbc" class="outline-2">
+<h2 id="org9b1afbc"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org1cceeb6" class="outline-3">
+<h3 id="org1cceeb6"><span class="section-number-3">3.1</span> gb（<a href="https://godoc.org/github.com/constabulary/gb/cmd/gb-vendor">doc</a>）</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+<pre class="src src-sh">gb help
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb77d663" class="outline-3">
+<h3 id="orgb77d663"><span class="section-number-3">3.2</span> gb-vendor</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+使用 gb vendor（<a href="https://godoc.org/github.com/constabulary/gb/cmd/gb-vendor">doc</a>）处理依赖，例如：
+</p>
+<pre class="example">
+gb vendor fetch github.com/urfave/cli
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org0690f75" class="outline-3">
+<h3 id="org0690f75"><span class="section-number-3">3.3</span> gitlab CI</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-05 四 21:28</p>
+<p class="date">Created: 2019-09-06 五 17:01</p>
 <p class="validation"></p>
 </div>
 </body>
