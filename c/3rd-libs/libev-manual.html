@@ -1,0 +1,2356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-06 五 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>libev manual</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">libev manual</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2bbc92d">1. 示例</a></li>
+<li><a href="#org92a6492">2. 关于 LIBEV</a></li>
+<li><a href="#org69042eb">3. 特征</a></li>
+<li><a href="#org7e861e4">4. 约定</a></li>
+<li><a href="#orgc71b6d0">5. 时间表示</a></li>
+<li><a href="#org55aef40">6. 错误处理</a></li>
+<li><a href="#org6f0be3e">7. 全局函数</a></li>
+<li><a href="#orga978447">8. 控制 event 循环的函数</a></li>
+<li><a href="#org30f0e2b">9. 解剖观察者</a></li>
+<li><a href="#orgac5e0da">10. 通用观察者函数</a></li>
+<li><a href="#org39400ba">11. 观察者状态</a></li>
+<li><a href="#org869b188">12. 观察者优先模型</a></li>
+<li><a href="#orgeae7381">13. 观察者类型</a>
+<ul>
+<li><a href="#org772e11d">13.1. ev_io - is this file descriptor readable or writable?</a>
+<ul>
+<li><a href="#orgc620c60">13.1.1. The special problem of disappearing file descriptors</a></li>
+<li><a href="#org1d5d060">13.1.2. The special problem of dup'ed file descriptors</a></li>
+<li><a href="#org6bae8a7">13.1.3. The special problem of files</a></li>
+<li><a href="#orge0bf48d">13.1.4. The special problem of fork</a></li>
+<li><a href="#orga2f677a">13.1.5. The special problem of SIGPIPE</a></li>
+<li><a href="#org981ad8b">13.1.6. The special problem of accept()ing when you can't</a></li>
+<li><a href="#orgea4dfd4">13.1.7. Watcher-Specific Functions</a></li>
+<li><a href="#org15223c8">13.1.8. 示例</a></li>
+</ul>
+</li>
+<li><a href="#org2c6c73f">13.2. ev_timer - relative and optionally repeating timeouts</a></li>
+<li><a href="#org9917a5a">13.3. ev_periodic - to cron or not to cron?</a></li>
+<li><a href="#org3eec9ea">13.4. ev_signal - signal me when a signal gets signalled!</a></li>
+<li><a href="#orgc46608f">13.5. ev_stat - did the file attributes just change?</a></li>
+<li><a href="#orge4ab9fa">13.6. ev_idle - when you've got nothing better to do&#x2026;</a></li>
+<li><a href="#orgbe8386e">13.7. ev_prepare and ev_check - customise your event loop!</a></li>
+<li><a href="#org0a15941">13.8. ev_embed - when one backend isn't enough&#x2026;</a></li>
+<li><a href="#org6ec0565">13.9. ev_fork - the audacity to resume the event loop after a fork</a></li>
+<li><a href="#orgb3add93">13.10. ev_cleanup - even the best things end</a></li>
+<li><a href="#org1b01117">13.11. ev_async - how to wake up an event loop</a>
+<ul>
+<li><a href="#org3f3dea8">13.11.1. Queueing</a>
+<ul>
+<li><a href="#org37c1b9e">13.11.1.1. queueing from a signal handler context</a></li>
+<li><a href="#org341bdb4">13.11.1.2. queueing from a thread context</a></li>
+</ul>
+</li>
+<li><a href="#org7e28929">13.11.2. Watcher-Specific Functions and Data Members</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org5fd911c">14. 通用或有用的模型</a></li>
+<li><a href="#org147b8e3">15. 模拟 libevent</a></li>
+<li><a href="#orga0e392e">16. C++ 支持</a></li>
+<li><a href="#orgd7b8c3f">17. 其他语言绑定</a></li>
+<li><a href="#orga65ec71">18. 宏魔法</a></li>
+<li><a href="#org11f67d2">19. 嵌套</a></li>
+<li><a href="#org89ec2ec">20. 与其他程序、库或者环境交互</a></li>
+<li><a href="#org09a9d7b">21. 可移植性注意事项</a></li>
+<li><a href="#org714b3c0">22. 算法复杂度</a></li>
+<li><a href="#orgd728d53">23. 从 LIBEV 3.X 到 4.X 的移植</a></li>
+<li><a href="#orgc7dc7b1">24. 词汇表</a></li>
+<li><a href="#org97ba8c9">25. 作者</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文是 <a href="http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod">原手册</a> 的简单翻译。
+</p>
+
+<div id="outline-container-org2bbc92d" class="outline-2">
+<h2 id="org2bbc92d"><span class="section-number-2">1</span> 示例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/libev/tutor.c">tutor.c</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org92a6492" class="outline-2">
+<h2 id="org92a6492"><span class="section-number-2">2</span> 关于 LIBEV</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Libev 是一个事件循环：注册某些感兴趣的事件（例如文件描述符可读或发生超时），它将管理这些事件源并为程序提供事件。
+</p>
+
+<p>
+要做到这一点，它必须通过执行事件循环处理程序，这或多或少控制您的进程（或线程），然后通过回调机制传递事件。
+</p>
+
+<p>
+通过注册所谓的事件观察者（event watcher）来注册某些感兴趣的事件（event），这些事件观察者是使用事件的详细信息初始化的相对较小的 C 结构，然后通过启动观察者将其交给 libev。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org69042eb" class="outline-2">
+<h2 id="org69042eb"><span class="section-number-2">3</span> 特征</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Libev 支持：
+</p>
+<ul class="org-ul">
+<li>ev_io：用于文件描述符事件，支持：
+<ul class="org-ul">
+<li>select，poll</li>
+<li>Linux 特有的 aio 和 epoll 接口</li>
+<li>BSD 特有的 kqueue</li>
+<li>Solaris 特有事件端口机制</li>
+</ul></li>
+<li>ev_stat：Linux inotify 接口，</li>
+<li>Linux eventfd/signalfd （用于更快和更清晰的线程间唤醒（ev_async）/信号处理（ev_signal））</li>
+<li>ev_timer：相对定时器</li>
+<li>ev_periodic：具有定制重新调度的绝对定时器，</li>
+<li>ev_signal：同步信号，</li>
+<li>ev_child：进程状态改变事件</li>
+<li>ev_idle，ev_embed，ev_prepare 和 ev_check：和事件观察器处理事件循环机制本身。</li>
+<li>ev_stat：文件观察者</li>
+<li>ev_fork：fork 事件的有限支持。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7e861e4" class="outline-2">
+<h2 id="org7e861e4"><span class="section-number-2">4</span> 约定</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Libev 非常易于配置。在本手册中，将描述默认（和最常见）配置，它支持多个事件循环。有关各种配置选项的更多信息，请参阅本手册中的 EMBED 部分。如果配置 libev 不支持多个事件循环，则所有带有名称为 loop 的初始参数的函数（loop 类型为 <code>struct ev_loop *</code> ）将不具有此参数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc71b6d0" class="outline-2">
+<h2 id="orgc71b6d0"><span class="section-number-2">5</span> 时间表示</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Libev 将时间表示为单个浮点数，表示自 epoch 以来的秒数（小数）（实际上在 1970 年初的某个事件，细节很复杂，不要问）。这种类型称为 ev_tstamp，这也是应该使用的。它通常是 C 中的 double 类型的别名。当需要对其进行任何计算时，应将其视为某个浮点值。
+</p>
+
+<p>
+与名称 stamp 所示不同，libev 它还用于时间间隔（例如延迟）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org55aef40" class="outline-2">
+<h2 id="org55aef40"><span class="section-number-2">6</span> 错误处理</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Libev 知道三类错误：操作系统错误，使用错误和内部错误。
+</p>
+
+<p>
+当 libev 捕获到无法处理的操作系统错误时（例如 libev 无法修复的系统调用），它会通过 ev_set_syserr_cb 调用回调函数，这应该可以解决问题或中止。默认设置是打印诊断消息并调用 abort()。
+</p>
+
+<p>
+当 libev 检测到使用错误（例如负计时器间隔）时，它将打印诊断消息并中止（通过断言机制，因此 NDEBUG 将禁用此检查）：这些是 libev 调用者的编程错误，需要在那里修复。
+</p>
+
+<p>
+通过 EV_FREQUENT 宏，您可以编译和/或在 libev 中启用广泛的一致性检查代码，该代码可用于检查内部不一致，这通常是由应用程序错误引起的。
+</p>
+
+<p>
+Libev 还有一些内部错误检查断言。这些在正常情况下不会触发，因为它们表示 libev 的 bug 或更糟的错误。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6f0be3e" class="outline-2">
+<h2 id="org6f0be3e"><span class="section-number-2">7</span> 全局函数</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+即使在以任何方式初始化库之前，也可以随时调用这些函数。
+</p>
+<ul class="org-ul">
+<li><p>
+ev_tstamp ev_time ()
+</p>
+
+<p>
+返回 libev 使用它的当前时间。请注意，ev_now 函数通常更快，并且通常还会返回您实际想知道的时间戳。同样有趣的是 ev_now_update 和 ev_now 的组合。
+</p></li>
+
+<li><p>
+ev_sleep (ev_tstamp interval)
+</p>
+
+<p>
+休眠在给定的时间间隔：当前线程将被阻塞，直到它被中断或者给定的时间间隔已经过去（大约 - 即使没有中断，它也可能提前返回）。如果 interval &lt;= 0，则立即返回。
+</p>
+
+<p>
+基本上这是一个亚秒级分辨率的 <code>sleep()</code> 。
+</p>
+
+<p>
+interval 的范围是有限的 - libev 仅保证最多一天的睡眠时间（interval&lt;= 86400）。
+</p></li>
+
+<li>int ev_version_major ()</li>
+<li><p>
+int ev_version_minor ()
+</p>
+
+<p>
+可以通过调用函数 ev_version_major 和 ev_version_minor 找到您链接的库的主要和次要 ABI 版本号。如果需要，可以与全局符号 EV_VERSION_MAJOR 和 EV_VERSION_MINOR 进行比较，后者指定编译程序库的版本。
+</p>
+
+<p>
+这些版本号是指库的 ABI 版本，而不是发行版本。
+</p>
+
+<p>
+通常，如果主要版本不匹配，最好终止，因为这表明不兼容的更改。次要版本通常与旧版本兼容，因此单独使用较大的次要版本通常不是问题。
+</p>
+
+<p>
+示例：确保我们没有意外地链接到错误的版本（但请注意，这不会检测到其他 ABI 不匹配，例如 LFS 或重入）。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">assert((<span style="color: #ff4ea3;">"libev version mismatch"</span>, ev_version_major() == EV_VERSION_MAJOR &amp;&amp;
+                                      ev_version_minor() &gt;= EV_VERSION_MINOR));
+</pre>
+</div></li>
+
+<li><p>
+unsigned int ev_supported_backends ()
+</p>
+
+<p>
+返回编译到 libev 二进制文件中的所有后端集（即它们对应的 EV_BACKEND_* 值）（与它们在您运行的系统上的可用性无关）。有关设置值的说明，请参阅 ev_default_loop。
+</p>
+
+<p>
+例如：确保我们有 epoll 方法:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">assert((<span style="color: #ff4ea3;">"sorry, no epoll, no sex"</span>, ev_supported_backends() &amp; EVBACKEND_EPOLL));
+</pre>
+</div></li>
+
+<li><p>
+unsigned int ev_recommended_backends ()
+</p>
+
+<p>
+返回编译到 libev 二进制文件中的所有后端的集合，以及推荐用于此平台的后端，这意味着它适用于大多数文件描述符类型。这个集合通常小于 ev_supported_backends 返回的集合，例如 kqueue 在大多数 BSD 上被破坏，除非你明确请求它（假设你知道你在做什么），否则不会被自动检测到。如果您没有明确指定后端，那么 libev 将探测的后端集合。
+</p></li>
+
+<li><p>
+unsigned int ev_embeddable_backends ()
+</p>
+
+<p>
+返回可嵌入其他事件循环的后端集。此值是平台相关的，但可以包括当前系统上不可用的后端。要查找当前系统可能支持哪些可嵌入的后端，您需要查看 ev_embeddable_backends（）和 ev_supported_backends（），同样适用于推荐的后端。
+</p>
+
+<p>
+有关详细信息，请参阅 ev_embed 观察者的说明。
+</p></li>
+
+<li><p>
+ev_set_allocator (void *(*cb)(void *ptr, long size) throw ())
+</p>
+
+<p>
+设置要使用的分配函数（函数原型类似 - 语义与 realloc C89 / SuS / POSIX 函数相同）。它用于分配和释放内存。如果在需要分配内存（size！= 0）时它返回零，则库可能会中止或采取一些潜在的破坏性操作。
+</p>
+
+<p>
+由于某些系统（至少 OpenBSD 和 Darwin）无法实现正确的 realloc 语义，因此 libev 将默认使用系统 realloc 和 free 函数的包装器。
+</p>
+
+<p>
+您可以在高可用性程序中覆盖此功能，例如，如果无法分配内存，使用特殊分配器，甚至暂停一段时间并重试直到某些内存可用，则释放一些内存。
+</p>
+
+<p>
+示例：以下是 libev 本身使用的 realloc 函数，它应该与各种 realloc 和 free 函数一起使用，并且可能是您自己的实现的良好基础：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> *<span style="color: #ffd700;">ev_realloc_emul</span>(<span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">ptr</span>, <span style="color: #00d7af;">long</span> <span style="color: #ff8700;">size</span>) EV_NOEXCEPT {
+  <span style="color: #a1db00;">if</span> (size) <span style="color: #a1db00;">return</span> realloc(ptr, size);
+
+  free(ptr);
+  <span style="color: #a1db00;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+示例：将 libev 分配器替换为等待一个然后重试的分配器。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> *<span style="color: #ffd700;">persistent_realloc</span>(<span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">ptr</span>, <span style="color: #00d7af;">size_t</span> <span style="color: #ff8700;">size</span>) {
+  <span style="color: #a1db00;">if</span> (<span style="color: #ff4b4b;">!</span>size) {
+    free(ptr);
+    <span style="color: #a1db00;">return</span> 0;
+  }
+
+  <span style="color: #a1db00;">for</span> (;;) {
+    <span style="color: #00d7af;">void</span> *<span style="color: #ff8700;">newptr</span> = realloc(ptr, size);
+
+    <span style="color: #a1db00;">if</span> (newptr) <span style="color: #a1db00;">return</span> newptr;
+
+    sleep(60);
+  }
+}
+
+... ev_set_allocator(persistent_realloc);
+</pre>
+</div></li>
+
+<li><p>
+ev_set_syserr_cb (void (*cb)(const char *msg) throw ())
+</p>
+
+<p>
+设置发生可重试的系统调用错误（例如，选择，轮询，epoll_wait 失败）时候的回调函数。该消息是可打印的字符串，指示导致问题的系统调用或子系统。如果设置了这个回调，那么 libev 将期望它能够在不知何时返回时解决这个问题。也就是说，libev 通常会重试所请求的操作，或者，如果条件没有消失，则执行不好的操作（例如中止）。
+</p>
+
+<p>
+示例：这与 libev 内部执行的操作基本相同。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">fatal_error</span>(<span style="color: #a1db00;">const</span> <span style="color: #00d7af;">char</span> *<span style="color: #ff8700;">msg</span>) {
+  perror(msg);
+  abort();
+}
+
+... ev_set_syserr_cb(fatal_error);
+</pre>
+</div></li>
+
+<li><p>
+ev_feed_signal (int signum)
+</p>
+
+<p>
+此功能可用于“模拟”信号接收。从任何环境（包括信号处理程序或随机线程）随时调用此函数是完全安全的。
+</p>
+
+<p>
+它的主要用途是在您的过程中自定义信号处理，尤其是在线程存在的情况下。例如，您可以在所有线程中默认阻止信号（并在创建任何循环时指定 EVFLAG_NOSIGMASK），并在一个线程中使用 sigwait 或任何其他机制等待信号，然后通过调用 ev_feed_signal 将它们“传递”到 libev。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga978447" class="outline-2">
+<h2 id="orga978447"><span class="section-number-2">8</span> 控制 event 循环的函数</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<code>struct ev_loop *</code> 描述了一个事件循环（在这种情况下，struct 不是可选的，除非禁用 libev 3 兼容性，因为 libev 3 有一个与结构名称冲突的 ev_loop 函数）。
+</p>
+
+<p>
+该库知道两种类型的此类循环，默认循环（支持子进程事件）和动态创建的事件循环（不支持子进程事件）。
+</p>
+
+<ul class="org-ul">
+<li><p>
+struct ev_loop *ev_default_loop (unsigned int flags)
+</p>
+
+<p>
+这将返回“默认”事件循环对象，这是您在需要“事件循环”时通常应该使用的对象。在 ev_loop_new 的条目中更详细地描述了事件循环对象和 flags 参数。
+</p>
+
+<p>
+如果默认循环已经初始化，那么这个函数只返回它（并忽略 flags。如果这令你烦恼，那么请检查 ev_backend()）。否则它将使用给定的 flags 创建它，flags 几乎总是取值为 0，除非调用者也调用了 ev_run 或有资格作为“主程序”。
+</p>
+
+<p>
+如果不知道要使用哪个事件循环，请使用从此函数返回的循环（或通过 EV_DEFAULT 宏）。
+</p>
+
+<p>
+请注意，此函数不是线程安全的，因此如果要从多个线程中使用它，则必须使用某种互斥（请注意，这种情况不太可能，因为无论如何都不能在线程之间轻松共享循环）。
+</p>
+
+<p>
+默认循环是唯一可以处理 ev_child 观察者的循环，因为它总是为 SIGCHLD 注册一个处理程序。如果这对您的应用程序来说是一个问题，您可以使用 ev_loop_new 创建一个不执行此操作的动态循环，或者您可以在调用 ev_default_init 之后简单地覆盖 SIGCHLD 信号处理程序。
+</p>
+
+<p>
+示例：这是最典型的用法。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">if</span> (<span style="color: #ff4b4b;">!</span>ev_default_loop(0))
+  fatal(<span style="color: #ff4ea3;">"could not initialise libev, bad $LIBEV_FLAGS in environment?"</span>);
+</pre>
+</div>
+
+<p>
+示例：将 libev 限制为 select 和 poll 后端，并且不允许考虑环境设置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #ffd700;">ev_default_loop</span> (EVBACKEND_POLL | EVBACKEND_SELECT | EVFLAG_NOENV);
+</pre>
+</div></li>
+
+<li><p>
+struct ev_loop * ev_loop_new（unsigned int flags）
+</p>
+
+<p>
+这将创建并初始化一个新的事件循环对象。如果无法初始化循环，则返回 false。
+</p>
+
+<p>
+这个函数是线程安全的，并且将 libev 与线程一起使用的一种常见方法确实是为每个线程创建一个循环，并“main”或“initial”线程中使用默认循环。
+</p>
+
+<p>
+flags 参数可用于指定要使用的特殊行为或特定后端，通常指定为 0（或 EVFLAG_AUTO）。支持以下标志：
+</p>
+
+<ul class="org-ul">
+<li><p>
+EVFLAG_AUTO
+</p>
+
+<p>
+默认标志值。如果你没有线索就使用它（相信我，这是正确的）。
+</p></li>
+
+<li><p>
+EVFLAG_NOENV
+</p>
+
+<p>
+如果使用此标志位（或程序以 setuid 或 setgid 运行），则 libev 将不会查看环境变量 LIBEV_FLAGS。否则（默认值），如果在环境中找到标志，则此环境变量将完全覆盖 flags。这对于尝试特定的后端来测试它们的性能，解决 bug 或者使 libev 线程安全很有用（访问环境变量不能以线程安全的方式完成，但通常在没有其他线程修改它们的情况下可以这么做）。
+</p></li>
+
+<li><p>
+EVFLAG_FORKCHECK
+</p>
+
+<p>
+除了在 fork 之后手动调用 ev_loop_fork，也可以通过启用此标志使 libev 在每次迭代中检查 fork。
+</p>
+
+<p>
+这通过在循环的每次迭代中调用 getpid() 来实现，因此如果循环迭代很多，但实际工作很少，这可能会减慢事件循环，但通常不会引人注意（例如在我的 GNU / Linux 系统上） ，getpid 实际上是一个简单的 5-insn 序列，没有系统调用，因此非常快，但我的 GNU / Linux 系统也有 pthread_atfork，甚至更快）。 （更新：glibc 2.25 版显然再次删除了 getpid 优化）。
+</p>
+
+<p>
+这个标志的一大优点是，当使用这个标志时，你可以忘记 fork（忘记忘记告诉 libev 有关 forking，尽管你仍然必须忽略 SIGPIPE）。
+</p>
+
+<p>
+无法在 LIBEV_FLAGS 环境变量中覆盖或指定此标志设置。
+</p></li>
+
+<li><p>
+EVFLAG_NOINOTIFY
+</p>
+
+<p>
+指定此标志后，libev 将不会尝试将 inotify API 用于其 ev_stat 观察者。除了调试和测试之外，此标志可用于保存 inotify 文件描述符，否则使用 ev_stat 观察器的每个循环都会消耗一个 inotify 句柄。
+</p></li>
+
+<li><p>
+EVFLAG_SIGNALFD
+</p>
+
+<p>
+当指定此标志时，libev 将尝试将 signalfd API 用于其 ev_signal（和 ev_child）观察者。该 API 可以同步传递信号，这使得它更快，并且可以获得排队的信号数据。它还可以简化线程的信号处理，只要在线程中正确地屏蔽不感兴趣处理的信号即可。
+</p>
+
+<p>
+默认情况下不会使用 Signalfd，因为这会改变信号掩码，并且有很多伪劣的库和程序（例如 glib 的线程池）无法正确初始化其信号掩码。
+</p></li>
+
+<li><p>
+EVFLAG_NOSIGMASK
+</p>
+
+<p>
+指定此标志后，libev 将避免修改信号掩码。具体来说，这意味着您必须确保在想要接收信号时没有阻塞信号。
+</p>
+
+<p>
+当您想要进行自己的信号处理，或者只想在特定线程中处理信号并希望避免 libev 阻塞信号时，此行为非常有用。
+</p>
+
+<p>
+在一个线程程序中 POSIX 需要该标志，因为 libev 调用 sigprocmask，其行为是官方未指定的。
+</p>
+
+<p>
+此标志的行为将成为 libev 未来版本的默认行为。
+</p></li>
+
+<li><p>
+EVBACKEND_SELECT (value 1, portable select backend)
+</p>
+
+<p>
+这是您的标准 select（2）后端。不完全标准，因为 libev 试图随机它自己的 fd_set 而对 fds 的数量没有限制，但是如果失败了，那么在使用这个后端时期望 fds 数量的限制相当低。它不能很好地扩展（O（highest_fd）），但它通常是少量 fds （低序号的）的最快后端。
+</p>
+
+<p>
+要从这个后端获得良好的性能，您需要大量的并行性（大多数文件描述符应该很忙）。如果您正在编写服务器，则应在循环中 accept() 以在一次迭代期间接受尽可能多的连接。您可能还想查看 ev_set_io_collect_interval（）以增加每次迭代获得的就绪通知量。
+</p>
+
+<p>
+此后端将 EV_READ 映射到 readfds 集，将 EV_WRITE 映射到 writefds 集（并解决 Microsoft Windows 错误，也可以解决该平台上设置的 exceptfds）。
+</p></li>
+
+<li><p>
+EVBACKEND_POLL (value 2, poll backend, available everywhere except on windows)
+</p>
+
+<p>
+这是你的标准 poll（2）后端。它比 select 更复杂，但更好地处理稀疏 fds，对可使用的 fds 数量没有人为限制（除非它会因很多非活动 fds 而显着减慢）。它的扩展性类似 select ，即 O（total_fds）。有关性能提示，请参阅上面的 EVBACKEND_SELECT 条目。
+</p>
+
+<p>
+此后端将 EV_READ 映射到 POLLIN | POLLERR | POLLHUP 和 EV_WRITE 到 POLLOUT | POLLERR | POLLHUP。
+</p></li>
+
+<li><p>
+EVBACKEND_EPOLL (value 4, Linux)
+</p>
+
+<p>
+使用 Linux 特有的 epoll（7）接口（适用于 2.6.9 之前和之后的内核）。
+</p>
+
+<p>
+对于少数 fds，这个后端比 poll 和 select 慢一点，但它的扩展性能更好。虽然 poll 和 select 通常按 O（total_fds）扩展，其中 total_fds 是 fds 的总数（或最大 fd），epoll 会按照 O（1）或 O（active_fds）扩展。
+</p>
+
+<p>
+epoll 机制值得重点提及，因为最先进的事件机制被错误设计：仅仅是下面这些烦恼，包括默默地丢弃文件描述符，每个文件描述符的每次更改需要系统调用（以及不必要的参数猜测），dup 的问题，在超时之前返回值，导致额外的迭代（仅提供 5ms 的精确度，但同一平台上 select 提供 0.1ms），依此类推。然而，最大的问题是 fork 竞争 - 如果一个程序调用 fork，然后父进程和子进程必须重新创建 epoll 集合，这可能需要相当长的时间（每个文件描述符一个系统调用），当然这很难检测。
+</p>
+
+<p>
+众所周知，Epoll 有很多 bug，- 嵌套的 epoll fds 应该可以工作，但当然不会，并且 epoll 只是喜欢报告完全不同的文件描述符的事件而不是注册集合（甚至已经关闭的文件描述符，因此甚至不能从集合中移除它们，特别是在 SMP 系统上）。 Libev 尝试通过使用额外的生成计数器来对抗这些虚假通知，并将其与事件进行比较以过滤掉虚假的通知，在需要时重新创建集合。 Epoll 也会错误地缩短超时时间，但是你无法知道什么时候和缩短了多少，所以有时候因为尽管是非 0 超时， epoll 也 会立即返回，所以你必须忙着等待。最后，它还无法和一些文件描述符（文件，许多字符设备&#x2026;&#x2026;）共同工作，但它们与 select 完美配合。
+</p>
+
+<p>
+Epoll 确实是事件轮询机制中的残次品，一个 frankenpoll，匆忙拼凑在一起，没有考虑与他人设计或互动。哦，它的痛苦会永远停止&#x2026;&#x2026;
+</p>
+
+<p>
+虽然在同一次迭代中停止，设置和启动 I / O 观察者将导致一些缓存，但每次此类事件仍然存在系统调用（因为相同的文件描述符现在可能指向不同的文件描述），因此最好避免这样做。此外，如果为 dup（）产生的两个文件描述符注册事件，可能无法正常工作。
+</p>
+
+<p>
+通过不要注销尚未关闭的文件描述符的所有观察者来实现该后端的最佳性能，如果可能的话，始终保持每个 fd 至少一个观察者活动。停止和启动观察者（不要重新设置）通常也不会产生额外的开销。 fork 既可以导致虚假通知，也可以在 libev 中导致破坏和重新创建 epoll 对象，这可能需要相当长的时间，因此应该避免。
+</p>
+
+<p>
+所有这些意味着，实际上，最多可能有一百个文件描述符时，根据使用情况，EVBACKEND_SELECT 可能和 epoll 一样快，甚至更快。好难过。
+</p>
+
+<p>
+虽然名义上可以嵌入到其他事件循环中，但是这个功能在许多内核修订版本中被破坏，但可能（！）在当前版本中有效。
+</p>
+
+<p>
+此后端以与 EVBACKEND_POLL 相同的方式映射 EV_READ 和 EV_WRITE。
+</p>
+
+<ul class="org-ul">
+<li><p>
+EVBACKEND_LINUXAIO (value 64, Linux)
+</p>
+
+<p>
+使用 linux 内核 4.18 版本之后特有的 Linux AIO 事件接口（不是 aio（7）而是 io_submit（2），但 libev 仅尝试在 4.19 中使用它）。
+</p>
+
+<p>
+这是另一个不完整的事件接口。
+</p>
+
+<p>
+如果这个后端适合你（截至本文时，它是非常实验性的），它是 Linux 上可用的最佳事件接口，可能非常值得启用它- 如果检测到它在内核中不可用，则会跳过。
+</p>
+
+<p>
+此后端可以批量处理请求，并支持用户空间环缓冲区来接收事件。它也没有 epoll 的大多数设计问题（例如无法从 epoll 集中删除事件源），并且通常听起来好得令人难以置信。因为，这是 Linux 内核，当然它会受到一系列新的限制，迫使你回到 epoll，继承其所有的设计问题。
+</p>
+
+<p>
+首先，它不容易嵌入（但可能在一些额外的开销下使用事件 fd 完成）。它还受系统范围的限制，可以在/ proc / sys / fs / aio-max-nr 中配置。如果没有剩余 AIO 请求，则在初始化期间将跳过此后端，并在循环激活时切换到 epoll。
+</p>
+
+<p>
+然而，在实践中最大的问题是并非所有文件描述符都适用它。例如，在 Linux 5.1 中，支持 TCP 套接字，管道，事件 fds，文件，/ dev / null 和许多其他功能，但 ttys 无法正常工作（内核开发人员不关心的已知错误，请参阅 https： / /lore.kernel.org/patchwork/patch/1047453/），所以这不是（还是？）一个通用事件轮询界面。
+</p>
+
+<p>
+总的来说，似乎 Linux 开发人员不希望它具有除 select 或 poll 之外的通用事件处理机制。
+</p>
+
+<p>
+为了解决所有这些问题，当前版本的 libev 使用它的 epoll 后端作为不起作用的文件描述符类型的后备。如果内核起作用，或者完全退回到 epoll。
+</p>
+
+<p>
+此后端以与 EVBACKEND_POLL 相同的方式映射 EV_READ 和 EV_WRITE。
+</p></li>
+
+<li><p>
+EVBACKEND_KQUEUE (value 8, most BSD clones)
+</p>
+
+<p>
+Kqueue 特别值得一提，因为在这个后端实现的时候，除了 NetBSD 之外，它在所有 BSD 上都是破损的。然而，与 epoll 不同，它的破损不是来自于设计，这些 kqueue 错误不需要对现有程序更改可以修复（并且大部分已经被修复）。因此，除非您在标志中明确指定它（即使用 EVBACKEND_KQUEUE），否则它不会在所有平台上“自动检测”，或者在像 NetBSD 这样的已知良好（ - 足够）系统上编译 libev。
+</p>
+
+<p>
+您仍然可以将 kqueue 嵌入到普通 poll 中或 select 后端，并仅将其用于 socket（在确保套接字在目标平台上使用 kqueue 之后）。有关详细信息，请参阅 ev_embed 观察者。
+</p>
+
+<p>
+它的扩展方式与 epoll 后端相同，但内核的接口效率更高（当然，它没有说明它的实际速度）。虽然停止，设置和启动 I / O 观察器不会像 EVBACKEND_EPOLL 那样引起额外的系统调用，但每次事件仍然会增加两个事件更改。对 fork（）的支持是非常糟糕的（你可能不得不在 fork 上泄漏 fds，但它比 epoll 更加理智）并且在类似难以检测的情况下静默地丢弃 fds。
+</p>
+
+<p>
+在大多数情况下，此后端通常表现良好。虽然名义上可以嵌入其他事件循环中，但这并不适用于所有地方，因此您可能需要对此进行测试。并且因为它几乎无处不在，所以只有当你有很多套接字（它通常可以工作）时才应该使用它，方法是将它嵌入到另一个事件循环中（例如 EVBACKEND_SELECT 或 EVBACKEND_POLL（但是当然也会在操作系统中打破轮询） X）），并且，我提到它，仅用于套接字。
+</p>
+
+<p>
+此后端将 EV_READ 映射到带有 NOTE_EOF 的 EVFILT_READ kevent，将 EV_WRITE 映射到带有 NOTE_EOF 的 EVFILT_WRITE kevent。
+</p></li>
+
+<li><p>
+EVBACKEND_DEVPOLL (value 16, Solaris 8)
+</p>
+
+<p>
+这尚未实现（除非您向我发送实现，否则可能永远不会实现）。据报道，/ dev / poll 只支持套接字，不能嵌入，这将极大地限制了这个后端的实用性。
+</p></li>
+
+<li><p>
+EVBACKEND_PORT (value 32, Solaris 10)
+</p>
+
+<p>
+这使用 Solaris 10 事件端口机制。与 Solaris 上的所有内容一样，它确实很慢，但它仍然可以很好地扩展（O（active_fds））。
+</p>
+
+<p>
+虽然这个后端可以很好地扩展，但每次循环迭代需要每个活动文件描述符进行一次系统调用。对于中小数量的文件描述符，“慢”EVBACKEND_SELECT 或 EVBACKEND_POLL 后端可能表现更好。
+</p>
+
+<p>
+从积极的方面来看，这个后端实际上完全符合所有测试中的规范，并且完全可嵌入，这在操作系统特有的后端中非常罕见。
+</p>
+
+<p>
+从消极方面来说，接口是奇怪的- 如此奇怪，甚至 sun 本身在他们的代码示例中都会出错：事件轮询功能有时会向调用者返回事件，即使发生了错误，但没有任何迹象表明它是否已经这样做或者不是（是的，它甚至以这种方式记录） - 对于边缘触发的接口是致命的，你必须知道是否发生了一个事件，因为你必须重新启动观察者。
+</p>
+
+<p>
+幸运的是，libev 似乎能够解决这些愚蠢的问题。
+</p>
+
+<p>
+此后端以与 EVBACKEND_POLL 相同的方式映射 EV_READ 和 EV_WRITE。
+</p></li>
+
+<li><p>
+EVBACKEND_ALL
+</p>
+
+<p>
+尝试所有后端（甚至使用 EVFLAG_AUTO 时不会尝试的可能破坏的后端）。由于这是一个掩码，你可以做诸如 <code>EVBACKEND_ALL</code> 和 <code>~EVBACKEND_KQUEUE</code> 之类的东西。
+</p>
+
+<p>
+绝对不建议使用此标志，使用 ev_recommended_backends（）返回的任何内容，或者根本不指定后端。
+</p></li>
+
+<li><p>
+EVBACKEND_MASK
+</p>
+
+<p>
+根本不是后端，而是一个掩码，用于从标志值中选择所有后端位，以防您想要从标志值中屏蔽掉任何后端（例如，在修改 LIBEV_FLAGS 环境变量时）。
+</p></li>
+</ul></li>
+</ul></li>
+</ul>
+
+
+<p>
+如果一个或多个后端标志被置于标志值中，则只会尝试这些后端（按此处列出的相反顺序）。如果未指定，则将尝试 ev_recommended_backends（）中的所有后端。
+</p>
+
+<p>
+示例：尝试创建一个使用 epoll 而不使用 epoll 的事件循环。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">epoller</span> = ev_loop_new(EVBACKEND_EPOLL | EVFLAG_NOENV);
+<span style="color: #a1db00;">if</span> (<span style="color: #ff4b4b;">!</span>epoller)
+  fatal(<span style="color: #ff4ea3;">"no epoll found here, maybe it hides under your chair"</span>);
+</pre>
+</div>
+
+<p>
+示例：使用 libev 提供的任何内容，但请确保使用 kqueue（如果可用）。   struct ev_loop * loop = ev_loop_new（ev_recommended_backends（）| EVBACKEND_KQUEU
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span> = ev_loop_new (ev_recommended_backends () | EVBACKEND_KQUEUE);
+</pre>
+</div>
+
+<p>
+示例：类似地，在 linux 上，如果可能的话，你想要利用 linux aio 后端，但如果不可用，则回退到其他东西。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span> = ev_loop_new (ev_recommended_backends () | EVBACKEND_LINUXAIO);
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><p>
+ev_loop_destroy (loop)
+</p>
+
+<p>
+销毁事件循环对象（释放所有内存和内核状态等）。在正常意义上，所有活动事件观察者都不会被停止，例如， ev_is_active 可能仍然返回 true。你有责任在调用此函数之前自己完全停止所有观察者，或者在事后处理事实（这通常是最简单的事情，你可以忽略观察者和/或释放他们）。
+</p>
+
+<p>
+请注意，此功能不会释放某些全局状态（如信号状态（和已安装的信号处理程序）），并且需要手动停止相关的观察者（如信号和儿童观察者）。
+</p>
+
+<p>
+此函数通常用于由 ev_loop_new 分配的循环对象，但也可以在 ev_default_loop 返回的默认循环上使用，在这种情况下，它不是线程安全的。
+</p>
+
+<p>
+请注意，除非在产生竞争套件下，真正需要释放其资源，否则不建议在默认循环上调用此函数。如果需要动态分配的循环，最好使用 ev_loop_new 和 ev_loop_destroy。
+</p></li>
+
+<li><p>
+ev_loop_fork (loop)
+</p>
+
+<p>
+此函数设置一个标志，该标志会导致后续的 ev_run 迭代重新初始化后端的内核状态。尽管有名字如此，可以随时调用它来启动或停止观察者（除了在 ev_prepare 回调中），但在 fork 后的子进程中它最有意义。必需在子进程恢复或调用 ev_run 之前调用它（或使用 EVFLAG_FORKCHECK）。
+</p>
+
+<p>
+此外，如果要重用循环（通过此函数或 EVFLAG_FORKCHECK），还必须忽略 SIGPIPE。
+</p>
+
+<p>
+同样，您必须在 fork 之后重新使用的任何循环上调用它，即使您不打算在父进程中使用循环也是如此。这是因为一些内核接口* cough * kqueue * cough *在 fork 期间做了有趣的事情。
+</p>
+
+<p>
+另一方面，当且仅当想在子进程中使用事件循环时，才需要在子进程中调用此函数。如果只是 fork exec 或在子进程中创建一个新的循环，根本不需要调用它（事实上，epoll 是如此严重破坏，它会产生影响，但 libev 通常会自己检测这种情况并做一个耗时的后端重置）。
+</p>
+
+<p>
+函数本身非常快，并且在 fork 之后调用它通常不是问题。示例：使用 pthreads 时，在默认循环上自动调用 ev_loop_fork。   静态无效
+</p>
+
+<p>
+示例：使用 pthreads 时，在默认循环上自动调用 ev_loop_fork。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">post_fork_child</span>(<span style="color: #00d7af;">void</span>) {
+ ev_loop_fork(EV_DEFAULT);
+}
+
+... pthread_atfork(0, 0, post_fork_child);
+</pre>
+</div></li>
+
+<li><p>
+int ev_is_default_loop (loop)
+</p>
+
+<p>
+当给定的循环实际上是默认循环时返回 true，否则返回 false。
+</p></li>
+
+<li><p>
+unsigned int ev_iteration (loop)
+返回事件循环的当前迭代计数，该值与 libev 对新事件进行轮询的次数相同。它从 0 开始，并愉快地包装足够的迭代。
+</p>
+
+<p>
+该值有时可用作排序的生成计数器（它“循环”循环迭代次数），因为它大致对应于 ev_prepare 和 ev_check 调用 - 并且在准备和检查阶段之间递增。
+</p></li>
+
+<li><p>
+unsigned int ev_depth (loop)
+</p>
+
+<p>
+返回 ev_run 的进入次数减去 ev_run 正常退出的次数，换句话说，递归深度。在 ev_run 之外，这个数字为零。在回调中，此数字为 1，除非以递归方式（或从另一个线程）调用 ev_run，在这种情况下它更高。
+</p>
+
+<p>
+异常离开 ev_run（setjmp / longjmp，取消线程，抛出异常等），不算作“退出” - 认为这是一个提示，以避免这种类似不友好的行为，除非它真的很方便，在这种情况下它是完全支持。
+</p></li>
+
+<li><p>
+unsigned int ev_backend (loop)
+</p>
+
+<p>
+返回指示事件后端的 EVBACKEND_ *标志。
+</p></li>
+
+<li><p>
+ev_tstamp ev_now (loop)
+</p>
+
+<p>
+返回当前的“事件循环时间”，即事件循环接收事件并开始处理它们的时间。只要正在处理回调，此时间戳就不会更改，这也是用于相对计时器的基准时间。您可以将其视为事件发生的时间戳（或者更准确地说，解析它）。
+</p></li>
+
+<li><p>
+ev_now_update (loop)
+</p>
+
+<p>
+通过查询内核建立当前时间，更新进程中 ev_now（）返回的时间。这是一项代价高昂的操作，通常在 ev_run（）中自动完成。这个函数很少有用，但是当一些事件回调运行很长时间而没有进入事件循环时，更新 libev 对当前时间的想法是个好主意。另请参阅 ev_timer 部分中的时间更新的特殊问题。
+</p></li>
+
+<li>ev_suspend (loop)</li>
+<li><p>
+ev_resume (loop)
+</p>
+
+<p>
+这两个函数暂停并恢复事件循环，以便在循环停用一段时间，但不应处理超时的情况下使用。
+</p>
+
+<p>
+一个典型的用例是一个交互式程序，例如游戏：当用户按下^ Z 暂停游戏并在一小时后恢复它时，最好这样处理超时：好像在程序暂停时没有实际时间流逝。这可通过在 SIGTSTP 处理程序中调用 ev_suspend，给自己发送 SIGSTOP 并在之后直接调用 ev_resume 来恢复计时器处理来实现。
+</p>
+
+<p>
+实际上，ev_suspend 和 ev_resume 之间的所有 ev_timer 观察者将被延迟，所有 ev_periodic 观察者将被重新安排（即，他们将丢失暂停时可能发生的任何事件）。
+</p>
+
+<p>
+在调用 ev_suspend 之后，除了 ev_resume 之外，你不能调用给定循环上的任何函数，并且如果没有先前调用 ev_suspend，则不能调用 ev_resume。
+</p>
+
+<p>
+调用 ev_suspend / ev_resume 会对更新事件循环时间产生副作用（请参阅 ev_now_update）。
+</p></li>
+
+<li><p>
+bool ev_run (loop, int flags)
+最后，就是事件处理程序。在初始化所有观察者后并想要开始处理事件时，通常会调用此函数。它会向操作系统询问任何新事件，调用观察者回调，然后无限期地重复整个过程：这就是事件循环被称为循环的原因。
+</p>
+
+<p>
+如果将 flags 参数指定为 0，它将继续处理事件，直到任何事件观察者不再处于活动状态或调用 ev_break。
+</p>
+
+<p>
+如果没有更多活动观察者（通常意味着“完成所有工作”或“死锁”），则返回值为 false，而在所有其他情况下（通常意味着“您应该再次调用 ev_run”），返回值为 true。
+</p>
+
+<p>
+请注意，在决定程序何时结束时（特别是在交互式程序中），明确的 ev_break 通常比依赖所有观察者停用更好，但是有一个程序可以自动循环，只要它必须而且不再由于依靠观察者正确地停下来，这真的是一件美丽的事情。
+</p>
+
+<p>
+这个函数主要是异常安全的 - 你可以通过在回调中调用 longjmp，抛出 C++ 异常等来打破 ev_run 调用。这不会减少 ev_depth 值，也不会清除任何未完成的 EVBREAK_ONE 中断。
+</p>
+
+<p>
+EVRUN_NOWAIT 的标志值将查找新事件，将处理这些事件以及任何已经未完成的事件，但不会在没有事件发生时阻止进程，并将在循环的一次迭代后返回。这有时可用于在进行冗长计算时轮询和处理新事件，以保持程序的响应性。
+</p>
+
+<p>
+EVRUN_ONCE 的标志值将查找新事件（必要时等待）并将处理那些已经未完成的事件。它将阻止你的进程，直到至少有一个新事件到来，并将在循环的一次迭代后返回。（这可能是 libev 本身内部的一个事件，因此无法保证将调用用户注册的回调）
+</p>
+
+<p>
+如果正在等待某些外部事件，而这些外部事件又无法使用其他 libev 观察者表达，这将非常有用。但是，对于这类事情，一对 ev_prepare / ev_check 观察者通常是更好的方法。
+</p>
+
+<p>
+以下是 ev_run 的详细信息（这是为了您的理解，而不是保证在未来的版本中事情会像这样工作）：
+</p>
+<pre class="example">
+   - Increment loop depth.
+   - Reset the ev_break status.
+   - Before the first iteration, call any pending watchers.
+
+   LOOP:
+   - If EVFLAG_FORKCHECK was used, check for a fork.
+   - If a fork was detected (by any means), queue and call all fork watchers.
+   - Queue and call all prepare watchers.
+   - If ev_break was called, goto FINISH.
+   - If we have been forked, detach and recreate the kernel state
+     as to not disturb the other process.
+   - Update the kernel state with all outstanding changes.
+   - Update the "event loop time" (ev_now ()).
+   - Calculate for how long to sleep or block, if at all
+     (active idle watchers, EVRUN_NOWAIT or not having
+     any active watchers at all will result in not sleeping).
+   - Sleep if the I/O and timer collect interval say so.
+   - Increment loop iteration counter.
+   - Block the process, waiting for any events.
+   - Queue all outstanding I/O (fd) events.
+   - Update the "event loop time" (ev_now ()), and do time jump adjustments.
+   - Queue all expired timers.
+   - Queue all expired periodics.
+   - Queue all idle watchers with priority higher than that of pending events.
+   - Queue all check watchers.
+   - Call all queued watchers in reverse order (i.e. check watchers first).
+     Signals and child watchers are implemented as I/O watchers, and will
+     be handled here by queueing them when their watcher gets executed.
+   - If ev_break has been called, or EVRUN_ONCE or EVRUN_NOWAIT
+     were used, or there are no active watchers, goto FINISH, otherwise
+     continue with step LOOP.
+   FINISH:
+   - Reset the ev_break status iff it was EVBREAK_ONE.
+   - Decrement the loop depth.
+   - Return.
+</pre></li>
+
+<li><p>
+ev_break (loop, how)
+</p>
+
+<p>
+可以用来让 ev_run 提前返回（但只有在它处理完所有未完成的事件之后）。 how 参数必须是 EVBREAK_ONE，它将使最内层的 ev_run 调用返回，或者 EVBREAK_ALL，这将使所有嵌套的 ev_run 调用返回。
+</p>
+
+<p>
+这个“break status”将在下次调用 ev_run 时被清除。
+</p>
+
+<p>
+从外部调用 ev_break 也可以安全地调用 ev_run 调用，在这种情况下它将无效。
+</p></li>
+
+<li>ev_ref (loop)</li>
+<li><p>
+ev_unref (loop)
+</p>
+
+<p>
+Ref / unref 可用于在事件循环上添加或删除引用计数：每个观察者保留一个引用，只要引用计数非零，ev_run 就不会自行返回。
+</p>
+
+<p>
+当需要一个永远不打算取消注册的观察者时，这很有用，但是不应该让 ev_run 不能返回。在这种情况下，请在启动后调用 ev_unref，并在停止之前调用 ev_ref。
+</p>
+
+<p>
+例如，libev 本身将其用于其内部信号管道：它对 libev 用户不可见，并且如果 libev 注册的事件活动者没有任何活动，则应让 ev_run 退出。对于通用定期计时器或第三方库中，这也是一种很好的方法。只需记住启动后的 unref 和停止前的 ref（但前提是观察者之前没有活动，或者之前是活动的。请注意，libev 可能会停止观察者本身（例如非重复计时器），在这种情况下你必须回调中的 ev_ref）。
+</p>
+
+<p>
+示例：创建信号观察器，但在没有其他任何活动时，不要让 ev_run 保持运行。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">ev_signal</span> <span style="color: #ff8700;">exitsig</span>;
+ev_signal_init(&amp;exitsig, sig_cb, SIGINT);
+<span style="color: #ffd700;">ev_signal_start</span>(loop, &amp;exitsig);
+<span style="color: #ffd700;">ev_unref</span>(loop);
+</pre>
+</div>
+
+<p>
+示例：出于某种奇怪的原因，请再次注销上述信号处理程序。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #ffd700;">ev_ref</span>(loop);
+<span style="color: #ffd700;">ev_signal_stop</span>(loop, &amp;exitsig);
+</pre>
+</div></li>
+
+<li>ev_set_io_collect_interval (loop, ev_tstamp interval)</li>
+<li><p>
+ev_set_timeout_collect_interval (loop, ev_tstamp interval)
+</p>
+
+<p>
+这些高级功能会影响 libev 等待事件所花费的时间。两个时间间隔默认为 0，这意味着 libev 将尝试以最小延迟调用定时器/周期性回调和 I / O 回调。
+</p>
+
+<p>
+将这些设置为更高的值（间隔必须&gt; = 0）允许 libev 延迟 I / O 和定时器/周期性回调的调用，以提高循环迭代的效率（或增加节能机会）。
+</p>
+
+<p>
+这个想法是，有时你的程序运行得足够快，每个循环迭代处理一个（或很少）事件。虽然这会使程序响应，但它也浪费了大量的 CPU 时间来轮询新事件，尤其是像 select（）这样的后端，它们实际轮询的开销很高，但可以同时传递许多事件。
+</p>
+
+<p>
+通过设置更高的 io 收集间隔，您可以让 libev 花更多时间收集 I / O 事件，这样您就可以在每次迭代时处理更多事件，但代价是增加延迟。超时（ev_periodic 和 ev_timer）不会受到影响。将此值设置为非空值将在大多数循环迭代中引入额外的 ev_sleep（）调用。休眠时间确保 libev 不会更频繁地轮询 I / O 事件，然后平均每隔一个间隔轮询一次（只要主机时间分辨率足够好）。
+</p>
+
+<p>
+同样，通过设置更高的超时收集间隔，您可以让 libev 花费更多时间收集超时，但代价是增加延迟/抖动/不精确性（延迟将调用观察者回调）。 ev_io 观察者不会受到影响。将此值设置为非 null 值不会在 libev 中引入任何开销。
+</p>
+
+<p>
+许多（繁忙）程序通常可以通过将 I / O 收集间隔设置为接近 0.1 左右的值来获益，这通常足以用于交互式服务器（当然不适用于游戏），同样适用于超时。将其设置为低于 0.01 的值通常没有多大意义，因为这接近大多数系统的时序粒度。
+</p>
+
+<p>
+请注意，如果您与外界进行交易并且无法增加并行性，则此设置将限制您的交易率（如果您需要每次交易轮询一次并且 I / O 收集间隔为 0.01，那么您可以'每秒执行超过 100 次交易）。
+</p>
+
+<p>
+设置超时收集间隔可以提高节省功率的机会，因为程序将通过延迟一些“捆绑”时间“接近”的定时器回调调用，从而减少进程休眠和再次唤醒的次数。另一种减少迭代/唤醒的有用技术是使用 ev_periodic 观察者并确保它们仅在一秒边界上触发。
+</p>
+
+<p>
+示例：我们只需要 0.1 秒超时粒度，并且我们希望不要每秒轮询超过 100 次：
+</p>
+<div class="org-src-container">
+<pre class="src src-c">ev_set_timeout_collect_interval&#65288;EV_DEFAULT_UC_ 0.1&#65289;;
+ev_set_io_collect_interval&#65288;EV_DEFAULT_UC_ 0.01&#65289;;
+</pre>
+</div></li>
+<li><p>
+ev_invoke_pending (loop)
+</p>
+
+<p>
+此调用将在重置其挂起状态时调用所有挂起的观察者。通常，ev_run 会在需要时自动执行此操作，但是当覆盖调用回调时，此调用很方便。可以从观察者调用此函数- 这可能很有用，例如，当您想要进行一些冗长的计算并希望将进一步的事件处理传递给另一个线程时（您仍然必须确保在 ev_invoke_pending 或 ev_run 中只执行一个线程） ）。
+</p></li>
+
+<li><p>
+int ev_pending_count (loop)
+</p>
+
+<p>
+返回待处理观察者的数量 - 零表示没有观察者待处理。
+</p></li>
+
+<li><p>
+ev_set_invoke_pending_cb (loop, void (*invoke_pending_cb)(EV_P))
+</p>
+
+<p>
+这会覆盖循环的调用挂起功能：ev_run 将调用此回调，而不是所有挂起的观察者。例如，当您想要在另一个上下文（另一个线程等）中调用实际观察者时，这很有用。
+</p>
+
+<p>
+如果要重置回调，请使用 ev_invoke_pending 作为新回调
+</p></li>
+
+<li><p>
+ev_set_loop_release_cb (loop, void (*release)(EV_P) throw (), void (*acquire)(EV_P) throw ())
+</p>
+
+<p>
+有时希望在多个线程之间共享相同的循环。这可以通过在每次调用 libev 函数时放置 mutex_lock / unlock 调用来相对简单地完成。
+</p>
+
+<p>
+但是，ev_run 可以无限期运行，因此等待它返回是不可行的。解决这个问题的一种方法是通过 ev_break 和 ev_async_send 唤醒事件循环，另一种方法是设置这些循环上的 release 和 acquire 回调。
+</p>
+
+<p>
+设置后，将在线程暂停等待新事件之前调用 release，之后调用 acquire。
+</p>
+
+<p>
+理想情况下，release 只会调用你的 mutex_unlock 函数，而 acquire 只会再次调用 mutex_lock 函数。
+</p>
+
+<p>
+虽然在 release 和 acquire 的调用之间允许事件循环修改（毕竟这是它们唯一的目的），但是没有进行任何修改会影响事件循环，例如添加观察者将不会影响正在观看的文件描述符集，或者等待的时间。当您希望它记录您所做的任何更改时，请使用 ev_async 观察程序唤醒 ev_run。
+</p>
+
+<p>
+理论上，执行 ev_run 的线程在 release 和 acquire 的调用之间将是异步取消安全的。
+</p>
+
+<p>
+另请参阅本文档后面的 THREADS 部分中的锁定示例。
+</p></li>
+
+<li>ev_set_userdata (loop, void *data)</li>
+<li><p>
+void *ev_userdata (loop)
+</p>
+
+<p>
+设置并检索与循环关联的单个 void *。从未调用 ev_set_userdata 时，ev_userdata 返回 0。 这两个函数可用于将任意数据与循环相关联，并且仅用于上述 invoke_pending_cb，release 和 acquire 回调，但当然也可以用于任何其他目的（甚至滥用）。
+</p></li>
+
+<li><p>
+ev_verify (loop)
+</p>
+
+<p>
+此函数仅在编译时候加入 EV_VERIFY 支持时执行某些操作，这是非最小版本的默认设置。它试图通过所有内部结构并检查它们的有效性。如果发现任何不一致的地方，它将向标准错误打印错误消息并调用 abort（）。
+</p>
+
+<p>
+这可以用来捕获 libev 本身内部的 bug：在正常情况下，这个函数永远不会 abort，因为 libev 保持其数据结构的一致性。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org30f0e2b" class="outline-2">
+<h2 id="org30f0e2b"><span class="section-number-2">9</span> 解剖观察者</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+在下面的描述中，名称中的大写 TYPE 代表观察者类型，例如，ev_TYPE_start 可以表示定时器观察器的 ev_timer_start 和 I/O 观察器的 ev_io_start。
+</p>
+
+<p>
+观察者是一种不透明的结构，您可以分配并注册以记录某些感兴趣的事件。举一个具体的例子，假设您想等待 STDIN 变得可读，您将为此创建一个 ev_io 观察器：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">my_cb</span>(<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span>, <span style="color: #00d7af;">ev_io</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  ev_io_stop(w);
+  ev_break(loop, EVBREAK_ALL);
+}
+
+<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span> = ev_default_loop(0);
+
+<span style="color: #00d7af;">ev_io</span> <span style="color: #ff8700;">stdin_watcher</span>;
+
+ev_init(&amp;stdin_watcher, my_cb);
+ev_io_set(&amp;stdin_watcher, STDIN_FILENO, EV_READ);
+<span style="color: #ffd700;">ev_io_start</span>(loop, &amp;stdin_watcher);
+
+<span style="color: #ffd700;">ev_run</span>(loop, 0);
+</pre>
+</div>
+
+<p>
+如您所见，您负责为您的观察器结构分配内存（在堆栈上执行此操作通常是个坏主意）。
+</p>
+
+<p>
+每个观察者都有一个相关的观察者结构（称为 struct ev_TYPE 或简称为 ev_TYPE，因为所有观察者结构使用 typedef）。
+</p>
+
+<p>
+必须通过调用 <code>ev_init（watcher *，callback）</code> 来初始化每个观察者结构，以及提供回调。 每次事件发生时都会调用此回调（或者，在 I / O 观察器的情况下，每次事件循环检测到给定的文件描述符是可读和/或可写的）。
+</p>
+
+<p>
+每个观察者类型还具有自己的 <code>ev_TYPE_set（watcher *，...）</code> 宏来配置它，有特定于观察者类型的参数。在一个调用中还有一个用于组合初始化和设置的宏： <code>ev_TYPE_init(watcher *，callback，...)</code> 。
+</p>
+
+<p>
+为了让观察者真正监测事件，必须使用观察者特定的启动函数（ <code>ev_TYPE_start（loop，watcher *）</code> ）启动它，你可以通过调用相应的停止功能随时停止观察事件（ <code>ev_TYPE_stop(loop，watcher*)</code> )。
+</p>
+
+<p>
+只要您的观察者处于活动状态（已启动但未停止），您就不能访问存储在其中的值。最重要的是，您必须永远不要重新初始化它或调用它的 ev_TYPE_set 宏。
+</p>
+
+<p>
+每个回调接收事件循环指针作为第一个，注册的观察者结构作为第二个，并且接收的事件的比特集作为第三个参数。收到的事件通常包括每个事件类型接收一个位（您可以同时接收多个事件）。可能的位掩码是：
+</p>
+
+<ul class="org-ul">
+<li>EV_READ</li>
+<li><p>
+EV_WRITE
+</p>
+
+<p>
+ev_io 观察器中的文件描述符已变得可读和/或可写。
+</p></li>
+
+<li><p>
+EV_TIMER
+</p>
+
+<p>
+ev_timer 观察者已经超时了。
+</p></li>
+
+<li><p>
+EV_PERIODIC
+</p>
+
+<p>
+ev_periodic 观察者已超时。
+</p></li>
+
+<li><p>
+EV_SIGNAL
+</p>
+
+<p>
+ev_signal 观察器中指定的信号已被线程接收。
+</p></li>
+
+<li><p>
+EV_CHILD
+</p>
+
+<p>
+ev_child 观察程序中指定的 pid 已收到状态更改。
+</p></li>
+
+<li><p>
+EV_STAT
+</p>
+
+<p>
+ev_stat 观察器中指定的路径以某种方式更改了其属性。
+</p></li>
+
+<li><p>
+EV_IDLE
+</p>
+
+<p>
+ev_idle 观察者已经确定你没有更好的事情要做。
+</p></li>
+
+<li>EV_PREPARE</li>
+<li><p>
+EV_CHECK
+</p>
+
+<p>
+所有 ev_prepare 观察者都在 ev_run 开始收集新事件之前调用，并且所有 ev_check 观察者在 ev_run 收集它们之后排队（未调用），但在它排队任何接收到的事件的回调之前。这意味着 ev_prepare 观察者是在事件循环休眠或轮询新事件之前调用的最后一个观察者，并且 ev_check 观察者将在事件循环迭代中的任何其他具有相同或较低优先级的观察者之前被调用。
+</p>
+
+<p>
+两种观察者类型的回调可以像他们想要的那样开始和停止所有观察者，并且所有观察者都将被考虑在内（例如，ev_prepare 观察者可能启动空闲观察者以防止 ev_run 阻止）。
+</p></li>
+
+<li><p>
+EV_EMBED
+</p>
+
+<p>
+ev_embed 观察者中指定的嵌入式事件循环需要引起注意。
+</p></li>
+
+<li><p>
+EV_FORK
+</p>
+
+<p>
+在 fork 之后，子进程中的事件循环已恢复（请参阅 ev_fork）。
+</p></li>
+
+<li><p>
+EV_CLEANUP
+</p>
+
+<p>
+事件循环即将被销毁（参见 ev_cleanup）。
+</p></li>
+
+<li><p>
+EV_ASYNC
+</p>
+
+<p>
+已异步通知给定的异步观察器（请参阅 ev_async）。
+</p></li>
+
+<li><p>
+EV_CUSTOM
+</p>
+
+<p>
+libev 本身并未发送（或以其他方式使用），但 libev 用户可以自由地使用它来发信号通知观察者（例如通过 ev_feed_event）。
+</p></li>
+
+<li><p>
+EV_ERROR
+</p>
+
+<p>
+发生了未指定的错误，观察者已停止。这可能是因为观察者无法正常启动，因为 libev 内存不足，发现文件描述符已关闭或任何其他问题。 Libev 考虑了这些应用程序错误。
+</p>
+
+<p>
+你最好通过报告问题并以某种方式应对被拦截的观察者来采取行动。请注意，编写良好的程序不应该收到任何错误，所以当您的观察者收到它时，这通常表示您的程序中存在错误。
+</p>
+
+<p>
+Libev 通常会发出一些“虚假”事件和一个错误信号，例如它可能表明 fd 是可读写的，如果你的回调写得很好，它只能尝试操作并处理 read() 或者 write()。但是，这在多线程程序中不起作用，因为 fd 已经可以关闭并重新用于其他事情，所以要小心。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgac5e0da" class="outline-2">
+<h2 id="orgac5e0da"><span class="section-number-2">10</span> 通用观察者函数</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li><p>
+ev_init (ev_TYPE *watcher, callback)
+</p>
+
+<p>
+该宏初始化观察者的通用部分。观察者对象的内容可以是任意的（因此 malloc 会这样做）。只初始化了观察程序的通用部分，之后需要调用特定于类型的 ev_TYPE_set 宏来初始化特定于类型的部分。对于每种类型，还有一个 ev_TYPE_init 宏，它将两个调用都包装成一个。
+</p>
+
+<p>
+可以随时重新初始化观察者，只要它已被停止（或从未开始）并且没有待处理的待处理事件。
+</p>
+
+<p>
+回调总是类型为 <code>void (*)(struct ev_loop *loop, ev_TYPE *watcher, int revents)</code> 。
+</p>
+
+<p>
+示例：分两步初始化 ev_io 观察程序。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">ev_io</span> <span style="color: #ff8700;">w</span>;
+ev_init(&amp;w, my_cb);
+ev_io_set(&amp;w, STDIN_FILENO, EV_READ);
+</pre>
+</div></li>
+
+<li><p>
+ev_TYPE_set (ev_TYPE *watcher, [args])
+</p>
+
+<p>
+此宏初始化观察者的类型特定部分。在调用此宏之前，您需要至少调用一次 ev_init，但您可以多次调用 ev_TYPE_set。但是，您不能在处于活动状态的观察器上调用此宏（但它可以处于挂起状态，这与 ev_init 宏不同）。
+</p>
+
+<p>
+虽然某些观察者类型没有特定于类型的参数（例如 ev_prepare），但您仍需要调用其 set 宏。
+</p>
+
+<p>
+请参阅上面的 ev_init，以获取前者
+</p></li>
+
+<li><p>
+ev_TYPE_init (ev_TYPE *watcher, callback, [args])
+</p>
+
+<p>
+此宏将 ev_init 和 ev_TYPE_set 宏调用都转换为单个调用。这是初始化观察者最方便的方法。当然，同样的限制也适用。
+</p>
+
+<p>
+示例：初始化并设置 ev_io
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c">ev_io_init (&amp;w, my_cb, STDIN_FILENO, EV_READ);
+</pre>
+</div></li>
+
+<li><p>
+ev_TYPE_start (loop, ev_TYPE *watcher)
+</p>
+
+<p>
+启动（激活）给定的观察者。只有活跃的观察者才会收到活动。如果观察者已经活跃，则不会发生任何事情。
+</p>
+
+<p>
+示例：在整个部分中启动正在滥用的 ev_io 观察程序作为示例。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #ffd700;">ev_io_start</span> (EV_DEFAULT_UC, &amp;w);
+</pre>
+</div></li>
+
+<li><p>
+ev_TYPE_stop (loop, ev_TYPE *watcher)
+</p>
+
+<p>
+如果处于活动状态，则停止指定的观察者，并清除挂起状态（不管观察者是否处于活动状态）。
+</p>
+
+<p>
+停止的观察者可能正在等待 - 例如，非重复计时器在它们变为待定时停止 - 但调用 ev_TYPE_stop 可确保观察者既不活动也不挂起。如果你想释放或重用观察者使用的内存，那么总是调用它的 ev_TYPE_stop 函数是个好主意。
+</p></li>
+
+<li><p>
+bool ev_is_active（ev_TYPE * watcher）
+</p>
+
+<p>
+如果观察者处于活动状态（即它已经启动但尚未停止），则返回一个真值。如
+</p></li>
+
+<li><p>
+bool ev_is_pending (ev_TYPE *watcher)
+</p>
+
+<p>
+如果观察者处于挂起状态，则返回真值（即，它具有未完成的事件，但尚未调用其回调）。只要观察者处于待处理状态（但不是活动状态），就不能在其上调用 init 函数（但是 ev_TYPE_set 是安全的），你不能改变它的优先级，你必须确保观察者可以使用 libev（例如你不能释放它）。
+</p></li>
+
+<li><p>
+callback ev_cb (ev_TYPE *watcher)
+</p>
+
+<p>
+返回当前在观察者上设置的回调。
+</p></li>
+
+<li><p>
+ev_set_cb (ev_TYPE *watcher, callback)
+</p>
+
+<p>
+更改回调。您几乎可以随时更改回调（modulo thread）。
+</p></li>
+
+<li>ev_set_priority (ev_TYPE *watcher, int priority)</li>
+<li><p>
+int ev_priority (ev_TYPE *watcher)
+</p>
+
+<p>
+设置并查询观察者的优先级。优先级是 EV_MAXPRI（默认值：2）和 EV_MINPRI（默认值：-2）之间的一个小整数。高优先级的挂起观察者将先被调用，但优先级将不会使观察者不被执行（除了 ev_idle 观察者）。
+</p>
+
+<p>
+如果需要在更高优先级事件挂起时禁止调用，则需要查看提供此功能的 ev_idle 观察器。
+</p></li>
+
+<li><p>
+ev_invoke (loop, ev_TYPE *watcher, int revents)
+</p>
+
+<p>
+使用指定的 loop 和事件（revents）调用观察者。只要观察者回调可以处理 loop 和 revents 都不需要有效，因为两者都只是传递给回调。
+</p></li>
+
+<li><p>
+int ev_clear_pending (loop, ev_TYPE *watcher)
+</p>
+
+<p>
+如果观察者处于挂起状态，则此函数将清除其挂起状态并返回其 revents bitset（就像调用其回调一样）。如果观察者没有挂起，它什么也不做，返回 0。
+</p>
+
+<p>
+有时“轮询”观察者而不是等待调用其回调很有用，这可以通过此函数来完成。
+</p></li>
+
+<li><p>
+ev_feed_event (loop, ev_TYPE *watcher, int revents)
+</p>
+
+<p>
+将给定事件集合提供到事件循环中，就好像指定的事件对于指定的观察者已发生（必须是指向已初始化但未必启动的事件观察者的指针）上。显然，只要它有未决事件，你就不能释放观察者。
+</p>
+
+<p>
+停止观察者，让 libev 调用它，或调用 ev_clear_pending 将清除待处理的事件，即使观察者没有首先启动。
+</p>
+
+<p>
+有关不需要观察者的相关函数，另请参阅 ev_feed_fd_event 和 ev_feed_signal_event。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org39400ba" class="outline-2">
+<h2 id="org39400ba"><span class="section-number-2">11</span> 观察者状态</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+本手册中提到了各种观察者状态 - 活跃，待决等等。在本节中，将更详细地描述这些状态和它们之间转换的规则 - 虽然这些规则可能看起来很复杂，但它们通常做“正确的事情”。
+</p>
+
+<ul class="org-ul">
+<li><p>
+initialised
+</p>
+
+<p>
+观察者在事件循环中注册之前，必须对其进行初始化。这可以通过调用 ev_TYPE_init 来完成，或者调用 ev_init，然后调用特定于观察者的 ev_TYPE_set 函数。
+</p>
+
+<p>
+在这种状态下，它只是一些适合在事件循环中使用的内存块。它可以随意移动，释放，重用等 - 只要你保持内存内容不变，或者再次调用 ev_TYPE_init。
+</p></li>
+
+<li><p>
+started/running/active
+</p>
+
+<p>
+一旦观察者开始调用 ev_TYPE_start，它就成为事件循环的属性，并且正在积极地等待事件。在这种状态下它无法被访问（除了一些记录的方式），移动，释放或其他任何操作 - 唯一合法的事情是保持指向它的指针，并在其上调用可以在活跃观察者身上使用的 libev 函数，
+</p></li>
+
+<li><p>
+pending
+</p>
+
+<p>
+如果观察者处于活动状态且 libev 确定已发生其感兴趣的事件（例如计时器到期），则它将变为待处理状态。它将保持在此挂起状态，直到它被停止或其调用即将被调用，因此它通常不会在观察者回调中挂起。
+</p>
+
+<p>
+观察者在待处理时可能处于活动状态，也可能不处于活动状态（例如，过期的非重复计时器可能处于暂挂状态但不再处于活动状态）。如果它被停止，它可以自由访问（例如通过调用 ev_TYPE_set），但它此时仍然是事件循环的属性，因此不能移动，释放或重用。如果它处于活动状态，则前一项中描述的规则仍然适用。
+</p>
+
+<p>
+还可以在未激活的观察者上提供事件（例如，通过 ev_feed_event），在这种情况下，它变为待处理状态而不是活动的。
+</p></li>
+
+<li><p>
+stopped
+</p>
+
+<p>
+可以通过 libev 隐式地停止观察者（在这种情况下它可能仍处于未决状态），或通过调用其 ev_TYPE_stop 函数显式地停止。后者将清除观察者可能处于的任何待处理状态，无论其是否处于活动状态，因此在释放观察者之前明确停止观察者通常是一个好主意。
+</p>
+
+<p>
+停止（并且未挂起）的观察者基本上处于初始化状态，也就是说，它可以以您希望的任何方式重复使用，移动和修改（但是当您丢弃内存块时，您需要再次 ev_TYPE_init。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org869b188" class="outline-2">
+<h2 id="org869b188"><span class="section-number-2">12</span> 观察者优先模型</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+许多事件循环支持观察者优先级，这些优先级通常是小整数，它们以某种方式影响观察者之间事件回调调用的顺序，其他条件相同。
+</p>
+
+<p>
+在 libev 中，可以使用 ev_set_priority 设置 Watcher 优先级。有关更多技术细节，请参阅其说明，例如实际优先级范围。
+</p>
+
+<p>
+事件循环如何解释这些优先级有两种常见方式：
+</p>
+
+<p>
+常见的锁定模型，较高优先级“锁定”较低优先级观察者的调用，这意味着只要优先级较高的观察者接收事件，就不会调用较低优先级的观察者。
+</p>
+
+<p>
+不太常见的排序模型，仅使用优先级来在单个事件循环迭代中对回调调用进行排序：优先调用高优先级的观察者，但在新的轮询事件之前都会调用它们。
+</p>
+
+<p>
+Libev 对其所有观察者使用第二种（仅用于排序）模型，除了空闲观察者（使用锁定模型）。
+</p>
+
+<p>
+这背后的基本原理是大多数内核接口都没有很好地支持为观察者实现锁定模型，并且只要他们的回调没有被执行，大多数事件库就会一次又一次地轮询相同的事件，这在一个高优先级观察者锁定大量低优先级观察者的常见情况下效率低下。
+</p>
+
+<p>
+当有两个或多个处理相同资源的观察者时，静态（排序）优先级最有用：典型的使用示例是让 ev_io 观察者接收数据，以及相关的 ev_timer 来处理超时。在加载时，程序接收数据时可能在处理其他作业，但由于通常首先调用定时器，因此将在检查数据之前执行超时处理程序。在这种情况下，由于给定时器的优先级低于 I / O 观察器，可确保即使在不利条件下（通常，但并非总是如此），I / O 也将首先处理。
+</p>
+
+<p>
+由于空闲观察者使用“锁定”模型，这意味着只有当没有相同或更高优先级的观察者收到事件时才会执行空闲观察者，它们可用于在需要时实施“锁定”模型。
+</p>
+
+<p>
+例如，要模拟有多少其他事件库处理优先级，您可以将 ev_idle 观察者与每个此类观察者关联，并且在正常观察者回调中，您只需启动空闲观察者。实际处理在空闲观察者回调中完成。这会导致 libev 不断地为观察者轮询和处理内核事件数据，但是当知道锁定情况很少（反过来很少见:)时，这是可行的。
+</p>
+
+<p>
+然而，通常，以这种方式实施的锁定模型，将在其设计用于处理的负载类型下悲惨地执行。在这种情况下，最好在启动空闲观察器之前停止真正的观察者，因此如果实际处理将延迟相当长的时间，内核将不必处理该事件。
+</p>
+
+<p>
+下面是一个 I / O 观察程序的示例，它应该以低于默认值的严格优先级运行，并且只应在没有其他事件挂起时处理数据：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #00d7af;">ev_idle</span> <span style="color: #ff8700;">idle</span>;  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">actual processing watcher</span>
+<span style="color: #00d7af;">ev_io</span> <span style="color: #ff8700;">io</span>;      <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">actual event watcher</span>
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">io_cb</span>(EV_P_ <span style="color: #00d7af;">ev_io</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">stop the I/O watcher, we received the event, but</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">are not yet ready to handle it.</span>
+  ev_io_stop(<span style="color: #00d7af;">EV_A_</span> <span style="color: #ff8700;">w</span>);
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">start the idle watcher to handle the actual event.</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">it will not be executed as long as other watchers</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">with the default priority are receiving events.</span>
+  ev_idle_start(EV_A_ &amp; idle);
+}
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">idle_cb</span>(EV_P_ <span style="color: #00d7af;">ev_idle</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">actual processing</span>
+  read(STDIN_FILENO, ...);
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">have to start the I/O watcher again, as</span>
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">we have handled the event</span>
+  ev_io_start(EV_P_ &amp; io);
+}
+
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">initialisation</span>
+ev_idle_init(&amp;idle, idle_cb);
+ev_io_init(&amp;io, io_cb, STDIN_FILENO, EV_READ);
+<span style="color: #ffd700;">ev_io_start</span>(EV_DEFAULT_ &amp;io);
+</pre>
+</div>
+
+<p>
+在“真实”的世界中，启动计时器也可能是有益的，这样在负载下永远不能锁定低优先级连接。这使程序能够在短时间高负载期间为重要连接保持较低的延迟，同时不会完全锁定不太重要的连接。
+</p>
+</div>
+</div>
+<div id="outline-container-orgeae7381" class="outline-2">
+<h2 id="orgeae7381"><span class="section-number-2">13</span> 观察者类型</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+本节详细介绍了每个观察者，但不会重复上一节中给出的信息。解释了特定于观察者类型的任何初始化/设置宏，函数和成员。
+</p>
+
+<p>
+成员还标有[只读]，这意味着，当观察者处于活动状态时，您可以查看该成员并期望一些合理的内容，但您不能修改它，或[读写]，这意味着你可以期待它在观察者激活时有一些合理的内容，但你也可以修改它。修改它可能不会做任何明智的事情或立即生效（或做任何事情），但 libev 不会以任何方式崩溃或故障。
+</p>
+</div>
+<div id="outline-container-org772e11d" class="outline-3">
+<h3 id="org772e11d"><span class="section-number-3">13.1</span> ev_io - is this file descriptor readable or writable?</h3>
+<div class="outline-text-3" id="text-13-1">
+<p>
+I / O 观察者在事件循环的每次迭代中检查文件描述符是可读还是可写，或者更准确地说，何时读取不会阻塞进程并且写入至少能够写入一些数据时。此行为称为水平触发，因为只要条件仍然存在，就会继续接收事件。请记住，如果您不想对事件采取行动并且不想接收未来事件，也可以停止观察者。
+</p>
+
+<p>
+通常，您可以根据需要为每个 fd 注册尽可能多的读取和/或写入事件监视器（只要您不要混淆自己）。将所有文件描述符设置为非阻塞模式通常也是一个好主意（但如果您知道自己在做什么，则不需要）。
+</p>
+
+<p>
+另外需要注意的是，非常容易接收到“虚假”准备就绪通知，也就是说，可以使用 EV_READ 调用回调函数，但后续的 read（2）实际上会因为没有数据而被阻塞。即使使用相对标准的程序结构，也很容易进入这种情况。因此，最好始终使用非阻塞 I / O：返回 EAGAIN 的 read 远比在某些数据到达之前挂起的程序更可取。
+</p>
+
+<p>
+如果你不能在非阻塞模式下运行 fd（例如你不应该使用 Xlib 连接），那么你必须单独重新测试一个文件描述符是否真的准备好了已知的良好接口，如作为 poll（幸运的是，在 Xlib 的情况下，它已经单独执行此操作，因此使用它非常安全）。有些人还使用 SIGALRM 和间隔计时器，只是为了确保你不会无限期地阻止。
+</p>
+
+<p>
+但实际上，最好使用非阻塞模式。
+</p>
+</div>
+
+
+<div id="outline-container-orgc620c60" class="outline-4">
+<h4 id="orgc620c60"><span class="section-number-4">13.1.1</span> The special problem of disappearing file descriptors</h4>
+<div class="outline-text-4" id="text-13-1-1">
+<p>
+需要告知一些后端（例如 kqueue，epoll，linuxaio）关闭文件描述符（由于明确地调用 close 或任何其他方式，例如 dup2）。原因是注册了感兴趣的某些文件描述符，但是当它消失时，操作系统将默默地放弃。如果使用 libev 注册了具有相同编号的另一个文件描述符，则没有有效的方法可以看出这实际上是一个不同的文件描述符。
+</p>
+
+<p>
+为了避免必须明确告诉 libev 这样的情况，libev 遵循以下策略：每次调用 ev_io_set 时，libev 都会认为这可能是一个新的文件描述符，否则假定文件描述符保持不变。这意味着即使文件描述符编号本身没有改变，您也必须在更改描述符时调用 ev_io_set（或 ev_io_init）。
+</p>
+
+<p>
+无论如何，这就是人们通常会这样做的方式，重要的一点是 libev 应用程序不应该围绕 libev 进行优化，而应该对 libev 进行优化。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d5d060" class="outline-4">
+<h4 id="org1d5d060"><span class="section-number-4">13.1.2</span> The special problem of dup'ed file descriptors</h4>
+<div class="outline-text-4" id="text-13-1-2">
+<p>
+某些后端（例如 epoll）不能为文件描述符注册事件，而只能注册基础文件描述的事件。这意味着当你有 dup（）产生的文件描述符或更奇怪的时，并为它们注册事件时，只有一个文件描述符可能实际上接收事件。
+</p>
+
+<p>
+除了不为潜在的 dup（）产生的文件描述符注册事件，或者使用 EVBACKEND_SELECT 或 EVBACKEND_POLL 之外，没有可能的解决方法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6bae8a7" class="outline-4">
+<h4 id="org6bae8a7"><span class="section-number-4">13.1.3</span> The special problem of files</h4>
+<div class="outline-text-4" id="text-13-1-3">
+<p>
+许多人尝试在表示文件的文件描述符上使用 select（或 libev），并期望当程序不阻塞磁盘访问时（这可能需要很长时间）才能使其准备就绪。
+</p>
+
+<p>
+但是，这不能以“预期”的方式工作- 一旦内核知道是否存在以及存在多少数据，就会通知准备就绪，而在打开文件的情况下，情况总是如此，所以你总是得到一个即时通知准备就绪，您的读取（或可能写入）仍将阻止磁盘 I / O.
+</p>
+
+<p>
+查看它的另一种方法是，在套接字，管道，字符设备等的情况下，有另一方（发送方）自己提供数据，但在文件的情况下，没有这样的事情：磁盘不会自己发送数据，只是因为它不知道你想要读什么- 你首先要请求一些数据。
+</p>
+
+<p>
+由于高级通知机制通常不支持文件，因此即使您不应该使用文件，libev 也会尝试模拟文件的 POSIX 行为。这样做的原因是方便：有时你想看 STDIN 或 STDOUT，它通常是一个 tty，通常是一个管道，但有时也有文件或特殊设备（例如，Linux 上的 epoll 与/ dev / random 一起使用但不能用/ dev / urandom），即使文件可能更适合使用异步 I / O 而不是非阻塞 I / O，但它仍然有用，当它“正常工作”而不是冻结时。
+</p>
+
+<p>
+因此，当你知道它时，避免使用指向文件的文件描述符（例如使用 libeio），但在方便的时候使用它们，例如：对于 STDIN / STDOUT，或者很少从文件而不是从套接字读取，并且想要重用
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge0bf48d" class="outline-4">
+<h4 id="orge0bf48d"><span class="section-number-4">13.1.4</span> The special problem of fork</h4>
+<div class="outline-text-4" id="text-13-1-4">
+<p>
+一些后端（epoll，kqueue，linuxaio，iouring）根本不支持 fork（）或表现出无用的行为。 Libev 完全支持 fork，但如果你想继续在子进程身上使用它，需要在子进程身上告诉它。
+</p>
+
+<p>
+要在子进程中支持 fork，必须在子进程中调用 ev_loop_fork（），启用 EVFLAG_FORKCHECK，或使用 EVBACKEND_SELECT 或 EVBACKEND_POL
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga2f677a" class="outline-4">
+<h4 id="orga2f677a"><span class="section-number-4">13.1.5</span> The special problem of SIGPIPE</h4>
+<div class="outline-text-4" id="text-13-1-5">
+<p>
+虽然不是特别针对 libev，但很容易忘记 SIGPIPE：当写入另一端关闭的管道时，程序会被发送一个 SIGPIPE，默认情况下会中止你的程序。对于大多数程序来说，这是明智的行为，对于守护进程来说，这通常是不可取的。
+</p>
+
+<p>
+因此，当您遇到虚假的，无法解释的守护进程退出时，请确保忽略 SIGPIPE（并且可能确保将守护进程的退出状态记录在某处，因为这会给您一个很大的线索）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org981ad8b" class="outline-4">
+<h4 id="org981ad8b"><span class="section-number-4">13.1.6</span> The special problem of accept()ing when you can't</h4>
+<div class="outline-text-4" id="text-13-1-6">
+<p>
+POSIX accept 函数的许多实现（例如，在 2004 之后的 Linux 中找到）具有在所有错误情况下不从挂起队列中删除连接的特殊行为。
+</p>
+
+<p>
+例如，较大的服务器通常用完文件描述符（由于资源限制），导致 accept 由于 ENFILE 失败，但不拒绝连接，导致再次下一次迭代的 libev 信号准备就绪（连接仍然存在），以及通常导致程序以 100％的 CPU 使用率循环。
+</p>
+
+<p>
+不幸的是，造成这个问题的一组错误在操作系统之间有所不同，应用程序通常很少能够解决这种情况，并且没有已知的线程安全方法来删除连接以应对过载（对我而言）。
+</p>
+
+<p>
+处理这种情况最简单的方法之一就是忽略它 - 当程序遇到重载时，它会循环直到情况结束。虽然这是一种忙碌等待的形式，但没有操作系统提供基于事件的方式来处理这种情况，因此它是最好的方法。
+</p>
+
+<p>
+处理这种情况的一种更好的方法是记录除 EAGAIN 和 EWOULDBLOCK 之外的任何错误，确保不要使用这些消息充斥日志，并像往常一样继续，这至少让用户知道可能出错的地方（“提高 ulimit ！“）。对于额外的点，可以在监听 fd“停留一段时间”停止 ev_io 观察者，这会降低 CPU 使用率。
+</p>
+
+<p>
+如果您的程序是单线程的，那么您还可以为过载情况保留一个虚拟文件描述符（例如，通过打开/ dev / null），当您遇到 ENFILE 或 EMFILE 时，关闭它，运行 accept，关闭该 fd，以及创建一个新的虚拟 fd。在典型的过载情况下，这将优雅地拒绝客户。
+</p>
+
+<p>
+处理它的最后一种方法是简单地记录错误并退出，就像通常使用 malloc 失败一样，但这会导致容易发生 DoS 攻击。 观察者特定功能
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgea4dfd4" class="outline-4">
+<h4 id="orgea4dfd4"><span class="section-number-4">13.1.7</span> Watcher-Specific Functions</h4>
+<div class="outline-text-4" id="text-13-1-7">
+<ul class="org-ul">
+<li>ev_io_init (ev_io *, callback, int fd, int events)</li>
+<li><p>
+ev_io_set (ev_io *, int fd, int events)
+</p>
+
+<p>
+Configures an ev_io watcher. The fd is the file descriptor to receive events for and events is either EV_READ, EV_WRITE or EV_READ | EV_WRITE, to express the desire to receive the given events.
+</p></li>
+
+<li><p>
+int fd [read-only]
+</p>
+
+<p>
+The file descriptor being watched.
+</p></li>
+
+<li><p>
+int events [read-only]
+</p>
+
+<p>
+The events being watched.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org15223c8" class="outline-4">
+<h4 id="org15223c8"><span class="section-number-4">13.1.8</span> 示例</h4>
+<div class="outline-text-4" id="text-13-1-8">
+<p>
+示例：当 STDIN_FILENO 变得易读且只能读取一次时，调用 stdin_readable_cb。由于它可能是行缓冲的，因此您可以尝试在回调中读取整行。
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">stdin_readable_cb</span>(<span style="color: #a1db00;">struct</span> <span style="color: #00d7af;">ev_loop</span> *<span style="color: #ff8700;">loop</span>, <span style="color: #00d7af;">ev_io</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  ev_io_stop(loop, w);
+  ..read from stdin here(or <span style="color: #00d7af;">from</span> <span style="color: #ff8700;">w</span>-&gt;fd) and handle <span style="color: #00d7af;">any</span> <span style="color: #ff8700;">I</span> / O errors
+}
+
+... <span style="color: #a1db00;">struct</span> ev_loop *loop = ev_default_init(0);
+<span style="color: #00d7af;">ev_io</span> <span style="color: #ff8700;">stdin_readable</span>;
+ev_io_init(&amp;stdin_readable, stdin_readable_cb, STDIN_FILENO, EV_READ);
+<span style="color: #ffd700;">ev_io_start</span>(loop, &amp;stdin_readable);
+<span style="color: #ffd700;">ev_run</span>(loop, 0);
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c6c73f" class="outline-3">
+<h3 id="org2c6c73f"><span class="section-number-3">13.2</span> ev_timer - relative and optionally repeating timeouts</h3>
+</div>
+
+<div id="outline-container-org9917a5a" class="outline-3">
+<h3 id="org9917a5a"><span class="section-number-3">13.3</span> ev_periodic - to cron or not to cron?</h3>
+</div>
+
+<div id="outline-container-org3eec9ea" class="outline-3">
+<h3 id="org3eec9ea"><span class="section-number-3">13.4</span> ev_signal - signal me when a signal gets signalled!</h3>
+</div>
+
+<div id="outline-container-orgc46608f" class="outline-3">
+<h3 id="orgc46608f"><span class="section-number-3">13.5</span> ev_stat - did the file attributes just change?</h3>
+</div>
+
+<div id="outline-container-orge4ab9fa" class="outline-3">
+<h3 id="orge4ab9fa"><span class="section-number-3">13.6</span> ev_idle - when you've got nothing better to do&#x2026;</h3>
+</div>
+
+<div id="outline-container-orgbe8386e" class="outline-3">
+<h3 id="orgbe8386e"><span class="section-number-3">13.7</span> ev_prepare and ev_check - customise your event loop!</h3>
+</div>
+
+<div id="outline-container-org0a15941" class="outline-3">
+<h3 id="org0a15941"><span class="section-number-3">13.8</span> ev_embed - when one backend isn't enough&#x2026;</h3>
+</div>
+
+<div id="outline-container-org6ec0565" class="outline-3">
+<h3 id="org6ec0565"><span class="section-number-3">13.9</span> ev_fork - the audacity to resume the event loop after a fork</h3>
+</div>
+
+<div id="outline-container-orgb3add93" class="outline-3">
+<h3 id="orgb3add93"><span class="section-number-3">13.10</span> ev_cleanup - even the best things end</h3>
+</div>
+
+<div id="outline-container-org1b01117" class="outline-3">
+<h3 id="org1b01117"><span class="section-number-3">13.11</span> ev_async - how to wake up an event loop</h3>
+<div class="outline-text-3" id="text-13-11">
+<p>
+通常，您不能使用来自多个线程或其他异步源（如信号处理程序）的 ev_loop（而不是多个事件循环 - 这些在不同的线程中使用是安全的）。
+</p>
+
+<p>
+但是，有时您需要唤醒一个您无法控制的事件循环，例如因为它属于另一个线程。这就是 ev_async 观察者所做的事情：只要 ev_async 观察者处于活动状态，您就可以通过调用 ev_async_send 来发信号，这是线程和信号安全的。
+</p>
+
+<p>
+该功能与 ev_signal 观察者非常相似，因为信号本质上也是异步的，并且信号也将被压缩（即，回调调用的数量可能小于 ev_async_send 调用的数量）。实际上，您可以使用信号观察器作为一种“全局异步监视器”，通过在未使用的信号上使用观察器，并使用 ev_feed_signal 从另一个线程发信号通知该观察者，即使不知道哪个循环拥有该信号。
+</p>
+</div>
+
+<div id="outline-container-org3f3dea8" class="outline-4">
+<h4 id="org3f3dea8"><span class="section-number-4">13.11.1</span> Queueing</h4>
+<div class="outline-text-4" id="text-13-11-1">
+<p>
+ev_async 不支持以任何方式排队数据。原因是作者不知道一个简单的多写单读的队列的算法，算法在所有情况下都有效，并且不需要精心设计以支持像 pthreads 或不可移植的内存访问语义。
+</p>
+
+<p>
+这意味着如果要对数据进行排队，则必须提供自己的队列。但至少我可以告诉你如何在你的队列中实现锁定：
+</p>
+</div>
+
+
+<div id="outline-container-org37c1b9e" class="outline-5">
+<h5 id="org37c1b9e"><span class="section-number-5">13.11.1.1</span> queueing from a signal handler context</h5>
+<div class="outline-text-5" id="text-13-11-1-1">
+<p>
+要实现无锁排队，您只需添加到信号处理程序中的队列，但是您将阻止观察者回调中的信号处理程序。这是一个为一些虚构的 SIGUSR1 处理程序执行此操作的示例：
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">ev_async</span> <span style="color: #ff8700;">mysig</span>;
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">sigusr1_handler</span>(<span style="color: #00d7af;">void</span>) {
+  <span style="color: #00d7af;">sometype</span> <span style="color: #ff8700;">data</span>;
+
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">no locking etc.</span>
+  queue_put(data);
+  ev_async_send(EV_DEFAULT_ &amp; mysig);
+}
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">mysig_cb</span>(EV_P_ <span style="color: #00d7af;">ev_async</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  <span style="color: #00d7af;">sometype</span> <span style="color: #ff8700;">data</span>;
+  <span style="color: #00d7af;">sigset_t</span> <span style="color: #ff8700;">block</span>, <span style="color: #ff8700;">prev</span>;
+
+  sigemptyset(&amp;block);
+  sigaddset(&amp;block, SIGUSR1);
+  sigprocmask(SIG_BLOCK, &amp;block, &amp;prev);
+
+  <span style="color: #a1db00;">while</span> (queue_get(&amp;data)) process(data);
+
+     <span style="color: #a1db00;">if</span> (sigismember (&amp;prev, SIGUSR1)
+       sigprocmask (SIG_UNBLOCK, &amp;block, 0);
+}
+</pre>
+</div>
+<p>
+注意：理论上 pthreads 要求你在使用线程时使用 pthread_setmask 而不是 sigprocmask，但 libev 也不会这样做&#x2026;&#x2026;）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org341bdb4" class="outline-5">
+<h5 id="org341bdb4"><span class="section-number-5">13.11.1.2</span> queueing from a thread context</h5>
+<div class="outline-text-5" id="text-13-11-1-2">
+<p>
+线程的策略是不同的，因为您不能（轻松地）阻止线程，但您可以轻松地抢占它们，因此要安全地排队，您需要使用传统的互斥锁，例如在此 pthread 示例中：
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a1db00;">static</span> <span style="color: #00d7af;">ev_async</span> <span style="color: #ff8700;">mysig</span>;
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">pthread_mutex_t</span> <span style="color: #ff8700;">mymutex</span> = PTHREAD_MUTEX_INITIALIZER;
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">otherthread</span>(<span style="color: #00d7af;">void</span>) {
+  <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">only need to lock the actual queueing operation</span>
+  pthread_mutex_lock(&amp;mymutex);
+  queue_put(data);
+  pthread_mutex_unlock(&amp;mymutex);
+
+  ev_async_send(EV_DEFAULT_ &amp; mysig);
+}
+
+<span style="color: #a1db00;">static</span> <span style="color: #00d7af;">void</span> <span style="color: #ffd700;">mysig_cb</span>(EV_P_ <span style="color: #00d7af;">ev_async</span> *<span style="color: #ff8700;">w</span>, <span style="color: #00d7af;">int</span> <span style="color: #ff8700;">revents</span>) {
+  pthread_mutex_lock(&amp;mymutex);
+
+  <span style="color: #a1db00;">while</span> (queue_get(&amp;data)) process(data);
+
+  pthread_mutex_unlock(&amp;mymutex);
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7e28929" class="outline-4">
+<h4 id="org7e28929"><span class="section-number-4">13.11.2</span> Watcher-Specific Functions and Data Members</h4>
+<div class="outline-text-4" id="text-13-11-2">
+<ul class="org-ul">
+<li>ev_async_init (ev_async *, callback)</li>
+<li>ev_async_send (loop, ev_async *)</li>
+<li>bool = ev_async_pending (ev_async *)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5fd911c" class="outline-2">
+<h2 id="org5fd911c"><span class="section-number-2">14</span> 通用或有用的模型</h2>
+</div>
+
+<div id="outline-container-org147b8e3" class="outline-2">
+<h2 id="org147b8e3"><span class="section-number-2">15</span> 模拟 libevent</h2>
+</div>
+
+<div id="outline-container-orga0e392e" class="outline-2">
+<h2 id="orga0e392e"><span class="section-number-2">16</span> C++ 支持</h2>
+</div>
+
+<div id="outline-container-orgd7b8c3f" class="outline-2">
+<h2 id="orgd7b8c3f"><span class="section-number-2">17</span> 其他语言绑定</h2>
+</div>
+
+<div id="outline-container-orga65ec71" class="outline-2">
+<h2 id="orga65ec71"><span class="section-number-2">18</span> 宏魔法</h2>
+</div>
+
+<div id="outline-container-org11f67d2" class="outline-2">
+<h2 id="org11f67d2"><span class="section-number-2">19</span> 嵌套</h2>
+</div>
+
+<div id="outline-container-org89ec2ec" class="outline-2">
+<h2 id="org89ec2ec"><span class="section-number-2">20</span> 与其他程序、库或者环境交互</h2>
+</div>
+
+<div id="outline-container-org09a9d7b" class="outline-2">
+<h2 id="org09a9d7b"><span class="section-number-2">21</span> 可移植性注意事项</h2>
+</div>
+
+<div id="outline-container-org714b3c0" class="outline-2">
+<h2 id="org714b3c0"><span class="section-number-2">22</span> 算法复杂度</h2>
+</div>
+
+<div id="outline-container-orgd728d53" class="outline-2">
+<h2 id="orgd728d53"><span class="section-number-2">23</span> 从 LIBEV 3.X 到 4.X 的移植</h2>
+</div>
+
+<div id="outline-container-orgc7dc7b1" class="outline-2">
+<h2 id="orgc7dc7b1"><span class="section-number-2">24</span> 词汇表</h2>
+</div>
+
+<div id="outline-container-org97ba8c9" class="outline-2">
+<h2 id="org97ba8c9"><span class="section-number-2">25</span> 作者</h2>
+<div class="outline-text-2" id="text-25">
+<p>
+作者 Marc Lehmann &lt;libev@schmorp.de&gt;，由 Mikael Magnusson 和 Emanuele Giaquinta 反复修正，以及许多其他人的小修正。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-09-06 五 17:42</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

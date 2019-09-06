@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-06 五 17:41 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>logging</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">logging</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgdb317bb">1. 概述</a></li>
+<li><a href="#org9297b9d">2. Logger</a>
+<ul>
+<li><a href="#org16f599d">2.1. propagate</a></li>
+<li><a href="#org90524af">2.2. setLevel(level)</a></li>
+<li><a href="#org1854d87">2.3. addFilter(filter)</a></li>
+<li><a href="#org3777f2a">2.4. addHandler(hdlr)</a></li>
+<li><a href="#orgc8d29cb">2.5. debug(msg, *args, **kwargs)</a></li>
+</ul>
+</li>
+<li><a href="#org4e864de">3. Handler</a>
+<ul>
+<li><a href="#org553e141">3.1. setLevel(level)</a></li>
+<li><a href="#org155f880">3.2. setFormatter(fmt)</a></li>
+<li><a href="#org033d8f1">3.3. addFilter(filter)</a></li>
+</ul>
+</li>
+<li><a href="#org254ae94">4. Formatter</a></li>
+<li><a href="#org2fc2ebb">5. Filter</a></li>
+<li><a href="#org88533b8">6. LogRecord</a></li>
+<li><a href="#orgc4d1390">7. 配置</a>
+<ul>
+<li><a href="#orgfc47cfe">7.1. logging.config.dictConfig</a></li>
+<li><a href="#org944e46e">7.2. logging.config.fileConfig</a></li>
+<li><a href="#orgfcb112b">7.3. logging.config.listen</a></li>
+<li><a href="#org975bd6e">7.4. 增量配置</a></li>
+</ul>
+</li>
+<li><a href="#org0ae4d41">8. 线程安全</a></li>
+<li><a href="#org988da53">9. 进程安全</a></li>
+<li><a href="#orga99fb74">10. 实践</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgdb317bb" class="outline-2">
+<h2 id="orgdb317bb"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+该模块中包括的主要类对象：
+</p>
+<ul class="org-ul">
+<li><p>
+Logger
+</p>
+
+<p>
+应用程序代码直接使用的接口。
+</p></li>
+
+<li><p>
+Handler
+</p>
+
+<p>
+处理程序是确定记录器中每条消息发生情况的引擎。它描述了特定的日志记录行为，例如将消息写入屏幕，文件或网络套接字。
+</p></li>
+
+<li><p>
+Filter
+</p>
+
+<p>
+过滤器用于提供对从记录器到处理程序的日志记录传递的额外控制。
+</p>
+
+<p>
+默认情况下，将处理满足日志级别要求的任何日志消息。 但是，通过安装筛选器，可以在日志记录过程中添加其他条件。例如，可以安装仅允许发出来自特定源的 ERROR 消息的过滤器。
+</p>
+
+<p>
+过滤器还可用于在发出之前修改日志记录。 例如，如果满足一组特定条件，可以编写一个过滤器，将 ERROR 日志记录降级为 WARNING 记录。
+</p>
+
+<p>
+过滤器可以安装在记录器或处理器上; 可以在链中使用多个过滤器来执行多个过滤操作。
+</p></li>
+
+<li><p>
+Formatter
+</p>
+
+<p>
+最终，日志记录需要呈现为文本。 格式化程序描述该文本的确切格式。 格式化程序通常由包含 LogRecord 属性的 Python 格式化字符串组成; 但是，也可以编写自定义格式化程序来实现特定的格式化行为。
+</p></li>
+
+<li><p>
+LogRecord
+</p>
+
+<p>
+Logger 记录日志时产生的日志对象。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9297b9d" class="outline-2">
+<h2 id="org9297b9d"><span class="section-number-2">2</span> Logger</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+请注意，Logger 永远不会直接实例化，而是始终通过模块级函数 <code>logging.getLogger(name)</code> 实例化。对具有相同名称的 <code>getLogger()</code> 的多次调用将始终返回对同一 Logger 对象的引用。
+</p>
+
+<p>
+name 可能是一个以句点分隔的层次值，如 foo.bar.baz（它也可能只是普通的 foo）。 在分层列表中较低的 logger 是列表中较高的 logger 的后继。例如，给定一个名为 foo 的 logger，名称为 foo.bar，foo.bar.baz 和 foo.bam 的 logger 都是 foo 的后代。 记录器名称层次结构类似于 Python 包层次结构，在每个模块上使用推荐的 <code>logging.getLogger(__ name__)</code> 组织 logger 也会达到同样的效果，因为在模块中， <code>__name__</code> 是 Python 包命名空间中的模块名称。
+</p>
+</div>
+
+<div id="outline-container-org16f599d" class="outline-3">
+<h3 id="org16f599d"><span class="section-number-3">2.1</span> propagate</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+如果此属性的计算结果为 true，则除了附加到此 logger 的任何处理程序之外，记录到此 logger 的事件将传递给更高级别（祖先）logger 的处理程序。 消息直接传递给祖先记录器的处理程序 - 不考虑祖先 logger 的级别和过滤器。
+</p>
+
+<p>
+该属性默认为 true。
+</p>
+
+<p>
+注意如果将处理程序附加到记录器及其一个或多个祖先，它可能会产生多次相同的记录。 通常，不需要将处理程序附加到多个记录器，如果只是将其附加到记录器层次结构中最高的相应记录器，那么它将看到所有后代记录器记录的所有事件，前提是它们的 propagate 设置为 True。 一种常见的情况是仅将处理程序附加到根记录程序，并让传播处理其余部分。
+</p>
+
+<p>
+通常不应该将一个 handler 附加到多个 logger，而是应该设置合理的继承层级，传递日志。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org90524af" class="outline-3">
+<h3 id="org90524af"><span class="section-number-3">2.2</span> setLevel(level)</h3>
+</div>
+
+<div id="outline-container-org1854d87" class="outline-3">
+<h3 id="org1854d87"><span class="section-number-3">2.3</span> addFilter(filter)</h3>
+</div>
+
+<div id="outline-container-org3777f2a" class="outline-3">
+<h3 id="org3777f2a"><span class="section-number-3">2.4</span> addHandler(hdlr)</h3>
+</div>
+
+<div id="outline-container-orgc8d29cb" class="outline-3">
+<h3 id="orgc8d29cb"><span class="section-number-3">2.5</span> debug(msg, *args, **kwargs)</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+kwargs 中有三个关键字参数被检查：exc_info，stack_info 和 extra。
+</p>
+
+<p>
+如果 exc_info 未计算为 false，则会将异常信息添加到日志记录消息中。如果提供了异常元组（以 sys.exc_info()返回的格式）或异常实例，则使用它; 否则，调用 sys.exc_info()以获取异常信息。
+</p>
+
+<p>
+第二个可选关键字参数是 stack_info，默认为 False。如果为 true，则将堆栈信息添加到日志消息中，包括实际的日志记录调用。请注意，这与通过指定 exc_info 显示的堆栈信息不同：前者是从堆栈底部到当前线程中的日志记录调用的堆栈帧，而后者是有关已展开的堆栈帧的信息，跟踪异常，同时搜索异常处理程序。
+</p>
+
+<p>
+可以独立于 exc_info 指定 stack_info，例如只是展示你如何到达代码中的某个点，即使没有引发异常。堆栈帧按标题行打印，标题行表示：
+</p>
+
+<pre class="example">
+   Stack (most recent call last):
+</pre>
+<p>
+这模仿了在显示异常帧时使用的 Traceback（最近的最后一次调用）。
+</p>
+
+<p>
+第三个关键字参数是 extra，可用于传递字典，该字典用于填充为具有用户定义属性的日志记录事件创建的 LogRecord 的__dict__。然后可以根据需要使用这些自定义属性。例如，它们可以合并到记录的消息中。例如：
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #ff8700;">FORMAT</span> = <span style="color: #ff4ea3;">'%(asctime)-15s %(clientip)s %(user)-8s %(message)s'</span>
+logging.basicConfig(<span style="color: #d18aff;">format</span>=FORMAT)
+<span style="color: #ff8700;">d</span> = {<span style="color: #ff4ea3;">'clientip'</span>: <span style="color: #ff4ea3;">'192.168.0.1'</span>, <span style="color: #ff4ea3;">'user'</span>: <span style="color: #ff4ea3;">'fbloggs'</span>}
+<span style="color: #ff8700;">logger</span> = logging.getLogger(<span style="color: #ff4ea3;">'tcpserver'</span>)
+logger.warning(<span style="color: #ff4ea3;">'Protocol problem: %s'</span>, <span style="color: #ff4ea3;">'connection reset'</span>, extra=d)
+</pre>
+</div>
+<p>
+将会打印：
+</p>
+<pre class="example">
+   2006-02-08 22:20:02,165 192.168.0.1 fbloggs  Protocol problem: connection reset
+</pre>
+
+<p>
+extra 中的键不应与日志系统使用的键冲突。 （有关日志记录系统使用哪些密钥的详细信息，请参阅 Formatter 文档。）
+</p>
+
+<p>
+如果您选择在记录的消息中使用这些属性，则需要谨慎操作。例如，在上面的示例中，Formatter 已经设置了格式字符串，该字符串在 LogRecord 的属性字典中需要'clientip'和'user'。如果缺少这些，则不会记录该消息，因为将发生字符串格式化异常。所以在这种情况下，总是需要使用这些键传递额外的字典。
+</p>
+
+<p>
+虽然这可能很烦人，但此功能旨在用于特殊情况，例如多线程服务器，其中相同的代码在许多上下文中执行，并且出现的有趣条件取决于此上下文（例如上例中的远程客户端 IP 地址和经过身份验证用户名）。在这种情况下，专门的 Formatters 可能会与特定的 Handler 一起使用。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4e864de" class="outline-2">
+<h2 id="org4e864de"><span class="section-number-2">3</span> Handler</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Handler 永远不会直接实例化;此类充当更有用的子类的基础。实例使用子类进行初始化。
+</p>
+</div>
+
+<div id="outline-container-org553e141" class="outline-3">
+<h3 id="org553e141"><span class="section-number-3">3.1</span> setLevel(level)</h3>
+</div>
+
+<div id="outline-container-org155f880" class="outline-3">
+<h3 id="org155f880"><span class="section-number-3">3.2</span> setFormatter(fmt)</h3>
+</div>
+
+<div id="outline-container-org033d8f1" class="outline-3">
+<h3 id="org033d8f1"><span class="section-number-3">3.3</span> addFilter(filter)</h3>
+</div>
+</div>
+
+<div id="outline-container-org254ae94" class="outline-2">
+<h2 id="org254ae94"><span class="section-number-2">4</span> Formatter</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+使用
+</p>
+<div class="org-src-container">
+<pre class="src src-python">logging.Formatter(fmt=<span style="color: #5fafd7;">None</span>, datefmt=<span style="color: #5fafd7;">None</span>, style=<span style="color: #ff4ea3;">'%'</span>)
+</pre>
+</div>
+<p>
+style 参数可以是'％'，'{'或'$'之一，并确定格式字符串将如何与其数据合并：使用 <code>％-formatting</code> ， <code>str.format()</code> 或 <code>string.Template</code> 之一。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2fc2ebb" class="outline-2">
+<h2 id="org2fc2ebb"><span class="section-number-2">5</span> Filter</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+待添加
+</p>
+</div>
+</div>
+
+<div id="outline-container-org88533b8" class="outline-2">
+<h2 id="org88533b8"><span class="section-number-2">6</span> LogRecord</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+每次记录某些内容时，Logger 会自动创建 LogRecord 实例，并且可以通过 makeLogRecord（）手动创建（例如，通过线路接收的 pickle 事件）。
+</p>
+
+<p>
+Formatter 使用 LogRecord 的属性来格式化。
+</p>
+
+<p>
+常用的属性有 filename,levelname,lineno,message,name 等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc4d1390" class="outline-2">
+<h2 id="orgc4d1390"><span class="section-number-2">7</span> 配置</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+实际使用中，可以在代码中声明和定义各模块各自的 logger，handler，formatter，也可以 logging.config 提供的 api 接口直接设置 logging 模块。后者代码更加整洁。
+</p>
+</div>
+<div id="outline-container-orgfc47cfe" class="outline-3">
+<h3 id="orgfc47cfe"><span class="section-number-3">7.1</span> logging.config.dictConfig</h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/96e745936f2b6791c7ee3fb8689c6988.js">https://gist.github.com/phenix3443/96e745936f2b6791c7ee3fb8689c6988.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+<p>
+传递给 dictConfig(config)的参数 config 是一个字典，必须包含以下 key：
+</p>
+<ul class="org-ul">
+<li><p>
+version
+</p>
+
+<p>
+必选，代表版本的整数值，目前唯一有效值是 1.
+</p></li>
+</ul>
+
+<p>
+所有其他键都是可选的，但如果存在，则将按如下所述进行解释。在下面字典类型配置中，将检查 key 为 “()” 的特殊键以查看是否需要自定义实例化。 如果是这样，下面用户定义对象中描述的机制用于创建实例; 否则，上下文用于确定要实例化的内容。
+</p>
+
+<ul class="org-ul">
+<li><p>
+formatters
+</p>
+
+<p>
+相应的值将是一个 dict，其中每个键是 Formatter  ID，每个值都是一个描述如何配置相应的 Formatter 实例的字典。值必须有 <code>formatter</code> 和 <code>datefmt</code> 键，用来构造 Formatter 实例。
+</p>
+
+<p>
+但是奇怪，为什么 style 参数在 logging.config.dictConfig 中不起作用？
+</p></li>
+
+<li><p>
+filters
+</p>
+
+<p>
+相应的值将是一个 dict，其中每个键都是一个过滤器 ID，每个值都是一个描述如何配置相应 Filter 实例的 dict。值必须有 name 键（默认为空字符串），这用于构造 logging.Filter 实例。
+</p></li>
+
+<li><p>
+handlers
+</p>
+
+<p>
+相应的值将是一个 dict，其中每个键是一个处理程序 ID，每个值都是一个描述如何配置相应的 Handler 实例的 dict。值可以配置以下键：
+</p>
+<ul class="org-ul">
+<li>class (mandatory).此处理程序类的完全限定名称</li>
+<li>level (optional). 此处理程序的级别.</li>
+<li>formatter (optional). 此处理程序格式化程序 ID.</li>
+<li>filters (optional). 此处理程序的过滤器 ID 列表.</li>
+</ul></li>
+
+<li><p>
+loggers
+</p>
+
+<p>
+相应的值将是一个 dict，其中每个键都是一个记录器名称，每个值都是一个描述如何配置相应 Logger 实例的 dict。值包含以下 key：
+</p>
+<ul class="org-ul">
+<li>level (optional). 此记录器的等级。</li>
+<li>propagate (optional). 此记录器的传播设置。</li>
+<li>filters (optional). 此记录器过滤器 ID 列表。</li>
+<li>handlers (optional). 此记录器处理程序 ID 列表。</li>
+</ul></li>
+
+<li><p>
+root
+</p>
+
+<p>
+这将是 root 记录器的配置。配置的处理将与任何 logger 一样，但 propagate 设置将不适用。
+</p></li>
+
+<li><p>
+incremental
+</p>
+
+<p>
+是否将配置解释为现有配置的增量。此值默认为 False，这意味着使用指定的配置替换现有配置。
+</p></li>
+
+<li>disable_existing_loggers</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org944e46e" class="outline-3">
+<h3 id="org944e46e"><span class="section-number-3">7.2</span> logging.config.fileConfig</h3>
+</div>
+
+<div id="outline-container-orgfcb112b" class="outline-3">
+<h3 id="orgfcb112b"><span class="section-number-3">7.3</span> logging.config.listen</h3>
+</div>
+
+<div id="outline-container-org975bd6e" class="outline-3">
+<h3 id="org975bd6e"><span class="section-number-3">7.4</span> 增量配置</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+很难为增量配置提供完全的灵活性。例如，因为过滤器和格式化程序之类的对象是匿名的，所以一旦设置了配置，在扩充配置时就不可能引用这样的匿名对象。
+</p>
+
+<p>
+此外，一旦配置完成，就没有令人信服的案例在运行时任意改变记录器，处理程序，过滤器，格式化程序的对象图; 只需设置级别（记录器还可以设置传播标志）就可以控制记录器和处理程序的详细程度。在多线程环境中以安全的方式任意改变对象图是有问题的; 虽然并非不可能，但实际上增加的复杂性并不值得。
+</p>
+
+<p>
+因此，当配置字典中的 incremental 键存在且为 True 时，系统将完全忽略任何格式化器和过滤器条目，并仅处理处理程序条目中的级别设置，以及记录器和根条目中的级别和传播设置。
+</p>
+
+<p>
+使用配置字典中的值可以将配置作为 pickled dicts 通过线路发送到套接字侦听器。因此，长时间运行的应用程序的日志记录详细程度可以随着时间的推移而改变，而无需停止和重新启动应用程序。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0ae4d41" class="outline-2">
+<h2 id="org0ae4d41"><span class="section-number-2">8</span> 线程安全</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+日志记录模块是线程安全的。它通过使用线程锁实现了这一点; 有一个锁可以序列化对模块共享数据的访问，每个处理程序还会创建一个锁，以序列化对其底层 I/O 的访问。
+</p>
+
+<p>
+如果使 signal 模块实现异步信号处理程序，则可能无法在此类处理程序中使用 logging。 这是因为线程模块中的锁实现并不总是可重入的，因此不能从这样的信号处理程序中调用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org988da53" class="outline-2">
+<h2 id="org988da53"><span class="section-number-2">9</span> 进程安全</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+但是多个进程往同一个文件写日志不是安全的。官方的说法是这样的：
+</p>
+<blockquote>
+<p>
+Because there is no standard way to serialize access to a single file across multiple processes in Python. If you need to log to a single file from multiple processes, one way of doing this is to have all the processes log to a SocketHandler, and have a separate process which implements a socket server which reads from the socket and logs to file. (If you prefer, you can dedicate one thread in one of the existing processes to perform this function.)
+</p>
+</blockquote>
+
+<p>
+为了解决这个问题，可以使用 ConcurrentLogHandler，ConcurrentLogHandler 可以在多进程环境下安全的将日志写入到同一个文件，并且可以在日志文件达到特定大小时，分割日志文件。在默认的 logging 模块中，有个 TimedRotatingFileHandler 类，可以按时间分割日志文件，可惜 ConcurrentLogHandler 不支持这种按时间分割日志文件的方式。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga99fb74" class="outline-2">
+<h2 id="orga99fb74"><span class="section-number-2">10</span> 实践</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+可以单独定义类对象：
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #a1db00;">import</span> logging
+
+<span style="color: #ff8700;">logger</span> = logging.getLogger(<span style="color: #d18aff;">__name__</span>)
+
+<span style="color: #ff8700;">fmt</span> = logging.Formatter(
+        <span style="color: #ff4ea3;">'{asctime} {levelname} {module}:{lineno} {message}'</span>, style=<span style="color: #ff4ea3;">'{'</span>)
+
+<span style="color: #ff8700;">handler</span> = logging.StreamHandler()
+handler.setFormatter(fmt)
+
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+logger.debug(<span style="color: #ff4ea3;">"debug message"</span>)
+</pre>
+</div>
+
+<p>
+更好的使用 logging.config<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+</p>
+<div class="HTML">
+<p>
+&lt;script src="<a href="https://gist.github.com/phenix3443/2640a5003cc77789badbc629eb068725.js">https://gist.github.com/phenix3443/2640a5003cc77789badbc629eb068725.js</a>"&gt;&lt;/script&gt;
+</p>
+
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://docs.python.org/3/howto/logging.html#">logging-howto</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
+<p class="date">Created: 2019-09-06 五 17:41</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
