@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-06 五 18:04 -->
+<!-- 2019-09-07 六 13:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang summary</title>
@@ -334,12 +334,7 @@ for the JavaScript code in this tag.
 </li>
 </ul>
 </li>
-<li><a href="#org6b745d1">3. 工程布局</a>
-<ul>
-<li><a href="#orgb76d1e3">3.1. 包</a></li>
-<li><a href="#orgec679ff">3.2. 命令程序</a></li>
-</ul>
-</li>
+<li><a href="#org6b745d1">3. 工程布局</a></li>
 <li><a href="#org35e9c8b">4. 命令行工具</a>
 <ul>
 <li><a href="#orge971c38">4.1. 集成开发</a></li>
@@ -513,7 +508,25 @@ func 注释
 </div>
 <div id="outline-container-org9aab814" class="outline-3">
 <h3 id="org9aab814"><span class="section-number-3">2.1</span> 安装</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-sh">apt install golang
+</pre>
 </div>
+
+<p>
+If you're using Ubuntu 16.04 LTS, 18.04 LTS or 19.04, then you can use the longsleep/golang-backports PPA and install Go 1.13.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">sudo add-apt-repository ppa:longsleep/golang-backports
+sudo apt-get update
+sudo apt-get install golang-go
+</pre>
+</div>
+</div>
+</div>
+
 
 <div id="outline-container-org6691d17" class="outline-3">
 <h3 id="org6691d17"><span class="section-number-3">2.2</span> 配置</h3>
@@ -546,87 +559,7 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 
 <div id="outline-container-org6b745d1" class="outline-2">
 <h2 id="org6b745d1"><span class="section-number-2">3</span> 工程布局<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup></h2>
-<div class="outline-text-2" id="text-3">
-<p>
-参阅 <a href="https://golang.org/doc/code.html">How to Write Go Code</a>
-</p>
-
-<p>
-所有的 go 程序都应该在一个共同的 workspace 下面，这与其他语言不同，其他语言中一个项目就是一个单独的 workspace。这样组织方便 go build，go install 等工具的使用。
-</p>
 </div>
-
-<div id="outline-container-orgb76d1e3" class="outline-3">
-<h3 id="orgb76d1e3"><span class="section-number-3">3.1</span> 包</h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-go get 命令会将项目下的所有子目录和源码文件存放到第一个工作区的 src 目录下，而 src 目录下的所有子目录都会是某个代码包导入路径的一部分或者全部。所以应该 <b>直接在项目目录下存放子代码包和源码文件</b> ，并且 <b>直接存放在项目目录下的源码文件所声明的包名应该与该项目名相同</b> 。这样做可以让其他人使用 go get 命令从 Github 站点上下载你的项目之后直接就能使用它。
-</p>
-
-<p>
-package name 应该是小写的单词，不要使用下划线或者驼峰命名法。
-</p>
-
-<pre class="example">
-go_test_lib
-└── stringutils
-    ├── reverse.go
-    └── reverse_test.go
-</pre>
-<p>
-库代码文件
-reverse.go
-</p>
-<div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">package</span> stringutils
-
-<span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Reverse</span>(s <span style="color: #00d7af;">string</span>) <span style="color: #00d7af;">string</span> {
-    r := []<span style="color: #ffd700;">rune</span>(s)
-    <span style="color: #a1db00;">for</span> i, j := 0, <span style="color: #d18aff;">len</span>(r)-1; i &lt; <span style="color: #d18aff;">len</span>(r)/2; i, j = i+1, j-1 {
-        r[i], r[j] = r[j], r[i]
-    }
-    <span style="color: #a1db00;">return</span> <span style="color: #ffd700;">string</span>(r)
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgec679ff" class="outline-3">
-<h3 id="orgec679ff"><span class="section-number-3">3.2</span> 命令程序</h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-命令程序和库代码有所不同，每个命令程序项目应该作为一个 gopath 路径进行部署。
-</p>
-
-<ul class="org-ul">
-<li>build.sh 对项目进行编译。</li>
-<li><p>
-src 下不直接放置代码文件，而是将其归类存放在文件夹中。
-</p>
-<pre class="example">
-test
-├── bin
-│   └── hello
-├── build.sh
-├── pkg
-└── src
-    └── hello
-        └── hello.go
-</pre>
-
-<p>
-hello.go
-</p>
-<div class="org-src-container">
-<pre class="src src-go">
-</pre>
-</div></li>
-</ul>
-</div>
-</div>
-</div>
-
 <div id="outline-container-org35e9c8b" class="outline-2">
 <h2 id="org35e9c8b"><span class="section-number-2">4</span> 命令行工具</h2>
 <div class="outline-text-2" id="text-4">
@@ -801,7 +734,7 @@ hello.go
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-09-06 五 18:04</p>
+<p class="date">Created: 2019-09-07 六 13:05</p>
 <p class="validation"></p>
 </div>
 </body>
