@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-15 四 16:28 -->
+<!-- 2019-09-10 二 19:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>todo list</title>
+<title>Lua IDE</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="lsl" />
+<meta name="author" content="liushangliang" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,112 +306,127 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">todo list</h1>
+<h1 class="title">Lua IDE</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org44f9e68">1. emacs</a>
+<li><a href="#org455be7d">1. luarocks</a></li>
+<li><a href="#org8f0cdd7">2. lua-mode</a></li>
+<li><a href="#org7519e7b">3. company-lua</a></li>
+<li><a href="#orgda7cc4d">4. lua_code_formatter</a></li>
+<li><a href="#orgae4952e">5. Formatter</a></li>
+<li><a href="#orgd609883">6. lsp server</a>
 <ul>
-<li><a href="#org2248103">1.1. auto-header 自动添加文件头部信息</a></li>
-<li><a href="#orgdb0db42">1.2. 自动给函数添加注释信息 doxgen</a></li>
-<li><a href="#org24cd99c">1.3. yasnippet 代码补全功能</a></li>
-<li><a href="#orge25bdcc">1.4. 代码风格的自动格式化</a></li>
-<li><a href="#org59b6b70">1.5. 自动编译</a></li>
-<li><a href="#orgd6e1db5">1.6. emacs25 不能使用现有配置文件</a></li>
-<li><a href="#orgc708b29">1.7. windows gnutls maralade 更新</a></li>
+<li><a href="#org470c180">6.1. lua-lsp</a></li>
+<li><a href="#org3b02cf6">6.2. EmmyLua-LanguageServe</a></li>
 </ul>
 </li>
-<li><a href="#org89090a6">2. org-mode</a></li>
-<li><a href="#orgb0f7237">3. xfce</a>
-<ul>
-<li><a href="#org13f7322">3.1. 了解基本功能模块，快捷键</a></li>
-<li><a href="#orgce70bf1">3.2. 学习配置</a></li>
-</ul>
-</li>
-<li><a href="#org8ae4079">4. git</a>
-<ul>
-<li><a href="#org03c4250">4.1. 了解 git log 的使用</a></li>
-<li><a href="#org6b5ae33">4.2. 跨平台的 gui git client</a></li>
-<li><a href="#org00419ab">4.3. 了解 git config 命令</a></li>
-</ul>
-</li>
-<li><a href="#org43247ec">5. HHKB</a>
-<ul>
-<li><a href="#org9f210f5">5.1. 整理配置</a></li>
-</ul>
-</li>
+<li><a href="#orgcdc73df">7. 其他可用的 ide</a></li>
 </ul>
 </div>
-</div>
-<div id="outline-container-org44f9e68" class="outline-2">
-<h2 id="org44f9e68"><span class="section-number-2">1</span> emacs</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org2248103" class="outline-3">
-<h3 id="org2248103"><span class="section-number-3">1.1</span> auto-header 自动添加文件头部信息</h3>
-</div>
-<div id="outline-container-orgdb0db42" class="outline-3">
-<h3 id="orgdb0db42"><span class="section-number-3">1.2</span> 自动给函数添加注释信息 doxgen</h3>
-</div>
-<div id="outline-container-org24cd99c" class="outline-3">
-<h3 id="org24cd99c"><span class="section-number-3">1.3</span> yasnippet 代码补全功能</h3>
-</div>
-<div id="outline-container-orge25bdcc" class="outline-3">
-<h3 id="orge25bdcc"><span class="section-number-3">1.4</span> 代码风格的自动格式化</h3>
-</div>
-<div id="outline-container-org59b6b70" class="outline-3">
-<h3 id="org59b6b70"><span class="section-number-3">1.5</span> 自动编译</h3>
-</div>
-<div id="outline-container-orgd6e1db5" class="outline-3">
-<h3 id="orgd6e1db5"><span class="section-number-3">1.6</span> emacs25 不能使用现有配置文件</h3>
-</div>
-<div id="outline-container-orgc708b29" class="outline-3">
-<h3 id="orgc708b29"><span class="section-number-3">1.7</span> windows gnutls maralade 更新</h3>
-</div>
-</div>
-<div id="outline-container-org89090a6" class="outline-2">
-<h2 id="org89090a6"><span class="section-number-2">2</span> org-mode</h2>
 </div>
 
-<div id="outline-container-orgb0f7237" class="outline-2">
-<h2 id="orgb0f7237"><span class="section-number-2">3</span> xfce</h2>
+<div id="outline-container-org455be7d" class="outline-2">
+<h2 id="org455be7d"><span class="section-number-2">1</span> luarocks</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+使用 luarocks 进行包管理。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">apt install luarocks
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8f0cdd7" class="outline-2">
+<h2 id="org8f0cdd7"><span class="section-number-2">2</span> <a href="https://github.com/immerrr/lua-mode">lua-mode</a></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+lua 编程的 major mode。详见<a href="lua-mode.html">lua-mode 实践</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7519e7b" class="outline-2">
+<h2 id="org7519e7b"><span class="section-number-2">3</span> company-lua</h2>
 <div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org13f7322" class="outline-3">
-<h3 id="org13f7322"><span class="section-number-3">3.1</span> 了解基本功能模块，快捷键</h3>
-</div>
-<div id="outline-container-orgce70bf1" class="outline-3">
-<h3 id="orgce70bf1"><span class="section-number-3">3.2</span> 学习配置</h3>
+<p>
+company 的 lua 补全后端。详见<a href="company-lua.html">company-lua 实践</a>
+</p>
 </div>
 </div>
-<div id="outline-container-org8ae4079" class="outline-2">
-<h2 id="org8ae4079"><span class="section-number-2">4</span> git</h2>
+
+<div id="outline-container-orgda7cc4d" class="outline-2">
+<h2 id="orgda7cc4d"><span class="section-number-2">4</span> <a href="https://github.com/martin-eden/lua_code_formatter">lua_code_formatter</a></h2>
 <div class="outline-text-2" id="text-4">
+<p>
+代码格式化工具。优点：
+</p>
+<ul class="org-ul">
+<li>会删除空白行。</li>
+</ul>
+
+<p>
+详见<a href="file:///home/lsl/github/notebook/org/lua/lua-code-formatter.html">lua-code-formatter 实践</a>
+</p>
 </div>
-<div id="outline-container-org03c4250" class="outline-3">
-<h3 id="org03c4250"><span class="section-number-3">4.1</span> 了解 git log 的使用</h3>
 </div>
-<div id="outline-container-org6b5ae33" class="outline-3">
-<h3 id="org6b5ae33"><span class="section-number-3">4.2</span> 跨平台的 gui git client</h3>
-</div>
-<div id="outline-container-org00419ab" class="outline-3">
-<h3 id="org00419ab"><span class="section-number-3">4.3</span> 了解 git config 命令</h3>
-</div>
-</div>
-<div id="outline-container-org43247ec" class="outline-2">
-<h2 id="org43247ec"><span class="section-number-2">5</span> HHKB</h2>
+
+<div id="outline-container-orgae4952e" class="outline-2">
+<h2 id="orgae4952e"><span class="section-number-2">5</span> Formatter</h2>
 <div class="outline-text-2" id="text-5">
+<p>
+代码格式化工具，优点：
+</p>
+<ul class="org-ul">
+<li>可以直接将格式化的代码写回源文件。</li>
+</ul>
+
+<p>
+详见<a href="file:///home/lsl/github/notebook/org/lua/formatter.html">formatter 实践</a>
+</p>
 </div>
-<div id="outline-container-org9f210f5" class="outline-3">
-<h3 id="org9f210f5"><span class="section-number-3">5.1</span> 整理配置</h3>
+</div>
+
+<div id="outline-container-orgd609883" class="outline-2">
+<h2 id="orgd609883"><span class="section-number-2">6</span> lsp server</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org470c180" class="outline-3">
+<h3 id="org470c180"><span class="section-number-3">6.1</span> lua-lsp</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+目前还不是很完善。详见<a href="lua-lsp.html">lua-lsp 实践</a> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3b02cf6" class="outline-3">
+<h3 id="org3b02cf6"><span class="section-number-3">6.2</span> EmmyLua-LanguageServe</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+详见<a href="file:///home/lsl/github/notebook/org/lua/emmy-lua-ls-all.html">emmylua-languageserver 实践</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcdc73df" class="outline-2">
+<h2 id="orgcdc73df"><span class="section-number-2">7</span> 其他可用的 ide</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+<a href="http://lua-users.org/wiki/LuaIntegratedDevelopmentEnvironments">Lua Integrated Development Environments</a>
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: lsl</p>
-<p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
-<p class="date">Created: 2019-08-15 四 16:28</p>
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-09-10 二 19:36</p>
 <p class="validation"></p>
 </div>
 </body>
