@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-06 五 17:25 -->
+<!-- 2019-09-10 二 20:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang 语法</title>
@@ -330,7 +330,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgf30ce41">1.0.3. 语句</a></li>
 <li><a href="#org1a2e898">1.0.4. 变量</a>
 <ul>
-<li><a href="#orgc166ca0">1.0.4.1. 值类型</a></li>
+<li><a href="#orgbc3ce7e">1.0.4.1. 值类型</a></li>
 <li><a href="#orgc4156f9">1.0.4.2. 引用类型</a></li>
 <li><a href="#org6909f63">1.0.4.3. 作用域</a></li>
 </ul>
@@ -350,7 +350,7 @@ for the JavaScript code in this tag.
 <li><a href="#org9f99c5a">2.1.4. 字符串（string）</a></li>
 <li><a href="#org80bd917">2.1.5. 通道（channel）</a>
 <ul>
-<li><a href="#orgc3a2207">2.1.5.1. 声明</a></li>
+<li><a href="#orgd81bcab">2.1.5.1. 声明</a></li>
 <li><a href="#orgb5959a8">2.1.5.2. 阻塞与带缓冲</a></li>
 <li><a href="#orgd013d5f">2.1.5.3. 习惯用法：</a></li>
 </ul>
@@ -362,23 +362,23 @@ for the JavaScript code in this tag.
 <li><a href="#org7b4df29">2.2.1. 数组</a>
 <ul>
 <li><a href="#org5307fa4">2.2.1.1. 声明：</a></li>
-<li><a href="#orgbc3ce7e">2.2.1.2. 值类型</a></li>
+<li><a href="#org4a27dbe">2.2.1.2. 值类型</a></li>
 </ul>
 </li>
 <li><a href="#org2c3c2be">2.2.2. 切片（slice）</a>
 <ul>
-<li><a href="#orgd614df9">2.2.2.1. 声明</a></li>
+<li><a href="#orga6c000c">2.2.2.1. 声明</a></li>
 <li><a href="#org19fa8ff">2.2.2.2. 扩展</a></li>
 </ul>
 </li>
 <li><a href="#orgc1c46c1">2.2.3. 映射（map）：</a>
 <ul>
-<li><a href="#org1b88a93">2.2.3.1. 声明</a></li>
+<li><a href="#orgcfaa868">2.2.3.1. 声明</a></li>
 </ul>
 </li>
 <li><a href="#orgff0eff0">2.2.4. 结构体（struct）</a>
 <ul>
-<li><a href="#org22ce970">2.2.4.1. 声明</a></li>
+<li><a href="#org1a8fe15">2.2.4.1. 声明</a></li>
 <li><a href="#org64d86b0">2.2.4.2. 导出字段与可见性原则</a></li>
 <li><a href="#org7dc5955">2.2.4.3. 字段标签</a></li>
 <li><a href="#org11dfa19">2.2.4.4. 匿名字段</a></li>
@@ -386,7 +386,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgbc017bb">2.2.5. 接口（interface）</a>
 <ul>
-<li><a href="#orgcd92d55">2.2.5.1. 声明</a></li>
+<li><a href="#org75b0b4e">2.2.5.1. 声明</a></li>
 <li><a href="#org04fe7e2">2.2.5.2. 类型断言</a></li>
 <li><a href="#org624702f">2.2.5.3. 调用规则</a></li>
 <li><a href="#orgd09b891">2.2.5.4. 空接口</a></li>
@@ -666,7 +666,7 @@ func(arg type) ret type
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org28adcfe"></a>声明<br />
+<li><a id="orgcd92d55"></a>声明<br />
 <div class="outline-text-6" id="text-1-0-2-5-1">
 <p>
 func (recv receiver_type) methodName(parameter_list) (return_value_list) { &#x2026; }
@@ -801,8 +801,8 @@ func (recv receiver_type) methodName(parameter_list) (return_value_list) { &#x20
 <h4 id="org1a2e898"><span class="section-number-4">1.0.4</span> 变量</h4>
 <div class="outline-text-4" id="text-1-0-4">
 </div>
-<div id="outline-container-orgc166ca0" class="outline-5">
-<h5 id="orgc166ca0"><span class="section-number-5">1.0.4.1</span> 值类型</h5>
+<div id="outline-container-orgbc3ce7e" class="outline-5">
+<h5 id="orgbc3ce7e"><span class="section-number-5">1.0.4.1</span> 值类型</h5>
 </div>
 
 <div id="outline-container-orgc4156f9" class="outline-5">
@@ -957,8 +957,8 @@ len()计算字符串所占字节长度。
 <h4 id="org80bd917"><span class="section-number-4">2.1.5</span> 通道（channel）</h4>
 <div class="outline-text-4" id="text-2-1-5">
 </div>
-<div id="outline-container-orgc3a2207" class="outline-5">
-<h5 id="orgc3a2207"><span class="section-number-5">2.1.5.1</span> 声明</h5>
+<div id="outline-container-orgd81bcab" class="outline-5">
+<h5 id="orgd81bcab"><span class="section-number-5">2.1.5.1</span> 声明</h5>
 <div class="outline-text-5" id="text-2-1-5-1">
 <p>
 var identifier chan datatype
@@ -1112,8 +1112,8 @@ reciveChan := <span style="color: #d18aff;">make</span>(<span style="color: #a1d
 </div>
 </div>
 
-<div id="outline-container-orgbc3ce7e" class="outline-5">
-<h5 id="orgbc3ce7e"><span class="section-number-5">2.2.1.2</span> 值类型</h5>
+<div id="outline-container-org4a27dbe" class="outline-5">
+<h5 id="org4a27dbe"><span class="section-number-5">2.2.1.2</span> 值类型</h5>
 <div class="outline-text-5" id="text-2-2-1-2">
 <p>
 数组是值类型，长度是数组类型的一部分。
@@ -1141,8 +1141,8 @@ reciveChan := <span style="color: #d18aff;">make</span>(<span style="color: #a1d
 切片（slice）是对数组一个连续片段的 <b>引用</b> （该数组我们称之为相关数组，通常是匿名的），只有在没有任何切片指向的时候，底层的数组内存才会被释放，这种特性有时会导致程序占用多余的内存。
 </p>
 </div>
-<div id="outline-container-orgd614df9" class="outline-5">
-<h5 id="orgd614df9"><span class="section-number-5">2.2.2.1</span> 声明</h5>
+<div id="outline-container-orga6c000c" class="outline-5">
+<h5 id="orga6c000c"><span class="section-number-5">2.2.2.1</span> 声明</h5>
 <div class="outline-text-5" id="text-2-2-2-1">
 <ul class="org-ul">
 <li>[]type</li>
@@ -1189,8 +1189,8 @@ reciveChan := <span style="color: #d18aff;">make</span>(<span style="color: #a1d
 <h4 id="orgc1c46c1"><span class="section-number-4">2.2.3</span> 映射（map）：</h4>
 <div class="outline-text-4" id="text-2-2-3">
 </div>
-<div id="outline-container-org1b88a93" class="outline-5">
-<h5 id="org1b88a93"><span class="section-number-5">2.2.3.1</span> 声明</h5>
+<div id="outline-container-orgcfaa868" class="outline-5">
+<h5 id="orgcfaa868"><span class="section-number-5">2.2.3.1</span> 声明</h5>
 <div class="outline-text-5" id="text-2-2-3-1">
 <p>
 map[keytype]valuetype
@@ -1217,8 +1217,8 @@ map[keytype]valuetype
 <h4 id="orgff0eff0"><span class="section-number-4">2.2.4</span> 结构体（struct）</h4>
 <div class="outline-text-4" id="text-2-2-4">
 </div>
-<div id="outline-container-org22ce970" class="outline-5">
-<h5 id="org22ce970"><span class="section-number-5">2.2.4.1</span> 声明</h5>
+<div id="outline-container-org1a8fe15" class="outline-5">
+<h5 id="org1a8fe15"><span class="section-number-5">2.2.4.1</span> 声明</h5>
 <div class="outline-text-5" id="text-2-2-4-1">
 <p>
 struct {field type}
@@ -1325,8 +1325,8 @@ struct {field type}
 <h4 id="orgbc017bb"><span class="section-number-4">2.2.5</span> 接口（interface）</h4>
 <div class="outline-text-4" id="text-2-2-5">
 </div>
-<div id="outline-container-orgcd92d55" class="outline-5">
-<h5 id="orgcd92d55"><span class="section-number-5">2.2.5.1</span> 声明</h5>
+<div id="outline-container-org75b0b4e" class="outline-5">
+<h5 id="org75b0b4e"><span class="section-number-5">2.2.5.1</span> 声明</h5>
 <div class="outline-text-5" id="text-2-2-5-1">
 <p>
 {} interface
@@ -1648,7 +1648,7 @@ select 与无限循环配合使用。
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-06 五 17:25</p>
+<p class="date">Created: 2019-09-10 二 20:00</p>
 <p class="validation"></p>
 </div>
 </body>

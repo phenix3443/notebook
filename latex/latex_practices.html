@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:43 -->
+<!-- 2019-09-10 二 20:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>latex practices</title>
@@ -318,20 +318,20 @@ for the JavaScript code in this tag.
 <li><a href="#orgae0fb5c">1.3. 不足</a></li>
 <li><a href="#org4db6950">1.4. 生态</a>
 <ul>
-<li><a href="#orge849bc2">1.4.1. 格式</a></li>
-<li><a href="#org23da0fa">1.4.2. 引擎</a></li>
+<li><a href="#orgc226213">1.4.1. 格式</a></li>
+<li><a href="#org57902c0">1.4.2. 引擎</a></li>
 <li><a href="#org3d243eb">1.4.3. 命令</a></li>
-<li><a href="#orga5c9ad0">1.4.4. 宏包</a></li>
-<li><a href="#org9284d90">1.4.5. 周边工具</a></li>
-<li><a href="#org7198bfe">1.4.6. 发行版</a></li>
+<li><a href="#org5a3e139">1.4.4. 宏包</a></li>
+<li><a href="#org6c20e8b">1.4.5. 周边工具</a></li>
+<li><a href="#org5ce5807">1.4.6. 发行版</a></li>
 </ul>
 </li>
 <li><a href="#orge2f8f57">1.5. 排版流程</a>
 <ul>
 <li><a href="#org585b0a8">1.5.1. latex+dvips 命令排版流程</a>
 <ul>
-<li><a href="#org961a434">1.5.1.1. 编辑</a></li>
-<li><a href="#org77fac30">1.5.1.2. 编译</a></li>
+<li><a href="#org1190ab0">1.5.1.1. 编辑</a></li>
+<li><a href="#org08e1969">1.5.1.2. 编译</a></li>
 <li><a href="#orgabedb5a">1.5.1.3. 查看</a></li>
 <li><a href="#org773bb0c">1.5.1.4. 打印</a></li>
 <li><a href="#org07260f4">1.5.1.5. 输出</a></li>
@@ -339,8 +339,8 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#org26b21e5">1.5.2. pdflatex、xelatex 排版流程</a>
 <ul>
-<li><a href="#org1190ab0">1.5.2.1. 编辑</a></li>
-<li><a href="#org08e1969">1.5.2.2. 编译</a></li>
+<li><a href="#orgaa7cc15">1.5.2.1. 编辑</a></li>
+<li><a href="#org8270e80">1.5.2.2. 编译</a></li>
 </ul>
 </li>
 </ul>
@@ -348,7 +348,7 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#orgdc1f872">2. 引擎选择</a></li>
-<li><a href="#org43fc5e7">3. 安装</a>
+<li><a href="#orgef3eef7">3. 安装</a>
 <ul>
 <li><a href="#org6d56d6c">3.1. 光盘安装</a></li>
 <li><a href="#org1df85e2">3.2. 网络安装</a></li>
@@ -366,7 +366,7 @@ for the JavaScript code in this tag.
 <li><a href="#fl-context">4.1.5. ConTeXt</a></li>
 </ul>
 </li>
-<li><a href="#org57902c0">4.2. 引擎</a>
+<li><a href="#orgb9566ca">4.2. 引擎</a>
 <ul>
 <li><a href="#fl-tex">4.2.1. Knuth TeX</a></li>
 <li><a href="#fl-pdftex">4.2.2. PdfTeX</a></li>
@@ -377,22 +377,22 @@ for the JavaScript code in this tag.
 <li><a href="#fl-euptex">4.2.7. e-upTeX</a></li>
 </ul>
 </li>
-<li><a href="#org5a3e139">4.3. 宏包</a></li>
-<li><a href="#org6c20e8b">4.4. 周边工具</a>
+<li><a href="#org90e114c">4.3. 宏包</a></li>
+<li><a href="#org46c2832">4.4. 周边工具</a>
 <ul>
 <li><a href="#fl-bibtex">4.4.1. BibTeX</a></li>
 <li><a href="#fl-makeindex">4.4.2. makeindex</a></li>
 <li><a href="#fl-metapost">4.4.3. Metapost</a></li>
 </ul>
 </li>
-<li><a href="#org5ce5807">4.5. 发行版</a>
+<li><a href="#orgb172520">4.5. 发行版</a>
 <ul>
 <li><a href="#fl-miktex">4.5.1. MiKTeX</a></li>
 <li><a href="#fl-ctex">4.5.2. CTeX</a></li>
 <li><a href="#fl-texlive">4.5.3. TexLive</a>
 <ul>
 <li><a href="#orgd804758">4.5.3.1. 内容</a></li>
-<li><a href="#orgef3eef7">4.5.3.2. 安装</a></li>
+<li><a href="#orga684a87">4.5.3.2. 安装</a></li>
 </ul>
 </li>
 <li><a href="#fl-mactex">4.5.4. MacTex</a></li>
@@ -467,16 +467,16 @@ TeX 系统的发明者 Knuth 教授也是享有盛誉的计算机程序设计系
 TeX 家族可以分成几个层次<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
 </p>
 </div>
-<div id="outline-container-orge849bc2" class="outline-4">
-<h4 id="orge849bc2"><span class="section-number-4">1.4.1</span> 格式</h4>
+<div id="outline-container-orgc226213" class="outline-4">
+<h4 id="orgc226213"><span class="section-number-4">1.4.1</span> 格式</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <p>
 格式是一些宏的集合，并且这些宏大致具有常用、底层的特点。常见格式有 Knuth 的 <a href="#fl-plaintex">plainTeX</a>, 著名的 <a href="#fl-latex">LaTeX</a>, 以及生力军 <a href="#fl-context">ConTeXt</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org23da0fa" class="outline-4">
-<h4 id="org23da0fa"><span class="section-number-4">1.4.2</span> 引擎</h4>
+<div id="outline-container-org57902c0" class="outline-4">
+<h4 id="org57902c0"><span class="section-number-4">1.4.2</span> 引擎</h4>
 <div class="outline-text-4" id="text-1-4-2">
 <p>
 引擎是各位开发者根据 Knuth 的算法做的各种实现，是真正进行排版作业的程序，在不同的硬件和操作系统上可能由不同的实现（想想 C 和 gcc、vs）。比如<a href="#fl-tex">TeX</a>, <a href="#fl-pdftex">PdfTeX</a>, <a href="#fl-xetex">XeTeX</a>, <a href="#fl-luatex">LuaTeX</a>, 再比如日系的 <a href="#fl-ptex">pTeX</a>, <a href="#fl-eptex">e-pTeX</a>, <a href="#fl-euptex">e-upTeX</a>, 这些都是引擎。
@@ -491,8 +491,8 @@ TeX 家族可以分成几个层次<sup><a id="fnr.3" class="footref" href="#fn.3
 </p>
 </div>
 </div>
-<div id="outline-container-orga5c9ad0" class="outline-4">
-<h4 id="orga5c9ad0"><span class="section-number-4">1.4.4</span> 宏包</h4>
+<div id="outline-container-org5a3e139" class="outline-4">
+<h4 id="org5a3e139"><span class="section-number-4">1.4.4</span> 宏包</h4>
 <div class="outline-text-4" id="text-1-4-4">
 <p>
 宏包也是宏的集合，但通常没有格式那么常用或者底层。宏包基本上是为了一定的目的专门编写的，与格式和引擎搭配使用。
@@ -500,16 +500,16 @@ TeX 家族可以分成几个层次<sup><a id="fnr.3" class="footref" href="#fn.3
 </div>
 </div>
 
-<div id="outline-container-org9284d90" class="outline-4">
-<h4 id="org9284d90"><span class="section-number-4">1.4.5</span> 周边工具</h4>
+<div id="outline-container-org6c20e8b" class="outline-4">
+<h4 id="org6c20e8b"><span class="section-number-4">1.4.5</span> 周边工具</h4>
 <div class="outline-text-4" id="text-1-4-5">
 <p>
 为了自动化方便，一些软件提供 TeX 本身实现起来麻烦的功能。比如 <a href="#fl-bibtex">BibTeX</a> 用来排版参考文献，比如 <a href="#fl-makeindex">makeindex</a> 用来排版文章索引，<a href="#fl-metapost">Metapost</a> 用来画图。
 </p>
 </div>
 </div>
-<div id="outline-container-org7198bfe" class="outline-4">
-<h4 id="org7198bfe"><span class="section-number-4">1.4.6</span> 发行版</h4>
+<div id="outline-container-org5ce5807" class="outline-4">
+<h4 id="org5ce5807"><span class="section-number-4">1.4.6</span> 发行版</h4>
 <div class="outline-text-4" id="text-1-4-6">
 <p>
 上面单独的任何一个层次都是没法给一般用户使用的（想想 linux 内核与众多发行版的关系），所谓发行版就是上面所有东西的集合（还包括一些说明文档和字体之类的东西）。比如 <a href="#fl-miktex">MikTeX</a> 和 <a href="#fl-ctex">CTeX</a> 是简体中文 Windows 用户常用的发行版，更通用的则是 TUG 维护的 <a href="#fl-texlive">TeX Live</a>, Mac 上有<a href="#fl-mactex">MacTeX</a>。
@@ -548,16 +548,16 @@ LaTeX 源文件是普通的文本文件格式，其中不仅包括所要排版�
 <p><span class="figure-number">Figure 2: </span>latex dvips 排版流程</p>
 </div>
 </div>
-<div id="outline-container-org961a434" class="outline-5">
-<h5 id="org961a434"><span class="section-number-5">1.5.1.1</span> 编辑</h5>
+<div id="outline-container-org1190ab0" class="outline-5">
+<h5 id="org1190ab0"><span class="section-number-5">1.5.1.1</span> 编辑</h5>
 <div class="outline-text-5" id="text-1-5-1-1">
 <p>
 用编辑器编写文稿（源文件），同时插入排版命令。需要注意的是，源文件必须是 utf8 纯文本格式的，并且通常以.tex 作为其扩展名（如 test.tex）。在 Linux 下建议使用 Emacs 或者 VIM 编辑器，它们都能够识别 LaTeX 语法并且可以高亮显示 LaTeX 命令中的关键字。
 </p>
 </div>
 </div>
-<div id="outline-container-org77fac30" class="outline-5">
-<h5 id="org77fac30"><span class="section-number-5">1.5.1.2</span> 编译</h5>
+<div id="outline-container-org08e1969" class="outline-5">
+<h5 id="org08e1969"><span class="section-number-5">1.5.1.2</span> 编译</h5>
 <div class="outline-text-5" id="text-1-5-1-2">
 <p>
 生成的 LaTeX 源文件中如果没有语法错误，那么就可以使用 LaTeX 命令进行编译，生成 DVI 文件：
@@ -616,11 +616,11 @@ DVI 元文件中的信息最终要被转化成可以在特定打印机上输出�
 <h4 id="org26b21e5"><span class="section-number-4">1.5.2</span> pdflatex、xelatex 排版流程</h4>
 <div class="outline-text-4" id="text-1-5-2">
 </div>
-<div id="outline-container-org1190ab0" class="outline-5">
-<h5 id="org1190ab0"><span class="section-number-5">1.5.2.1</span> 编辑</h5>
+<div id="outline-container-orgaa7cc15" class="outline-5">
+<h5 id="orgaa7cc15"><span class="section-number-5">1.5.2.1</span> 编辑</h5>
 </div>
-<div id="outline-container-org08e1969" class="outline-5">
-<h5 id="org08e1969"><span class="section-number-5">1.5.2.2</span> 编译</h5>
+<div id="outline-container-org8270e80" class="outline-5">
+<h5 id="org8270e80"><span class="section-number-5">1.5.2.2</span> 编译</h5>
 </div>
 </div>
 </div>
@@ -634,8 +634,8 @@ DVI 元文件中的信息最终要被转化成可以在特定打印机上输出�
 </div>
 </div>
 
-<div id="outline-container-org43fc5e7" class="outline-2">
-<h2 id="org43fc5e7"><span class="section-number-2">3</span> 安装</h2>
+<div id="outline-container-orgef3eef7" class="outline-2">
+<h2 id="orgef3eef7"><span class="section-number-2">3</span> 安装</h2>
 <div class="outline-text-2" id="text-3">
 </div>
 <div id="outline-container-org6d56d6c" class="outline-3">
@@ -802,8 +802,8 @@ todo:有的字体找不到需要解决。
 <h2 id="org6905578"><span class="section-number-2">4</span> 附录</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgc226213" class="outline-3">
-<h3 id="fl-format"><a id="orgc226213"></a><span class="section-number-3">4.1</span> 格式</h3>
+<div id="outline-container-orga1b8879" class="outline-3">
+<h3 id="fl-format"><a id="orga1b8879"></a><span class="section-number-3">4.1</span> 格式</h3>
 <div class="outline-text-3" id="text-fl-format">
 </div>
 <div id="outline-container-org16a077a" class="outline-4">
@@ -866,8 +866,8 @@ ConTeXt 是 TeX 的一种格式，是荷兰 Pragma-ADE 公司设计的一种高�
 </div>
 </div>
 </div>
-<div id="outline-container-org57902c0" class="outline-3">
-<h3 id="org57902c0"><span class="section-number-3">4.2</span> 引擎</h3>
+<div id="outline-container-orgb9566ca" class="outline-3">
+<h3 id="orgb9566ca"><span class="section-number-3">4.2</span> 引擎</h3>
 <div class="outline-text-3" id="text-4-2">
 </div>
 <div id="outline-container-org0acaa1b" class="outline-4">
@@ -984,11 +984,11 @@ LuaTeX 小组由 Taco Hoekwater、Hartmut Henkel 和 Hans Hagen 组成。
 </div>
 </div>
 </div>
-<div id="outline-container-org5a3e139" class="outline-3">
-<h3 id="org5a3e139"><span class="section-number-3">4.3</span> 宏包</h3>
+<div id="outline-container-org90e114c" class="outline-3">
+<h3 id="org90e114c"><span class="section-number-3">4.3</span> 宏包</h3>
 </div>
-<div id="outline-container-org6c20e8b" class="outline-3">
-<h3 id="org6c20e8b"><span class="section-number-3">4.4</span> 周边工具</h3>
+<div id="outline-container-org46c2832" class="outline-3">
+<h3 id="org46c2832"><span class="section-number-3">4.4</span> 周边工具</h3>
 <div class="outline-text-3" id="text-4-4">
 </div>
 <div id="outline-container-org34faf92" class="outline-4">
@@ -1007,8 +1007,8 @@ LuaTeX 小组由 Taco Hoekwater、Hartmut Henkel 和 Hans Hagen 组成。
 </div>
 </div>
 </div>
-<div id="outline-container-org5ce5807" class="outline-3">
-<h3 id="org5ce5807"><span class="section-number-3">4.5</span> 发行版</h3>
+<div id="outline-container-orgb172520" class="outline-3">
+<h3 id="orgb172520"><span class="section-number-3">4.5</span> 发行版</h3>
 <div class="outline-text-3" id="text-4-5">
 </div>
 <div id="outline-container-org7ec1a16" class="outline-4">
@@ -1074,8 +1074,8 @@ TEX Live<sup><a id="fnr.16" class="footref" href="#fn.16">16</a></sup> 是由国
 </ul>
 </div>
 </div>
-<div id="outline-container-orgef3eef7" class="outline-5">
-<h5 id="orgef3eef7"><span class="section-number-5">4.5.3.2</span> 安装</h5>
+<div id="outline-container-orga684a87" class="outline-5">
+<h5 id="orga684a87"><span class="section-number-5">4.5.3.2</span> 安装</h5>
 <div class="outline-text-5" id="text-4-5-3-2">
 <p>
 TEX Live 可以通过网络或 DVD 安装，二者所提供的安装文件是完全一致的，其区别在于通过网络安装可得到当前可用的最新宏包，另外通过网络安装时用户可自行选择可用镜像站点。Windows 用户可通过执行 install-tl.bat 启动安装程序，Linux/Unix 用户可以通过命令行终端执行 perl install-tl 启动安装程序，Mac OS X 用户则推荐使用 MacTEX。
@@ -1227,7 +1227,7 @@ MacTeX<sup><a id="fnr.18" class="footref" href="#fn.18">18</a></sup>实际上是
 <div id="postamble" class="status">
 <p class="author">Author: lsl</p>
 <p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
-<p class="date">Created: 2019-08-13 二 10:43</p>
+<p class="date">Created: 2019-09-10 二 20:00</p>
 <p class="validation"></p>
 </div>
 </body>
