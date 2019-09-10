@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-07 六 13:05 -->
+<!-- 2019-09-10 二 17:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>notebook</title>
@@ -446,14 +446,7 @@ for the JavaScript code in this tag.
 <li><a href="emacs/language-server-protocol.html">Language Server Protocol</a></li>
 <li><a href="emacs/python-ide.html">Python IDE</a></li>
 <li><a href="emacs/sql-IDE.html">SQL IDE</a></li>
-<li><a href="emacs/emmy-lua-ls-all.html">emmylua-ls-all</a></li>
-<li><a href="emacs/exec-path-from-shell.html">exec-path-from-shell</a></li>
-<li><a href="emacs/go-guru.html">go-guru</a></li>
-<li><a href="emacs/go-mode.html">go-mode</a></li>
-<li><a href="emacs/go-playgound.html">go-playground</a></li>
-<li><a href="emacs/go-test.html">gotest</a></li>
 <li><a href="emacs/livedown.html">livedown</a></li>
-<li><a href="emacs/markdown-mode.html">markdown-mode</a></li>
 <li><a href="emacs/markdown-toc.html">markdown-toc</a></li>
 <li><a href="emacs/nginx-ide.html">nginx IDE</a></li>
 <li><a href="emacs/zerobrane-studio.html">zerobrane-studio</a></li>
@@ -484,7 +477,14 @@ for the JavaScript code in this tag.
 <li><a href="emacs/modes/ediff-mode.html">ediff-mode</a></li>
 <li><a href="emacs/modes/eldoc.html">eldoc-mode</a></li>
 <li><a href="emacs/modes/emacs-ccls.html">emacs-ccls</a></li>
+<li><a href="emacs/modes/emmy-lua-ls-all.html">emmylua-ls-all</a></li>
+<li><a href="emacs/modes/exec-path-from-shell.html">exec-path-from-shell</a></li>
+<li><a href="emacs/modes/go-eldoc.html">go-eldoc</a></li>
+<li><a href="emacs/modes/go-guru.html">go-guru</a></li>
+<li><a href="emacs/modes/go-mode.html">go-mode</a></li>
+<li><a href="emacs/modes/go-playgound.html">go-playground</a></li>
 <li><a href="emacs/modes/google-this.html">google-this</a></li>
+<li><a href="emacs/modes/go-test.html">gotest</a></li>
 <li><a href="emacs/modes/header2.html">header2</a></li>
 <li><a href="emacs/modes/helm-core.html">helm</a></li>
 <li><a href="emacs/modes/helm-dash.html">helm-dash</a></li>
@@ -502,6 +502,7 @@ for the JavaScript code in this tag.
 <li><a href="emacs/modes/lua-lsp.html">lua-lsp</a></li>
 <li><a href="emacs/modes/lua-mode.html">lua-mode</a></li>
 <li><a href="emacs/modes/magit.html">magit practices</a></li>
+<li><a href="emacs/modes/markdown-mode.html">markdown-mode</a></li>
 <li><a href="emacs/modes/org2blog-mode.html">org2blog-mode</a></li>
 <li><a href="emacs/modes/pangu-spacing.html">pangu-space</a></li>
 <li><a href="emacs/modes/persp-projectile.html">persp-projectile</a></li>
@@ -559,12 +560,14 @@ for the JavaScript code in this tag.
 <li>golang
 <ul class="org-ul">
 <li><a href="golang/gopath.html">GOPATH</a></li>
+<li><a href="golang/gocode.html">gocode</a></li>
 <li><a href="golang/golang-summary.html">golang summary</a></li>
 <li><a href="golang/golang-tutor.html">golang tutor</a></li>
 <li><a href="golang/golang-faq.html">golang 常见问题</a></li>
 <li><a href="golang/golang-std-lib.html">golang 标准库</a></li>
 <li><a href="golang/golang-test-fram.html">golang 测试框架</a></li>
 <li><a href="golang/go-lang.html">golang 语法</a></li>
+<li><a href="golang/gopls.html">gopls</a></li>
 <li>3rd-lib
 <ul class="org-ul">
 <li><a href="golang/3rd-lib/gocache.html">gocache</a></li>
@@ -585,6 +588,8 @@ for the JavaScript code in this tag.
 <li><a href="golang/std-lib/go-logging.html">go-logging</a></li>
 <li><a href="golang/std-lib/logrus.html">logrus</a></li>
 <li><a href="golang/std-lib/mysql.html">mysql</a></li>
+<li><a href="golang/std-lib/string.html">stirng</a></li>
+<li><a href="golang/std-lib/stconv.html">strconv</a></li>
 <li><a href="golang/std-lib/sync.html">sync</a></li>
 <li><a href="golang/std-lib/time.html">time</a></li>
 <li><a href="golang/std-lib/log.html">标准库 log</a></li>
@@ -603,6 +608,7 @@ for the JavaScript code in this tag.
 <li><a href="golang/tools/golint.html">golint</a></li>
 <li><a href="golang/tools/goreporter.html">goreporter</a></li>
 <li><a href="golang/tools/gotests.html">gotests</a></li>
+<li><a href="golang/tools/govendor.html">govendor</a></li>
 <li><a href="golang/tools/go-vet.html">govet</a></li>
 <li><a href="golang/tools/guru.html">guru</a></li>
 <li><a href="golang/tools/staticcheck.html">staticcheck</a></li>
@@ -1016,7 +1022,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <p class="author">Author: lsl</p>
 <p class="email">Email: <a href="mailto:lsl@lsl-ThinkPad-X1-Carbon-5th">lsl@lsl-ThinkPad-X1-Carbon-5th</a></p>
-<p class="date">Created: 2019-09-07 六 13:05</p>
+<p class="date">Created: 2019-09-10 二 17:47</p>
 <p class="validation"></p>
 </div>
 </body>

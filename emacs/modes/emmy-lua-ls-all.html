@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 17:47 -->
+<!-- 2019-09-10 二 17:46 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gocode</title>
+<title>emmylua-ls-all</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,50 +306,71 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gocode</h1>
+<h1 class="title">emmylua-ls-all</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb5330c3">1. 概述</a></li>
-<li><a href="#org0f44296">2. 安装</a></li>
-<li><a href="#orge205337">3. 配置</a></li>
-<li><a href="#orgc47eba1">4. 使用</a></li>
+<li><a href="#org2f0199b">1. 概述</a></li>
+<li><a href="#orga653abd">2. 安装</a></li>
+<li><a href="#org12ee34f">3. 使用</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-orgb5330c3" class="outline-2">
-<h2 id="orgb5330c3"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org2f0199b" class="outline-2">
+<h2 id="org2f0199b"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/mdempsky/gocode">gocode</a> 是一个用来进行 golang 语法分析的模块，现在已经不再维护，不要使用该功能。
+<a href="https://github.com/EmmyLua/EmmyLua-LanguageServer">Emmy Lua Language Server</a> 是一个 lua 语言的 lsp-server。该程序需要安装 JDK。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0f44296" class="outline-2">
-<h2 id="org0f44296"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-orga653abd" class="outline-2">
+<h2 id="orga653abd"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
-<pre class="example">
-go get -u github.com/nsf/gocode
+<p>
+编译：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">git clone https://github.com/EmmyLua/EmmyLua-LanguageServer.git
+<span style="color: #d18aff;">cd</span> EmmyLua-LanguageServer/
+chmod +x gradlew
+./gradlew shadowJar
+</pre>
+</div>
+
+<p>
+最后一步编译不成功，是因为设置 gradle 版本错误。
+</p>
+
+<p>
+或者在 docker 中搭建：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker pull mcr.microsoft.com/java/jdk:8u192-zulu-ubuntu
+docker run --name emmy-lua-build -it -v &lt;abs-paht-to-EmmyLua-LanguageServer&gt;:/EmmyLua-LanguageServer mcr.microsoft.com/java/jdk:8u192-zulu-ubuntu
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orge205337" class="outline-2">
-<h2 id="orge205337"><span class="section-number-2">3</span> 配置</h2>
 </div>
 
-<div id="outline-container-orgc47eba1" class="outline-2">
-<h2 id="orgc47eba1"><span class="section-number-2">4</span> 使用</h2>
+
+<div id="outline-container-org12ee34f" class="outline-2">
+<h2 id="org12ee34f"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-sh">java -cp EmmyLua-LS-all.jar com.tang.vscode.MainKt
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 17:47</p>
+<p class="date">Created: 2019-09-10 二 17:46</p>
 <p class="validation"></p>
 </div>
 </body>
