@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-08-13 二 10:42 -->
+<!-- 2019-09-10 二 19:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Auto-Complete manual</title>
+<title>auto-complete</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,228 +306,231 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">Auto-Complete manual</h1>
+<h1 class="title">auto-complete</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org27e48f9">1 Introduction</a></li>
-<li><a href="#org8a59cd0">2 Downloads</a></li>
-<li><a href="#orgecaac67">3 Installation</a>
+<li><a href="#org27e48f9">1. 1 Introduction</a></li>
+<li><a href="#org8a59cd0">2. 2 Downloads</a></li>
+<li><a href="#orgecaac67">3. 3 Installation</a>
 <ul>
-<li><a href="#org719882c">3.1 Requirements</a></li>
-<li><a href="#org0d4affa">3.2 Automatic Installation</a></li>
-<li><a href="#orga4bceb9">3.3 Manual Installation</a></li>
-<li><a href="#org872b12c">3.4 After-Installation Check</a></li>
+<li><a href="#org719882c">3.1. 3.1 Requirements</a></li>
+<li><a href="#org0d4affa">3.2. 3.2 Automatic Installation</a></li>
+<li><a href="#orga4bceb9">3.3. 3.3 Manual Installation</a></li>
+<li><a href="#org872b12c">3.4. 3.4 After-Installation Check</a></li>
 </ul>
 </li>
-<li><a href="#orgda4f6c8">4 Basic Usage</a>
+<li><a href="#orgda4f6c8">4. 4 Basic Usage</a>
 <ul>
-<li><a href="#orgc4ed173">4.1 Input Characters</a></li>
-<li><a href="#org4d4f08c">4.2 Completion by TAB</a></li>
-<li><a href="#org9e9c5bd">4.3 Completion by RET</a></li>
-<li><a href="#org193387b">4.4 Candidate Selection</a></li>
-<li><a href="#org10cc704">4.5 Help</a></li>
-<li><a href="#org546eb98">4.6 Summary</a></li>
+<li><a href="#orgc4ed173">4.1. 4.1 Input Characters</a></li>
+<li><a href="#org4d4f08c">4.2. 4.2 Completion by TAB</a></li>
+<li><a href="#org9e9c5bd">4.3. 4.3 Completion by RET</a></li>
+<li><a href="#org193387b">4.4. 4.4 Candidate Selection</a></li>
+<li><a href="#org10cc704">4.5. 4.5 Help</a></li>
+<li><a href="#org546eb98">4.6. 4.6 Summary</a></li>
 </ul>
 </li>
-<li><a href="#org408ce18">5 Advanced Usage</a>
+<li><a href="#org408ce18">5. 5 Advanced Usage</a>
 <ul>
-<li><a href="#orga613206">5.1 auto-complete command</a></li>
-<li><a href="#orgb7792fe">5.2 Completion by Fuzzy Matching</a></li>
-<li><a href="#orgc740814">5.3 Filtering Completion Candidates</a></li>
-<li><a href="#org8aea7e7">5.4 Trigger Key</a></li>
-<li><a href="#org4b56107">5.5 Candidate Suggestion</a></li>
-<li><a href="#orge42047b">5.6 Completion by Dictionary</a>
+<li><a href="#orga613206">5.1. 5.1 auto-complete command</a></li>
+<li><a href="#orgb7792fe">5.2. 5.2 Completion by Fuzzy Matching</a></li>
+<li><a href="#orgc740814">5.3. 5.3 Filtering Completion Candidates</a></li>
+<li><a href="#org8aea7e7">5.4. 5.4 Trigger Key</a></li>
+<li><a href="#org4b56107">5.5. 5.5 Candidate Suggestion</a></li>
+<li><a href="#orge42047b">5.6. 5.6 Completion by Dictionary</a>
 <ul>
-<li><a href="#orgc1ba9c4">5.6.1 User Defined Dictionary</a></li>
-<li><a href="#orgefe6d5d">5.6.2 Major Mode Dictionary and Extension Dictionary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org1742ab0">6 Source</a>
-<ul>
-<li><a href="#org930bd06">6.1 Using Source</a></li>
-<li><a href="#orged1ad60">6.2 Builtin Sources</a>
-<ul>
-<li><a href="#orgbcc0933">6.2.1 ac-source-abbrev</a></li>
-<li><a href="#org2a18104">6.2.2 ac-source-css-property</a></li>
-<li><a href="#org14b92cb">6.2.3 ac-source-dictionary</a></li>
-<li><a href="#org7335d30">6.2.4 ac-source-eclim</a></li>
-<li><a href="#orge04c639">6.2.5 ac-source-features</a></li>
-<li><a href="#orga2fdbff">6.2.6 ac-source-filename</a></li>
-<li><a href="#orgbf9e7c4">6.2.7 ac-source-files-in-current-dir</a></li>
-<li><a href="#orgbf44e36">6.2.8 ac-source-functions</a></li>
-<li><a href="#org95ad3ea">6.2.9 ac-source-ghc-mod</a></li>
-<li><a href="#orgedae0d0">6.2.10 ac-source-gtags</a></li>
-<li><a href="#org3e66b98">6.2.11 ac-source-imenu</a></li>
-<li><a href="#orgc9c78c4">6.2.12 ac-source-semantic</a></li>
-<li><a href="#orgc791861">6.2.13 ac-source-slime</a></li>
-<li><a href="#orge46c389">6.2.14 ac-source-semantic-raw</a></li>
-<li><a href="#org5919cd2">6.2.15 ac-source-symbols</a></li>
-<li><a href="#orgee1b0b2">6.2.16 ac-source-variables</a></li>
-<li><a href="#orgbfd2463">6.2.17 ac-source-words-in-all-buffer</a></li>
-<li><a href="#org217b28c">6.2.18 ac-source-words-in-buffer</a></li>
-<li><a href="#orgee5342e">6.2.19 ac-source-words-in-same-mode-buffers</a></li>
-<li><a href="#orgd873e70">6.2.20 ac-source-yasnippet</a></li>
+<li><a href="#orgc1ba9c4">5.6.1. 5.6.1 User Defined Dictionary</a></li>
+<li><a href="#orgefe6d5d">5.6.2. 5.6.2 Major Mode Dictionary and Extension Dictionary</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org375df6d">7 Tips</a>
+<li><a href="#org1742ab0">6. 6 Source</a>
 <ul>
-<li><a href="#org7415a2f">7.1 Not to complete automatically</a></li>
-<li><a href="#orgbb09860">7.2 Not to show completion menu automatically</a></li>
-<li><a href="#orge36294d">7.3 Stop completion</a></li>
-<li><a href="#org42afea0">7.4 Finish completion by TAB</a></li>
-<li><a href="#org39710a9">7.5 Select candidates with C-n/C-p only when completion menu is displayed</a></li>
-<li><a href="#orgd9b6cd5">7.6 Not to use quick help</a></li>
-<li><a href="#org54a985d">7.7 Change a height of completion menu</a></li>
-<li><a href="#orga6e3173">7.8 Enable auto-complete-mode automatically for specific modes</a></li>
-<li><a href="#org25d9fc5">7.9 Ignore case</a></li>
-<li><a href="#org4dbb213">7.10 Stop completion automatically after inserting specific words</a></li>
-<li><a href="#org32a1ea1">7.11 Change colors</a></li>
-<li><a href="#orgd9bec93">7.12 Change default sources</a></li>
-<li><a href="#org169d7cd">7.13 Change sources for specific major modes</a></li>
-<li><a href="#org5a2d0bf">7.14 Completion with specific source</a></li>
-<li><a href="#orgcae92e9">7.15 Show help persistently</a></li>
-<li><a href="#org6f76175">7.16 Show a lastly completed candidate help</a></li>
-<li><a href="#org46d63a0">7.17 Show help beautifully</a></li>
-</ul>
-</li>
-<li><a href="#org0f0d4c4">8 Third-party Extensions</a>
+<li><a href="#org930bd06">6.1. 6.1 Using Source</a></li>
+<li><a href="#orged1ad60">6.2. 6.2 Builtin Sources</a>
 <ul>
-<li><a href="#orgb8815f6">8.1 SLIME</a></li>
-<li><a href="#org11e0272">8.2 Scala</a></li>
-</ul>
-</li>
-<li><a href="#org731d36e">9 Configuration</a>
-<ul>
-<li><a href="#orgde0a3ed">9.1 ac-delay</a></li>
-<li><a href="#orge8d9f78">9.2 ac-auto-show-menu</a></li>
-<li><a href="#org8efcd3c">9.3 ac-show-menu-immediately-on-auto-complete</a></li>
-<li><a href="#orgfadcea1">9.4 ac-expand-on-auto-complete</a></li>
-<li><a href="#org0abb96d">9.5 ac-disable-faces</a></li>
-<li><a href="#orgc9396b7">9.6 ac-stop-flymake-on-completing</a></li>
-<li><a href="#org6fd250c">9.7 ac-use-fuzzy</a></li>
-<li><a href="#org17d21a5">9.8 ac-fuzzy-cursor-color</a></li>
-<li><a href="#org93863b2">9.9 ac-use-comphist</a></li>
-<li><a href="#orgf2d0558">9.10 ac-comphist-threshold</a></li>
-<li><a href="#org3a3172e">9.11 ac-comphist-file</a></li>
-<li><a href="#org8f058ee">9.12 ac-use-quick-help</a></li>
-<li><a href="#orgaec45e0">9.13 ac-quick-help-delay</a></li>
-<li><a href="#org4e42369">9.14 ac-menu-height</a></li>
-<li><a href="#org73570c1">9.15 ac-quick-help-height</a></li>
-<li><a href="#org54a1266">9.16 ac-quick-help-prefer-pos-tip</a></li>
-<li><a href="#org41350d2">9.17 ac-candidate-limit</a></li>
-<li><a href="#orge1566b8">9.18 ac-modes</a></li>
-<li><a href="#orga73fa04">9.19 ac-compatible-packages-regexp</a></li>
-<li><a href="#org95857ca">9.20 ac-non-trigger-commands</a></li>
-<li><a href="#orgf9d2b6a">9.21 ac-trigger-commands</a></li>
-<li><a href="#orgbadaea4">9.22 ac-trigger-commands-on-completing</a></li>
-<li><a href="#orgddb60ba">9.23 ac-trigger-key</a></li>
-<li><a href="#orgcc2759d">9.24 ac-auto-start</a></li>
-<li><a href="#orgd1dc93b">9.25 ac-stop-words</a></li>
-<li><a href="#orgfd0c355">9.26 ac-use-dictionary-as-stop-words</a></li>
-<li><a href="#org1c70bf8">9.27 ac-ignore-case</a></li>
-<li><a href="#org7414f4c">9.28 ac-dwim</a></li>
-<li><a href="#orgf9adfca">9.29 ac-use-menu-map</a></li>
-<li><a href="#org5555424">9.30 ac-use-overriding-local-map</a></li>
-<li><a href="#orge29db1e">9.31 ac-completion-face</a></li>
-<li><a href="#org104b593">9.32 ac-candidate-face</a></li>
-<li><a href="#orgb254f38">9.33 ac-selection-face</a></li>
-<li><a href="#org6e0e776">9.34 global-auto-complete-mode</a></li>
-<li><a href="#org99e8585">9.35 ac-user-dictionary</a></li>
-<li><a href="#org560c2b6">9.36 ac-user-dictionary-files</a></li>
-<li><a href="#org402ae26">9.37 ac-dictionary-directories</a></li>
-<li><a href="#orga1df7ec">9.38 ac-sources</a></li>
-<li><a href="#org2c57273">9.39 ac-completing-map</a></li>
-<li><a href="#orgc531880">9.40 ac-menu-map</a></li>
-<li><a href="#orgb8f4f37">9.41 ac-mode-map</a></li>
-</ul>
-</li>
-<li><a href="#org9b1fd8a">10 Extend</a>
-<ul>
-<li><a href="#org702c637">10.1 Prototype</a></li>
-<li><a href="#org34b816d">10.2 Example</a></li>
-<li><a href="#orgd39fcde">10.3 Initialization</a></li>
-<li><a href="#orgf02585e">10.4 Cache</a>
-<ul>
-<li><a href="#org6781742">10.4.1 Cache Expiration</a></li>
-</ul>
-</li>
-<li><a href="#org57852e0">10.5 Action</a></li>
-<li><a href="#orgf187d93">10.6 Omni Completion</a></li>
-<li><a href="#orga330b51">10.7 ac-define-source</a>
-<ul>
-<li><a href="#orgc52665a">10.7.1 Source Properties</a>
-<ul>
-<li><a href="#org287e3ce">10.7.1.1 init</a></li>
-<li><a href="#org2f81f17">10.7.1.2 candidates</a></li>
-</ul>
-</li>
-<li><a href="#orge30f304">10.7.2 prefix</a></li>
-<li><a href="#org78e96cc">10.7.3 requires</a></li>
-<li><a href="#org7c21452">10.7.4 action</a></li>
-<li><a href="#orgc432f48">10.7.5 limit</a></li>
-<li><a href="#org45529be">10.7.6 symbol</a></li>
-<li><a href="#org0bdfeb7">10.7.7 summary</a></li>
-<li><a href="#orgc453dac">10.7.8 cache</a></li>
-<li><a href="#org5177d3e">10.7.9 require</a></li>
-<li><a href="#org8741c07">10.7.10 candidate-face</a></li>
-<li><a href="#orgbce5ad6">10.7.11 selection-face</a></li>
-<li><a href="#org86643fd">10.7.12 depends</a></li>
-<li><a href="#org00f1010">10.7.13 available</a></li>
-<li><a href="#orgaf813b8">10.7.14 document</a></li>
-</ul>
-</li>
-<li><a href="#org9611296">10.8 Variables</a>
-<ul>
-<li><a href="#org10228eb">10.8.1 ac-buffer</a></li>
-<li><a href="#orga84a9f9">10.8.2 ac-point</a></li>
-<li><a href="#org70aff1c">10.8.3 ac-prefix</a></li>
-<li><a href="#orgf904964">10.8.4 ac-limit</a></li>
-<li><a href="#org10dcb1d">10.8.5 ac-candidates</a></li>
+<li><a href="#orgbcc0933">6.2.1. 6.2.1 ac-source-abbrev</a></li>
+<li><a href="#org2a18104">6.2.2. 6.2.2 ac-source-css-property</a></li>
+<li><a href="#org14b92cb">6.2.3. 6.2.3 ac-source-dictionary</a></li>
+<li><a href="#org7335d30">6.2.4. 6.2.4 ac-source-eclim</a></li>
+<li><a href="#orge04c639">6.2.5. 6.2.5 ac-source-features</a></li>
+<li><a href="#orga2fdbff">6.2.6. 6.2.6 ac-source-filename</a></li>
+<li><a href="#orgbf9e7c4">6.2.7. 6.2.7 ac-source-files-in-current-dir</a></li>
+<li><a href="#orgbf44e36">6.2.8. 6.2.8 ac-source-functions</a></li>
+<li><a href="#org95ad3ea">6.2.9. 6.2.9 ac-source-ghc-mod</a></li>
+<li><a href="#orgedae0d0">6.2.10. 6.2.10 ac-source-gtags</a></li>
+<li><a href="#org3e66b98">6.2.11. 6.2.11 ac-source-imenu</a></li>
+<li><a href="#orgc9c78c4">6.2.12. 6.2.12 ac-source-semantic</a></li>
+<li><a href="#orgc791861">6.2.13. 6.2.13 ac-source-slime</a></li>
+<li><a href="#orge46c389">6.2.14. 6.2.14 ac-source-semantic-raw</a></li>
+<li><a href="#org5919cd2">6.2.15. 6.2.15 ac-source-symbols</a></li>
+<li><a href="#orgee1b0b2">6.2.16. 6.2.16 ac-source-variables</a></li>
+<li><a href="#orgbfd2463">6.2.17. 6.2.17 ac-source-words-in-all-buffer</a></li>
+<li><a href="#org217b28c">6.2.18. 6.2.18 ac-source-words-in-buffer</a></li>
+<li><a href="#orgee5342e">6.2.19. 6.2.19 ac-source-words-in-same-mode-buffers</a></li>
+<li><a href="#orgd873e70">6.2.20. 6.2.20 ac-source-yasnippet</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org00c0459">11 Trouble Shooting</a>
+<li><a href="#org375df6d">7. 7 Tips</a>
 <ul>
-<li><a href="#orgd51d451">11.1 Response Latency</a>
-<ul>
-<li><a href="#org318fba7">11.1.1 ac-auto-start</a></li>
-<li><a href="#orgaef0f4c">11.1.2 ac-delay</a></li>
-<li><a href="#org1102d14">11.1.3 ac-auto-show-menu</a></li>
-<li><a href="#org08c0fdd">11.1.4 ac-use-comphist</a></li>
-<li><a href="#org61d4ca6">11.1.5 ac-candidate-limit</a></li>
+<li><a href="#org7415a2f">7.1. 7.1 Not to complete automatically</a></li>
+<li><a href="#orgbb09860">7.2. 7.2 Not to show completion menu automatically</a></li>
+<li><a href="#orge36294d">7.3. 7.3 Stop completion</a></li>
+<li><a href="#org42afea0">7.4. 7.4 Finish completion by TAB</a></li>
+<li><a href="#org39710a9">7.5. 7.5 Select candidates with C-n/C-p only when completion menu is displayed</a></li>
+<li><a href="#orgd9b6cd5">7.6. 7.6 Not to use quick help</a></li>
+<li><a href="#org54a985d">7.7. 7.7 Change a height of completion menu</a></li>
+<li><a href="#orga6e3173">7.8. 7.8 Enable auto-complete-mode automatically for specific modes</a></li>
+<li><a href="#org25d9fc5">7.9. 7.9 Ignore case</a></li>
+<li><a href="#org4dbb213">7.10. 7.10 Stop completion automatically after inserting specific words</a></li>
+<li><a href="#org32a1ea1">7.11. 7.11 Change colors</a></li>
+<li><a href="#orgd9bec93">7.12. 7.12 Change default sources</a></li>
+<li><a href="#org169d7cd">7.13. 7.13 Change sources for specific major modes</a></li>
+<li><a href="#org5a2d0bf">7.14. 7.14 Completion with specific source</a></li>
+<li><a href="#orgcae92e9">7.15. 7.15 Show help persistently</a></li>
+<li><a href="#org6f76175">7.16. 7.16 Show a lastly completed candidate help</a></li>
+<li><a href="#org46d63a0">7.17. 7.17 Show help beautifully</a></li>
 </ul>
 </li>
-<li><a href="#org780449a">11.2 Completion menu is disrupted</a>
+<li><a href="#org0f0d4c4">8. 8 Third-party Extensions</a>
 <ul>
-<li><a href="#orgc0987cd">11.2.1 Column Computation Case</a></li>
-<li><a href="#org856c7e7">11.2.2 Font Case</a></li>
+<li><a href="#orgb8815f6">8.1. 8.1 SLIME</a></li>
+<li><a href="#org11e0272">8.2. 8.2 Scala</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#org4f1583f">12 Known Bugs</a>
+<li><a href="#org731d36e">9. 9 Configuration</a>
 <ul>
-<li><a href="#org110ac35">12.1 Auto completion will not be started in a buffer flyspell-mode enabled</a></li>
-<li><a href="#orgdc60992">12.2 linum-mode tries to display the line numbers even for the comletion menu</a></li>
+<li><a href="#orgde0a3ed">9.1. 9.1 ac-delay</a></li>
+<li><a href="#orge8d9f78">9.2. 9.2 ac-auto-show-menu</a></li>
+<li><a href="#org8efcd3c">9.3. 9.3 ac-show-menu-immediately-on-auto-complete</a></li>
+<li><a href="#orgfadcea1">9.4. 9.4 ac-expand-on-auto-complete</a></li>
+<li><a href="#org0abb96d">9.5. 9.5 ac-disable-faces</a></li>
+<li><a href="#orgc9396b7">9.6. 9.6 ac-stop-flymake-on-completing</a></li>
+<li><a href="#org6fd250c">9.7. 9.7 ac-use-fuzzy</a></li>
+<li><a href="#org17d21a5">9.8. 9.8 ac-fuzzy-cursor-color</a></li>
+<li><a href="#org93863b2">9.9. 9.9 ac-use-comphist</a></li>
+<li><a href="#orgf2d0558">9.10. 9.10 ac-comphist-threshold</a></li>
+<li><a href="#org3a3172e">9.11. 9.11 ac-comphist-file</a></li>
+<li><a href="#org8f058ee">9.12. 9.12 ac-use-quick-help</a></li>
+<li><a href="#orgaec45e0">9.13. 9.13 ac-quick-help-delay</a></li>
+<li><a href="#org4e42369">9.14. 9.14 ac-menu-height</a></li>
+<li><a href="#org73570c1">9.15. 9.15 ac-quick-help-height</a></li>
+<li><a href="#org54a1266">9.16. 9.16 ac-quick-help-prefer-pos-tip</a></li>
+<li><a href="#org41350d2">9.17. 9.17 ac-candidate-limit</a></li>
+<li><a href="#orge1566b8">9.18. 9.18 ac-modes</a></li>
+<li><a href="#orga73fa04">9.19. 9.19 ac-compatible-packages-regexp</a></li>
+<li><a href="#org95857ca">9.20. 9.20 ac-non-trigger-commands</a></li>
+<li><a href="#orgf9d2b6a">9.21. 9.21 ac-trigger-commands</a></li>
+<li><a href="#orgbadaea4">9.22. 9.22 ac-trigger-commands-on-completing</a></li>
+<li><a href="#orgddb60ba">9.23. 9.23 ac-trigger-key</a></li>
+<li><a href="#orgcc2759d">9.24. 9.24 ac-auto-start</a></li>
+<li><a href="#orgd1dc93b">9.25. 9.25 ac-stop-words</a></li>
+<li><a href="#orgfd0c355">9.26. 9.26 ac-use-dictionary-as-stop-words</a></li>
+<li><a href="#org1c70bf8">9.27. 9.27 ac-ignore-case</a></li>
+<li><a href="#org7414f4c">9.28. 9.28 ac-dwim</a></li>
+<li><a href="#orgf9adfca">9.29. 9.29 ac-use-menu-map</a></li>
+<li><a href="#org5555424">9.30. 9.30 ac-use-overriding-local-map</a></li>
+<li><a href="#orge29db1e">9.31. 9.31 ac-completion-face</a></li>
+<li><a href="#org104b593">9.32. 9.32 ac-candidate-face</a></li>
+<li><a href="#orgb254f38">9.33. 9.33 ac-selection-face</a></li>
+<li><a href="#org6e0e776">9.34. 9.34 global-auto-complete-mode</a></li>
+<li><a href="#org99e8585">9.35. 9.35 ac-user-dictionary</a></li>
+<li><a href="#org560c2b6">9.36. 9.36 ac-user-dictionary-files</a></li>
+<li><a href="#org402ae26">9.37. 9.37 ac-dictionary-directories</a></li>
+<li><a href="#orga1df7ec">9.38. 9.38 ac-sources</a></li>
+<li><a href="#org2c57273">9.39. 9.39 ac-completing-map</a></li>
+<li><a href="#orgc531880">9.40. 9.40 ac-menu-map</a></li>
+<li><a href="#orgb8f4f37">9.41. 9.41 ac-mode-map</a></li>
 </ul>
 </li>
-<li><a href="#org38c4391">13 Reporting Bugs</a></li>
+<li><a href="#org9b1fd8a">10. 10 Extend</a>
+<ul>
+<li><a href="#org702c637">10.1. 10.1 Prototype</a></li>
+<li><a href="#org34b816d">10.2. 10.2 Example</a></li>
+<li><a href="#orgd39fcde">10.3. 10.3 Initialization</a></li>
+<li><a href="#orgf02585e">10.4. 10.4 Cache</a>
+<ul>
+<li><a href="#org6781742">10.4.1. 10.4.1 Cache Expiration</a></li>
+</ul>
+</li>
+<li><a href="#org57852e0">10.5. 10.5 Action</a></li>
+<li><a href="#orgf187d93">10.6. 10.6 Omni Completion</a></li>
+<li><a href="#orga330b51">10.7. 10.7 ac-define-source</a>
+<ul>
+<li><a href="#orgc52665a">10.7.1. 10.7.1 Source Properties</a>
+<ul>
+<li><a href="#org287e3ce">10.7.1.1. 10.7.1.1 init</a></li>
+<li><a href="#org2f81f17">10.7.1.2. 10.7.1.2 candidates</a></li>
+</ul>
+</li>
+<li><a href="#orge30f304">10.7.2. 10.7.2 prefix</a></li>
+<li><a href="#org78e96cc">10.7.3. 10.7.3 requires</a></li>
+<li><a href="#org7c21452">10.7.4. 10.7.4 action</a></li>
+<li><a href="#orgc432f48">10.7.5. 10.7.5 limit</a></li>
+<li><a href="#org45529be">10.7.6. 10.7.6 symbol</a></li>
+<li><a href="#org0bdfeb7">10.7.7. 10.7.7 summary</a></li>
+<li><a href="#orgc453dac">10.7.8. 10.7.8 cache</a></li>
+<li><a href="#org5177d3e">10.7.9. 10.7.9 require</a></li>
+<li><a href="#org8741c07">10.7.10. 10.7.10 candidate-face</a></li>
+<li><a href="#orgbce5ad6">10.7.11. 10.7.11 selection-face</a></li>
+<li><a href="#org86643fd">10.7.12. 10.7.12 depends</a></li>
+<li><a href="#org00f1010">10.7.13. 10.7.13 available</a></li>
+<li><a href="#orgaf813b8">10.7.14. 10.7.14 document</a></li>
+</ul>
+</li>
+<li><a href="#org9611296">10.8. 10.8 Variables</a>
+<ul>
+<li><a href="#org10228eb">10.8.1. 10.8.1 ac-buffer</a></li>
+<li><a href="#orga84a9f9">10.8.2. 10.8.2 ac-point</a></li>
+<li><a href="#org70aff1c">10.8.3. 10.8.3 ac-prefix</a></li>
+<li><a href="#orgf904964">10.8.4. 10.8.4 ac-limit</a></li>
+<li><a href="#org10dcb1d">10.8.5. 10.8.5 ac-candidates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org00c0459">11. 11 Trouble Shooting</a>
+<ul>
+<li><a href="#orgd51d451">11.1. 11.1 Response Latency</a>
+<ul>
+<li><a href="#org318fba7">11.1.1. 11.1.1 ac-auto-start</a></li>
+<li><a href="#orgaef0f4c">11.1.2. 11.1.2 ac-delay</a></li>
+<li><a href="#org1102d14">11.1.3. 11.1.3 ac-auto-show-menu</a></li>
+<li><a href="#org08c0fdd">11.1.4. 11.1.4 ac-use-comphist</a></li>
+<li><a href="#org61d4ca6">11.1.5. 11.1.5 ac-candidate-limit</a></li>
+</ul>
+</li>
+<li><a href="#org780449a">11.2. 11.2 Completion menu is disrupted</a>
+<ul>
+<li><a href="#orgc0987cd">11.2.1. 11.2.1 Column Computation Case</a></li>
+<li><a href="#org856c7e7">11.2.2. 11.2.2 Font Case</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org4f1583f">12. 12 Known Bugs</a>
+<ul>
+<li><a href="#org110ac35">12.1. 12.1 Auto completion will not be started in a buffer flyspell-mode enabled</a></li>
+<li><a href="#orgdc60992">12.2. 12.2 linum-mode tries to display the line numbers even for the comletion menu</a></li>
+</ul>
+</li>
+<li><a href="#org38c4391">13. 13 Reporting Bugs</a></li>
 </ul>
 </div>
 </div>
+<p>
+建议使用 company-mode， auto-complete 已经停止开发了。
+</p>
 
 <div id="outline-container-org27e48f9" class="outline-2">
-<h2 id="org27e48f9">1 Introduction</h2>
-<div class="outline-text-2" id="text-org27e48f9">
+<h2 id="org27e48f9"><span class="section-number-2">1</span> 1 Introduction</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-Auto-Complete (a.k.a auto-complete.el, auto-complete-mode) is an extension that automates and advances the completion-system of GNU Emacs. It is superior to the old system. Features include:
+<a href="https://github.com/auto-complete/auto-complete">Auto-Complete</a> (a.k.a auto-complete.el, auto-complete-mode) is an extension that automates and advances the completion-system of GNU Emacs. It is superior to the old system. Features include:
 </p>
 
 <p>
@@ -579,8 +582,8 @@ Auto Complete Mode 使用 GPLv3 协议授权。本文档给予 GFDL 许可。
 </div>
 
 <div id="outline-container-org8a59cd0" class="outline-2">
-<h2 id="org8a59cd0">2 Downloads</h2>
-<div class="outline-text-2" id="text-org8a59cd0">
+<h2 id="org8a59cd0"><span class="section-number-2">2</span> 2 Downloads</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 You can download the latest auto-complete from the official site.
 </p>
@@ -588,12 +591,12 @@ You can download the latest auto-complete from the official site.
 </div>
 
 <div id="outline-container-orgecaac67" class="outline-2">
-<h2 id="orgecaac67">3 Installation</h2>
-<div class="outline-text-2" id="text-orgecaac67">
+<h2 id="orgecaac67"><span class="section-number-2">3</span> 3 Installation</h2>
+<div class="outline-text-2" id="text-3">
 </div>
 <div id="outline-container-org719882c" class="outline-3">
-<h3 id="org719882c">3.1 Requirements</h3>
-<div class="outline-text-3" id="text-org719882c">
+<h3 id="org719882c"><span class="section-number-3">3.1</span> 3.1 Requirements</h3>
+<div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>800MHz or higher CPU</li>
 <li>256MB or higher RAM</li>
@@ -603,8 +606,8 @@ You can download the latest auto-complete from the official site.
 </div>
 
 <div id="outline-container-org0d4affa" class="outline-3">
-<h3 id="org0d4affa">3.2 Automatic Installation</h3>
-<div class="outline-text-3" id="text-org0d4affa">
+<h3 id="org0d4affa"><span class="section-number-3">3.2</span> 3.2 Automatic Installation</h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
 It is easy to install by using an installation script called etc/install.el that is located in the package directory.
 </p>
@@ -664,8 +667,8 @@ Add the following code to your .emacs:
 </div>
 
 <div id="outline-container-orga4bceb9" class="outline-3">
-<h3 id="orga4bceb9">3.3 Manual Installation</h3>
-<div class="outline-text-3" id="text-orga4bceb9">
+<h3 id="orga4bceb9"><span class="section-number-3">3.3</span> 3.3 Manual Installation</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
 It is also possible to install manually if you follow a directory configuration. First, byte-compile all .el files in the package directory. You may use Makefile in UNIX OS.
 </p>
@@ -720,8 +723,8 @@ If you haven't added the directory to load-path, you need to add the following c
 </div>
 
 <div id="outline-container-org872b12c" class="outline-3">
-<h3 id="org872b12c">3.4 After-Installation Check</h3>
-<div class="outline-text-3" id="text-org872b12c">
+<h3 id="org872b12c"><span class="section-number-3">3.4</span> 3.4 After-Installation Check</h3>
+<div class="outline-text-3" id="text-3-4">
 <p>
 Type some characters in <b>scratch</b> buffer in a restarted or newly-launched Emacs. Installation has been successful if you see a completion menu. If you have an error or no completion is started, it could be a failure. Please contact me in such case with confirmation following:
 </p>
@@ -756,8 +759,8 @@ If you have <b>Backtrace</b> with errors or errors in minibuffer (bottom of fram
 </div>
 
 <div id="outline-container-orgda4f6c8" class="outline-2">
-<h2 id="orgda4f6c8">4 Basic Usage</h2>
-<div class="outline-text-2" id="text-orgda4f6c8">
+<h2 id="orgda4f6c8"><span class="section-number-2">4</span> 4 Basic Usage</h2>
+<div class="outline-text-2" id="text-4">
 <p>
 First, in a meaning, auto-complete-mode has no "usage". Because auto-complete-mode is designed to fade into the Emacs editing system. Users will receive a highly-developed completion system automatically without any difficulty. Ultimately, a goal of auto-complete-mode is to provide a system that does what users want without any command, but it is impossible to accomplish 100% accuracy actually. So there is "usage" to cover those points.
 </p>
@@ -768,8 +771,8 @@ First, in a meaning, auto-complete-mode has no "usage". Because auto-complete-mo
 </div>
 
 <div id="outline-container-orgc4ed173" class="outline-3">
-<h3 id="orgc4ed173">4.1 Input Characters</h3>
-<div class="outline-text-3" id="text-orgc4ed173">
+<h3 id="orgc4ed173"><span class="section-number-3">4.1</span> 4.1 Input Characters</h3>
+<div class="outline-text-3" id="text-4-1">
 <p>
 Inputting characters is basic. Completions will never be shown without any character. So when completion will be started, what character causes completion to be started? It is a good question but it is difficult to answer here. In simple words, completion will be started when a character is inserted. See ac-trigger-commands for more details.
 </p>
@@ -788,8 +791,8 @@ Inputting characters is basic. Completions will never be shown without any chara
 </div>
 
 <div id="outline-container-org4d4f08c" class="outline-3">
-<h3 id="org4d4f08c">4.2 Completion by TAB</h3>
-<div class="outline-text-3" id="text-org4d4f08c">
+<h3 id="org4d4f08c"><span class="section-number-3">4.2</span> 4.2 Completion by TAB</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 After completion is started, completion by TAB will be enabled temporarily. Completion by TAB is the most important and most frequent used command. TAB has several meanings.
 </p>
@@ -859,8 +862,8 @@ It may be a little different according to settings, but basically completion by 
 </div>
 
 <div id="outline-container-org9e9c5bd" class="outline-3">
-<h3 id="org9e9c5bd">4.3 Completion by RET</h3>
-<div class="outline-text-3" id="text-org9e9c5bd">
+<h3 id="org9e9c5bd"><span class="section-number-3">4.3</span> 4.3 Completion by RET</h3>
+<div class="outline-text-3" id="text-4-3">
 <p>
 Like completion by TAB but some points are different:
 </p>
@@ -898,8 +901,8 @@ It is necessary to type TAB a few times for completion by TAB. Completion by RET
 </div>
 
 <div id="outline-container-org193387b" class="outline-3">
-<h3 id="org193387b">4.4 Candidate Selection</h3>
-<div class="outline-text-3" id="text-org193387b">
+<h3 id="org193387b"><span class="section-number-3">4.4</span> 4.4 Candidate Selection</h3>
+<div class="outline-text-3" id="text-4-4">
 <p>
 Following the auto-complete-mode philosophy, it is not recommended to manually select candidates. That means it has been failed to guess the completion, and also it requires users to do candidate selection which is a high cost operation. We think there are so many cases that requires to do candidate selection, because completion by TAB will help candidate selection somehow and in recent versions, a statistical method contributes to make a candidate suggestion more accurate. However, actually, this is such cases. So we also think it is not bad idea to remember how to select candidates.
 </p>
@@ -927,8 +930,8 @@ There are other ways to select candidates. M-1 to select candidate 1, M-2 to sel
 </div>
 
 <div id="outline-container-org10cc704" class="outline-3">
-<h3 id="org10cc704">4.5 Help</h3>
-<div class="outline-text-3" id="text-org10cc704">
+<h3 id="org10cc704"><span class="section-number-3">4.5</span> 4.5 Help</h3>
+<div class="outline-text-3" id="text-4-5">
 <p>
 auto-complete-mode has two types of help functionalities called Quick Help and Buffer Help. They are different in a point of displaying. Quick help will appear at the side of completion menu, so you can easily see that, but there is a problem if there is no space to display the help. Quick help will be shown automatically. To use quick help, you need to set ac-use-quick-help to t. Delay time to show quick help is given by ac-quick-help-delay.
 </p>
@@ -948,8 +951,8 @@ On the other side, buffer help will not be shown without any instructions from u
 </div>
 
 <div id="outline-container-org546eb98" class="outline-3">
-<h3 id="org546eb98">4.6 Summary</h3>
-<div class="outline-text-3" id="text-org546eb98">
+<h3 id="org546eb98"><span class="section-number-3">4.6</span> 4.6 Summary</h3>
+<div class="outline-text-3" id="text-4-6">
 <p>
 Completion will be started by inserting characters. After completion is started, operations in the following table will be enabled temporarily. After completion is finished, these operations will be disabled.
 </p>
@@ -1019,12 +1022,12 @@ To stop completion, simply use C-g.
 </div>
 
 <div id="outline-container-org408ce18" class="outline-2">
-<h2 id="org408ce18">5 Advanced Usage</h2>
-<div class="outline-text-2" id="text-org408ce18">
+<h2 id="org408ce18"><span class="section-number-2">5</span> 5 Advanced Usage</h2>
+<div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-orga613206" class="outline-3">
-<h3 id="orga613206">5.1 auto-complete command</h3>
-<div class="outline-text-3" id="text-orga613206">
+<h3 id="orga613206"><span class="section-number-3">5.1</span> 5.1 auto-complete command</h3>
+<div class="outline-text-3" id="text-5-1">
 <p>
 Basically there is an assumption that auto-complete-mode will be started automatically, but there is also exception. For example, that is a case that an user wants to complete without inserting any character or a case not to start auto-complete-mode automatically by settings. A command called auto-complete is useful in such cases, which is used with key binding in general. The following code changes a default completion command to more advanced feature that auto-complete-mode provides.
 </p>
@@ -1099,8 +1102,8 @@ Otherwise start completion with/without expanding a whole common part and showin
 </div>
 
 <div id="outline-container-orgb7792fe" class="outline-3">
-<h3 id="orgb7792fe">5.2 Completion by Fuzzy Matching</h3>
-<div class="outline-text-3" id="text-orgb7792fe">
+<h3 id="orgb7792fe"><span class="section-number-3">5.2</span> 5.2 Completion by Fuzzy Matching</h3>
+<div class="outline-text-3" id="text-5-2">
 <p>
 In a case that there are no candidates by auto-complete command or the case where ac-fuzzy-complete command is executed, auto-complete-mode attempts to complete with fuzzy matching instead of the usual exact matching. Parameters of fuzzy matching have already been optimized for use, so users don't need to change them. However if you want to know the internals, see fuzzy.el. Using completion by fuzzy matching, typos will be fixed as a series of completion. For instance, input "messaeg" in a buffer, and then do M-x auto-complete or M-x ac-fuzzy-complete. The cursor color will be changed to red if completion has been successful, and then you can continue to complete, regarding "messaeg" as "message". It is not a bad idea to bind auto-complete command to some key to handle such cases.
 </p>
@@ -1119,8 +1122,8 @@ In a case that there are no candidates by auto-complete command or the case wher
 </div>
 
 <div id="outline-container-orgc740814" class="outline-3">
-<h3 id="orgc740814">5.3 Filtering Completion Candidates</h3>
-<div class="outline-text-3" id="text-orgc740814">
+<h3 id="orgc740814"><span class="section-number-3">5.3</span> 5.3 Filtering Completion Candidates</h3>
+<div class="outline-text-3" id="text-5-3">
 <p>
 You can start filtering by C-s. The cursor color will change to blue. Then input characters to filter. It is possible to do completion by TAB or select candidates, which changes the cursor color to original so that telling filtering completion candidates has done. The filtering string will be restored when C-s again. To delete the filter string, press DEL or C-h. Other general operations is not allowed there.
 </p>
@@ -1138,8 +1141,8 @@ You can start filtering by C-s. The cursor color will change to blue. Then input
 </div>
 
 <div id="outline-container-org8aea7e7" class="outline-3">
-<h3 id="org8aea7e7">5.4 Trigger Key</h3>
-<div class="outline-text-3" id="text-org8aea7e7">
+<h3 id="org8aea7e7"><span class="section-number-3">5.4</span> 5.4 Trigger Key</h3>
+<div class="outline-text-3" id="text-5-4">
 <p>
 It is difficult what key auto-complete command is bound to. It should be bound to a key which is easy to press as much as possible because completion operation is often happened. However, it is a major problem that there is no empty key to press easily. auto-complete-mode provides a feature called Trigger Key that handles such the problem. Using trigger key, you can use an arbitrary key temporarily if necessary. The following code uses TAB as trigger key.
 </p>
@@ -1173,8 +1176,8 @@ As of ac-auto-start, see Not to complete automatically or ac-auto-start for more
 </div>
 
 <div id="outline-container-org4b56107" class="outline-3">
-<h3 id="org4b56107">5.5 Candidate Suggestion</h3>
-<div class="outline-text-3" id="text-org4b56107">
+<h3 id="org4b56107"><span class="section-number-3">5.5</span> 5.5 Candidate Suggestion</h3>
+<div class="outline-text-3" id="text-5-5">
 <p>
 auto-complete-mode analyzes completion operations one by one and reduces overheads of completion as much as possible. For example, having a candidate "foobar" been completed few times, auto-complete-mode arranges it to top of the candidates next time and make a situation that allows users to complete the word with one time TAB or few times TAB. It is called comphist internally, and you can use it by setting ac-use-comphist to t. It is enabled by default. Collection operations data will be stored in user-emacs-directory or ~/.emacs.d/ with a name ac-comphist.dat.
 </p>
@@ -1220,8 +1223,8 @@ Simply saying, it collects not only a completion count but also a position of co
 </div>
 
 <div id="outline-container-orge42047b" class="outline-3">
-<h3 id="orge42047b">5.6 Completion by Dictionary</h3>
-<div class="outline-text-3" id="text-orge42047b">
+<h3 id="orge42047b"><span class="section-number-3">5.6</span> 5.6 Completion by Dictionary</h3>
+<div class="outline-text-3" id="text-5-6">
 <p>
 Dictionary is a simple list of string. There is three types of dictionary: user defined dictionary, major mode dictionary, and extension dictionary. You need to add ac-source-dictionary to ac-sources (default). See Source for more details.
 </p>
@@ -1232,8 +1235,8 @@ Dictionary is a simple list of string. There is three types of dictionary: user 
 </div>
 
 <div id="outline-container-orgc1ba9c4" class="outline-4">
-<h4 id="orgc1ba9c4">5.6.1 User Defined Dictionary</h4>
-<div class="outline-text-4" id="text-orgc1ba9c4">
+<h4 id="orgc1ba9c4"><span class="section-number-4">5.6.1</span> 5.6.1 User Defined Dictionary</h4>
+<div class="outline-text-4" id="text-5-6-1">
 <p>
 User defined dictionary is composed of a list of string specified ac-user-dictionary and dictionary files specified by ac-user-dictionary-files. Dictionary file is a word list separated with newline. User defined dictionary is shared with all buffers. Here is example adding your mail address to dictionary.
 </p>
@@ -1292,8 +1295,8 @@ No need to say perhaps, you can use other files as dictionary file by adding to 
 </div>
 
 <div id="outline-container-orgefe6d5d" class="outline-4">
-<h4 id="orgefe6d5d">5.6.2 Major Mode Dictionary and Extension Dictionary</h4>
-<div class="outline-text-4" id="text-orgefe6d5d">
+<h4 id="orgefe6d5d"><span class="section-number-4">5.6.2</span> 5.6.2 Major Mode Dictionary and Extension Dictionary</h4>
+<div class="outline-text-4" id="text-5-6-2">
 <p>
 You can use other dictionaries for every major-modes and extensions. A dictionary will loaded from a directory specified with ac-dictionary-directories. ac-dictionary-directories may be the following setting if you followed Installation instructions.
 </p>
@@ -1328,8 +1331,8 @@ As same as user defined dictionary, after editing and adding dictionary, you sho
 </div>
 
 <div id="outline-container-org1742ab0" class="outline-2">
-<h2 id="org1742ab0">6 Source</h2>
-<div class="outline-text-2" id="text-org1742ab0">
+<h2 id="org1742ab0"><span class="section-number-2">6</span> 6 Source</h2>
+<div class="outline-text-2" id="text-6">
 <p>
 Source is a concept that ensures the extensibility of auto-complete-mode. Simply saying, source is a description of:
 </p>
@@ -1382,8 +1385,8 @@ Usually a source name starts with ac-source-. So you can list sources with aprop
 </div>
 
 <div id="outline-container-org930bd06" class="outline-3">
-<h3 id="org930bd06">6.1 Using Source</h3>
-<div class="outline-text-3" id="text-org930bd06">
+<h3 id="org930bd06"><span class="section-number-3">6.1</span> 6.1 Using Source</h3>
+<div class="outline-text-3" id="text-6-1">
 <p>
 If you wrote (ac-config-default) in your .emacs, it is rare to change a source setting because it is already optimized to use. Here is a short explanation about source however. Sources will be used by setting ac-sources to a list of sources. You can see the setting by evaluating ac-sources in <b>scratch</b> buffer:
 </p>
@@ -1512,8 +1515,8 @@ There are other ways to do that. (ac-config-default) changes the default value o
 </div>
 
 <div id="outline-container-orged1ad60" class="outline-3">
-<h3 id="orged1ad60">6.2 Builtin Sources</h3>
-<div class="outline-text-3" id="text-orged1ad60">
+<h3 id="orged1ad60"><span class="section-number-3">6.2</span> 6.2 Builtin Sources</h3>
+<div class="outline-text-3" id="text-6-2">
 <p>
 Here are defined sources in auto-complete.el and auto-complete-config.el.
 </p>
@@ -1524,8 +1527,8 @@ Here are defined sources in auto-complete.el and auto-complete-config.el.
 </div>
 
 <div id="outline-container-orgbcc0933" class="outline-4">
-<h4 id="orgbcc0933">6.2.1 ac-source-abbrev</h4>
-<div class="outline-text-4" id="text-orgbcc0933">
+<h4 id="orgbcc0933"><span class="section-number-4">6.2.1</span> 6.2.1 ac-source-abbrev</h4>
+<div class="outline-text-4" id="text-6-2-1">
 <p>
 A source for Emacs abbreviation function. See info emacs Abbrevs about abbreviation function.
 </p>
@@ -1537,8 +1540,8 @@ Emacs 缩写函数使用的 source，查看 emacs Abbrevs 了解。
 </div>
 
 <div id="outline-container-org2a18104" class="outline-4">
-<h4 id="org2a18104">6.2.2 ac-source-css-property</h4>
-<div class="outline-text-4" id="text-org2a18104">
+<h4 id="org2a18104"><span class="section-number-4">6.2.2</span> 6.2.2 ac-source-css-property</h4>
+<div class="outline-text-4" id="text-6-2-2">
 <p>
 A source for CSS property.
 </p>
@@ -1550,8 +1553,8 @@ CSS 属性的 source。
 </div>
 
 <div id="outline-container-org14b92cb" class="outline-4">
-<h4 id="org14b92cb">6.2.3 ac-source-dictionary</h4>
-<div class="outline-text-4" id="text-org14b92cb">
+<h4 id="org14b92cb"><span class="section-number-4">6.2.3</span> 6.2.3 ac-source-dictionary</h4>
+<div class="outline-text-4" id="text-6-2-3">
 <p>
 A source for dictionary. See Completion by Dictionary about dictionary.
 </p>
@@ -1563,8 +1566,8 @@ A source for dictionary. See Completion by Dictionary about dictionary.
 </div>
 
 <div id="outline-container-org7335d30" class="outline-4">
-<h4 id="org7335d30">6.2.4 ac-source-eclim</h4>
-<div class="outline-text-4" id="text-org7335d30">
+<h4 id="org7335d30"><span class="section-number-4">6.2.4</span> 6.2.4 ac-source-eclim</h4>
+<div class="outline-text-4" id="text-6-2-4">
 <p>
 A source for Emacs-eclim.
 </p>
@@ -1572,8 +1575,8 @@ A source for Emacs-eclim.
 </div>
 
 <div id="outline-container-orge04c639" class="outline-4">
-<h4 id="orge04c639">6.2.5 ac-source-features</h4>
-<div class="outline-text-4" id="text-orge04c639">
+<h4 id="orge04c639"><span class="section-number-4">6.2.5</span> 6.2.5 ac-source-features</h4>
+<div class="outline-text-4" id="text-6-2-5">
 <p>
 A source for completing features which are available with (require '.
 </p>
@@ -1585,8 +1588,8 @@ A source for completing features which are available with (require '.
 </div>
 
 <div id="outline-container-orga2fdbff" class="outline-4">
-<h4 id="orga2fdbff">6.2.6 ac-source-filename</h4>
-<div class="outline-text-4" id="text-orga2fdbff">
+<h4 id="orga2fdbff"><span class="section-number-4">6.2.6</span> 6.2.6 ac-source-filename</h4>
+<div class="outline-text-4" id="text-6-2-6">
 <p>
 A source for completing file name. Completion will be started after inserting /.
 </p>
@@ -1598,8 +1601,8 @@ A source for completing file name. Completion will be started after inserting /.
 </div>
 
 <div id="outline-container-orgbf9e7c4" class="outline-4">
-<h4 id="orgbf9e7c4">6.2.7 ac-source-files-in-current-dir</h4>
-<div class="outline-text-4" id="text-orgbf9e7c4">
+<h4 id="orgbf9e7c4"><span class="section-number-4">6.2.7</span> 6.2.7 ac-source-files-in-current-dir</h4>
+<div class="outline-text-4" id="text-6-2-7">
 <p>
 A source for completing files in a current directory. It may be useful with eshell.
 </p>
@@ -1611,8 +1614,8 @@ A source for completing files in a current directory. It may be useful with eshe
 </div>
 
 <div id="outline-container-orgbf44e36" class="outline-4">
-<h4 id="orgbf44e36">6.2.8 ac-source-functions</h4>
-<div class="outline-text-4" id="text-orgbf44e36">
+<h4 id="orgbf44e36"><span class="section-number-4">6.2.8</span> 6.2.8 ac-source-functions</h4>
+<div class="outline-text-4" id="text-6-2-8">
 <p>
 A source for completing Emacs Lisp functions. It is available only after (.
 补全 Emacs Lisp 函数。只在（之后可用。
@@ -1621,8 +1624,8 @@ A source for completing Emacs Lisp functions. It is available only after (.
 </div>
 
 <div id="outline-container-org95ad3ea" class="outline-4">
-<h4 id="org95ad3ea">6.2.9 ac-source-ghc-mod</h4>
-<div class="outline-text-4" id="text-org95ad3ea">
+<h4 id="org95ad3ea"><span class="section-number-4">6.2.9</span> 6.2.9 ac-source-ghc-mod</h4>
+<div class="outline-text-4" id="text-6-2-9">
 <p>
 A source for ghc-mod.
 </p>
@@ -1630,8 +1633,8 @@ A source for ghc-mod.
 </div>
 
 <div id="outline-container-orgedae0d0" class="outline-4">
-<h4 id="orgedae0d0">6.2.10 ac-source-gtags</h4>
-<div class="outline-text-4" id="text-orgedae0d0">
+<h4 id="orgedae0d0"><span class="section-number-4">6.2.10</span> 6.2.10 ac-source-gtags</h4>
+<div class="outline-text-4" id="text-6-2-10">
 <p>
 A source for completing tags of Global.
 </p>
@@ -1643,8 +1646,8 @@ A source for completing tags of Global.
 </div>
 
 <div id="outline-container-org3e66b98" class="outline-4">
-<h4 id="org3e66b98">6.2.11 ac-source-imenu</h4>
-<div class="outline-text-4" id="text-org3e66b98">
+<h4 id="org3e66b98"><span class="section-number-4">6.2.11</span> 6.2.11 ac-source-imenu</h4>
+<div class="outline-text-4" id="text-6-2-11">
 <p>
 A source for completing imenu nodes. See info emacs imenu for details.
 </p>
@@ -1653,8 +1656,8 @@ A source for completing imenu nodes. See info emacs imenu for details.
 
 
 <div id="outline-container-orgc9c78c4" class="outline-4">
-<h4 id="orgc9c78c4">6.2.12 ac-source-semantic</h4>
-<div class="outline-text-4" id="text-orgc9c78c4">
+<h4 id="orgc9c78c4"><span class="section-number-4">6.2.12</span> 6.2.12 ac-source-semantic</h4>
+<div class="outline-text-4" id="text-6-2-12">
 <p>
 A source for Semantic. It can be used for completing member name for C/C++.
 </p>
@@ -1662,8 +1665,8 @@ A source for Semantic. It can be used for completing member name for C/C++.
 </div>
 
 <div id="outline-container-orgc791861" class="outline-4">
-<h4 id="orgc791861">6.2.13 ac-source-slime</h4>
-<div class="outline-text-4" id="text-orgc791861">
+<h4 id="orgc791861"><span class="section-number-4">6.2.13</span> 6.2.13 ac-source-slime</h4>
+<div class="outline-text-4" id="text-6-2-13">
 <p>
 A source for SLIME.
 </p>
@@ -1671,8 +1674,8 @@ A source for SLIME.
 </div>
 
 <div id="outline-container-orge46c389" class="outline-4">
-<h4 id="orge46c389">6.2.14 ac-source-semantic-raw</h4>
-<div class="outline-text-4" id="text-orge46c389">
+<h4 id="orge46c389"><span class="section-number-4">6.2.14</span> 6.2.14 ac-source-semantic-raw</h4>
+<div class="outline-text-4" id="text-6-2-14">
 <p>
 Unlike ac-source-semantic, this source is for completing symbols in a raw namespace.
 </p>
@@ -1680,8 +1683,8 @@ Unlike ac-source-semantic, this source is for completing symbols in a raw namesp
 </div>
 
 <div id="outline-container-org5919cd2" class="outline-4">
-<h4 id="org5919cd2">6.2.15 ac-source-symbols</h4>
-<div class="outline-text-4" id="text-org5919cd2">
+<h4 id="org5919cd2"><span class="section-number-4">6.2.15</span> 6.2.15 ac-source-symbols</h4>
+<div class="outline-text-4" id="text-6-2-15">
 <p>
 A source for completing Emacs Lisp symbols.
 </p>
@@ -1689,8 +1692,8 @@ A source for completing Emacs Lisp symbols.
 </div>
 
 <div id="outline-container-orgee1b0b2" class="outline-4">
-<h4 id="orgee1b0b2">6.2.16 ac-source-variables</h4>
-<div class="outline-text-4" id="text-orgee1b0b2">
+<h4 id="orgee1b0b2"><span class="section-number-4">6.2.16</span> 6.2.16 ac-source-variables</h4>
+<div class="outline-text-4" id="text-6-2-16">
 <p>
 A source for completing Emacs Lisp symbols.
 </p>
@@ -1698,8 +1701,8 @@ A source for completing Emacs Lisp symbols.
 </div>
 
 <div id="outline-container-orgbfd2463" class="outline-4">
-<h4 id="orgbfd2463">6.2.17 ac-source-words-in-all-buffer</h4>
-<div class="outline-text-4" id="text-orgbfd2463">
+<h4 id="orgbfd2463"><span class="section-number-4">6.2.17</span> 6.2.17 ac-source-words-in-all-buffer</h4>
+<div class="outline-text-4" id="text-6-2-17">
 <p>
 A source for completing words in all buffer. Unlikely ac-source-words-in-same-mode-buffers, it doesn't regard major-mode.
 </p>
@@ -1707,8 +1710,8 @@ A source for completing words in all buffer. Unlikely ac-source-words-in-same-mo
 </div>
 
 <div id="outline-container-org217b28c" class="outline-4">
-<h4 id="org217b28c">6.2.18 ac-source-words-in-buffer</h4>
-<div class="outline-text-4" id="text-org217b28c">
+<h4 id="org217b28c"><span class="section-number-4">6.2.18</span> 6.2.18 ac-source-words-in-buffer</h4>
+<div class="outline-text-4" id="text-6-2-18">
 <p>
 A source for completing words in a current buffer.
 </p>
@@ -1716,8 +1719,8 @@ A source for completing words in a current buffer.
 </div>
 
 <div id="outline-container-orgee5342e" class="outline-4">
-<h4 id="orgee5342e">6.2.19 ac-source-words-in-same-mode-buffers</h4>
-<div class="outline-text-4" id="text-orgee5342e">
+<h4 id="orgee5342e"><span class="section-number-4">6.2.19</span> 6.2.19 ac-source-words-in-same-mode-buffers</h4>
+<div class="outline-text-4" id="text-6-2-19">
 <p>
 A source for completing words which are collected over buffers whom major-mode is same to of a current buffer. For example, words will shared among a.cpp and b.cpp, but not shared among a.pl and b.cpp because they are different major-mode buffers. Usually this source is more useful than ac-source-words-in-all-buffer.
 </p>
@@ -1725,8 +1728,8 @@ A source for completing words which are collected over buffers whom major-mode i
 </div>
 
 <div id="outline-container-orgd873e70" class="outline-4">
-<h4 id="orgd873e70">6.2.20 ac-source-yasnippet</h4>
-<div class="outline-text-4" id="text-orgd873e70">
+<h4 id="orgd873e70"><span class="section-number-4">6.2.20</span> 6.2.20 ac-source-yasnippet</h4>
+<div class="outline-text-4" id="text-6-2-20">
 <p>
 A source for Yasnippet to complete and expand snippets.
 </p>
@@ -1736,12 +1739,12 @@ A source for Yasnippet to complete and expand snippets.
 </div>
 
 <div id="outline-container-org375df6d" class="outline-2">
-<h2 id="org375df6d">7 Tips</h2>
-<div class="outline-text-2" id="text-org375df6d">
+<h2 id="org375df6d"><span class="section-number-2">7</span> 7 Tips</h2>
+<div class="outline-text-2" id="text-7">
 </div>
 <div id="outline-container-org7415a2f" class="outline-3">
-<h3 id="org7415a2f">7.1 Not to complete automatically</h3>
-<div class="outline-text-3" id="text-org7415a2f">
+<h3 id="org7415a2f"><span class="section-number-3">7.1</span> 7.1 Not to complete automatically</h3>
+<div class="outline-text-3" id="text-7-1">
 <p>
 If you are being annoyed with displaying completion menu, you can disable automatic starting completion by setting ac-auto-start to nil.
 </p>
@@ -1816,8 +1819,8 @@ And consider to use Trigger Key.
 </div>
 
 <div id="outline-container-orgbb09860" class="outline-3">
-<h3 id="orgbb09860">7.2 Not to show completion menu automatically</h3>
-<div class="outline-text-3" id="text-orgbb09860">
+<h3 id="orgbb09860"><span class="section-number-3">7.2</span> 7.2 Not to show completion menu automatically</h3>
+<div class="outline-text-3" id="text-7-2">
 <p>
 There is another approach to solve the annoying problem is that not to show completion menu automatically. Not to show completion menu automatically, set ac-auto-show-menu to nil.
 </p>
@@ -1864,8 +1867,8 @@ This interface has both good points of completely automatic completion and compl
 </div>
 
 <div id="outline-container-orge36294d" class="outline-3">
-<h3 id="orge36294d">7.3 Stop completion</h3>
-<div class="outline-text-3" id="text-orge36294d">
+<h3 id="orge36294d"><span class="section-number-3">7.3</span> 7.3 Stop completion</h3>
+<div class="outline-text-3" id="text-7-3">
 <p>
 You can stop completion by pressing C-g. However you won't press C-g while defining a macro. In such case, it is a good idea to bind some key to ac-completing-map.
 </p>
@@ -1889,8 +1892,8 @@ Now you can stop completion by pressing M-/.
 </div>
 </div>
 <div id="outline-container-org42afea0" class="outline-3">
-<h3 id="org42afea0">7.4 Finish completion by TAB</h3>
-<div class="outline-text-3" id="text-org42afea0">
+<h3 id="org42afea0"><span class="section-number-3">7.4</span> 7.4 Finish completion by TAB</h3>
+<div class="outline-text-3" id="text-7-4">
 <p>
 As we described above, there is many behaviors in TAB. You need to use TAB and RET properly, but there is a simple interface that bind RET to original and TAB to finish completion:
 </p>
@@ -1908,8 +1911,8 @@ As we described above, there is many behaviors in TAB. You need to use TAB and R
 </div>
 
 <div id="outline-container-org39710a9" class="outline-3">
-<h3 id="org39710a9">7.5 Select candidates with C-n/C-p only when completion menu is displayed</h3>
-<div class="outline-text-3" id="text-org39710a9">
+<h3 id="org39710a9"><span class="section-number-3">7.5</span> 7.5 Select candidates with C-n/C-p only when completion menu is displayed</h3>
+<div class="outline-text-3" id="text-7-5">
 <p>
 By evaluating the following code, you can select candidates with C-n/C-p, but it might be annoying sometimes.
 </p>
@@ -1948,8 +1951,8 @@ See ac-use-menu-map and ac-menu-map for more details.
 </div>
 
 <div id="outline-container-orgd9b6cd5" class="outline-3">
-<h3 id="orgd9b6cd5">7.6 Not to use quick help</h3>
-<div class="outline-text-3" id="text-orgd9b6cd5">
+<h3 id="orgd9b6cd5"><span class="section-number-3">7.6</span> 7.6 Not to use quick help</h3>
+<div class="outline-text-3" id="text-7-6">
 <p>
 A tooltip help that is shown when completing is called quick help. You can disable it if you don't want to use it:
 </p>
@@ -1966,8 +1969,8 @@ A tooltip help that is shown when completing is called quick help. You can disab
 </div>
 
 <div id="outline-container-org54a985d" class="outline-3">
-<h3 id="org54a985d">7.7 Change a height of completion menu</h3>
-<div class="outline-text-3" id="text-org54a985d">
+<h3 id="org54a985d"><span class="section-number-3">7.7</span> 7.7 Change a height of completion menu</h3>
+<div class="outline-text-3" id="text-7-7">
 <p>
 Set ac-menu-height to number of lines.
 </p>
@@ -1981,8 +1984,8 @@ Set ac-menu-height to number of lines.
 </div>
 
 <div id="outline-container-orga6e3173" class="outline-3">
-<h3 id="orga6e3173">7.8 Enable auto-complete-mode automatically for specific modes</h3>
-<div class="outline-text-3" id="text-orga6e3173">
+<h3 id="orga6e3173"><span class="section-number-3">7.8</span> 7.8 Enable auto-complete-mode automatically for specific modes</h3>
+<div class="outline-text-3" id="text-7-8">
 <p>
 auto-complete-mode won't be enabled automatically for modes that are not in ac-modes. So you need to set if necessary:
 </p>
@@ -1999,8 +2002,8 @@ auto-complete-mode won't be enabled automatically for modes that are not in ac-m
 </div>
 
 <div id="outline-container-org25d9fc5" class="outline-3">
-<h3 id="org25d9fc5">7.9 Ignore case</h3>
-<div class="outline-text-3" id="text-org25d9fc5">
+<h3 id="org25d9fc5"><span class="section-number-3">7.9</span> 7.9 Ignore case</h3>
+<div class="outline-text-3" id="text-7-9">
 <p>
 There is three ways to distinguish upper case and lower case.
 </p>
@@ -2026,8 +2029,8 @@ Default is smart.
 </div>
 
 <div id="outline-container-org4dbb213" class="outline-3">
-<h3 id="org4dbb213">7.10 Stop completion automatically after inserting specific words</h3>
-<div class="outline-text-3" id="text-org4dbb213">
+<h3 id="org4dbb213"><span class="section-number-3">7.10</span> 7.10 Stop completion automatically after inserting specific words</h3>
+<div class="outline-text-3" id="text-7-10">
 <p>
 Set ac-stop-words to words that stops completion automatically. In ruby, some people want to stop completion automatically after inserting "end":
 </p>
@@ -2055,8 +2058,8 @@ Note that ac-stop-words is not a buffer local variable, so you need to make it b
 </div>
 
 <div id="outline-container-org32a1ea1" class="outline-3">
-<h3 id="org32a1ea1">7.11 Change colors</h3>
-<div class="outline-text-3" id="text-org32a1ea1">
+<h3 id="org32a1ea1"><span class="section-number-3">7.11</span> 7.11 Change colors</h3>
+<div class="outline-text-3" id="text-7-11">
 <p>
 Colors settings are following:
 </p>
@@ -2107,8 +2110,8 @@ To change face background color, use set-face-background. To change face foregro
 </div>
 
 <div id="outline-container-orgd9bec93" class="outline-3">
-<h3 id="orgd9bec93">7.12 Change default sources</h3>
-<div class="outline-text-3" id="text-orgd9bec93">
+<h3 id="orgd9bec93"><span class="section-number-3">7.12</span> 7.12 Change default sources</h3>
+<div class="outline-text-3" id="text-7-12">
 <p>
 Read Source first if you don't familiar with sources. To change default of sources, use setq-default:
 </p>
@@ -2125,8 +2128,8 @@ Read Source first if you don't familiar with sources. To change default of sourc
 </div>
 
 <div id="outline-container-org169d7cd" class="outline-3">
-<h3 id="org169d7cd">7.13 Change sources for specific major modes</h3>
-<div class="outline-text-3" id="text-org169d7cd">
+<h3 id="org169d7cd"><span class="section-number-3">7.13</span> 7.13 Change sources for specific major modes</h3>
+<div class="outline-text-3" id="text-7-13">
 <p>
 For example, you may want to use specific sources for C++ buffers. To do that, register a hook by add-hook and change ac-sources properly:
 </p>
@@ -2143,8 +2146,8 @@ For example, you may want to use specific sources for C++ buffers. To do that, r
 </div>
 
 <div id="outline-container-org5a2d0bf" class="outline-3">
-<h3 id="org5a2d0bf">7.14 Completion with specific source</h3>
-<div class="outline-text-3" id="text-org5a2d0bf">
+<h3 id="org5a2d0bf"><span class="section-number-3">7.14</span> 7.14 Completion with specific source</h3>
+<div class="outline-text-3" id="text-7-14">
 <p>
 You can start completion with specific source. For example, if you want to complete file name, do M-x ac-complete-filename at point. Or if you want to complete C/C++ member name, do M-x ac-complete-semantic at point. Usually, you may bind them to some key like:
 </p>
@@ -2192,8 +2195,8 @@ auto-complete function can take an alternative of ac-sources.
 </div>
 
 <div id="outline-container-orgcae92e9" class="outline-3">
-<h3 id="orgcae92e9">7.15 Show help persistently</h3>
-<div class="outline-text-3" id="text-orgcae92e9">
+<h3 id="orgcae92e9"><span class="section-number-3">7.15</span> 7.15 Show help persistently</h3>
+<div class="outline-text-3" id="text-7-15">
 <p>
 Use ac-persist-help instead of ac-help, which is bound to M-&lt;f1&gt; and C-M-?.
 </p>
@@ -2201,8 +2204,8 @@ Use ac-persist-help instead of ac-help, which is bound to M-&lt;f1&gt; and C-M-?
 </div>
 
 <div id="outline-container-org6f76175" class="outline-3">
-<h3 id="org6f76175">7.16 Show a lastly completed candidate help</h3>
-<div class="outline-text-3" id="text-org6f76175">
+<h3 id="org6f76175"><span class="section-number-3">7.16</span> 7.16 Show a lastly completed candidate help</h3>
+<div class="outline-text-3" id="text-7-16">
 <p>
 ac-last-help command shows a lastly completed candidate help in a ac-help (buffer help) form. If you give an argument by C-u or just call ac-last-persist-help, its help buffer will not disappear automatically.
 </p>
@@ -2236,8 +2239,8 @@ You may bind keys to these command like:
 </div>
 
 <div id="outline-container-org46d63a0" class="outline-3">
-<h3 id="org46d63a0">7.17 Show help beautifully</h3>
-<div class="outline-text-3" id="text-org46d63a0">
+<h3 id="org46d63a0"><span class="section-number-3">7.17</span> 7.17 Show help beautifully</h3>
+<div class="outline-text-3" id="text-7-17">
 <p>
 If pos-tip.el is installed, auto-complete-mode uses its native rendering engine for displaying quick help instead of legacy one.
 </p>
@@ -2250,12 +2253,12 @@ If pos-tip.el is installed, auto-complete-mode uses its native rendering engine 
 </div>
 
 <div id="outline-container-org0f0d4c4" class="outline-2">
-<h2 id="org0f0d4c4">8 Third-party Extensions</h2>
-<div class="outline-text-2" id="text-org0f0d4c4">
+<h2 id="org0f0d4c4"><span class="section-number-2">8</span> 8 Third-party Extensions</h2>
+<div class="outline-text-2" id="text-8">
 </div>
 <div id="outline-container-orgb8815f6" class="outline-3">
-<h3 id="orgb8815f6">8.1 SLIME</h3>
-<div class="outline-text-3" id="text-orgb8815f6">
+<h3 id="orgb8815f6"><span class="section-number-3">8.1</span> 8.1 SLIME</h3>
+<div class="outline-text-3" id="text-8-1">
 <p>
 See ac-slime page.
 </p>
@@ -2263,8 +2266,8 @@ See ac-slime page.
 </div>
 
 <div id="outline-container-org11e0272" class="outline-3">
-<h3 id="org11e0272">8.2 Scala</h3>
-<div class="outline-text-3" id="text-org11e0272">
+<h3 id="org11e0272"><span class="section-number-3">8.2</span> 8.2 Scala</h3>
+<div class="outline-text-3" id="text-8-2">
 <p>
 See ENSIME page.
 </p>
@@ -2273,8 +2276,8 @@ See ENSIME page.
 </div>
 
 <div id="outline-container-org731d36e" class="outline-2">
-<h2 id="org731d36e">9 Configuration</h2>
-<div class="outline-text-2" id="text-org731d36e">
+<h2 id="org731d36e"><span class="section-number-2">9</span> 9 Configuration</h2>
+<div class="outline-text-2" id="text-9">
 <p>
 Any configuration item will be set in .emacs or with M-x customize-group RET auto-complete RET.
 </p>
@@ -2285,8 +2288,8 @@ Any configuration item will be set in .emacs or with M-x customize-group RET aut
 </div>
 
 <div id="outline-container-orgde0a3ed" class="outline-3">
-<h3 id="orgde0a3ed">9.1 ac-delay</h3>
-<div class="outline-text-3" id="text-orgde0a3ed">
+<h3 id="orgde0a3ed"><span class="section-number-3">9.1</span> 9.1 ac-delay</h3>
+<div class="outline-text-3" id="text-9-1">
 <p>
 Delay time to start completion in real number seconds. It is a trade-off of responsiveness and performance.
 </p>
@@ -2298,8 +2301,8 @@ Delay time to start completion in real number seconds. It is a trade-off of resp
 </div>
 
 <div id="outline-container-orge8d9f78" class="outline-3">
-<h3 id="orge8d9f78">9.2 ac-auto-show-menu</h3>
-<div class="outline-text-3" id="text-orge8d9f78">
+<h3 id="orge8d9f78"><span class="section-number-3">9.2</span> 9.2 ac-auto-show-menu</h3>
+<div class="outline-text-3" id="text-9-2">
 <p>
 Show completion menu automatically if t specified. t means always automatically showing completion menu. nil means never showing completion menu. Real number means delay time in seconds.
 </p>
@@ -2311,8 +2314,8 @@ Show completion menu automatically if t specified. t means always automatically 
 </div>
 
 <div id="outline-container-org8efcd3c" class="outline-3">
-<h3 id="org8efcd3c">9.3 ac-show-menu-immediately-on-auto-complete</h3>
-<div class="outline-text-3" id="text-org8efcd3c">
+<h3 id="org8efcd3c"><span class="section-number-3">9.3</span> 9.3 ac-show-menu-immediately-on-auto-complete</h3>
+<div class="outline-text-3" id="text-9-3">
 <p>
 Whether or not to show completion menu immediately on auto-complete command. If inline completion has already been showed, this configuration will be ignored.
 </p>
@@ -2324,8 +2327,8 @@ Whether or not to show completion menu immediately on auto-complete command. If 
 </div>
 
 <div id="outline-container-orgfadcea1" class="outline-3">
-<h3 id="orgfadcea1">9.4 ac-expand-on-auto-complete</h3>
-<div class="outline-text-3" id="text-orgfadcea1">
+<h3 id="orgfadcea1"><span class="section-number-3">9.4</span> 9.4 ac-expand-on-auto-complete</h3>
+<div class="outline-text-3" id="text-9-4">
 <p>
 Whether or not to expand a common part of whole candidates.
 </p>
@@ -2337,8 +2340,8 @@ Whether or not to expand a common part of whole candidates.
 </div>
 
 <div id="outline-container-org0abb96d" class="outline-3">
-<h3 id="org0abb96d">9.5 ac-disable-faces</h3>
-<div class="outline-text-3" id="text-org0abb96d">
+<h3 id="org0abb96d"><span class="section-number-3">9.5</span> 9.5 ac-disable-faces</h3>
+<div class="outline-text-3" id="text-9-5">
 <p>
 Specify a list of face symbols for disabling auto completion. Auto completion will not be started if a face text property at a point is included in the list.
 </p>
@@ -2346,8 +2349,8 @@ Specify a list of face symbols for disabling auto completion. Auto completion wi
 </div>
 
 <div id="outline-container-orgc9396b7" class="outline-3">
-<h3 id="orgc9396b7">9.6 ac-stop-flymake-on-completing</h3>
-<div class="outline-text-3" id="text-orgc9396b7">
+<h3 id="orgc9396b7"><span class="section-number-3">9.6</span> 9.6 ac-stop-flymake-on-completing</h3>
+<div class="outline-text-3" id="text-9-6">
 <p>
 Whether or not to stop Flymake on completion.
 </p>
@@ -2355,8 +2358,8 @@ Whether or not to stop Flymake on completion.
 </div>
 
 <div id="outline-container-org6fd250c" class="outline-3">
-<h3 id="org6fd250c">9.7 ac-use-fuzzy</h3>
-<div class="outline-text-3" id="text-org6fd250c">
+<h3 id="org6fd250c"><span class="section-number-3">9.7</span> 9.7 ac-use-fuzzy</h3>
+<div class="outline-text-3" id="text-9-7">
 <p>
 Whether or not to use fuzzy matching.
 </p>
@@ -2368,8 +2371,8 @@ Whether or not to use fuzzy matching.
 </div>
 
 <div id="outline-container-org17d21a5" class="outline-3">
-<h3 id="org17d21a5">9.8 ac-fuzzy-cursor-color</h3>
-<div class="outline-text-3" id="text-org17d21a5">
+<h3 id="org17d21a5"><span class="section-number-3">9.8</span> 9.8 ac-fuzzy-cursor-color</h3>
+<div class="outline-text-3" id="text-9-8">
 <p>
 Change cursor color to specified color when Completion by Fuzzy Matching is started. nil means never changed. Available colors can be seen with M-x list-colors-display.
 </p>
@@ -2377,8 +2380,8 @@ Change cursor color to specified color when Completion by Fuzzy Matching is star
 </div>
 
 <div id="outline-container-org93863b2" class="outline-3">
-<h3 id="org93863b2">9.9 ac-use-comphist</h3>
-<div class="outline-text-3" id="text-org93863b2">
+<h3 id="org93863b2"><span class="section-number-3">9.9</span> 9.9 ac-use-comphist</h3>
+<div class="outline-text-3" id="text-9-9">
 <p>
 Whether or not to use Candidate Suggestion. nil means never using it and get performance better maybe.
 </p>
@@ -2390,8 +2393,8 @@ Whether or not to use Candidate Suggestion. nil means never using it and get per
 </div>
 
 <div id="outline-container-orgf2d0558" class="outline-3">
-<h3 id="orgf2d0558">9.10 ac-comphist-threshold</h3>
-<div class="outline-text-3" id="text-orgf2d0558">
+<h3 id="orgf2d0558"><span class="section-number-3">9.10</span> 9.10 ac-comphist-threshold</h3>
+<div class="outline-text-3" id="text-9-10">
 <p>
 Specify a percentage of limiting lower scored candidates. 100% for whole scores.
 </p>
@@ -2403,8 +2406,8 @@ Specify a percentage of limiting lower scored candidates. 100% for whole scores.
 </div>
 
 <div id="outline-container-org3a3172e" class="outline-3">
-<h3 id="org3a3172e">9.11 ac-comphist-file</h3>
-<div class="outline-text-3" id="text-org3a3172e">
+<h3 id="org3a3172e"><span class="section-number-3">9.11</span> 9.11 ac-comphist-file</h3>
+<div class="outline-text-3" id="text-9-11">
 <p>
 Specify a file stores data of Candidate Suggestion.
 </p>
@@ -2416,8 +2419,8 @@ Specify a file stores data of Candidate Suggestion.
 </div>
 
 <div id="outline-container-org8f058ee" class="outline-3">
-<h3 id="org8f058ee">9.12 ac-use-quick-help</h3>
-<div class="outline-text-3" id="text-org8f058ee">
+<h3 id="org8f058ee"><span class="section-number-3">9.12</span> 9.12 ac-use-quick-help</h3>
+<div class="outline-text-3" id="text-9-12">
 <p>
 Whether or not to use quick help.
 </p>
@@ -2429,8 +2432,8 @@ Whether or not to use quick help.
 </div>
 
 <div id="outline-container-orgaec45e0" class="outline-3">
-<h3 id="orgaec45e0">9.13 ac-quick-help-delay</h3>
-<div class="outline-text-3" id="text-orgaec45e0">
+<h3 id="orgaec45e0"><span class="section-number-3">9.13</span> 9.13 ac-quick-help-delay</h3>
+<div class="outline-text-3" id="text-9-13">
 <p>
 Delay time to show quick help in real number seconds.
 </p>
@@ -2442,8 +2445,8 @@ Delay time to show quick help in real number seconds.
 </div>
 
 <div id="outline-container-org4e42369" class="outline-3">
-<h3 id="org4e42369">9.14 ac-menu-height</h3>
-<div class="outline-text-3" id="text-org4e42369">
+<h3 id="org4e42369"><span class="section-number-3">9.14</span> 9.14 ac-menu-height</h3>
+<div class="outline-text-3" id="text-9-14">
 <p>
 Specify an integer of lines of completion menu.
 </p>
@@ -2455,8 +2458,8 @@ Specify an integer of lines of completion menu.
 </div>
 
 <div id="outline-container-org73570c1" class="outline-3">
-<h3 id="org73570c1">9.15 ac-quick-help-height</h3>
-<div class="outline-text-3" id="text-org73570c1">
+<h3 id="org73570c1"><span class="section-number-3">9.15</span> 9.15 ac-quick-help-height</h3>
+<div class="outline-text-3" id="text-9-15">
 <p>
 Specify an integer of lines of quick help.
 </p>
@@ -2468,8 +2471,8 @@ Specify an integer of lines of quick help.
 </div>
 
 <div id="outline-container-org54a1266" class="outline-3">
-<h3 id="org54a1266">9.16 ac-quick-help-prefer-pos-tip</h3>
-<div class="outline-text-3" id="text-org54a1266">
+<h3 id="org54a1266"><span class="section-number-3">9.16</span> 9.16 ac-quick-help-prefer-pos-tip</h3>
+<div class="outline-text-3" id="text-9-16">
 <p>
 Whether or not auto-complete prefers native tooltip with pos-tip than overlap popup for displaying quick help. If non-nil, you also need to install pos-tip.el so that displaying tooltip can work well.
 </p>
@@ -2481,8 +2484,8 @@ auto-complete 显示快速帮助时更偏向于使用 pos-tip 带的原生工具
 </div>
 
 <div id="outline-container-org41350d2" class="outline-3">
-<h3 id="org41350d2">9.17 ac-candidate-limit</h3>
-<div class="outline-text-3" id="text-org41350d2">
+<h3 id="org41350d2"><span class="section-number-3">9.17</span> 9.17 ac-candidate-limit</h3>
+<div class="outline-text-3" id="text-9-17">
 <p>
 Limit a number of candidates. Specifying an integer, the value will be a limit of candidates. nil means no limit.
 </p>
@@ -2494,8 +2497,8 @@ Limit a number of candidates. Specifying an integer, the value will be a limit o
 </div>
 
 <div id="outline-container-orge1566b8" class="outline-3">
-<h3 id="orge1566b8">9.18 ac-modes</h3>
-<div class="outline-text-3" id="text-orge1566b8">
+<h3 id="orge1566b8"><span class="section-number-3">9.18</span> 9.18 ac-modes</h3>
+<div class="outline-text-3" id="text-9-18">
 <p>
 Specify major modes as a list of symbols that will be enabled automatically if global-auto-complete-mode is enabled.
 </p>
@@ -2507,8 +2510,8 @@ Specify major modes as a list of symbols that will be enabled automatically if g
 </div>
 
 <div id="outline-container-orga73fa04" class="outline-3">
-<h3 id="orga73fa04">9.19 ac-compatible-packages-regexp</h3>
-<div class="outline-text-3" id="text-orga73fa04">
+<h3 id="orga73fa04"><span class="section-number-3">9.19</span> 9.19 ac-compatible-packages-regexp</h3>
+<div class="outline-text-3" id="text-9-19">
 <p>
 Specify a regexp that identifies starting completion or not for that package.
 </p>
@@ -2520,8 +2523,8 @@ Specify a regexp that identifies starting completion or not for that package.
 </div>
 
 <div id="outline-container-org95857ca" class="outline-3">
-<h3 id="org95857ca">9.20 ac-non-trigger-commands</h3>
-<div class="outline-text-3" id="text-org95857ca">
+<h3 id="org95857ca"><span class="section-number-3">9.20</span> 9.20 ac-non-trigger-commands</h3>
+<div class="outline-text-3" id="text-9-20">
 <p>
 Specify commands as a list of symbols that does NOT starts completion automatically.
 </p>
@@ -2529,8 +2532,8 @@ Specify commands as a list of symbols that does NOT starts completion automatica
 </div>
 
 <div id="outline-container-orgf9d2b6a" class="outline-3">
-<h3 id="orgf9d2b6a">9.21 ac-trigger-commands</h3>
-<div class="outline-text-3" id="text-orgf9d2b6a">
+<h3 id="orgf9d2b6a"><span class="section-number-3">9.21</span> 9.21 ac-trigger-commands</h3>
+<div class="outline-text-3" id="text-9-21">
 <p>
 Specify commands as a list of symbols that starts completion automatically. self-insert-command is one of default.
 </p>
@@ -2542,8 +2545,8 @@ Specify commands as a list of symbols that starts completion automatically. self
 </div>
 
 <div id="outline-container-orgbadaea4" class="outline-3">
-<h3 id="orgbadaea4">9.22 ac-trigger-commands-on-completing</h3>
-<div class="outline-text-3" id="text-orgbadaea4">
+<h3 id="orgbadaea4"><span class="section-number-3">9.22</span> 9.22 ac-trigger-commands-on-completing</h3>
+<div class="outline-text-3" id="text-9-22">
 <p>
 Same as ac-trigger-commands expect this will be used on completing.
 </p>
@@ -2551,8 +2554,8 @@ Same as ac-trigger-commands expect this will be used on completing.
 </div>
 
 <div id="outline-container-orgddb60ba" class="outline-3">
-<h3 id="orgddb60ba">9.23 ac-trigger-key</h3>
-<div class="outline-text-3" id="text-orgddb60ba">
+<h3 id="orgddb60ba"><span class="section-number-3">9.23</span> 9.23 ac-trigger-key</h3>
+<div class="outline-text-3" id="text-9-23">
 <p>
 Specify a Trigger Key.
 </p>
@@ -2560,8 +2563,8 @@ Specify a Trigger Key.
 </div>
 
 <div id="outline-container-orgcc2759d" class="outline-3">
-<h3 id="orgcc2759d">9.24 ac-auto-start</h3>
-<div class="outline-text-3" id="text-orgcc2759d">
+<h3 id="orgcc2759d"><span class="section-number-3">9.24</span> 9.24 ac-auto-start</h3>
+<div class="outline-text-3" id="text-9-24">
 <p>
 Specify how completion will be started. t means always starting completion automatically. nil means never started automatically. An integer means completion will not be started until the value is more than a length of the completion target string.
 </p>
@@ -2569,8 +2572,8 @@ Specify how completion will be started. t means always starting completion autom
 </div>
 
 <div id="outline-container-orgd1dc93b" class="outline-3">
-<h3 id="orgd1dc93b">9.25 ac-stop-words</h3>
-<div class="outline-text-3" id="text-orgd1dc93b">
+<h3 id="orgd1dc93b"><span class="section-number-3">9.25</span> 9.25 ac-stop-words</h3>
+<div class="outline-text-3" id="text-9-25">
 <p>
 Specify a list of strings that stops completion.
 </p>
@@ -2578,8 +2581,8 @@ Specify a list of strings that stops completion.
 </div>
 
 <div id="outline-container-orgfd0c355" class="outline-3">
-<h3 id="orgfd0c355">9.26 ac-use-dictionary-as-stop-words</h3>
-<div class="outline-text-3" id="text-orgfd0c355">
+<h3 id="orgfd0c355"><span class="section-number-3">9.26</span> 9.26 ac-use-dictionary-as-stop-words</h3>
+<div class="outline-text-3" id="text-9-26">
 <p>
 Specify whether auto-complete uses dictionaries as stop words.
 </p>
@@ -2587,8 +2590,8 @@ Specify whether auto-complete uses dictionaries as stop words.
 </div>
 
 <div id="outline-container-org1c70bf8" class="outline-3">
-<h3 id="org1c70bf8">9.27 ac-ignore-case</h3>
-<div class="outline-text-3" id="text-org1c70bf8">
+<h3 id="org1c70bf8"><span class="section-number-3">9.27</span> 9.27 ac-ignore-case</h3>
+<div class="outline-text-3" id="text-9-27">
 <p>
 Specify how distinguish case. t means always ignoring case. nil means never ignoring case. smart in symbol means ignoring case only when the completion target string doesn't include upper characters.
 </p>
@@ -2596,8 +2599,8 @@ Specify how distinguish case. t means always ignoring case. nil means never igno
 </div>
 
 <div id="outline-container-org7414f4c" class="outline-3">
-<h3 id="org7414f4c">9.28 ac-dwim</h3>
-<div class="outline-text-3" id="text-org7414f4c">
+<h3 id="org7414f4c"><span class="section-number-3">9.28</span> 9.28 ac-dwim</h3>
+<div class="outline-text-3" id="text-9-28">
 <p>
 "Do What I Mean" function. t means:
 </p>
@@ -2609,8 +2612,8 @@ Specify how distinguish case. t means always ignoring case. nil means never igno
 </div>
 
 <div id="outline-container-orgf9adfca" class="outline-3">
-<h3 id="orgf9adfca">9.29 ac-use-menu-map</h3>
-<div class="outline-text-3" id="text-orgf9adfca">
+<h3 id="orgf9adfca"><span class="section-number-3">9.29</span> 9.29 ac-use-menu-map</h3>
+<div class="outline-text-3" id="text-9-29">
 <p>
 Specify a special keymap (ac-menu-map) should be enabled when completion menu is displayed. ac-menu-map will be enabled when it is t and satisfy one of the following conditions:
 </p>
@@ -2623,8 +2626,8 @@ Completion menu is displayed by ac-isearch command
 </div>
 </div>
 <div id="outline-container-org5555424" class="outline-3">
-<h3 id="org5555424">9.30 ac-use-overriding-local-map</h3>
-<div class="outline-text-3" id="text-org5555424">
+<h3 id="org5555424"><span class="section-number-3">9.30</span> 9.30 ac-use-overriding-local-map</h3>
+<div class="outline-text-3" id="text-9-30">
 <p>
 Use only when operations is not affected. Internally it uses overriding-local-map, which is too powerful to use with keeping orthogonality. So don't use as much as possible.
 </p>
@@ -2632,8 +2635,8 @@ Use only when operations is not affected. Internally it uses overriding-local-ma
 </div>
 
 <div id="outline-container-orge29db1e" class="outline-3">
-<h3 id="orge29db1e">9.31 ac-completion-face</h3>
-<div class="outline-text-3" id="text-orge29db1e">
+<h3 id="orge29db1e"><span class="section-number-3">9.31</span> 9.31 ac-completion-face</h3>
+<div class="outline-text-3" id="text-9-31">
 <p>
 Face of inline completion.
 </p>
@@ -2641,8 +2644,8 @@ Face of inline completion.
 </div>
 
 <div id="outline-container-org104b593" class="outline-3">
-<h3 id="org104b593">9.32 ac-candidate-face</h3>
-<div class="outline-text-3" id="text-org104b593">
+<h3 id="org104b593"><span class="section-number-3">9.32</span> 9.32 ac-candidate-face</h3>
+<div class="outline-text-3" id="text-9-32">
 <p>
 Face of completion menu background.
 </p>
@@ -2650,8 +2653,8 @@ Face of completion menu background.
 </div>
 
 <div id="outline-container-orgb254f38" class="outline-3">
-<h3 id="orgb254f38">9.33 ac-selection-face</h3>
-<div class="outline-text-3" id="text-orgb254f38">
+<h3 id="orgb254f38"><span class="section-number-3">9.33</span> 9.33 ac-selection-face</h3>
+<div class="outline-text-3" id="text-9-33">
 <p>
 Face of completion menu selection.
 </p>
@@ -2659,8 +2662,8 @@ Face of completion menu selection.
 </div>
 
 <div id="outline-container-org6e0e776" class="outline-3">
-<h3 id="org6e0e776">9.34 global-auto-complete-mode</h3>
-<div class="outline-text-3" id="text-org6e0e776">
+<h3 id="org6e0e776"><span class="section-number-3">9.34</span> 9.34 global-auto-complete-mode</h3>
+<div class="outline-text-3" id="text-9-34">
 <p>
 Whether or not to use auto-complete-mode globally. It is t in general.
 </p>
@@ -2668,8 +2671,8 @@ Whether or not to use auto-complete-mode globally. It is t in general.
 </div>
 
 <div id="outline-container-org99e8585" class="outline-3">
-<h3 id="org99e8585">9.35 ac-user-dictionary</h3>
-<div class="outline-text-3" id="text-org99e8585">
+<h3 id="org99e8585"><span class="section-number-3">9.35</span> 9.35 ac-user-dictionary</h3>
+<div class="outline-text-3" id="text-9-35">
 <p>
 Specify a dictionary as a list of string for Completion by Dictionary.
 </p>
@@ -2677,8 +2680,8 @@ Specify a dictionary as a list of string for Completion by Dictionary.
 </div>
 
 <div id="outline-container-org560c2b6" class="outline-3">
-<h3 id="org560c2b6">9.36 ac-user-dictionary-files</h3>
-<div class="outline-text-3" id="text-org560c2b6">
+<h3 id="org560c2b6"><span class="section-number-3">9.36</span> 9.36 ac-user-dictionary-files</h3>
+<div class="outline-text-3" id="text-9-36">
 <p>
 Specify a dictionary files as a list of string for Completion by Dictionary.
 </p>
@@ -2686,8 +2689,8 @@ Specify a dictionary files as a list of string for Completion by Dictionary.
 </div>
 
 <div id="outline-container-org402ae26" class="outline-3">
-<h3 id="org402ae26">9.37 ac-dictionary-directories</h3>
-<div class="outline-text-3" id="text-org402ae26">
+<h3 id="org402ae26"><span class="section-number-3">9.37</span> 9.37 ac-dictionary-directories</h3>
+<div class="outline-text-3" id="text-9-37">
 <p>
 Specify a dictionary directories as a list of string for Completion by Dictionary.
 </p>
@@ -2695,8 +2698,8 @@ Specify a dictionary directories as a list of string for Completion by Dictionar
 </div>
 
 <div id="outline-container-orga1df7ec" class="outline-3">
-<h3 id="orga1df7ec">9.38 ac-sources</h3>
-<div class="outline-text-3" id="text-orga1df7ec">
+<h3 id="orga1df7ec"><span class="section-number-3">9.38</span> 9.38 ac-sources</h3>
+<div class="outline-text-3" id="text-9-38">
 <p>
 Specify sources as a list of Source. This is a buffer local variable.
 </p>
@@ -2704,8 +2707,8 @@ Specify sources as a list of Source. This is a buffer local variable.
 </div>
 
 <div id="outline-container-org2c57273" class="outline-3">
-<h3 id="org2c57273">9.39 ac-completing-map</h3>
-<div class="outline-text-3" id="text-org2c57273">
+<h3 id="org2c57273"><span class="section-number-3">9.39</span> 9.39 ac-completing-map</h3>
+<div class="outline-text-3" id="text-9-39">
 <p>
 Keymap for completion.
 </p>
@@ -2713,8 +2716,8 @@ Keymap for completion.
 </div>
 
 <div id="outline-container-orgc531880" class="outline-3">
-<h3 id="orgc531880">9.40 ac-menu-map</h3>
-<div class="outline-text-3" id="text-orgc531880">
+<h3 id="orgc531880"><span class="section-number-3">9.40</span> 9.40 ac-menu-map</h3>
+<div class="outline-text-3" id="text-9-40">
 <p>
 Keymap for completion on completion menu. See also ac-use-menu-map.
 </p>
@@ -2722,8 +2725,8 @@ Keymap for completion on completion menu. See also ac-use-menu-map.
 </div>
 
 <div id="outline-container-orgb8f4f37" class="outline-3">
-<h3 id="orgb8f4f37">9.41 ac-mode-map</h3>
-<div class="outline-text-3" id="text-orgb8f4f37">
+<h3 id="orgb8f4f37"><span class="section-number-3">9.41</span> 9.41 ac-mode-map</h3>
+<div class="outline-text-3" id="text-9-41">
 <p>
 Keymap for auto-complete-mode enabled buffers.
 </p>
@@ -2732,16 +2735,16 @@ Keymap for auto-complete-mode enabled buffers.
 </div>
 
 <div id="outline-container-org9b1fd8a" class="outline-2">
-<h2 id="org9b1fd8a">10 Extend</h2>
-<div class="outline-text-2" id="text-org9b1fd8a">
+<h2 id="org9b1fd8a"><span class="section-number-2">10</span> 10 Extend</h2>
+<div class="outline-text-2" id="text-10">
 <p>
 A meaning to extend auto-complete-mode is just defining a Source. This section describe how to define a source.
 </p>
 </div>
 
 <div id="outline-container-org702c637" class="outline-3">
-<h3 id="org702c637">10.1 Prototype</h3>
-<div class="outline-text-3" id="text-org702c637">
+<h3 id="org702c637"><span class="section-number-3">10.1</span> 10.1 Prototype</h3>
+<div class="outline-text-3" id="text-10-1">
 <p>
 Source basically takes a form of the following:
 </p>
@@ -2760,8 +2763,8 @@ As you see, source is just an associate list. You can define a source by combini
 </div>
 
 <div id="outline-container-org34b816d" class="outline-3">
-<h3 id="org34b816d">10.2 Example</h3>
-<div class="outline-text-3" id="text-org34b816d">
+<h3 id="org34b816d"><span class="section-number-3">10.2</span> 10.2 Example</h3>
+<div class="outline-text-3" id="text-10-2">
 <p>
 The most important property for source is candidates property. This property describes how to generate completion candidates by giving a function, an expression, or a variable. A result of evaluation should be a list of strings. Here is an example to generate candidates "Foo", "Bar", and "Baz":
 </p>
@@ -2801,8 +2804,8 @@ The function specified in candidates property will be called without any argumen
 </div>
 
 <div id="outline-container-orgd39fcde" class="outline-3">
-<h3 id="orgd39fcde">10.3 Initialization</h3>
-<div class="outline-text-3" id="text-orgd39fcde">
+<h3 id="orgd39fcde"><span class="section-number-3">10.3</span> 10.3 Initialization</h3>
+<div class="outline-text-3" id="text-10-3">
 <p>
 You may want to initialize a source at first time to complete. Use init property in these cases. As same as candidates property, specify a function without any parameters or an expression. Here is an example:
 </p>
@@ -2831,8 +2834,8 @@ In this example, mysource2-init function does huge processing, and stores the re
 </div>
 
 <div id="outline-container-orgf02585e" class="outline-3">
-<h3 id="orgf02585e">10.4 Cache</h3>
-<div class="outline-text-3" id="text-orgf02585e">
+<h3 id="orgf02585e"><span class="section-number-3">10.4</span> 10.4 Cache</h3>
+<div class="outline-text-3" id="text-10-4">
 <p>
 Caching strategy is important for auto-complete-mode. There are two major ways: init property and cache property that is described in this section. Specifying cache property in source definition, a result of evaluation of candidates property will be cached and reused the result as the result of evaluation of candidates property next time.
 </p>
@@ -2857,8 +2860,8 @@ There is no performance problem because this source has cache property even if c
 </div>
 
 <div id="outline-container-org6781742" class="outline-4">
-<h4 id="org6781742">10.4.1 Cache Expiration</h4>
-<div class="outline-text-4" id="text-org6781742">
+<h4 id="org6781742"><span class="section-number-4">10.4.1</span> 10.4.1 Cache Expiration</h4>
+<div class="outline-text-4" id="text-10-4-1">
 <p>
 It is possible to keep among more wider scope than init property and cache property. It may be useful for remembering all function names which is rarely changed. In these cases, how can we clear cache property not at the expense of performance? This is true time use that functionality.
 </p>
@@ -2892,8 +2895,8 @@ It is also possible to clear cache periodically. Use ac-clear-variable-every-min
 </div>
 
 <div id="outline-container-org57852e0" class="outline-3">
-<h3 id="org57852e0">10.5 Action</h3>
-<div class="outline-text-3" id="text-org57852e0">
+<h3 id="org57852e0"><span class="section-number-3">10.5</span> 10.5 Action</h3>
+<div class="outline-text-3" id="text-10-5">
 <p>
 Completion by RET will evaluate a function or an expression specified in action property. A builtin sources ac-source-abbrev and ac-source-yasnippet use this property.
 </p>
@@ -2901,8 +2904,8 @@ Completion by RET will evaluate a function or an expression specified in action 
 </div>
 
 <div id="outline-container-orgf187d93" class="outline-3">
-<h3 id="orgf187d93">10.6 Omni Completion</h3>
-<div class="outline-text-3" id="text-orgf187d93">
+<h3 id="orgf187d93"><span class="section-number-3">10.6</span> 10.6 Omni Completion</h3>
+<div class="outline-text-3" id="text-10-6">
 <p>
 Omni Completion is a type of completion which regards of a context of editing. A file name completion which completes with slashed detected and a member name completion in C/C++ with dots detected are omni completions. To make a source support for omni completion, use prefix property. A result of evaluation of prefix property must be a beginning point of completion target string. Retuning nil means the source is disabled within the context.
 </p>
@@ -2957,8 +2960,8 @@ Add this source to ac-sources and then type "To:". You will be able to complete 
 </div>
 
 <div id="outline-container-orga330b51" class="outline-3">
-<h3 id="orga330b51">10.7 ac-define-source</h3>
-<div class="outline-text-3" id="text-orga330b51">
+<h3 id="orga330b51"><span class="section-number-3">10.7</span> 10.7 ac-define-source</h3>
+<div class="outline-text-3" id="text-10-7">
 <p>
 You may use an utility macro called ac-define-source which defines a source and a command.
 </p>
@@ -2988,12 +2991,12 @@ A source will be defined as usual and in addition a command that completes with 
 </div>
 
 <div id="outline-container-orgc52665a" class="outline-4">
-<h4 id="orgc52665a">10.7.1 Source Properties</h4>
-<div class="outline-text-4" id="text-orgc52665a">
+<h4 id="orgc52665a"><span class="section-number-4">10.7.1</span> 10.7.1 Source Properties</h4>
+<div class="outline-text-4" id="text-10-7-1">
 </div>
 <div id="outline-container-org287e3ce" class="outline-5">
-<h5 id="org287e3ce">10.7.1.1 init</h5>
-<div class="outline-text-5" id="text-org287e3ce">
+<h5 id="org287e3ce"><span class="section-number-5">10.7.1.1</span> 10.7.1.1 init</h5>
+<div class="outline-text-5" id="text-10-7-1-1">
 <p>
 Specify a function or an expression that is evaluated only once when completion is started.
 </p>
@@ -3001,8 +3004,8 @@ Specify a function or an expression that is evaluated only once when completion 
 </div>
 
 <div id="outline-container-org2f81f17" class="outline-5">
-<h5 id="org2f81f17">10.7.1.2 candidates</h5>
-<div class="outline-text-5" id="text-org2f81f17">
+<h5 id="org2f81f17"><span class="section-number-5">10.7.1.2</span> 10.7.1.2 candidates</h5>
+<div class="outline-text-5" id="text-10-7-1-2">
 <p>
 Specify a function, an expression, or a variable to calculate candidates. Candidates should be a list of string. If cache property is enabled, this property will be ignored twice or later.
 </p>
@@ -3011,8 +3014,8 @@ Specify a function, an expression, or a variable to calculate candidates. Candid
 </div>
 
 <div id="outline-container-orge30f304" class="outline-4">
-<h4 id="orge30f304">10.7.2 prefix</h4>
-<div class="outline-text-4" id="text-orge30f304">
+<h4 id="orge30f304"><span class="section-number-4">10.7.2</span> 10.7.2 prefix</h4>
+<div class="outline-text-4" id="text-10-7-2">
 <p>
 Specify a regexp, a function, or an expression to find a point of completion target string for Omni Completion. This source will be ignored when nil returned. If a regexp is specified, a start point of group 1 or group 2 will be used as a value.
 </p>
@@ -3020,8 +3023,8 @@ Specify a regexp, a function, or an expression to find a point of completion tar
 </div>
 
 <div id="outline-container-org78e96cc" class="outline-4">
-<h4 id="org78e96cc">10.7.3 requires</h4>
-<div class="outline-text-4" id="text-org78e96cc">
+<h4 id="org78e96cc"><span class="section-number-4">10.7.3</span> 10.7.3 requires</h4>
+<div class="outline-text-4" id="text-10-7-3">
 <p>
 Specify a required number of characters of completion target string. If nothing is specified, auto-complete-mode uses ac-auto-start instead.
 </p>
@@ -3029,8 +3032,8 @@ Specify a required number of characters of completion target string. If nothing 
 </div>
 
 <div id="outline-container-org7c21452" class="outline-4">
-<h4 id="org7c21452">10.7.4 action</h4>
-<div class="outline-text-4" id="text-org7c21452">
+<h4 id="org7c21452"><span class="section-number-4">10.7.4</span> 10.7.4 action</h4>
+<div class="outline-text-4" id="text-10-7-4">
 <p>
 Specify a function or an expression that is executed on Completion by RET.
 </p>
@@ -3038,8 +3041,8 @@ Specify a function or an expression that is executed on Completion by RET.
 </div>
 
 <div id="outline-container-orgc432f48" class="outline-4">
-<h4 id="orgc432f48">10.7.5 limit</h4>
-<div class="outline-text-4" id="text-orgc432f48">
+<h4 id="orgc432f48"><span class="section-number-4">10.7.5</span> 10.7.5 limit</h4>
+<div class="outline-text-4" id="text-10-7-5">
 <p>
 Specify a limit of candidates. It overrides ac-candidate-limit partially.
 </p>
@@ -3047,8 +3050,8 @@ Specify a limit of candidates. It overrides ac-candidate-limit partially.
 </div>
 
 <div id="outline-container-org45529be" class="outline-4">
-<h4 id="org45529be">10.7.6 symbol</h4>
-<div class="outline-text-4" id="text-org45529be">
+<h4 id="org45529be"><span class="section-number-4">10.7.6</span> 10.7.6 symbol</h4>
+<div class="outline-text-4" id="text-10-7-6">
 <p>
 Specify a symbol of candidate meaning in one character string. The symbol will be any character, but you should follow the rule:
 </p>
@@ -3101,8 +3104,8 @@ Specify a symbol of candidate meaning in one character string. The symbol will b
 </div>
 
 <div id="outline-container-org0bdfeb7" class="outline-4">
-<h4 id="org0bdfeb7">10.7.7 summary</h4>
-<div class="outline-text-4" id="text-org0bdfeb7">
+<h4 id="org0bdfeb7"><span class="section-number-4">10.7.7</span> 10.7.7 summary</h4>
+<div class="outline-text-4" id="text-10-7-7">
 <p>
 Specify a summary of candidate in string. It should be used for summarizing the candidate in short string.
 </p>
@@ -3110,8 +3113,8 @@ Specify a summary of candidate in string. It should be used for summarizing the 
 </div>
 
 <div id="outline-container-orgc453dac" class="outline-4">
-<h4 id="orgc453dac">10.7.8 cache</h4>
-<div class="outline-text-4" id="text-orgc453dac">
+<h4 id="orgc453dac"><span class="section-number-4">10.7.8</span> 10.7.8 cache</h4>
+<div class="outline-text-4" id="text-10-7-8">
 <p>
 Use Cache.
 </p>
@@ -3119,8 +3122,8 @@ Use Cache.
 </div>
 
 <div id="outline-container-org5177d3e" class="outline-4">
-<h4 id="org5177d3e">10.7.9 require</h4>
-<div class="outline-text-4" id="text-org5177d3e">
+<h4 id="org5177d3e"><span class="section-number-4">10.7.9</span> 10.7.9 require</h4>
+<div class="outline-text-4" id="text-10-7-9">
 <p>
 Specify an integer or nil. This source will be ignored when the integer value is lager than a length of completion target string. nil means nothing ignored.
 </p>
@@ -3128,8 +3131,8 @@ Specify an integer or nil. This source will be ignored when the integer value is
 </div>
 
 <div id="outline-container-org8741c07" class="outline-4">
-<h4 id="org8741c07">10.7.10 candidate-face</h4>
-<div class="outline-text-4" id="text-org8741c07">
+<h4 id="org8741c07"><span class="section-number-4">10.7.10</span> 10.7.10 candidate-face</h4>
+<div class="outline-text-4" id="text-10-7-10">
 <p>
 Specify a face of candidate. It overrides ac-candidate-face partially.
 </p>
@@ -3137,8 +3140,8 @@ Specify a face of candidate. It overrides ac-candidate-face partially.
 </div>
 
 <div id="outline-container-orgbce5ad6" class="outline-4">
-<h4 id="orgbce5ad6">10.7.11 selection-face</h4>
-<div class="outline-text-4" id="text-orgbce5ad6">
+<h4 id="orgbce5ad6"><span class="section-number-4">10.7.11</span> 10.7.11 selection-face</h4>
+<div class="outline-text-4" id="text-10-7-11">
 <p>
 Specify a face of selection. It overrides ac-selection-face partially.
 </p>
@@ -3146,8 +3149,8 @@ Specify a face of selection. It overrides ac-selection-face partially.
 </div>
 
 <div id="outline-container-org86643fd" class="outline-4">
-<h4 id="org86643fd">10.7.12 depends</h4>
-<div class="outline-text-4" id="text-org86643fd">
+<h4 id="org86643fd"><span class="section-number-4">10.7.12</span> 10.7.12 depends</h4>
+<div class="outline-text-4" id="text-10-7-12">
 <p>
 Specify a list of features (which are required) that the source is depending.
 </p>
@@ -3155,8 +3158,8 @@ Specify a list of features (which are required) that the source is depending.
 </div>
 
 <div id="outline-container-org00f1010" class="outline-4">
-<h4 id="org00f1010">10.7.13 available</h4>
-<div class="outline-text-4" id="text-org00f1010">
+<h4 id="org00f1010"><span class="section-number-4">10.7.13</span> 10.7.13 available</h4>
+<div class="outline-text-4" id="text-10-7-13">
 <p>
 Specify a function or an expression that describe the source is available or not.
 </p>
@@ -3164,8 +3167,8 @@ Specify a function or an expression that describe the source is available or not
 </div>
 
 <div id="outline-container-orgaf813b8" class="outline-4">
-<h4 id="orgaf813b8">10.7.14 document</h4>
-<div class="outline-text-4" id="text-orgaf813b8">
+<h4 id="orgaf813b8"><span class="section-number-4">10.7.14</span> 10.7.14 document</h4>
+<div class="outline-text-4" id="text-10-7-14">
 <p>
 Specify a function or an expression that returns documentation of the candidate.
 </p>
@@ -3174,16 +3177,16 @@ Specify a function or an expression that returns documentation of the candidate.
 </div>
 
 <div id="outline-container-org9611296" class="outline-3">
-<h3 id="org9611296">10.8 Variables</h3>
-<div class="outline-text-3" id="text-org9611296">
+<h3 id="org9611296"><span class="section-number-3">10.8</span> 10.8 Variables</h3>
+<div class="outline-text-3" id="text-10-8">
 <p>
 Here is a list of often used variables.
 </p>
 </div>
 
 <div id="outline-container-org10228eb" class="outline-4">
-<h4 id="org10228eb">10.8.1 ac-buffer</h4>
-<div class="outline-text-4" id="text-org10228eb">
+<h4 id="org10228eb"><span class="section-number-4">10.8.1</span> 10.8.1 ac-buffer</h4>
+<div class="outline-text-4" id="text-10-8-1">
 <p>
 A buffer where completion started.
 </p>
@@ -3191,8 +3194,8 @@ A buffer where completion started.
 </div>
 
 <div id="outline-container-orga84a9f9" class="outline-4">
-<h4 id="orga84a9f9">10.8.2 ac-point</h4>
-<div class="outline-text-4" id="text-orga84a9f9">
+<h4 id="orga84a9f9"><span class="section-number-4">10.8.2</span> 10.8.2 ac-point</h4>
+<div class="outline-text-4" id="text-10-8-2">
 <p>
 A start point of completion target string.
 </p>
@@ -3200,8 +3203,8 @@ A start point of completion target string.
 </div>
 
 <div id="outline-container-org70aff1c" class="outline-4">
-<h4 id="org70aff1c">10.8.3 ac-prefix</h4>
-<div class="outline-text-4" id="text-org70aff1c">
+<h4 id="org70aff1c"><span class="section-number-4">10.8.3</span> 10.8.3 ac-prefix</h4>
+<div class="outline-text-4" id="text-10-8-3">
 <p>
 A string of completion target.
 </p>
@@ -3209,8 +3212,8 @@ A string of completion target.
 </div>
 
 <div id="outline-container-orgf904964" class="outline-4">
-<h4 id="orgf904964">10.8.4 ac-limit</h4>
-<div class="outline-text-4" id="text-orgf904964">
+<h4 id="orgf904964"><span class="section-number-4">10.8.4</span> 10.8.4 ac-limit</h4>
+<div class="outline-text-4" id="text-10-8-4">
 <p>
 A limit of candidates. Its value may be one of ac-candidate-limit and limit property.
 </p>
@@ -3218,8 +3221,8 @@ A limit of candidates. Its value may be one of ac-candidate-limit and limit prop
 </div>
 
 <div id="outline-container-org10dcb1d" class="outline-4">
-<h4 id="org10dcb1d">10.8.5 ac-candidates</h4>
-<div class="outline-text-4" id="text-org10dcb1d">
+<h4 id="org10dcb1d"><span class="section-number-4">10.8.5</span> 10.8.5 ac-candidates</h4>
+<div class="outline-text-4" id="text-10-8-5">
 <p>
 A list of candidates.
 </p>
@@ -3229,20 +3232,20 @@ A list of candidates.
 </div>
 
 <div id="outline-container-org00c0459" class="outline-2">
-<h2 id="org00c0459">11 Trouble Shooting</h2>
-<div class="outline-text-2" id="text-org00c0459">
+<h2 id="org00c0459"><span class="section-number-2">11</span> 11 Trouble Shooting</h2>
+<div class="outline-text-2" id="text-11">
 </div>
 <div id="outline-container-orgd51d451" class="outline-3">
-<h3 id="orgd51d451">11.1 Response Latency</h3>
-<div class="outline-text-3" id="text-orgd51d451">
+<h3 id="orgd51d451"><span class="section-number-3">11.1</span> 11.1 Response Latency</h3>
+<div class="outline-text-3" id="text-11-1">
 <p>
 To keep much responsibility is very important for auto-complete-mode. However it is well known fact that a performance is a trade off of functionalities. List up options related to the performance.
 </p>
 </div>
 
 <div id="outline-container-org318fba7" class="outline-4">
-<h4 id="org318fba7">11.1.1 ac-auto-start</h4>
-<div class="outline-text-4" id="text-org318fba7">
+<h4 id="org318fba7"><span class="section-number-4">11.1.1</span> 11.1.1 ac-auto-start</h4>
+<div class="outline-text-4" id="text-11-1-1">
 <p>
 For a larger number, it reduces a cost of generating completion candidates. Or you can remove the cost by setting nil and you can use when you truly need. See Not to complete automatically for more details.
 </p>
@@ -3250,8 +3253,8 @@ For a larger number, it reduces a cost of generating completion candidates. Or y
 </div>
 
 <div id="outline-container-orgaef0f4c" class="outline-4">
-<h4 id="orgaef0f4c">11.1.2 ac-delay</h4>
-<div class="outline-text-4" id="text-orgaef0f4c">
+<h4 id="orgaef0f4c"><span class="section-number-4">11.1.2</span> 11.1.2 ac-delay</h4>
+<div class="outline-text-4" id="text-11-1-2">
 <p>
 For a larger number, it reduces a cost of starting completion.
 </p>
@@ -3259,8 +3262,8 @@ For a larger number, it reduces a cost of starting completion.
 </div>
 
 <div id="outline-container-org1102d14" class="outline-4">
-<h4 id="org1102d14">11.1.3 ac-auto-show-menu</h4>
-<div class="outline-text-4" id="text-org1102d14">
+<h4 id="org1102d14"><span class="section-number-4">11.1.3</span> 11.1.3 ac-auto-show-menu</h4>
+<div class="outline-text-4" id="text-11-1-3">
 <p>
 For a larger number, it reduces a displaying cost of completion menu.
 </p>
@@ -3268,8 +3271,8 @@ For a larger number, it reduces a displaying cost of completion menu.
 </div>
 
 <div id="outline-container-org08c0fdd" class="outline-4">
-<h4 id="org08c0fdd">11.1.4 ac-use-comphist</h4>
-<div class="outline-text-4" id="text-org08c0fdd">
+<h4 id="org08c0fdd"><span class="section-number-4">11.1.4</span> 11.1.4 ac-use-comphist</h4>
+<div class="outline-text-4" id="text-11-1-4">
 <p>
 Setting ac-use-comphist to nil to disable Candidate Suggestion, it reduces a cost of suggestion.
 </p>
@@ -3277,8 +3280,8 @@ Setting ac-use-comphist to nil to disable Candidate Suggestion, it reduces a cos
 </div>
 
 <div id="outline-container-org61d4ca6" class="outline-4">
-<h4 id="org61d4ca6">11.1.5 ac-candidate-limit</h4>
-<div class="outline-text-4" id="text-org61d4ca6">
+<h4 id="org61d4ca6"><span class="section-number-4">11.1.5</span> 11.1.5 ac-candidate-limit</h4>
+<div class="outline-text-4" id="text-11-1-5">
 <p>
 For a property number, it reduces much computation of generating candidates.
 </p>
@@ -3287,16 +3290,16 @@ For a property number, it reduces much computation of generating candidates.
 </div>
 
 <div id="outline-container-org780449a" class="outline-3">
-<h3 id="org780449a">11.2 Completion menu is disrupted</h3>
-<div class="outline-text-3" id="text-org780449a">
+<h3 id="org780449a"><span class="section-number-3">11.2</span> 11.2 Completion menu is disrupted</h3>
+<div class="outline-text-3" id="text-11-2">
 <p>
 There is two major cases.
 </p>
 </div>
 
 <div id="outline-container-orgc0987cd" class="outline-4">
-<h4 id="orgc0987cd">11.2.1 Column Computation Case</h4>
-<div class="outline-text-4" id="text-orgc0987cd">
+<h4 id="orgc0987cd"><span class="section-number-4">11.2.1</span> 11.2.1 Column Computation Case</h4>
+<div class="outline-text-4" id="text-11-2-1">
 <p>
 auto-complete-mode tries to reduce a cost of computation of columns to show completion menu correctly by using a optimized function at the expense of accuracy. However, it probably causes a menu to be disrupted. Not to use the optimized function, evaluate the following code:
 </p>
@@ -3309,8 +3312,8 @@ auto-complete-mode tries to reduce a cost of computation of columns to show comp
 </div>
 
 <div id="outline-container-org856c7e7" class="outline-4">
-<h4 id="org856c7e7">11.2.2 Font Case</h4>
-<div class="outline-text-4" id="text-org856c7e7">
+<h4 id="org856c7e7"><span class="section-number-4">11.2.2</span> 11.2.2 Font Case</h4>
+<div class="outline-text-4" id="text-11-2-2">
 <p>
 There is a problem when render IPA font with Xft in Ubuntu 9.10. Use VL gothic, which renders more suitably. Or disable Xft, then it can render correctly.
 </p>
@@ -3329,12 +3332,12 @@ We don't good answers now, but you may shot the troubles by changing font size w
 </div>
 
 <div id="outline-container-org4f1583f" class="outline-2">
-<h2 id="org4f1583f">12 Known Bugs</h2>
-<div class="outline-text-2" id="text-org4f1583f">
+<h2 id="org4f1583f"><span class="section-number-2">12</span> 12 Known Bugs</h2>
+<div class="outline-text-2" id="text-12">
 </div>
 <div id="outline-container-org110ac35" class="outline-3">
-<h3 id="org110ac35">12.1 Auto completion will not be started in a buffer flyspell-mode enabled</h3>
-<div class="outline-text-3" id="text-org110ac35">
+<h3 id="org110ac35"><span class="section-number-3">12.1</span> 12.1 Auto completion will not be started in a buffer flyspell-mode enabled</h3>
+<div class="outline-text-3" id="text-12-1">
 <p>
 A way of delaying processes of flyspell-mode disables auto completion. You can avoid this problem by M-x ac-flyspell-workaround. You can write the following code into your ~/.emacs.
 </p>
@@ -3347,8 +3350,8 @@ A way of delaying processes of flyspell-mode disables auto completion. You can a
 </div>
 
 <div id="outline-container-orgdc60992" class="outline-3">
-<h3 id="orgdc60992">12.2 linum-mode tries to display the line numbers even for the comletion menu</h3>
-<div class="outline-text-3" id="text-orgdc60992">
+<h3 id="orgdc60992"><span class="section-number-3">12.2</span> 12.2 linum-mode tries to display the line numbers even for the comletion menu</h3>
+<div class="outline-text-3" id="text-12-2">
 <p>
 linum-mode tries to add the line numbers even for the comletion menu. To stop that annoying behavior, do M-x ac-linum-workaround or add the following code into your ~/.emacs.
 </p>
@@ -3362,8 +3365,8 @@ linum-mode tries to add the line numbers even for the comletion menu. To stop th
 </div>
 
 <div id="outline-container-org38c4391" class="outline-2">
-<h2 id="org38c4391">13 Reporting Bugs</h2>
-<div class="outline-text-2" id="text-org38c4391">
+<h2 id="org38c4391"><span class="section-number-2">13</span> 13 Reporting Bugs</h2>
+<div class="outline-text-2" id="text-13">
 <p>
 Visit Auto-Complete Issue Tracker and create a new issue.
 </p>
@@ -3373,7 +3376,7 @@ Visit Auto-Complete Issue Tracker and create a new issue.
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-08-13 二 10:42</p>
+<p class="date">Created: 2019-09-10 二 19:49</p>
 <p class="validation"></p>
 </div>
 </body>
