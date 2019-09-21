@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 19:59 -->
+<!-- 2019-09-21 六 19:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Fiddler 实践</title>
+<title>Fiddler</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,24 +306,93 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">Fiddler 实践</h1>
+<h1 class="title">Fiddler</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org61a4696">1. 概述</a></li>
+<li><a href="#orgb52d3e1">2. 安装</a>
+<ul>
+<li><a href="#org687d0dd">2.1. ubuntu</a></li>
+<li><a href="#orgb313224">2.2. windows</a></li>
+</ul>
+</li>
+<li><a href="#org9958e7c">3. 使用</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-org61a4696" class="outline-2">
 <h2 id="org61a4696"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://www.telerik.com/fiddler/add-ons">Fiddler</a> 虽然可以在 Linux 运行，但是没有办法安装插件，也没有找到可以设置 Firefox 支持 https 的方法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb52d3e1" class="outline-2">
+<h2 id="orgb52d3e1"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org687d0dd" class="outline-3">
+<h3 id="org687d0dd"><span class="section-number-3">2.1</span> ubuntu</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+安装 mono
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">apt install mono-complete
+</pre>
+</div>
+<p>
+使用 mono 启动
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">mono Fiddler.exe
+</pre>
+</div>
+
+<p>
+为了后续使用方便，设置快捷方式
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #d18aff;">alias</span> <span style="color: #ff8700;">filddler</span>=mono &lt;install-path&gt;/Fiddler.exe<span style="color: #ff4ea3;">'</span>
+</pre>
+</div>
+
+<p>
+或者使用 alacarte 添加菜单项后可以直接从菜单项目启动。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb313224" class="outline-3">
+<h3 id="orgb313224"><span class="section-number-3">2.2</span> windows</h3>
+</div>
+</div>
+
+
+<div id="outline-container-org9958e7c" class="outline-2">
+<h2 id="org9958e7c"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+使用参见 <a href="https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureFiddler">文档</a> ，常见操作有：
+</p>
+<ul class="org-ul">
+<li>会话查看。</li>
+<li>查看 https 请求。</li>
+<li>请求和响应断点，以及伪造。</li>
+<li>代理 ios 和 android 请求。</li>
+</ul>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 19:59</p>
+<p class="date">Created: 2019-09-21 六 19:07</p>
 <p class="validation"></p>
 </div>
 </body>

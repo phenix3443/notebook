@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-11 三 10:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Effective Modern CMake</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Effective Modern CMake</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgbd7f66e">1. 概述</a></li>
+<li><a href="#org49a4a74">2. 通用</a></li>
+<li><a href="#orgdb4380b">3. 模块</a></li>
+<li><a href="#org2904fad">4. 项目</a></li>
+<li><a href="#org68a25c4">5. 目标属性</a></li>
+<li><a href="#org128d1bf">6. 函数和宏</a></li>
+<li><a href="#orgc8b235d">7. 参数</a></li>
+<li><a href="#orgcd280ff">8. 循环</a></li>
+<li><a href="#org58e9a55">9. 包</a></li>
+<li><a href="#org3344633">10. 交叉编译</a></li>
+<li><a href="#org4085a9e">11. 警告和错误</a></li>
+<li><a href="#orge289bc8">12. 静态分析</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文翻译自 <a href="https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1">Effective Modern CMake</a>
+</p>
+
+<div id="outline-container-orgbd7f66e" class="outline-2">
+<h2 id="orgbd7f66e"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+有关 CMake 的简短用户级介绍，请观看 C++ Weekly，第 78 集，Jason Turner 讲述的 <a href="https://llvm.org/docs/CMakePrimer.html">CMake简介</a>。 LLVM 的 <a href="https://llvm.org/docs/CMakePrimer.html">CMake Primer</a> 提供了对 CMake 语法的高级介绍。
+</p>
+
+<p>
+之后，观看 Mathieu Ropert 的 CppCon 2017 演讲，<a href="https://www.youtube.com/watch?v=eC9-iRN2b04">使用现代 CMake 模式进行良好的模块化设计</a>（<a href="https://github.com/CppCon/CppCon2017/blob/master/Tutorials/Using%20Modern%20CMake%20Patterns%20to%20Enforce%20a%20Good%20Modular%20Design/Using%20Modern%20CMake%20Patterns%20to%20Enforce%20a%20Good%20Modular%20Design%20-%20Mathieu%20Ropert%20-%20CppCon%202017.pdf">幻灯片</a>）。它提供了对现代 CMake 的全面解释，以及为什么它比“老派”CMake 好得多。该演讲中的模块化设计思想基于 John Lakos 的《大规模 C++ 软件设计》（<a href="https://book.douban.com/subject/26220142/">中文</a>）（<a href="https://book.douban.com/subject/1459011/">英文</a>）。
+</p>
+
+<p>
+下一部关于现代 CMake 细节的视频是 Daniel Pfeifer 的 C++ Now 2017 talk <a href="https://www.youtube.com/watch?v=bsXLMQ6WgIk">Effective CMake</a>（<a href="https://github.com/boostcon/cppnow_presentations_2017/blob/master/05-19-2017_friday/effective_cmake__daniel_pfeifer__cppnow_05-19-2017.pdf">幻灯片</a>）。
+</p>
+
+<p>
+本文深受 Mathieu Ropert 和 Daniel Pfeifer 的谈话影响。 如果您对 CMake 的历史和内部架构感兴趣，请查看<a href="http://aosabook.org/en/index.html">《开源应用程序架构》（The Architecture of Open Source Applications）</a>一书中的 <a href="http://www.aosabook.org/en/cmake.html">CMake</a> 一文。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org49a4a74" class="outline-2">
+<h2 id="org49a4a74"><span class="section-number-2">2</span> 通用</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><p>
+至少使用 CMake 3.0.0 版。
+</p>
+
+<p>
+Modern CMake 仅适用于 3.0.0 版本。
+</p></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><p>
+像生产代码一样处理 CMake 代码。
+</p>
+
+<p>
+CMake 是代码。因此它应该是干净的。对于 CMakeLists.txt 和模块使用与代码库相同的原则。
+</p></li>
+
+<li><p>
+全局定义项目属性。
+</p>
+
+<p>
+例如，项目可能使用一组通用的编译器警告。在顶级 CMakeLists.txt 文件中全局定义此类属性可防止由于依赖目标使用更严格的编译器选项，导致依赖目标不能编译的情况，。全局定义此类项目属性可以更轻松地管理具有所有目标的项目。
+</p></li>
+
+<li><p>
+忘记命令 add_compile_options，include_directories，link_directories，link_libraries。
+</p>
+
+<p>
+这些命令在目录级别上运行。在该级别定义的所有目标都继承这些属性。这增加了隐藏依赖的机会。更好地直接对目标进行操作。
+</p></li>
+
+<li><p>
+不要使用 CMAKE_CXX_FLAGS。
+</p>
+
+<p>
+不同的编译器使用不同的命令行参数格式。在 CMAKE_CXX_FLAGS 中通过 <code>-std=c++14</code> 设置 C++ 标准将来可能会有问题，因为这些要求也在 C++ 17 等其他标准中得到满足，并且编译器选项在旧编译器上并不相同。因此，最好告诉 CMake 编译功能，以便它可以找出要使用的相应编译器选项。
+</p></li>
+
+<li><p>
+不要滥用使用 requirements
+</p>
+
+<p>
+例如，不要将 <code>-Wall</code> 添加到 target_compile_options 的 PUBLIC 或 INTERFACE 部分，因为构建依赖目标并不需要它。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgdb4380b" class="outline-2">
+<h2 id="orgdb4380b"><span class="section-number-2">3</span> 模块</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><p>
+使用现代查找模块来声明导出目标
+</p>
+
+<p>
+从 CMake 3.4 开始，越来越多的 find 模块导出可以通过 target_link_libraries 使用的目标。
+</p></li>
+
+<li><p>
+使用外部包的导出目标。
+</p>
+
+<p>
+不要回到使用外部包定义的变量的旧 CMake 样式。通过 target_link_libraries 使用导出的目标。（何意？）
+</p></li>
+
+<li><p>
+使用 find 模块用于不支持 CMake 的第三方库。
+</p>
+
+<p>
+CMake 为第三方库提供了一系列查找模块。例如，Boost 不支持 CMake。相反，CMake 提供了一个在 CMake 中使用 Boost 的查找模块。
+</p></li>
+
+<li><p>
+如果第三方库不支持使用 CMake，请将其作为 bugg 报告给作者。如果库是开源项目，请考虑发送补丁。
+</p>
+
+<p>
+CMake 在行业中占主导地位。如果库作者不支持 CMake，这是一个问题。
+</p></li>
+
+<li><p>
+为不支持 CMake 的第三方库编写查找模块。
+</p>
+
+<p>
+可以通过查找模块正确导出目标来改装为不支持 CMake 的外部程序包。
+</p></li>
+
+<li><p>
+如果您是库作者，请导出库接口。
+</p>
+
+<p>
+请参阅 Daniel Pfeifer 的 C++ Now 2017 talk  <a href="https://www.youtube.com/watch?v=bsXLMQ6WgIk">Effective CMake</a>（<a href="https://github.com/boostcon/cppnow_presentations_2017/blob/master/05-19-2017_friday/effective_cmake__daniel_pfeifer__cppnow_05-19-2017.pdf">幻灯片</a>）了解如何执行此操作。请记住导出正确的信息。使用 BUILD_INTERFACE 和 INSTALL_INTERFACE 生成器表达式作为过滤器。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2904fad" class="outline-2">
+<h2 id="org2904fad"><span class="section-number-2">4</span> 项目</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><p>
+避免在项目命令的参数中使用自定义变量。
+</p>
+
+<p>
+保持简单。不要引入不必要的自定义变量。不要用 <code>add_library(a ${MY_HEADERS} ${MY_SOURCES})</code> ，请执行 <code>add_library(a b.h b.cpp)</code> 。
+</p></li>
+
+<li><p>
+不要在项目中使用文件（GLOB）。
+</p>
+
+<p>
+CMake 是构建系统生成器，而不是构建系统。它在生成构建系统时将 GLOB 表达式计算为文件列表。然后，构建系统对此文件列表进行操作。因此，构建系统无法检测到文件系统中发生了某些变化。
+</p>
+
+<p>
+CMake 不能只将 GLOB 表达式转发到构建系统，以便在构建时评估表达式。 CMake 希望成为受支持的构建系统的共同点。并非所有构建系统都支持此功能，因此 CMake 也不能支持它。
+</p></li>
+
+<li><p>
+将特定于 CI 的设置放在 CTest 脚本中，而不是放在项目中。
+</p>
+
+<p>
+它只会让事情变得简单。有关详细信息，请参阅 CTest 脚本中的 Dashboard Client。
+</p></li>
+
+<li><p>
+遵循测试名称的命名约定。
+</p>
+
+<p>
+当通过 CTest 运行测试时，这简化了正则表达式的过滤。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org68a25c4" class="outline-2">
+<h2 id="org68a25c4"><span class="section-number-2">5</span> 目标属性</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><p>
+考虑目标和属性。
+</p>
+
+<p>
+通过根据目标定义属性（即编译定义，编译选项，编译功能，包含目录和库依赖性），它有助于开发人员在目标级别思考构建系统。开发人员了解单个目标不需要了解整个系统。构建系统处理传递性。
+</p></li>
+
+<li><p>
+将目标当做对象。
+</p>
+
+<p>
+调用成员函数会修改对象的成员变量。
+</p>
+
+<p>
+类似于构造函数：
+</p>
+<ul class="org-ul">
+<li>add_executable</li>
+<li>add_library</li>
+</ul>
+
+<p>
+类比成员变量：
+</p>
+<ul class="org-ul">
+<li>目标属性（这里列出太多）</li>
+</ul>
+
+<p>
+类比成员函数：
+</p>
+<ul class="org-ul">
+<li>target_compile_definitions</li>
+<li>target_compile_features</li>
+<li>target_compile_options</li>
+<li>target_include_directories</li>
+<li>target_link_libraries</li>
+<li>target_sources</li>
+<li>get_target_property</li>
+<li>set_target_property</li>
+</ul></li>
+
+<li><p>
+保持内部属性 PRIVATE。
+</p>
+
+<p>
+如果目标需要内部属性（即编译定义，编译选项，编译功能，包含目录和库依赖项），请将它们添加到 target_ *命令的 PRIVATE 部分。
+</p></li>
+
+<li><p>
+使用 target_compile_definitions 声明编译定义。
+</p>
+
+<p>
+这将编译定义与其对目标的可见性（PRIVATE，PUBLIC，INTERFACE）相关联。这比使用 add_compile_definitions 要好，后者与目标无关。
+</p></li>
+
+<li><p>
+使用 target_compile_options 声明编译选项。
+</p>
+
+<p>
+这将编译选项与其可见性（PRIVATE，PUBLIC，INTERFACE）关联到目标。这比使用与目标没有关联的 add_compile_options 更好。但要注意不要声明影响 ABI 的编译选项。全局声明这些选项。请参阅“不要使用 target_compile_options 来设置影响 ABI 的选项。”
+</p></li>
+
+<li><p>
+使用 target_compile_features 声明编译功能。
+</p>
+
+<p>
+有待讨论。
+</p></li>
+
+<li><p>
+使用 target_include_directories 声明包含目录。
+</p>
+
+<p>
+这会将 include 目录与其可见性（PRIVATE，PUBLIC，INTERFACE）关联到目标。这比使用 include_directories 更好，include_directories 与目标没有关联。
+</p></li>
+
+<li><p>
+使用 target_link_libraries 声明直接依赖项。
+</p>
+
+<p>
+这会将使用要求从依赖目标传播到依赖目标。该命令还解决了传递依赖性。
+</p></li>
+
+<li><p>
+不要将 target_include_directories 与组件目录之外的路径一起使用。
+</p>
+
+<p>
+使用组件目录外部的路径是隐藏的依赖项。相反，通过 target_link_directories 将 include 目录作为使用要求传播到依赖目标。
+</p></li>
+
+<li><p>
+使用 target_ *时，始终显式声明属性 PUBLIC，PRIVATE 或 INTERFACE。
+</p>
+
+<p>
+显式说明减少了无意中引入隐藏依赖项的机会。
+</p></li>
+
+<li><p>
+不要使用 target_compile_options 来设置影响 ABI 的选项。
+</p>
+
+<p>
+对多个目标使用不同的编译选项可能会影响 ABI 兼容性。防止此类问题的最简单方法是全局定义编译选项（另请参阅“全局定义项目属性”。）
+</p></li>
+
+<li><p>
+使用在同一 CMake 树中定义的库应该与使用外部库相同。（何意？）
+</p>
+
+<p>
+可以直接访问在同一 CMake 树中定义的包。通过 CMAKE_PREFIX_PATH 可以使预构建的库。如果在同一构建树中定义包，可使用 find_package 查找包。将目标 Bar 导出到名称空间 Foo 时，还可以通过 <code>add_library(Foo::Bar ALIAS Bar)</code> 创建别名 <code>Foo::Bar</code> 。创建一个列出所有子项目的变量。定义宏 find_package 以包装原始的 find_package 命令（现在可以通过_find_package 访问）。如果变量包含包的名称，则宏禁止对_find_package 的调用。有关详细信息，请参阅 Daniel Pfeifer 的 C ++ Now 2017 talk Effective CMake（幻灯片 31ff。）。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org128d1bf" class="outline-2">
+<h2 id="org128d1bf"><span class="section-number-2">6</span> 函数和宏</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><p>
+只要合理，首选函数优于宏。
+</p>
+
+<p>
+除基于目录的作用域外，CMake 函数也有自己的作用域。这意味着在父范围内看不到函数内设置的变量。宏不是这样。
+</p></li>
+
+<li><p>
+使用宏仅定义非常小的功能位或包装具有输出参数的命令。否则创建一个函数。
+</p>
+
+<p>
+函数有自己的范围，宏没有。这意味着在宏中设置的变量将在调用范围中可见。
+</p>
+
+<p>
+宏的参数未设置为变量，而是在执行宏之前在宏中解析对参数的解引用。使用未引用的变量时，这可能会导致意外行为。一般来说，这个问题并不常见，因为它需要使用名称在父作用域中重叠的非解除引用的变量，但重要的是要注意，因为它可能导致细微的错误。
+</p></li>
+
+<li><p>
+不要使用影响目录树中所有目标的宏，例如 include_directories，add_definitions 或 link_libraries。
+</p>
+
+<p>
+那些宏是邪恶的。如果在顶层使用，则所有目标都可以使用它们定义的属性。例如，所有目标都可以使用（即#include）include_directories 定义的头。如果目标不需要链接（例如，接口库，内联模板），则在这种情况下甚至不会出现编译器错误。通过这些宏的其他目标很容易意外地创建隐藏的依赖项。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc8b235d" class="outline-2">
+<h2 id="orgc8b235d"><span class="section-number-2">7</span> 参数</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li><p>
+使用 cmake_parse_arguments 作为处理基于参数的行为或可选参数的推荐方法。
+</p>
+
+<p>
+不要重新发明轮子。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgcd280ff" class="outline-2">
+<h2 id="orgcd280ff"><span class="section-number-2">8</span> 循环</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>使用现代 foreach 语法。
+<ul class="org-ul">
+<li>foreach(var IN ITEMS foo bar baz)</li>
+<li>foreach(var IN LISTS my_list)</li>
+<li>foreach(var IN LISTS my_list ITEMS foo bar baz)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org58e9a55" class="outline-2">
+<h2 id="org58e9a55"><span class="section-number-2">9</span> 包</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+CPack 是 CMake 的一部分，并与它很好地集成。
+</p>
+<ul class="org-ul">
+<li><p>
+编写 CPackConfig.cmake 生成 CMake 对应产物
+</p>
+
+<p>
+这样就可以设置不需要出现在项目中的其他变量。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3344633" class="outline-2">
+<h2 id="org3344633"><span class="section-number-2">10</span> 交叉编译</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li><p>
+使用工具链进行交叉编译。
+</p>
+
+<p>
+工具链文件封装了工具链以进行交叉编译。
+</p></li>
+
+<li><p>
+保持工具链文件简单。
+</p>
+
+<p>
+它更容易理解，更易于使用。不要将逻辑放在工具链文件中。为每个平台创建一个工具链文件。
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4085a9e" class="outline-2">
+<h2 id="org4085a9e"><span class="section-number-2">11</span> 警告和错误</h2>
+<div class="outline-text-2" id="text-11">
+<ul class="org-ul">
+<li>正确处理构建错误。
+<ul class="org-ul">
+<li>修复它们。</li>
+<li>拒绝拉取请求。</li>
+<li>阻止发布。</li>
+</ul></li>
+<li><p>
+将警告视为错误。
+</p>
+
+<p>
+要将警告视为错误，请不要将 <code>-Werror</code> 传递给编译器。如果这样做，编译器会将警告视为错误。不能再将警告视为错误，因为您不再收到任何警告。你得到的只是错误。
+</p>
+<ul class="org-ul">
+<li>除非已经达到零警告，否则无法启用-Werror。</li>
+
+<li>除非您已修复该级别引入的所有警告，否则无法增加警告级别。</li>
+
+<li>除非已经修复了编译器在警告级别报告的所有新警告，否则无法升级编译器。</li>
+
+<li>除非您已将代码移出现在 <code>\[\[deprecated\]\]</code> 的任何符号，</li>
+
+<li>否则无法更新依赖项。只要仍然使用内部代码，您就不能 <code>\[\[deprecated\]\]</code> 。</li>
+
+<li>但是一旦它不再使用，你也可以删除它。将新警告视为错误。在开发周期开始时（例如，sprint），允许引入新警告。</li>
+
+<li>提高警告级别，明确启用新警告。更新编译器。更新依赖项。将符号标记为 <code>\[\[deprecated\]\]</code> 。</li>
+</ul></li>
+
+<li>降低警告的数量。</li>
+<li>重复。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge289bc8" class="outline-2">
+<h2 id="orge289bc8"><span class="section-number-2">12</span> 静态分析</h2>
+<div class="outline-text-2" id="text-12">
+<ul class="org-ul">
+<li><p>
+多个支持的分析仪。
+</p>
+
+<p>
+使用 clang-tidy（&lt;lang&gt; _CLANG_TIDY），cpplint（&lt;lang&gt; _CPPLINT），include-you-you-use（&lt;lang&gt; _INCLUDE_WHAT_YOU_USE）和 LINK_WHAT_YOU_USE 可以帮助您在代码中找到问题。这些工具的诊断输出将显示在构建输出和 IDE 中。
+</p></li>
+
+<li><p>
+对于每个头文件，必须有一个关联的源文件，在顶部 <code>#include</code> 头文件，即使该源文件否则为空。
+</p>
+
+<p>
+大多数分析工具都会报告当前源文件和相关标头的诊断信息。不会分析没有关联源文件的头文件。可能可以自定义头文件的过滤器，但头文件可能会分析多次。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2019-09-11 三 10:33</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
