@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-25 三 12:06 -->
+<!-- 2019-09-25 三 16:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>cmockery</title>
@@ -440,7 +440,19 @@ Cmockery 仅需要将测试应用程序与标准 C 库链接即可，这样可�
 <h3 id="orgcfe271f"><span class="section-number-3">4.4</span> 断言(assertions)</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
-像标准 C 库的 assert()这样的运行时断言宏应在正在测试的模块中重新定义，以使用 Cmockery 的 <code>mock_assert()</code> 函数。通常， <code>mock_assert()</code> 表示测试失败。如果使用 <code>expect_assert_failure()</code> 宏调用了一个函数，则该函数内对 <code>mock_assert()</code> 的任何调用都将导致测试的执行。如果在通过 <code>expect_assert_failure()</code> 调用的函数期间未发生对 <code>mock_assert()</code> 的调用，则表明测试失败。
+像标准 C 库的 assert()这样的运行时断言宏应在正在测试的模块中重新定义，以使用 Cmockery 的 <code>mock_assert()</code> 函数。通常， <code>mock_assert()</code> 表示测试失败。
+</p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/assert.c">assert.c</a>
+</p>
+
+<p>
+如果使用 <code>expect_assert_failure()</code> 宏调用了一个函数，则该函数内对 <code>mock_assert()</code> 的任何调用都将导致测试的执行。如果在通过 <code>expect_assert_failure()</code> 调用的函数期间未发生对 <code>mock_assert()</code> 的调用，则表明测试失败。
+</p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/expect_assert_failure.c">expect_assert_failure.c</a>
 </p>
 </div>
 </div>
@@ -451,6 +463,10 @@ Cmockery 仅需要将测试应用程序与标准 C 库链接即可，这样可�
 <p>
 Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而不是 C 标准库的 <code>assert()</code> 宏。在断言失败时，Cmockery 断言宏会将故障写入标准错误流，并发出测试失败的信号。由于 C 语言的限制，一般的 C 标准库 <code>assert()</code> 和 Cmockery 的 <code>assert_true()</code> 和 <code>assert_false()</code> 宏只能显示导致断言失败的表达式。 Cmockery 的特定于类型的断言宏 <code>assert_{type}_equal()</code> 和 <code>assert_{type}_not_equal()</code>  显示导致断言失败的数据，该数据增加了数据可见性，有助于调试失败的测试用例。
 </p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/assert_macro.c">assert_macro.c</a>
+</p>
 </div>
 </div>
 
@@ -458,7 +474,7 @@ Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而�
 <h3 id="org9875b0e"><span class="section-number-3">4.6</span> 动态内存分配(dynamic memory allcation)</h3>
 <div class="outline-text-3" id="text-4-6">
 <p>
-为了测试内存泄漏，缓冲区溢出和下溢，由 Cmockery 测试的模块应该分别用 <code>test_malloc()</code> ， <code>test_calloc()</code> 和 <code>test_free()</code> 替换对 <code>malloc()</code> ， <code>calloc()</code> 和 <code>free()</code> 的调用。每次使用 <code>test_free()</code> 释放一个块时，都会检查其是否损坏。如果发现损坏的块，则表明测试失败。使用 test _ *()分配函数分配的所有块均由 Cmockery 库跟踪。测试完成后，如果剩余任何分配的块（内存泄漏），则将报告它们并发出测试失败的信号。
+为了测试内存泄漏，缓冲区溢出和下溢，由 Cmockery 测试的模块应该分别用 <code>test_malloc()</code> ， <code>test_calloc()</code> 和 <code>test_free()</code> 替换对 <code>malloc()</code> ， <code>calloc()</code> 和 <code>free()</code> 的调用。每次使用 <code>test_free()</code> 释放一个块时，都会检查其是否损坏。如果发现损坏的块，则表明测试失败。使用 <code>test_*()</code> 分配函数分配的所有块均由 Cmockery 库跟踪。测试完成后，如果剩余任何分配的块（内存泄漏），则将报告它们并发出测试失败的信号。
 </p>
 
 <p>
@@ -471,7 +487,7 @@ Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而�
 <h3 id="orgf2d58dc"><span class="section-number-3">4.7</span> Mock 函数(mock functions)</h3>
 <div class="outline-text-3" id="text-4-7">
 <p>
-理想情况下，单元测试应将要测试的函数或模块与任何外部依赖项隔离开。可以使用与被测试模块静态或动态链接的模拟函数来执行此操作。当要测试的代码直接引用外部函数时，模拟函数必须静态链接。动态链接只是在被测试模块使用的表中设置函数指针以引用单元测试中定义的模拟函数的过程。
+理想情况下，单元测试应将要测试的函数或模块与任何外部依赖项隔离开。可以通过将被测试模块与模拟函数静态或动态链接来达到目的。当要测试的代码直接引用外部函数时，模拟函数必须静态链接。在被测试模块使用的表中设置函数指针以引用单元测试中定义的模拟函数时才会用到动态链接。
 </p>
 </div>
 </div>
@@ -480,11 +496,15 @@ Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而�
 <h3 id="org0764f45"><span class="section-number-3">4.8</span> 返回值(return values)</h3>
 <div class="outline-text-3" id="text-4-8">
 <p>
-为了简化模拟函数的实现，Cmockery 提供了使用 <code>will_return()</code> 在每个测试用例中存储模拟功能的返回值的功能。然后，每个模拟函数都使用对 mock()的调用返回这些值。
+为了简化模拟函数的实现，Cmockery 通过 <code>will_return()</code> 在每个测试用例中存储模拟函数的返回值。然后，每个模拟函数都调用 <code>mock()</code> 返回这些值。
 </p>
 
 <p>
-传递给 will_return()的值将添加到指定的每个函数的队列中。从函数每次对 mock()的连续调用都会从队列中删除一个返回值。这使得模拟函数可以使用多次调用 mock()来返回输出参数以及返回值。另外，这允许指定对模拟函数的多次调用的返回值。
+传递给 <code>will_return()</code> 的值将添加到每个函数指定的队列中。函数每次对 <code>mock()</code> 的连续调用都会从队列中删除一个返回值。这使得模拟函数可以使用多次调用 <code>mock()</code> 来返回输出参数以及返回值。另外，这允许指定多次调用模拟函数的返回值。
+</p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/mock_func.c">mock_func.c</a>
 </p>
 </div>
 </div>
@@ -493,7 +513,15 @@ Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而�
 <h3 id="orgee81b0b"><span class="section-number-3">4.9</span> 检查参数(check params)</h3>
 <div class="outline-text-3" id="text-4-9">
 <p>
-除了存储模拟函数的返回值外，Cmockery 还提供使用所提供的 Expect _ *()函数存储模拟函数参数的期望值的功能。然后可以使用 check_expected()宏来验证模拟函数参数。对参数的 Expect _ *()宏的连续调用将值排队以检查指定的参数。 check_expected()根据使用 expected _ *()排队的下一个值检查功能参数，如果参数检查失败，则表示测试失败。此外，如果调用 check_expected()且没有更多的参数值排队，则测试失败。
+除了存储模拟函数的返回值外，Cmockery 还使用 <code>expect_*()</code> 函数存储模拟函数参数的期望值。然后可以使用 <code>=check_expected()</code> = 宏来验证模拟函数参数。
+</p>
+
+<p>
+对参数的 <code>expect_*()</code> 宏的连续调用将检查指定的参数的值排队。 <code>check_expected()</code> 根据使用 <code>expected_*()</code> 排队的下一个值检查功能参数，如果参数检查失败，则表示测试失败。此外，如果调用 <code>check_expected()</code> 且没有更多的参数值排队，则测试失败。
+</p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/mock_func_param.c">mock_func_param.c</a>
 </p>
 </div>
 </div>
@@ -502,11 +530,14 @@ Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而�
 <h3 id="orgf890c2c"><span class="section-number-3">4.10</span> Test State</h3>
 <div class="outline-text-3" id="text-4-10">
 <p>
-Cmockery 允许为每个测试用例指定多种设置和拆卸功能。由 unit_test_setup()或 unit_test_setup_teardown()宏指定的设置函数允许在多个测试用例之间共享常见的初始化。另外，由 unit_test_teardown()或 unit_test_setup_teardown()宏指定的拆卸函数提供了即使在测试用例失败时也始终执行的代码路径。
+Cmockery 允许为每个测试用例指定多种 set-up 和 tear-down 功能。由 <code>unit_test_setup()</code> 或 <code>unit_test_setup_teardown()</code> 宏指定的 set-up 函数允许在多个测试用例之间共享常见的初始化。另外，由 unit_test_teardown()或 <code>unit_test_setup_teardown()</code> 宏指定的 tear-down 函数提供了即使在测试用例失败时也始终执行的代码路径。
+</p>
+
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/c/cmockery/setup_teardown.c">setup_teardown.c</a>
 </p>
 </div>
 </div>
-
 <div id="outline-container-orgabd6506" class="outline-3">
 <h3 id="orgabd6506"><span class="section-number-3">4.11</span> 示例（example）</h3>
 </div>
@@ -515,7 +546,7 @@ Cmockery 允许为每个测试用例指定多种设置和拆卸功能。由 unit
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-25 三 12:06</p>
+<p class="date">Created: 2019-09-25 三 16:21</p>
 <p class="validation"></p>
 </div>
 </body>
