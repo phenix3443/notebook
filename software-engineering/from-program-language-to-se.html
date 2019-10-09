@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 19:58 -->
+<!-- 2019-10-09 三 11:46 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>从程序语言到软件工程</title>
@@ -320,42 +320,24 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orga9b0c6c">2.1. 编辑器</a></li>
 <li><a href="#org99f916c">2.2. 集成开发（IDE）</a></li>
-<li><a href="#org4687601">2.3. 文档系统（document）</a>
+<li><a href="#org9a973ef">2.3. 文档生成器（code documentation generators）</a></li>
+<li><a href="#orgb1b4929">2.4. 编译工具（compile）</a></li>
+<li><a href="#org70a5b52">2.5. 代码测试（test）</a>
 <ul>
-<li><a href="#orgc76c0b5">2.3.1. doxygen</a></li>
-<li><a href="#orga8867e4">2.3.2. sphinx</a></li>
+<li><a href="#org0d148de">2.5.1. 单元测试</a></li>
+<li><a href="#org079061d">2.5.2. 代码 mock</a></li>
+<li><a href="#org955b181">2.5.3. 接口测试</a></li>
 </ul>
 </li>
-<li><a href="#orgb1b4929">2.4. 编译工具（compile）</a></li>
-<li><a href="#org70a5b52">2.5. 代码测试（test）</a></li>
 <li><a href="#orgdd96763">2.6. 代码调试（debug）</a></li>
 <li><a href="#org8b96e8d">2.7. 静态检查</a></li>
 <li><a href="#orga358250">2.8. 动态检查</a></li>
 <li><a href="#org2af0127">2.9. 性能分析（profile）</a></li>
-<li><a href="#org23a5669">2.10. 代码导航（navigation）</a>
-<ul>
-<li><a href="#org4350240">2.10.1. 同名高亮（highlight）</a></li>
-<li><a href="#org476d354">2.10.2. 代码跳转（jump to define and reference）</a></li>
-<li><a href="#orgbe26f40">2.10.3. 代码折叠(hide)</a></li>
+<li><a href="#orgae4594d">2.10. 版本控制</a></li>
+<li><a href="#orgf7261d2">2.11. CI/CD</a></li>
 </ul>
 </li>
-<li><a href="#orga912440">2.11. 其他工具</a></li>
-</ul>
-</li>
-<li><a href="#orgc6427b6">3. 项目管理</a>
-<ul>
-<li><a href="#org27f552f">3.1. 编译打包</a></li>
-<li><a href="#orgae4594d">3.2. 版本控制</a></li>
-<li><a href="#orgf7261d2">3.3. CI/CD</a></li>
-</ul>
-</li>
-<li><a href="#orgf1667ae">4. 上线跟踪</a>
-<ul>
-<li><a href="#org37eec9c">4.1. 日志分析</a></li>
-<li><a href="#org1a686ee">4.2. 数据统计</a></li>
-<li><a href="#org5147164">4.3. 全链路跟踪</a></li>
-</ul>
-</li>
+<li><a href="#orgc143746">3. 数据分析</a></li>
 </ul>
 </div>
 </div>
@@ -386,13 +368,12 @@ for the JavaScript code in this tag.
 </p>
 <ul class="org-ul">
 <li>自动匹配符号的相关操作（paredit/smartparens）</li>
-<li>列编辑</li>
-<li>区块锁定（narrow，wide）</li>
+<li>列编辑（column edit）</li>
+<li>代码块编辑（narrow edit）</li>
 <li>多光标编辑（multiple-cursors）</li>
-<li>快速打开文件（helm-locate）</li>
-<li>显示右侧列边界（fill-column-indicator）</li>
-<li>汉字英文加空格分隔（pangu-spacing）</li>
-<li>分屏</li>
+<li>缩进提示（indent-guide）</li>
+<li>符号高亮（symbol highlight）</li>
+<li>代码折叠（code fold）</li>
 </ul>
 </div>
 </div>
@@ -404,49 +385,62 @@ for the JavaScript code in this tag.
 集成开发环境，既可用来编码，也可以用来代码导航。
 </p>
 <ul class="org-ul">
-<li>快捷键，快捷键提示（guide-key，which-key）</li>
-<li>同名高亮（highlight）</li>
-<li>以 html 方式拷贝代码（htmlize）</li>
-<li>缩进指示（indent-guide）</li>
-<li>代码模板（yasnippet）</li>
-<li>代码补全（company/autocomplete/gtags/rtags/lsp）</li>
-<li>编码规范（flycheck)</li>
-<li>函数提示（eldoc）</li>
+<li>快捷键提示（）</li>
+<li>代码模板（code snippet）</li>
+<li>代码补全（code complete）</li>
+<li>编码规范（code check)</li>
+<li>函数原型提示（eldoc）</li>
 <li>自动编译（smart-compile）</li>
-<li>项目管理（projectile）</li>
-<li>代码折叠（hideshow）</li>
-<li>自动插入包引用（cquery/clang-format/go-import/）</li>
+<li>项目管理（project manage）</li>
+<li>代码导航（code navigation）</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org4687601" class="outline-3">
-<h3 id="org4687601"><span class="section-number-3">2.3</span> 文档系统（document）</h3>
+
+<div id="outline-container-org9a973ef" class="outline-3">
+<h3 id="org9a973ef"><span class="section-number-3">2.3</span> 文档生成器（code documentation generators）</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-用于文档化代码。
+使用工具直接从代码生成文档。包括代码文档和项目文档。 <a href="https://en.wikipedia.org/wiki/Comparison_of_documentation_generatorshttps://en.wikipedia.org/wiki/Comparison_of_documentation_generators">文档生成工具对比</a>
 </p>
-</div>
 
-<div id="outline-container-orgc76c0b5" class="outline-4">
-<h4 id="orgc76c0b5"><span class="section-number-4">2.3.1</span> doxygen</h4>
-</div>
-<div id="outline-container-orga8867e4" class="outline-4">
-<h4 id="orga8867e4"><span class="section-number-4">2.3.2</span> sphinx</h4>
+<ul class="org-ul">
+<li>doxygen 支持 C++  PHP JAVA PYTHON</li>
+<li>sphinx</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-orgb1b4929" class="outline-3">
 <h3 id="orgb1b4929"><span class="section-number-3">2.4</span> 编译工具（compile）</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>cmak</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org70a5b52" class="outline-3">
 <h3 id="org70a5b52"><span class="section-number-3">2.5</span> 代码测试（test）</h3>
 <div class="outline-text-3" id="text-2-5">
+</div>
+<div id="outline-container-org0d148de" class="outline-4">
+<h4 id="org0d148de"><span class="section-number-4">2.5.1</span> 单元测试</h4>
+<div class="outline-text-4" id="text-2-5-1">
 <ul class="org-ul">
-<li>自动化测试工具。</li>
-<li>代码与测试代码间的跳转。</li>
+<li>docker</li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks">单元测试工具列表</a></li>
 </ul>
+</div>
+</div>
+
+<div id="outline-container-org079061d" class="outline-4">
+<h4 id="org079061d"><span class="section-number-4">2.5.2</span> 代码 mock</h4>
+</div>
+
+<div id="outline-container-org955b181" class="outline-4">
+<h4 id="org955b181"><span class="section-number-4">2.5.3</span> 接口测试</h4>
 </div>
 </div>
 
@@ -458,13 +452,8 @@ for the JavaScript code in this tag.
 <h3 id="org8b96e8d"><span class="section-number-3">2.7</span> 静态检查</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
-lint 工具
+lint 工具一般用来执行静态检查，检查程序语法语义上的错误。
 </p>
-<blockquote>
-<p>
-在计算机科学中，lint 是一种工具程序的名称，它用来标记源代码中，某些可疑的、不具结构性（可能造成 bug）的段落。它是一种静态程序分析工具，最早适用于 C 语言，在 UNIX 平台上开发出来。后来它成为通用术语，可用于描述在任何一种计算机程序语言中，用来标记源代码中有疑义段落的工具。  &#x2013; wikipedia
-</p>
-</blockquote>
 </div>
 </div>
 
@@ -476,44 +465,9 @@ lint 工具
 <h3 id="org2af0127"><span class="section-number-3">2.9</span> 性能分析（profile）</h3>
 </div>
 
-<div id="outline-container-org23a5669" class="outline-3">
-<h3 id="org23a5669"><span class="section-number-3">2.10</span> 代码导航（navigation）</h3>
-<div class="outline-text-3" id="text-2-10">
-</div>
-<div id="outline-container-org4350240" class="outline-4">
-<h4 id="org4350240"><span class="section-number-4">2.10.1</span> 同名高亮（highlight）</h4>
-</div>
-
-<div id="outline-container-org476d354" class="outline-4">
-<h4 id="org476d354"><span class="section-number-4">2.10.2</span> 代码跳转（jump to define and reference）</h4>
-</div>
-
-<div id="outline-container-orgbe26f40" class="outline-4">
-<h4 id="orgbe26f40"><span class="section-number-4">2.10.3</span> 代码折叠(hide)</h4>
-</div>
-</div>
-
-<div id="outline-container-orga912440" class="outline-3">
-<h3 id="orga912440"><span class="section-number-3">2.11</span> 其他工具</h3>
-</div>
-</div>
-
-<div id="outline-container-orgc6427b6" class="outline-2">
-<h2 id="orgc6427b6"><span class="section-number-2">3</span> 项目管理</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org27f552f" class="outline-3">
-<h3 id="org27f552f"><span class="section-number-3">3.1</span> 编译打包</h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-cmake
-</p>
-</div>
-</div>
-
 <div id="outline-container-orgae4594d" class="outline-3">
-<h3 id="orgae4594d"><span class="section-number-3">3.2</span> 版本控制</h3>
-<div class="outline-text-3" id="text-3-2">
+<h3 id="orgae4594d"><span class="section-number-3">2.10</span> 版本控制</h3>
+<div class="outline-text-3" id="text-2-10">
 <p>
 svn git
 </p>
@@ -521,46 +475,32 @@ svn git
 </div>
 
 <div id="outline-container-orgf7261d2" class="outline-3">
-<h3 id="orgf7261d2"><span class="section-number-3">3.3</span> CI/CD</h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-docker jekin github
-</p>
+<h3 id="orgf7261d2"><span class="section-number-3">2.11</span> CI/CD</h3>
+<div class="outline-text-3" id="text-2-11">
+<ul class="org-ul">
+<li>github</li>
+<li>gitlab</li>
+
+<li>jekin</li>
+</ul>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf1667ae" class="outline-2">
-<h2 id="orgf1667ae"><span class="section-number-2">4</span> 上线跟踪</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org37eec9c" class="outline-3">
-<h3 id="org37eec9c"><span class="section-number-3">4.1</span> 日志分析</h3>
-</div>
-
-<div id="outline-container-org1a686ee" class="outline-3">
-<h3 id="org1a686ee"><span class="section-number-3">4.2</span> 数据统计</h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-openfalcon
-</p>
-</div>
-</div>
-
-<div id="outline-container-org5147164" class="outline-3">
-<h3 id="org5147164"><span class="section-number-3">4.3</span> 全链路跟踪</h3>
-<div class="outline-text-3" id="text-4-3">
-<p>
-ELK
-</p>
-</div>
+<div id="outline-container-orgc143746" class="outline-2">
+<h2 id="orgc143746"><span class="section-number-2">3</span> 数据分析</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>open-falcon</li>
+<li>ELK</li>
+</ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 19:58</p>
+<p class="date">Created: 2019-10-09 三 11:46</p>
 <p class="validation"></p>
 </div>
 </body>
