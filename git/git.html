@@ -6,7 +6,7 @@
 <!-- 2019-10-14 一 20:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GitProV2 读书笔记</title>
+<title>git</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="刘尚亮" />
 <style type="text/css">
@@ -306,203 +306,23 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">GitProV2 读书笔记</h1>
+<h1 class="title">git</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org02992e4">1. 第一章 起步</a></li>
-<li><a href="#org5436d71">2. 第二章 Git 基础</a></li>
-<li><a href="#orgf34879a">3. 第三章 Git 分支</a></li>
-<li><a href="#org324c2fa">4. 第四章 服务器上的 Git</a></li>
-<li><a href="#orgb3fedc5">5. 第五章 分布式 Git</a></li>
-<li><a href="#org408087b">6. 第六章 GitHub</a></li>
-<li><a href="#org6cd436a">7. 第七章 Git 工具</a>
-<ul>
-<li><a href="#orgee442aa">7.1. 7.11 Git 工具-子模块</a></li>
-</ul>
-</li>
-<li><a href="#org3b9cedf">8. 第八章 自定义 Git</a></li>
-<li><a href="#orge2bc8a5">9. 第九章 Git 与其他系统</a></li>
-<li><a href="#org31aff01">10. 第十章 Git 内部原理</a></li>
+<li><a href="#orga8b9f1b">1. 删除子模块</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org02992e4" class="outline-2">
-<h2 id="org02992e4"><span class="section-number-2">1</span> 第一章 起步</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Git 直接记录文件快照，而非差异比较。
-<ul class="org-ul">
-<li>这么做的好处是什么？</li>
-<li>文件不会迅速膨胀？</li>
-</ul></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org5436d71" class="outline-2">
-<h2 id="org5436d71"><span class="section-number-2">2</span> 第二章 Git 基础</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>.gitignore 格式规范如下：
-<ul class="org-ul">
-<li>所有空行或以#开头的行都会被 Git 忽略。</li>
-<li>可以使用标准的 glob 匹配。</li>
-<li>匹配模式可以以（/）开头防止递归。</li>
-<li>匹配模式可以以（/）结尾指定目录。</li>
-<li>要忽略指定模式意外以外的文件或目录，可以在模式前加上惊叹号（！）取反。</li>
-</ul></li>
-<li>git diff 查看尚未暂存的改动。</li>
-<li>git diff &#x2013;staged 查看将要添加到下次提交的内容。</li>
-<li>git rm &#x2013;cached 只是将文件从暂存区删除，而在当前目录保留</li>
-<li>git log
-<ul class="org-ul">
-<li>-p 按补丁格式显示每个更新之间的差异。</li>
-<li>&#x2013;stat 显示每次更新的文件修改统计信息。</li>
-<li>&#x2013;shortstat 只显示 &#x2013;stat 中最后的行数修改添加移除统计。</li>
-<li>&#x2013;name-only 仅在提交信息后显示已修改的文件清单。</li>
-<li>&#x2013;name-status 显示新增、修改、删除的文件清单。</li>
-<li>&#x2013;abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。</li>
-<li>&#x2013;relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。</li>
-<li>&#x2013;graph 显示 ASCII 图形表示的分支合并历史。</li>
-<li>&#x2013;pretty 使用其他格式显示历史提交信息。可用的选项包括 oneline，short，full，fuller 和 format（后跟指定格式）。</li>
-
-<li>-(n) 仅显示最近的 n 条提交</li>
-<li>&#x2013;since, &#x2013;after 仅显示指定时间之后的提交。</li>
-<li>&#x2013;until, &#x2013;before 仅显示指定时间之前的提交。</li>
-<li>&#x2013;author 仅显示指定作者相关的提交。</li>
-<li>&#x2013;committer 仅显示指定提交者相关的提交。</li>
-<li>&#x2013;grep 仅显示含指定关键字的提交</li>
-<li>-S 仅显示添加或移除了某个关键字的提交</li>
-</ul></li>
-<li>git remote</li>
-<li>git tag
-<ul class="org-ul">
-<li>-l 轻量级标签</li>
-<li>-a 附注标签</li>
-<li>后期打标签</li>
-<li>检出标签</li>
-</ul></li>
-
-<li>git 别名</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgf34879a" class="outline-2">
-<h2 id="orgf34879a"><span class="section-number-2">3</span> 第三章 Git 分支</h2>
-<div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li>Git 的分支，其本质上仅仅是指向提交对象的可变指针。</li>
-<li>HEAD 指针指向当前所在的 <b>本地</b> 分支。</li>
-<li>git branch
-<ul class="org-ul">
-<li>-d 删除本地分支。</li>
-</ul></li>
-<li>git fetch 会抓取服务器上本地没有的所有数据。</li>
-<li>要特别注意的一点是当抓取到新的远程跟踪分支时，本地不会自动生成一份可编辑的副本（拷贝）。 换一句话说，这种情况下，不会有一个新的 serverfix 分支 - 只有一个不可以修改的 origin/serverfix 指针。</li>
-<li>跟踪分支，git checkout &#x2013;trach origin/branch</li>
-<li>推送分支后不要执行变基操作。</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org324c2fa" class="outline-2">
-<h2 id="org324c2fa"><span class="section-number-2">4</span> 第四章 服务器上的 Git</h2>
-</div>
-
-<div id="outline-container-orgb3fedc5" class="outline-2">
-<h2 id="orgb3fedc5"><span class="section-number-2">5</span> 第五章 分布式 Git</h2>
-</div>
-
-<div id="outline-container-org408087b" class="outline-2">
-<h2 id="org408087b"><span class="section-number-2">6</span> 第六章 GitHub</h2>
-</div>
-
-<div id="outline-container-org6cd436a" class="outline-2">
-<h2 id="org6cd436a"><span class="section-number-2">7</span> 第七章 Git 工具</h2>
-<div class="outline-text-2" id="text-7">
-<ul class="org-ul">
-<li>git log 双点号，三点号等应用</li>
-<li>git stas</li>
-<li>git clean
-<ul class="org-ul">
-<li>默认情况下，git clean 命令只会移除没有忽略的未跟踪文件。</li>
-<li>-d</li>
-<li>-n</li>
-<li>-f</li>
-</ul></li>
-<li>git grep</li>
-<li>git log
-<ul class="org-ul">
-<li>-S</li>
-<li>-L</li>
-</ul></li>
-<li>git submodule
-<ul class="org-ul">
-<li>不能添加一个空的子模块。</li>
-</ul></li>
-</ul>
-</div>
-<div id="outline-container-orgee442aa" class="outline-3">
-<h3 id="orgee442aa"><span class="section-number-3">7.1</span> 7.11 Git 工具-子模块</h3>
-<div class="outline-text-3" id="text-7-1">
-<ol class="org-ol">
-<li><p>
-优雅的删除子模块
-</p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#36870;&#21021;&#22987;&#21270;&#27169;&#22359;&#65292;&#20854;&#20013;{MOD_NAME}&#20026;&#27169;&#22359;&#30446;&#24405;&#65292;&#25191;&#34892;&#21518;&#21487;&#21457;&#29616;&#27169;&#22359;&#30446;&#24405;&#34987;&#28165;&#31354;</span>
-git submodule deinit {MOD_NAME}
-<span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#21024;&#38500;.gitmodules &#20013;&#35760;&#24405;&#30340;&#27169;&#22359;&#20449;&#24687;&#65288;--cached &#36873;&#39033;&#28165;&#38500;.git/modules &#20013;&#30340;&#32531;&#23384;&#65289;</span>
-git rm --cached {MOD_NAME}
-</pre>
-</div></li>
-
-<li>修改某模块 URL
-<ul class="org-ul">
-<li>修改'.gitmodules'文件中对应模块的”url“属性;</li>
-<li><p>
-使用 git submodule sync 命令，将新的 URL 更新到文件.git/config；
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">git submodule sync
-</pre>
-</div></li>
-</ul></li>
-</ol>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org3b9cedf" class="outline-2">
-<h2 id="org3b9cedf"><span class="section-number-2">8</span> 第八章 自定义 Git</h2>
-</div>
-
-<div id="outline-container-orge2bc8a5" class="outline-2">
-<h2 id="orge2bc8a5"><span class="section-number-2">9</span> 第九章 Git 与其他系统</h2>
-</div>
-
-<div id="outline-container-org31aff01" class="outline-2">
-<h2 id="org31aff01"><span class="section-number-2">10</span> 第十章 Git 内部原理</h2>
-<div class="outline-text-2" id="text-10">
-<ul class="org-ul">
-<li>从根本上来讲 Git 是一个内容寻址文件系统。</li>
-<li>所有内容均以树对象和数据对象的形式存储，其中树对象对应了 UNIX 中的目录项，数据对象则大致上对应了 inodes 或文件内容。</li>
-<li>三种主要的 Git 对象——数据对象、树对象、提交对象。树对象代表了不通过项目快照。提交对象记录了树对象的一些额外信息。</li>
-<li>Git 分支的本质：一个指向某一系列提交之首的指针或引用。</li>
-<li>标签对象（tag object）非常类似于一个提交对象——它包含一个标签创建者信息、一个日期、一段注释信息，以及一个指针。 主要的区别在于，标签对象通常指向一个提交对象，而不是一个树对象。</li>
-<li>Git 时常会自动对仓库进行重新打包以节省空间，最新版本完整保存了文件内容，而原始的版本反而是以差异方式保存的。</li>
-</ul>
-</div>
+<div id="outline-container-orga8b9f1b" class="outline-2">
+<h2 id="orga8b9f1b"><span class="section-number-2">1</span> 删除子模块</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
-<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
 <p class="date">Created: 2019-10-14 一 20:09</p>
 <p class="validation"></p>
 </div>

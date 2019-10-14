@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-10-11 五 15:38 -->
+<!-- 2019-10-14 一 20:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL实战45讲笔记</title>
@@ -313,9 +313,11 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orge788cae">1. 准备</a></li>
 <li><a href="#orgcae3b18">2. 开篇词</a></li>
-<li><a href="#org661a3d6">3. 基础架构</a></li>
-<li><a href="#org579abc4">4. 日志系统</a></li>
+<li><a href="#org9918830">3. 基础架构：查询语句执行流程</a></li>
+<li><a href="#org9284661">4. 日志系统：更新语句执行流程</a></li>
 <li><a href="#orgc642176">5. 事务隔离</a></li>
+<li><a href="#org2071271">6. 深入浅出索引</a></li>
+<li><a href="#org12e7345">7. 全局锁和表锁</a></li>
 </ul>
 </div>
 </div>
@@ -339,22 +341,113 @@ docker run -it --network test --rm mysql:5.7 mysql -hmysql-test -uroot -p123
 <h2 id="orgcae3b18"><span class="section-number-2">2</span> 开篇词</h2>
 </div>
 
-<div id="outline-container-org661a3d6" class="outline-2">
-<h2 id="org661a3d6"><span class="section-number-2">3</span> 基础架构</h2>
+<div id="outline-container-org9918830" class="outline-2">
+<h2 id="org9918830"><span class="section-number-2">3</span> 基础架构：查询语句执行流程</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+server 层
+</p>
+<ul class="org-ul">
+<li>连接器
+<ul class="org-ul">
+<li>show processlist</li>
+<li>长连接问题：mysql_reset_connection</li>
+<li>查询缓存
+<ul class="org-ul">
+<li>不要使用。</li>
+<li>query_cache_type DEMAND</li>
+<li>select SQL_CACHE * from T where ID=10;</li>
+<li>8.0 删除了该功能。</li>
+</ul></li>
+</ul></li>
+
+<li>分析器</li>
+
+<li>优化器
+<ul class="org-ul">
+<li>决定使用的索引、表的连接（join）顺序。</li>
+</ul></li>
+<li>执行器
+<ul class="org-ul">
+<li>检查对表的执行权限。</li>
+</ul></li>
+</ul>
+
+<p>
+存储层
+</p>
+<ul class="org-ul">
+<li>存储引擎</li>
+</ul>
+</div>
 </div>
 
-<div id="outline-container-org579abc4" class="outline-2">
-<h2 id="org579abc4"><span class="section-number-2">4</span> 日志系统</h2>
+<div id="outline-container-org9284661" class="outline-2">
+<h2 id="org9284661"><span class="section-number-2">4</span> 日志系统：更新语句执行流程</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+redo log：
+</p>
+<ul class="org-ul">
+<li>InnoDB 引擎特有日志</li>
+<li>innodb_flush_log_at_trx_commit=1</li>
+</ul>
+
+<p>
+binlog
+</p>
+<ul class="org-ul">
+<li>server 层特有日志。</li>
+<li>sync_binlog=1</li>
+</ul>
+
+<p>
+二者不同：
+</p>
+
+<p>
+二阶段提交。
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgc642176" class="outline-2">
 <h2 id="orgc642176"><span class="section-number-2">5</span> 事务隔离</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）。
+</p>
+
+<p>
+SQL 标准的事务隔离级别包括：读未提交（read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（serializable）。
+</p>
+
+<p>
+实现原理：
+</p>
+<ul class="org-ul">
+<li>同一条记录在系统中可以存在多个版本，即数据库的多版本并发控制。</li>
+<li>每条记录在更新的时候都会同时记录一条回滚操作，即回滚日志。</li>
+</ul>
+
+<p>
+总是设置 autocommit = 1，开启事务的自动提交。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2071271" class="outline-2">
+<h2 id="org2071271"><span class="section-number-2">6</span> 深入浅出索引</h2>
+</div>
+
+<div id="outline-container-org12e7345" class="outline-2">
+<h2 id="org12e7345"><span class="section-number-2">7</span> 全局锁和表锁</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-10-11 五 15:38</p>
+<p class="date">Created: 2019-10-14 一 20:09</p>
 <p class="validation"></p>
 </div>
 </body>

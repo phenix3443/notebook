@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 19:58 -->
+<!-- 2019-10-14 一 20:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>emmylua-ls-all</title>
@@ -342,6 +342,10 @@ chmod +x gradlew
 </div>
 
 <p>
+编译 LS 放在 <code>EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar</code>
+</p>
+
+<p>
 最后一步编译不成功，是因为设置 gradle 版本错误。
 </p>
 
@@ -360,6 +364,9 @@ docker run --name emmy-lua-build -it -v &lt;abs-paht-to-EmmyLua-LanguageServer&g
 <div id="outline-container-org12ee34f" class="outline-2">
 <h2 id="org12ee34f"><span class="section-number-2">3</span> 使用</h2>
 <div class="outline-text-2" id="text-3">
+<p>
+启动 LS，然后客户端就可以对接使用了。
+</p>
 <div class="org-src-container">
 <pre class="src src-sh">java -cp EmmyLua-LS-all.jar com.tang.vscode.MainKt
 </pre>
@@ -370,7 +377,7 @@ docker run --name emmy-lua-build -it -v &lt;abs-paht-to-EmmyLua-LanguageServer&g
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 19:58</p>
+<p class="date">Created: 2019-10-14 一 20:09</p>
 <p class="validation"></p>
 </div>
 </body>
