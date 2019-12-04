@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-10-14 一 20:09 -->
+<!-- 2019-12-04 三 21:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL实战45讲笔记</title>
@@ -330,9 +330,7 @@ for the JavaScript code in this tag.
 </p>
 <pre class="example">
 docker pull mysql:5.7
-docker network create test
-docker run --network test --restart always --name mysql-test -e MYSQL_ROOT_PASSWORD=123 -d mysql:5.7
-docker run -it --network test --rm mysql:5.7 mysql -hmysql-test -uroot -p123
+docker run -d --restart always --name mysql-test -e MYSQL_ROOT_PASSWORD=test mysql:5.7
 </pre>
 </div>
 </div>
@@ -367,6 +365,7 @@ server 层
 <ul class="org-ul">
 <li>决定使用的索引、表的连接（join）顺序。</li>
 </ul></li>
+
 <li>执行器
 <ul class="org-ul">
 <li>检查对表的执行权限。</li>
@@ -415,29 +414,87 @@ binlog
 <h2 id="orgc642176"><span class="section-number-2">5</span> 事务隔离</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）。
+事务特性：ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）。
 </p>
 
 <p>
-SQL 标准的事务隔离级别包括：读未提交（read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（serializable）。
+隔离性常见问题：脏读、不可重复读、幻读
+</p>
+
+<p>
+SQL 标准的事务隔离级别包括：
+</p>
+<ul class="org-ul">
+<li>读未提交（read uncommitted），实现方式：直接返回记录上的值</li>
+<li>读提交（read committed），实现方式：开始执行 SQL 语句时候创建视图</li>
+<li>可重复读（repeatable read），实现方式：启动事务时创建视图</li>
+<li>串行化（serializable）,实现方式：加锁</li>
+</ul>
+
+<p>
+设置隔离级别：启动参数 transactio-isolation，查询 <code>show variables like 'transaction_isolation'</code>
 </p>
 
 <p>
 实现原理：
 </p>
 <ul class="org-ul">
-<li>同一条记录在系统中可以存在多个版本，即数据库的多版本并发控制。</li>
 <li>每条记录在更新的时候都会同时记录一条回滚操作，即回滚日志。</li>
+<li>同一条记录在系统中可以存在多个版本，即数据库的多版本并发控制。</li>
 </ul>
 
 <p>
-总是设置 autocommit = 1，开启事务的自动提交。
+不要使用长事务。
+</p>
+<ul class="org-ul">
+<li>长事务意味着会存在很多老的事务视图，以及大量回滚日志。</li>
+<li>长事务还会占用锁资源。</li>
+</ul>
+
+<p>
+避免使用长事务：
+</p>
+<ul class="org-ul">
+<li>总是设置 autocommit = 1，开启事务的自动提交。</li>
+</ul>
+
+<p>
+查询 information_schema 的 innodb_trx 查找长事务。
 </p>
 </div>
 </div>
 
 <div id="outline-container-org2071271" class="outline-2">
 <h2 id="org2071271"><span class="section-number-2">6</span> 深入浅出索引</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+索引目的：加速查询效率。
+</p>
+
+<p>
+索引模型：
+</p>
+<ul class="org-ul">
+<li>哈希表，只适合等值查询，不适合区间查询。</li>
+<li>有序数组，支持区间查询和等值查询，但是插入困难，只适合静态存储引擎。</li>
+<li>B+树：对磁盘读写少。</li>
+</ul>
+
+<p>
+主键索引：聚簇索引
+</p>
+
+<p>
+非主键索引：二级索引
+</p>
+
+<p>
+最佳实践：
+</p>
+<ul class="org-ul">
+<li>使用自增字段做索引。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org12e7345" class="outline-2">
@@ -447,7 +504,7 @@ SQL 标准的事务隔离级别包括：读未提交（read uncommitted）、读
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-10-14 一 20:09</p>
+<p class="date">Created: 2019-12-04 三 21:51</p>
 <p class="validation"></p>
 </div>
 </body>

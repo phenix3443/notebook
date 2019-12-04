@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 20:00 -->
+<!-- 2019-12-04 三 21:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the way to go</title>
@@ -324,12 +324,12 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orge25c0cd">1.2. 第五章 控制结构</a>
 <ul>
-<li><a href="#org3378511">1.2.1. if-else 循环</a></li>
-<li><a href="#orgf39cdf3">1.2.2. 测试多返回值函数的错误</a></li>
-<li><a href="#orgda73f34">1.2.3. switch 结构</a></li>
-<li><a href="#org65e9236">1.2.4. for 结构</a></li>
-<li><a href="#org1f35ab3">1.2.5. break 与 continue</a></li>
-<li><a href="#org5a46013">1.2.6. 标签与 goto</a></li>
+<li><a href="#org949075f">1.2.1. 5.1 if-else 循环</a></li>
+<li><a href="#orgb2db3fb">1.2.2. 5.2 测试多返回值函数的错误</a></li>
+<li><a href="#orgdc102c3">1.2.3. 5.3 switch 结构</a></li>
+<li><a href="#orgce13885">1.2.4. 5.4 for 结构</a></li>
+<li><a href="#org41bbfb7">1.2.5. 5.5 break 与 continue</a></li>
+<li><a href="#org036108c">1.2.6. 5.6 标签与 goto</a></li>
 </ul>
 </li>
 <li><a href="#org5196605">1.3. 第六章 函数</a>
@@ -447,8 +447,9 @@ for the JavaScript code in this tag.
 <div class="outline-text-4" id="text-1-1-1">
 <ul class="org-ul">
 <li>int 类型是计算最快的一种类型。为什么？</li>
-<li>/ 对于整数运算而言，结果依旧为整数。</li>
-<li>带有 ++ 和 &#x2013; 的只能作为语句，而非表达式。</li>
+<li>字符 byte 是 uint8 的别名。</li>
+<li>unicode(utf-8)字符类型是 rune，是 int32 的别名。</li>
+<li>带有 ++ 和 &#x2013; 的只能作为语句，而非表达式。不能用在 for 的第三部分。</li>
 </ul>
 </div>
 </div>
@@ -457,7 +458,10 @@ for the JavaScript code in this tag.
 <h4 id="orgd96cea6"><span class="section-number-4">1.1.2</span> 4.6 字符串</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <ul class="org-ul">
+<li>字符串是是 UTF-8 字符序列</li>
 <li>字符串是字节的定长数组。</li>
+<li>解释字符串和非解释字符串</li>
+<li>字符串拼接的方法及其效率。</li>
 </ul>
 </div>
 </div>
@@ -472,6 +476,11 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-org881ccfd" class="outline-4">
 <h4 id="org881ccfd"><span class="section-number-4">1.1.5</span> 4.9 指针</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+Go 语言可以隐藏简介引用。
+</p>
+</div>
 </div>
 </div>
 
@@ -479,33 +488,47 @@ for the JavaScript code in this tag.
 <h3 id="orge25c0cd"><span class="section-number-3">1.2</span> 第五章 控制结构</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org3378511" class="outline-4">
-<h4 id="org3378511"><span class="section-number-4">1.2.1</span> if-else 循环</h4>
+<div id="outline-container-org949075f" class="outline-4">
+<h4 id="org949075f"><span class="section-number-4">1.2.1</span> 5.1 if-else 循环</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
-<li>如果 if 初始化中的变量在 if 结构之前就已经存在，那么在 if 结构中，该变量原来的值会被隐藏。</li>
+<li>if 可以包含一个初始化语句，但是初始化语句中定义的变量作用域只限于 if 语句中。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf39cdf3" class="outline-4">
-<h4 id="orgf39cdf3"><span class="section-number-4">1.2.2</span> 测试多返回值函数的错误</h4>
+<div id="outline-container-orgb2db3fb" class="outline-4">
+<h4 id="orgb2db3fb"><span class="section-number-4">1.2.2</span> 5.2 测试多返回值函数的错误</h4>
 </div>
 
-<div id="outline-container-orgda73f34" class="outline-4">
-<h4 id="orgda73f34"><span class="section-number-4">1.2.3</span> switch 结构</h4>
+<div id="outline-container-orgdc102c3" class="outline-4">
+<h4 id="orgdc102c3"><span class="section-number-4">1.2.3</span> 5.3 switch 结构</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<ul class="org-ul">
+<li>逗号分割多个测试值 <code>case var1,var2,var3</code></li>
+<li>也可以没有测试条件，等效于多个 if-else 语句。</li>
+<li>测试条件包含初始化语句。</li>
+</ul>
+</div>
 </div>
 
-<div id="outline-container-org65e9236" class="outline-4">
-<h4 id="org65e9236"><span class="section-number-4">1.2.4</span> for 结构</h4>
+<div id="outline-container-orgce13885" class="outline-4">
+<h4 id="orgce13885"><span class="section-number-4">1.2.4</span> 5.4 for 结构</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<ul class="org-ul">
+<li>golang 循环只有 for 语句。</li>
+<li>for 当做 while 使用，没有第一和第三部分。</li>
+<li>for-range，其中 value 是集合中对应元素的值拷贝。</li>
+</ul>
+</div>
 </div>
 
-<div id="outline-container-org1f35ab3" class="outline-4">
-<h4 id="org1f35ab3"><span class="section-number-4">1.2.5</span> break 与 continue</h4>
+<div id="outline-container-org41bbfb7" class="outline-4">
+<h4 id="org41bbfb7"><span class="section-number-4">1.2.5</span> 5.5 break 与 continue</h4>
 </div>
 
-<div id="outline-container-org5a46013" class="outline-4">
-<h4 id="org5a46013"><span class="section-number-4">1.2.6</span> 标签与 goto</h4>
+<div id="outline-container-org036108c" class="outline-4">
+<h4 id="org036108c"><span class="section-number-4">1.2.6</span> 5.6 标签与 goto</h4>
 </div>
 </div>
 
@@ -519,6 +542,11 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-org8e3eef4" class="outline-4">
 <h4 id="org8e3eef4"><span class="section-number-4">1.3.2</span> 6.2 函数参数与返回值</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+应该尽量使用命名返回值。
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgeb1275f" class="outline-4">
@@ -718,7 +746,7 @@ for the JavaScript code in this tag.
 如果方法不需要使用 recv 的值，可以用 _ 替换它，比如：
 </p>
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">func</span> (_ <span style="color: #00d7af;">receiver_type</span>) <span style="color: #ffd700;">methodName</span>(<span style="color: #00d7af;">parameter_list</span>) (<span style="color: #00d7af;">return_value_list</span>) { ... }
+<pre class="src src-go"><span style="color: #a1db00;">func</span> (<span style="color: #ff8700;">_</span> <span style="color: #00d7af;">receiver_type</span>) <span style="color: #ffd700;">methodName</span>(<span style="color: #00d7af;">parameter_list</span>) (<span style="color: #00d7af;">return_value_list</span>) { ... }
 </pre>
 </div>
 <p>
@@ -836,7 +864,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 20:00</p>
+<p class="date">Created: 2019-12-04 三 21:51</p>
 <p class="validation"></p>
 </div>
 </body>

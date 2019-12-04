@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 19:58 -->
+<!-- 2019-12-04 三 21:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>lsp-mode</title>
@@ -314,10 +314,19 @@ for the JavaScript code in this tag.
 <li><a href="#org89fb955">1. 概述</a></li>
 <li><a href="#org7f55632">2. 配置</a>
 <ul>
-<li><a href="#org8eda46e">2.1. 新增语言支持</a></li>
+<li><a href="#org87863cc">2.1. emacs</a></li>
+<li><a href="#org244d3c2">2.2. Spacemacs</a></li>
+<li><a href="#org34d4882">2.3. use-package</a></li>
+<li><a href="#org2f594b2">2.4. Docker</a></li>
 </ul>
 </li>
-<li><a href="#org6368ecb">3. 使用</a></li>
+<li><a href="#org435baaa">3. 工作原理</a></li>
+<li><a href="#org8eda46e">4. 新增语言支持</a></li>
+<li><a href="#org51ed7d2">5. FAQ</a>
+<ul>
+<li><a href="#orgb892574">5.1. 我已经为语言 FOO 注册了多个语言服务器。打开项目时将使用哪一个？</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -337,16 +346,20 @@ emacs-cquery，lsp-rust，lsp-haskell 等可以看做是 lsp-mode 的适配器�
 lsp-mode 主要功能：
 </p>
 <ul class="org-ul">
-<li>代码诊断，使用 <code>flycheck/lsp-ui</code> 或内置的 flymake（Emacs&gt;26）。</li>
-<li>Code completion（代码补全），使用 company-lsp 或内置的 complete-at-point。</li>
-<li>悬停展示，使用 lsp-ui，在代码附近展示相关信息：如函数原型提示等。</li>
-<li>Code actions（代码操作），使用 lsp-execute-code-action 或 lsp-ui。</li>
-<li>Code outline（代码大纲），使用内置的 imenu 或 helm-imenu。</li>
-<li>Code navigation（代码导航） ，使用内置外部 xref。</li>
-<li><a href="https://docs.microsoft.com/en-us/visualstudio/ide/find-code-changes-and-other-history-with-codelens?view=vs-2019">Code lens</a>（参考/实现），该功能提供正在使用的源代码的元信息，例如单元测试、更改历史等。使用内置 xref。</li>
-<li>Highlights（代码高亮）</li>
-<li>Code Format（代码格式化）</li>
-<li>调试器，使用 dap-mode</li>
+<li>非阻塞异步调用。</li>
+<li>实时代码诊断，通过内置的 flymake（Emacs&gt;26）或 <a href="flycheck-mode.html">flycheck</a>/<a href="lsp-ui.html">lsp-ui</a> 。</li>
+<li>代码补全（Code completion），使用 <a href="company-lsp.html">company-lsp</a> 或内置的 complete-at-point。</li>
+<li>悬停展示（Hovers）：在代码附近展示相关信息，如函数原型提示等。使用 <a href="lsp-ui.html">lsp-ui</a>。</li>
+<li>代码操作（Code actions）：（参见 <a href="https://github.com/vshaxe/vshaxe/wiki/Code-Actions">code action</a>）使用 lsp-execute-code-action 或  <a href="lsp-ui.html">lsp-ui</a>。</li>
+<li>代码大纲（Code outline）：显示代码文件中定义的函数或变量。通过内置的 <a href="imenu.html">imenu</a> 或 helm-imenu。</li>
+<li>代码导航（Code navigation），使用内置外部 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref.html">xref</a>。</li>
+<li>代码感知（Code Lens）(参考/实现)：提供正在使用的源代码的元信息，例如单元测试、更改历史等。使用内置  <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref.html">xref</a>。关于 codelens 参考 <a href="https://www.codeproject.com/Articles/794766/What-is-CodeLens">what is CodeLens?</a>  <a href="https://docs.microsoft.com/en-us/visualstudio/ide/find-code-changes-and-other-history-with-codelens?view=vs-2019">Find code changes and other history with CodeLens</a></li>
+<li>代码高亮（Highlights）</li>
+<li>代码格式化（Code Format）</li>
+<li>调试器，使用 <a href="dap-mode.html">dap-mode</a></li>
+<li>集成 Ivy</li>
+<li>集成 Treemacs</li>
+<li>语义高亮（Semantic highlighting）（目前由 JDT LS 和未发布的 clangd 版本实现，请参见<a href="https://github.com/microsoft/vscode-languageserver-node/pull/367">Semantic highlighting spec</a>）</li>
 </ul>
 
 <p>
@@ -359,37 +372,164 @@ lsp-mode 在 <code>lsp-clients.el</code> 中预定义了几个 lsp-server（type
 <h2 id="org7f55632"><span class="section-number-2">2</span> 配置</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org8eda46e" class="outline-3">
-<h3 id="org8eda46e"><span class="section-number-3">2.1</span> 新增语言支持</h3>
+<div id="outline-container-org87863cc" class="outline-3">
+<h3 id="org87863cc"><span class="section-number-3">2.1</span> emacs</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-以下是注册新语言服务器所需的最小配置。注册时支持的其他设置请参阅 <code>lsp-clients.el</code> 的文档。 必须更新 lsp-language-id-configuration 以包含相应的 mode-&gt;language id，此例是 <code>(python-mode . "python")</code> ：
+最简 lsp-mode 除了内置 flymake 和 completion-at-point 外无需外部软件包，也可以安装以下扩展以获得更好的体验：
+</p>
+<ul class="org-ul">
+<li>安装 lsp-ui 以集成 flycheck 和更高级别的 UI 模块。</li>
+<li>安装 company-lsp 以使用 company-mode。</li>
+<li>安装 lsp-treemacs 以获得项目范围的错误概述。</li>
+<li>安装 helm-lsp 为 xref-apropos 提供类型完成功能。</li>
+<li>如果调试器支持您的语言，请安装 dap-mode。</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">require</span> '<span style="color: #5fafd7;">lsp-mode</span>)
+(add-hook 'XXX-mode-hook #'lsp)
+</pre>
+</div>
+<p>
+其中 XXX 可能是主要模式，例如 python，java，c ++。另外，如果要最小化配置，可以使用 prog-mode-hook。如果这样做，lsp 将尝试为每种编程模式启动，并在没有为当前模式注册任何客户端或不存在相应服务器的情况下回显一条消息。此外，lsp-mode 将自动检测并配置 lsp-ui 和 company-lsp。要关闭该行为，可以将 lsp-auto-configure 设置为 nil。
+</p>
+
+<p>
+若要将 LSP 服务器启动（和 DidOpen 通知）推迟到缓冲区可见之前，可以使用 lsp-deferred 而不是 lsp：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(add-hook 'XXX-mode-hook #'lsp-deferred)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org244d3c2" class="outline-3">
+<h3 id="org244d3c2"><span class="section-number-3">2.2</span> Spacemacs</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+spacemacs 开发分支中包含 lsp-mode 。将 lsp 添加到 dotspacemacs-configuration-layers 并配置用于 lsp 后端支持的语言。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org34d4882" class="outline-3">
+<h3 id="org34d4882"><span class="section-number-3">2.3</span> use-package</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+如果您使用 use-package，请用以下内容替换（要求'lsp-mode）。
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-mode</span>
+  <span style="color: #d18aff;">:hook</span> (XXX-mode . lsp)
+  <span style="color: #d18aff;">:commands</span> lsp)
+
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">optionally</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-ui</span> <span style="color: #d18aff;">:commands</span> lsp-ui-mode)
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">company-lsp</span> <span style="color: #d18aff;">:commands</span> company-lsp)
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">helm-lsp</span> <span style="color: #d18aff;">:commands</span> helm-lsp-workspace-symbol)
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-treemacs</span> <span style="color: #d18aff;">:commands</span> lsp-treemacs-errors-list)
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">optionally if you want to use debugger</span>
+(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">dap-mode</span>)
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(use-package dap-LANGUAGE) to load the dap adapter for your language</span>
+</pre>
+</div>
+
+
+<p>
+若要将 LSP 服务器启动（和 DidOpen 通知）推迟到 buffer 可见之前，可以使用 lsp-deferred 而不是 lsp：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-mode</span>
+  <span style="color: #d18aff;">:hook</span> (XXX-mode . lsp-deferred)
+  <span style="color: #d18aff;">:commands</span> (lsp lsp-deferred))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org2f594b2" class="outline-3">
+<h3 id="org2f594b2"><span class="section-number-3">2.4</span> Docker</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+请参阅 <a href="https://github.com/emacs-lsp/lsp-docker/">lsp-docker</a> 自述文件，该文件提供了如何在 docker 容器中运行 lsp-mode 的指南。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org435baaa" class="outline-2">
+<h2 id="org435baaa"><span class="section-number-2">3</span> 工作原理</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+lsp-mode 有预定义的服务器配置列表（通过 lsp-clients.el 加载），该列表包含 major-mode 到服务器的关联配置，或通过激活使用功能。除了 lsp-clients.el 中的默认服务器配置外，有些语言服务器需要单独的程序包（参见 <a href="https://github.com/emacs-lsp/lsp-mode/blob/master/README.org#supported-languages">支持语言种类</a> ）。当从特定项目中打开文件时，lsp-mode 并调用 lsp 命令，lsp-mode 将查找注册过的、能够处理当前文件的服务器。如果有这样的客户端，lsp-mode 将查找项目根目录。如果是第一次从项目中打开文件，系统将提示定义当前项目的根目录。一旦选择了项目根目录，它将保存在 lsp-session 文件中，并且在下次启动 Emacs 时将被加载，因此从该项目打开文件时不再要求提供项目根目录。以后，如果要更改项目根目录，可以使用 lsp-workspace-folder-remove 删除项目，然后调用 lsp-workspace-folder-add 添加根目录。如果要文件中需要强制启动特定语言服务器，则可以使用 <code>C-u M-x lsp</code> ，它将提示您选择要启动的语言服务器。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8eda46e" class="outline-2">
+<h2 id="org8eda46e"><span class="section-number-2">4</span> 新增语言支持</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+以下是注册新语言服务器所需的最小配置。注册时支持的其他设置请参阅 <code>lsp-clients.el</code> 的文档。 必须更新 lsp-language-id-configuration 以包含相应的 language mode-&gt;language id 映射关系，例如 <code>(python-mode . "python")</code> ：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(lsp-register-client
+<pre class="src src-elisp">(<span style="color: #a1db00;">defvar</span> <span style="color: #ff8700;">lsp-language-id-configuration</span>
+  '(...
+   (python-mode . <span style="color: #ff4ea3;">"python"</span>)
+   ...))
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">if you are adding the support for your language server in separate repo use</span>
+<span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">(add-to-list 'lsp-language-id-configuration '(python-mode . "python"))</span>
+
+(lsp-register-client
  (make-lsp-client <span style="color: #d18aff;">:new-connection</span> (lsp-stdio-connection <span style="color: #ff4ea3;">"pyls"</span>)
                   <span style="color: #d18aff;">:major-modes</span> '(python-mode)
                   <span style="color: #d18aff;">:server-id</span> 'pyls))
 </pre>
 </div>
+
+<p>
+如果语言服务器支持环境变量来控制其他行为，则可以使用：environment-fn 函数进行注册，就像 Bash 语言客户端所做的那样：
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(lsp-register-client
+ (make-lsp-client <span style="color: #d18aff;">:new-connection</span> (lsp-stdio-connection '(<span style="color: #ff4ea3;">"bash-language-server"</span> <span style="color: #ff4ea3;">"start"</span>))
+                  <span style="color: #d18aff;">:major-modes</span> '(sh-mode)
+                  <span style="color: #d18aff;">:priority</span> -1
+                  <span style="color: #d18aff;">:environment-fn</span> (<span style="color: #a1db00;">lambda</span> ()
+                                    ((<span style="color: #ff4ea3;">"EXPLAINSHELL_ENDPOINT"</span> . lsp-bash-explainshell-endpoint)
+                                     (<span style="color: #ff4ea3;">"HIGHLIGHT_PARSING_ERRORS"</span> . lsp-bash-highlight-parsing-errors)))
+                  <span style="color: #d18aff;">:server-id</span> 'bash-ls))
+</pre>
 </div>
+
+<p>
+lsp-bash-explainshell-endpoint 和 lsp-bash-highlight-parsing-errors 是语言客户端 defcustom，它们以类型安全的方式公开受支持的服务器环境设置。如果您更改了这些变量中的任何一个，请使用 lsp-restart-workspace 重新启动语言服务器以应用更改。
+</p>
 </div>
 </div>
 
-<div id="outline-container-org6368ecb" class="outline-2">
-<h2 id="org6368ecb"><span class="section-number-2">3</span> 使用</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-org51ed7d2" class="outline-2">
+<h2 id="org51ed7d2"><span class="section-number-2">5</span> FAQ</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgb892574" class="outline-3">
+<h3 id="orgb892574"><span class="section-number-3">5.1</span> 我已经为语言 FOO 注册了多个语言服务器。打开项目时将使用哪一个？</h3>
+<div class="outline-text-3" id="text-5-1">
 <p>
-使用 <code>M-x lsp</code> 启动。如果没有为当前模式注册客户端或相应服务器不存在，将回显消息。此外，lsp-mode 将自动检测和配置 lsp-ui 和 company-lsp。要关闭该行为，可以将 lsp-auto-configure 设置为 nil
+具有最高优先级的获胜。 lsp-clients.el 预定义服务器的优先级为-1，低于外部程序包（如果未指定，则优先级为 0）。如果服务器是使用 <code>add-on?</code> 标记 注册的，并且将标志设置为 t，它将与为当前模式注册的其他服务器并行启动。
 </p>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 19:58</p>
+<p class="date">Created: 2019-12-04 三 21:50</p>
 <p class="validation"></p>
 </div>
 </body>

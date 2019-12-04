@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 三 21:50 -->
+<!-- 2019-12-04 三 21:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>homebrew</title>
+<title>rand</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,155 +306,96 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">homebrew</h1>
+<h1 class="title">rand</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3f9d8b5">1. 概述</a></li>
-<li><a href="#org03db425">2. 安装</a></li>
-<li><a href="#org1b9afb7">3. 常用命令</a></li>
-<li><a href="#org143a863">4. 问题</a>
-<ul>
-<li><a href="#org208277b">4.1. brew 更新镜像</a></li>
-<li><a href="#org245b91f">4.2. 安装 java</a></li>
-</ul>
-</li>
+<li><a href="#org46f05b8">1. 概述</a></li>
+<li><a href="#org24a7ed8">2. func Int</a></li>
+<li><a href="#org0254279">3. func Intn</a></li>
+<li><a href="#org5e5149b">4. func Perm</a></li>
+<li><a href="#org39dc4c6">5. func Seed</a></li>
+<li><a href="#orgd65080b">6. func Shuffle</a></li>
 </ul>
 </div>
 </div>
 
+<div id="outline-container-org46f05b8" class="outline-2">
+<h2 id="org46f05b8"><span class="section-number-2">1</span> 概述</h2>
+</div>
 
-<div id="outline-container-org3f9d8b5" class="outline-2">
-<h2 id="org3f9d8b5"><span class="section-number-2">1</span> 概述</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-<a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 macOS 的软件包管理器。
-</p>
-</div>
-</div>
-<div id="outline-container-org03db425" class="outline-2">
-<h2 id="org03db425"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-org24a7ed8" class="outline-2">
+<h2 id="org24a7ed8"><span class="section-number-2">2</span> func Int</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
-<pre class="src src-sh">/usr/bin/ruby -e <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">curl</span><span style="color: #ff4ea3;"> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span>
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Int</span>() <span style="color: #00d7af;">int</span>
 </pre>
 </div>
+<p>
+返回一个非负的伪随机整数。
+</p>
 </div>
 </div>
 
-<div id="outline-container-org1b9afb7" class="outline-2">
-<h2 id="org1b9afb7"><span class="section-number-2">3</span> 常用命令</h2>
+<div id="outline-container-org0254279" class="outline-2">
+<h2 id="org0254279"><span class="section-number-2">3</span> func Intn</h2>
 <div class="outline-text-2" id="text-3">
-<p>
-以安装 wget 为例：
-</p>
 <div class="org-src-container">
-<pre class="src src-sh">brew search wget
-brew info wget
-brew install wget
-brew reinstall wget
-brew uninstall wget
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Intn</span>() <span style="color: #00d7af;">int</span>
 </pre>
 </div>
-
 <p>
-查看 wget 的 homepage：
+返回一个 [0,n) 范围内的非负的伪随机整数。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">brew home wget
-</pre>
-</div>
-
-<p>
-查看 brew 安装的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew list
-</pre>
-</div>
-
-<p>
-查看过期的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew outdated
-</pre>
-</div>
-
-<p>
-删除无用的旧包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew cleanup
-</pre>
-</div>
-
-<p>
-更新所有软件包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-brew upgrade
-</pre>
-</div>
 </div>
 </div>
 
-<div id="outline-container-org143a863" class="outline-2">
-<h2 id="org143a863"><span class="section-number-2">4</span> 问题</h2>
+<div id="outline-container-org5e5149b" class="outline-2">
+<h2 id="org5e5149b"><span class="section-number-2">4</span> func Perm</h2>
 <div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org208277b" class="outline-3">
-<h3 id="org208277b"><span class="section-number-3">4.1</span> brew 更新镜像</h3>
-<div class="outline-text-3" id="text-4-1">
-<ol class="org-ol">
-<li>执行下面这句命令，更换为中科院的镜像：</li>
-</ol>
-
 <div class="org-src-container">
-<pre class="src src-sh">mv /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core.bak
-git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Perm</span>(<span style="color: #ff8700;">n</span> <span style="color: #00d7af;">int</span>) []<span style="color: #00d7af;">int</span>
 </pre>
 </div>
-
-<ol class="org-ol">
-<li>把 homebrew-core 的镜像地址也设为中科院的国内镜像</li>
-</ol>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
-<span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)/Library/Taps/homebrew/homebrew-core"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-
-</pre>
-</div>
-<ol class="org-ol">
-<li><p>
-更新
+<p>
+Perm 返回 [0，n）的伪随机排列。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-</pre>
-</div></li>
-</ol>
 </div>
 </div>
 
-<div id="outline-container-org245b91f" class="outline-3">
-<h3 id="org245b91f"><span class="section-number-3">4.2</span> 安装 java</h3>
-<div class="outline-text-3" id="text-4-2">
-<pre class="example">
-brew cast install java
+<div id="outline-container-org39dc4c6" class="outline-2">
+<h2 id="org39dc4c6"><span class="section-number-2">5</span> func Seed</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Seed</span>(<span style="color: #ff8700;">seed</span> <span style="color: #00d7af;">int64</span>)
 </pre>
 </div>
+
+<p>
+使用 seed 来初始化随机数集合。 Rand.Seed 方法不同，Seed 可以安全地同时使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd65080b" class="outline-2">
+<h2 id="orgd65080b"><span class="section-number-2">6</span> func Shuffle</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Shuffle</span>(<span style="color: #ff8700;">n</span> <span style="color: #00d7af;">int</span>, <span style="color: #ff8700;">swap</span> <span style="color: #a1db00;">func</span>(<span style="color: #ff8700;">i</span>, <span style="color: #ff8700;">j</span> <span style="color: #00d7af;">int</span>))
+</pre>
+</div>
+
+<p>
+使用默认的 Source 伪随机化元素的顺序。 n 是元素数。swap 交换索引为 i 和 j 的元素。
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-04 三 21:50</p>
+<p class="date">Created: 2019-12-04 三 21:51</p>
 <p class="validation"></p>
 </div>
 </body>

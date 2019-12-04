@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 三 21:50 -->
+<!-- 2019-12-04 三 21:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>homebrew</title>
+<title>strings</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,155 +306,12 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">homebrew</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org3f9d8b5">1. 概述</a></li>
-<li><a href="#org03db425">2. 安装</a></li>
-<li><a href="#org1b9afb7">3. 常用命令</a></li>
-<li><a href="#org143a863">4. 问题</a>
-<ul>
-<li><a href="#org208277b">4.1. brew 更新镜像</a></li>
-<li><a href="#org245b91f">4.2. 安装 java</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-
-<div id="outline-container-org3f9d8b5" class="outline-2">
-<h2 id="org3f9d8b5"><span class="section-number-2">1</span> 概述</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-<a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 macOS 的软件包管理器。
-</p>
-</div>
-</div>
-<div id="outline-container-org03db425" class="outline-2">
-<h2 id="org03db425"><span class="section-number-2">2</span> 安装</h2>
-<div class="outline-text-2" id="text-2">
-<div class="org-src-container">
-<pre class="src src-sh">/usr/bin/ruby -e <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">curl</span><span style="color: #ff4ea3;"> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org1b9afb7" class="outline-2">
-<h2 id="org1b9afb7"><span class="section-number-2">3</span> 常用命令</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-以安装 wget 为例：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew search wget
-brew info wget
-brew install wget
-brew reinstall wget
-brew uninstall wget
-</pre>
-</div>
-
-<p>
-查看 wget 的 homepage：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew home wget
-</pre>
-</div>
-
-<p>
-查看 brew 安装的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew list
-</pre>
-</div>
-
-<p>
-查看过期的包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew outdated
-</pre>
-</div>
-
-<p>
-删除无用的旧包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew cleanup
-</pre>
-</div>
-
-<p>
-更新所有软件包：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-brew upgrade
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org143a863" class="outline-2">
-<h2 id="org143a863"><span class="section-number-2">4</span> 问题</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org208277b" class="outline-3">
-<h3 id="org208277b"><span class="section-number-3">4.1</span> brew 更新镜像</h3>
-<div class="outline-text-3" id="text-4-1">
-<ol class="org-ol">
-<li>执行下面这句命令，更换为中科院的镜像：</li>
-</ol>
-
-<div class="org-src-container">
-<pre class="src src-sh">mv /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core.bak
-git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
-</pre>
-</div>
-
-<ol class="org-ol">
-<li>把 homebrew-core 的镜像地址也设为中科院的国内镜像</li>
-</ol>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
-<span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)/Library/Taps/homebrew/homebrew-core"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-
-</pre>
-</div>
-<ol class="org-ol">
-<li><p>
-更新
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">brew update
-</pre>
-</div></li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-org245b91f" class="outline-3">
-<h3 id="org245b91f"><span class="section-number-3">4.2</span> 安装 java</h3>
-<div class="outline-text-3" id="text-4-2">
-<pre class="example">
-brew cast install java
-</pre>
-</div>
-</div>
-</div>
+<h1 class="title">strings</h1>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-04 三 21:50</p>
+<p class="date">Created: 2019-12-04 三 21:51</p>
 <p class="validation"></p>
 </div>
 </body>
