@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 19:59 -->
+<!-- 2019-12-07 六 15:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>python-lsp</title>
@@ -314,17 +314,11 @@ for the JavaScript code in this tag.
 <li><a href="#orgcca948d">1. 概述</a></li>
 <li><a href="#org5a85ef7">2. python-language-server</a>
 <ul>
-<li><a href="#org5e0704b">2.1. 安装</a></li>
-<li><a href="#org63a04cd">2.2. 配置</a></li>
-<li><a href="#orgc9e9789">2.3. 使用</a></li>
+<li><a href="#org7a7ee3f">2.1. 安装</a></li>
+<li><a href="#org91607c2">2.2. 使用</a></li>
 </ul>
 </li>
-<li><a href="#org0c2d11f">3. lsp-python-ms</a>
-<ul>
-<li><a href="#org7a7ee3f">3.1. 安装</a></li>
-<li><a href="#org91607c2">3.2. 使用</a></li>
-</ul>
-</li>
+<li><a href="#org0c2d11f">3. lsp-python-ms</a></li>
 </ul>
 </div>
 </div>
@@ -333,7 +327,7 @@ for the JavaScript code in this tag.
 <h2 id="orgcca948d"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-本文主要对比介绍几种python的 language server。
+本文主要对比介绍几种 python 的 language server。
 </p>
 </div>
 </div>
@@ -342,12 +336,12 @@ for the JavaScript code in this tag.
 <h2 id="org5a85ef7"><span class="section-number-2">2</span> python-language-server</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-<a href="https://github.com/palantir/python-language-server">python-language-server</a> 是纯python开发的lsp server。
+<a href="https://github.com/palantir/python-language-server">python-language-server</a> 是纯 python 开发的 lsp server。
 </p>
 </div>
 
-<div id="outline-container-org5e0704b" class="outline-3">
-<h3 id="org5e0704b"><span class="section-number-3">2.1</span> 安装</h3>
+<div id="outline-container-org7a7ee3f" class="outline-3">
+<h3 id="org7a7ee3f"><span class="section-number-3">2.1</span> 安装</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-sh">pip3 install python-language-server[all]
@@ -355,11 +349,11 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-安装以下lib：
+安装以下 lib：
 </p>
 <ul class="org-ul">
 <li>Rope：补全和重命名</li>
-<li>Pyflakes： 检测各种错误的linter</li>
+<li>Pyflakes： 检测各种错误的 linter</li>
 <li>McCabe： 用于复杂性检查</li>
 <li>pycodestyle：用于代码风格检查的  linter</li>
 <li>pydocstyle：用于文档字符串样式检查的 linter（默认情况下禁用）</li>
@@ -369,15 +363,11 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org63a04cd" class="outline-3">
-<h3 id="org63a04cd"><span class="section-number-3">2.2</span> 配置</h3>
-</div>
-
-<div id="outline-container-orgc9e9789" class="outline-3">
-<h3 id="orgc9e9789"><span class="section-number-3">2.3</span> 使用</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-org91607c2" class="outline-3">
+<h3 id="org91607c2"><span class="section-number-3">2.2</span> 使用</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
-目前该配置pyls使用还比较卡顿，暂时放弃。
+目前该配置 pyls 使用还比较卡顿，暂时放弃。
 </p>
 </div>
 </div>
@@ -387,57 +377,19 @@ for the JavaScript code in this tag.
 <h2 id="org0c2d11f"><span class="section-number-2">3</span> lsp-python-ms</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-<a href="https://github.com/andrew-christianson/lsp-python-ms/">lsp-python-ms</a> 使用微软实现的python的lsp server。
+<a href="https://github.com/andrew-christianson/lsp-python-ms/">lsp-python-ms</a> 使用微软实现的 python 的 lsp server。
 </p>
-</div>
 
-<div id="outline-container-org7a7ee3f" class="outline-3">
-<h3 id="org7a7ee3f"><span class="section-number-3">3.1</span> 安装</h3>
-<div class="outline-text-3" id="text-3-1">
-<ol class="org-ol">
-<li>安装 <a href="https://www.microsoft.com/net/download">donet-sdk</a></li>
-<li><p>
-安装 <a href="https://github.com/Microsoft/python-language-server">python-language-server</a>
+<p>
+配置参见 <a href="https://github.com/phenix3443/emacs.d/blob/master/lisps/python-ide.el">python-ide.el</a>
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">git clone git@github.com:Microsoft/python-language-server.git
-<span style="color: #d18aff;">cd</span> python-language-server/src/LanguageServer/Impl
-dotnet build -c Release
-dotnet publish -c Release -r linux-x64
-</pre>
-</div></li>
-<li><p>
-然后使用如下配置：
-</p>
-<div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-python-ms</span>
-  <span style="color: #d18aff;">:demand</span>  <span style="color: #6c6c6c; font-style: italic;">;</span><span style="color: #6c6c6c; font-style: italic;">&#19981;&#35201;&#23569;&#20102;&#35813;&#25351;&#20196;&#65292;&#21542;&#21017;&#20250;&#25552;&#31034;python&#27809;&#26377;lsp</span>
-  <span style="color: #d18aff;">:ensure</span> nil
-  <span style="color: #d18aff;">:load-path</span> <span style="color: #ff4ea3;">"~/github/lsp-python-ms"</span>
-  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">:after lsp-mode</span>
-  <span style="color: #d18aff;">:hook</span> (python-mode . lsp)
-  <span style="color: #d18aff;">:config</span>
-  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">for dev build of language server</span>
-  (<span style="color: #a1db00;">setq</span> lsp-python-ms-dir
-        (expand-file-name <span style="color: #ff4ea3;">"~/github/python-language-server/output/bin/Release/"</span>))
-  <span style="color: #6c6c6c; font-style: italic;">;; </span><span style="color: #6c6c6c; font-style: italic;">for executable of language server, if it's not symlinked on your PATH</span>
-  (<span style="color: #a1db00;">setq</span> lsp-python-ms-executable <span style="color: #ff4ea3;">"~/github/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"</span>)
-  )
-</pre>
-</div></li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-org91607c2" class="outline-3">
-<h3 id="org91607c2"><span class="section-number-3">3.2</span> 使用</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 19:59</p>
+<p class="date">Created: 2019-12-07 六 15:20</p>
 <p class="validation"></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 三 21:50 -->
+<!-- 2019-12-09 一 21:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>lsp-ui</title>
@@ -311,16 +311,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9e2ed65">1. 概述</a></li>
-<li><a href="#orgde2970f">2. 配置</a>
+<li><a href="#org9e2ed65">1. 概述</a>
 <ul>
-<li><a href="#org7b5a1d1">2.1. lsp-ui-sideline</a></li>
-<li><a href="#orgaf3f1f2">2.2. lsp-ui-peek</a></li>
-<li><a href="#orgfd30262">2.3. lsp-ui-imenu</a></li>
-<li><a href="#org14aa6e0">2.4. lsp-ui-doc</a></li>
+<li><a href="#org7b5a1d1">1.1. lsp-ui-sideline</a></li>
+<li><a href="#orgaf3f1f2">1.2. lsp-ui-peek</a></li>
+<li><a href="#orgfd30262">1.3. lsp-ui-imenu</a></li>
+<li><a href="#org14aa6e0">1.4. lsp-ui-doc</a></li>
 </ul>
 </li>
-<li><a href="#org4c4bb36">3. 使用</a></li>
+<li><a href="#org4c4bb36">2. 使用</a></li>
 </ul>
 </div>
 </div>
@@ -331,26 +330,11 @@ for the JavaScript code in this tag.
 <p>
 <a href="https://github.com/Emacs-lsp/lsp-ui">lsp-ui</a> 包含了 lsp-mode 的所有更高级 UI 模块，如 flycheck 支持和 code lenses。
 </p>
-
-<p>
-lsp-mode 中一些与 Emacs 集成有关，但与 lsp 核心协议无关的组件放在这里。当前有：
-</p>
-<ul class="org-ul">
-<li>lsp-ui-flycheck 用 language server 的 diagnostics 信息实现 flycheck 的 checker</li>
-<li>lsp-ui-sideline 即时显示当前行所有标识符的 textDocument/hover 信息</li>
-<li>lsp-ui-peek 基于 quick-peek 的 find-{definitions,references,apropos}</li>
-<li>未来可能添加更多 code lens 功能</li>
-</ul>
-</div>
 </div>
 
-<div id="outline-container-orgde2970f" class="outline-2">
-<h2 id="orgde2970f"><span class="section-number-2">2</span> 配置</h2>
-<div class="outline-text-2" id="text-2">
-</div>
 <div id="outline-container-org7b5a1d1" class="outline-3">
-<h3 id="org7b5a1d1"><span class="section-number-3">2.1</span> lsp-ui-sideline</h3>
-<div class="outline-text-3" id="text-2-1">
+<h3 id="org7b5a1d1"><span class="section-number-3">1.1</span> lsp-ui-sideline</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
 显示当前行上符号的信息。 它还显示了 flycheck 诊断和 LSP 代码动作（code action）。
 </p>
@@ -358,21 +342,21 @@ lsp-mode 中一些与 Emacs 集成有关，但与 lsp 核心协议无关的组�
 </div>
 
 <div id="outline-container-orgaf3f1f2" class="outline-3">
-<h3 id="orgaf3f1f2"><span class="section-number-3">2.2</span> lsp-ui-peek</h3>
-<div class="outline-text-3" id="text-2-2">
+<h3 id="orgaf3f1f2"><span class="section-number-3">1.2</span> lsp-ui-peek</h3>
+<div class="outline-text-3" id="text-1-2">
 <p>
-有时检查符号相关的信息（如定义、引用）需要切换当前代码上下文，使用 <a href="https://code.visualstudio.com/docs/editor/editingevolved#_peek">peek</a> 可以直接打开一个小窗口查看和编辑符号相关的上下文。
+<a href="https://code.visualstudio.com/docs/editor/editingevolved#_peek">peek</a> 可以直接打开一个小窗口查看和编辑符号相关的上下文，例如函数的定义和引用等。
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgfd30262" class="outline-3">
-<h3 id="orgfd30262"><span class="section-number-3">2.3</span> lsp-ui-imenu</h3>
+<h3 id="orgfd30262"><span class="section-number-3">1.3</span> lsp-ui-imenu</h3>
 </div>
 
 <div id="outline-container-org14aa6e0" class="outline-3">
-<h3 id="org14aa6e0"><span class="section-number-3">2.4</span> lsp-ui-doc</h3>
-<div class="outline-text-3" id="text-2-4">
+<h3 id="org14aa6e0"><span class="section-number-3">1.4</span> lsp-ui-doc</h3>
+<div class="outline-text-3" id="text-1-4">
 <p>
 在 child frame 中显示光标处对象的文档。
 </p>
@@ -381,13 +365,13 @@ lsp-mode 中一些与 Emacs 集成有关，但与 lsp 核心协议无关的组�
 </div>
 
 <div id="outline-container-org4c4bb36" class="outline-2">
-<h2 id="org4c4bb36"><span class="section-number-2">3</span> 使用</h2>
+<h2 id="org4c4bb36"><span class="section-number-2">2</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-04 三 21:50</p>
+<p class="date">Created: 2019-12-09 一 21:01</p>
 <p class="validation"></p>
 </div>
 </body>
