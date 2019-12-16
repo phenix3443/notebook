@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 20:00 -->
+<!-- 2019-12-16 一 11:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>scrapy 之 pipeline</title>
@@ -351,9 +351,9 @@ CSVPipeline 将 item 保存到 csv 文件中。
 修改 tutorial/tutorial/settings.py：
 </p>
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #ff8700;">ITEM_PIPELINES</span> = {
-    <span style="color: #ff4ea3;">'tutorial.pipelines.TutorialPipeline'</span>: 300,
-    <span style="color: #ff4ea3;">'tutorial.pipelines.CSVPipeline'</span>: 400
+<pre class="src src-python"><span style="color: #c6c6c6; background-color: #303030;">ITEM_PIPELINES</span> = {
+    <span style="color: #ff4ea3;">'tutorial.pipelines.TutorialPipeline'</span>: <span style="color: #c6c6c6; background-color: #303030;">300</span>,
+    <span style="color: #ff4ea3;">'tutorial.pipelines.CSVPipeline'</span>: <span style="color: #c6c6c6; background-color: #303030;">400</span>
 }
 </pre>
 </div>
@@ -384,9 +384,9 @@ pipeline 后面的数据表示优先级，数字越小，优先级越高。
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #ff8700;">custom_settings</span> = {
+<pre class="src src-python"><span style="color: #c6c6c6; background-color: #303030;">custom_settings</span> = {
         <span style="color: #ff4ea3;">'ITEM_PIPELINES'</span>: {
-            <span style="color: #ff4ea3;">'&lt;project_name&gt;.pipelines.&lt;pipeline_name&gt;'</span>: 100
+            <span style="color: #ff4ea3;">'&lt;project_name&gt;.pipelines.&lt;pipeline_name&gt;'</span>: <span style="color: #c6c6c6; background-color: #303030;">100</span>
         }
     }
 </pre>
@@ -406,13 +406,13 @@ pipeline 后面的数据表示优先级，数字越小，优先级越高。
 
 
 <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">QuotesSpider</span>(scrapy.Spider):
-    <span style="color: #ff8700;">name</span> = <span style="color: #ff4ea3;">'quotes'</span>
-    <span style="color: #ff8700;">custom_settings</span> = {
+    <span style="color: #c6c6c6; background-color: #303030;">name</span> = <span style="color: #ff4ea3;">'quotes'</span>
+    <span style="color: #c6c6c6; background-color: #303030;">custom_settings</span> = {
         <span style="color: #ff4ea3;">'ITEM_PIPELINES'</span>: {
-            <span style="color: #ff4ea3;">'tutorial.pipelines.CSVPipeline'</span>: 400
+            <span style="color: #ff4ea3;">'tutorial.pipelines.CSVPipeline'</span>: <span style="color: #c6c6c6; background-color: #303030;">400</span>
         }
     }
-    <span style="color: #ff8700;">allowed_domains</span> = [<span style="color: #ff4ea3;">'quotes.toscrape.com'</span>]
+    <span style="color: #c6c6c6; background-color: #303030;">allowed_domains</span> = [<span style="color: #ff4ea3;">'quotes.toscrape.com'</span>]
 .......
 </pre>
 </div>
@@ -420,9 +420,9 @@ pipeline 后面的数据表示优先级，数字越小，优先级越高。
 还需要对应修改 tutorial/tutorial/settings.py：
 </p>
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #ff8700;">ITEM_PIPELINES</span> = {
-    <span style="color: #ff4ea3;">'tutorial.pipelines.TutorialPipeline'</span>: 300,
-    <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">'tutorial.pipelines.CSVPipeline': 400</span>
+<pre class="src src-python"><span style="color: #c6c6c6; background-color: #303030;">ITEM_PIPELINES</span> = {
+    <span style="color: #ff4ea3;">'tutorial.pipelines.TutorialPipeline'</span>: <span style="color: #c6c6c6; background-color: #303030;">300</span>,
+    <span style="color: #6c6c6c; font-style: italic;"># 'tutorial.pipelines.CSVPipeline': 400</span>
 }
 </pre>
 </div>
@@ -432,7 +432,7 @@ pipeline 后面的数据表示优先级，数字越小，优先级越高。
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 20:00</p>
+<p class="date">Created: 2019-12-16 一 11:01</p>
 <p class="validation"></p>
 </div>
 </body>

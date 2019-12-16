@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 22:13 -->
+<!-- 2019-12-16 一 10:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>python summary</title>
@@ -753,50 +753,50 @@ python 本身支持类模型。
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">-*- coding:utf-8-*-</span>
 <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">Base</span>:
-    <span style="color: #ff8700;">cls_var</span> = <span style="color: #ff4ea3;">"cls_var"</span>
+    <span style="color: #c6c6c6; background-color: #303030;">cls_var</span> = <span style="color: #ff4ea3;">"cls_var"</span>
 
     <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">__init__</span>(<span style="color: #a1db00;">self</span>, name):
         <span style="color: #a1db00;">print</span>(<span style="color: #ff4ea3;">"construct Foo instance: "</span> + name)
         <span style="color: #a1db00;">self</span>.instance_var = <span style="color: #ff4ea3;">"instance var"</span>
 
-    <span style="color: #00d7af;">@classmethod</span>
-    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">cls_method</span>(cls):
-        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(cls).<span style="color: #d18aff;">__name__</span> + <span style="color: #ff4ea3;">" class method"</span>
+    <span style="color: #a1db00;">@classmethod</span>
+    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">cls_method</span>(<span style="color: #a1db00;">cls</span>):
+        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(<span style="color: #a1db00;">cls</span>).__name__ + <span style="color: #ff4ea3;">" class method"</span>
 
-    <span style="color: #00d7af;">@classmethod</span>
-    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">call_static_method</span>(cls):
-        <span style="color: #a1db00;">return</span> <span style="color: #ff4ea3;">"from class method call "</span> + cls.static_methold()
+    <span style="color: #a1db00;">@classmethod</span>
+    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">call_static_method</span>(<span style="color: #a1db00;">cls</span>):
+        <span style="color: #a1db00;">return</span> <span style="color: #ff4ea3;">"from class method call "</span> + <span style="color: #a1db00;">cls</span>.static_methold()
 
-    <span style="color: #00d7af;">@staticmethod</span>
+    <span style="color: #a1db00;">@staticmethod</span>
     <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">static_methold</span>():
         <span style="color: #a1db00;">return</span> <span style="color: #ff4ea3;">"base static method "</span>
 
-    <span style="color: #00d7af;">@staticmethod</span>
+    <span style="color: #a1db00;">@staticmethod</span>
     <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">call_cls_methold</span>():
         <span style="color: #a1db00;">return</span> <span style="color: #ff4ea3;">"from static method call "</span> + Base.cls_method()
 
     <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">instance_method</span>(<span style="color: #a1db00;">self</span>):
-        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(<span style="color: #a1db00;">self</span>).<span style="color: #d18aff;">__name__</span> + <span style="color: #ff4ea3;">" instance method"</span>
+        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(<span style="color: #a1db00;">self</span>).__name__ + <span style="color: #ff4ea3;">" instance method"</span>
 
 
 <span style="color: #a1db00;">class</span> <span style="color: #00d7af;">Derive</span>(Base):
-    <span style="color: #00d7af;">@classmethod</span>
-    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">cls_method</span>(cls):
-        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(cls).<span style="color: #d18aff;">__name__</span> + <span style="color: #ff4ea3;">" class method"</span>
+    <span style="color: #a1db00;">@classmethod</span>
+    <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">cls_method</span>(<span style="color: #a1db00;">cls</span>):
+        <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">type</span>(<span style="color: #a1db00;">cls</span>).__name__ + <span style="color: #ff4ea3;">" class method"</span>
 
-    <span style="color: #00d7af;">@staticmethod</span>
+    <span style="color: #a1db00;">@staticmethod</span>
     <span style="color: #a1db00;">def</span> <span style="color: #ffd700;">static_methold</span>():
         <span style="color: #a1db00;">return</span> <span style="color: #ff4ea3;">"child static method"</span>
 
 
 <span style="color: #a1db00;">if</span> <span style="color: #d18aff;">__name__</span> == <span style="color: #ff4ea3;">"__main__"</span>:
-    <span style="color: #ff8700;">b1</span> = Base(<span style="color: #ff4ea3;">"foo1"</span>)
-    <span style="color: #ff8700;">b2</span> = Base(<span style="color: #ff4ea3;">"foo2"</span>)
+    <span style="color: #c6c6c6; background-color: #303030;">b1</span> = Base(<span style="color: #ff4ea3;">"foo1"</span>)
+    <span style="color: #c6c6c6; background-color: #303030;">b2</span> = Base(<span style="color: #ff4ea3;">"foo2"</span>)
 
-    <span style="color: #a1db00;">print</span>(b1.instance_var <span style="color: #a1db00;">is</span> b2.instance_var)  <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">True</span>
-    <span style="color: #a1db00;">print</span>(b1.cls_var <span style="color: #a1db00;">is</span> b2.cls_var)  <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">True</span>
-    <span style="color: #a1db00;">print</span>(b1.cls_method <span style="color: #a1db00;">is</span> b2.cls_method)  <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">False</span>
-    <span style="color: #a1db00;">print</span>(b1.static_methold <span style="color: #a1db00;">is</span> b2.static_methold)  <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">True</span>
+    <span style="color: #a1db00;">print</span>(b1.instance_var <span style="color: #a1db00;">is</span> b2.instance_var)  <span style="color: #6c6c6c; font-style: italic;"># True</span>
+    <span style="color: #a1db00;">print</span>(b1.cls_var <span style="color: #a1db00;">is</span> b2.cls_var)  <span style="color: #6c6c6c; font-style: italic;"># True</span>
+    <span style="color: #a1db00;">print</span>(b1.cls_method <span style="color: #a1db00;">is</span> b2.cls_method)  <span style="color: #6c6c6c; font-style: italic;"># False</span>
+    <span style="color: #a1db00;">print</span>(b1.static_methold <span style="color: #a1db00;">is</span> b2.static_methold)  <span style="color: #6c6c6c; font-style: italic;"># True</span>
 
     <span style="color: #a1db00;">print</span>(b1.instance_method())
 
@@ -809,7 +809,7 @@ python 本身支持类模型。
     <span style="color: #a1db00;">print</span>(Base.call_cls_methold())
     <span style="color: #a1db00;">print</span>(Base.call_static_method())
 
-    <span style="color: #ff8700;">d</span> = Derive(<span style="color: #ff4ea3;">"child"</span>)
+    <span style="color: #c6c6c6; background-color: #303030;">d</span> = Derive(<span style="color: #ff4ea3;">"child"</span>)
     <span style="color: #a1db00;">print</span>(d.call_static_method())
     <span style="color: #a1db00;">print</span>(d.call_cls_methold())
 
@@ -877,7 +877,7 @@ python 本身支持类模型。
         <span style="color: #a1db00;">print</span>(<span style="color: #ff4ea3;">"init D"</span>)
 
 
-<span style="color: #ff8700;">d</span> = D()
+<span style="color: #c6c6c6; background-color: #303030;">d</span> = D()
 
 </pre>
 </div>
@@ -908,7 +908,7 @@ python 本身支持类模型。
         <span style="color: #a1db00;">print</span>(<span style="color: #ff4ea3;">"init D"</span>)
 
 
-<span style="color: #ff8700;">d</span> = D()
+<span style="color: #c6c6c6; background-color: #303030;">d</span> = D()
 
 </pre>
 </div>
@@ -1059,7 +1059,7 @@ build-in
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 22:13</p>
+<p class="date">Created: 2019-12-16 一 10:45</p>
 <p class="validation"></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 三 21:51 -->
+<!-- 2019-12-16 一 11:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>the way to go</title>
@@ -552,9 +552,9 @@ Go 语言可以隐藏简介引用。
 <div id="outline-container-orgeb1275f" class="outline-4">
 <h4 id="orgeb1275f"><span class="section-number-4">1.3.3</span> 6.3 传递变长参数</h4>
 <div class="outline-text-4" id="text-1-3-3">
-<ul class="org-ul">
-<li>变长参数的主要用途是什么？除了字符格式化输出函数。</li>
-</ul>
+<p>
+变长参数放在 slice 中。
+</p>
 </div>
 </div>
 
@@ -569,6 +569,15 @@ Go 语言可以隐藏简介引用。
 
 <div id="outline-container-orgeeb5e8a" class="outline-4">
 <h4 id="orgeeb5e8a"><span class="section-number-4">1.3.5</span> 6.5 内置函数</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<p>
+new 和 make 均是用于分配内存：new 用于值类型和用户定义的类型，如自定义结构，make 用于内置引用类型（切片、map 和管道）。
+</p>
+
+<p>
+new(T) 分配类型 T 的零值并返回其地址，也就是指向类型 T 的指针（详见第 10.1 节）。它也可以被用于基本类型：v := new(int)。make(T) 返回类型 T 的初始化之后的值，因此它比 new 进行更多的工作。
+</p>
+</div>
 </div>
 
 <div id="outline-container-org6ca8a37" class="outline-4">
@@ -581,11 +590,6 @@ Go 语言可以隐藏简介引用。
 
 <div id="outline-container-orgf924f8c" class="outline-4">
 <h4 id="orgf924f8c"><span class="section-number-4">1.3.8</span> 6.8 闭包</h4>
-<div class="outline-text-4" id="text-1-3-8">
-<ul class="org-ul">
-<li>闭包多是匿名函数，配合 defer，go 使用，或者将函数作为返回值。</li>
-</ul>
-</div>
 </div>
 
 <div id="outline-container-orgf09bf45" class="outline-4">
@@ -612,13 +616,27 @@ Go 语言可以隐藏简介引用。
 <div id="outline-container-orgc11c091" class="outline-4">
 <h4 id="orgc11c091"><span class="section-number-4">1.4.1</span> 7.1 声明与初始化</h4>
 <div class="outline-text-4" id="text-1-4-1">
-<ul class="org-ul">
-<li>数组长度也是数组类型的一部分。</li>
-</ul>
+<p>
+数组长度也是数组类型的一部分。
+</p>
 </div>
 </div>
+
 <div id="outline-container-orgbce7bd3" class="outline-4">
 <h4 id="orgbce7bd3"><span class="section-number-4">1.4.2</span> 7.2 切片</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+make()创建一个切片，同时创建好相关数组。
+</p>
+
+<p>
+make 和 new 看起来二者没有什么区别，都在堆上分配内存，但是它们的行为不同，适用于不同的类型。
+</p>
+<ul class="org-ul">
+<li>new(T) 为每个新的类型 T 分配一片内存，初始化为 0 并且返回类型为*T 的内存地址：这种方法 返回一个指向类型为 T，值为 0 的地址的指针，它适用于值类型如数组和结构体（参见第 10 章）；它相当于 &amp;T{}。</li>
+<li>make(T) 返回一个类型为 T 的初始值，它只适用于 3 种内建的引用类型：切片、map 和 channel（参见第 8 章，第 13 章）。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org01bd919" class="outline-4">
@@ -637,6 +655,7 @@ Go 语言可以隐藏简介引用。
 </ul>
 </div>
 </div>
+
 <div id="outline-container-orgaba4902" class="outline-4">
 <h4 id="orgaba4902"><span class="section-number-4">1.4.6</span> 7.6 字符串、数组和切片的应用</h4>
 <div class="outline-text-4" id="text-1-4-6">
@@ -864,7 +883,7 @@ Go 语言可以隐藏简介引用。
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-04 三 21:51</p>
+<p class="date">Created: 2019-12-16 一 11:01</p>
 <p class="validation"></p>
 </div>
 </body>

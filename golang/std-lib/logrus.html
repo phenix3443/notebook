@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 20:00 -->
+<!-- 2019-12-16 一 11:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>logrus</title>
@@ -401,7 +401,7 @@ logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">testLogrus</span>() {
     logrus.<span style="color: #ffd700;">SetOutput</span>(os.Stdout)
-    logrus.<span style="color: #ffd700;">SetFormatter</span>(&amp;logrus.<span style="color: #00d7af;">JSONFormatter</span>{})
+    logrus.<span style="color: #ffd700;">SetFormatter</span>(&amp;<span style="color: #00d7af;">logrus.JSONFormatter</span>{})
     <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">logrus.SetFormatter(&amp;logrus.TextFormatter{})</span>
     logrus.<span style="color: #ffd700;">SetLevel</span>(logrus.InfoLevel)
     logrus.<span style="color: #ffd700;">Debug</span>(<span style="color: #ff4ea3;">"debug log"</span>)
@@ -417,7 +417,7 @@ logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">testLogger</span>() {
-    logger := &amp;logrus.<span style="color: #00d7af;">Logger</span>{
+    <span style="color: #ff8700;">logger</span> := &amp;<span style="color: #00d7af;">logrus.Logger</span>{
         <span style="color: #5fafd7;">Out</span>:       os.Stdout,
         <span style="color: #5fafd7;">Formatter</span>: <span style="color: #d18aff;">new</span>(<span style="color: #00d7af;">logrus.JSONFormatter</span>),
         <span style="color: #5fafd7;">Level</span>:     logrus.DebugLevel,
@@ -436,14 +436,14 @@ logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">testEntry</span>() {
-    logger := &amp;logrus.<span style="color: #00d7af;">Logger</span>{
+    <span style="color: #ff8700;">logger</span> := &amp;<span style="color: #00d7af;">logrus.Logger</span>{
         <span style="color: #5fafd7;">Out</span>:       os.Stdout,
         <span style="color: #5fafd7;">Formatter</span>: <span style="color: #d18aff;">new</span>(<span style="color: #00d7af;">logrus.JSONFormatter</span>),
         <span style="color: #5fafd7;">Level</span>:     logrus.DebugLevel,
     }
 
-    e := logrus.<span style="color: #ffd700;">NewEntry</span>(logger)
-    e.<span style="color: #ffd700;">WithFields</span>(logrus.<span style="color: #00d7af;">Fields</span>{
+    <span style="color: #ff8700;">e</span> := logrus.<span style="color: #ffd700;">NewEntry</span>(logger)
+    e.<span style="color: #ffd700;">WithFields</span>(<span style="color: #00d7af;">logrus.Fields</span>{
         <span style="color: #ff4ea3;">"name"</span>: <span style="color: #ff4ea3;">"lsl"</span>,
         <span style="color: #ff4ea3;">"age"</span>:  30,
     })
@@ -462,15 +462,15 @@ logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应
 <div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">testHook</span>() {
-    logger := logrus.<span style="color: #ffd700;">New</span>()
-    hook, err := logrus_mail.<span style="color: #ffd700;">NewMailAuthHook</span>(<span style="color: #ff4ea3;">"APPLICATION_NAME"</span>, <span style="color: #ff4ea3;">"HOST"</span>, PORT, <span style="color: #ff4ea3;">"FROM"</span>, <span style="color: #ff4ea3;">"TO"</span>, <span style="color: #ff4ea3;">"USERNAME"</span>, <span style="color: #ff4ea3;">"PASSWORD"</span>)
+    <span style="color: #ff8700;">logger</span> := logrus.<span style="color: #ffd700;">New</span>()
+    <span style="color: #ff8700;">hook</span>, <span style="color: #ff8700;">err</span> := logrus_mail.<span style="color: #ffd700;">NewMailAuthHook</span>(<span style="color: #ff4ea3;">"APPLICATION_NAME"</span>, <span style="color: #ff4ea3;">"HOST"</span>, PORT, <span style="color: #ff4ea3;">"FROM"</span>, <span style="color: #ff4ea3;">"TO"</span>, <span style="color: #ff4ea3;">"USERNAME"</span>, <span style="color: #ff4ea3;">"PASSWORD"</span>)
 
     <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
         logger.<span style="color: #ffd700;">Error</span>(<span style="color: #ff4ea3;">"init hook error"</span>)
     }
     logger.Hooks.<span style="color: #ffd700;">Add</span>(hook)
 
-    e := logger.<span style="color: #ffd700;">WithFields</span>(logrus.<span style="color: #00d7af;">Fields</span>{
+    <span style="color: #ff8700;">e</span> := logger.<span style="color: #ffd700;">WithFields</span>(<span style="color: #00d7af;">logrus.Fields</span>{
         <span style="color: #ff4ea3;">"content"</span>: <span style="color: #ff4ea3;">"test logrus hook"</span>,
     })
     <span style="color: #6c6c6c; font-style: italic;">//</span><span style="color: #6c6c6c; font-style: italic;">&#35774;&#32622;&#26102;&#38388;&#25139;&#21644; message</span>
@@ -502,8 +502,8 @@ logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
-<p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
-<p class="date">Created: 2019-09-10 二 20:00</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-12-16 一 11:01</p>
 <p class="validation"></p>
 </div>
 </body>

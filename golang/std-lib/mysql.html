@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 20:00 -->
+<!-- 2019-12-16 一 11:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>mysql</title>
@@ -355,20 +355,20 @@ golang 中的数据库主要是用到了 database/sql 包，但是这个包指�
 <h2 id="org2679189"><span class="section-number-2">3</span> 连接数据库</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
-<pre class="src src-go">    dsn := <span style="color: #ff4ea3;">"root:toor@tcp(127.0.0.1:3306)/touch_manager"</span>
-    db, err := sql.<span style="color: #ffd700;">Open</span>(<span style="color: #ff4ea3;">"mysql"</span>, dsn)
+<pre class="src src-go">    <span style="color: #ff8700;">dsn</span> := <span style="color: #ff4ea3;">"root:toor@tcp(127.0.0.1:3306)/touch_manager"</span>
+    <span style="color: #ff8700;">db</span>, <span style="color: #ff8700;">err</span> := sql.<span style="color: #ffd700;">Open</span>(<span style="color: #ff4ea3;">"mysql"</span>, dsn)
     <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
         fmt.<span style="color: #ffd700;">Println</span>(err.<span style="color: #ffd700;">Error</span>())
     }
 
-    <span style="color: #a1db00;">if</span> ok := db.<span style="color: #ffd700;">Ping</span>(); ok == <span style="color: #5fafd7;">nil</span> {
+    <span style="color: #a1db00;">if</span> <span style="color: #ff8700;">ok</span> := db.<span style="color: #ffd700;">Ping</span>(); ok == <span style="color: #5fafd7;">nil</span> {
         <span style="color: #d18aff;">println</span>(<span style="color: #ff4ea3;">"db still alive"</span>)
     }
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Open</span>(driverName, dataSourceName <span style="color: #00d7af;">string</span>) (*<span style="color: #00d7af;">DB</span>, <span style="color: #00d7af;">error</span>)
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">Open</span>(<span style="color: #ff8700;">driverName</span>, <span style="color: #ff8700;">dataSourceName</span> <span style="color: #00d7af;">string</span>) (*<span style="color: #00d7af;">DB</span>, <span style="color: #00d7af;">error</span>)
 </pre>
 </div>
 
@@ -382,12 +382,12 @@ DB 对象代表了和数据数据库的连接池。sql 包会自动创建和释�
 <h2 id="orgf4c963b"><span class="section-number-2">4</span> 增删改</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
-<pre class="src src-go">res, err := db.<span style="color: #ffd700;">Exec</span>(<span style="color: #ff4ea3;">"replace into touch_rule values (?,?);"</span>, 1, <span style="color: #ff4ea3;">"test"</span>)
+<pre class="src src-go"><span style="color: #ff8700;">res</span>, <span style="color: #ff8700;">err</span> := db.<span style="color: #ffd700;">Exec</span>(<span style="color: #ff4ea3;">"replace into touch_rule values (?,?);"</span>, 1, <span style="color: #ff4ea3;">"test"</span>)
 <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
     log.<span style="color: #ffd700;">Fatal</span>(err)
 }
-id, _ := res.<span style="color: #ffd700;">LastInsertId</span>()
-count, _ := res.<span style="color: #ffd700;">RowsAffected</span>()
+<span style="color: #ff8700;">id</span>, <span style="color: #ff8700;">_</span> := res.<span style="color: #ffd700;">LastInsertId</span>()
+<span style="color: #ff8700;">count</span>, <span style="color: #ff8700;">_</span> := res.<span style="color: #ffd700;">RowsAffected</span>()
 </pre>
 </div>
 <p>
@@ -404,8 +404,8 @@ count, _ := res.<span style="color: #ffd700;">RowsAffected</span>()
 <h3 id="org8cfd7dd"><span class="section-number-3">5.1</span> 单行</h3>
 <div class="outline-text-3" id="text-5-1">
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">var</span> content string
-err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4ea3;">"select content from touch_rule where rule_id = ?"</span>, 1).<span style="color: #ffd700;">Scan</span>(&amp;content)
+<pre class="src src-go"><span style="color: #a1db00;">var</span> <span style="color: #ff8700;">content</span> <span style="color: #00d7af;">string</span>
+<span style="color: #ff8700;">err</span> := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4ea3;">"select content from touch_rule where rule_id = ?"</span>, 1).<span style="color: #ffd700;">Scan</span>(&amp;content)
 <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
     log.<span style="color: #ffd700;">Fatal</span>(err)
 }
@@ -417,7 +417,7 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 <h3 id="org0ba8863"><span class="section-number-3">5.2</span> 多行</h3>
 <div class="outline-text-3" id="text-5-2">
 <div class="org-src-container">
-<pre class="src src-go">rows, err := db.<span style="color: #ffd700;">Query</span>(<span style="color: #ff4ea3;">"select * from touch_rule;"</span>)
+<pre class="src src-go"><span style="color: #ff8700;">rows</span>, <span style="color: #ff8700;">err</span> := db.<span style="color: #ffd700;">Query</span>(<span style="color: #ff4ea3;">"select * from touch_rule;"</span>)
 <span style="color: #a1db00;">defer</span> rows.<span style="color: #ffd700;">Close</span>()
 
 <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
@@ -425,8 +425,8 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 }
 
 <span style="color: #a1db00;">for</span> rows.<span style="color: #ffd700;">Next</span>() {
-    <span style="color: #a1db00;">var</span> id uint32
-    <span style="color: #a1db00;">var</span> content string
+    <span style="color: #a1db00;">var</span> <span style="color: #ff8700;">id</span> <span style="color: #00d7af;">uint32</span>
+    <span style="color: #a1db00;">var</span> <span style="color: #ff8700;">content</span> <span style="color: #00d7af;">string</span>
     err = rows.<span style="color: #ffd700;">Scan</span>(&amp;id, &amp;content)
     <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
         log.<span style="color: #ffd700;">Fatal</span>(err)
@@ -468,8 +468,8 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 自定义了数据类型，比如，NullBool 表示该字段是 bool 类型，但是有可能设置为 null。简单说就是设计数据库的时候不要出现 null，处理起来非常费力。Null 的 type 很有限，例如没有 sql.NullUint64; null 值没有默认零值。
 </p>
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #a1db00;">var</span> content sql.NullString
-err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4ea3;">"select content from touch_rule where rule_id = ?"</span>, 2).<span style="color: #ffd700;">Scan</span>(&amp;content)
+<pre class="src src-go"><span style="color: #a1db00;">var</span> <span style="color: #ff8700;">content</span> <span style="color: #00d7af;">sql.NullString</span>
+<span style="color: #ff8700;">err</span> := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4ea3;">"select content from touch_rule where rule_id = ?"</span>, 2).<span style="color: #ffd700;">Scan</span>(&amp;content)
 <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
     log.<span style="color: #ffd700;">Fatal</span>(err)
 }
@@ -485,8 +485,8 @@ err := db.<span style="color: #ffd700;">QueryRow</span>(<span style="color: #ff4
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
-<p class="email">Email: <a href="mailto:phenix3443@gmai.com">phenix3443@gmai.com</a></p>
-<p class="date">Created: 2019-09-10 二 20:00</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2019-12-16 一 11:01</p>
 <p class="validation"></p>
 </div>
 </body>

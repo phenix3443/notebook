@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 20:00 -->
+<!-- 2019-12-16 一 11:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang summary</title>
@@ -326,15 +326,16 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#org656a4ca">2. 安装运行</a>
 <ul>
-<li><a href="#org9aab814">2.1. 安装</a></li>
-<li><a href="#org6691d17">2.2. 配置</a>
+<li><a href="#org72b1ea7">2.1. ubuntu</a></li>
+<li><a href="#org9b243fb">2.2. macos</a></li>
+<li><a href="#org6691d17">2.3. 配置</a>
 <ul>
-<li><a href="#orgea347b5">2.2.1. GOPATH</a></li>
+<li><a href="#orgea347b5">2.3.1. GOPATH</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org6b745d1">3. 工程布局</a></li>
+<li><a href="#orgbbab5c9">3. 工程布局</a></li>
 <li><a href="#org35e9c8b">4. 命令行工具</a>
 <ul>
 <li><a href="#orge971c38">4.1. 集成开发</a></li>
@@ -506,35 +507,39 @@ func 注释
 <h2 id="org656a4ca"><span class="section-number-2">2</span> 安装运行</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org9aab814" class="outline-3">
-<h3 id="org9aab814"><span class="section-number-3">2.1</span> 安装</h3>
+<div id="outline-container-org72b1ea7" class="outline-3">
+<h3 id="org72b1ea7"><span class="section-number-3">2.1</span> ubuntu</h3>
 <div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-sh">apt install golang
-</pre>
-</div>
-
 <p>
 If you're using Ubuntu 16.04 LTS, 18.04 LTS or 19.04, then you can use the longsleep/golang-backports PPA and install Go 1.13.
 </p>
 
 <div class="org-src-container">
 <pre class="src src-sh">sudo add-apt-repository ppa:longsleep/golang-backports
-sudo apt-get update
-sudo apt-get install golang-go
+sudo apt update
+sudo apt install golang-go
 </pre>
 </div>
 </div>
 </div>
 
+<div id="outline-container-org9b243fb" class="outline-3">
+<h3 id="org9b243fb"><span class="section-number-3">2.2</span> macos</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-sh">brew install golang
+</pre>
+</div>
+</div>
+</div>
 
 <div id="outline-container-org6691d17" class="outline-3">
-<h3 id="org6691d17"><span class="section-number-3">2.2</span> 配置</h3>
-<div class="outline-text-3" id="text-2-2">
+<h3 id="org6691d17"><span class="section-number-3">2.3</span> 配置</h3>
+<div class="outline-text-3" id="text-2-3">
 </div>
 <div id="outline-container-orgea347b5" class="outline-4">
-<h4 id="orgea347b5"><span class="section-number-4">2.2.1</span> GOPATH</h4>
-<div class="outline-text-4" id="text-2-2-1">
+<h4 id="orgea347b5"><span class="section-number-4">2.3.1</span> GOPATH</h4>
+<div class="outline-text-4" id="text-2-3-1">
 <p>
 GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src、pkg 三个目录。默认的 gopath 路径是 <code>$HOME/go</code> ，可以在 <code>~/.profile</code> 中修改如下环境变量。
 </p>
@@ -557,9 +562,15 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 </div>
 </div>
 
-<div id="outline-container-org6b745d1" class="outline-2">
-<h2 id="org6b745d1"><span class="section-number-2">3</span> 工程布局<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup></h2>
+<div id="outline-container-orgbbab5c9" class="outline-2">
+<h2 id="orgbbab5c9"><span class="section-number-2">3</span> 工程布局</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+参见  <a href="https://golang.org/doc/code.html">How to Write Go Code</a>
+</p>
 </div>
+</div>
+
 <div id="outline-container-org35e9c8b" class="outline-2">
 <h2 id="org35e9c8b"><span class="section-number-2">4</span> 命令行工具</h2>
 <div class="outline-text-2" id="text-4">
@@ -581,11 +592,8 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>go get 包管理</li>
-<li>goimports 清理 imports</li>
-<li>gocode 自动补全</li>
-<li>godef</li>
-<li>guru</li>
-<li>oracle  找到所有函数方法的调用者。</li>
+<li>goimports 在 gofmt 代码格式化基础上，增加了整理 imports 的功能。所以可以替代 gofmt。</li>
+<li>gopls go 语言的 lsp 服务端。</li>
 </ul>
 </div>
 </div>
@@ -594,7 +602,6 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 <h3 id="org1d94475"><span class="section-number-3">4.2</span> 代码检查</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
-<li>gofmt 检查语法。</li>
 <li>go-vet 检查可疑代码。</li>
 <li>golint 检查代码风格。</li>
 <li>errcheck 检查返回但没有处理的 error。</li>
@@ -610,7 +617,7 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>go fix</li>
-<li>go env    打印 go 环境变量。</li>
+<li>go env 打印 go 环境变量。</li>
 <li>go build</li>
 <li>go run</li>
 <li>go install</li>
@@ -620,7 +627,6 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 <li>-r 选项递归清理依赖项。</li>
 </ul></li>
 <li>gb</li>
-<li>cmake</li>
 </ul>
 </div>
 </div>
@@ -704,10 +710,17 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 
 <div id="outline-container-orge8364ea" class="outline-3">
 <h3 id="orge8364ea"><span class="section-number-3">5.2</span> 高级</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+<a href="https://golang.org/doc/effective_go.html#names">Effective Go</a>
+</p>
 </div>
+</div>
+
 <div id="outline-container-org93d6cd2" class="outline-3">
 <h3 id="org93d6cd2"><span class="section-number-3">5.3</span> 实践</h3>
 </div>
+
 <div id="outline-container-orgee0f360" class="outline-3">
 <h3 id="orgee0f360"><span class="section-number-3">5.4</span> 原理</h3>
 </div>
@@ -724,17 +737,13 @@ GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安�
 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.5.html">深入解析 go</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
-<a href="https://golang.org/doc/code.html">How to Write Go Code</a>
-</p></div></div>
-
 
 </div>
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 20:00</p>
+<p class="date">Created: 2019-12-16 一 11:01</p>
 <p class="validation"></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 三 21:50 -->
+<!-- 2019-12-16 一 10:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>homebrew</title>
@@ -331,8 +331,21 @@ for the JavaScript code in this tag.
 <p>
 <a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 macOS 的软件包管理器。
 </p>
+
+<p>
+brew 主要用来下载一些不带界面的命令行工具和第三方库来进行二次开发。它下载源码然后解压、编译、安装，同时会包含相关依存库。并自动配置好各种环境变量，而且易于卸载。
+</p>
+
+<p>
+brew cask 主要用来下载一些带界面的应用软件（.dmg），下载后放在统一的目录中（/opt/homebrew-cask/Caskroom），省掉了自己去下载、解压、拖拽（安装）等步骤，在 mac 中直接运行使用，卸载相当容易与干净。对一般用户来说会比较方便，包含很多在 AppStore 里没有的常用软件。
+</p>
+
+<p>
+参见 <a href="https://www.zhihu.com/question/22624898">https://www.zhihu.com/question/22624898</a>
+</p>
 </div>
 </div>
+
 <div id="outline-container-org03db425" class="outline-2">
 <h2 id="org03db425"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
@@ -413,7 +426,7 @@ brew upgrade
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-sh">mv /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core.bak
+<pre class="src src-sh">mv /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core.bak &amp;&amp; <span style="color: #ff4ea3;">\</span>
 git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
 </pre>
 </div>
@@ -422,11 +435,12 @@ git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Libra
 <li>把 homebrew-core 的镜像地址也设为中科院的国内镜像</li>
 </ol>
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
-<span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)/Library/Taps/homebrew/homebrew-core"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-
+<pre class="src src-sh"><span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)"</span> &amp;&amp; <span style="color: #ff4ea3;">\</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git &amp;&amp; <span style="color: #ff4ea3;">\</span>
+<span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)/Library/Taps/homebrew/homebrew-core"</span> &amp;&amp; <span style="color: #ff4ea3;">\</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git &amp;&amp; <span style="color: #ff4ea3;">\</span>
+<span style="color: #d18aff;">cd</span> <span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">brew</span><span style="color: #ff4ea3;"> --repo)"</span>/Library/Taps/homebrew/homebrew-cask &amp;&amp; <span style="color: #ff4ea3;">\</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
 </pre>
 </div>
 <ol class="org-ol">
@@ -454,7 +468,7 @@ brew cast install java
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-04 三 21:50</p>
+<p class="date">Created: 2019-12-16 一 10:39</p>
 <p class="validation"></p>
 </div>
 </body>

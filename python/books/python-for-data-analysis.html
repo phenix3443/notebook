@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-10 二 22:13 -->
+<!-- 2019-12-16 一 10:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>利用 Python 进行数据分析读书笔记</title>
@@ -348,19 +348,19 @@ sudo apt install python-tk
 
 <span style="color: #a1db00;">from</span> pandas <span style="color: #a1db00;">import</span> DataFrame, Series
 
-<span style="color: #ff8700;">path</span> = <span style="color: #ff4ea3;">'usagov_bitly_data2012-03-16-1331923249.txt'</span>
+<span style="color: #c6c6c6; background-color: #303030;">path</span> = <span style="color: #ff4ea3;">'usagov_bitly_data2012-03-16-1331923249.txt'</span>
 
-<span style="color: #ff8700;">records</span> = [json.loads(line) <span style="color: #a1db00;">for</span> line <span style="color: #a1db00;">in</span> <span style="color: #d18aff;">open</span>(path)]
+<span style="color: #c6c6c6; background-color: #303030;">records</span> = [json.loads(line) <span style="color: #a1db00;">for</span> line <span style="color: #a1db00;">in</span> <span style="color: #d18aff;">open</span>(path)]
 
-<span style="color: #ff8700;">frame</span> = DataFrame(records)
+<span style="color: #c6c6c6; background-color: #303030;">frame</span> = DataFrame(records)
 
-<span style="color: #ff8700;">clean_tz</span> = frame[<span style="color: #ff4ea3;">'tz'</span>].fillna(<span style="color: #ff4ea3;">'Missing'</span>)
+<span style="color: #c6c6c6; background-color: #303030;">clean_tz</span> = frame[<span style="color: #ff4ea3;">'tz'</span>].fillna(<span style="color: #ff4ea3;">'Missing'</span>)
 
-<span style="color: #ff8700;">clean_tz</span>[clean_tz == <span style="color: #ff4ea3;">''</span>] = <span style="color: #ff4ea3;">'Unknown'</span>
+<span style="color: #c6c6c6; background-color: #303030;">clean_tz</span>[clean_tz == <span style="color: #ff4ea3;">''</span>] = <span style="color: #ff4ea3;">'Unknown'</span>
 
-<span style="color: #ff8700;">tz_counts</span> = clean_tz.value_counts()
+<span style="color: #c6c6c6; background-color: #303030;">tz_counts</span> = clean_tz.value_counts()
 
-tz_counts[:10].plot(kind=<span style="color: #ff4ea3;">'barh'</span>,rot=0)
+tz_counts[:<span style="color: #c6c6c6; background-color: #303030;">10</span>].plot(<span style="color: #c6c6c6; background-color: #303030;">kind</span>=<span style="color: #ff4ea3;">'barh'</span>,<span style="color: #c6c6c6; background-color: #303030;">rot</span>=<span style="color: #c6c6c6; background-color: #303030;">0</span>)
 </pre>
 </div>
 </div>
@@ -409,7 +409,7 @@ tz_counts[:10].plot(kind=<span style="color: #ff4ea3;">'barh'</span>,rot=0)
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-09-10 二 22:13</p>
+<p class="date">Created: 2019-12-16 一 10:45</p>
 <p class="validation"></p>
 </div>
 </body>
