@@ -6,9 +6,9 @@
 <!-- 2019-12-17 二 22:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>mysql 实践</title>
+<title>Redis in action</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,101 +306,23 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">mysql 实践</h1>
+<h1 class="title">Redis in action</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf3c5910">1. 概述</a></li>
-<li><a href="#org5e8f77c">2. 安装</a>
-<ul>
-<li><a href="#orga6f05ab">2.1. ubuntu</a></li>
-<li><a href="#org5135201">2.2. centos</a></li>
-<li><a href="#orgc2732e1">2.3. macos</a></li>
-</ul>
-</li>
-<li><a href="#org0953931">3. 使用</a></li>
+<li><a href="#org8c96809">1. 概述</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf3c5910" class="outline-2">
-<h2 id="orgf3c5910"><span class="section-number-2">1</span> 概述</h2>
-</div>
-
-<div id="outline-container-org5e8f77c" class="outline-2">
-<h2 id="org5e8f77c"><span class="section-number-2">2</span> 安装</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-orga6f05ab" class="outline-3">
-<h3 id="orga6f05ab"><span class="section-number-3">2.1</span> ubuntu</h3>
-<div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y mysql-server
-</pre>
-</div>
-<p>
-如果在安装过程中，没有出现安全设置界面来设置 root 账号的密码，那么安装后将无法通过空密码登录：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">ERROR 1698 (28000): Access denied for user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span>
-</pre>
-</div>
-<p>
-此时，可通过如下方法设置密码：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sudo mysql -uroot
-</pre>
-</div>
-<p>
-修改安全策略，降低密码要求等级：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">set</span> global <span style="color: #ff8700;">validate_password_policy</span>=0;
-</pre>
-</div>
-<p>
-否则设置密码会提示：
-</p>
-<pre class="example">
-ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
-</pre>
-
-<p>
-设置密码：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">ALTER user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span> IDENTIFIED WITH mysql_native_password BY <span style="color: #ff4ea3;">'password'</span>;
-</pre>
-</div>
-
-<p>
-然后登录：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">mysql -uroot -ppassword
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5135201" class="outline-3">
-<h3 id="org5135201"><span class="section-number-3">2.2</span> centos</h3>
-</div>
-
-<div id="outline-container-orgc2732e1" class="outline-3">
-<h3 id="orgc2732e1"><span class="section-number-3">2.3</span> macos</h3>
-</div>
-</div>
-
-<div id="outline-container-org0953931" class="outline-2">
-<h2 id="org0953931"><span class="section-number-2">3</span> 使用</h2>
+<div id="outline-container-org8c96809" class="outline-2">
+<h2 id="org8c96809"><span class="section-number-2">1</span> 概述</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
 <p class="date">Created: 2019-12-17 二 22:06</p>
 <p class="validation"></p>
 </div>

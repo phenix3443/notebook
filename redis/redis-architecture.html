@@ -6,9 +6,9 @@
 <!-- 2019-12-17 二 22:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>mysql 实践</title>
+<title>redis部署架构选择</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,101 +306,230 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">mysql 实践</h1>
+<h1 class="title">redis部署架构选择</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf3c5910">1. 概述</a></li>
-<li><a href="#org5e8f77c">2. 安装</a>
+<li><a href="#org28eb6ac">1. 概览</a></li>
+<li><a href="#org5506cb9">2. 单例</a></li>
+<li><a href="#org0d5fe7b">3. 单机多实例</a>
 <ul>
-<li><a href="#orga6f05ab">2.1. ubuntu</a></li>
-<li><a href="#org5135201">2.2. centos</a></li>
-<li><a href="#orgc2732e1">2.3. macos</a></li>
+<li><a href="#org678945a">3.1. 目的</a></li>
+<li><a href="#org424a762">3.2. 操作</a></li>
 </ul>
 </li>
-<li><a href="#org0953931">3. 使用</a></li>
+<li><a href="#orge512b02">4. 主从</a>
+<ul>
+<li><a href="#org5cfd96d">4.1. 目的</a></li>
+<li><a href="#org86c613b">4.2. 注意事项</a></li>
+</ul>
+</li>
+<li><a href="#org2a61162">5. Sentinel</a>
+<ul>
+<li><a href="#org737bbde">5.1. 目的</a></li>
+<li><a href="#org4be8d7f">5.2. 作用</a></li>
+<li><a href="#org0489ba3">5.3. 注意事项</a></li>
+</ul>
+</li>
+<li><a href="#org0ff2722">6. cluster</a>
+<ul>
+<li><a href="#org3275469">6.1. 目的</a></li>
+<li><a href="#orgf3e0509">6.2. 注意事项</a></li>
+</ul>
+</li>
+<li><a href="#org32a5e8e">7. 如何构建高可用的分布式 redis 服务？</a></li>
+<li><a href="#org6b52e9d">8. Client</a></li>
+<li><a href="#orgdab3e2d">9. books</a>
+<ul>
+<li><a href="#org8e7a4be">9.1. 入门</a></li>
+<li><a href="#orgf175ad0">9.2. 高级</a></li>
+<li><a href="#org46bf96c">9.3. 实践</a></li>
+<li><a href="#org5cd38b2">9.4. 原理</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf3c5910" class="outline-2">
-<h2 id="orgf3c5910"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org28eb6ac" class="outline-2">
+<h2 id="org28eb6ac"><span class="section-number-2">1</span> 概览</h2>
 </div>
 
-<div id="outline-container-org5e8f77c" class="outline-2">
-<h2 id="org5e8f77c"><span class="section-number-2">2</span> 安装</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-org5506cb9" class="outline-2">
+<h2 id="org5506cb9"><span class="section-number-2">2</span> 单例</h2>
 </div>
-<div id="outline-container-orga6f05ab" class="outline-3">
-<h3 id="orga6f05ab"><span class="section-number-3">2.1</span> ubuntu</h3>
-<div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y mysql-server
-</pre>
+
+<div id="outline-container-org0d5fe7b" class="outline-2">
+<h2 id="org0d5fe7b"><span class="section-number-2">3</span> 单机多实例</h2>
+<div class="outline-text-2" id="text-3">
 </div>
+<div id="outline-container-org678945a" class="outline-3">
+<h3 id="org678945a"><span class="section-number-3">3.1</span> 目的</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
-如果在安装过程中，没有出现安全设置界面来设置 root 账号的密码，那么安装后将无法通过空密码登录：
+单个 redis 实例占用资源很少，为了充分利用单机性能，可在单机上部署多个 redis 实例。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">ERROR 1698 (28000): Access denied for user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span>
-</pre>
 </div>
-<p>
-此时，可通过如下方法设置密码：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sudo mysql -uroot
-</pre>
 </div>
+<div id="outline-container-org424a762" class="outline-3">
+<h3 id="org424a762"><span class="section-number-3">3.2</span> 操作</h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
-修改安全策略，降低密码要求等级：
+单个实例的配置文件（redis-6380.conf）做如下修改：
 </p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">set</span> global <span style="color: #ff8700;">validate_password_policy</span>=0;
-</pre>
-</div>
-<p>
-否则设置密码会提示：
-</p>
+
 <pre class="example">
-ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+pidfile /tmp/redis-server-6380.pid
+port 6380
+dir /tmp/redis-6380/
+logfile /tmp/redis-server-6380.log
 </pre>
-
 <p>
-设置密码：
+然后启动服务即可：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">ALTER user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span> IDENTIFIED WITH mysql_native_password BY <span style="color: #ff4ea3;">'password'</span>;
+<pre class="src src-sh">redis-server redis-6380.conf
 </pre>
 </div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge512b02" class="outline-2">
+<h2 id="orge512b02"><span class="section-number-2">4</span> 主从</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org5cfd96d" class="outline-3">
+<h3 id="org5cfd96d"><span class="section-number-3">4.1</span> 目的</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+单个实例存在以下问题：
+</p>
+<ul class="org-ul">
+<li>单点故障风险，主从结构中主宕机之后，从上的数据还可以保留。</li>
+<li>性能瓶颈，通过主从可以分担查询压力，进行读写分离。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org86c613b" class="outline-3">
+<h3 id="org86c613b"><span class="section-number-3">4.2</span> 注意事项</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+如果 master 没有设置持久化，当 master 重启之后，slave 的数据有可能会被清空。所以这种情况下，应该禁止 master 自动重启。
+</p>
 
 <p>
-然后登录：
+redis4.0 之前的可写从不能不能正确处理过期的 key。（writable slaves before version 4.0 were incapable of expiring keys with a time to live set.）
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">mysql -uroot -ppassword
-</pre>
+
+<p>
+从 redis 4.0 开始，从上的写操作指示本地写，不会扩散到下一层的从上。（since Redis 4.0 slave writes are only local, and are not propagated to sub-slaves attached to the instance.）
+</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org5135201" class="outline-3">
-<h3 id="org5135201"><span class="section-number-3">2.2</span> centos</h3>
+<div id="outline-container-org2a61162" class="outline-2">
+<h2 id="org2a61162"><span class="section-number-2">5</span> Sentinel</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org737bbde" class="outline-3">
+<h3 id="org737bbde"><span class="section-number-3">5.1</span> 目的</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+主从结构中主宕机之后，后续的请求不能继续处理，不利于故障恢复。
+</p>
+</div>
+</div>
+<div id="outline-container-org4be8d7f" class="outline-3">
+<h3 id="org4be8d7f"><span class="section-number-3">5.2</span> 作用</h3>
 </div>
 
-<div id="outline-container-orgc2732e1" class="outline-3">
-<h3 id="orgc2732e1"><span class="section-number-3">2.3</span> macos</h3>
+
+<div id="outline-container-org0489ba3" class="outline-3">
+<h3 id="org0489ba3"><span class="section-number-3">5.3</span> 注意事项</h3>
+<div class="outline-text-3" id="text-5-3">
+<ul class="org-ul">
+<li>down-after-milliseconds 表示 redis 实例失联时常</li>
+<li>parallel-syncs 表示在执行</li>
+<li>从挂了怎么办？</li>
+</ul>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org0953931" class="outline-2">
-<h2 id="org0953931"><span class="section-number-2">3</span> 使用</h2>
+<div id="outline-container-org0ff2722" class="outline-2">
+<h2 id="org0ff2722"><span class="section-number-2">6</span> cluster</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org3275469" class="outline-3">
+<h3 id="org3275469"><span class="section-number-3">6.1</span> 目的</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+单个实例不能存储所有的数据，需要一个分布式的 redis 存储。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf3e0509" class="outline-3">
+<h3 id="orgf3e0509"><span class="section-number-3">6.2</span> 注意事项</h3>
+</div>
+</div>
+
+<div id="outline-container-org32a5e8e" class="outline-2">
+<h2 id="org32a5e8e"><span class="section-number-2">7</span> 如何构建高可用的分布式 redis 服务？</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+两个要点：
+</p>
+<ul class="org-ul">
+<li>分布式，存储大量数据，没有性能瓶颈。</li>
+<li>高可用，故障恢复。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6b52e9d" class="outline-2">
+<h2 id="org6b52e9d"><span class="section-number-2">8</span> Client</h2>
+</div>
+
+<div id="outline-container-orgdab3e2d" class="outline-2">
+<h2 id="orgdab3e2d"><span class="section-number-2">9</span> books</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org8e7a4be" class="outline-3">
+<h3 id="org8e7a4be"><span class="section-number-3">9.1</span> 入门</h3>
+<div class="outline-text-3" id="text-9-1">
+<ul class="org-ul">
+<li><a href="https://book.douban.com/subject/24522045/">redis 入门指南</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf175ad0" class="outline-3">
+<h3 id="orgf175ad0"><span class="section-number-3">9.2</span> 高级</h3>
+</div>
+<div id="outline-container-org46bf96c" class="outline-3">
+<h3 id="org46bf96c"><span class="section-number-3">9.3</span> 实践</h3>
+<div class="outline-text-3" id="text-9-3">
+<ul class="org-ul">
+<li><a href="https://book.douban.com/subject/26612779/">redis 实战</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5cd38b2" class="outline-3">
+<h3 id="org5cd38b2"><span class="section-number-3">9.4</span> 原理</h3>
+<div class="outline-text-3" id="text-9-4">
+<ul class="org-ul">
+<li><a href="https://book.douban.com/subject/25900156/">redis 设计与实现</a></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
 <p class="date">Created: 2019-12-17 二 22:06</p>
 <p class="validation"></p>
 </div>

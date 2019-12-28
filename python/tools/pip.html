@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-17 二 22:06 -->
+<!-- 2019-12-17 二 22:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>mysql 实践</title>
+<title>pip</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,102 +306,47 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">mysql 实践</h1>
+<h1 class="title">pip</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf3c5910">1. 概述</a></li>
-<li><a href="#org5e8f77c">2. 安装</a>
+<li><a href="#org48b43dd">1. 概述</a></li>
+<li><a href="#org20e540b">2. 安装</a>
 <ul>
-<li><a href="#orga6f05ab">2.1. ubuntu</a></li>
-<li><a href="#org5135201">2.2. centos</a></li>
-<li><a href="#orgc2732e1">2.3. macos</a></li>
+<li><a href="#org680ec3d">2.1. macos</a></li>
 </ul>
 </li>
-<li><a href="#org0953931">3. 使用</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf3c5910" class="outline-2">
-<h2 id="orgf3c5910"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org48b43dd" class="outline-2">
+<h2 id="org48b43dd"><span class="section-number-2">1</span> 概述</h2>
 </div>
 
-<div id="outline-container-org5e8f77c" class="outline-2">
-<h2 id="org5e8f77c"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-org20e540b" class="outline-2">
+<h2 id="org20e540b"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orga6f05ab" class="outline-3">
-<h3 id="orga6f05ab"><span class="section-number-3">2.1</span> ubuntu</h3>
+<div id="outline-container-org680ec3d" class="outline-3">
+<h3 id="org680ec3d"><span class="section-number-3">2.1</span> macos</h3>
 <div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt install -y mysql-server
-</pre>
-</div>
-<p>
-如果在安装过程中，没有出现安全设置界面来设置 root 账号的密码，那么安装后将无法通过空密码登录：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">ERROR 1698 (28000): Access denied for user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span>
-</pre>
-</div>
-<p>
-此时，可通过如下方法设置密码：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sudo mysql -uroot
-</pre>
-</div>
-<p>
-修改安全策略，降低密码要求等级：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #d18aff;">set</span> global <span style="color: #ff8700;">validate_password_policy</span>=0;
-</pre>
-</div>
-<p>
-否则设置密码会提示：
-</p>
 <pre class="example">
-ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+python3 -m pip install --user
 </pre>
 
 <p>
-设置密码：
+然后将 <code>~/Library/Python/3.7/bin</code> 添加到 PATH 变量。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">ALTER user <span style="color: #ff4ea3;">'root'</span>@<span style="color: #ff4ea3;">'localhost'</span> IDENTIFIED WITH mysql_native_password BY <span style="color: #ff4ea3;">'password'</span>;
-</pre>
-</div>
-
-<p>
-然后登录：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">mysql -uroot -ppassword
-</pre>
 </div>
 </div>
-</div>
-
-<div id="outline-container-org5135201" class="outline-3">
-<h3 id="org5135201"><span class="section-number-3">2.2</span> centos</h3>
-</div>
-
-<div id="outline-container-orgc2732e1" class="outline-3">
-<h3 id="orgc2732e1"><span class="section-number-3">2.3</span> macos</h3>
-</div>
-</div>
-
-<div id="outline-container-org0953931" class="outline-2">
-<h2 id="org0953931"><span class="section-number-2">3</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-12-17 二 22:06</p>
+<p class="date">Created: 2019-12-17 二 22:05</p>
 <p class="validation"></p>
 </div>
 </body>

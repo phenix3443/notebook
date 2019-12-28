@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-10-30 三 14:00 -->
+<!-- 2019-12-28 六 18:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>collections</title>
@@ -313,22 +313,95 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org6b78515">1. 概述</a></li>
 <li><a href="#orgc01080c">2. 安装</a></li>
+<li><a href="#orgce12640">3. 使用</a>
+<ul>
+<li><a href="#org0a44777">3.1. 集合 (set)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-org6b78515" class="outline-2">
 <h2 id="org6b78515"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://godoc.org/github.com/golang-collections/collections">collection</a> 是一些通用的数据结构，包括：
+</p>
+<ul class="org-ul">
+<li>队列（Queue）</li>
+<li>集合（Set）</li>
+<li><p>
+跳表（Skip list）
+</p>
+
+<p>
+跳表是一种在链接列表的层次结构中存储节点的数据结构。通过使用随机数量的前向链接来跳过列表的某些部分，它的性能类似于二进制搜索树。
+</p></li>
+
+<li><p>
+伸展树树（Splay Tree）
+</p>
+
+<p>
+<a href="https://zh.wikipedia.org/wiki/%E4%BC%B8%E5%B1%95%E6%A0%91">伸展树</a> 是二叉搜索树的一种，其中对树的每次访问都会导致树的重新排列，从而使当前节点位于最前面。
+</p></li>
+
+<li>栈（Stack）</li>
+
+<li>字典树（Trie）
+<a href="https://zh.wikipedia.org/zh-hans/Trie">字典树</a> 又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。trie 树常用于搜索提示。如当输入一个网址，可以自动搜索出可能的选择。当没有完全匹配的搜索结果，可以返回前缀最相似的可能。</li>
+
+<li>三叉搜索树（Ternary Search Tree）</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-orgc01080c" class="outline-2">
 <h2 id="orgc01080c"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">go get -u  github.com/golang-collections/collections
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgce12640" class="outline-2">
+<h2 id="orgce12640"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org0a44777" class="outline-3">
+<h3 id="org0a44777"><span class="section-number-3">3.1</span> 集合 (set)</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+参见 <a href="https://github.com/phenix3443/test/blob/master/golang/collections/set/main.go">示例代码</a>
+</p>
+<ul class="org-ul">
+<li><p>
+<code>func (this *Set) ProperSubsetOf(set *Set) bool</code>
+</p>
+
+<p>
+判断 set 是否 this 的真子集
+</p></li>
+
+<li><p>
+<code>func (this *Set) SubsetOf(set *Set) bool</code>
+</p>
+
+<p>
+判断 set 是否 this 的子集
+</p></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-10-30 三 14:00</p>
+<p class="date">Created: 2019-12-28 六 18:45</p>
 <p class="validation"></p>
 </div>
 </body>

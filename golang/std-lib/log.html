@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-16 一 11:01 -->
+<!-- 2019-12-28 六 18:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>log</title>
@@ -312,18 +312,108 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org3606958">1. 概述</a></li>
+<li><a href="#org1792bb4">2. 使用</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-org3606958" class="outline-2">
 <h2 id="org3606958"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://golang.org/pkg/log/">log</a> 是一个简单的日志记录程序包。它定义了 Logger 类型，并带有格式化输出的方法。它还具有可通过辅助函数 Print[f|ln]，Fatal[f|ln]和 Panic[f|ln]访问的预定义​​​​“标准”logger，比手动创建 logger 更容易使用。该 logger 将日志写入标准错误，并打印每个记录的消息的日期和时间。每条日志消息都单独输出一行：如果正在打印的消息未以换行符结尾，则记录器将添加换行符。Fatal 函数 在写入日志消息后调用 os.Exit（1）。Panic 函数会在写入日志消息后调用 panic。
+</p>
+
+<p>
+日志显示的格式是
+</p>
+<pre class="example">
+[Prefix][logFlag][message]
+</pre>
+<p>
+例如：
+</p>
+<pre class="example">
+standard log prefix:2019/12/18 22:54:20 main.go:10: hello,world
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org1792bb4" class="outline-2">
+<h2 id="org1792bb4"><span class="section-number-2">2</span> 使用</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+主要函数
+</p>
+<ul class="org-ul">
+<li><p>
+Print[f|ln]()
+</p>
+
+<p>
+打印日志消息
+</p></li>
+
+<li><p>
+SetFlags()
+</p>
+
+<p>
+通过标志位设置日志行中是否显示日期、文件名、行号等信息。
+</p>
+
+<p>
+这些标志定义在记录器生成的每个日志条目之前添加哪些文本。将位组合在一起以控制打印的内容。无法控制它们的显示顺序（此处列出的顺序）或它们显示的格式（如注释中所述）。
+</p>
+
+<p>
+可用 flag 如下：
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">const</span> (
+    <span style="color: #5fafd7;">Ldate</span>         = 1 &lt;&lt; <span style="color: #5fafd7;">iota</span>     <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">the date in the local time zone: 2009/01/23</span>
+    <span style="color: #5fafd7;">Ltime</span>                         <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">the time in the local time zone: 01:23:23</span>
+    <span style="color: #5fafd7;">Lmicroseconds</span>                 <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">microsecond resolution: 01:23:23.123123.  assumes Ltime.</span>
+    <span style="color: #5fafd7;">Llongfile</span>                     <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">full file name and line number: /a/b/c/d.go:23</span>
+    <span style="color: #5fafd7;">Lshortfile</span>                    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">final file name element and line number: d.go:23. overrides Llongfile</span>
+    <span style="color: #5fafd7;">LUTC</span>                          <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">if Ldate or Ltime is set, use UTC rather than the local time zone</span>
+    <span style="color: #5fafd7;">LstdFlags</span>     = Ldate | Ltime <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">initial values for the standard logger</span>
+)
+</pre>
+</div></li>
+
+<li><p>
+SetOutput()
+</p>
+
+<p>
+设置日志输出位置，默认标准输出。
+</p></li>
+
+<li><p>
+SetPrefix()
+</p>
+
+<p>
+设置标准 logger 的输出前缀。
+</p></li>
+
+<li><p>
+type Logger
+</p>
+
+<p>
+logger 表示一个活动的记录对象，该对象生成到 io.Writer 的输出行。每个记录操作都会调用 Writer 的 Write 方法。一个 Logger 可以同时从多个 goroutines 中使用。它保证序列化对 Writer 的访问。
+</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2019-12-16 一 11:01</p>
+<p class="date">Created: 2019-12-28 六 18:45</p>
 <p class="validation"></p>
 </div>
 </body>
