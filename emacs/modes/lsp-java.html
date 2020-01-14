@@ -6,7 +6,7 @@
 <!-- 2020-01-14 二 22:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>shell常见的语句</title>
+<title>lsp-java</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,24 +306,64 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">shell常见的语句</h1>
+<h1 class="title">lsp-java</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org625cad1">1. 查找目录下最大的文件</a></li>
+<li><a href="#orgc4183fb">1. 概述</a>
+<ul>
+<li><a href="#org22ac4a0">1.1. Eclipse JDT Language Server</a></li>
+</ul>
+</li>
+<li><a href="#orgcfae264">2. 使用</a></li>
+<li><a href="#org6f7c02e">3. 配置</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org625cad1" class="outline-2">
-<h2 id="org625cad1"><span class="section-number-2">1</span> 查找目录下最大的文件</h2>
+<div id="outline-container-orgc4183fb" class="outline-2">
+<h2 id="orgc4183fb"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
-<pre class="example">
-find /usr/ -type f | xargs du -sk | sort -rn | head -1
-</pre>
+<p>
+<a href="https://github.com/emacs-lsp/lsp-java">lsp-java</a> 模式支持以下 JDT 功能：
+</p>
+<ul class="org-ul">
+<li>输入时分析和编译错误的报告时（通过 =flycheck / lsp-ui=）</li>
+<li>代码补全，使用 <code>company-lsp</code> 或内置的 <code>complete-at-poin</code></li>
+<li>Javadoc 悬停-使用 <code>lsp-ui</code></li>
+<li>代码操作-使用 <code>lsp-ui</code></li>
+<li>代码大纲-使用内置的 imenu</li>
+<li>代码导航-使用内置的 xref</li>
+<li>Code Lens（参​​​​考/实现）-使用内置的 xref</li>
+<li>代码高亮</li>
+<li>代码格式化</li>
+<li>Maven pom.xml 项目支持</li>
+<li>有限的 Gradle 支持</li>
+<li>可视化调试器， <code>dap-mode</code></li>
+<li>测试运行器  <code>dap-mode</code></li>
+<li>项目资源管理器集成-TreeMacs</li>
+<li>与 Spring Initializr 集成</li>
+</ul>
 </div>
+
+<div id="outline-container-org22ac4a0" class="outline-3">
+<h3 id="org22ac4a0"><span class="section-number-3">1.1</span> <a href="https://projects.eclipse.org/projects/eclipse.jdt.ls">Eclipse JDT Language Server</a></h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+lsp-java 将自动检测服务器是否存在，并将在首次启动之前下载 Eclipse JDT Language Server。服务器安装将在 lsp-java-server-install-dir 中。它将检测是否存在 dap-mode 并下载所需的服务器端插件/组件。如果要更新服务器，则可以运行 lsp-java-update-server。要运行特定版本的 Eclipse JDT Language Server，请使用 lsp-java-server-install-dir。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcfae264" class="outline-2">
+<h2 id="orgcfae264"><span class="section-number-2">2</span> 使用</h2>
+</div>
+
+
+<div id="outline-container-org6f7c02e" class="outline-2">
+<h2 id="org6f7c02e"><span class="section-number-2">3</span> 配置</h2>
 </div>
 </div>
 <div id="postamble" class="status">

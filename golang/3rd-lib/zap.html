@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-28 六 18:45 -->
+<!-- 2020-01-14 二 22:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>zap</title>
@@ -314,14 +314,11 @@ for the JavaScript code in this tag.
 <li><a href="#org97606af">1. 概览</a></li>
 <li><a href="#org267f36b">2. 性能</a></li>
 <li><a href="#org59c605d">3. 安装</a></li>
-<li><a href="#org2195355">4. 使用</a>
-<ul>
-<li><a href="#org9ff78e3">4.1. 配置 Zap</a></li>
-<li><a href="#org65f6a1c">4.2. SugaredLogger VS Logger</a></li>
-<li><a href="#orgabd485e">4.3. 派生 logger</a></li>
-</ul>
-</li>
-<li><a href="#org4e4ff7b">5. 扩展 Zap</a></li>
+<li><a href="#org03c8704">4. 简单使用</a></li>
+<li><a href="#org65f6a1c">5. SugaredLogger VS Logger</a></li>
+<li><a href="#orgf80e5e3">6. 配置</a></li>
+<li><a href="#orgabd485e">7. 派生 logger</a></li>
+<li><a href="#org4e4ff7b">8. 扩展 Zap</a></li>
 </ul>
 </div>
 </div>
@@ -330,15 +327,11 @@ for the JavaScript code in this tag.
 <h2 id="org97606af"><span class="section-number-2">1</span> 概览</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/uber-go/zap">zap</a> 是一个快速、结构化、支持日志分级的日志工具。与其他日志组件相比，优点有：
+<a href="https://github.com/uber-go/zap">zap</a> 是一个快速、结构化、支持日志分级的日志工具。与其他日志组件相比，最大特点是速度很快。
 </p>
-<ul class="org-ul">
-<li>快，zap 在记录信息的时候没有使用反射，而用户手动指定数据类型，虽然用起来麻烦点，但是性能提升很大。</li>
-<li>结构化。</li>
-<li></li>
-</ul>
 </div>
 </div>
+
 <div id="outline-container-org267f36b" class="outline-2">
 <h2 id="org267f36b"><span class="section-number-2">2</span> 性能</h2>
 <div class="outline-text-2" id="text-2">
@@ -347,11 +340,11 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-Zap 采用了不同的方法。它包括一个无反射，零分配的 JSON 编码器，并且基础 Logger 尽力避免序列化开销和分配。通过在此基础上构建的 SugaredLogger，用户可以通过 zap 选择何时需要关注每个分配，何时需要更熟悉的，松散类型的 API。
+Zap 采用了不同的方法。它包括一个无反射，零分配的 JSON 编码器，并且基础记录器尽力避免序列化开销和分配。通过在此基础上构建的 SugaredLogger，用户可以通过 zap 选择何时需要关注每个分配，何时需要更熟悉的，松散类型的 API。
 </p>
 
 <p>
-通过其自己的基准测试套件衡量，zap 不仅比同类结构化日志记录包具有更高的性能-而且比标准库还快。
+通过其自己的基准测试套件衡量，zap 不仅比同类结构化日志记录包具有更高的性能，甚至比标准库还快。
 </p>
 </div>
 </div>
@@ -366,15 +359,11 @@ Zap 采用了不同的方法。它包括一个无反射，零分配的 JSON 编�
 </div>
 </div>
 
-<div id="outline-container-org2195355" class="outline-2">
-<h2 id="org2195355"><span class="section-number-2">4</span> 使用</h2>
+<div id="outline-container-org03c8704" class="outline-2">
+<h2 id="org03c8704"><span class="section-number-2">4</span> 简单使用</h2>
 <div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org9ff78e3" class="outline-3">
-<h3 id="org9ff78e3"><span class="section-number-3">4.1</span> 配置 Zap</h3>
-<div class="outline-text-3" id="text-4-1">
 <p>
-构建 Logger 的最简单方法是使用 zap 自带的预设：NewExample，NewProduction 和 NewDevelopment。这些预置通过一个函数调用来构建 logger：
+zap 中构建记录器的最简单方法是使用自带的预设：NewExample，NewProduction 和 NewDevelopment。这些预设通过一个函数调用来构建记录器：
 </p>
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #ff8700;">logger</span>, <span style="color: #ff8700;">err</span> := zap.<span style="color: #ffd700;">NewProduction</span>()
@@ -384,22 +373,26 @@ Zap 采用了不同的方法。它包括一个无反射，零分配的 JSON 编�
 <span style="color: #a1db00;">defer</span> logger.<span style="color: #ffd700;">Sync</span>()
 </pre>
 </div>
-
 <p>
-预设适用于小型项目，但是大型项目和组织自然需要更多的自定义设置。对于大多数用户而言，zap 的 Config 结构在灵活性和便利性之间取得了适当的平衡。请参阅 <code>BasicConfiguration</code> 部分的示例代码。.
+默认情况下，记录器是无缓冲的。但是，由于 zap 的底层 API 允许缓冲，因此在退出进程之前调用 Sync 是一个好习惯。
 </p>
 
 <p>
-可以进行更特殊的配置（输出的日志文件自动拆分，将日志发送到消息队列等），但需要直接使用 <code>go.uber.org/zap/zapcore</code> 。请参阅 <code>AdvancedConfiguration</code> 部分示例代码。
+三种预设的区别在于：
 </p>
+<ul class="org-ul">
+<li>NewExample 构建了一个记录器，该记录器旨在用于 zap 的测试示例中。它将 DebugLevel 及以上的日志写成 JSON 标准输出，但省略了时间戳和调用函数，以使示例输出简短明了。</li>
+<li>NewDevelopment 构建一个开发记录器，该记录器以人性化的格式将 DebugLevel 及以上的日志写入标准错误。</li>
+<li>NewProduction 构建了一个生产用的记录器，该记录器将 InfoLevel 及以上的日志作为 JSON 写入标准错误中。这是 NewProductionConfig().Build(&#x2026; Option)的快捷方式。</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org65f6a1c" class="outline-3">
-<h3 id="org65f6a1c"><span class="section-number-3">4.2</span> SugaredLogger VS Logger</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-org65f6a1c" class="outline-2">
+<h2 id="org65f6a1c"><span class="section-number-2">5</span> SugaredLogger VS Logger</h2>
+<div class="outline-text-2" id="text-5">
 <p>
-在性能不错但不是很关键的情况下，请使用 <b>SugaredLogger</b> 。它比其他结构化日志记录包快 4-10 倍，并且支持结构化和 printf 样式的 API。
+在性能不是很关键的情况下，请使用 <b>SugaredLogger</b> 。它比其他结构化日志记录包快 4-10 倍，并且支持结构化和 printf 样式的 API。
 </p>
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #ff8700;">sugar</span> := zap.<span style="color: #ffd700;">NewExample</span>().<span style="color: #ffd700;">Sugar</span>()
@@ -414,11 +407,16 @@ sugar.<span style="color: #ffd700;">Infof</span>(<span style="color: #ff4ea3;">"
 </div>
 
 <p>
-对于于每个日志级别，它公开了三种方法：一种用于松散类型的结构化日志记录，一种用于 println 样式格式化，以及一种用于 printf 样式格式化。例如，SugaredLoggers 可以使用 Infow（结构化上下文中的“info with”），Info 或 Infof 生成 InfoLevel 输出。
+sugaredLoger 对于每个日志级别，它公开了三种方法：
 </p>
+<ul class="org-ul">
+<li>用于松散类型的结构化日志记录，例如 Infow(结构化上下文中的“info with”）</li>
+<li>用于 println 样式格式化，例如 Info</li>
+<li>用于 printf 样式格式化，例如 Infof</li>
+</ul>
 
 <p>
-当性能和类型安全至关重要时，请使用 <b>Logger</b> 。它比 SugaredLogger 更快，并且分配的资源少得多，但仅支持结构化日志记录。
+当性能和类型安全至关重要时，请使用 <b>Logger</b> 。它比 <b>SugaredLogger</b> 更快，并且分配的资源少得多，但仅支持结构化日志记录。
 </p>
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #ff8700;">logger</span> := zap.<span style="color: #ffd700;">NewExample</span>()
@@ -432,11 +430,7 @@ logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"
 </div>
 
 <p>
-默认情况下，logger 是无缓冲的。但是，由于 zap 的底层 API 允许缓冲，因此在退出进程之前调用 Sync 是一个好习惯。
-</p>
-
-<p>
-在 Logger 和 SugaredLogger 之间进行选择并不需要考虑真个应用范围，二者之间的转换既简单而方便：
+记录器可以在 Logger 和 SugaredLogger 之间简单而快捷的进行转换：
 </p>
 <div class="org-src-container">
 <pre class="src src-go"><span style="color: #ff8700;">logger</span> := zap.<span style="color: #ffd700;">NewExample</span>()
@@ -446,27 +440,77 @@ logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"
 </pre>
 </div>
 <p>
-也就是说，定义一个全局的 SugarLogger，在需要考虑性能的时候，我们可以方便地将其切换到为 Logger。
+也就是说，定义一个全局的记录器，在性能和记录方便性的情况下，在 Logger 和 sugaredLogger 之间进行切换。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgabd485e" class="outline-3">
-<h3 id="orgabd485e"><span class="section-number-3">4.3</span> 派生 logger</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-orgf80e5e3" class="outline-2">
+<h2 id="orgf80e5e3"><span class="section-number-2">6</span> 配置</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+zap 提供的预设适用于小型项目，但是大型项目和组织自然需要更多的自定义设置。对于大多数用户而言，zap 的 Config 结构在灵活性和便利性之间取得了适当的平衡。
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">For some users, the presets offered by the NewProduction, NewDevelopment,</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">and NewExample constructors won't be appropriate. For most of those</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">users, the bundled Config struct offers the right balance of flexibility</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">and convenience. (For more complex needs, see the AdvancedConfiguration</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">example.)</span>
+<span style="color: #6c6c6c; font-style: italic;">//</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">See the documentation for Config and zapcore.EncoderConfig for all the</span>
+<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">available options.</span>
+<span style="color: #ff8700;">rawJSON</span> := []<span style="color: #ffd700;">byte</span>(<span style="color: #ff4ea3;">`{</span>
+<span style="color: #ff4ea3;">      "level": "debug",</span>
+<span style="color: #ff4ea3;">      "encoding": "json",</span>
+<span style="color: #ff4ea3;">      "outputPaths": ["stdout", "/tmp/logs"],</span>
+<span style="color: #ff4ea3;">      "errorOutputPaths": ["stderr"],</span>
+<span style="color: #ff4ea3;">      "initialFields": {"foo": "bar"},</span>
+<span style="color: #ff4ea3;">      "encoderConfig": {</span>
+<span style="color: #ff4ea3;">        "messageKey": "message",</span>
+<span style="color: #ff4ea3;">        "levelKey": "level",</span>
+<span style="color: #ff4ea3;">        "levelEncoder": "lowercase"</span>
+<span style="color: #ff4ea3;">      }</span>
+<span style="color: #ff4ea3;">    }`</span>)
+
+<span style="color: #a1db00;">var</span> <span style="color: #ff8700;">cfg</span> <span style="color: #00d7af;">zap.Config</span>
+<span style="color: #a1db00;">if</span> <span style="color: #ff8700;">err</span> := json.<span style="color: #ffd700;">Unmarshal</span>(rawJSON, &amp;cfg); err != <span style="color: #5fafd7;">nil</span> {
+    <span style="color: #d18aff;">panic</span>(err)
+}
+<span style="color: #ff8700;">logger</span>, <span style="color: #ff8700;">err</span> := cfg.<span style="color: #ffd700;">Build</span>()
+<span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
+    <span style="color: #d18aff;">panic</span>(err)
+}
+<span style="color: #a1db00;">defer</span> logger.<span style="color: #ffd700;">Sync</span>()
+
+logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"logger construction succeeded"</span>)
+</pre>
+</div>
+<p>
+更特殊的配置(输出的日志文件自动拆分，将日志发送到消息队列等) 需要直接使用 <code>go.uber.org/zap/zapcore</code> 。请参阅 <code>AdvancedConfiguration</code> 部分示例代码。
+</p>
+<div class="org-src-container">
+<pre class="src src-go">
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgabd485e" class="outline-2">
+<h2 id="orgabd485e"><span class="section-number-2">7</span> 派生 logger</h2>
+<div class="outline-text-2" id="text-7">
 <p>
 使用 SurgaredLogger 和 Logger 的 with 方法可以派生出一个子 logger，以进一步细化 logger。
 </p>
 </div>
 </div>
-</div>
 
 
 <div id="outline-container-org4e4ff7b" class="outline-2">
-<h2 id="org4e4ff7b"><span class="section-number-2">5</span> 扩展 Zap</h2>
-<div class="outline-text-2" id="text-5">
+<h2 id="org4e4ff7b"><span class="section-number-2">8</span> 扩展 Zap</h2>
+<div class="outline-text-2" id="text-8">
 <p>
-zap 包本身是 <code>go.uber.org/zap/zapcore</code> 中接口的相对较薄的包装。扩展 zap 以支持新的编码（例如 BSON），新的日志接收器（例如 Kafka）或其他奇特的东西（也许是异常聚合服务，例如 <code>Sentry</code> 或 <code>Rollbar</code> ）通常需要实现 <code>zapcore.Encoder</code> ， <code>zapcore.WriteSyncer</code> 或 <code>zapcore.Core</code>  接口。有关详细信息，请参见 <code>zapcore</code> 文档。
+zap 包本身是 <code>go.uber.org/zap/zapcore</code> 中接口的相对简单的封装。扩展 zap 以支持新的编码(例如 BSON)，新的日志接收器(例如 Kafka)或其他奇特的东西(也许是异常聚合服务，例如 <code>Sentry</code> 或 <code>Rollbar</code> )通常需要实现 <code>zapcore.Encoder</code> ， <code>zapcore.WriteSyncer</code> 或 <code>zapcore.Core</code>  接口。有关详细信息，请参见 <code>zapcore</code> 文档。
 </p>
 
 <p>
@@ -478,7 +522,7 @@ zap 包本身是 <code>go.uber.org/zap/zapcore</code> 中接口的相对较薄�
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.coma">phenix3443@gmail.coma</a></p>
-<p class="date">Created: 2019-12-28 六 18:45</p>
+<p class="date">Created: 2020-01-14 二 22:02</p>
 <p class="validation"></p>
 </div>
 </body>

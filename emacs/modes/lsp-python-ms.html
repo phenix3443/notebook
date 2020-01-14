@@ -6,7 +6,7 @@
 <!-- 2020-01-14 二 22:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>shell常见的语句</title>
+<title>lsp-python-ms</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,23 +306,74 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">shell常见的语句</h1>
+<h1 class="title">lsp-python-ms</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org625cad1">1. 查找目录下最大的文件</a></li>
+<li><a href="#org0582011">1. 概述</a></li>
+<li><a href="#org459dbba">2. 安装</a></li>
+<li><a href="#org702c837">3. 配置</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org625cad1" class="outline-2">
-<h2 id="org625cad1"><span class="section-number-2">1</span> 查找目录下最大的文件</h2>
+<div id="outline-container-org0582011" class="outline-2">
+<h2 id="org0582011"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
-<pre class="example">
-find /usr/ -type f | xargs du -sk | sort -rn | head -1
+<p>
+<a href="https://github.com/andrew-christianson/lsp-python-ms/">lsp-python-ms</a> 使用微软实现的 python 的 lsp server。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org459dbba" class="outline-2">
+<h2 id="org459dbba"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<ol class="org-ol">
+<li><p>
+安装dotnet-sdk
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">brew cask install dotnet-sdk
 </pre>
+</div></li>
+<li><p>
+build <a href="https://github.com/Microsoft/python-language-server">python-language-server</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">git clone https://github.com/Microsoft/python-language-server.git
+<span style="color: #d18aff;">cd</span> python-language-server/src/LanguageServer/Impl
+dotnet publish -c Release -r osx-x64   <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">mac</span>
+</pre>
+</div>
+<p>
+根据您的体系结构和操作系统更改-r标志。有关系统的正确值，请参见Microsoft的 <a href="https://docs.microsoft.com/en-us/dotnet/core/rid-catalog">Runtime ID 目录</a> 。
+</p></li>
+<li><p>
+添加可执行权限
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">  chmod a+x $(<span style="color: #fa8072;">git</span> rev-parse --show-toplevel)/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer
+</pre>
+</div></li>
+<li><p>
+拷贝 <code>.emacs.d</code> 目录下。
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">cp -r python-language-server/output/bin/Release/osx-x64/publish ~/.emacs.d/mspyls
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org702c837" class="outline-2">
+<h2 id="org702c837"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+配置参见 <a href="https://github.com/phenix3443/emacs.d/blob/master/lisps/python-ide.el">python-ide.el</a>
+</p>
 </div>
 </div>
 </div>

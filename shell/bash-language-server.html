@@ -6,7 +6,7 @@
 <!-- 2020-01-14 二 22:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>shell常见的语句</title>
+<title>bash-language-server</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,23 +306,68 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">shell常见的语句</h1>
+<h1 class="title">bash-language-server</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org625cad1">1. 查找目录下最大的文件</a></li>
+<li><a href="#org67190e5">1. 概述</a></li>
+<li><a href="#org20fd12b">2. 安装</a></li>
+<li><a href="#orgdc07545">3. 配置</a>
+<ul>
+<li><a href="#orgcb85af1">3.1. emacs</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org625cad1" class="outline-2">
-<h2 id="org625cad1"><span class="section-number-2">1</span> 查找目录下最大的文件</h2>
+<div id="outline-container-org67190e5" class="outline-2">
+<h2 id="org67190e5"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
-<pre class="example">
-find /usr/ -type f | xargs du -sk | sort -rn | head -1
+<p>
+<a href="https://github.com/mads-hartmann/bash-language-server">bash-language-server</a> 是 bash 的 language server，支持：
+</p>
+<ul class="org-ul">
+<li>跳转到声明</li>
+<li>查找引用</li>
+<li>代码大纲、显示符号</li>
+<li>高亮显示</li>
+<li>代码补全（常用的 shell 命令）</li>
+<li>简单的诊断报告</li>
+<li>悬停标志的说明文档</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org20fd12b" class="outline-2">
+<h2 id="org20fd12b"><span class="section-number-2">2</span> 安装</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">sudo npm i -g bash-language-server
 </pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdc07545" class="outline-2">
+<h2 id="orgdc07545"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgcb85af1" class="outline-3">
+<h3 id="orgcb85af1"><span class="section-number-3">3.1</span> emacs</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Lsp-mode 具有内置的客户端，可以通过 use-package 安装。将配置添加到您的 <code>.emacs.d/init.el</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #a1db00;">use-package</span> <span style="color: #5fafd7;">lsp-mode</span>
+  <span style="color: #d18aff;">:commands</span> lsp
+  <span style="color: #d18aff;">:hook</span>
+  (sh-mode . lsp))
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>

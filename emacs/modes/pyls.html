@@ -6,7 +6,7 @@
 <!-- 2020-01-14 二 22:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>shell常见的语句</title>
+<title>pyls</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,23 +306,59 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">shell常见的语句</h1>
+<h1 class="title">pyls</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org625cad1">1. 查找目录下最大的文件</a></li>
+<li><a href="#orgfcc888a">1. 概述</a>
+<ul>
+<li><a href="#orga27c178">1.1. 安装</a></li>
+<li><a href="#org7876bc8">1.2. 使用</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org625cad1" class="outline-2">
-<h2 id="org625cad1"><span class="section-number-2">1</span> 查找目录下最大的文件</h2>
+<div id="outline-container-orgfcc888a" class="outline-2">
+<h2 id="orgfcc888a"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
-<pre class="example">
-find /usr/ -type f | xargs du -sk | sort -rn | head -1
+<p>
+<a href="https://github.com/palantir/python-language-server">python-language-server</a> (pylsp)是纯 python 开发的 lsp server。
+</p>
+</div>
+
+<div id="outline-container-orga27c178" class="outline-3">
+<h3 id="orga27c178"><span class="section-number-3">1.1</span> 安装</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-sh">pip3 install --user python-language-server[all]
 </pre>
+</div>
+
+<p>
+安装以下 lib：
+</p>
+<ul class="org-ul">
+<li>Rope：补全和重命名</li>
+<li>Pyflakes： 检测各种错误的 linter</li>
+<li>McCabe： 用于复杂性检查</li>
+<li>pycodestyle：用于代码风格检查的  linter</li>
+<li>pydocstyle：用于文档字符串样式检查的 linter（默认情况下禁用）</li>
+<li>autopep8 用于代码格式化</li>
+<li>YAPF 用于代码格式化（优先于 autopep8）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7876bc8" class="outline-3">
+<h3 id="org7876bc8"><span class="section-number-3">1.2</span> 使用</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+目前该配置 pyls 使用还比较卡顿，暂时放弃。
+</p>
+</div>
 </div>
 </div>
 </div>
