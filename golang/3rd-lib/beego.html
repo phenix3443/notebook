@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-21 六 19:07 -->
+<!-- 2020-03-05 四 17:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>beego</title>
@@ -323,7 +323,7 @@ for the JavaScript code in this tag.
 <h2 id="orgca4ecaf"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://beego.me/">beego</a>
+<a href="https://beego.me/">beego</a> 是一个简易的 HTTP 开发框架。
 </p>
 </div>
 </div>
@@ -338,12 +338,39 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-org58d020b" class="outline-2">
 <h2 id="org58d020b"><span class="section-number-2">4</span> 使用</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-sh">bee new project
+</pre>
+</div>
+<p>
+或者创建 api 项目
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">bee new api-project
+<span style="color: #d18aff;">cd</span> api-project
+bee run
+</pre>
+</div>
+
+<p>
+打开 <code>http://localhost:8080/</code> 就能看到简单的启动页面了。
+</p>
+
+<p>
+常用的其他命令：
+</p>
+<ul class="org-ul">
+<li>bee pack 打包发布</li>
+<li>bee dockerize 生成 docker 镜像</li>
+</ul>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2019-09-21 六 19:07</p>
+<p class="date">Created: 2020-03-05 四 17:02</p>
 <p class="validation"></p>
 </div>
 </body>

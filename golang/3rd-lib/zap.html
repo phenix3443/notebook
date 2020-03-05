@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-14 二 22:02 -->
+<!-- 2020-03-05 四 16:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>zap</title>
@@ -317,8 +317,9 @@ for the JavaScript code in this tag.
 <li><a href="#org03c8704">4. 简单使用</a></li>
 <li><a href="#org65f6a1c">5. SugaredLogger VS Logger</a></li>
 <li><a href="#orgf80e5e3">6. 配置</a></li>
-<li><a href="#orgabd485e">7. 派生 logger</a></li>
-<li><a href="#org4e4ff7b">8. 扩展 Zap</a></li>
+<li><a href="#orgc62031a">7. 动态调整日志级别</a></li>
+<li><a href="#org6264d2b">8. logger 继承（logger hierarchy）</a></li>
+<li><a href="#org4e4ff7b">9. 扩展 Zap</a></li>
 </ul>
 </div>
 </div>
@@ -451,54 +452,46 @@ logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"
 <p>
 zap 提供的预设适用于小型项目，但是大型项目和组织自然需要更多的自定义设置。对于大多数用户而言，zap 的 Config 结构在灵活性和便利性之间取得了适当的平衡。
 </p>
-<div class="org-src-container">
-<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">For some users, the presets offered by the NewProduction, NewDevelopment,</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">and NewExample constructors won't be appropriate. For most of those</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">users, the bundled Config struct offers the right balance of flexibility</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">and convenience. (For more complex needs, see the AdvancedConfiguration</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">example.)</span>
-<span style="color: #6c6c6c; font-style: italic;">//</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">See the documentation for Config and zapcore.EncoderConfig for all the</span>
-<span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">available options.</span>
-<span style="color: #ff8700;">rawJSON</span> := []<span style="color: #ffd700;">byte</span>(<span style="color: #ff4ea3;">`{</span>
-<span style="color: #ff4ea3;">      "level": "debug",</span>
-<span style="color: #ff4ea3;">      "encoding": "json",</span>
-<span style="color: #ff4ea3;">      "outputPaths": ["stdout", "/tmp/logs"],</span>
-<span style="color: #ff4ea3;">      "errorOutputPaths": ["stderr"],</span>
-<span style="color: #ff4ea3;">      "initialFields": {"foo": "bar"},</span>
-<span style="color: #ff4ea3;">      "encoderConfig": {</span>
-<span style="color: #ff4ea3;">        "messageKey": "message",</span>
-<span style="color: #ff4ea3;">        "levelKey": "level",</span>
-<span style="color: #ff4ea3;">        "levelEncoder": "lowercase"</span>
-<span style="color: #ff4ea3;">      }</span>
-<span style="color: #ff4ea3;">    }`</span>)
 
-<span style="color: #a1db00;">var</span> <span style="color: #ff8700;">cfg</span> <span style="color: #00d7af;">zap.Config</span>
-<span style="color: #a1db00;">if</span> <span style="color: #ff8700;">err</span> := json.<span style="color: #ffd700;">Unmarshal</span>(rawJSON, &amp;cfg); err != <span style="color: #5fafd7;">nil</span> {
-    <span style="color: #d18aff;">panic</span>(err)
-}
-<span style="color: #ff8700;">logger</span>, <span style="color: #ff8700;">err</span> := cfg.<span style="color: #ffd700;">Build</span>()
-<span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
-    <span style="color: #d18aff;">panic</span>(err)
-}
-<span style="color: #a1db00;">defer</span> logger.<span style="color: #ffd700;">Sync</span>()
+<p>
+示例代码： <a href="https://github.com/phenix3443/test/blob/master/golang/zap/base_config.go#L44">basicConfig.go</a>
+</p>
 
-logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"logger construction succeeded"</span>)
-</pre>
-</div>
 <p>
 更特殊的配置(输出的日志文件自动拆分，将日志发送到消息队列等) 需要直接使用 <code>go.uber.org/zap/zapcore</code> 。请参阅 <code>AdvancedConfiguration</code> 部分示例代码。
 </p>
-<div class="org-src-container">
-<pre class="src src-go">
-</pre>
-</div>
+
+<p>
+但是我觉得日志工具应该简单点，只是完成将日志落地到本地文件，然后由其他程序对日志中文件做进一步处理。
+</p>
 </div>
 </div>
 
-<div id="outline-container-orgabd485e" class="outline-2">
-<h2 id="orgabd485e"><span class="section-number-2">7</span> 派生 logger</h2>
+
+<div id="outline-container-orgc62031a" class="outline-2">
+<h2 id="orgc62031a"><span class="section-number-2">7</span> 动态调整日志级别</h2>
 <div class="outline-text-2" id="text-7">
+<p>
+AtomicLevel 可原子性的更改的动态日志记录级别。它使您可以在运行时安全地更改记录器树（根记录器和通过添加上下文创建的任何子级）的日志级别。
+</p>
+
+<p>
+AtomicLevel.ServeHTTP 本身是一个 http.Handler，它提供 JSON 端点来更改其级别。通过该函数，可以在程序运行期间修改日志级别，而不用重启程序。
+</p>
+
+<p>
+只有使用 NewAtomicLevel 构造函数创建 AtomicLevels 才能分配其内部原子指针。
+</p>
+
+<p>
+示例代码：<a href="https://github.com/phenix3443/test/blob/master/golang/zap/atomlevel.go">atomLevel.go</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6264d2b" class="outline-2">
+<h2 id="org6264d2b"><span class="section-number-2">8</span> logger 继承（logger hierarchy）</h2>
+<div class="outline-text-2" id="text-8">
 <p>
 使用 SurgaredLogger 和 Logger 的 with 方法可以派生出一个子 logger，以进一步细化 logger。
 </p>
@@ -507,8 +500,8 @@ logger.<span style="color: #ffd700;">Info</span>(<span style="color: #ff4ea3;">"
 
 
 <div id="outline-container-org4e4ff7b" class="outline-2">
-<h2 id="org4e4ff7b"><span class="section-number-2">8</span> 扩展 Zap</h2>
-<div class="outline-text-2" id="text-8">
+<h2 id="org4e4ff7b"><span class="section-number-2">9</span> 扩展 Zap</h2>
+<div class="outline-text-2" id="text-9">
 <p>
 zap 包本身是 <code>go.uber.org/zap/zapcore</code> 中接口的相对简单的封装。扩展 zap 以支持新的编码(例如 BSON)，新的日志接收器(例如 Kafka)或其他奇特的东西(也许是异常聚合服务，例如 <code>Sentry</code> 或 <code>Rollbar</code> )通常需要实现 <code>zapcore.Encoder</code> ， <code>zapcore.WriteSyncer</code> 或 <code>zapcore.Core</code>  接口。有关详细信息，请参见 <code>zapcore</code> 文档。
 </p>
@@ -522,7 +515,7 @@ zap 包本身是 <code>go.uber.org/zap/zapcore</code> 中接口的相对简单�
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.coma">phenix3443@gmail.coma</a></p>
-<p class="date">Created: 2020-01-14 二 22:02</p>
+<p class="date">Created: 2020-03-05 四 16:58</p>
 <p class="validation"></p>
 </div>
 </body>
