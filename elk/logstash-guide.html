@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-06 五 18:15 -->
+<!-- 2020-03-05 四 16:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gopls</title>
+<title>logstash</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,69 +306,192 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gopls</h1>
+<h1 class="title">logstash</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf0440d8">1. 概述</a></li>
-<li><a href="#orgd3a5e8b">2. 安装</a></li>
-<li><a href="#orgb990284">3. 配置</a></li>
-<li><a href="#org71abc15">4. 使用</a></li>
+<li><a href="#org31d3a80">1. 概述</a></li>
+<li><a href="#org234695b">2. Getting started with logstash</a>
+<ul>
+<li><a href="#org1ba2674">2.1. stashing your first event</a></li>
+<li><a href="#orge6a86f3">2.2. Parsing Logs with Logstash</a>
+<ul>
+<li><a href="#orgf562607">2.2.1. 配置 filebeat 讲日志发送到 logstash</a></li>
+<li><a href="#orgb1e4ed2">2.2.2. 为 filebeat 配置 logstash</a></li>
+<li><a href="#orgb853a54">2.2.3. 使用 Grok 过滤插件解析 web 日志</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf0440d8" class="outline-2">
-<h2 id="orgf0440d8"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org31d3a80" class="outline-2">
+<h2 id="org31d3a80"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/golang/tools/blob/master/gopls/README.md">gopls</a> （发音为“go please”）是 Go 的语言服务器协议（LSP）的实现。 LSP 允许使用类似 IDE 的功能扩展任何文本编辑器。
+<a href="https://www.elastic.co/guide/en/logstash/current/index.html">logstash guide</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd3a5e8b" class="outline-2">
-<h2 id="orgd3a5e8b"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-org234695b" class="outline-2">
+<h2 id="org234695b"><span class="section-number-2">2</span> Getting started with logstash</h2>
 <div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org1ba2674" class="outline-3">
+<h3 id="org1ba2674"><span class="section-number-3">2.1</span> stashing your first event</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
-要安装或更新 gopls，请运行：
+创建测试网络：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">go get golang.org/x/tools/gopls@latest
+<pre class="src src-sh">docker network create elk
+</pre>
+</div>
+<p>
+启动容器：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker run -d <span style="color: #ff4ea3;">\</span>
+--name elasticsearch <span style="color: #ff4ea3;">\</span>
+--net elk <span style="color: #ff4ea3;">\</span>
+-p 9200:9200 -p 9300:9300 <span style="color: #ff4ea3;">\</span>
+-e <span style="color: #ff4ea3;">"discovery.type=single-node"</span> <span style="color: #ff4ea3;">\</span>
+elasticsearch:7.3.2
+
+docker run -it --rm <span style="color: #ff4ea3;">\</span>
+--name logstash <span style="color: #ff4ea3;">\</span>
+--net elk <span style="color: #ff4ea3;">\</span>
+logstash:7.5.1 /bin/bash
 </pre>
 </div>
 
 <p>
-不要使用 <code>-u</code> 标志，因为它会将您的依赖项更新为不兼容的版本。
+在 logstash container 中启动 logstash，
 </p>
+<div class="org-src-container">
+<pre class="src src-sh">logstash -e <span style="color: #ff4ea3;">'input { stdin { } } output { stdout {} }</span>
+</pre>
+</div>
 
 <p>
-如果您看到此错误：
+logstash 完成一系列启动动作，打印日志到屏幕：
 </p>
 <pre class="example">
-$ go get golang.org/x/tools/gopls@latest
-go: cannot use path@version syntax in GOPATH mode
+[2020-02-04T13:53:54,546][INFO ][logstash.javapipeline    ] Pipeline started {"pipeline.id"=&gt;"main"}
+The stdin plugin is now waiting for input:
 </pre>
 <p>
-运行 <code>GO111MODULE=on go get golang.org/x/tools/gopls@latest</code> 。如果您使用 Go 模块，则需要将编辑器打开到包含 go.mod 文件的目录。
+完成后输入 <code>hello,world</code> ，可以看到 logstash 打印了处理后的相关消息：
+</p>
+<pre class="example">
+[2020-02-04T13:45:26,536][INFO ][logstash.agent           ] Pipelines running {:count=&gt;2, :running_pipelines=&gt;[:".monitoring-logstash", :main], :non_running_pipelines=&gt;[]}
+[2020-02-04T13:45:26,807][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=&gt;9600}
+hello,world
+/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/awesome_print-1.7.0/lib/awesome_print/formatters/base_formatter.rb:31: warning: constant ::Fixnum is deprecated
+{
+      "@version" =&gt; "1",
+          "host" =&gt; "7fb26edd3fd9",
+       "message" =&gt; "hello,world",
+    "@timestamp" =&gt; 2020-02-04T13:46:37.801Z
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge6a86f3" class="outline-3">
+<h3 id="orge6a86f3"><span class="section-number-3">2.2</span> Parsing Logs with Logstash</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+使用 filebeat 监控日志，然后讲请求转发到 logstash，处理后转发到 es，通过 kinbana 进行展示。
 </p>
 </div>
+
+<div id="outline-container-orgf562607" class="outline-4">
+<h4 id="orgf562607"><span class="section-number-4">2.2.1</span> 配置 filebeat 讲日志发送到 logstash</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+<pre class="src src-sh">docker run -it --rm <span style="color: #ff4ea3;">\</span>
+  --net elk <span style="color: #ff4ea3;">\</span>
+  --name=filebeat <span style="color: #ff4ea3;">\</span>
+  --volume=<span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">pwd</span><span style="color: #ff4ea3;">):/data"</span> <span style="color: #ff4ea3;">\</span>
+  docker.elastic.co/beats/filebeat:7.5.2 /bin/bash
+</pre>
+</div>
+<p>
+启动 filebeat：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">./filebeat -e -c /data/filebeat.yml -d <span style="color: #ff4ea3;">"publish"</span>
+</pre>
+</div>
+</div>
 </div>
 
-<div id="outline-container-orgb990284" class="outline-2">
-<h2 id="orgb990284"><span class="section-number-2">3</span> 配置</h2>
+<div id="outline-container-orgb1e4ed2" class="outline-4">
+<h4 id="orgb1e4ed2"><span class="section-number-4">2.2.2</span> 为 filebeat 配置 logstash</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+<pre class="src src-sh">docker run -it --rm <span style="color: #ff4ea3;">\</span>
+--name logstash <span style="color: #ff4ea3;">\</span>
+--volume=<span style="color: #ff4ea3;">"$(</span><span style="color: #fa8072;">pwd</span><span style="color: #ff4ea3;">):/data"</span> <span style="color: #ff4ea3;">\</span>
+--net elk <span style="color: #ff4ea3;">\</span>
+logstash:7.5.1 /bin/bash
+</pre>
 </div>
 
+<p>
+启动 logstash：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">bin/logstash -f /data/first-pipeline.conf --config.reload.automatic
+</pre>
+</div>
 
-<div id="outline-container-org71abc15" class="outline-2">
-<h2 id="org71abc15"><span class="section-number-2">4</span> 使用</h2>
+<p>
+如果 pipeline 设置正常，会看到很多如下的日志：
+</p>
+<div class="org-src-container">
+<pre class="src src-json">{
+    <span style="color: #ff4ea3;">"@timestamp"</span> =&gt; <span style="color: #5fafd7;">2017</span>-<span style="color: #5fafd7;">11</span>-<span style="color: #5fafd7;">09</span>T<span style="color: #5fafd7;">01</span>:<span style="color: #5fafd7;">44</span>:<span style="color: #5fafd7;">20.071</span>Z,
+        <span style="color: #ff4ea3;">"offset"</span> =&gt; <span style="color: #5fafd7;">325</span>,
+      <span style="color: #ff4ea3;">"@version"</span> =&gt; <span style="color: #ff4ea3;">"1"</span>,
+          <span style="color: #ff4ea3;">"beat"</span> =&gt; {
+            <span style="color: #ff4ea3;">"name"</span> =&gt; <span style="color: #ff4ea3;">"My-MacBook-Pro.local"</span>,
+        <span style="color: #ff4ea3;">"hostname"</span> =&gt; <span style="color: #ff4ea3;">"My-MacBook-Pro.local"</span>,
+         <span style="color: #ff4ea3;">"version"</span> =&gt; <span style="color: #ff4ea3;">"6.0.0"</span>
+    },
+          <span style="color: #ff4ea3;">"host"</span> =&gt; <span style="color: #ff4ea3;">"My-MacBook-Pro.local"</span>,
+    <span style="color: #ff4ea3;">"prospector"</span> =&gt; {
+        <span style="color: #ff4ea3;">"type"</span> =&gt; <span style="color: #ff4ea3;">"log"</span>
+    },
+    <span style="color: #ff4ea3;">"input"</span> =&gt; {
+        <span style="color: #ff4ea3;">"type"</span> =&gt; <span style="color: #ff4ea3;">"log"</span>
+    },
+        <span style="color: #ff4ea3;">"source"</span> =&gt; <span style="color: #ff4ea3;">"/path/to/file/logstash-tutorial.log"</span>,
+       <span style="color: #ff4ea3;">"message"</span> =&gt; <span style="color: #ff4ea3;">"83.149.9.216 - - [04/Jan/2015:05:13:42 +0000] \"GET /presentations/logstash-monitorama-2013/images/kibana-search.png HTTP/1.1\" 200 203023 \"http://semicomplete.com/presentations/logstash-monitorama-2013/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36\""</span>,
+          <span style="color: #ff4ea3;">"tags"</span> =&gt; [
+        [<span style="color: #5fafd7;">0</span>] <span style="color: #ff4ea3;">"beats_input_codec_plain_applied"</span>
+    ]
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb853a54" class="outline-4">
+<h4 id="orgb853a54"><span class="section-number-4">2.2.3</span> 使用 Grok 过滤插件解析 web 日志</h4>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-06 五 18:15</p>
+<p class="date">Created: 2020-03-05 四 16:59</p>
 <p class="validation"></p>
 </div>
 </body>

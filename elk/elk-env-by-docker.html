@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-06 五 18:15 -->
+<!-- 2020-03-05 四 16:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gopls</title>
+<title>使用docker搭建elk日志系统</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,69 +306,76 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gopls</h1>
+<h1 class="title">使用docker搭建elk日志系统</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf0440d8">1. 概述</a></li>
-<li><a href="#orgd3a5e8b">2. 安装</a></li>
-<li><a href="#orgb990284">3. 配置</a></li>
-<li><a href="#org71abc15">4. 使用</a></li>
+<li><a href="#org8c1a0f5">1. 概述</a>
+<ul>
+<li><a href="#orgf519e3e">1.1. logstash</a></li>
+<li><a href="#orgd5fea1d">1.2. elasticsearch</a></li>
+<li><a href="#org2069360">1.3. kibana</a></li>
+</ul>
+</li>
+<li><a href="#org3ecb1ac">2. 安装</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf0440d8" class="outline-2">
-<h2 id="orgf0440d8"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org8c1a0f5" class="outline-2">
+<h2 id="org8c1a0f5"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgf519e3e" class="outline-3">
+<h3 id="orgf519e3e"><span class="section-number-3">1.1</span> logstash</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
-<a href="https://github.com/golang/tools/blob/master/gopls/README.md">gopls</a> （发音为“go please”）是 Go 的语言服务器协议（LSP）的实现。 LSP 允许使用类似 IDE 的功能扩展任何文本编辑器。
+Logstash 是具有实时流水线功能的开源数据收集引擎。 Logstash 可以动态统一来自不同来源的数据，并将数据规范化为您选择的目标。
+</p>
+
+<p>
+收集是通过许多可配置的输入插件完成的，包括原始套接字/数据包通信，文件尾部和几个消息总线客户端。输入插件收集到数据后，可以使用任意数量的修改和注释事件数据的过滤器对其进行处理。最后，事件被路由到输出插件，这些插件可以将事件转发到各种外部程序，包括 Elasticsearch，本地文件和多个消息总线实现。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd3a5e8b" class="outline-2">
-<h2 id="orgd3a5e8b"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-orgd5fea1d" class="outline-3">
+<h3 id="orgd5fea1d"><span class="section-number-3">1.2</span> elasticsearch</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Elasticsearch 是一个分布式的 RESTful 搜索和分析引擎，能够解决越来越多的用例。作为 Elastic Stack 的核心，它集中存储您的数据，以便您发现期望的数据并发现意外的数据。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2069360" class="outline-3">
+<h3 id="org2069360"><span class="section-number-3">1.3</span> kibana</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Kibana 是一个旨在与 Elasticsearch 一起使用的开源分析和可视化平台。可以使用 Kibana 对 Elasticsearch 索引中存储的数据进行搜索、查看和交互。可以轻松地执行高级数据分析，并在各种图表，表格和地图中可视化数据。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3ecb1ac" class="outline-2">
+<h2 id="org3ecb1ac"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
-<p>
-要安装或更新 gopls，请运行：
-</p>
 <div class="org-src-container">
-<pre class="src src-sh">go get golang.org/x/tools/gopls@latest
+<pre class="src src-sh">docker pull elasticsearch:7.3.2
+docker pull kibana:7.3.2
+docker pull logstash:7.3.2
+docker pull docker.elastic.co/beats/filebeat:7.5.2
 </pre>
 </div>
-
-<p>
-不要使用 <code>-u</code> 标志，因为它会将您的依赖项更新为不兼容的版本。
-</p>
-
-<p>
-如果您看到此错误：
-</p>
-<pre class="example">
-$ go get golang.org/x/tools/gopls@latest
-go: cannot use path@version syntax in GOPATH mode
-</pre>
-<p>
-运行 <code>GO111MODULE=on go get golang.org/x/tools/gopls@latest</code> 。如果您使用 Go 模块，则需要将编辑器打开到包含 go.mod 文件的目录。
-</p>
 </div>
-</div>
-
-<div id="outline-container-orgb990284" class="outline-2">
-<h2 id="orgb990284"><span class="section-number-2">3</span> 配置</h2>
-</div>
-
-
-<div id="outline-container-org71abc15" class="outline-2">
-<h2 id="org71abc15"><span class="section-number-2">4</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-06 五 18:15</p>
+<p class="date">Created: 2020-03-05 四 16:59</p>
 <p class="validation"></p>
 </div>
 </body>

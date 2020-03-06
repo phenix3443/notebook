@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-06 五 18:15 -->
+<!-- 2020-03-05 四 17:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gopls</title>
+<title>yaml-ide</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,69 +306,53 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gopls</h1>
+<h1 class="title">yaml-ide</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf0440d8">1. 概述</a></li>
-<li><a href="#orgd3a5e8b">2. 安装</a></li>
-<li><a href="#orgb990284">3. 配置</a></li>
-<li><a href="#org71abc15">4. 使用</a></li>
+<li><a href="#org272ba27">1. 概述</a></li>
+<li><a href="#orgebfbf93">2. pakcage</a>
+<ul>
+<li><a href="#org8be824b">2.1. yaml-model</a></li>
+<li><a href="#orgaceeee3">2.2. yaml-imenu</a></li>
+<li><a href="#orgbee6392">2.3. format-all</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf0440d8" class="outline-2">
-<h2 id="orgf0440d8"><span class="section-number-2">1</span> 概述</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-<a href="https://github.com/golang/tools/blob/master/gopls/README.md">gopls</a> （发音为“go please”）是 Go 的语言服务器协议（LSP）的实现。 LSP 允许使用类似 IDE 的功能扩展任何文本编辑器。
-</p>
-</div>
+<div id="outline-container-org272ba27" class="outline-2">
+<h2 id="org272ba27"><span class="section-number-2">1</span> 概述</h2>
 </div>
 
-<div id="outline-container-orgd3a5e8b" class="outline-2">
-<h2 id="orgd3a5e8b"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-orgebfbf93" class="outline-2">
+<h2 id="orgebfbf93"><span class="section-number-2">2</span> pakcage</h2>
 <div class="outline-text-2" id="text-2">
-<p>
-要安装或更新 gopls，请运行：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">go get golang.org/x/tools/gopls@latest
-</pre>
+</div>
+<div id="outline-container-org8be824b" class="outline-3">
+<h3 id="org8be824b"><span class="section-number-3">2.1</span> yaml-model</h3>
 </div>
 
-<p>
-不要使用 <code>-u</code> 标志，因为它会将您的依赖项更新为不兼容的版本。
-</p>
+<div id="outline-container-orgaceeee3" class="outline-3">
+<h3 id="orgaceeee3"><span class="section-number-3">2.2</span> yaml-imenu</h3>
+</div>
 
+<div id="outline-container-orgbee6392" class="outline-3">
+<h3 id="orgbee6392"><span class="section-number-3">2.3</span> format-all</h3>
+<div class="outline-text-3" id="text-2-3">
 <p>
-如果您看到此错误：
-</p>
-<pre class="example">
-$ go get golang.org/x/tools/gopls@latest
-go: cannot use path@version syntax in GOPATH mode
-</pre>
-<p>
-运行 <code>GO111MODULE=on go get golang.org/x/tools/gopls@latest</code> 。如果您使用 Go 模块，则需要将编辑器打开到包含 go.mod 文件的目录。
+使用 <a href="https://prettier.io/">prettier</a> 来格式化代码。
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgb990284" class="outline-2">
-<h2 id="orgb990284"><span class="section-number-2">3</span> 配置</h2>
-</div>
-
-
-<div id="outline-container-org71abc15" class="outline-2">
-<h2 id="org71abc15"><span class="section-number-2">4</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-06 五 18:15</p>
+<p class="date">Created: 2020-03-05 四 17:01</p>
 <p class="validation"></p>
 </div>
 </body>
