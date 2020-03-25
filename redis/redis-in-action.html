@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 四 17:00 -->
+<!-- 2020-03-25 三 16:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis in action</title>
@@ -311,19 +311,160 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8c96809">1. 概述</a></li>
+<li><a href="#orge31a2bf">1. 第一章 初识 redis</a></li>
+<li><a href="#org8808336">2. 第二章 使用 redis 构建 web 应用</a></li>
+<li><a href="#orgaccb422">3. 第三章 redis 命令</a></li>
+<li><a href="#org40b9ad7">4. 第四章 数据安全与性能保障</a></li>
+<li><a href="#orgf06e8b0">5. 第五章 使用 redis 构建支持程序</a></li>
+<li><a href="#org58f715b">6. 第六章 使用 redis 构建应用程序组件</a></li>
+<li><a href="#org635bc09">7. 第七章 基于搜索的应用程序</a></li>
+<li><a href="#org8e6f0b7">8. 第八章 构建简单社交网站</a></li>
+<li><a href="#org7025184">9. 第九章 降低内存使用</a></li>
+<li><a href="#org99426dd">10. 第十章 扩展 redis</a></li>
+<li><a href="#org8b3aa8b">11. 第十一章 redis 的 Lua 脚本</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org8c96809" class="outline-2">
-<h2 id="org8c96809"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-orge31a2bf" class="outline-2">
+<h2 id="orge31a2bf"><span class="section-number-2">1</span> 第一章 初识 redis</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>k/v 数据库。</li>
+<li>可以将数据持久化到硬盘。</li>
+<li>可以使用复制特性来扩展读性能。</li>
+<li>可以使用客户端分片来扩展写性能。</li>
+</ul>
+
+<p>
+文章得分的计算方式设计比较精妙。将文章的发表时间和投票得分结合在一起，常数因子 432 的定义精巧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8808336" class="outline-2">
+<h2 id="org8808336"><span class="section-number-2">2</span> 第二章 使用 redis 构建 web 应用</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+即使经过优化，大多数关系数据库在每台数据库服务器上每秒也只能插入、更新或者删除 200~2000 个数据库行。
+</p>
+
+<p>
+统计浏览次数可以使用负数进行累加，这样方便排行，也是个技巧。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaccb422" class="outline-2">
+<h2 id="orgaccb422"><span class="section-number-2">3</span> 第三章 redis 命令</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+支持的数据结构：
+</p>
+<ul class="org-ul">
+<li>string</li>
+<li>list</li>
+<li>hash</li>
+<li>set</li>
+<li>order-set</li>
+<li>pub/sub</li>
+<li>transaction</li>
+<li>script</li>
+<li>geo</li>
+<li>hyperloglog</li>
+<li>stream</li>
+</ul>
+
+<p>
+在客户端断线时间，服务端发送的消息，客户端都会丢失。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org40b9ad7" class="outline-2">
+<h2 id="org40b9ad7"><span class="section-number-2">4</span> 第四章 数据安全与性能保障</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+如果 redis 内存占用量高达十几个 G，并且剩余容量不多，执行 bgsave 可能会导致系统长时间停顿。
+</p>
+
+<p>
+虽然 save 会一直阻塞 redis 直到快照生成完成，但是因为它不需要创建子进程，所以就不会向 bgsave 一样因为创建子进程而导致停顿。
+</p>
+
+<p>
+事务型流水线：使用 pipline/watch/multi/exec 等命令构成。
+</p>
+
+<p>
+使用非事务型 pipeline 减少多个命令的网络消耗。
+</p>
+
+<p>
+redis-benchmark 命令判断 redis 性能，然后和实际性能作对比。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf06e8b0" class="outline-2">
+<h2 id="orgf06e8b0"><span class="section-number-2">5</span> 第五章 使用 redis 构建支持程序</h2>
+</div>
+
+<div id="outline-container-org58f715b" class="outline-2">
+<h2 id="org58f715b"><span class="section-number-2">6</span> 第六章 使用 redis 构建应用程序组件</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+使用 watch 实现的是乐观锁。
+</p>
+
+<p>
+使用 sexnx 实现锁，注意锁的力度。
+</p>
+
+<p>
+计数信号量
+</p>
+
+<p>
+任务队列
+</p>
+</div>
+</div>
+
+<div id="outline-container-org635bc09" class="outline-2">
+<h2 id="org635bc09"><span class="section-number-2">7</span> 第七章 基于搜索的应用程序</h2>
+</div>
+
+<div id="outline-container-org8e6f0b7" class="outline-2">
+<h2 id="org8e6f0b7"><span class="section-number-2">8</span> 第八章 构建简单社交网站</h2>
+</div>
+
+<div id="outline-container-org7025184" class="outline-2">
+<h2 id="org7025184"><span class="section-number-2">9</span> 第九章 降低内存使用</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+三种方法：
+</p>
+<ul class="org-ul">
+<li>短结构：压缩表，整数集合</li>
+<li>分片 结构</li>
+<li>打包存储二进制位</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org99426dd" class="outline-2">
+<h2 id="org99426dd"><span class="section-number-2">10</span> 第十章 扩展 redis</h2>
+</div>
+
+<div id="outline-container-org8b3aa8b" class="outline-2">
+<h2 id="org8b3aa8b"><span class="section-number-2">11</span> 第十一章 redis 的 Lua 脚本</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2020-03-05 四 17:00</p>
+<p class="date">Created: 2020-03-25 三 16:17</p>
 <p class="validation"></p>
 </div>
 </body>

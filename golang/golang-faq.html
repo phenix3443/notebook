@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 四 17:02 -->
+<!-- 2020-03-25 三 16:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang 常见问题</title>
@@ -311,48 +311,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge4859fe">1. github 使用 git 协议替代 http</a></li>
-<li><a href="#org5f82e6a">2. golang.org/x/xx 下载失败解决办法</a></li>
+<li><a href="#org5f82e6a">1. golang.org/x/xx 下载失败解决办法</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge4859fe" class="outline-2">
-<h2 id="orge4859fe"><span class="section-number-2">1</span> github 使用 git 协议替代 http</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-使用 git 协议可以避免 http 协议下载需要输入密码的麻烦。
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">git config --global url.<span style="color: #ff4ea3;">"git@github.com:"</span>.insteadOf <span style="color: #ff4ea3;">"https://github.com/"</span>
-cat ~/.gitconfig
-[url <span style="color: #ff4ea3;">"git@github.com:"</span>]
-    insteadOf = https://github.com/
-</pre>
-</div>
-</div>
-</div>
 
 <div id="outline-container-org5f82e6a" class="outline-2">
-<h2 id="org5f82e6a"><span class="section-number-2">2</span> golang.org/x/xx 下载失败解决办法</h2>
-<div class="outline-text-2" id="text-2">
+<h2 id="org5f82e6a"><span class="section-number-2">1</span> golang.org/x/xx 下载失败解决办法</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-参考  <a href="https://shockerli.net/post/go-get-golang-org-x-solution/">https://shockerli.net/post/go-get-golang-org-x-solution/</a>
+使用 <a href="https://github.com/goproxy/goproxy.cn/blob/master/README.zh-CN.md">goproxy.cn</a>
 </p>
-
-<p>
-在 ~/.bash_profile 中设置：
-</p>
-<pre class="example">
-export GOPROXY=https://goproxy.io
-</pre>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-05 四 17:02</p>
+<p class="date">Created: 2020-03-25 三 16:19</p>
 <p class="validation"></p>
 </div>
 </body>

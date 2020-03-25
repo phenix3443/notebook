@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 四 16:59 -->
+<!-- 2020-03-25 三 16:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Openresty Practices</title>
+<title>Openresty实践</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,22 +306,23 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">Openresty Practices</h1>
+<h1 class="title">Openresty实践</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgc17f171">1. 概述</a></li>
 <li><a href="#org2b7ef47">2. 安装</a></li>
-<li><a href="#orgf1d68bd">3. 使用</a></li>
+<li><a href="#orgb9a2230">3. 使用说明</a></li>
 <li><a href="#orgb175519">4. 优秀的库</a></li>
-<li><a href="#org01da9ff">5. 使用 luaRocks</a></li>
-<li><a href="#org3cc53b8">6. LuaUnit 与 luacov</a></li>
-<li><a href="#org307dd18">7. 性能测试</a></li>
+<li><a href="#orgb1b75d9">5. resty-cli</a></li>
+<li><a href="#org502e645">6. luarocks</a></li>
+<li><a href="#org94ee389">7. LuaUnit</a></li>
+<li><a href="#orga6e93ed">8. luacov</a></li>
+<li><a href="#org307dd18">9. 性能测试</a></li>
 </ul>
 </div>
 </div>
-
 
 <div id="outline-container-orgc17f171" class="outline-2">
 <h2 id="orgc17f171"><span class="section-number-2">1</span> 概述</h2>
@@ -349,73 +350,100 @@ make &amp;&amp; make install
 安装好的目录结构如下：
 </p>
 <pre class="example">
-  openresty/
-  ├── bin
-  ├── luajit
-  ├── lualib
-  │   ├── cjson.so
-  │   ├── ngx
-  │   ├── rds
-  │   ├── redis
-  │   └── resty
-  ├── nginx
-  │   ├── conf
-  │   ├── html
-  │   ├── logs
-  │   └── sbin
-  ├── pod
-  ├── resty.index
-  └── site
+.
+├── bin
+│   ├── md2pod.pl
+│   ├── nginx-xml2pod
+│   ├── openresty -&gt; /usr/local/sandai/team_speed_server_v2/nginx/sbin/nginx
+│   ├── opm //包管理工具
+│   ├── resty //resty-cli工具
+│   ├── restydoc
+│   └── restydoc-index
+├── COPYRIGHT
+├── luajit
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   └── share
+├── lualib
+│   ├── cjson.so
+│   ├── librestysignal.so
+│   ├── ngx
+│   ├── rds
+│   ├── redis
+│   ├── resty
+│   └── tablepool.lua
+├── nginx
+│   ├── client_body_temp
+│   ├── conf
+│   ├── fastcgi_temp
+│   ├── html
+│   ├── logs
+│   ├── proxy_temp
+│   ├── sbin
+│   ├── scgi_temp
+│   └── uwsgi_temp
+├── pod // 默认安装的组件
+│   ├── array-var-nginx-module-0.05
+│   ├── drizzle-nginx-module-0.1.11
+│   ├── echo-nginx-module-0.61
+│   ├── encrypted-session-nginx-module-0.08
+│   ├── form-input-nginx-module-0.12
+│   ├── headers-more-nginx-module-0.33
+│   ├── iconv-nginx-module-0.14
+│   ├── lua-5.1.5
+│   ├── lua-cjson-2.1.0.7
+│   ├── luajit-2.1
+│   ├── luajit-2.1-20190507
+│   ├── lua-rds-parser-0.06
+│   ├── lua-redis-parser-0.13
+│   ├── lua-resty-core-0.1.17
+│   ├── lua-resty-dns-0.21
+│   ├── lua-resty-limit-traffic-0.06
+│   ├── lua-resty-lock-0.08
+│   ├── lua-resty-lrucache-0.09
+│   ├── lua-resty-memcached-0.14
+│   ├── lua-resty-mysql-0.21
+│   ├── lua-resty-redis-0.27
+│   ├── lua-resty-shell-0.02
+│   ├── lua-resty-signal-0.02
+│   ├── lua-resty-string-0.11
+│   ├── lua-resty-upload-0.10
+│   ├── lua-resty-upstream-healthcheck-0.06
+│   ├── lua-resty-websocket-0.07
+│   ├── lua-tablepool-0.01
+│   ├── memc-nginx-module-0.19
+│   ├── nginx
+│   ├── ngx_coolkit-0.2
+│   ├── ngx_devel_kit-0.3.1rc1
+│   ├── ngx_lua-0.10.15
+│   ├── ngx_lua_upstream-0.07
+│   ├── ngx_postgres-1.0
+│   ├── ngx_stream_lua-0.0.7
+│   ├── opm-0.0.5
+│   ├── rds-csv-nginx-module-0.09
+│   ├── rds-json-nginx-module-0.15
+│   ├── redis2-nginx-module-0.15
+│   ├── redis-nginx-module-0.3.7
+│   ├── resty-cli-0.24
+│   ├── set-misc-nginx-module-0.32
+│   ├── srcache-nginx-module-0.31
+│   └── xss-nginx-module-0.06
+├── resty.index
+└── site
     ├── lualib
     ├── manifest
     └── pod
-
-  64 directories, 10 files
 </pre>
-
-<ul class="org-ul">
-<li>bin/</li>
-<li>luajit/</li>
-<li>lualib/ 包含了常用的 lualib</li>
-<li>nginx/ nginx 程序的部署目录。</li>
-<li>pod/ （待补充）</li>
-<li>site/ （待补充）</li>
-</ul>
 </div>
 </div>
 
-<div id="outline-container-orgf1d68bd" class="outline-2">
-<h2 id="orgf1d68bd"><span class="section-number-2">3</span> 使用</h2>
+<div id="outline-container-orgb9a2230" class="outline-2">
+<h2 id="orgb9a2230"><span class="section-number-2">3</span> 使用说明</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-在 nginx/conf/nginx.conf 中添加处理 hello 请求的代码。
+具体 API 参见 <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a>
 </p>
-<div class="org-src-container">
-<pre class="src src-nginx"><span style="color: #a1db00;">http</span> {
-    ....
-    <span style="color: #a1db00;">server</span> {
-        <span style="color: #a1db00;">listen</span>       8080;      <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#23558;&#31471;&#21475;&#20462;&#25913;&#20026; 8080&#65292;&#21542;&#21017;&#30001;&#20110;&#26435;&#38480;&#21407;&#22240;&#19981;&#33021;&#21551;&#21160;</span>
-        ....
-        <span style="color: #a1db00;">location</span> <span style="color: #ffd700;">/hello</span> {       <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#22788;&#29702; hello &#25509;&#21475;&#30340;&#20195;&#30721;</span>
-            <span style="color: #a1db00;">content_by_lua_block</span> {
-                <span style="color: #a1db00;">ngx</span>.say(<span style="color: #ff4ea3;">"hello,openresty"</span>)
-            }
-        }
-        ....
-    }
-   ....
-}
-</pre>
-</div>
-<p>
-启动服务器：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">openresty/nginx$ ./sbin/nginx -p <span style="color: #fa8072;">`pwd`</span> -c conf/nginx.conf
-openresty/nginx$ curl 127.0.0.1:8080/hello
-hello,openresty
-</pre>
-</div>
 </div>
 </div>
 
@@ -427,75 +455,50 @@ hello,openresty
 </p>
 </div>
 </div>
-<div id="outline-container-org01da9ff" class="outline-2">
-<h2 id="org01da9ff"><span class="section-number-2">5</span> <a href="https://openresty.org/cn/using-luarocks.html">使用 luaRocks</a></h2>
+
+<div id="outline-container-orgb1b75d9" class="outline-2">
+<h2 id="orgb1b75d9"><span class="section-number-2">5</span> resty-cli</h2>
 <div class="outline-text-2" id="text-5">
-<div class="org-src-container">
-<pre class="src src-sh">sudo apt  install luarocks
-sudo luarocks install md5
-</pre>
-</div>
-
 <p>
-luarocks 默认将包安装在 <code>/usr/share/lua/5.1/</code> 下。修改 nginx/conf/nginx.conf:
+openresty 自带的 resty 可以用来直接调用 lua_nginx_module 中的 api，免去了需要启动 openresty 服务器烦恼，具体使用参见 <a href="resty-cli.html">resty-cli</a>
 </p>
-
-<div class="org-src-container">
-<pre class="src src-nginx"><span style="color: #a1db00;">http</span> {
-    <span style="color: #a1db00;">lua_package_path</span> '/usr/share/lua/5.1/?.lua;;';
-    ....
-    <span style="color: #a1db00;">server</span> {
-        ....
-        <span style="color: #a1db00;">location</span> <span style="color: #ffd700;">/luarocks</span> {
-            <span style="color: #a1db00;">content_by_lua_block</span> {
-                <span style="color: #a1db00;">local</span> rocks = require(<span style="color: #ff4ea3;">"luarocks.loader"</span>)
-                <span style="color: #a1db00;">local</span> md5 = require(<span style="color: #ff4ea3;">"md5"</span>)
-                <span style="color: #a1db00;">ngx</span>.say(md5.sumhexa(<span style="color: #ff4ea3;">"rocks and md5 loaded"</span>))
-            }
-        }
-        ....
-    }
-    ....
-}
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-sh">./sbin/nginx -s reload
-curl 127.0.0.1:8080/luarocks
-</pre>
-</div>
-
-<p>
-返回结果如下：
-</p>
-<pre class="example">
-  bccf4dad903b43b4c3db18d075b94559
-</pre>
 </div>
 </div>
 
-
-<div id="outline-container-org3cc53b8" class="outline-2">
-<h2 id="org3cc53b8"><span class="section-number-2">6</span> LuaUnit 与 luacov</h2>
+<div id="outline-container-org502e645" class="outline-2">
+<h2 id="org502e645"><span class="section-number-2">6</span> luarocks</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-使用 luaunit 做单元测试。
+使用 luarocks 管理使用过程中的 lua package，具体使用参见 <a href="lua/tools/luarocks.html">luarocks实践</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org94ee389" class="outline-2">
+<h2 id="org94ee389"><span class="section-number-2">7</span> LuaUnit</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+使用 luaunit 来编写代码的单元测试，具体使用参见 <a href="lua/tools/luaunit.html">luaunit实践</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga6e93ed" class="outline-2">
+<h2 id="orga6e93ed"><span class="section-number-2">8</span> luacov</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+luacov 做代码覆盖率统计。具体使用参见 <a href="lua/tools/luacov.html">luacov实践</a>
 </p>
 
 <p>
-luacov 做代码覆盖率统计。<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
-</p>
-
-<p>
-还有网上的一个最佳实践。<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
+参考文献：<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> <sup>, </sup><sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
 </p>
 </div>
 </div>
 
 <div id="outline-container-org307dd18" class="outline-2">
-<h2 id="org307dd18"><span class="section-number-2">7</span> 性能测试</h2>
-<div class="outline-text-2" id="text-7">
+<h2 id="org307dd18"><span class="section-number-2">9</span> 性能测试</h2>
+<div class="outline-text-2" id="text-9">
 <p>
 openresty 提供基于 Systemtap 的各种工具，用于在生产和开发环境中分析实时 OpenResty 应用程序。
 </p>
@@ -532,7 +535,7 @@ openresty 提供基于 Systemtap 的各种工具，用于在生产和开发环�
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-05 四 16:59</p>
+<p class="date">Created: 2020-03-25 三 16:17</p>
 <p class="validation"></p>
 </div>
 </body>

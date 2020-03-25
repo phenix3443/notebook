@@ -3,10 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2020-03-25 三 16:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>深入理解coroutine</title>
 <meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -309,9 +311,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5028d41">生产者、消费者练习</a></li>
-<li><a href="#orgfb797f8">添加过滤的生产者、消费者程序</a></li>
-<li><a href="#org069938f">非抢先式多线程</a></li>
+<li><a href="#org5028d41">1. 生产者、消费者练习</a></li>
+<li><a href="#orgfb797f8">2. 添加过滤的生产者、消费者程序</a></li>
+<li><a href="#org069938f">3. 非抢先式多线程</a></li>
 </ul>
 </div>
 </div>
@@ -319,8 +321,8 @@ for the JavaScript code in this tag.
 实现类似管道类型的生产者消费者模型。
 </p>
 <div id="outline-container-org5028d41" class="outline-2">
-<h2 id="org5028d41">生产者、消费者练习</h2>
-<div class="outline-text-2" id="text-org5028d41">
+<h2 id="org5028d41"><span class="section-number-2">1</span> 生产者、消费者练习</h2>
+<div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-lua"><span style="color: #6c6c6c; font-style: italic;">-- </span><span style="color: #6c6c6c; font-style: italic;">&#28040;&#36153;&#32773;&#39537;&#21160; :tangle lua-analysis/producer-consumer.lua</span>
 producer = <span style="color: #d18aff;">coroutine</span>.<span style="color: #d18aff;">create</span>(<span style="color: #a1db00;">function</span>(status)
@@ -347,8 +349,8 @@ consumer()
 </div>
 
 <div id="outline-container-orgfb797f8" class="outline-2">
-<h2 id="orgfb797f8">添加过滤的生产者、消费者程序</h2>
-<div class="outline-text-2" id="text-orgfb797f8">
+<h2 id="orgfb797f8"><span class="section-number-2">2</span> 添加过滤的生产者、消费者程序</h2>
+<div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-lua"><span style="color: #a1db00;">function</span> <span style="color: #ffd700;">prod</span>()
     <span style="color: #a1db00;">return</span> <span style="color: #d18aff;">coroutine</span>.<span style="color: #d18aff;">create</span>(<span style="color: #a1db00;">function</span> (is_run)
@@ -393,8 +395,8 @@ consumer(filter(prod()))
 </div>
 
 <div id="outline-container-org069938f" class="outline-2">
-<h2 id="org069938f">非抢先式多线程</h2>
-<div class="outline-text-2" id="text-org069938f">
+<h2 id="org069938f"><span class="section-number-2">3</span> 非抢先式多线程</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 协同程序预常规的多线程的不同之处在于，协同程序是非抢占式的。就是说当一个协同程序运行时，是无法从外部停止它的。
 </p>
@@ -463,7 +465,9 @@ Dispatch()
 </div>
 </div>
 <div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2020-03-25 三 16:18</p>
 <p class="validation"></p>
 </div>
 </body>

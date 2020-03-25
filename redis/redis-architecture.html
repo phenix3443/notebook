@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 四 17:00 -->
+<!-- 2020-03-25 三 16:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>redis部署架构选择</title>
@@ -315,27 +315,27 @@ for the JavaScript code in this tag.
 <li><a href="#org5506cb9">2. 单例</a></li>
 <li><a href="#org0d5fe7b">3. 单机多实例</a>
 <ul>
-<li><a href="#org3275469">3.1. 目的</a></li>
+<li><a href="#org008943c">3.1. 目的</a></li>
 <li><a href="#org424a762">3.2. 操作</a></li>
 </ul>
 </li>
 <li><a href="#orge512b02">4. 主从</a>
 <ul>
-<li><a href="#org0a24233">4.1. 目的</a></li>
-<li><a href="#orgf3e0509">4.2. 注意事项</a></li>
+<li><a href="#org67a003c">4.1. 目的</a></li>
+<li><a href="#org4310b27">4.2. 注意事项</a></li>
 </ul>
 </li>
 <li><a href="#org2a61162">5. Sentinel</a>
 <ul>
-<li><a href="#orgbf7531a">5.1. 目的</a></li>
+<li><a href="#orgf1f3e7d">5.1. 目的</a></li>
 <li><a href="#org4be8d7f">5.2. 作用</a></li>
-<li><a href="#org382cb58">5.3. 注意事项</a></li>
+<li><a href="#orgfc22270">5.3. 注意事项</a></li>
 </ul>
 </li>
 <li><a href="#org0ff2722">6. cluster</a>
 <ul>
-<li><a href="#orgaa8a94b">6.1. 目的</a></li>
-<li><a href="#org942d22f">6.2. 注意事项</a></li>
+<li><a href="#org89dade2">6.1. 目的</a></li>
+<li><a href="#org6fd6020">6.2. 注意事项</a></li>
 </ul>
 </li>
 <li><a href="#org32a5e8e">7. 如何构建高可用的分布式 redis 服务？</a></li>
@@ -364,8 +364,8 @@ for the JavaScript code in this tag.
 <h2 id="org0d5fe7b"><span class="section-number-2">3</span> 单机多实例</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org3275469" class="outline-3">
-<h3 id="org3275469"><span class="section-number-3">3.1</span> 目的</h3>
+<div id="outline-container-org008943c" class="outline-3">
+<h3 id="org008943c"><span class="section-number-3">3.1</span> 目的</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 单个 redis 实例占用资源很少，为了充分利用单机性能，可在单机上部署多个 redis 实例。
@@ -400,8 +400,8 @@ logfile /tmp/redis-server-6380.log
 <h2 id="orge512b02"><span class="section-number-2">4</span> 主从</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org0a24233" class="outline-3">
-<h3 id="org0a24233"><span class="section-number-3">4.1</span> 目的</h3>
+<div id="outline-container-org67a003c" class="outline-3">
+<h3 id="org67a003c"><span class="section-number-3">4.1</span> 目的</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 单个实例存在以下问题：
@@ -413,8 +413,8 @@ logfile /tmp/redis-server-6380.log
 </div>
 </div>
 
-<div id="outline-container-orgf3e0509" class="outline-3">
-<h3 id="orgf3e0509"><span class="section-number-3">4.2</span> 注意事项</h3>
+<div id="outline-container-org4310b27" class="outline-3">
+<h3 id="org4310b27"><span class="section-number-3">4.2</span> 注意事项</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 如果 master 没有设置持久化，当 master 重启之后，slave 的数据有可能会被清空。所以这种情况下，应该禁止 master 自动重启。
@@ -435,8 +435,8 @@ redis4.0 之前的可写从不能不能正确处理过期的 key。（writable s
 <h2 id="org2a61162"><span class="section-number-2">5</span> Sentinel</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgbf7531a" class="outline-3">
-<h3 id="orgbf7531a"><span class="section-number-3">5.1</span> 目的</h3>
+<div id="outline-container-orgf1f3e7d" class="outline-3">
+<h3 id="orgf1f3e7d"><span class="section-number-3">5.1</span> 目的</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 主从结构中主宕机之后，后续的请求不能继续处理，不利于故障恢复。
@@ -448,8 +448,8 @@ redis4.0 之前的可写从不能不能正确处理过期的 key。（writable s
 </div>
 
 
-<div id="outline-container-org382cb58" class="outline-3">
-<h3 id="org382cb58"><span class="section-number-3">5.3</span> 注意事项</h3>
+<div id="outline-container-orgfc22270" class="outline-3">
+<h3 id="orgfc22270"><span class="section-number-3">5.3</span> 注意事项</h3>
 <div class="outline-text-3" id="text-5-3">
 <ul class="org-ul">
 <li>down-after-milliseconds 表示 redis 实例失联时常</li>
@@ -464,16 +464,16 @@ redis4.0 之前的可写从不能不能正确处理过期的 key。（writable s
 <h2 id="org0ff2722"><span class="section-number-2">6</span> cluster</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgaa8a94b" class="outline-3">
-<h3 id="orgaa8a94b"><span class="section-number-3">6.1</span> 目的</h3>
+<div id="outline-container-org89dade2" class="outline-3">
+<h3 id="org89dade2"><span class="section-number-3">6.1</span> 目的</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 单个实例不能存储所有的数据，需要一个分布式的 redis 存储。
 </p>
 </div>
 </div>
-<div id="outline-container-org942d22f" class="outline-3">
-<h3 id="org942d22f"><span class="section-number-3">6.2</span> 注意事项</h3>
+<div id="outline-container-org6fd6020" class="outline-3">
+<h3 id="org6fd6020"><span class="section-number-3">6.2</span> 注意事项</h3>
 </div>
 </div>
 
@@ -530,7 +530,7 @@ redis4.0 之前的可写从不能不能正确处理过期的 key。（writable s
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2020-03-05 四 17:00</p>
+<p class="date">Created: 2020-03-25 三 16:17</p>
 <p class="validation"></p>
 </div>
 </body>

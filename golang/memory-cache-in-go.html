@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-03-25 三 16:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>golang内存数据库对比</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">golang内存数据库对比</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge552191">1. 概述</a></li>
+<li><a href="#org55103d4">2. 内存缓存要求</a></li>
+<li><a href="#org487972a">3. Go map 和 sync.Mutex</a></li>
+<li><a href="#org5299486">4. Go maps 和分离锁（lock striping）</a></li>
+<li><a href="#org7aee4e5">5. LRU cache</a></li>
+<li><a href="#orgeb8a746">6. LRU cache 和分离锁</a></li>
+<li><a href="#orgc433898">7. 当前流行的 cache 实现方案</a>
+<ul>
+<li><a href="#orgf96cf3a">7.1. BigCache</a></li>
+<li><a href="#org2beb71a">7.2. FreeCache</a></li>
+<li><a href="#org665c9c4">7.3. GroupCache</a></li>
+<li><a href="#orgb866eba">7.4. compare</a>
+<ul>
+<li><a href="#orgc66e7d5">7.4.1. Read-Only</a></li>
+<li><a href="#org14e91cd">7.4.2. Write-Only</a></li>
+<li><a href="#org73538b4">7.4.3. Read-Write (25% writes, 75% reads)</a></li>
+<li><a href="#org78e98ea">7.4.4. 命中率比较</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgff84ffe">8. 结论</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge552191" class="outline-2">
+<h2 id="orge552191"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本文主要介绍 golang 中的内存缓存库。内容参考 <a href="https://blog.dgraph.io/post/caching-in-go/">https://blog.dgraph.io/post/caching-in-go/</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org55103d4" class="outline-2">
+<h2 id="org55103d4"><span class="section-number-2">2</span> 内存缓存要求</h2>
+<div class="outline-text-2" id="text-2">
+<ol class="org-ol">
+<li>并发。</li>
+<li>内存限制（可配置最大内存使用量）。</li>
+<li>随着核心和 goroutine 数量的增加，扩展性也很好。</li>
+<li>在非随机 key 访问分布（例如 Zipf）下可以很好地扩展。</li>
+<li>高命中率。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org487972a" class="outline-2">
+<h2 id="org487972a"><span class="section-number-2">3</span> Go map 和 sync.Mutex</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+将 Go 映射与 sync.Mutex（或 sync.RWMutex）一起使用是最常用的缓存方法。但这会导致所有 goroutine 在获取锁的时候阻塞，从而导致竞争。这也无法限制内存使用量。
+</p>
+
+<p>
+不符合 2-5。(4-5 为什么不符合？)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5299486" class="outline-2">
+<h2 id="org5299486"><span class="section-number-2">4</span> Go maps 和分离锁（lock striping）</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+这与上面的概念相同，但是使用指纹将 key 划分为许多较小的，由互斥锁保护的 Go Map 碎片（请参见此处）。许多开发人员错误地认为分离锁是避免争用的好方法，尤其是在将分片的数量设置为超过程序中的线程数时（&gt; GOMAXPROCS）。
+</p>
+
+<p>
+在我们最初尝试构建简化的内存缓存时，我们也构建了它。为了允许将内存释放回操作系统，我们将定期选择一个随机分片并删除其映射，以便重新填充。这是一种粗略但简单的技术，其性能优于 LRU 缓存（如下所述），但有很多缺点。
+</p>
+
+<p>
+第一，Go 将内存释放回操作系统的速度很慢，但是请求内存的速度却很快。一旦分片被清空，尝试访问该分片中的键的 goroutine 将开始分配内存，而先前的内存仍未完全释放，从而导致内存使用量激增和 OOM 迅速崩溃。
+</p>
+
+<p>
+另外，我们当时没有意识到的是，访问模式受 Zipf 定律的限制。最常访问的键仍处于少数锁中，因此成为所有 goroutine 争用的原因。这种方法的性能无法随内核数量很好地扩展。
+</p>
+
+<p>
+不符合 2 和 4。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7aee4e5" class="outline-2">
+<h2 id="org7aee4e5"><span class="section-number-2">5</span> LRU cache</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Go 具有基本的 LRU 缓存实现，它是 groupcache 的一部分。在尝试使用映射和分离锁失败之后，我们通过引入锁来修改此 LRU 缓存以支持并发。尽管此缓存确实解决了之前由于频繁的内存释放而导致的内存高峰问题，但我们意识到它将引入竞争。
+</p>
+
+<p>
+此高速缓存的大小还取决于条目的数量，而不是它们消耗的内存量。在 Go 中尝试估计复杂数据结构在堆上的内存使用是非常昂贵的，几乎是不可能实现的，这是我们在使用多种机制徒劳尝试之后才意识到的。这特别困难，因为我们的数据结构在放入缓存后发生了变化（我们计划避免这种情况）。
+</p>
+
+<p>
+但是，我们不了解该缓存可能引起多少争用。使用此缓存一年后，我们意识到围绕此缓存的争用非常重大，以至于删除它会使我们的查询速度提高 10 倍！
+</p>
+
+<p>
+在此实现中，每次读取都是写操作，用来更新元素在最近度链接列表中的相对位置。因此，所有访问都等待单个互斥锁。此外，LRU 的关键部分比映射慢，并且会进行很多指针取消引用，从而维护映射和双向链接列表（请参见代码）。尽管我们在懒惰驱逐方面做出了努力，但仍然存在严重的争议。
+</p>
+
+<p>
+未能达到要求 3-4。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeb8a746" class="outline-2">
+<h2 id="orgeb8a746"><span class="section-number-2">6</span> LRU cache 和分离锁</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+我们没有尝试这样做。从 map 和分离锁的试验中，我们知道这只会是部分的改进，并且无法很好地扩展。 （不过，出于对本文中的缓存进行基准测试的目的，我们实现了如下所述的条带化 LRU 缓存。）
+</p>
+
+<p>
+将无法满足要求 4。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc433898" class="outline-2">
+<h2 id="orgc433898"><span class="section-number-2">7</span> 当前流行的 cache 实现方案</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+许多其他方法旨在减少花费在 map 碎片上的 GC 时间。 GC 时间随着映射中条目数量的增加而增加。通过分配更少，更大的字节片并在每个片中存储许多缓存条目来实现减少 map 的碎皮哦按回收。这是一种有效的方法-我们在 Badger 中的多个位置（“跳过列表”，“表构建器”等）中使用此方法。 Go 中一些流行的缓存使用此技术。
+</p>
+</div>
+
+<div id="outline-container-orgf96cf3a" class="outline-3">
+<h3 id="orgf96cf3a"><span class="section-number-3">7.1</span> BigCache</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+BigCache 根据 key 的哈希将数据分为碎片。每个分片都包含一个映射和一个环形缓冲区。每当设置新元素时，它都会将该元素追加到相应分片的环形缓冲区中，并且缓冲区中的偏移量将存储在映射中。如果同一元素被设置多次，则缓冲区中的先前条目将标记为无效。如果缓冲区太小，则将其扩展直到达到最大容量。
+</p>
+
+<p>
+每个 map key 都是一个 uint32 哈希，其值是一个 uint32 指针，指向该值与元数据信息一起存储的缓冲区中的偏移量。如果存在哈希冲突，则 BigCache 会忽略前一个键并将当前键存储到 map 中。预先分配较少，较大的缓冲区并使用 map [uint32] uint32 是避免 GC 扫描成本的好方法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2beb71a" class="outline-3">
+<h3 id="org2beb71a"><span class="section-number-3">7.2</span> FreeCache</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+FreeCache 将缓存分为 256 个段。每个段包含 256 个插槽和一个环形缓冲区以存储数据。将新 key 添加到高速缓存时，将使用 key 哈希的低八位来标识段 ID。此外，使用 key 的哈希的 LSB 9-16 选择一个插槽。将数据划分为多个插槽有助于减少在缓存中查找键时的搜索空间。
+</p>
+
+<p>
+然后将数据附加到环形缓冲区中，并将偏移量存储到 <b>排序数组</b> 中。如果环形缓冲区没有足够的空间，则使用修改后的 LRU 策略从环形缓冲区的开头开始在该段中删除。如果该条目的最后访问时间小于段的平均访问时间，则从环形缓冲区中删除该条目。要在高速缓存中查找条目，在相应插槽中的排序数组中执行二进制搜索。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org665c9c4" class="outline-3">
+<h3 id="org665c9c4"><span class="section-number-3">7.3</span> GroupCache</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+GroupCache 使用链接列表和 Go 映射实现确切的 LRU 逐出策略。为了公平地比较，我们在 GroupCache 的顶部实现了具有 256 个分片的分片逻辑。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb866eba" class="outline-3">
+<h3 id="orgb866eba"><span class="section-number-3">7.4</span> compare</h3>
+<div class="outline-text-3" id="text-7-4">
+</div>
+<div id="outline-container-orgc66e7d5" class="outline-4">
+<h4 id="orgc66e7d5"><span class="section-number-4">7.4.1</span> Read-Only</h4>
+<div class="outline-text-4" id="text-7-4-1">
+<p>
+鉴于读取是无锁的，因此我们可以看到 BigCache 读取扩展良好。 FreeCache 和 GroupCache 读取不是无锁的，并且在一个点（20 个并发访问）之后不会扩展。 （值越高，y轴越好）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org14e91cd" class="outline-4">
+<h4 id="org14e91cd"><span class="section-number-4">7.4.2</span> Write-Only</h4>
+<div class="outline-text-4" id="text-7-4-2">
+<p>
+对于只写工作负载，所有库似乎都具有类似的性能。不过，FreeCache 的性能比其他两个要好一些。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73538b4" class="outline-4">
+<h4 id="org73538b4"><span class="section-number-4">7.4.3</span> Read-Write (25% writes, 75% reads)</h4>
+<div class="outline-text-4" id="text-7-4-3">
+<p>
+对于包含 25％的写入和 75％的读取的混合工作负载，虽然 BigCache 是​​​​唯一显然可以很好地扩展的库，但是命中率对于 Zipf 工作负载不利，如下一节所述。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78e98ea" class="outline-4">
+<h4 id="org78e98ea"><span class="section-number-4">7.4.4</span> 命中率比较</h4>
+<div class="outline-text-4" id="text-7-4-4">
+<p>
+三个缓存的命中率如下所示。 FreeCache 与 GroupCache 实施的 LRU 策略非常接近。但是，由于以下原因，BigCache 不适用于 Zipf 分布式工作负载：
+</p>
+<ul class="org-ul">
+<li>BigCache 无法有效利用缓冲区，最终可能会在缓冲区中存储同一键的多个条目。</li>
+<li>BigCache 不会更新访问（读取）上的条目，因此会导致驱逐最近访问的密钥。</li>
+</ul>
+
+
+<p>
+因此，我们可以得出结论，没有一个缓存库可以满足所有要求。 GroupCache 和 FreeCache 在要求 4 上失败，而 BigCache 在要求 5 上失败。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgff84ffe" class="outline-2">
+<h2 id="orgff84ffe"><span class="section-number-2">8</span> 结论</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+最终，我们还没有找到到 Go 中可以满足全部需求列表的智能内存绑定缓存。
+</p>
+
+<p>
+同时，我们遇到了 Caffeine，这是 Cassandra，Finagle 和其他数据库系统使用的 Java 库。它使用 <a href="https://arxiv.org/abs/1512.00727">TinyLFU</a>（一种高效的高速缓存允许策略），并使用各种技术来随着线程和核心数量的增长而扩展和良好地执行，同时提供接近最佳的命中率。<a href="https://docs.google.com/presentation/d/1NlDxyXsUG1qlVHMl4vsUUBQfAJ2c2NsFPNPr2qymIBs/edit?usp=sharing">（perform）</a> 可以在<a href="http://highscalability.com/blog/2016/1/25/design-of-a-modern-cache.html">本文</a>中了解有关其工作原理的更多信息。
+</p>
+
+<p>
+Caffeine 满足了我在开始时提到的所有五个要求，因此我们正在考虑构建等效于 Go 的 Caffeine，它可以满足我们的需求，并有可能填补 Go 语言中并发，高性能，内存受限的缓存的空白。
+</p>
+
+<p>
+By:最后他们自己造了一个轮子： <a href="https://blog.dgraph.io/post/introducing-ristretto-high-perf-go-cache/">Introducing Ristretto: A High-Performance Go Cache</a>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2020-03-25 三 16:19</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

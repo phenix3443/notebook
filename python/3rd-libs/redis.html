@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-05 四 16:59 -->
+<!-- 2020-03-25 三 16:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>redis</title>
@@ -313,13 +313,21 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgc51f0fc">1. 概述</a></li>
 <li><a href="#orgc41383d">2. 安装</a></li>
-<li><a href="#org2946237">3. 配置</a></li>
-<li><a href="#orgd8a61f6">4. 使用</a></li>
+<li><a href="#org6f92ac5">3. Connection Pools</a></li>
+<li><a href="#org17d6198">4. Thread Safety</a></li>
+<li><a href="#orgb1a19bc">5. Pipelines</a></li>
+<li><a href="#orga46a367">6. Publish/Subscribe</a></li>
+<li><a href="#org5855c24">7. Lua Scripting</a></li>
 </ul>
 </div>
 </div>
 <div id="outline-container-orgc51f0fc" class="outline-2">
 <h2 id="orgc51f0fc"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://pypi.org/project/redis/">redis</a> 是 python 的 redis client 库，简单易用。
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgc41383d" class="outline-2">
@@ -331,18 +339,186 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org2946237" class="outline-2">
-<h2 id="org2946237"><span class="section-number-2">3</span> 配置</h2>
+<div id="outline-container-org6f92ac5" class="outline-2">
+<h2 id="org6f92ac5"><span class="section-number-2">3</span> Connection Pools</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+在后台，redis-py 使用连接池来管理与 Redis 服务器的连接。默认情况下，创建的每个 Redis 实例将依次创建自己的连接池。通过将已创建的连接池实例传递给 Redis 类的 connection_pool 参数，可以覆盖此行为并使用现有的连接池。可以选择执行此操作以实现客户端分片或对连接的管理方式进行细粒度控制。
+</p>
+<pre class="example">
+&gt;&gt;&gt; pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+&gt;&gt;&gt; r = redis.Redis(connection_pool=pool)
+</pre>
+</div>
 </div>
 
-<div id="outline-container-orgd8a61f6" class="outline-2">
-<h2 id="orgd8a61f6"><span class="section-number-2">4</span> 使用</h2>
+<div id="outline-container-org17d6198" class="outline-2">
+<h2 id="org17d6198"><span class="section-number-2">4</span> Thread Safety</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Redis 客户端实例可以在线程之间安全地共享。在内部，仅在命令执行期间从连接池中检索连接实例，然后在连接实例直接返回到连接池中。命令执行从不修改客户端实例上的状态。
+</p>
+
+<p>
+在线程之间传递 PubSub 或 Pipeline 对象是不安全的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb1a19bc" class="outline-2">
+<h2 id="orgb1a19bc"><span class="section-number-2">5</span> Pipelines</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+管道是 Redis 基类的子类，它提供对在单个请求中缓冲到服务器的多个命令的支持。通过减少客户端和服务器之间来回 TCP 数据包的数量，可以将它们用于显着提高命令组的性能。管道使用起来非常简单：
+</p>
+<pre class="example">
+&gt;&gt;&gt; r = redis.Redis(...)
+&gt;&gt;&gt; r.set('bing', 'baz')
+&gt;&gt;&gt; # Use the pipeline() method to create a pipeline instance
+&gt;&gt;&gt; pipe = r.pipeline()
+&gt;&gt;&gt; # The following SET commands are buffered
+&gt;&gt;&gt; pipe.set('foo', 'bar')
+&gt;&gt;&gt; pipe.get('bing')
+&gt;&gt;&gt; # the EXECUTE call sends all buffered commands to the server, returning
+&gt;&gt;&gt; # a list of responses, one for each command.
+&gt;&gt;&gt; pipe.execute()
+[True, 'baz']
+</pre>
+
+<p>
+此外，管道还可以确保缓冲的命令以原子方式成组执行。默认情况下会发生这种情况。如果要禁用管道的原子性质，但仍要缓冲命令，则可以关闭事务。
+</p>
+<pre class="example">
+&gt;&gt;&gt; pipe = r.pipeline(transaction=False)
+</pre>
+<p>
+还可以使用 watch，
+</p>
+<pre class="example">
+&gt;&gt;&gt; with r.pipeline() as pipe:
+...     while True:
+...         try:
+...             # put a WATCH on the key that holds our sequence value
+...             pipe.watch('OUR-SEQUENCE-KEY')
+...             # after WATCHing, the pipeline is put into immediate execution
+...             # mode until we tell it to start buffering commands again.
+...             # this allows us to get the current value of our sequence
+...             current_value = pipe.get('OUR-SEQUENCE-KEY')
+...             next_value = int(current_value) + 1
+...             # now we can put the pipeline back into buffered mode with MULTI
+...             pipe.multi()
+...             pipe.set('OUR-SEQUENCE-KEY', next_value)
+...             # and finally, execute the pipeline (the set command)
+...             pipe.execute()
+...             # if a WatchError wasn't raised during execution, everything
+...             # we just did happened atomically.
+...             break
+...        except WatchError:
+...             # another client must have changed 'OUR-SEQUENCE-KEY' between
+...             # the time we started WATCHing it and the pipeline's execution.
+...             # our best bet is to just retry.
+...             continue
+</pre>
+
+<p>
+存在一种名为“transaction”的便捷方法，用于处理所有处理和重试 watch 错误的样板。它需要一个可调用对象，该可调用对象应预期将监视单个参数，管道对象和任意数量的键。我们上面的客户端 INCR 命令可以这样写，更容易阅读：
+</p>
+<pre class="example">
+&gt;&gt;&gt; def client_side_incr(pipe):
+...     current_value = pipe.get('OUR-SEQUENCE-KEY')
+...     next_value = int(current_value) + 1
+...     pipe.multi()
+...     pipe.set('OUR-SEQUENCE-KEY', next_value)
+&gt;&gt;&gt;
+&gt;&gt;&gt; r.transaction(client_side_incr, 'OUR-SEQUENCE-KEY')
+[True]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga46a367" class="outline-2">
+<h2 id="orga46a367"><span class="section-number-2">6</span> Publish/Subscribe</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+redis-py 包含一个 PubSub 对象，该对象订阅频道并侦听新消息。创建 PubSub 对象很容易。
+</p>
+<pre class="example">
+&gt;&gt;&gt; r = redis.Redis(...)
+&gt;&gt;&gt; p = r.pubsub()
+</pre>
+<p>
+创建 PubSub 实例后，即可订阅通道和模式。
+</p>
+<pre class="example">
+&gt;&gt;&gt; p.subscribe('my-first-channel', 'my-second-channel', ...)
+&gt;&gt;&gt; p.psubscribe('my-*', ...)
+</pre>
+<p>
+现在，PubSub 实例已订阅了这些通道/模式。订阅确认可以通过从 PubSub 实例读取消息来查看。
+</p>
+<pre class="example">
+&gt;&gt;&gt; p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-second-channel', 'data': 1L}
+&gt;&gt;&gt; p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-first-channel', 'data': 2L}
+&gt;&gt;&gt; p.get_message()
+{'pattern': None, 'type': 'psubscribe', 'channel': 'my-*', 'data': 3L}
+</pre>
+
+<p>
+redis-py 还允许注册回调函数来处理已发布的消息。消息处理程序采用单个参数，即 message，就像上面的示例一样，它是一个字典。要使用消息处理程序订阅频道或模式，请将频道或模式名称作为关键字参数传递，其值是回调函数。
+</p>
+
+<p>
+当使用消息处理程序在通道或模式上读取消息时，将创建消息字典并将其传递给消息处理程序。在这种情况下，由于已处理消息，因此 get_message（）返回 None 值。
+</p>
+
+<pre class="example">
+&gt;&gt;&gt; def my_handler(message):
+...     print 'MY HANDLER: ', message['data']
+&gt;&gt;&gt; p.subscribe(**{'my-channel': my_handler})
+# read the subscribe confirmation message
+&gt;&gt;&gt; p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-channel', 'data': 1L}
+</pre>
+
+<p>
+listen（）是一个生成器，它将阻塞直到消息可用为止。如果您的应用程序除了接收和处理从 Redis 接收到的消息并对其执行其他操作外，就不需要执行其他任何操作，那么 listen（）是启动运行的一种简便方法。
+</p>
+<pre class="example">
+&gt;&gt;&gt; for message in p.listen():
+...     # do something with the message
+</pre>
+
+<p>
+第三个选项在单独的线程中运行事件循环。 pubsub.run_in_thread()创建一个新线程并启动事件循环。线程对象返回给 run_in_thread()的调用者。调用者可以使用 thread.stop()方法关闭事件循环和线程。在幕后，这只是对 get_message()的包装，该包装在单独的线程中运行，从本质上创建了一个微小的非阻塞事件循环。 run_in_thread()采用可选的 sleep_time 参数。如果指定，事件循环将在循环的每次迭代中调用 time.sleep()及其值。
+</p>
+
+<p>
+注意：由于我们是在单独的线程中运行，因此无法处理注册消息处理程序无法自动处理的消息。因此，如果您订阅了未附加消息处理程序的模式或通道，则 redis-py 会阻止您调用 run_in_thread()。
+</p>
+<pre class="example">
+&gt;&gt;&gt; p.subscribe(**{'my-channel': my_handler})
+&gt;&gt;&gt; thread = p.run_in_thread(sleep_time=0.001)
+# the event loop is now running in the background processing messages
+# when it's time to shut it down...
+&gt;&gt;&gt; thread.stop()
+</pre>
+
+<p>
+PubSub 对象会记住它们订阅的通道和模式。如果发生连接断开（例如网络错误或超时），则重新连接时，PubSub 对象将重新订阅所有先前的通道和模式。无法传递客户端断开连接时发布的消息。完成 PubSub 对象后，请调用其.close（）方法以关闭连接。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5855c24" class="outline-2">
+<h2 id="org5855c24"><span class="section-number-2">7</span> Lua Scripting</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-05 四 16:59</p>
+<p class="date">Created: 2020-03-25 三 16:16</p>
 <p class="validation"></p>
 </div>
 </body>
