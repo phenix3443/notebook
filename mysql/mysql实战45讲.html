@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-25 三 16:18 -->
+<!-- 2020-03-26 四 14:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL实战45讲笔记</title>
@@ -328,10 +328,19 @@ for the JavaScript code in this tag.
 <p>
 使用 docker 搭建测试环境。
 </p>
-<pre class="example">
-docker pull mysql:5.7
-docker run -d --restart always --name mysql-test -e MYSQL_ROOT_PASSWORD=test mysql:5.7
+<div class="org-src-container">
+<pre class="src src-sh">docker pull mysql:5.7
+docker run -d --network test --restart always --name mysql-test -e <span style="color: #ff8700;">MYSQL_ROOT_PASSWORD</span>=test mysql:5.7
 </pre>
+</div>
+
+<p>
+连接 mysql
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker run -it --network test mysql:5.7 mysql -h mysql-test -p
+</pre>
+</div>
 </div>
 </div>
 
@@ -342,24 +351,42 @@ docker run -d --restart always --name mysql-test -e MYSQL_ROOT_PASSWORD=test mys
 <div id="outline-container-org9918830" class="outline-2">
 <h2 id="org9918830"><span class="section-number-2">3</span> 基础架构：查询语句执行流程</h2>
 <div class="outline-text-2" id="text-3">
-<p>
-server 层
-</p>
+<ul class="org-ul">
+<li>server 层，涵盖 mysql 大多数核心服务功能，以及所有内置函数，所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。
 <ul class="org-ul">
 <li>连接器
 <ul class="org-ul">
+<li>建立链接
+<ul class="org-ul">
+<li>长连接问题：
+<ul class="org-ul">
+<li>原因：执行过程中临时使用的内存是在 链接对象中的。</li>
+<li>解决办法：mysql_reset_connection 初始化连接资源。</li>
+</ul></li>
+</ul></li>
+<li>身份验证
+<ul class="org-ul">
 <li>show processlist</li>
-<li>长连接问题：mysql_reset_connection</li>
+</ul></li>
+<li>查询权限
+<ul class="org-ul">
+<li>去系统表读取数据，结果放在变量，执行器从该变量中读取。</li>
+</ul></li>
+
 <li>查询缓存
 <ul class="org-ul">
 <li>不要使用。</li>
-<li>query_cache_type DEMAND</li>
+<li>query_cache_type 设置为 DEMAND，按需使用。</li>
 <li>select SQL_CACHE * from T where ID=10;</li>
 <li>8.0 删除了该功能。</li>
 </ul></li>
 </ul></li>
 
-<li>分析器</li>
+<li>分析器
+<ul class="org-ul">
+<li>词法分析：识别查询语句中数据库名、表名、列名等。</li>
+<li>语法分析</li>
+</ul></li>
 
 <li>优化器
 <ul class="org-ul">
@@ -368,15 +395,12 @@ server 层
 
 <li>执行器
 <ul class="org-ul">
-<li>检查对表的执行权限。</li>
+<li>检查对表的执行权限。sql 执行过程中可能会有触发器这种在运行时才能确定的过程，分析器工作结束后的 precheck 是不能对这种运行时涉及到的表进行权限校验的，所以需要在执行器阶段进行权限检查。另外正是因为有 precheck 这个步骤，才会在报错时报的是用户无权，而不是 k 字段不存在（为了不向用户暴露表结构）</li>
+<li>使用对应的引擎打开表。</li>
 </ul></li>
-</ul>
+</ul></li>
 
-<p>
-存储层
-</p>
-<ul class="org-ul">
-<li>存储引擎</li>
+<li>存储引擎层</li>
 </ul>
 </div>
 </div>
@@ -388,8 +412,12 @@ server 层
 redo log：
 </p>
 <ul class="org-ul">
+<li>更新数据，先写 redo log，空闲时间再写磁盘，即 WAL（write-ahead logging）技术。</li>
+<li>固定大小，1GB/文件 * 4</li>
+<li>保证及时数据库发生异常重启，之前提交的记录都不会丢失。</li>
 <li>InnoDB 引擎特有日志</li>
 <li>innodb_flush_log_at_trx_commit=1</li>
+<li>redo log 是顺序写，记录落盘是随机写，前者要快很多所以先写 redo log，然后记录落盘。</li>
 </ul>
 
 <p>
@@ -397,16 +425,29 @@ binlog
 </p>
 <ul class="org-ul">
 <li>server 层特有日志。</li>
-<li>sync_binlog=1</li>
+<li>sync_binlog=1。</li>
+<li>binlog 是有固定格式，也就是固定结尾的，可以用来判断一条 binlog 是否完整。</li>
 </ul>
 
 <p>
 二者不同：
 </p>
+<ul class="org-ul">
+<li>redo log 是 InnoDB 特有的。binlog 是 MySQL 层实现的，所有引擎都可以使用。</li>
+<li>redo log 是物理日志，记录数据页的更改；binlog 是逻辑日志，记录 sql 语句的原始逻辑。二者通过事务 ID 进行对应。</li>
+<li>redo log 是循环写的，binlog 是追加写。</li>
+<li>redo log 用于异常重启恢复，binlog 主要用于备份。</li>
+</ul>
 
 <p>
-二阶段提交。
+update 语句二阶段提交。
 </p>
+<ul class="org-ul">
+<li>执行器执行语句，获得新行，调用引擎接口。</li>
+<li>引擎更新数据到内存，同时写操作记录到 redo log，redo log 处于 prepare 状态。</li>
+<li>执行器执行 binlog，binlog 写磁盘。</li>
+<li>执行器调用引擎提交事务接口，引擎将刚才的 redo log 改为提交状态。（prepare 写日志的最后 512 个字节，会在 commit 的时候被改掉）</li>
+</ul>
 </div>
 </div>
 
@@ -440,6 +481,7 @@ SQL 标准的事务隔离级别包括：
 </p>
 <ul class="org-ul">
 <li>每条记录在更新的时候都会同时记录一条回滚操作，即回滚日志。</li>
+<li>当没有比回滚日志更早的 read-view 时候，才删除回滚日志。</li>
 <li>同一条记录在系统中可以存在多个版本，即数据库的多版本并发控制。</li>
 </ul>
 
@@ -504,7 +546,7 @@ SQL 标准的事务隔离级别包括：
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-03-25 三 16:18</p>
+<p class="date">Created: 2020-03-26 四 14:34</p>
 <p class="validation"></p>
 </div>
 </body>

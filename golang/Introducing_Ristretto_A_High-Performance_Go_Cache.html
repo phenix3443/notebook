@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-03-26 四 14:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introducing Ristretto: A High-Performance Go Cache</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">Introducing Ristretto: A High-Performance Go Cache</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3ce96ca">1. 前言</a></li>
+<li><a href="#orgbbf1ad2">2. Ristretto: Better Half of Espresso</a></li>
+<li><a href="#org971bb1d">3. 指导原则</a></li>
+<li><a href="#org63c2cab">4. 快速访问</a></li>
+<li><a href="#org88ae39c">5. 并发和竞争</a>
+<ul>
+<li><a href="#orgf59ff4f">5.1. Gets</a></li>
+<li><a href="#org9ac047b">5.2. Sets</a>
+<ul>
+<li><a href="#org16d3f48">5.2.1. 注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgff353d8">6. 抗竞争性</a></li>
+<li><a href="#org356b72e">7. 内存可控</a>
+<ul>
+<li><a href="#orgf239335">7.1. key 成本</a></li>
+<li><a href="#org17dea26">7.2. 接纳策略：TinyLFU</a></li>
+<li><a href="#orgfbbe274">7.3. 驱逐策略：Sampled LFU</a></li>
+</ul>
+</li>
+<li><a href="#orgf95f36b">8. DoorKeeper</a></li>
+<li><a href="#org93ff953">9. Metrics</a></li>
+<li><a href="#orgf5137ad">10. 基准测试</a>
+<ul>
+<li><a href="#org208b6c8">10.1. 命中率</a>
+<ul>
+<li><a href="#org46fd330">10.1.1. 搜索</a></li>
+<li><a href="#orgd3469bd">10.1.2. 数据库</a></li>
+<li><a href="#orgf578e39">10.1.3. 循环</a></li>
+<li><a href="#org7f956cd">10.1.4. CODASYL</a></li>
+<li><a href="#org28d4799">10.1.5. 吞吐量</a>
+<ul>
+<li><a href="#org0f4cc31">10.1.5.1. 混合：25％写入，75％读取</a></li>
+<li><a href="#orgf5963fa">10.1.5.2. Read: 100% Reads</a></li>
+<li><a href="#orge05bcbc">10.1.5.3. Write: 100% Writes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org10dd0cb">11. 未来的改进</a></li>
+<li><a href="#orgd8f80db">12. 特别感谢</a></li>
+<li><a href="#orgdcb753e">13. 结论</a></li>
+</ul>
+</div>
+</div>
+<p>
+<a href="https://blog.dgraph.io/post/introducing-ristretto-high-perf-go-cache/">原文</a>
+</p>
+
+<p>
+经过六个多月的研发，我们很荣幸地宣布初始版本的 <a href="https://github.com/dgraph-io/ristretto">Ristretto</a>：高性能、并行、内存绑定的 Go 缓存。它具有抗竞争性，良好的可伸缩性，并始终具有很高的命中率。
+</p>
+
+<div id="outline-container-org3ce96ca" class="outline-2">
+<h2 id="org3ce96ca"><span class="section-number-2">1</span> 前言</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+一切始于 Dgraph 需要内存可控的并发 Go 缓存。我们四处寻找也未曾发现一个好的解决方案。后来，我们尝试使用分片 map，它具有分片驱逐功能来释放内存，但导致出现内存问题。然后，我们重新利用 Groupcache 的 <a href="https://github.com/golang/groupcache/blob/master/lru/lru.go">LRU</a>，使用互斥锁来确保线程安全。大约一年后，我们注意到缓存遇到严重的争用。删除该缓存的操作使查询延迟大大提高了 5 到 10 倍。本质上，缓存拖慢了速度！
+</p>
+
+<p>
+我们得出的结论是，Go 中的并发缓存缺失，我们必须自己实现一个。 3 月，我们写了关于 <a href="https://blog.dgraph.io/post/caching-in-go/">State of Caching in Go</a> 的文章，提到数据库和系统需要智能且内存可控的缓存的问题，其中该缓存可以在 golang 这样的多线程环境中扩展。特别地，我们认为缓存应该满足：
+</p>
+<ol class="org-ol">
+<li>高并发</li>
+<li>高命中率</li>
+<li>内存可控（可配置的最大内存使用限制）</li>
+<li>随着核心和 goroutine 数量的增加，可以很好地扩展</li>
+<li>在非随机 key 访问分布（例如 Zipf）下可以很好地扩展。</li>
+</ol>
+
+<p>
+发布博客文章后，我们成立了一个团队来解决其中提到的挑战，并创建了一个值得与非 Go 实现的缓存进行比较的 Go 缓存库。尤其是基于 Java 8 的 Caffeine，它是一个高性能，几乎是最佳的缓存库。它被许多基于 Java 的数据库使用，例如 Cassandra，HBase 和 Neo4j。有一篇关于 Caffeine 设计的 <a href="http://highscalability.com/blog/2016/1/25/design-of-a-modern-cache.html">文章</a> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbbf1ad2" class="outline-2">
+<h2 id="orgbbf1ad2"><span class="section-number-2">2</span> Ristretto: Better Half of Espresso</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+从那以后，我们阅读了文献<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup><sup>, </sup><sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup><sup>, </sup><sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>，实现也进行了广泛测试，并讨论了编写缓存库时要考虑的每个变量。今天，我们很自豪地宣布，它已经准备好供 Go 社区更广泛的使用和试验。
+</p>
+
+<p>
+在我们开始解释 Ristretto 的设计之前，这里是一个代码片段，展示了如何使用它：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">main</span>() {
+    <span style="color: #ff8700;">cache</span>, <span style="color: #ff8700;">err</span> := ristretto.<span style="color: #ffd700;">NewCache</span>(&amp;<span style="color: #00d7af;">ristretto.Config</span>{
+        <span style="color: #5fafd7;">NumCounters</span>: 1e7,     <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Num keys to track frequency of (10M).</span>
+        <span style="color: #5fafd7;">MaxCost</span>:     1 &lt;&lt; 30, <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Maximum cost of cache (1GB).</span>
+        <span style="color: #5fafd7;">BufferItems</span>: 64,      <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Number of keys per Get buffer.</span>
+    })
+    <span style="color: #a1db00;">if</span> err != <span style="color: #5fafd7;">nil</span> {
+        <span style="color: #d18aff;">panic</span>(err)
+    }
+
+    cache.<span style="color: #ffd700;">Set</span>(<span style="color: #ff4ea3;">"key"</span>, <span style="color: #ff4ea3;">"value"</span>, 1) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">set a value</span>
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">wait for value to pass through buffers</span>
+    time.<span style="color: #ffd700;">Sleep</span>(10 * time.Millisecond)
+
+    <span style="color: #ff8700;">value</span>, <span style="color: #ff8700;">found</span> := cache.<span style="color: #ffd700;">Get</span>(<span style="color: #ff4ea3;">"key"</span>)
+    <span style="color: #a1db00;">if</span> <span style="color: #ff4b4b;">!</span>found {
+        <span style="color: #d18aff;">panic</span>(<span style="color: #ff4ea3;">"missing value"</span>)
+    }
+    fmt.<span style="color: #ffd700;">Println</span>(value)
+    cache.<span style="color: #ffd700;">Del</span>(<span style="color: #ff4ea3;">"key"</span>)
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org971bb1d" class="outline-2">
+<h2 id="org971bb1d"><span class="section-number-2">3</span> 指导原则</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Ristretto 建立在三个指导原则上：
+</p>
+<ol class="org-ol">
+<li>快速访问</li>
+<li>高并发和抗竞争性</li>
+<li>内存可控。</li>
+</ol>
+
+<p>
+在此博客文章中，我们将讨论这三个原则以及如何在 Ristretto 中实现它们。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org63c2cab" class="outline-2">
+<h2 id="org63c2cab"><span class="section-number-2">4</span> 快速访问</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+尽管我们喜欢 Go 及其在功能方面的坚定立场，但 Go 的某些设计决策阻止了我们挤出想要的所有性能。最值得注意的是 Go 的并发模型。由于对 CSP 的关注，大多数其他形式的原子操作都被忽略了。这使得难以实现在缓存库中有用的无锁结构。例如，Go 不提供线程本地存储。
+</p>
+
+<p>
+缓存的核心是 hash map，其中包含有关进出的规则。如果 hash map 执行不佳，则整个缓存将受到影响。与 Java 不同，Go 没有无锁并发的 hash map。相反，Go 中的线程安全是通过显式获取互斥锁来实现的。
+</p>
+
+<p>
+我们尝试了多种实现方式（使用 Ristretto 中的 store 接口），发现 sync.Map 对于读取繁重的工作负载表现良好，但对于写入工作负载则表现不佳。考虑到没有线程本地存储，我们发现分片（shared）互斥包装的 Go map 具有最佳的整体性能。特别是，我们选择使用 256 个分片（shared）以确保即使在 64 核服务器上也能很好地执行。
+</p>
+
+<p>
+使用基于分片（shared）的方法，我们还需要找到一种快速的方法来计算 key 应放入哪个分片（shared）。这种要求以及对长 key 消耗过多内存的担忧，导致我们将 uint64 代表 key，而不是存储整个 key。这样做的理由是，我们需要在多个位置进行 key 的散列，在入口处执行一次散列即可使我们重新使用该散列，从而避免了任何其他计算。
+</p>
+
+<p>
+为了生成快速哈希，我们从 Go Runtime 借用了 <a href="https://github.com/dgraph-io/ristretto/blob/master/z/rtutil.go#L42-L44">runtime.memhash</a> 。此函数使用汇编代码快速生成哈希。请注意，哈希具有一个随机化器，该随机化器会在进程启动时进行初始化，这意味着相同的 key 在下一次进程运行时不会生成相同的哈希。但是，对于非永久性缓存来说，这没关系。在我们的实验中，我们发现它可以在 10ns 内散列 64 字节 key。
+</p>
+
+<p>
+然后，我们不仅使用此哈希作为存储的 key，而且还弄清楚了 key 应放入的分片（shared）。这确实会带来 key 碰撞的机会，这是我们计划在以后处理的事情。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org88ae39c" class="outline-2">
+<h2 id="org88ae39c"><span class="section-number-2">5</span> 并发和竞争</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+要实现高命中率，需要管理元数据，元数据和缓存中存在的内容以及缓存中应存在的内容有关。跨 goroutines 使得平衡缓存的性能和可伸缩性变得非常困难。幸运的是，有一篇名为 <a href="https://blog.dgraph.io/refs/bp_wrapper.pdf">BP-Wrapper 的论文</a>，它描述了一个系统框架，该框架使得任何替换算法几乎都可以无争用地锁定。论文介绍了两种缓解争用的方法：预取（prefetching） 和批处理(batching)。我们仅使用批处理。
+</p>
+
+<p>
+批处理正是我们所需要的。与其为每个元数据改变获取互斥锁，不如在获取互斥锁并处理突变之前等待环形缓冲区填满。如该论文所述，这几乎没有开销，从而大大降低了竞争。
+</p>
+
+<p>
+我们将此方法用于所有获取（Gets） 和设置（Sets） 缓存。
+</p>
+</div>
+
+<div id="outline-container-orgf59ff4f" class="outline-3">
+<h3 id="orgf59ff4f"><span class="section-number-3">5.1</span> Gets</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+当然，所有对缓存的获取都会立即得到服务。困难的部分是捕获 Get，因此我们可以跟踪 key 访问。在 LRU 缓存中，通常将 key 放在链接列表的开头。在基于 LFU 的缓存中，我们需要增加条目的点击计数器。这两个操作（修改列表和计数）都需要对缓存的全局结构进行线程安全地访问。 BP-Wrapper 建议使用批处理来递增命中计数器，但是问题是我们如何在不获取另一个锁的情况下实现此批处理过程。
+</p>
+
+<p>
+这听起来像是使用 Go channels 的完美场景，事实确实如此。不幸的是，通道的吞吐量性能并不满足我们的使用。取而代之的是，我们设计了一种使用 sync.Pool 的好方法，以实现分离、有损的<a href="https://github.com/dgraph-io/ristretto/blob/master/ring.go#L99-L104">环形缓冲区</a>，这些缓冲区性能出色，数据丢失很少。
+</p>
+
+<p>
+Pool 存储的任何条目都可以随时自动删除，而不另行通知。这就引入了一层有损行为。Pool 中的每个条目实际上都是一批 key。这批填满后，将其推送到某个 channel。故意将 channel 设置较小，以避免消耗太多的 CPU 周期来处理它。如果通道已满，则删除该批次。这引入了第二层有损行为。一个 goroutine 从内部通道中提取此批次并处理 key，从而更新其命中计数器。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #ffd700;">AddToLossyBuffer</span>(key):
+  <span style="color: #ff8700;">stripe</span> := b.pool.<span style="color: #ffd700;">Get</span>().(*<span style="color: #00d7af;">ringStripe</span>)
+  stripe.<span style="color: #ffd700;">Push</span>(key)
+  b.pool.<span style="color: #ffd700;">Put</span>(stripe)
+
+Once <span style="color: #00d7af;">buffer</span> fills <span style="color: #00d7af;">up</span>, push <span style="color: #00d7af;">to</span> channel:
+  <span style="color: #a1db00;">select</span> {
+  <span style="color: #a1db00;">case</span> p.itemsCh &lt;- keys:
+      p.stats.<span style="color: #ffd700;">Add</span>(keepGets, keys[0], <span style="color: #ffd700;">uint64</span>(<span style="color: #d18aff;">len</span>(keys)))
+      <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">true</span>
+  <span style="color: #a1db00;">default</span>:
+      p.stats.<span style="color: #ffd700;">Add</span>(dropGets, keys[0], <span style="color: #ffd700;">uint64</span>(<span style="color: #d18aff;">len</span>(keys)))
+      <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">false</span>
+  }
+
+p.itemCh <span style="color: #00d7af;">processing</span>:
+  <span style="color: #a1db00;">func</span> (<span style="color: #ff8700;">p</span> *<span style="color: #00d7af;">tinyLFU</span>) <span style="color: #ffd700;">Push</span>(<span style="color: #ff8700;">keys</span> []<span style="color: #00d7af;">uint64</span>) {
+    <span style="color: #a1db00;">for</span> <span style="color: #ff8700;">_</span>, <span style="color: #ff8700;">key</span> := <span style="color: #a1db00;">range</span> keys {
+      p.<span style="color: #ffd700;">Increment</span>(key)
+    }
+  }
+</pre>
+</div>
+
+<p>
+使用 sync.Pool 而非其他任何内容（切片，互斥锁等）获得的性能优势主要是由于内部使用的线程本地存储，而 Go 的用户无法将其作为公共 API 使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9ac047b" class="outline-3">
+<h3 id="org9ac047b"><span class="section-number-3">5.2</span> Sets</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Set 缓冲区的要求与 Get 稍有不同。在 Gets 中，我们对 key 进行缓冲，仅在缓冲区填满后才对其进行处理。在 Sets 中，我们希望尽快处理 key。因此，我们使用一个通道来捕获 Sets，如果通道已满，则将它们丢弃以避免竞争。几个后台 goroutine 从通道中选择集并处理该 Set 操作。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">select</span> {
+<span style="color: #a1db00;">case</span> c.setBuf &lt;- &amp;<span style="color: #00d7af;">item</span>{<span style="color: #5fafd7;">key</span>: hash, <span style="color: #5fafd7;">val</span>: val, <span style="color: #5fafd7;">cost</span>: cost}:
+    <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">true</span>
+<span style="color: #a1db00;">default</span>:
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">drop the set and avoid blocking</span>
+    c.stats.<span style="color: #ffd700;">Add</span>(dropSets, hash, 1)
+    <span style="color: #a1db00;">return</span> <span style="color: #5fafd7;">false</span>
+}
+</pre>
+</div>
+<p>
+与 Gets 一样，此方法旨在优化抗竞争性。但是，有一些注意事项。
+</p>
+</div>
+<div id="outline-container-org16d3f48" class="outline-4">
+<h4 id="org16d3f48"><span class="section-number-4">5.2.1</span> 注意事项</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+Ristretto 中的 Sets 将在缓冲区中排队，控制权返回给调用者，然后用缓冲区更新缓存。这有两个副作用：
+</p>
+<ol class="org-ol">
+<li>不能保证 set 一定会应用。可以立即删除它以避免争用，或者以后可以被接纳策略拒绝。</li>
+<li>调用返回给用户后，应用了 set 也可能需要花费几毫秒的时间。用数据库术语来说，这是一个最终的一致性模型。</li>
+</ol>
+
+<p>
+但是，如果缓存中已存在 key，Set 将立即更新该 key。这是为了避免缓存的 key 保留陈旧的值。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgff353d8" class="outline-2">
+<h2 id="orgff353d8"><span class="section-number-2">6</span> 抗竞争性</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Ristretto 针对竞争性进行了优化。在繁重的并发负载下，这确实表现良好，我们将在下面的吞吐量基准中看到。但是，它将损失一些元数据以换取更好的吞吐量性能。
+</p>
+
+<p>
+有趣的是，由于 key 访问分布的性质，信息丢失不会损害命中率。如果我们确实丢失了元数据，当 key 访问分布不统一是，命中率也会统一丢失（If we do lose metadata, it is generally lost uniformly while the key access distribution remains non-uniform. ）（译注：什么意思）。因此，如下图所示，我们仍然可以实现较高的命中率，并且命中率下降很小。
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-hit-degrade.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org356b72e" class="outline-2">
+<h2 id="org356b72e"><span class="section-number-2">7</span> 内存可控</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-orgf239335" class="outline-3">
+<h3 id="orgf239335"><span class="section-number-3">7.1</span> key 成本</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+无限大的缓存实际上是不可能的。高速缓存必须有大小限制。许多缓存库会将缓存大小视为元素数。我们发现这种方法很幼稚。当然，它可以在值大小相同的情景下工作。但是，大多数情况下值都是不同大小的。一个值可能要花几个字节，几千字节，甚至几兆字节。将它们视为具有相同的内存成本是不现实的。
+</p>
+
+<p>
+在 Ristretto 中，我们将成本附加到每个 key 值。用户可以在调用 Set 时指定该成本是多少。我们将此成本与缓存的 MaxCost 相比较。当缓存以最大容量运行时，高成本的条目可能会取代许多低成本条目。该机制非常不错，因为它适用于所有不同的工作情景，包括幼稚的方法（其中每个 key 值花费 1）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org17dea26" class="outline-3">
+<h3 id="org17dea26"><span class="section-number-3">7.2</span> 接纳策略：TinyLFU</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+什么应该进入缓存？是由接纳策略决定。显然，如果新条目比当前条目“更有价值”就接受。但是，如果您考虑跟踪与“价值”问题相关的相关条目信息所需的开销（延迟和内存），则这将成为一个挑战。
+</p>
+
+<p>
+尽管提高命中率的策略有据可查，但大多数 Go 缓存库根本没有接纳策略。实际上，许多 LRU 收回实现都将最新 key 视为最有价值。
+</p>
+
+<p>
+此外，大多数 Go 缓存库使用纯 LRU 或近似 LRU 作为其驱逐策略。尽管具有 LRU 近似的质量，但某些工作更适合 LFU 驱逐策略。我们在跟踪各种基准测试发现了这种情况。
+</p>
+
+<p>
+对于接纳策略，我们研究了一篇名为 <a href="https://blog.dgraph.io/refs/TinyLFU%20-%20A%20Highly%20Efficient%20Cache%20Admission%20Policy.pdf">TinyLFU: A Highly Efficient Cache Admission Policy</a> 的新颖有趣的论文。在很高的层次上，TinyLFU 提供了三种方法：
+</p>
+<ul class="org-ul">
+<li>Increment(key uint64)（译注：增量）</li>
+<li>Estimate(key uint64) int (referred as ɛ)（译注：估值）</li>
+<li>Reset</li>
+</ul>
+
+<p>
+该论文对此进行了最好的解释，但是 TinyLFU 是一种与逐出无关的准入策略，旨在以很少的内存开销提高命中率。主要思想是 <b>仅在新条目的估值（estimate）高于被逐出的条目的估值时才允许接纳</b> 。我们在 Ristretto 中使用 <a href="https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch">Count-Min</a> Sketch 实现了 TinyLFU。它使用 4 位计数器来近似条目的访问频率（也就是 ɛ）。与使用普通 key-频率 map 相比，每个 key 的这种小成本使我们能够跟踪更大范围的全局 key 空间样本。
+</p>
+
+<p>
+TinyLFU 还通过 Reset 功能保持 key 访问的新近度。 N 个 key 递增后，计数器减半。因此，一段时间未访问的 key，其计数器重置为零；为最近出现的 key 铺平道路。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfbbe274" class="outline-3">
+<h3 id="orgfbbe274"><span class="section-number-3">7.3</span> 驱逐策略：Sampled LFU</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+当高速缓存达到容量时，每个传入 key 都应替换高速缓存中存在的一个或多个 key。不仅如此，传入 key 的 ɛ （译注：估值）应该比被逐出的 key 的  ɛ 高。要查找低 ɛ 的 key，我们使用了 Go map 迭代提供的 <a href="https://blog.golang.org/go-maps-in-action">randomness</a> 来选择一个 key 样本，并在它们上循环查找最低估值（ɛ）的 key。
+</p>
+
+<p>
+然后，我们将此 key 的估值（ɛ）与传入 key 进行比较。如果输入的 key 具有较高的估值（ɛ），则此 key 将被逐出（逐出策略）。否则，输入 key 将被拒绝（接纳策略）。重复此机制，直到可以将传入 key 的成本适合放入高速缓存中为止。因此，单个输入 key 可能逐出一个以上的 key。请注意，传入 key 的成本不会影响如何选择退出 key。
+</p>
+
+<p>
+使用这种方法，各种工作负载下的 LFU 策略的命中率在 1％以内。这意味着，在同一个小 package 中，我们可以获得接纳策略、保守的内存使用以及较低竞争方面的优势。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Snippet from the Admission and Eviction Algorithm</span>
+<span style="color: #ff8700;">incHits</span> := p.admit.<span style="color: #ffd700;">Estimate</span>(key)
+<span style="color: #a1db00;">for</span> ; room &lt; 0; room = p.evict.<span style="color: #ffd700;">roomLeft</span>(cost) {
+    sample = p.evict.<span style="color: #ffd700;">fillSample</span>(sample)
+    <span style="color: #ff8700;">minKey</span>, <span style="color: #ff8700;">minHits</span>, <span style="color: #ff8700;">minId</span> := <span style="color: #ffd700;">uint64</span>(0), <span style="color: #ffd700;">int64</span>(math.MaxInt64), 0
+    <span style="color: #a1db00;">for</span> <span style="color: #ff8700;">i</span>, <span style="color: #ff8700;">pair</span> := <span style="color: #a1db00;">range</span> sample {
+        <span style="color: #a1db00;">if</span> <span style="color: #ff8700;">hits</span> := p.admit.<span style="color: #ffd700;">Estimate</span>(pair.key); hits &lt; minHits {
+            minKey, minHits, minId = pair.key, hits, i
+        }
+    }
+    <span style="color: #a1db00;">if</span> incHits &lt; minHits {
+        p.stats.<span style="color: #ffd700;">Add</span>(rejectSets, key, 1)
+        <span style="color: #a1db00;">return</span> victims, <span style="color: #5fafd7;">false</span>
+    }
+    p.evict.<span style="color: #ffd700;">del</span>(minKey)
+    sample[minId] = sample[<span style="color: #d18aff;">len</span>(sample)-1]
+    sample = sample[:<span style="color: #d18aff;">len</span>(sample)-1]
+    victims = <span style="color: #d18aff;">append</span>(victims, minKey)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf95f36b" class="outline-2">
+<h2 id="orgf95f36b"><span class="section-number-2">8</span> DoorKeeper</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+在我们将新 key 放入 TinyLFU 中之前，Ristretto 首先使用布隆过滤器（bloom filter）检查该 key 是否之前已被查看过。仅当 key 在布隆过滤器中已经存在时，才将其插入 TinyLFU。这是为了避免长时间不被看到的长尾 key 污染 TinyLFU。（译注：缓存穿透）
+</p>
+
+<p>
+计算 key 的估值（ɛ） 时，如果该条目包含在布隆过滤器中，则其频率估值为 TinyLFU 的估值加 1。在重置 TinyLFU 的过程中，也会清除 Bloom 过滤器。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org93ff953" class="outline-2">
+<h2 id="org93ff953"><span class="section-number-2">9</span> Metrics</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+尽管是可选的，但了解缓存的行为方式是重要的。我们希望确保不仅可以实现与缓存相关的跟踪指标，而且这样做的开销也足够低，可以打开和保持打开状态。
+</p>
+
+<p>
+除了命中和遗漏之外，Ristretto 还跟踪其他指标，例如 key 及其添加，更新和收回的成本，sets 丢失或拒绝以及 gets 丢失或保留的成本。所有这些数字有助于了解各种工作负载上的缓存行为，并为进一步优化铺平道路。
+</p>
+
+<p>
+我们最初使用原子计数器。但开销很大。我们将原因归结为<a href="https://dzone.com/articles/false-sharing">False Sharign</a> 。考虑一个多核系统，其中不同的原子计数器（每个 8 字节）位于同一高速缓存行（通常为 64 字节）中。对这些计数器之一进行的任何更新都会导致其他计数器被标记为无效。这将强制为拥有该高速缓存的所有其他核心重新加载高速缓存，从而在高速缓存行上创建写争用。
+</p>
+
+<p>
+为了实现可伸缩性，我们确保每个原子计数器完全占用完整的缓存行。因此，每个内核都在不同的缓存行上工作。 Ristretto 通过为每个度量分配 256 个 uint64 来使用此功能，在每个活动 uint64 之间保留 9 个未使用的 uint64。为了避免额外的计算，重新使用 key 哈希值以确定要增加的 uint64。
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #5fafd7;">Add</span>:
+    <span style="color: #ff8700;">valp</span> := p.all[t]
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">Avoid false sharing by padding at least 64 bytes of space between two</span>
+    <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">atomic counters which would be incremented.</span>
+    <span style="color: #ff8700;">idx</span> := (hash % 25) * 10
+    atomic.<span style="color: #ffd700;">AddUint64</span>(valp[idx], delta)
+
+<span style="color: #5fafd7;">Read</span>:
+    <span style="color: #ff8700;">valp</span> := p.all[t]
+    <span style="color: #a1db00;">var</span> <span style="color: #ff8700;">total</span> <span style="color: #00d7af;">uint64</span>
+    <span style="color: #a1db00;">for</span> <span style="color: #ff8700;">i</span> := <span style="color: #a1db00;">range</span> valp {
+        total += atomic.<span style="color: #ffd700;">LoadUint64</span>(valp[i])
+    }
+    <span style="color: #a1db00;">return</span> total
+</pre>
+</div>
+<p>
+读取度量标准时，将读取并汇总所有 uint64，以获取最新数值。使用这种方法，指标跟踪仅会增加大约 10％的缓存性能开销。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf5137ad" class="outline-2">
+<h2 id="orgf5137ad"><span class="section-number-2">10</span> 基准测试</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+既然您了解了 Ristretto 中存在的各种机制，那么让我们看一下与其他流行的 Go 缓存相比的命中率和吞吐量基准。
+</p>
+</div>
+
+<div id="outline-container-org208b6c8" class="outline-3">
+<h3 id="org208b6c8"><span class="section-number-3">10.1</span> 命中率</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+使用 Damian Gryski 的 cachetest 和我们自己的基准测试套件来衡量命中率。两种实用程序的命中率数字相同，但是我们增加了读取某些跟踪格式（特别是 LIRS 和 ARC）以及 CSV 输出的功能，以便于绘制图形。如果要编写自己的基准测试或添加跟踪格式，请使用 <a href="https://github.com/dgraph-io/ristretto/tree/master/sim">sim</a> 软件包。
+</p>
+
+<p>
+为了更好地了解改进的空间，我们添加了一种理论上最优化的缓存实现，该实现使用未来的知识来逐出在其整个生命周期内命中次数最少的条目。请注意，这是千篇一律的 LFU 驱逐策略，其他千篇一律的策略可能会使用 LRU。根据工作量，LFU 或 LRU 可能更适合，但是我们发现通透的 LFU 对于与 Ristretto 的 Sampled LFU 进行比较很有用。
+</p>
+</div>
+
+<div id="outline-container-org46fd330" class="outline-4">
+<h4 id="org46fd330"><span class="section-number-4">10.1.1</span> 搜索</h4>
+<div class="outline-text-4" id="text-10-1-1">
+<p>
+将该跟踪描述为“大型商业搜索引擎响应各种 Web 搜索请求而发起的磁盘读取访问。”
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-hit-search.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd3469bd" class="outline-4">
+<h4 id="orgd3469bd"><span class="section-number-4">10.1.2</span> 数据库</h4>
+<div class="outline-text-4" id="text-10-1-2">
+<p>
+此跟踪被描述为“在商业站点上运行的数据库服务器，该服务器在商业数据库之上运行 ERP 应用程序。”
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-hit-db.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf578e39" class="outline-4">
+<h4 id="orgf578e39"><span class="section-number-4">10.1.3</span> 循环</h4>
+<div class="outline-text-4" id="text-10-1-3">
+<p>
+此跟踪演示了循环访问模式。在本基准及以下基准中，我们不能包括 Fastcache，Freecache 或 Bigcache 实现，因为它们的最小容量要求会使结果产生偏差。一些跟踪文件很小，并且需要较小的容量来进行性能测量。
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-hit-loop.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f956cd" class="outline-4">
+<h4 id="org7f956cd"><span class="section-number-4">10.1.4</span> CODASYL</h4>
+<div class="outline-text-4" id="text-10-1-4">
+<p>
+将该跟踪描述为“在一小时内对 CODASYL 数据库的引用”。请注意，与这里的其他相比，Ristretto 的表现受到影响。这是因为 LFU 驱逐策略不适合此工作负载。
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-hit-codasyl.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org28d4799" class="outline-4">
+<h4 id="org28d4799"><span class="section-number-4">10.1.5</span> 吞吐量</h4>
+<div class="outline-text-4" id="text-10-1-5">
+<p>
+使用与<a href="https://blog.dgraph.io/post/caching-in-go/">以前的博客文章</a>相同的<a href="https://github.com/dgryski/trifles/blob/master/cachetest/main.go">实用程序</a>来测量吞吐量，该实用程序会生成大量 key，并根据工作量在用于 gets 和 sets 的 goroutine 之间进行交替。
+</p>
+
+<p>
+所有吞吐量基准均在具有 16gb RAM 的 Intel Core i7-8700K（3.7GHz）上运行。
+</p>
+</div>
+
+<div id="outline-container-org0f4cc31" class="outline-5">
+<h5 id="org0f4cc31"><span class="section-number-5">10.1.5.1</span> 混合：25％写入，75％读取</h5>
+<div class="outline-text-5" id="text-10-1-5-1">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-thr-mixed.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf5963fa" class="outline-5">
+<h5 id="orgf5963fa"><span class="section-number-5">10.1.5.2</span> Read: 100% Reads</h5>
+<div class="outline-text-5" id="text-10-1-5-2">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-thr-read.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge05bcbc" class="outline-5">
+<h5 id="orge05bcbc"><span class="section-number-5">10.1.5.3</span> Write: 100% Writes</h5>
+<div class="outline-text-5" id="text-10-1-5-3">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://blog.dgraph.io/images/rt-thr-write.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org10dd0cb" class="outline-2">
+<h2 id="org10dd0cb"><span class="section-number-2">11</span> 未来的改进</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+您可能已经在 CODASYL 基准测试中注意到，Ristretto 的性能在 LRU 繁重的工作负载中受到影响。但是，对于大多数工作负载而言，我们的 LFU 采样策略表现都很好。问题变成了“我们如何才能兼得两全”？
+</p>
+
+<p>
+在名为<a href="https://blog.dgraph.io/refs/Adaptive%20Software%20Cache%20Management.pdf">“自适应软件缓存管理”的论文</a> 中，探讨了这个确切的问题。基本思想是在主缓存段之前放置一个 LRU“窗口”，并使用爬山技术（hill-climbing）自适应地调整窗口大小，以使命中率最大化。Caffeine 已经取得了很好的效果。我们相信 Ristretto 将来也会从中受益。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd8f80db" class="outline-2">
+<h2 id="orgd8f80db"><span class="section-number-2">12</span> 特别感谢</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+我们衷心感谢<a href="https://github.com/ben-manes">本·马内斯</a>。他的知识渊博和专心，无私的分享是我们取得任何进展的重要因素，我们很荣幸与他就缓存的所有内容进行了多次对话。如果没有他在我们内部 Slack 频道中的指导、支持和 99.9% availabilit，Ristretto 就是不可能的。
+</p>
+
+<p>
+我们还要感谢 <a href="https://twitter.com/dgryski">Damian Gryski</a> 对 Ristretto 进行的基准测试和编写 TinyLFU 实现参考的帮助。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdcb753e" class="outline-2">
+<h2 id="orgdcb753e"><span class="section-number-2">13</span> 结论</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+我们的目标是构建与 Caffeine 具有竞争力的缓存库。尽管还不够完善，但通过使用一些新技术，我们确实创造了明显比 Go 世界中大多数缓存更好的东西，其他人可以从中学习。
+</p>
+
+<p>
+在 Dgraph 中使用此缓存的一些初步实验看起来很有希望。我们希望在接下来的几个月中将 Ristretto 集成到 Dgraph 和 Badger 中。请检查一下，也许可以使用 Ristretto 来加快工作量！
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://blog.dgraph.io/refs/bp_wrapper.pdf">https://blog.dgraph.io/refs/bp_wrapper.pdf</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://blog.dgraph.io/refs/Adaptive%20Software%20Cache%20Management.pdf">https://blog.dgraph.io/refs/Adaptive Software Cache Management.pdf</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://blog.dgraph.io/refs/TinyLFU%20-%20A%20Highly%20Efficient%20Cache%20Admission%20Policy.pdf">https://blog.dgraph.io/refs/TinyLFU - A Highly Efficient Cache Admission Policy.pdf</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2020-03-26 四 14:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
