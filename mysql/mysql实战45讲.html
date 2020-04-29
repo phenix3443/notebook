@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:54 -->
+<!-- 2020-04-29 三 14:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL实战45讲笔记</title>
@@ -342,6 +342,21 @@ for the JavaScript code in this tag.
 <li><a href="#org2f98d61">29. 读写分离哟那些坑</a></li>
 <li><a href="#orgc981b72">30. 如何判断一个数据库是不是出问题了</a></li>
 <li><a href="#org3b228af">31. 答疑文章（二）：用动态的观点看加锁</a></li>
+<li><a href="#org25e55c6">32. 误删数据后除了跑路还能怎么办？</a></li>
+<li><a href="#orga589e88">33. 为什么还有 kill 不掉的语句</a></li>
+<li><a href="#orgcc6e290">34. 我查了这么多数据会不会把数据库内存打爆</a></li>
+<li><a href="#org938aa36">35. 到底可不可以使用 join</a></li>
+<li><a href="#orgf8ce9db">36. join 语句如何优化。</a></li>
+<li><a href="#orgfd22144">37. 为什么临时表可以重名</a></li>
+<li><a href="#orgc81829a">38. 什么时候会使用内部临时表</a></li>
+<li><a href="#org4faf949">39. 都说 InnoDB 好，那还要不要使用 Memory 引擎</a></li>
+<li><a href="#orgfc30ba3">40. 自增主键为什么不是连续的</a></li>
+<li><a href="#orgad96f0b">41. insert 语句的锁为什么这么多</a></li>
+<li><a href="#orgabfcfe5">42. 怎么最快的赋值一张表</a></li>
+<li><a href="#orgcb95bc6">43. grant 之后为什么要跟着 flush privilege</a></li>
+<li><a href="#org5f1669e">44. 要不要使用分区表</a></li>
+<li><a href="#org0259050">45. 答疑文章（三）说一说这些好问题</a></li>
+<li><a href="#orgb3ae6ab">46. 自增 ID 用完了怎么办</a></li>
 </ul>
 </div>
 </div>
@@ -846,6 +861,7 @@ change buffer 和 redo log 区别：
 <h2 id="org419167d"><span class="section-number-2">14</span> 为什么我的 mysql 会抖一下</h2>
 <div class="outline-text-2" id="text-14">
 <p>
+可能是在写内存和刷脏页。
 redo log 何时写：
 </p>
 <ul class="org-ul">
@@ -854,15 +870,83 @@ redo log 何时写：
 <li>系统空闲。</li>
 <li>mysql 关闭。</li>
 </ul>
+
+
+<p>
+InnoDB 刷脏页的控制策略：
+</p>
+<ul class="org-ul">
+<li><p>
+磁盘速度：设置 innodb_io_capacity 参数
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">fio -filename=$<span style="color: #ff8700;">filename</span> -direct=1 -iodepth 1 -thread -rw=randrw -ioengine=psync -bs=16k -size=500M -numjobs=10 -runtime=10 -group_reporting -name=mytest
+</pre>
+</div></li>
+<li>脏页比例：innodb_max_dirty_page_pct</li>
+<li>相邻脏页 innodb_flush_neghbors</li>
+</ul>
 </div>
 </div>
 
+
 <div id="outline-container-orgcebfc33" class="outline-2">
 <h2 id="orgcebfc33"><span class="section-number-2">15</span> 为什么表数据删掉一半，表文件大小不变</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+innodb_file_per_table=ON
+</p>
+
+<p>
+数据页的复用与记录的复用是不同的：
+</p>
+<ul class="org-ul">
+<li>记录的复用，只限于符合范围条件的数据。</li>
+<li>整个页从 B+树里里面摘掉以后，可以复用到任何位置。</li>
+</ul>
+
+
+<p>
+delete 命令其实只是把记录的 位置，或者数据页标记为“可复用”，但是磁盘的大小是不会变的。
+</p>
+
+<p>
+插入数据也会造成数据空洞。
+</p>
+
+<p>
+重建表可以用来收缩表空间。alter table A engine=InnoDB.
+</p>
+
+<p>
+推荐使用 github 开源的 gh-ost 操作。
+</p>
+
+<p>
+Online 与 Inplace：
+</p>
+
+<ul class="org-ul">
+<li>Inplace 是指数据有没有在表间移动。</li>
+<li>Online 是指操作期间是否可以继续更新数据。</li>
+<li>DDL 过程如果是 Online 的，那一定是 inplace 的。</li>
+<li>反过来未必，截止到 mysql 8.0，添加全文索引和空间索引属于这种情况。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org3c97d28" class="outline-2">
 <h2 id="org3c97d28"><span class="section-number-2">16</span> count(*)这么慢，我该怎么办</h2>
+<div class="outline-text-2" id="text-16">
+<p>
+数据库保存技术：利用事务的特性自己实现
+count(*)和 count(column)区别：
+</p>
+<ul class="org-ul">
+<li>count(*) 做了特殊优化，不取值，直接返回行数，建议使用。</li>
+<li>count(column) 返回列不为 null 的数量。</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-org214c4bf" class="outline-2">
@@ -924,11 +1008,71 @@ redo log 何时写：
 <div id="outline-container-org3b228af" class="outline-2">
 <h2 id="org3b228af"><span class="section-number-2">31</span> 答疑文章（二）：用动态的观点看加锁</h2>
 </div>
+
+<div id="outline-container-org25e55c6" class="outline-2">
+<h2 id="org25e55c6"><span class="section-number-2">32</span> 误删数据后除了跑路还能怎么办？</h2>
+</div>
+
+<div id="outline-container-orga589e88" class="outline-2">
+<h2 id="orga589e88"><span class="section-number-2">33</span> 为什么还有 kill 不掉的语句</h2>
+</div>
+
+<div id="outline-container-orgcc6e290" class="outline-2">
+<h2 id="orgcc6e290"><span class="section-number-2">34</span> 我查了这么多数据会不会把数据库内存打爆</h2>
+</div>
+
+<div id="outline-container-org938aa36" class="outline-2">
+<h2 id="org938aa36"><span class="section-number-2">35</span> 到底可不可以使用 join</h2>
+</div>
+
+<div id="outline-container-orgf8ce9db" class="outline-2">
+<h2 id="orgf8ce9db"><span class="section-number-2">36</span> join 语句如何优化。</h2>
+</div>
+
+<div id="outline-container-orgfd22144" class="outline-2">
+<h2 id="orgfd22144"><span class="section-number-2">37</span> 为什么临时表可以重名</h2>
+</div>
+
+<div id="outline-container-orgc81829a" class="outline-2">
+<h2 id="orgc81829a"><span class="section-number-2">38</span> 什么时候会使用内部临时表</h2>
+</div>
+
+<div id="outline-container-org4faf949" class="outline-2">
+<h2 id="org4faf949"><span class="section-number-2">39</span> 都说 InnoDB 好，那还要不要使用 Memory 引擎</h2>
+</div>
+
+<div id="outline-container-orgfc30ba3" class="outline-2">
+<h2 id="orgfc30ba3"><span class="section-number-2">40</span> 自增主键为什么不是连续的</h2>
+</div>
+
+<div id="outline-container-orgad96f0b" class="outline-2">
+<h2 id="orgad96f0b"><span class="section-number-2">41</span> insert 语句的锁为什么这么多</h2>
+</div>
+
+<div id="outline-container-orgabfcfe5" class="outline-2">
+<h2 id="orgabfcfe5"><span class="section-number-2">42</span> 怎么最快的赋值一张表</h2>
+</div>
+
+<div id="outline-container-orgcb95bc6" class="outline-2">
+<h2 id="orgcb95bc6"><span class="section-number-2">43</span> grant 之后为什么要跟着 flush privilege</h2>
+</div>
+
+<div id="outline-container-org5f1669e" class="outline-2">
+<h2 id="org5f1669e"><span class="section-number-2">44</span> 要不要使用分区表</h2>
+</div>
+
+<div id="outline-container-org0259050" class="outline-2">
+<h2 id="org0259050"><span class="section-number-2">45</span> 答疑文章（三）说一说这些好问题</h2>
+</div>
+
+<div id="outline-container-orgb3ae6ab" class="outline-2">
+<h2 id="orgb3ae6ab"><span class="section-number-2">46</span> 自增 ID 用完了怎么办</h2>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:54</p>
+<p class="date">Created: 2020-04-29 三 14:54</p>
 <p class="validation"></p>
 </div>
 </body>
