@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-19 二 16:40 -->
+<!-- 2020-05-19 二 16:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>后台服务优化流程</title>
+<title>如何设计一个秒杀系统</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,130 +306,291 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">后台服务优化流程</h1>
+<h1 class="title">如何设计一个秒杀系统</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbab7dfe">1. 效果</a></li>
-<li><a href="#org0c478c6">2. 业务代码</a></li>
-<li><a href="#org2376a48">3. 缓存</a></li>
-<li><a href="#orge2bb51c">4. 数据库（MySql）</a></li>
-<li><a href="#org54b9fc5">5. 其他</a></li>
+<li><a href="#org7abd77a">1. 开篇词 秒杀系统都有哪些关键点</a></li>
+<li><a href="#orge8a671a">2. 01 设计秒杀系统时应该注意的 5 个架构原则</a></li>
+<li><a href="#org36ff1bc">3. 02 如何才能做好动静分离</a></li>
+<li><a href="#org8a40f49">4. 03 二八原则：有针对性的处理好系统的“热点”</a></li>
+<li><a href="#org70a202a">5. 04  流量削峰这事应该怎么做</a></li>
+<li><a href="#orgee84afd">6. 05 影响性能的因素有哪些？又该如何提高系统的性能</a></li>
+<li><a href="#orga8b833c">7. 06 秒杀系统“减库存”设计的核心逻辑</a></li>
+<li><a href="#org692565c">8. 07 准备 Plan B：如何设计兜底方案</a></li>
+<li><a href="#org29278f0">9. 08 答疑解惑</a></li>
 </ul>
 </div>
 </div>
+<p>
+本文章是极客时间 <a href="https://time.geekbang.org/column/article/40153">《如何设计一个秒杀系统》</a> 的学习笔记
+</p>
 
-<div id="outline-container-orgbab7dfe" class="outline-2">
-<h2 id="orgbab7dfe"><span class="section-number-2">1</span> 效果</h2>
+<div id="outline-container-org7abd77a" class="outline-2">
+<h2 id="org7abd77a"><span class="section-number-2">1</span> 开篇词 秒杀系统都有哪些关键点</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+秒杀系统主要解决两个问题：并发度和并发写。
+</p>
+
+<p>
+并发读的优化理念：尽量减少用户到服务端来“读”数据，或者让他们读更少的数据。
+</p>
+
+<p>
+并发写的优化理念：在数据库层面独立出来一个库，做特殊处理。
+</p>
+
+<p>
+实践原则：
+</p>
+<ul class="org-ul">
+<li>用户请求的数据尽量少: 动静分离。</li>
+<li>请求数尽量少: 根据 UID、IP 限流。</li>
+<li>路径尽量短，依赖尽量少。</li>
+<li>不要有单点。</li>
+</ul>
+
+<p>
+优化路径：
+</p>
 <ol class="org-ol">
-<li>完善服务监控和告警系统。</li>
-<li>最复杂的接口响应从之前的 1-2s，降低到现在的 100ms 以内。</li>
-<li>数据库内存从高峰期的 13-14Gb，缩减到当前的 1Gb 以内。</li>
-<li>代码重构，实现代码模块化、补全单元测试，接口测试，补充项目文档和代码文档。</li>
+<li>前端秒杀页面：
+<ul class="org-ul">
+<li>动静分离</li>
+<li>限流（比如限制页面刷新或者点击）</li>
+</ul></li>
+
+<li>中间代理：
+<ul class="org-ul">
+<li>限流，nginx 限制请求并发</li>
+<li>分流，对请求 hash</li>
+<li>负载均衡和横向扩容</li>
+</ul></li>
+
+<li>后端服务
+<ul class="org-ul">
+<li>限流防刷</li>
+<li>横向扩容</li>
+<li>业务分离，不影响正常业务</li>
+<li>异步处理，如消息队列</li>
+</ul></li>
+
+<li>数据层：
+<ul class="org-ul">
+<li>分库分表</li>
+<li>读写分离</li>
+<li>缓存读写，异步落盘</li>
+<li>业务分离</li>
+</ul></li>
 </ol>
-</div>
-</div>
 
-<div id="outline-container-org0c478c6" class="outline-2">
-<h2 id="org0c478c6"><span class="section-number-2">2</span> 业务代码</h2>
-<div class="outline-text-2" id="text-2">
+<p>
+架构特性：
+</p>
 <ul class="org-ul">
-<li>集成 ELK 数据采集和钉钉群告警，补全监控和告警系统有利于后续的业务开发和代码重构。</li>
-<li>接口处理流程规范化。所有处理流程规范为解析参数-&gt;请求处理-&gt;返回响应，使得处理逻辑更加清晰。</li>
-<li>设计接口对应的 <code>request</code> 和 <code>response</code> 结构体，好处：
-<ul class="org-ul">
-<li>替代原先滥用的 <code>map[string]interface{}</code> ，该结构使用发射进行类型转换，低效。</li>
-<li>结构清晰明了，可以和代码文档相对应，也便于日志打印时候直接序列化，发送到 ELK 系统定位问题。</li>
-</ul></li>
-<li>拆分处理函数，这么做有两个优点：
-<ul class="org-ul">
-<li>判断逻辑冗余在一个函数中，不便于阅读和测试，拆分成模块更便于复用和进行单元测试。</li>
-<li>耦合太紧的函数不利于 goroutine，提高并发。</li>
-</ul></li>
-<li>原先通过 for 循环过滤大量数据库查询结果，现在将限制条件放置在 sql 查询语句中，并将结果缓存在包含查询条件的 key 中。</li>
-<li>整个处理过程只使用代表书籍的 coopID_bookID，只在需要返回书籍信息的时候的时候查询书籍详情。</li>
-<li>将数据库和缓存模块单独拆分，增加一层接入层，向业务代码屏蔽底层数据结构。
-<ul class="org-ul">
-<li>方便替换别的数据库。</li>
-<li>方便测试数据库代码。</li>
-</ul></li>
-<li>使用 zap 替代代低效的 fmt.Printf 写日志。
-<ul class="org-ul">
-<li>fmt.Printf 低效，没有日志分级，不仅日质量大，而且不方便定位问题。</li>
-<li>日志组件利用 zap 不仅打印高效，还可将运行日志和数据日志分离为不同的日志文件。操作日志对接 ELK 定位问题， 数据日志对接数据平台生成报表。</li>
-</ul></li>
-<li>程序本地缓存书籍静态信息。
-<ul class="org-ul">
-<li>程序本地缓存书籍静态信息，不用去 redis 查询，同时减少了从 redis 存取时候的 json 反串行化消耗。</li>
-</ul></li>
-
-<li>采用更加高效的 gin 替代 beego 框架。</li>
-
-<li>使用协程实现并行处理。</li>
+<li>高性能：数据动静分离、热点发现与隔离、请求的削峰和分层过滤、服务端极致优化</li>
+<li>一致性：减库存</li>
+<li>高可用：Plan B</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org2376a48" class="outline-2">
-<h2 id="org2376a48"><span class="section-number-2">3</span> 缓存</h2>
+<div id="outline-container-orge8a671a" class="outline-2">
+<h2 id="orge8a671a"><span class="section-number-2">2</span> 01 设计秒杀系统时应该注意的 5 个架构原则</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+架构原则：4要 1 不要：
+</p>
+<ul class="org-ul">
+<li>数据要尽量少，减少 CPU 消耗。</li>
+<li>请求数要尽量少。减少加载时间。实践：合并 css 和 js 文件。</li>
+<li>路径要尽量短，减少节点消耗。</li>
+<li>依赖要尽量少。</li>
+<li>不要有单点。避免服务状态和机器绑定，即服务无状态化。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org36ff1bc" class="outline-2">
+<h2 id="org36ff1bc"><span class="section-number-2">3</span> 02 如何才能做好动静分离</h2>
 <div class="outline-text-2" id="text-3">
-<ol class="org-ol">
-<li>使用合理的数据结构。例如使用 set 存储分类信息，使用 zset 存储排行信息，二者做交集就是分类的排行信息。</li>
-<li>设置合理的 key 名，将过滤条件包含在 key 中，方便查询。</li>
-<li>之缓存书籍的动态信息，例如更新时间，最新章节等。</li>
-<li>合理设置缓存的过期时间。</li>
-</ol>
+<p>
+如何缓存静态数据：
+</p>
+<ul class="org-ul">
+<li>把静态数据缓存到离用户最近的地方。</li>
+<li>静态化改造就要要直接缓存 HTTP 链接。</li>
+<li>使用 nginx 等更擅长处理大并发静态文件的 web 服务请求做反向代理。</li>
+</ul>
+
+<p>
+如何做动静分离：
+</p>
+<ul class="org-ul">
+<li>URL 唯一化。</li>
+<li>分离浏览者相关的因素。</li>
+<li>分离时间因素。</li>
+<li>异步化地域因素。</li>
+<li>去掉 cookie。</li>
+</ul>
+
+<p>
+动态数据处理方案：
+</p>
+<ul class="org-ul">
+<li>ESI 方案：web 代理请求动态内容。服务端性能有影响，但是用户体验好。</li>
+<li>CSI 方案：浏览器单独发起异步 JS 请求。服务端性能更好，但是用户端演示，体验稍差。</li>
+</ul>
+
+
+<p>
+静态资源存储的方案：
+</p>
+<ul class="org-ul">
+<li>实体机单机部署。
+<ul class="org-ul">
+<li>优点：没有网络瓶颈、能提升命中率，减少数据压缩和序列化、减少 cache 失效压力。</li>
+<li>缺点：物理机器浪费，提高了运维复杂度。</li>
+</ul></li>
+
+<li>统一 cache 层。
+<ul class="org-ul">
+<li>优点：减少运维成本，方便接入其他静态化系统，共享内存，减少物理机成本。</li>
+<li>缺点：cache 内部交换网络瓶颈，不要存在单点。</li>
+</ul></li>
+
+<li>上 CDN
+<ul class="org-ul">
+<li>优点：离用户近，效果更好。</li>
+<li>缺点：失效问题，命中率问题，发布更新问题。</li>
+<li>选择 CDN 二级 cache：
+<ul class="org-ul">
+<li>靠近访问量比较集中的地区。</li>
+<li>离主站相对较远</li>
+<li>节点到主站间的网络好且稳定</li>
+<li>节点容量比较大。</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orge2bb51c" class="outline-2">
-<h2 id="orge2bb51c"><span class="section-number-2">4</span> 数据库（MySql）</h2>
+<div id="outline-container-org8a40f49" class="outline-2">
+<h2 id="org8a40f49"><span class="section-number-2">4</span> 03 二八原则：有针对性的处理好系统的“热点”</h2>
 <div class="outline-text-2" id="text-4">
-<ol class="org-ol">
-<li>合理设置设计表结构。
 <ul class="org-ul">
-<li>比如推荐表中的有书籍信息相关的无效字段。</li>
-<li>bookCate 表与 bookInfo 表需要联合查询，优化时候就把 bookInfo 表中的信息插入到 bookCate 表中，避免 join 操作。</li>
-</ul></li>
-
-<li>合理的数据库字段类型。
+<li>热点数据
 <ul class="org-ul">
-<li>使用 set enum 等数据类型。</li>
-</ul></li>
-
-<li>优化索引。
+<li>静态热点数据，买家报名</li>
+<li>动态热点数据
 <ul class="org-ul">
-<li>调整 coop_bookID 索引位 bookID_coop。</li>
-<li>使用 FULLTEXT 替换原有字符串正则表达式。</li>
+<li>热点发现，异步系统分析数据后预热</li>
+<li>热点反馈，热点保护，热点数据隔离</li>
 </ul></li>
-
-<li>使用查询优化程序和慢查询日志查找问题和验证优化结果。</li>
-</ol>
+</ul></li>
+<li>热点操作：限流、缓存热点数据。</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org54b9fc5" class="outline-2">
-<h2 id="org54b9fc5"><span class="section-number-2">5</span> 其他</h2>
+<div id="outline-container-org70a202a" class="outline-2">
+<h2 id="org70a202a"><span class="section-number-2">5</span> 04  流量削峰这事应该怎么做</h2>
 <div class="outline-text-2" id="text-5">
-<ol class="org-ol">
-<li>代码仓库遵循 golang 规范构建，这样别的项目也能引用我们的代码。</li>
-<li>使用 go mod 替代 vender。</li>
-<li>给出支付服务解决用户订单并发处理的方法：
+<p>
+削峰思路：
+</p>
 <ul class="org-ul">
-<li>序列化请求，然后使用 pod 对接请求序列。</li>
-<li>使用 redis 实现分布式锁，处理时对用户进行加锁。</li>
-<li>使用 nginx 将用户请求 hash(userid)到业务机器，业务机器串行处理请求，这种方式对现有代码改动最小。</li>
-</ul></li>
-</ol>
+<li>排队：消息队列</li>
+<li>答题：防刷，延缓请求。</li>
+<li>分层过滤：过滤无效请求</li>
+</ul>
 </div>
+</div>
+
+<div id="outline-container-orgee84afd" class="outline-2">
+<h2 id="orgee84afd"><span class="section-number-2">6</span> 05 影响性能的因素有哪些？又该如何提高系统的性能</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+性能指标：
+</p>
+<ul class="org-ul">
+<li>QPS</li>
+<li>RT</li>
+</ul>
+
+<p>
+查看 CPU 瓶颈：JProfiler 和 Yourkit
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga8b833c" class="outline-2">
+<h2 id="orga8b833c"><span class="section-number-2">7</span> 06 秒杀系统“减库存”设计的核心逻辑</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+减库存操作：
+</p>
+<ul class="org-ul">
+<li>下单减库存：恶意下单</li>
+<li>付款减库存：超卖</li>
+<li>预扣减库存：
+<ul class="org-ul">
+<li>缺点：恶意下单</li>
+<li>解决：买家打标，最大购买件数，重复下单不付款的操作次数进行限制。</li>
+</ul></li>
+</ul>
+
+
+<p>
+大型秒杀推荐使用下单减库存的方式：
+</p>
+<ul class="org-ul">
+<li>通过事务保证减后库存不能为负数，否则就回滚。</li>
+<li>字节设置数据库字段为无符号整数，减后数据库字段小于 0 就报错。</li>
+<li><p>
+使用 case when 语句
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #a1db00;">UPDATE</span> item <span style="color: #a1db00;">SET</span> inventory= <span style="color: #a1db00;">CASE</span> <span style="color: #a1db00;">WHEN</span> inventory&gt;=xxx <span style="color: #a1db00;">THEN</span> inventroy-xxx <span style="color: #a1db00;">ELSE</span> inventory <span style="color: #a1db00;">END</span>
+</pre>
+</div></li>
+</ul>
+
+<p>
+减库存优化：
+</p>
+<ul class="org-ul">
+<li>使用 redis：适用简单场景</li>
+<li>使用 mysql：
+<ul class="org-ul">
+<li>应用层排队：按照商品设置队列，单个商品为一个队列。</li>
+<li>数据库层排队：阿里做了 InnoDB 补丁。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org692565c" class="outline-2">
+<h2 id="org692565c"><span class="section-number-2">8</span> 07 准备 Plan B：如何设计兜底方案</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>降级，非核心功能</li>
+<li>限流，</li>
+<li>拒绝服务</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org29278f0" class="outline-2">
+<h2 id="org29278f0"><span class="section-number-2">9</span> 08 答疑解惑</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-19 二 16:40</p>
+<p class="date">Created: 2020-05-19 二 16:39</p>
 <p class="validation"></p>
 </div>
 </body>

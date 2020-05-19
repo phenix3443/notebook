@@ -6,7 +6,7 @@
 <!-- 2020-05-19 二 16:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>后台服务优化流程</title>
+<title>lua-cjson</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,123 +306,56 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">后台服务优化流程</h1>
+<h1 class="title">lua-cjson</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbab7dfe">1. 效果</a></li>
-<li><a href="#org0c478c6">2. 业务代码</a></li>
-<li><a href="#org2376a48">3. 缓存</a></li>
-<li><a href="#orge2bb51c">4. 数据库（MySql）</a></li>
-<li><a href="#org54b9fc5">5. 其他</a></li>
+<li><a href="#orgc2a54a8">1. 概述</a></li>
+<li><a href="#org587146c">2. 使用</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgbab7dfe" class="outline-2">
-<h2 id="orgbab7dfe"><span class="section-number-2">1</span> 效果</h2>
+<div id="outline-container-orgc2a54a8" class="outline-2">
+<h2 id="orgc2a54a8"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
-<ol class="org-ol">
-<li>完善服务监控和告警系统。</li>
-<li>最复杂的接口响应从之前的 1-2s，降低到现在的 100ms 以内。</li>
-<li>数据库内存从高峰期的 13-14Gb，缩减到当前的 1Gb 以内。</li>
-<li>代码重构，实现代码模块化、补全单元测试，接口测试，补充项目文档和代码文档。</li>
-</ol>
+<div class="org-src-container">
+<pre class="src src-sh">luarocks install lua-cjson
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org0c478c6" class="outline-2">
-<h2 id="org0c478c6"><span class="section-number-2">2</span> 业务代码</h2>
+<div id="outline-container-org587146c" class="outline-2">
+<h2 id="org587146c"><span class="section-number-2">2</span> 使用</h2>
 <div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>集成 ELK 数据采集和钉钉群告警，补全监控和告警系统有利于后续的业务开发和代码重构。</li>
-<li>接口处理流程规范化。所有处理流程规范为解析参数-&gt;请求处理-&gt;返回响应，使得处理逻辑更加清晰。</li>
-<li>设计接口对应的 <code>request</code> 和 <code>response</code> 结构体，好处：
-<ul class="org-ul">
-<li>替代原先滥用的 <code>map[string]interface{}</code> ，该结构使用发射进行类型转换，低效。</li>
-<li>结构清晰明了，可以和代码文档相对应，也便于日志打印时候直接序列化，发送到 ELK 系统定位问题。</li>
-</ul></li>
-<li>拆分处理函数，这么做有两个优点：
-<ul class="org-ul">
-<li>判断逻辑冗余在一个函数中，不便于阅读和测试，拆分成模块更便于复用和进行单元测试。</li>
-<li>耦合太紧的函数不利于 goroutine，提高并发。</li>
-</ul></li>
-<li>原先通过 for 循环过滤大量数据库查询结果，现在将限制条件放置在 sql 查询语句中，并将结果缓存在包含查询条件的 key 中。</li>
-<li>整个处理过程只使用代表书籍的 coopID_bookID，只在需要返回书籍信息的时候的时候查询书籍详情。</li>
-<li>将数据库和缓存模块单独拆分，增加一层接入层，向业务代码屏蔽底层数据结构。
-<ul class="org-ul">
-<li>方便替换别的数据库。</li>
-<li>方便测试数据库代码。</li>
-</ul></li>
-<li>使用 zap 替代代低效的 fmt.Printf 写日志。
-<ul class="org-ul">
-<li>fmt.Printf 低效，没有日志分级，不仅日质量大，而且不方便定位问题。</li>
-<li>日志组件利用 zap 不仅打印高效，还可将运行日志和数据日志分离为不同的日志文件。操作日志对接 ELK 定位问题， 数据日志对接数据平台生成报表。</li>
-</ul></li>
-<li>程序本地缓存书籍静态信息。
-<ul class="org-ul">
-<li>程序本地缓存书籍静态信息，不用去 redis 查询，同时减少了从 redis 存取时候的 json 反串行化消耗。</li>
-</ul></li>
+<p>
+Json 有两种常用的数据类型：object 和 array
+</p>
 
-<li>采用更加高效的 gin 替代 beego 框架。</li>
+<p>
+cjson 对于空的 table，会默认处理为 object，对于 Lua 本身，是无法区分空数组和空字典的，但是对于强类型语言(C/C++, Java 等)，这时候就会出现问题，必须作容错处理.
+</p>
 
-<li>使用协程实现并行处理。</li>
-</ul>
-</div>
+<p>
+方案一：使用 metatable 将 table 标记为 array
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #d18aff;">setmetatable</span>(tab, cjson.empty_array_mt)
+</pre>
 </div>
 
-<div id="outline-container-org2376a48" class="outline-2">
-<h2 id="org2376a48"><span class="section-number-2">3</span> 缓存</h2>
-<div class="outline-text-2" id="text-3">
-<ol class="org-ol">
-<li>使用合理的数据结构。例如使用 set 存储分类信息，使用 zset 存储排行信息，二者做交集就是分类的排行信息。</li>
-<li>设置合理的 key 名，将过滤条件包含在 key 中，方便查询。</li>
-<li>之缓存书籍的动态信息，例如更新时间，最新章节等。</li>
-<li>合理设置缓存的过期时间。</li>
-</ol>
+<p>
+推荐使用这种方案。
+</p>
+
+<p>
+方案二 使用 encode_empty_table_as_object 方法
+</p>
+<div class="org-src-container">
+<pre class="src src-lua">cjson.encode_empty_table_as_object(<span style="color: #5fafd7;">false</span>)
+</pre>
 </div>
-</div>
-
-<div id="outline-container-orge2bb51c" class="outline-2">
-<h2 id="orge2bb51c"><span class="section-number-2">4</span> 数据库（MySql）</h2>
-<div class="outline-text-2" id="text-4">
-<ol class="org-ol">
-<li>合理设置设计表结构。
-<ul class="org-ul">
-<li>比如推荐表中的有书籍信息相关的无效字段。</li>
-<li>bookCate 表与 bookInfo 表需要联合查询，优化时候就把 bookInfo 表中的信息插入到 bookCate 表中，避免 join 操作。</li>
-</ul></li>
-
-<li>合理的数据库字段类型。
-<ul class="org-ul">
-<li>使用 set enum 等数据类型。</li>
-</ul></li>
-
-<li>优化索引。
-<ul class="org-ul">
-<li>调整 coop_bookID 索引位 bookID_coop。</li>
-<li>使用 FULLTEXT 替换原有字符串正则表达式。</li>
-</ul></li>
-
-<li>使用查询优化程序和慢查询日志查找问题和验证优化结果。</li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-org54b9fc5" class="outline-2">
-<h2 id="org54b9fc5"><span class="section-number-2">5</span> 其他</h2>
-<div class="outline-text-2" id="text-5">
-<ol class="org-ol">
-<li>代码仓库遵循 golang 规范构建，这样别的项目也能引用我们的代码。</li>
-<li>使用 go mod 替代 vender。</li>
-<li>给出支付服务解决用户订单并发处理的方法：
-<ul class="org-ul">
-<li>序列化请求，然后使用 pod 对接请求序列。</li>
-<li>使用 redis 实现分布式锁，处理时对用户进行加锁。</li>
-<li>使用 nginx 将用户请求 hash(userid)到业务机器，业务机器串行处理请求，这种方式对现有代码改动最小。</li>
-</ul></li>
-</ol>
 </div>
 </div>
 </div>

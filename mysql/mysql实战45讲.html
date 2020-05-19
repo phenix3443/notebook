@@ -3,12 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-29 三 14:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL实战45讲笔记</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -311,64 +309,66 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge788cae">1. 准备</a></li>
-<li><a href="#orgcae3b18">2. 开篇词</a></li>
-<li><a href="#org9918830">3. 基础架构：查询语句执行流程</a></li>
-<li><a href="#org9284661">4. 日志系统：更新语句执行流程</a></li>
-<li><a href="#orgc642176">5. 事务隔离</a></li>
-<li><a href="#org032edbc">6. 深入浅出索引（上）</a></li>
-<li><a href="#org5a260d8">7. 深入浅出索引（下）</a></li>
-<li><a href="#org12e7345">8. 全局锁和表锁</a></li>
-<li><a href="#org421ce5c">9. 行锁功过：怎么减少行锁对性能的影响</a></li>
-<li><a href="#orga39e1f0">10. 事务到底是隔离的还是不隔离的？</a></li>
-<li><a href="#orgfd954d0">11. 普通索引和唯一索引，应该怎么选择</a></li>
-<li><a href="#org90f60cc">12. mysql 为什么有时候会选错索引</a></li>
-<li><a href="#orgeb4fa36">13. 怎么给字符串字段加索引</a></li>
-<li><a href="#org419167d">14. 为什么我的 mysql 会抖一下</a></li>
-<li><a href="#orgcebfc33">15. 为什么表数据删掉一半，表文件大小不变</a></li>
-<li><a href="#org3c97d28">16. count(*)这么慢，我该怎么办</a></li>
-<li><a href="#org214c4bf">17. 答疑文章（一）：日志和索引相关问题</a></li>
-<li><a href="#org39a00d5">18. order by 是怎么工作的</a></li>
-<li><a href="#org481b3ea">19. 如何正确的显示随机消息</a></li>
-<li><a href="#org4dcd172">20. 为什么这些 sql 语句逻辑相同，性能却差异巨大？</a></li>
-<li><a href="#org23be924">21. 为什么我只查一行的语句，也执行这么慢</a></li>
-<li><a href="#orge1e10af">22. 幻读是什么，幻读有什么问题</a></li>
-<li><a href="#org7e57275">23. mysql 有哪些“饮鸩止渴”提高性能的方法</a></li>
-<li><a href="#org1acbf95">24. mysql 是怎么保证数据不丢的</a></li>
-<li><a href="#org5526be8">25. mysql 是怎么保证主备一致的</a></li>
-<li><a href="#orge8b60a8">26. mysql 是怎么保证高可用的</a></li>
-<li><a href="#org46dbae2">27. 备库为什么会延迟好几个小时</a></li>
-<li><a href="#org2168a86">28. 主库出问题了，从库怎么办？</a></li>
-<li><a href="#org2f98d61">29. 读写分离哟那些坑</a></li>
-<li><a href="#orgc981b72">30. 如何判断一个数据库是不是出问题了</a></li>
-<li><a href="#org3b228af">31. 答疑文章（二）：用动态的观点看加锁</a></li>
-<li><a href="#org25e55c6">32. 误删数据后除了跑路还能怎么办？</a></li>
-<li><a href="#orga589e88">33. 为什么还有 kill 不掉的语句</a></li>
-<li><a href="#orgcc6e290">34. 我查了这么多数据会不会把数据库内存打爆</a></li>
-<li><a href="#org938aa36">35. 到底可不可以使用 join</a></li>
-<li><a href="#orgf8ce9db">36. join 语句如何优化。</a></li>
-<li><a href="#orgfd22144">37. 为什么临时表可以重名</a></li>
-<li><a href="#orgc81829a">38. 什么时候会使用内部临时表</a></li>
-<li><a href="#org4faf949">39. 都说 InnoDB 好，那还要不要使用 Memory 引擎</a></li>
-<li><a href="#orgfc30ba3">40. 自增主键为什么不是连续的</a></li>
-<li><a href="#orgad96f0b">41. insert 语句的锁为什么这么多</a></li>
-<li><a href="#orgabfcfe5">42. 怎么最快的赋值一张表</a></li>
-<li><a href="#orgcb95bc6">43. grant 之后为什么要跟着 flush privilege</a></li>
-<li><a href="#org5f1669e">44. 要不要使用分区表</a></li>
-<li><a href="#org0259050">45. 答疑文章（三）说一说这些好问题</a></li>
-<li><a href="#orgb3ae6ab">46. 自增 ID 用完了怎么办</a></li>
+<li><a href="#orge788cae">准备</a></li>
+<li><a href="#orgcae3b18">开篇词</a></li>
+<li><a href="#org9918830">基础架构：查询语句执行流程</a></li>
+<li><a href="#org9284661">日志系统：更新语句执行流程</a></li>
+<li><a href="#orgc642176">事务隔离</a></li>
+<li><a href="#org032edbc">深入浅出索引（上）</a></li>
+<li><a href="#org5a260d8">深入浅出索引（下）</a></li>
+<li><a href="#org12e7345">全局锁和表锁</a></li>
+<li><a href="#org421ce5c">行锁功过：怎么减少行锁对性能的影响</a></li>
+<li><a href="#orga39e1f0">事务到底是隔离的还是不隔离的？</a></li>
+<li><a href="#orgfd954d0">普通索引和唯一索引，应该怎么选择</a></li>
+<li><a href="#org90f60cc">mysql 为什么有时候会选错索引</a></li>
+<li><a href="#orgeb4fa36">怎么给字符串字段加索引</a></li>
+<li><a href="#org419167d">为什么我的 mysql 会抖一下</a></li>
+<li><a href="#orgcebfc33">为什么表数据删掉一半，表文件大小不变</a></li>
+<li><a href="#org3c97d28">count(*)这么慢，我该怎么办</a></li>
+<li><a href="#org214c4bf">答疑文章（一）：日志和索引相关问题</a></li>
+<li><a href="#org39a00d5">order by 是怎么工作的</a></li>
+<li><a href="#org481b3ea">如何正确的显示随机消息</a></li>
+<li><a href="#org4dcd172">为什么这些 sql 语句逻辑相同，性能却差异巨大？</a></li>
+<li><a href="#org23be924">为什么我只查一行的语句，也执行这么慢</a></li>
+<li><a href="#orge1e10af">幻读是什么，幻读有什么问题</a></li>
+<li><a href="#org7e57275">mysql 有哪些“饮鸩止渴”提高性能的方法</a></li>
+<li><a href="#org1acbf95">mysql 是怎么保证数据不丢的</a></li>
+<li><a href="#org5526be8">mysql 是怎么保证主备一致的</a></li>
+<li><a href="#orge8b60a8">mysql 是怎么保证高可用的</a></li>
+<li><a href="#org46dbae2">备库为什么会延迟好几个小时</a></li>
+<li><a href="#org2168a86">主库出问题了，从库怎么办？</a></li>
+<li><a href="#org2f98d61">读写分离哟那些坑</a></li>
+<li><a href="#orgc981b72">如何判断一个数据库是不是出问题了</a></li>
+<li><a href="#org3b228af">答疑文章（二）：用动态的观点看加锁</a></li>
+<li><a href="#org25e55c6">误删数据后除了跑路还能怎么办？</a></li>
+<li><a href="#orga589e88">为什么还有 kill 不掉的语句</a></li>
+<li><a href="#orgcc6e290">我查了这么多数据会不会把数据库内存打爆</a></li>
+<li><a href="#org938aa36">到底可不可以使用 join</a></li>
+<li><a href="#orgf8ce9db">join 语句如何优化。</a></li>
+<li><a href="#orgfd22144">为什么临时表可以重名</a></li>
+<li><a href="#orgc81829a">什么时候会使用内部临时表</a></li>
+<li><a href="#org4faf949">都说 InnoDB 好，那还要不要使用 Memory 引擎</a></li>
+<li><a href="#orgfc30ba3">自增主键为什么不是连续的</a></li>
+<li><a href="#orgad96f0b">insert 语句的锁为什么这么多</a></li>
+<li><a href="#orgabfcfe5">怎么最快的赋值一张表</a></li>
+<li><a href="#orgcb95bc6">grant 之后为什么要跟着 flush privilege</a></li>
+<li><a href="#org5f1669e">要不要使用分区表</a></li>
+<li><a href="#org0259050">答疑文章（三）说一说这些好问题</a></li>
+<li><a href="#orgb3ae6ab">自增 ID 用完了怎么办</a></li>
 </ul>
 </div>
 </div>
 
+
 <div id="outline-container-orge788cae" class="outline-2">
-<h2 id="orge788cae"><span class="section-number-2">1</span> 准备</h2>
-<div class="outline-text-2" id="text-1">
+<h2 id="orge788cae">准备</h2>
+<div class="outline-text-2" id="text-orge788cae">
 <p>
 使用 docker 搭建测试环境。
 </p>
 <div class="org-src-container">
 <pre class="src src-sh">docker pull mysql:5.7
+docker network create test
 docker run -d --network test --restart always --name mysql-test -e <span style="color: #ff8700;">MYSQL_ROOT_PASSWORD</span>=test mysql:5.7
 </pre>
 </div>
@@ -384,12 +384,12 @@ docker run -d --network test --restart always --name mysql-test -e <span style="
 </div>
 
 <div id="outline-container-orgcae3b18" class="outline-2">
-<h2 id="orgcae3b18"><span class="section-number-2">2</span> 开篇词</h2>
+<h2 id="orgcae3b18">开篇词</h2>
 </div>
 
 <div id="outline-container-org9918830" class="outline-2">
-<h2 id="org9918830"><span class="section-number-2">3</span> 基础架构：查询语句执行流程</h2>
-<div class="outline-text-2" id="text-3">
+<h2 id="org9918830">基础架构：查询语句执行流程</h2>
+<div class="outline-text-2" id="text-org9918830">
 <ul class="org-ul">
 <li>server 层，涵盖 mysql 大多数核心服务功能，以及所有内置函数，所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。
 <ul class="org-ul">
@@ -445,8 +445,8 @@ docker run -d --network test --restart always --name mysql-test -e <span style="
 </div>
 
 <div id="outline-container-org9284661" class="outline-2">
-<h2 id="org9284661"><span class="section-number-2">4</span> 日志系统：更新语句执行流程</h2>
-<div class="outline-text-2" id="text-4">
+<h2 id="org9284661">日志系统：更新语句执行流程</h2>
+<div class="outline-text-2" id="text-org9284661">
 <p>
 redo log：
 </p>
@@ -491,8 +491,8 @@ update 语句二阶段提交。
 </div>
 
 <div id="outline-container-orgc642176" class="outline-2">
-<h2 id="orgc642176"><span class="section-number-2">5</span> 事务隔离</h2>
-<div class="outline-text-2" id="text-5">
+<h2 id="orgc642176">事务隔离</h2>
+<div class="outline-text-2" id="text-orgc642176">
 <p>
 事务特性：ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）。
 </p>
@@ -569,8 +569,8 @@ SQL 标准的事务隔离级别包括：
 </div>
 
 <div id="outline-container-org032edbc" class="outline-2">
-<h2 id="org032edbc"><span class="section-number-2">6</span> 深入浅出索引（上）</h2>
-<div class="outline-text-2" id="text-6">
+<h2 id="org032edbc">深入浅出索引（上）</h2>
+<div class="outline-text-2" id="text-org032edbc">
 <p>
 索引目的：加速查询效率。
 </p>
@@ -629,10 +629,9 @@ SQL 标准的事务隔离级别包括：
 </div>
 </div>
 
-
 <div id="outline-container-org5a260d8" class="outline-2">
-<h2 id="org5a260d8"><span class="section-number-2">7</span> 深入浅出索引（下）</h2>
-<div class="outline-text-2" id="text-7">
+<h2 id="org5a260d8">深入浅出索引（下）</h2>
+<div class="outline-text-2" id="text-org5a260d8">
 <p>
 覆盖索引：索引上存储的值可以满足查询需求（查询列和条件列），就不需要回表了。对于高频查询使用覆盖索引。
 </p>
@@ -660,8 +659,8 @@ Percona 工具包
 </div>
 
 <div id="outline-container-org12e7345" class="outline-2">
-<h2 id="org12e7345"><span class="section-number-2">8</span> 全局锁和表锁</h2>
-<div class="outline-text-2" id="text-8">
+<h2 id="org12e7345">全局锁和表锁</h2>
+<div class="outline-text-2" id="text-org12e7345">
 <p>
 全局锁：整个数据库加锁（FTWRL）。
 </p>
@@ -690,8 +689,8 @@ Percona 工具包
 </div>
 
 <div id="outline-container-org421ce5c" class="outline-2">
-<h2 id="org421ce5c"><span class="section-number-2">9</span> 行锁功过：怎么减少行锁对性能的影响</h2>
-<div class="outline-text-2" id="text-9">
+<h2 id="org421ce5c">行锁功过：怎么减少行锁对性能的影响</h2>
+<div class="outline-text-2" id="text-org421ce5c">
 <p>
 全局锁和表锁是在 server 层实现的，行锁是在引擎自己实现的。
 </p>
@@ -729,15 +728,15 @@ Percona 工具包
 
 
 <p>
-innodb 行级锁是通过锁索引记录实现的。
+  InnoDB 行锁是通过给索引上的索引项加锁来实现的，这一点 MySQL 与 Oracle 不同，后者是通过在数据块中对相应数据行加锁来实现的。 InnoDB 这种行锁实现特点意味着：只有通过索引条件检索数据，InnoDB 才使用行级锁，否则，InnoDB 将使用表锁！
+在实际应用中，要特别注意 InnoDB 行锁的这一特性，不然容易导致大量的锁冲突，从而影响并发性能。
 </p>
 </div>
 </div>
 
-
 <div id="outline-container-orga39e1f0" class="outline-2">
-<h2 id="orga39e1f0"><span class="section-number-2">10</span> 事务到底是隔离的还是不隔离的？</h2>
-<div class="outline-text-2" id="text-10">
+<h2 id="orga39e1f0">事务到底是隔离的还是不隔离的？</h2>
+<div class="outline-text-2" id="text-orga39e1f0">
 <p>
 事务启动方式：
 </p>
@@ -766,8 +765,8 @@ select 使用 lock in share mode 或者 for update，支持当前读。
 </div>
 
 <div id="outline-container-orgfd954d0" class="outline-2">
-<h2 id="orgfd954d0"><span class="section-number-2">11</span> 普通索引和唯一索引，应该怎么选择</h2>
-<div class="outline-text-2" id="text-11">
+<h2 id="orgfd954d0">普通索引和唯一索引，应该怎么选择</h2>
+<div class="outline-text-2" id="text-orgfd954d0">
 <p>
 普通索引和唯一索引在查询能力上没有差别，主要是对更新性能的影响。
 </p>
@@ -805,8 +804,8 @@ change buffer 和 redo log 区别：
 </div>
 
 <div id="outline-container-org90f60cc" class="outline-2">
-<h2 id="org90f60cc"><span class="section-number-2">12</span> mysql 为什么有时候会选错索引</h2>
-<div class="outline-text-2" id="text-12">
+<h2 id="org90f60cc">mysql 为什么有时候会选错索引</h2>
+<div class="outline-text-2" id="text-org90f60cc">
 <p>
 优化器会结合扫描行数、是否使用临时表、是否排序等因素进行综合判断。
 </p>
@@ -826,10 +825,9 @@ change buffer 和 redo log 区别：
 </div>
 </div>
 
-
 <div id="outline-container-orgeb4fa36" class="outline-2">
-<h2 id="orgeb4fa36"><span class="section-number-2">13</span> 怎么给字符串字段加索引</h2>
-<div class="outline-text-2" id="text-13">
+<h2 id="orgeb4fa36">怎么给字符串字段加索引</h2>
+<div class="outline-text-2" id="text-orgeb4fa36">
 <p>
 使用前缀索引可以减少索引长度。
 </p>
@@ -856,10 +854,9 @@ change buffer 和 redo log 区别：
 </div>
 </div>
 
-
 <div id="outline-container-org419167d" class="outline-2">
-<h2 id="org419167d"><span class="section-number-2">14</span> 为什么我的 mysql 会抖一下</h2>
-<div class="outline-text-2" id="text-14">
+<h2 id="org419167d">为什么我的 mysql 会抖一下</h2>
+<div class="outline-text-2" id="text-org419167d">
 <p>
 可能是在写内存和刷脏页。
 redo log 何时写：
@@ -889,10 +886,9 @@ InnoDB 刷脏页的控制策略：
 </div>
 </div>
 
-
 <div id="outline-container-orgcebfc33" class="outline-2">
-<h2 id="orgcebfc33"><span class="section-number-2">15</span> 为什么表数据删掉一半，表文件大小不变</h2>
-<div class="outline-text-2" id="text-15">
+<h2 id="orgcebfc33">为什么表数据删掉一半，表文件大小不变</h2>
+<div class="outline-text-2" id="text-orgcebfc33">
 <p>
 innodb_file_per_table=ON
 </p>
@@ -936,8 +932,8 @@ Online 与 Inplace：
 </div>
 
 <div id="outline-container-org3c97d28" class="outline-2">
-<h2 id="org3c97d28"><span class="section-number-2">16</span> count(*)这么慢，我该怎么办</h2>
-<div class="outline-text-2" id="text-16">
+<h2 id="org3c97d28">count(*)这么慢，我该怎么办</h2>
+<div class="outline-text-2" id="text-org3c97d28">
 <p>
 数据库保存技术：利用事务的特性自己实现
 count(*)和 count(column)区别：
@@ -950,129 +946,127 @@ count(*)和 count(column)区别：
 </div>
 
 <div id="outline-container-org214c4bf" class="outline-2">
-<h2 id="org214c4bf"><span class="section-number-2">17</span> 答疑文章（一）：日志和索引相关问题</h2>
+<h2 id="org214c4bf">答疑文章（一）：日志和索引相关问题</h2>
 </div>
 
 <div id="outline-container-org39a00d5" class="outline-2">
-<h2 id="org39a00d5"><span class="section-number-2">18</span> order by 是怎么工作的</h2>
+<h2 id="org39a00d5">order by 是怎么工作的</h2>
 </div>
 
 <div id="outline-container-org481b3ea" class="outline-2">
-<h2 id="org481b3ea"><span class="section-number-2">19</span> 如何正确的显示随机消息</h2>
+<h2 id="org481b3ea">如何正确的显示随机消息</h2>
 </div>
 
 <div id="outline-container-org4dcd172" class="outline-2">
-<h2 id="org4dcd172"><span class="section-number-2">20</span> 为什么这些 sql 语句逻辑相同，性能却差异巨大？</h2>
+<h2 id="org4dcd172">为什么这些 sql 语句逻辑相同，性能却差异巨大？</h2>
 </div>
 
 <div id="outline-container-org23be924" class="outline-2">
-<h2 id="org23be924"><span class="section-number-2">21</span> 为什么我只查一行的语句，也执行这么慢</h2>
+<h2 id="org23be924">为什么我只查一行的语句，也执行这么慢</h2>
 </div>
 
 <div id="outline-container-orge1e10af" class="outline-2">
-<h2 id="orge1e10af"><span class="section-number-2">22</span> 幻读是什么，幻读有什么问题</h2>
+<h2 id="orge1e10af">幻读是什么，幻读有什么问题</h2>
 </div>
 
 <div id="outline-container-org7e57275" class="outline-2">
-<h2 id="org7e57275"><span class="section-number-2">23</span> mysql 有哪些“饮鸩止渴”提高性能的方法</h2>
+<h2 id="org7e57275">mysql 有哪些“饮鸩止渴”提高性能的方法</h2>
 </div>
 
 <div id="outline-container-org1acbf95" class="outline-2">
-<h2 id="org1acbf95"><span class="section-number-2">24</span> mysql 是怎么保证数据不丢的</h2>
+<h2 id="org1acbf95">mysql 是怎么保证数据不丢的</h2>
 </div>
 
 <div id="outline-container-org5526be8" class="outline-2">
-<h2 id="org5526be8"><span class="section-number-2">25</span> mysql 是怎么保证主备一致的</h2>
+<h2 id="org5526be8">mysql 是怎么保证主备一致的</h2>
 </div>
 
 <div id="outline-container-orge8b60a8" class="outline-2">
-<h2 id="orge8b60a8"><span class="section-number-2">26</span> mysql 是怎么保证高可用的</h2>
+<h2 id="orge8b60a8">mysql 是怎么保证高可用的</h2>
 </div>
 
 <div id="outline-container-org46dbae2" class="outline-2">
-<h2 id="org46dbae2"><span class="section-number-2">27</span> 备库为什么会延迟好几个小时</h2>
+<h2 id="org46dbae2">备库为什么会延迟好几个小时</h2>
 </div>
 
 <div id="outline-container-org2168a86" class="outline-2">
-<h2 id="org2168a86"><span class="section-number-2">28</span> 主库出问题了，从库怎么办？</h2>
+<h2 id="org2168a86">主库出问题了，从库怎么办？</h2>
 </div>
 
 <div id="outline-container-org2f98d61" class="outline-2">
-<h2 id="org2f98d61"><span class="section-number-2">29</span> 读写分离哟那些坑</h2>
+<h2 id="org2f98d61">读写分离哟那些坑</h2>
 </div>
 
 <div id="outline-container-orgc981b72" class="outline-2">
-<h2 id="orgc981b72"><span class="section-number-2">30</span> 如何判断一个数据库是不是出问题了</h2>
+<h2 id="orgc981b72">如何判断一个数据库是不是出问题了</h2>
 </div>
 
 <div id="outline-container-org3b228af" class="outline-2">
-<h2 id="org3b228af"><span class="section-number-2">31</span> 答疑文章（二）：用动态的观点看加锁</h2>
+<h2 id="org3b228af">答疑文章（二）：用动态的观点看加锁</h2>
 </div>
 
 <div id="outline-container-org25e55c6" class="outline-2">
-<h2 id="org25e55c6"><span class="section-number-2">32</span> 误删数据后除了跑路还能怎么办？</h2>
+<h2 id="org25e55c6">误删数据后除了跑路还能怎么办？</h2>
 </div>
 
 <div id="outline-container-orga589e88" class="outline-2">
-<h2 id="orga589e88"><span class="section-number-2">33</span> 为什么还有 kill 不掉的语句</h2>
+<h2 id="orga589e88">为什么还有 kill 不掉的语句</h2>
 </div>
 
 <div id="outline-container-orgcc6e290" class="outline-2">
-<h2 id="orgcc6e290"><span class="section-number-2">34</span> 我查了这么多数据会不会把数据库内存打爆</h2>
+<h2 id="orgcc6e290">我查了这么多数据会不会把数据库内存打爆</h2>
 </div>
 
 <div id="outline-container-org938aa36" class="outline-2">
-<h2 id="org938aa36"><span class="section-number-2">35</span> 到底可不可以使用 join</h2>
+<h2 id="org938aa36">到底可不可以使用 join</h2>
 </div>
 
 <div id="outline-container-orgf8ce9db" class="outline-2">
-<h2 id="orgf8ce9db"><span class="section-number-2">36</span> join 语句如何优化。</h2>
+<h2 id="orgf8ce9db">join 语句如何优化。</h2>
 </div>
 
 <div id="outline-container-orgfd22144" class="outline-2">
-<h2 id="orgfd22144"><span class="section-number-2">37</span> 为什么临时表可以重名</h2>
+<h2 id="orgfd22144">为什么临时表可以重名</h2>
 </div>
 
 <div id="outline-container-orgc81829a" class="outline-2">
-<h2 id="orgc81829a"><span class="section-number-2">38</span> 什么时候会使用内部临时表</h2>
+<h2 id="orgc81829a">什么时候会使用内部临时表</h2>
 </div>
 
 <div id="outline-container-org4faf949" class="outline-2">
-<h2 id="org4faf949"><span class="section-number-2">39</span> 都说 InnoDB 好，那还要不要使用 Memory 引擎</h2>
+<h2 id="org4faf949">都说 InnoDB 好，那还要不要使用 Memory 引擎</h2>
 </div>
 
 <div id="outline-container-orgfc30ba3" class="outline-2">
-<h2 id="orgfc30ba3"><span class="section-number-2">40</span> 自增主键为什么不是连续的</h2>
+<h2 id="orgfc30ba3">自增主键为什么不是连续的</h2>
 </div>
 
 <div id="outline-container-orgad96f0b" class="outline-2">
-<h2 id="orgad96f0b"><span class="section-number-2">41</span> insert 语句的锁为什么这么多</h2>
+<h2 id="orgad96f0b">insert 语句的锁为什么这么多</h2>
 </div>
 
 <div id="outline-container-orgabfcfe5" class="outline-2">
-<h2 id="orgabfcfe5"><span class="section-number-2">42</span> 怎么最快的赋值一张表</h2>
+<h2 id="orgabfcfe5">怎么最快的赋值一张表</h2>
 </div>
 
 <div id="outline-container-orgcb95bc6" class="outline-2">
-<h2 id="orgcb95bc6"><span class="section-number-2">43</span> grant 之后为什么要跟着 flush privilege</h2>
+<h2 id="orgcb95bc6">grant 之后为什么要跟着 flush privilege</h2>
 </div>
 
 <div id="outline-container-org5f1669e" class="outline-2">
-<h2 id="org5f1669e"><span class="section-number-2">44</span> 要不要使用分区表</h2>
+<h2 id="org5f1669e">要不要使用分区表</h2>
 </div>
 
 <div id="outline-container-org0259050" class="outline-2">
-<h2 id="org0259050"><span class="section-number-2">45</span> 答疑文章（三）说一说这些好问题</h2>
+<h2 id="org0259050">答疑文章（三）说一说这些好问题</h2>
 </div>
 
 <div id="outline-container-orgb3ae6ab" class="outline-2">
-<h2 id="orgb3ae6ab"><span class="section-number-2">46</span> 自增 ID 用完了怎么办</h2>
+<h2 id="orgb3ae6ab">自增 ID 用完了怎么办</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-29 三 14:54</p>
 <p class="validation"></p>
 </div>
 </body>

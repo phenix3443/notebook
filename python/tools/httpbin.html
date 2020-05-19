@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:51 -->
+<!-- 2020-05-19 二 16:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>httpbin</title>
@@ -312,7 +312,12 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org818b298">1. 概述</a></li>
-<li><a href="#org42b071a">2. 使用</a></li>
+<li><a href="#org42b071a">2. 使用</a>
+<ul>
+<li><a href="#org0fb929d">2.1. sh</a></li>
+<li><a href="#orga31fb82">2.2. docker</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -329,6 +334,21 @@ for the JavaScript code in this tag.
 <div id="outline-container-org42b071a" class="outline-2">
 <h2 id="org42b071a"><span class="section-number-2">2</span> 使用</h2>
 <div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org0fb929d" class="outline-3">
+<h3 id="org0fb929d"><span class="section-number-3">2.1</span> sh</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-sh">pip3 install --user httpbin gunicorn
+gunicorn httpbin:app
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga31fb82" class="outline-3">
+<h3 id="orga31fb82"><span class="section-number-3">2.2</span> docker</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
 使用 docker 安装，
 </p>
@@ -351,10 +371,11 @@ docker run -d --restart=always --name=httpbin -p 1234:80 kennethreitz/httpbin
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:51</p>
+<p class="date">Created: 2020-05-19 二 16:39</p>
 <p class="validation"></p>
 </div>
 </body>
