@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-22 五 13:36 -->
+<!-- 2020-05-22 五 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>算法面试通关 40 讲</title>
+<title>os</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,172 +306,134 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">算法面试通关 40 讲</h1>
+<h1 class="title">os</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3dd65a4">01 合格程序员的第一步</a></li>
-<li><a href="#orgef98cab">02 如何有效学习算法与数据结构</a></li>
-<li><a href="#org1888d4e">03 如何计算算法的复杂度</a></li>
-<li><a href="#org1766e7c">04 如何通过 LeetCode 来进行算法练习</a></li>
-<li><a href="#org709156b">05 理论讲解：数组&amp;链表</a></li>
-<li><a href="#org47a24f9">06 面试题：反转单链表和联表是否有环</a></li>
-<li><a href="#org141a7cd">07 理论讲解：优先队列</a></li>
-<li><a href="#org1d52b5c">08 面试题：判断符号是否有效</a></li>
-<li><a href="#orga3d2e14">09 面试题：用队列实现栈，用栈实现队列</a></li>
-<li><a href="#org8321207">10 理论讲解：优先队列</a></li>
-<li><a href="#org8881f55">11 面试题：返回数据流中中第 k 大元素</a></li>
-<li><a href="#orgd0d68c5">12 面试题：返回滑动窗口中的最大值</a></li>
-<li><a href="#orgb890dc4">13 理论讲解：哈希表</a></li>
+<li><a href="#org7ffd28a">1. 孤儿进程和僵尸进程</a></li>
+<li><a href="#org74f06cc">2. 线程和进程的区别联系：</a></li>
+<li><a href="#orgc8cb5ec">3. 进程间通信方式</a>
+<ul>
+<li><a href="#org4339299">3.1. 管道</a></li>
+<li><a href="#org1282ede">3.2. 信号</a></li>
+<li><a href="#org0106544">3.3. 信号量</a></li>
+<li><a href="#orgbf25858">3.4. 消息队列</a></li>
+<li><a href="#org351d786">3.5. 共享内存</a></li>
+<li><a href="#org113127c">3.6. socket</a></li>
+</ul>
+</li>
+<li><a href="#orge7174ab">4. 线程间通信方式</a>
+<ul>
+<li><a href="#org3485bbb">4.1. 信号量</a></li>
+<li><a href="#org039fc81">4.2. 互斥量</a></li>
+<li><a href="#orgf2e17dd">4.3. 读写锁</a></li>
+<li><a href="#orgf1fbe62">4.4. 自旋锁</a></li>
+<li><a href="#org10c56ae">4.5. 条件变量</a></li>
+<li><a href="#org2091a76">4.6. 屏障</a></li>
+</ul>
+</li>
+<li><a href="#org79efc0f">5. 如何系统调优</a></li>
+<li><a href="#org4b587c1">6. 死锁条件和如何避免</a></li>
+<li><a href="#org7a64391">7. malloc 的底层实现。</a></li>
+<li><a href="#org32a0dae">8. deamon 进程如何实现。</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3dd65a4" class="outline-2">
-<h2 id="org3dd65a4">01 合格程序员的第一步</h2>
-<div class="outline-text-2" id="text-org3dd65a4">
-<p>
-国内比较好的公司：
-</p>
+
+<div id="outline-container-org7ffd28a" class="outline-2">
+<h2 id="org7ffd28a"><span class="section-number-2">1</span> 孤儿进程和僵尸进程</h2>
+</div>
+
+
+<div id="outline-container-org74f06cc" class="outline-2">
+<h2 id="org74f06cc"><span class="section-number-2">2</span> 线程和进程的区别联系：</h2>
+<div class="outline-text-2" id="text-2">
 <ul class="org-ul">
-<li>快手、头条、airbnb（北京）、snapchat（深圳）</li>
-<li>微信、地平线及机器人、第四范式、小米、musically、face++</li>
-<li>BAT、微软、Google、小红书、饿了么、网易 等等</li>
-<li>新美大、滴滴</li>
+<li>进程：子进程是父进程的复制品。子进程获得父进程数据空间、堆和栈的复制品。</li>
+<li>线程：相对与进程而言，线程是一个更加接近与执行体的概念，它可以与同进程的其他线程共享数据（哪些数据），但拥有自己的栈空间，拥有独立的执行序列。</li>
 </ul>
 
 <p>
-电话面试编程：
+根本区别就一点：多进程每个进程有自己的地址空间 (address space)，线程则共享地址空间。所有其它区别都是由此而来的：
 </p>
 <ul class="org-ul">
-<li>collabedit.com</li>
-<li>coderpad.io 感觉这个更好用，可以直接编译运行代码。</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgef98cab" class="outline-2">
-<h2 id="orgef98cab">02 如何有效学习算法与数据结构</h2>
-<div class="outline-text-2" id="text-orgef98cab">
-<p>
-《异类：不一样的成功启示录》
-</p>
-
-<p>
-职业训练方法：
-</p>
-<ol class="org-ol">
-<li>知识分解</li>
-<li>刻意练习</li>
-<li>及时反馈</li>
-</ol>
-
-<p>
-切题四件套：
-</p>
-<ul class="org-ul">
-<li>理解题目</li>
-<li>可能解法
-<ul class="org-ul">
-<li>对比（时间、空间复杂度）</li>
-<li>延伸</li>
-</ul></li>
-<li>编写代码</li>
-<li>测试用例</li>
+<li>速度：线程产生的速度快，线程间的通讯快、切换快等，因为他们在同一个地址空间内。</li>
+<li>资源利用率：线程的资源利用率比较好也是因为他们在同一个地址空间内。</li>
+<li>同步问题：线程使用公共变量/内存时需要使用同步机制还是因为他们在同一个地址空间内。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org1888d4e" class="outline-2">
-<h2 id="org1888d4e">03 如何计算算法的复杂度</h2>
+<div id="outline-container-orgc8cb5ec" class="outline-2">
+<h2 id="orgc8cb5ec"><span class="section-number-2">3</span> 进程间通信方式</h2>
+<div class="outline-text-2" id="text-3">
 </div>
-
-<div id="outline-container-org1766e7c" class="outline-2">
-<h2 id="org1766e7c">04 如何通过 LeetCode 来进行算法练习</h2>
-<div class="outline-text-2" id="text-org1766e7c">
-<p>
-使用 leetcode 进行编程联系。
-</p>
+<div id="outline-container-org4339299" class="outline-3">
+<h3 id="org4339299"><span class="section-number-3">3.1</span> 管道</h3>
 </div>
+<div id="outline-container-org1282ede" class="outline-3">
+<h3 id="org1282ede"><span class="section-number-3">3.2</span> 信号</h3>
 </div>
-
-<div id="outline-container-org709156b" class="outline-2">
-<h2 id="org709156b">05 理论讲解：数组&amp;链表</h2>
+<div id="outline-container-org0106544" class="outline-3">
+<h3 id="org0106544"><span class="section-number-3">3.3</span> 信号量</h3>
 </div>
-
-<div id="outline-container-org47a24f9" class="outline-2">
-<h2 id="org47a24f9">06 面试题：反转单链表和联表是否有环</h2>
-<div class="outline-text-2" id="text-org47a24f9">
-<p>
-206
-</p>
-
-<p>
-141
-</p>
+<div id="outline-container-orgbf25858" class="outline-3">
+<h3 id="orgbf25858"><span class="section-number-3">3.4</span> 消息队列</h3>
+</div>
+<div id="outline-container-org351d786" class="outline-3">
+<h3 id="org351d786"><span class="section-number-3">3.5</span> 共享内存</h3>
+</div>
+<div id="outline-container-org113127c" class="outline-3">
+<h3 id="org113127c"><span class="section-number-3">3.6</span> socket</h3>
 </div>
 </div>
 
-<div id="outline-container-org141a7cd" class="outline-2">
-<h2 id="org141a7cd">07 理论讲解：优先队列</h2>
-<div class="outline-text-2" id="text-org141a7cd">
-<p>
-实现方式：
-</p>
-<ul class="org-ul">
-<li>heap <a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">https://en.wikipedia.org/wiki/Heap_(data_structure)</a></li>
-</ul>
+<div id="outline-container-orge7174ab" class="outline-2">
+<h2 id="orge7174ab"><span class="section-number-2">4</span> 线程间通信方式</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org3485bbb" class="outline-3">
+<h3 id="org3485bbb"><span class="section-number-3">4.1</span> 信号量</h3>
+</div>
+<div id="outline-container-org039fc81" class="outline-3">
+<h3 id="org039fc81"><span class="section-number-3">4.2</span> 互斥量</h3>
+</div>
+<div id="outline-container-orgf2e17dd" class="outline-3">
+<h3 id="orgf2e17dd"><span class="section-number-3">4.3</span> 读写锁</h3>
+</div>
+<div id="outline-container-orgf1fbe62" class="outline-3">
+<h3 id="orgf1fbe62"><span class="section-number-3">4.4</span> 自旋锁</h3>
+</div>
+<div id="outline-container-org10c56ae" class="outline-3">
+<h3 id="org10c56ae"><span class="section-number-3">4.5</span> 条件变量</h3>
+</div>
+<div id="outline-container-org2091a76" class="outline-3">
+<h3 id="org2091a76"><span class="section-number-3">4.6</span> 屏障</h3>
 </div>
 </div>
 
-<div id="outline-container-org1d52b5c" class="outline-2">
-<h2 id="org1d52b5c">08 面试题：判断符号是否有效</h2>
-<div class="outline-text-2" id="text-org1d52b5c">
-<p>
-20
-</p>
-</div>
+<div id="outline-container-org79efc0f" class="outline-2">
+<h2 id="org79efc0f"><span class="section-number-2">5</span> 如何系统调优</h2>
 </div>
 
-<div id="outline-container-orga3d2e14" class="outline-2">
-<h2 id="orga3d2e14">09 面试题：用队列实现栈，用栈实现队列</h2>
-<div class="outline-text-2" id="text-orga3d2e14">
-<p>
-232
-</p>
-
-<p>
-225
-</p>
-</div>
+<div id="outline-container-org4b587c1" class="outline-2">
+<h2 id="org4b587c1"><span class="section-number-2">6</span> 死锁条件和如何避免</h2>
 </div>
 
-<div id="outline-container-org8321207" class="outline-2">
-<h2 id="org8321207">10 理论讲解：优先队列</h2>
+<div id="outline-container-org7a64391" class="outline-2">
+<h2 id="org7a64391"><span class="section-number-2">7</span> malloc 的底层实现。</h2>
 </div>
 
-<div id="outline-container-org8881f55" class="outline-2">
-<h2 id="org8881f55">11 面试题：返回数据流中中第 k 大元素</h2>
-<div class="outline-text-2" id="text-org8881f55">
-<p>
-703
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd0d68c5" class="outline-2">
-<h2 id="orgd0d68c5">12 面试题：返回滑动窗口中的最大值</h2>
-</div>
-
-<div id="outline-container-orgb890dc4" class="outline-2">
-<h2 id="orgb890dc4">13 理论讲解：哈希表</h2>
+<div id="outline-container-org32a0dae" class="outline-2">
+<h2 id="org32a0dae"><span class="section-number-2">8</span> deamon 进程如何实现。</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-22 五 13:36</p>
+<p class="date">Created: 2020-05-22 五 13:35</p>
 <p class="validation"></p>
 </div>
 </body>

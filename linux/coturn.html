@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:52 -->
+<!-- 2020-05-22 五 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>stun、turn、coturn</title>
@@ -311,28 +311,61 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8ae3e40">1. STUN</a></li>
-<li><a href="#orge93645d">2. TURN</a></li>
-<li><a href="#org033c9bd">3. COTURN</a></li>
+<li><a href="#orge93645d">1. TURN</a></li>
+<li><a href="#org8ae3e40">2. STUN</a></li>
+<li><a href="#orgf3292b7">3. ICE</a></li>
+<li><a href="#org033c9bd">4. COTURN</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org8ae3e40" class="outline-2">
-<h2 id="org8ae3e40"><span class="section-number-2">1</span> STUN</h2>
-</div>
 
 <div id="outline-container-orge93645d" class="outline-2">
-<h2 id="orge93645d"><span class="section-number-2">2</span> TURN</h2>
+<h2 id="orge93645d"><span class="section-number-2">1</span> TURN</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+TURN (Traversal Using Relays around NAT:Relay Extensions to Session Traversal Utilities for NAT) 使用 UDP 进行 NATs 穿透。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8ae3e40" class="outline-2">
+<h2 id="org8ae3e40"><span class="section-number-2">2</span> STUN</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+STUN ( Simple Traversal of UDP Through NATs )  则是 TURN 的增强版，在无法使用 TURN 进行穿透时，通过中继的方式实现 P2P 互通。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf3292b7" class="outline-2">
+<h2 id="orgf3292b7"><span class="section-number-2">3</span> ICE</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+ICE 是一种标准穿透协议，利用 STUN 和 TURN 服务器来帮助端点建立连接。WebRTC 当通过信令 server 交换完 sdp, candidate 后，之后依靠 ICE 框架在 2 端之间建立一个通道。
+</p>
+
+<p>
+ICE 的过程主要分为 5 步：
+</p>
+
+<p>
+1, 收集候选传输地址
+2, 在信令通道中交换候选选项
+3, 执行连接检查
+4, 选择选定的对并启动媒体
+5, 心跳检测
+</p>
+</div>
 </div>
 
 <div id="outline-container-org033c9bd" class="outline-2">
-<h2 id="org033c9bd"><span class="section-number-2">3</span> COTURN</h2>
+<h2 id="org033c9bd"><span class="section-number-2">4</span> COTURN</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:52</p>
+<p class="date">Created: 2020-05-22 五 13:35</p>
 <p class="validation"></p>
 </div>
 </body>

@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-22 五 13:36 -->
+<!-- 2020-05-22 五 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>算法面试通关 40 讲</title>
+<title>HTTP相关面试题目</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -299,6 +299,28 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="org-div-home-and-up">
@@ -306,172 +328,152 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">算法面试通关 40 讲</h1>
+<h1 class="title">HTTP相关面试题目</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3dd65a4">01 合格程序员的第一步</a></li>
-<li><a href="#orgef98cab">02 如何有效学习算法与数据结构</a></li>
-<li><a href="#org1888d4e">03 如何计算算法的复杂度</a></li>
-<li><a href="#org1766e7c">04 如何通过 LeetCode 来进行算法练习</a></li>
-<li><a href="#org709156b">05 理论讲解：数组&amp;链表</a></li>
-<li><a href="#org47a24f9">06 面试题：反转单链表和联表是否有环</a></li>
-<li><a href="#org141a7cd">07 理论讲解：优先队列</a></li>
-<li><a href="#org1d52b5c">08 面试题：判断符号是否有效</a></li>
-<li><a href="#orga3d2e14">09 面试题：用队列实现栈，用栈实现队列</a></li>
-<li><a href="#org8321207">10 理论讲解：优先队列</a></li>
-<li><a href="#org8881f55">11 面试题：返回数据流中中第 k 大元素</a></li>
-<li><a href="#orgd0d68c5">12 面试题：返回滑动窗口中的最大值</a></li>
-<li><a href="#orgb890dc4">13 理论讲解：哈希表</a></li>
+<li><a href="#orgcf69e89">1. 描述一下浏览器输入网址之后发生了什么。</a></li>
+<li><a href="#org4c58ae3">2. HTTP/1.0 HTTP/1.1 HTTP/2.0 HTTP/3.0 之间的区别</a>
+<ul>
+<li><a href="#org77222f6">2.1. HTTP/1.1</a></li>
+<li><a href="#orgaf354e1">2.2. HTTP/2</a></li>
+<li><a href="#org51f7ddb">2.3. HTTP/3</a></li>
+<li><a href="#org753458c">2.4. HTTP/1.1 的 pipeline 和 HTTP/2 的多路复用的区别</a></li>
+</ul>
+</li>
+<li><a href="#org5080e5c">3. HTTPS</a></li>
+<li><a href="#orga020985">4. cookie 和 session 有什么区别？</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3dd65a4" class="outline-2">
-<h2 id="org3dd65a4">01 合格程序员的第一步</h2>
-<div class="outline-text-2" id="text-org3dd65a4">
+<div id="outline-container-orgcf69e89" class="outline-2">
+<h2 id="orgcf69e89"><span class="section-number-2">1</span> 描述一下浏览器输入网址之后发生了什么。</h2>
+</div>
+
+<div id="outline-container-org4c58ae3" class="outline-2">
+<h2 id="org4c58ae3"><span class="section-number-2">2</span> HTTP/1.0 HTTP/1.1 HTTP/2.0 HTTP/3.0 之间的区别</h2>
+<div class="outline-text-2" id="text-2">
 <p>
-国内比较好的公司：
+<a href="https://coolshell.cn/articles/19840.html">https://coolshell.cn/articles/19840.html</a>
+</p>
+</div>
+
+<div id="outline-container-org77222f6" class="outline-3">
+<h3 id="org77222f6"><span class="section-number-3">2.1</span> HTTP/1.1</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+HTTP/1.1 主要解决了 HTTP 1.0 的网络性能的问题，以及增加了一些新的东西：
 </p>
 <ul class="org-ul">
-<li>快手、头条、airbnb（北京）、snapchat（深圳）</li>
-<li>微信、地平线及机器人、第四范式、小米、musically、face++</li>
-<li>BAT、微软、Google、小红书、饿了么、网易 等等</li>
-<li>新美大、滴滴</li>
+<li>可以设置 keepalive 来让 HTTP 重用 TCP 链接，重用 TCP 链接可以省了每次请求都要在广域网上进行的 TCP 的三次握手的巨大开销。这是所谓的“HTTP 长链接” 或是 “请求响应式的 HTTP 持久链接”。英文叫 HTTP Persistent connection.</li>
+<li>支持 pipeline 网络传输，只要第一个请求发出去了，不必等其回来，就可以发第二个请求出去，可以减少整体的响应时间。（注：非幂等的 POST 方法或是有依赖的请求是不能被 pipeline 化的）</li>
+<li>支持 Chunked Responses ，也就是说，在 Response 的时候，不必说明 Content-Length 这样，客户端就不能断连接，直到收到服务端的 EOF 标识。这种技术又叫 “服务端 Push 模型”，或是 “服务端 Push 式的 HTTP 持久链接”</li>
+<li>还增加了 cache control 机制。</li>
+<li>协议头注增加了 Language, Encoding, Type 等等头，让客户端可以跟服务器端进行更多的协商。</li>
+<li>还正式加入了一个很重要的头—— HOST 这样的话，服务器就知道你要请求哪个网站了。因为可以有多个域名解析到同一个 IP 上，要区分用户是请求的哪个域名，就需要在 HTTP 的协议中加入域名的信息，而不是被 DNS 转换过的 IP 信息。</li>
+<li>正式加入了 OPTIONS 方法，其主要用于 CORS – Cross Origin Resource Sharing 应用。</li>
 </ul>
+</div>
+</div>
 
+<div id="outline-container-orgaf354e1" class="outline-3">
+<h3 id="orgaf354e1"><span class="section-number-3">2.2</span> HTTP/2</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
-电话面试编程：
+和 HTTP/1.1 最主要的不同是：
 </p>
 <ul class="org-ul">
-<li>collabedit.com</li>
-<li>coderpad.io 感觉这个更好用，可以直接编译运行代码。</li>
+<li>HTTP/2 是一个二进制协议，增加了数据传输的效率。</li>
+<li>HTTP/2 是可以在一个 TCP 链接中并发请求多个 HTTP 请求，移除了 HTTP/1.1 中的串行请求。</li>
+<li>HTTP/2 会压缩头，如果你同时发出多个请求，他们的头是一样的或是相似的，那么，协议会帮你消除重复的部分。这就是所谓的 HPACK 算法（参看 RFC 7541 附录 A）</li>
+<li>HTTP/2 允许服务端在客户端放 cache，又叫服务端 push，也就是说，你没有请求的东西，我服务端可以先送给你放在你的本地缓存中。比如，你请求 X，我服务端知道 X 依赖于 Y，虽然你没有的请求 Y，但我把把 Y 跟着 X 的请求一起返回客户端。</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgef98cab" class="outline-2">
-<h2 id="orgef98cab">02 如何有效学习算法与数据结构</h2>
-<div class="outline-text-2" id="text-orgef98cab">
+<div id="outline-container-org51f7ddb" class="outline-3">
+<h3 id="org51f7ddb"><span class="section-number-3">2.3</span> HTTP/3</h3>
+<div class="outline-text-3" id="text-2-3">
 <p>
-《异类：不一样的成功启示录》
+然而，这个世界没有完美的解决方案，HTTP/2 也不例外，其主要的问题是：若干个 HTTP 的请求在复用一个 TCP 的连接，底层的 TCP 协议是不知道上层有多少个 HTTP 的请求的，所以，一旦发生丢包，造成的问题就是所有的 HTTP 请求都必需等待这个丢了的包被重传回来，哪怕丢的那个包不是我这个 HTTP 请求的。因为 TCP 底层是没有这个知识了。
 </p>
 
 <p>
-职业训练方法：
+这个问题又叫 Head-of-Line Blocking 问题，这也是一个比较经典的流量调度的问题。
+</p>
+
+<p>
+是的 TCP 是无解了，但是 UDP 是有解的 ！于是 HTTP/3 破天荒地把 HTTP 底层的 TCP 协议改成了 UDP！
+</p>
+</div>
+</div>
+
+<div id="outline-container-org753458c" class="outline-3">
+<h3 id="org753458c"><span class="section-number-3">2.4</span> HTTP/1.1 的 pipeline 和 HTTP/2 的多路复用的区别</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>没有流水线操作的 HTTP/1.1：在下一个请求发出之前,必须响应 TCP 连接上的每个 HTTP 请求.</li>
+<li>带有流水线的 HTTP/1.1:可以立即进行 TCP 连接上的每个 HTTP 请求,而无需等待先前请求的响应返回.回复将以相同的顺序返回.</li>
+<li>HTTP/2 多路复用:可以立即进行 TCP 连接上的每个 HTTP 请求,而无需等待先前的响应返回.回复可以按任何顺序返回.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5080e5c" class="outline-2">
+<h2 id="org5080e5c"><span class="section-number-2">3</span> HTTPS</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Http + 加密 + 认证 + 完整性保护 = Https。
+</p>
+
+<p>
+传统的 Http 协议是一种应用层的传输协议，Http 直接与 TCP 协议通信。
+</p>
+
+<p>
+对称秘钥加密是指加密与解密过程使用同一把秘钥。这种方式的优点是处理速度快，但是如何安全的从一方将秘钥传递到通信的另一方是一个问题。
+</p>
+
+<p>
+非对称秘钥加密是指加密与解密使用两把不同的秘钥。这两把秘钥，一把叫公开秘钥，可以随意对外公开。一把叫私有秘钥，只用于本身持有。得到公开秘钥的客户端可以使用公开秘钥对传输内容进行加密，而只有私有秘钥持有者本身可以对公开秘钥加密的内容进行解密。这种方式克服了秘钥交换的问题，但是相对于对称秘钥加密的方式，处理速度较慢。
+</p>
+
+<p>
+SSL\TLS 的加密方式则是结合了两种加密方式的优点。首先采用非对称秘钥加密，将一个对称秘钥使用公开秘钥加密后传输到对方。对方使用私有秘钥解密，得到传输的对称秘钥。之后双方再使用对称秘钥进行通信。这样即解决了对称秘钥加密的秘钥传输问题，又利用了对称秘钥的高效率来进行通信内容的加密与解密。
+</p>
+
+<p>
+Https 的通信流程：
 </p>
 <ol class="org-ol">
-<li>知识分解</li>
-<li>刻意练习</li>
-<li>及时反馈</li>
+<li>Client 发起请求；</li>
+<li>Server 端响应请求，并在之后将证书发送至 Client；</li>
+<li>Client 使用认证机构的共钥认证证书，并从证书中取出 Server 端共钥；</li>
+<li>Client 使用共钥加密一个随机秘钥，并传到 Server；</li>
+<li>Server 使用私钥解密出随机秘钥；</li>
+<li>通信双方使用随机秘钥最为对称秘钥进行加密解密。</li>
 </ol>
+</div>
+</div>
 
-<p>
-切题四件套：
-</p>
+
+<div id="outline-container-orga020985" class="outline-2">
+<h2 id="orga020985"><span class="section-number-2">4</span> cookie 和 session 有什么区别？</h2>
+<div class="outline-text-2" id="text-4">
 <ul class="org-ul">
-<li>理解题目</li>
-<li>可能解法
-<ul class="org-ul">
-<li>对比（时间、空间复杂度）</li>
-<li>延伸</li>
-</ul></li>
-<li>编写代码</li>
-<li>测试用例</li>
+<li>Session 是在服务端保存的一个数据结构，用来跟踪用户的状态，这个数据可以保存在集群、数据库、文件中；</li>
+<li>Cookie 是客户端保存用户信息的一种机制，用来记录用户的一些信息，也是实现 Session 的一种方式。</li>
 </ul>
 </div>
-</div>
-
-<div id="outline-container-org1888d4e" class="outline-2">
-<h2 id="org1888d4e">03 如何计算算法的复杂度</h2>
-</div>
-
-<div id="outline-container-org1766e7c" class="outline-2">
-<h2 id="org1766e7c">04 如何通过 LeetCode 来进行算法练习</h2>
-<div class="outline-text-2" id="text-org1766e7c">
-<p>
-使用 leetcode 进行编程联系。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org709156b" class="outline-2">
-<h2 id="org709156b">05 理论讲解：数组&amp;链表</h2>
-</div>
-
-<div id="outline-container-org47a24f9" class="outline-2">
-<h2 id="org47a24f9">06 面试题：反转单链表和联表是否有环</h2>
-<div class="outline-text-2" id="text-org47a24f9">
-<p>
-206
-</p>
-
-<p>
-141
-</p>
-</div>
-</div>
-
-<div id="outline-container-org141a7cd" class="outline-2">
-<h2 id="org141a7cd">07 理论讲解：优先队列</h2>
-<div class="outline-text-2" id="text-org141a7cd">
-<p>
-实现方式：
-</p>
-<ul class="org-ul">
-<li>heap <a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">https://en.wikipedia.org/wiki/Heap_(data_structure)</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org1d52b5c" class="outline-2">
-<h2 id="org1d52b5c">08 面试题：判断符号是否有效</h2>
-<div class="outline-text-2" id="text-org1d52b5c">
-<p>
-20
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga3d2e14" class="outline-2">
-<h2 id="orga3d2e14">09 面试题：用队列实现栈，用栈实现队列</h2>
-<div class="outline-text-2" id="text-orga3d2e14">
-<p>
-232
-</p>
-
-<p>
-225
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8321207" class="outline-2">
-<h2 id="org8321207">10 理论讲解：优先队列</h2>
-</div>
-
-<div id="outline-container-org8881f55" class="outline-2">
-<h2 id="org8881f55">11 面试题：返回数据流中中第 k 大元素</h2>
-<div class="outline-text-2" id="text-org8881f55">
-<p>
-703
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd0d68c5" class="outline-2">
-<h2 id="orgd0d68c5">12 面试题：返回滑动窗口中的最大值</h2>
-</div>
-
-<div id="outline-container-orgb890dc4" class="outline-2">
-<h2 id="orgb890dc4">13 理论讲解：哈希表</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-22 五 13:36</p>
+<p class="date">Created: 2020-05-22 五 13:35</p>
 <p class="validation"></p>
 </div>
 </body>

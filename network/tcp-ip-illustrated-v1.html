@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:54 -->
+<!-- 2020-05-22 五 13:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TCP/IP 详解卷一笔记</title>
@@ -457,7 +457,7 @@ for the JavaScript code in this tag.
 <li><a href="#orga5fa124">第二十二章 TCP 的坚持定时器</a>
 <ul>
 <li><a href="#org1398566">22.1 引言</a></li>
-<li><a href="#org5589bc5">22.2 一个栗子</a></li>
+<li><a href="#orgef9358c">22.2 一个例子</a></li>
 <li><a href="#org2e6efd5">22.3 糊涂窗口综合症</a></li>
 </ul>
 </li>
@@ -1182,28 +1182,45 @@ TCP 提供了一种面向连接的、可靠的字节流服务。
 <li>重新排序</li>
 <li>流量控制</li>
 </ul></li>
+
 <li>字节流：</li>
 </ul>
 </div>
 </div>
+
 <div id="outline-container-orga8a9b32" class="outline-3">
 <h3 id="orga8a9b32">17.3 TCP 首部</h3>
 <div class="outline-text-3" id="text-orga8a9b32">
 <ul class="org-ul">
-<li>源端口、目的端口</li>
-<li>序列号、确认号</li>
-<li>首部长度，单位是 32 字长度</li>
-<li>窗口大小</li>
-<li>检验和</li>
+<li>源端口、目的端口(socketpair)</li>
+<li>序列号、确认号
+<ul class="org-ul">
+<li>主机要发送数据的第一个字节序号为这个 ISN 加 1，因为 syn 标志小号一个序号，FIN 也消耗一个序号。</li>
+<li>全双工服务。</li>
+<li>TCP 可以表述为一个没有选择确认或否认的滑动窗口协议（滑动窗口协议用于数据传输将在 20.3 节介绍）。我们说 TCP 缺少选择确认是因为 TCP 首部中的确认序号表示发方已成功收到字节，但还不包含确认序号所指的字节。当前还无法对数据流中选定的部分进行确认。例如，如果 1～1024 字节已经成功收到，下一报文段中包含序号从 2049～3072 的字节，收端并不能确认这个新的报文段。它所能做的就是发回一个确认序号为 1025 的 ACK。它也无法对一个报文段进行否认。例如，如果收到包含 1025～2048 字节的报文段，但它的检验和错，TCP 接收端所能做的就是发回一个确认序号为 1025 的 ACK。</li>
+</ul></li>
+<li>首部长度
+<ul class="org-ul">
+<li>单位是 32 字长度，</li>
+</ul></li>
+<li>窗口大小
+<ul class="org-ul">
+<li>单位字节数</li>
+</ul></li>
+<li>检验和
+<ul class="org-ul">
+<li>覆盖 TCP 整个报文段。</li>
+</ul></li>
 <li>紧急指针</li>
 <li>选项
 <ul class="org-ul">
-<li>最大报文段长度（MSS），避免分段。</li>
+<li>最大报文段长度（MSS）,每个连接方通常都在通信的第一个报文段（为建立连接而设置 SYN 标志的那个段）中指明这个选项。它指明本端所能接收的最大长度的报文段避免分段。</li>
 </ul></li>
 </ul>
 </div>
 </div>
 </div>
+
 <div id="outline-container-org3985263" class="outline-2">
 <h2 id="org3985263">第十八章 TCP 连接的建立和终止</h2>
 <div class="outline-text-2" id="text-org3985263">
@@ -1211,80 +1228,53 @@ TCP 提供了一种面向连接的、可靠的字节流服务。
 <div id="outline-container-orgd61d2af" class="outline-3">
 <h3 id="orgd61d2af">18.2 连接的建立和终止</h3>
 <div class="outline-text-3" id="text-orgd61d2af">
-<p>
-终止连接需要 4 次握手，这是由于 TCP 的半关闭造成的。发送 FIN 通常是应用层进行关闭的结果。
-</p>
-
-<p>
-FIN 占用一个序号。
-</p>
+<ul class="org-ul">
+<li>终止连接需要 4 次握手，这是由于 TCP 的半关闭造成的。发送 FIN 通常是应用层进行关闭的结果。</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org3d18381" class="outline-3">
 <h3 id="org3d18381">18.4 最大报文长度</h3>
 <div class="outline-text-3" id="text-org3d18381">
-<p>
-当一个连接建立时，连接的双方都要通告各自的 MSS。也就是说 MSS 选项只能出现在 SYN 报文段中。
-</p>
-
-<p>
-MSS 默认 536 字节。
-</p>
-
-<p>
-当 TCP 发送一个 SYC 时，它能将 MSS 值设置为外出接口上的 MTU 长度减去固定的 IP 首部长度和 TCP 首部长度。
-</p>
+<ul class="org-ul">
+<li>当一个连接建立时，连接的双方都要通告各自的 MSS。也就是说 MSS 选项只能出现在 SYN 报文段中。</li>
+<li>MSS 默认 536 字节。</li>
+<li>当 TCP 发送一个 SYC 时，它能将 MSS 值设置为外出接口上的 MTU 长度减去固定的 IP 首部长度和 TCP 首部长度。</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-orgf485c28" class="outline-3">
 <h3 id="orgf485c28">18.6 TCP 状态变迁图</h3>
 <div class="outline-text-3" id="text-orgf485c28">
-<p>
-注意连接终止时，主动关闭的四种状态，和被动关闭的两种状态。
-</p>
-
-<p>
-在连接处于 2MSL 等待时，任何迟到的报文段将被丢弃。
-</p>
-
-<p>
-一个插口对，在它处于 2MSL 等待时，将不能再被使用。（注意，使用 SO_REUSEADDR 可以重用端口，但是插口对不可用。）
-</p>
-
-<p>
-如果处于 2MSL 等待的主机故障重启，那么故障前发出报文会被错误的当做重启后新连接的报文段。为了防止这种情况，RFC793 支出 TCP 在重启后的 MSL 秒内不能建立任何链接。这称为平静时间（quiet time）。
-</p>
+<ul class="org-ul">
+<li>注意连接终止时，主动关闭的四种状态，和被动关闭的两种状态。</li>
+<li>在连接处于 2MSL 等待时，任何迟到的报文段将被丢弃。</li>
+<li>一个插口对，在它处于 2MSL 等待时，将不能再被使用。（注意，使用 SO_REUSEADDR 可以重用端口，但是插口对不可用。）</li>
+<li>如果处于 2MSL 等待的主机故障重启，那么故障前发出报文会被错误的当做重启后新连接的报文段。为了防止这种情况，RFC793 支出 TCP 在重启后的 MSL 秒内不能建立任何链接。这称为平静时间（quiet time）。</li>
+</ul>
 </div>
 </div>
+
 <div id="outline-container-orgb9cf9c5" class="outline-3">
 <h3 id="orgb9cf9c5">18.7 复位报文段</h3>
 <div class="outline-text-3" id="text-orgb9cf9c5">
-<p>
-也可能发送一个复位报文段而不是 FIN 来中途释放一个连接。
-</p>
-
-<p>
-如果一方已经关闭或异常终止连接而另一方还不知道，这样的 TCP 连接称为半打开的。（比如主机断电产生）
-</p>
-
-<p>
-这样的坏处是服务器主机会产生很多半打开的 TCP 连接，可使用 keepalive 避免。
-</p>
-
-<p>
-如果是服务器故障导致客户端产生半打开连接，客户端发送消息将会收到复位作为应答。
-</p>
+<ul class="org-ul">
+<li>也可能发送一个复位报文段而不是 FIN 来中途释放一个连接。</li>
+<li>如果一方已经关闭或异常终止连接而另一方还不知道，这样的 TCP 连接称为半打开的。（比如主机断电产生）</li>
+<li>这样的坏处是服务器主机会产生很多半打开的 TCP 连接，可使用 keepalive 避免。</li>
+<li>如果是服务器故障导致客户端产生半打开连接，客户端发送消息将会收到复位作为应答。</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-orge10408c" class="outline-3">
 <h3 id="orge10408c">18.8 同时打开</h3>
 <div class="outline-text-3" id="text-orge10408c">
-<p>
-同时打开需要交换 4 个报文段，但仍然只产生一个连接。
-</p>
+<ul class="org-ul">
+<li>同时打开需要交换 4 个报文段，但仍然只产生一个连接。</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1418,7 +1408,7 @@ ACK 可以累计，并在时延定时器溢出是发出。
 <h3 id="orge6d8efd">21.1 引言</h3>
 <div class="outline-text-3" id="text-orge6d8efd">
 <p>
-超时和重传的策略：怎样决定超时间隔和如何确定重传频率。
+超时和重传的策略关键：怎样决定超时间隔和如何确定重传频率。
 </p>
 
 <p>
@@ -1437,7 +1427,7 @@ ACK 可以累计，并在时延定时器溢出是发出。
 <h3 id="org87c5763">21.2 超时与重传的简单例子</h3>
 <div class="outline-text-3" id="text-org87c5763">
 <p>
-连续重传之间的时间间隔 1,3,6,12,24,48,64，指数退避（exponential backoff）。
+连续重传之间的时间间隔 1,3,6,12,24,48,64，指数退避（exponential backoff），最终发送方放弃并发送复位信号。
 </p>
 
 <p>
@@ -1580,9 +1570,9 @@ tcp 常见 ICMP 差错就是：源站抑制、主机不可达和网络不可达�
 </div>
 </div>
 
-<div id="outline-container-org5589bc5" class="outline-3">
-<h3 id="org5589bc5">22.2 一个栗子</h3>
-<div class="outline-text-3" id="text-org5589bc5">
+<div id="outline-container-orgef9358c" class="outline-3">
+<h3 id="orgef9358c">22.2 一个例子</h3>
+<div class="outline-text-3" id="text-orgef9358c">
 <p>
 窗口探查包含一个字节的数据。TCP 总是允许在关闭连接钱发送一个字节的数据。
 </p>
@@ -1678,7 +1668,7 @@ tcp 常见 ICMP 差错就是：源站抑制、主机不可达和网络不可达�
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:54</p>
+<p class="date">Created: 2020-05-22 五 13:36</p>
 <p class="validation"></p>
 </div>
 </body>
