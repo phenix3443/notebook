@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-22 五 13:35 -->
+<!-- 2020-06-08 一 17:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>os</title>
@@ -313,30 +313,34 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org7ffd28a">1. 孤儿进程和僵尸进程</a></li>
 <li><a href="#org74f06cc">2. 线程和进程的区别联系：</a></li>
-<li><a href="#orgc8cb5ec">3. 进程间通信方式</a>
+<li><a href="#org9e62678">3. 进程和线程的状态</a></li>
+<li><a href="#orgc8cb5ec">4. 进程间通信方式</a>
 <ul>
-<li><a href="#org4339299">3.1. 管道</a></li>
-<li><a href="#org1282ede">3.2. 信号</a></li>
-<li><a href="#org0106544">3.3. 信号量</a></li>
-<li><a href="#orgbf25858">3.4. 消息队列</a></li>
-<li><a href="#org351d786">3.5. 共享内存</a></li>
-<li><a href="#org113127c">3.6. socket</a></li>
+<li><a href="#org4339299">4.1. 管道</a></li>
+<li><a href="#org1282ede">4.2. 信号</a></li>
+<li><a href="#org3485bbb">4.3. 信号量</a></li>
+<li><a href="#orgbf25858">4.4. 消息队列</a></li>
+<li><a href="#org351d786">4.5. 共享内存</a></li>
+<li><a href="#org113127c">4.6. socket</a></li>
 </ul>
 </li>
-<li><a href="#orge7174ab">4. 线程间通信方式</a>
+<li><a href="#orge7174ab">5. 线程间通信方式</a>
 <ul>
-<li><a href="#org3485bbb">4.1. 信号量</a></li>
-<li><a href="#org039fc81">4.2. 互斥量</a></li>
-<li><a href="#orgf2e17dd">4.3. 读写锁</a></li>
-<li><a href="#orgf1fbe62">4.4. 自旋锁</a></li>
-<li><a href="#org10c56ae">4.5. 条件变量</a></li>
-<li><a href="#org2091a76">4.6. 屏障</a></li>
+<li><a href="#org0cd210e">5.1. 信号量</a></li>
+<li><a href="#org039fc81">5.2. 互斥量</a></li>
+<li><a href="#orgf2e17dd">5.3. 读写锁</a></li>
+<li><a href="#orgf1fbe62">5.4. 自旋锁</a></li>
+<li><a href="#org10c56ae">5.5. 条件变量</a></li>
+<li><a href="#org2091a76">5.6. 屏障</a></li>
 </ul>
 </li>
-<li><a href="#org79efc0f">5. 如何系统调优</a></li>
-<li><a href="#org4b587c1">6. 死锁条件和如何避免</a></li>
-<li><a href="#org7a64391">7. malloc 的底层实现。</a></li>
-<li><a href="#org32a0dae">8. deamon 进程如何实现。</a></li>
+<li><a href="#org58da48b">6. 如何实现线程安全</a></li>
+<li><a href="#orgf958973">7. 内存分配：</a></li>
+<li><a href="#org79efc0f">8. 如何系统调优</a></li>
+<li><a href="#org4b587c1">9. 死锁条件和如何避免</a></li>
+<li><a href="#org7a64391">10. malloc 的底层实现。</a></li>
+<li><a href="#org32a0dae">11. deamon 进程如何实现。</a></li>
+<li><a href="#org211a56f">12. 读写锁如何实现？</a></li>
 </ul>
 </div>
 </div>
@@ -350,90 +354,106 @@ for the JavaScript code in this tag.
 <div id="outline-container-org74f06cc" class="outline-2">
 <h2 id="org74f06cc"><span class="section-number-2">2</span> 线程和进程的区别联系：</h2>
 <div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>进程：子进程是父进程的复制品。子进程获得父进程数据空间、堆和栈的复制品。</li>
-<li>线程：相对与进程而言，线程是一个更加接近与执行体的概念，它可以与同进程的其他线程共享数据（哪些数据），但拥有自己的栈空间，拥有独立的执行序列。</li>
-</ul>
-
-<p>
-根本区别就一点：多进程每个进程有自己的地址空间 (address space)，线程则共享地址空间。所有其它区别都是由此而来的：
-</p>
-<ul class="org-ul">
-<li>速度：线程产生的速度快，线程间的通讯快、切换快等，因为他们在同一个地址空间内。</li>
-<li>资源利用率：线程的资源利用率比较好也是因为他们在同一个地址空间内。</li>
-<li>同步问题：线程使用公共变量/内存时需要使用同步机制还是因为他们在同一个地址空间内。</li>
-</ul>
+<ol class="org-ol">
+<li>进程是程序的一次执行，线程是进程中的执行单元；</li>
+<li>进程间是独立的，这表现在内存空间、上下文环境上；线程运行在进程中，每个线程有自己的堆栈区；同一进程中的线程可共享进程的存储、io 资源，由操作系统进行调度。</li>
+</ol>
 </div>
+</div>
+
+<div id="outline-container-org9e62678" class="outline-2">
+<h2 id="org9e62678"><span class="section-number-2">3</span> 进程和线程的状态</h2>
 </div>
 
 <div id="outline-container-orgc8cb5ec" class="outline-2">
-<h2 id="orgc8cb5ec"><span class="section-number-2">3</span> 进程间通信方式</h2>
-<div class="outline-text-2" id="text-3">
+<h2 id="orgc8cb5ec"><span class="section-number-2">4</span> 进程间通信方式</h2>
+<div class="outline-text-2" id="text-4">
 </div>
 <div id="outline-container-org4339299" class="outline-3">
-<h3 id="org4339299"><span class="section-number-3">3.1</span> 管道</h3>
+<h3 id="org4339299"><span class="section-number-3">4.1</span> 管道</h3>
 </div>
 <div id="outline-container-org1282ede" class="outline-3">
-<h3 id="org1282ede"><span class="section-number-3">3.2</span> 信号</h3>
+<h3 id="org1282ede"><span class="section-number-3">4.2</span> 信号</h3>
 </div>
-<div id="outline-container-org0106544" class="outline-3">
-<h3 id="org0106544"><span class="section-number-3">3.3</span> 信号量</h3>
+<div id="outline-container-org3485bbb" class="outline-3">
+<h3 id="org3485bbb"><span class="section-number-3">4.3</span> 信号量</h3>
 </div>
 <div id="outline-container-orgbf25858" class="outline-3">
-<h3 id="orgbf25858"><span class="section-number-3">3.4</span> 消息队列</h3>
+<h3 id="orgbf25858"><span class="section-number-3">4.4</span> 消息队列</h3>
 </div>
 <div id="outline-container-org351d786" class="outline-3">
-<h3 id="org351d786"><span class="section-number-3">3.5</span> 共享内存</h3>
+<h3 id="org351d786"><span class="section-number-3">4.5</span> 共享内存</h3>
 </div>
 <div id="outline-container-org113127c" class="outline-3">
-<h3 id="org113127c"><span class="section-number-3">3.6</span> socket</h3>
+<h3 id="org113127c"><span class="section-number-3">4.6</span> socket</h3>
 </div>
 </div>
 
 <div id="outline-container-orge7174ab" class="outline-2">
-<h2 id="orge7174ab"><span class="section-number-2">4</span> 线程间通信方式</h2>
-<div class="outline-text-2" id="text-4">
+<h2 id="orge7174ab"><span class="section-number-2">5</span> 线程间通信方式</h2>
+<div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org3485bbb" class="outline-3">
-<h3 id="org3485bbb"><span class="section-number-3">4.1</span> 信号量</h3>
+<div id="outline-container-org0cd210e" class="outline-3">
+<h3 id="org0cd210e"><span class="section-number-3">5.1</span> 信号量</h3>
 </div>
 <div id="outline-container-org039fc81" class="outline-3">
-<h3 id="org039fc81"><span class="section-number-3">4.2</span> 互斥量</h3>
+<h3 id="org039fc81"><span class="section-number-3">5.2</span> 互斥量</h3>
 </div>
 <div id="outline-container-orgf2e17dd" class="outline-3">
-<h3 id="orgf2e17dd"><span class="section-number-3">4.3</span> 读写锁</h3>
+<h3 id="orgf2e17dd"><span class="section-number-3">5.3</span> 读写锁</h3>
 </div>
 <div id="outline-container-orgf1fbe62" class="outline-3">
-<h3 id="orgf1fbe62"><span class="section-number-3">4.4</span> 自旋锁</h3>
+<h3 id="orgf1fbe62"><span class="section-number-3">5.4</span> 自旋锁</h3>
 </div>
 <div id="outline-container-org10c56ae" class="outline-3">
-<h3 id="org10c56ae"><span class="section-number-3">4.5</span> 条件变量</h3>
+<h3 id="org10c56ae"><span class="section-number-3">5.5</span> 条件变量</h3>
 </div>
 <div id="outline-container-org2091a76" class="outline-3">
-<h3 id="org2091a76"><span class="section-number-3">4.6</span> 屏障</h3>
+<h3 id="org2091a76"><span class="section-number-3">5.6</span> 屏障</h3>
+</div>
+</div>
+
+<div id="outline-container-org58da48b" class="outline-2">
+<h2 id="org58da48b"><span class="section-number-2">6</span> 如何实现线程安全</h2>
+</div>
+
+<div id="outline-container-orgf958973" class="outline-2">
+<h2 id="orgf958973"><span class="section-number-2">7</span> 内存分配：</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>栈：系统自动分配。</li>
+<li>堆：手动申请。</li>
+<li>数据段：也叫静态存储区，初始化的全局变量和静态变量，初始化为 0。</li>
+<li>bss 段：未初始化的全局变量和静态变量。</li>
+<li>代码段：只读</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-org79efc0f" class="outline-2">
-<h2 id="org79efc0f"><span class="section-number-2">5</span> 如何系统调优</h2>
+<h2 id="org79efc0f"><span class="section-number-2">8</span> 如何系统调优</h2>
 </div>
 
 <div id="outline-container-org4b587c1" class="outline-2">
-<h2 id="org4b587c1"><span class="section-number-2">6</span> 死锁条件和如何避免</h2>
+<h2 id="org4b587c1"><span class="section-number-2">9</span> 死锁条件和如何避免</h2>
 </div>
 
 <div id="outline-container-org7a64391" class="outline-2">
-<h2 id="org7a64391"><span class="section-number-2">7</span> malloc 的底层实现。</h2>
+<h2 id="org7a64391"><span class="section-number-2">10</span> malloc 的底层实现。</h2>
 </div>
 
 <div id="outline-container-org32a0dae" class="outline-2">
-<h2 id="org32a0dae"><span class="section-number-2">8</span> deamon 进程如何实现。</h2>
+<h2 id="org32a0dae"><span class="section-number-2">11</span> deamon 进程如何实现。</h2>
+</div>
+
+<div id="outline-container-org211a56f" class="outline-2">
+<h2 id="org211a56f"><span class="section-number-2">12</span> 读写锁如何实现？</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-22 五 13:35</p>
+<p class="date">Created: 2020-06-08 一 17:18</p>
 <p class="validation"></p>
 </div>
 </body>

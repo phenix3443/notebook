@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-22 五 13:35 -->
+<!-- 2020-06-08 一 17:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>golang</title>
@@ -311,43 +311,141 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf7f3703">1. go 语言相优点</a></li>
-<li><a href="#org03caf93">2. 常用的功能模块</a></li>
-<li><a href="#orge628da4">3. 类型断言和类型转换的区别</a></li>
-<li><a href="#org7ce4624">4. context 包的用途</a></li>
-<li><a href="#org394bbbd">5. 实现 set</a></li>
-<li><a href="#org19488ff">6. 实现消息队列</a></li>
-<li><a href="#org3690bf8">7. 出程序时怎么防止 channel 没有消费完，怎么实现完美退出？</a></li>
-<li><a href="#org6937162">8. 实现生产者和消费者</a></li>
-<li><a href="#org5bc791d">9. 实现循环队列</a></li>
-<li><a href="#orgb9c9465">10. sync.mutex 是怎么实现的，用了什么底层指令？</a></li>
-<li><a href="#orgece2249">11. go 为什么高并发好？调度模型？</a></li>
-<li><a href="#orgba544b0">12. slice 、map 内部实现</a></li>
-<li><a href="#org6b07173">13. fmt.println 内部实现</a></li>
-<li><a href="#org333c1b4">14. goroutine 实现原理，用了什么系统调用，如何调度</a></li>
-<li><a href="#org8202474">15. go 的 runtime 是如何实现的？</a></li>
-<li><a href="#orgf4a4358">16. sync.Pool 有什么用处？</a></li>
-<li><a href="#org9b7325f">17. select 可以用于什么，常用语 gorotine 的完美退出</a></li>
+<li><a href="#org5c2c306">1. go 语言优点</a></li>
+<li><a href="#org5bdc67a">2. 基本结构和数据类型</a>
+<ul>
+<li><a href="#org03e9a46">2.1. <code>var a []int</code> 和 <code>a := []int{}</code> 是否有区别？在开发过程中使用哪个更好，为什么？</a></li>
+<li><a href="#orge628da4">2.2. 类型断言和类型转换的区别</a></li>
+<li><a href="#org8373241">2.3. 拼接字符串的方式</a></li>
+</ul>
+</li>
+<li><a href="#org268c628">3. 控制结构</a>
+<ul>
+<li><a href="#org8e8b20c">3.1. select 作用</a></li>
+</ul>
+</li>
+<li><a href="#org1cbb9b2">4. 函数</a>
+<ul>
+<li><a href="#orgcc1e2a0">4.1. 匿名函数，闭包</a></li>
+</ul>
+</li>
+<li><a href="#org80f2f5c">5. 数组与切片</a>
+<ul>
+<li><a href="#orgd4454a6">5.1. Go 中，如何复制切片内容？</a></li>
+<li><a href="#orgdce0e84">5.2. slice 内部实现</a></li>
+</ul>
+</li>
+<li><a href="#orgfdc3893">6. map</a>
+<ul>
+<li><a href="#orgde38c35">6.1. map 内部实现</a>
+<ul>
+<li><a href="#org8e953e7">6.1.1. get</a></li>
+<li><a href="#org6f53be5">6.1.2. 疑问</a></li>
+</ul>
+</li>
+<li><a href="#org8326c6b">6.2. 如何复制 map 内容？</a></li>
+</ul>
+</li>
+<li><a href="#org1fa8707">7. 包</a></li>
+<li><a href="#org4296c4b">8. 结构和方法</a>
+<ul>
+<li><a href="#org2ab0f83">8.1. 在 Go 语言中，如何比较结构体。</a></li>
+<li><a href="#orgaf0e581">8.2. 空结构体 （struct{}）使用场景。</a></li>
+</ul>
+</li>
+<li><a href="#org7b5f9b7">9. 接口</a>
+<ul>
+<li><a href="#org9386273">9.1. 如何比较接口</a></li>
+<li><a href="#orgb79749b">9.2. 如何复制接口内容？编程时会如何操作实现。</a></li>
+</ul>
+</li>
+<li><a href="#org9aee456">10. 错误处理</a></li>
+<li><a href="#orgac8f431">11. 协程（goroutine）</a>
+<ul>
+<li><a href="#orga2e3913">11.1. 什么是 goroutine，他与 process， thread 有什么区别？</a></li>
+<li><a href="#org8bf8d4b">11.2. 抢占式 goroutine 是什么意思</a></li>
+<li><a href="#org171eb4e">11.3. goroutine 实现、调度</a></li>
+</ul>
+</li>
+<li><a href="#orgcbb2648">12. 通道（channel）</a>
+<ul>
+<li><a href="#orgf20cc9c">12.1. 除了 mutex 意外还有那些方式安全读写共享变量？</a></li>
+<li><a href="#org1e8a137">12.2. 什么是 channel，为什么它可以做到线程安全</a></li>
+<li><a href="#orgb1aaebb">12.3. channel 是通过注册相关 groutine id 实现消息通知的。</a></li>
+<li><a href="#org71effe0">12.4. channel 关闭原则</a></li>
+<li><a href="#org496cdd1">12.5. channel 缓冲区是使用循环队列实现的。</a></li>
+<li><a href="#org5ddb6c1">12.6. 如何用 channel 实现一个令牌桶？</a></li>
+</ul>
+</li>
+<li><a href="#org159b377">13. fmt 系列函数内部实现</a></li>
+<li><a href="#orgf4a4358">14. sync.Pool 有什么用处？</a></li>
+<li><a href="#orgb9c9465">15. sync.mutex 是怎么实现的，用了什么底层指令？</a></li>
+<li><a href="#org7c36ea9">16. 垃圾回收</a>
+<ul>
+<li><a href="#orgadb83d4">16.1. 回收原理</a></li>
+<li><a href="#org20a0006">16.2. 失效情形</a></li>
+<li><a href="#org7167fed">16.3. 什么是小对象？为什么小对象多了会造成 gc 压力？</a></li>
+</ul>
+</li>
+<li><a href="#org7ce4624">17. context 包的用途</a></li>
+<li><a href="#org6937162">18. 实现生产者和消费者</a></li>
+<li><a href="#org8a5de2f">19. 常见的坑</a></li>
+<li><a href="#org136c291">20. netgo，cgo 有什么区别？</a></li>
+<li><a href="#org7a90fdf">21. 如何调试一个 go 程序？</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf7f3703" class="outline-2">
-<h2 id="orgf7f3703"><span class="section-number-2">1</span> go 语言相优点</h2>
+<div id="outline-container-org5c2c306" class="outline-2">
+<h2 id="org5c2c306"><span class="section-number-2">1</span> go 语言优点</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li>性能和 C++差不多，但是语言很简单，更容易上手开发。</li>
+<li>各种包比较丰富，而且有好用的包管理工具。</li>
+<li>并发非常容易上手。</li>
+<li>有垃圾回收机制。</li>
+<li>有比较稳定的生态系统，有很好用的开发工具链。</li>
+</ol>
+</div>
 </div>
 
-<div id="outline-container-org03caf93" class="outline-2">
-<h2 id="org03caf93"><span class="section-number-2">2</span> 常用的功能模块</h2>
+
+<div id="outline-container-org5bdc67a" class="outline-2">
+<h2 id="org5bdc67a"><span class="section-number-2">2</span> 基本结构和数据类型</h2>
 <div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org03e9a46" class="outline-3">
+<h3 id="org03e9a46"><span class="section-number-3">2.1</span> <code>var a []int</code> 和 <code>a := []int{}</code> 是否有区别？在开发过程中使用哪个更好，为什么？</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
-container， container list，container heap
+首先，从赋值形式来看，二者都可以用于声明变量，前者主要用于声明包级别的全局变量，后者主要用于函数体内部的声明和初始化局部变量。
 </p>
+
+<p>
+其次，最重要的区别是：
+</p>
+<ul class="org-ul">
+<li>前者没有只是声明了引用形式，没有分配内存。</li>
+<li><p>
+后者大括号初始化的形式声明内存。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #a1db00;">func</span> <span style="color: #ffd700;">TestSliceSpace</span>(<span style="color: #ff8700;">t</span> *<span style="color: #00d7af;">testing.T</span>) {
+    <span style="color: #a1db00;">var</span> <span style="color: #ff8700;">s1</span> []<span style="color: #00d7af;">int</span>
+    <span style="color: #ff8700;">s2</span> := []<span style="color: #00d7af;">int</span>{}
+    fmt.<span style="color: #ffd700;">Printf</span>(<span style="color: #ff4ea3;">"s1=%p,s2=%p\n"</span>, s1, s2) <span style="color: #6c6c6c; font-style: italic;">// </span><span style="color: #6c6c6c; font-style: italic;">s1=0x0,s2=0x1268f58</span>
+}
+</pre>
+</div></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orge628da4" class="outline-2">
-<h2 id="orge628da4"><span class="section-number-2">3</span> 类型断言和类型转换的区别</h2>
-<div class="outline-text-2" id="text-3">
+
+<div id="outline-container-orge628da4" class="outline-3">
+<h3 id="orge628da4"><span class="section-number-3">2.2</span> 类型断言和类型转换的区别</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
 类型断言是用来从一个接口里面读取数值给一个具体的类型变量。
 </p>
@@ -358,73 +456,25 @@ container， container list，container heap
 </div>
 </div>
 
-
-<div id="outline-container-org7ce4624" class="outline-2">
-<h2 id="org7ce4624"><span class="section-number-2">4</span> context 包的用途</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-Context 通常被译作上下文，它是一个比较抽象的概念，其本质，是【上下上下】存在上下层的传递，上会把内容传递给下。在 Go 语言中，程序单元也就指的是 Goroutine
-</p>
+<div id="outline-container-org8373241" class="outline-3">
+<h3 id="org8373241"><span class="section-number-3">2.3</span> 拼接字符串的方式</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>使用加号</li>
+<li>使用 strings.join</li>
+<li>使用 bytes.Buffer</li>
+</ul>
 </div>
-</div>
-
-<div id="outline-container-org394bbbd" class="outline-2">
-<h2 id="org394bbbd"><span class="section-number-2">5</span> 实现 set</h2>
-</div>
-
-<div id="outline-container-org19488ff" class="outline-2">
-<h2 id="org19488ff"><span class="section-number-2">6</span> 实现消息队列</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-切片加锁
-</p>
 </div>
 </div>
 
-<div id="outline-container-org3690bf8" class="outline-2">
-<h2 id="org3690bf8"><span class="section-number-2">7</span> 出程序时怎么防止 channel 没有消费完，怎么实现完美退出？</h2>
+<div id="outline-container-org268c628" class="outline-2">
+<h2 id="org268c628"><span class="section-number-2">3</span> 控制结构</h2>
+<div class="outline-text-2" id="text-3">
 </div>
-
-
-<div id="outline-container-org6937162" class="outline-2">
-<h2 id="org6937162"><span class="section-number-2">8</span> 实现生产者和消费者</h2>
-</div>
-
-<div id="outline-container-org5bc791d" class="outline-2">
-<h2 id="org5bc791d"><span class="section-number-2">9</span> 实现循环队列</h2>
-</div>
-
-<div id="outline-container-orgb9c9465" class="outline-2">
-<h2 id="orgb9c9465"><span class="section-number-2">10</span> sync.mutex 是怎么实现的，用了什么底层指令？</h2>
-</div>
-
-<div id="outline-container-orgece2249" class="outline-2">
-<h2 id="orgece2249"><span class="section-number-2">11</span> go 为什么高并发好？调度模型？</h2>
-</div>
-
-<div id="outline-container-orgba544b0" class="outline-2">
-<h2 id="orgba544b0"><span class="section-number-2">12</span> slice 、map 内部实现</h2>
-</div>
-
-<div id="outline-container-org6b07173" class="outline-2">
-<h2 id="org6b07173"><span class="section-number-2">13</span> fmt.println 内部实现</h2>
-</div>
-
-<div id="outline-container-org333c1b4" class="outline-2">
-<h2 id="org333c1b4"><span class="section-number-2">14</span> goroutine 实现原理，用了什么系统调用，如何调度</h2>
-</div>
-
-<div id="outline-container-org8202474" class="outline-2">
-<h2 id="org8202474"><span class="section-number-2">15</span> go 的 runtime 是如何实现的？</h2>
-</div>
-
-<div id="outline-container-orgf4a4358" class="outline-2">
-<h2 id="orgf4a4358"><span class="section-number-2">16</span> sync.Pool 有什么用处？</h2>
-</div>
-
-<div id="outline-container-org9b7325f" class="outline-2">
-<h2 id="org9b7325f"><span class="section-number-2">17</span> select 可以用于什么，常用语 gorotine 的完美退出</h2>
-<div class="outline-text-2" id="text-17">
+<div id="outline-container-org8e8b20c" class="outline-3">
+<h3 id="org8e8b20c"><span class="section-number-3">3.1</span> select 作用</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
 golang 的 select 就是监听 IO 操作，当 IO 操作发生时，触发相应的动作
 </p>
@@ -435,10 +485,309 @@ golang 的 select 就是监听 IO 操作，当 IO 操作发生时，触发相应
 </div>
 </div>
 </div>
+
+<div id="outline-container-org1cbb9b2" class="outline-2">
+<h2 id="org1cbb9b2"><span class="section-number-2">4</span> 函数</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgcc1e2a0" class="outline-3">
+<h3 id="orgcc1e2a0"><span class="section-number-3">4.1</span> 匿名函数，闭包</h3>
+</div>
+</div>
+
+<div id="outline-container-org80f2f5c" class="outline-2">
+<h2 id="org80f2f5c"><span class="section-number-2">5</span> 数组与切片</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgd4454a6" class="outline-3">
+<h3 id="orgd4454a6"><span class="section-number-3">5.1</span> Go 中，如何复制切片内容？</h3>
+</div>
+<div id="outline-container-orgdce0e84" class="outline-3">
+<h3 id="orgdce0e84"><span class="section-number-3">5.2</span> slice 内部实现</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Go 中切片扩容的策略是这样的：
+</p>
+<ul class="org-ul">
+<li>首先判断，如果新申请容量（cap）大于 2 倍的旧容量（old.cap），最终容量（newcap）就是新申请的容量（cap）</li>
+<li>否则判断，如果旧切片的长度小于 1024，则最终容量(newcap)就是旧容量(old.cap)的两倍，即（newcap=doublecap）</li>
+<li>否则判断，如果旧切片长度大于等于 1024，则最终容量（newcap）从旧容量（old.cap）开始循环增加原来的 1/4，即（newcap=old.cap,for {newcap += newcap/4}）直到最终容量（newcap）大于等于新申请的容量(cap)，即（newcap &gt;= cap）</li>
+<li>如果最终容量（cap）计算值溢出，则最终容量（cap）就是新申请容量（cap）</li>
+</ul>
+
+<p>
+注意：扩容扩大的容量都是针对原来的容量而言的，而不是针对原来数组的长度而言的。
+</p>
+
+<p>
+<a href="https://halfrost.com/go_slice/">https://halfrost.com/go_slice/</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfdc3893" class="outline-2">
+<h2 id="orgfdc3893"><span class="section-number-2">6</span> map</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgde38c35" class="outline-3">
+<h3 id="orgde38c35"><span class="section-number-3">6.1</span> map 内部实现</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+哈希表解决冲突一般要么是开放定址法，要么是再哈希法。Golang 采用的是第一种，但是实现上和教科书式的实现方式不同。
+</p>
+
+<p>
+map 的底层结构是 hmap（即 hashmap 的缩写），核心元素是一个由若干个桶（bucket，结构为 bmap）组成的数组，每个 bucket 可以存放若干元素（通常是 8 个），key 通过哈希算法被归入不同的 bucket 中。当超过 8 个元素需要存入某个 bucket 时，hmap 会使用 extra 中的 overflow 来拓展该 bucket。
+</p>
+
+<p>
+<a href="https://www.linkinstar.wiki/2019/06/03/golang/source-code/graphic-golang-map/">https://www.linkinstar.wiki/2019/06/03/golang/source-code/graphic-golang-map/</a>
+</p>
+</div>
+
+<div id="outline-container-org8e953e7" class="outline-4">
+<h4 id="org8e953e7"><span class="section-number-4">6.1.1</span> get</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<p>
+下面说明要点：
+</p>
+<ul class="org-ul">
+<li>计算出 key 的 hash</li>
+<li>用最后的“B”位来确定在哪个桶（“B”就是前面说的那个，B为 4，就有 16 个桶，0101 用十进制表示为 5，所以在 5 号桶）</li>
+<li>根据 key 的前 8 位快速确定是在哪个格子（额外说明一下，在 bmap 中存放了每个 key 对应的 tophash，是 key 的前 8 位）</li>
+<li>最终还是需要比对 key 完整的 hash 是否匹配，如果匹配则获取对应 value</li>
+<li>如果都没有找到，就去下一个 overflow 找</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6f53be5" class="outline-4">
+<h4 id="org6f53be5"><span class="section-number-4">6.1.2</span> 疑问</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<ul class="org-ul">
+<li><p>
+删除掉 map 中的元素是否会释放内存？
+</p>
+
+<p>
+不会，删除操作仅仅将对应的 tophash[i]设置为 empty，并非释放内存。若要释放内存只能等待指针无引用后被系统 gc。
+</p></li>
+
+<li><p>
+如何并发地使用 map？
+</p>
+
+<p>
+map 不是 goroutine 安全的，所以在有多个 gorountine 对 map 进行写操作是会 panic。多 gorountine 读写 map 是应加锁（RWMutex），或使用 sync.Map（1.9 新增，在下篇文章中会介绍这个东西，总之是不太推荐使用）。
+</p></li>
+
+<li><p>
+map 的 iterator 是否安全？
+</p>
+
+<p>
+map 的 delete 并非真的 delete，所以对迭代器是没有影响的，是安全的。
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8326c6b" class="outline-3">
+<h3 id="org8326c6b"><span class="section-number-3">6.2</span> 如何复制 map 内容？</h3>
+</div>
+</div>
+
+<div id="outline-container-org1fa8707" class="outline-2">
+<h2 id="org1fa8707"><span class="section-number-2">7</span> 包</h2>
+</div>
+
+<div id="outline-container-org4296c4b" class="outline-2">
+<h2 id="org4296c4b"><span class="section-number-2">8</span> 结构和方法</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org2ab0f83" class="outline-3">
+<h3 id="org2ab0f83"><span class="section-number-3">8.1</span> 在 Go 语言中，如何比较结构体。</h3>
+</div>
+
+<div id="outline-container-orgaf0e581" class="outline-3">
+<h3 id="orgaf0e581"><span class="section-number-3">8.2</span> 空结构体 （struct{}）使用场景。</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+空结构体不占用内存，所有孔结构体都返回固定的地址。可以用来：
+</p>
+<ul class="org-ul">
+<li>定义 set， set =make(map[int]struct{},100)</li>
+<li>定义 channel， c= make(chan struct{})</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7b5f9b7" class="outline-2">
+<h2 id="org7b5f9b7"><span class="section-number-2">9</span> 接口</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org9386273" class="outline-3">
+<h3 id="org9386273"><span class="section-number-3">9.1</span> 如何比较接口</h3>
+</div>
+<div id="outline-container-orgb79749b" class="outline-3">
+<h3 id="orgb79749b"><span class="section-number-3">9.2</span> 如何复制接口内容？编程时会如何操作实现。</h3>
+</div>
+</div>
+
+<div id="outline-container-org9aee456" class="outline-2">
+<h2 id="org9aee456"><span class="section-number-2">10</span> 错误处理</h2>
+</div>
+
+<div id="outline-container-orgac8f431" class="outline-2">
+<h2 id="orgac8f431"><span class="section-number-2">11</span> 协程（goroutine）</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-orga2e3913" class="outline-3">
+<h3 id="orga2e3913"><span class="section-number-3">11.1</span> 什么是 goroutine，他与 process， thread 有什么区别？</h3>
+</div>
+
+<div id="outline-container-org8bf8d4b" class="outline-3">
+<h3 id="org8bf8d4b"><span class="section-number-3">11.2</span> 抢占式 goroutine 是什么意思</h3>
+</div>
+
+<div id="outline-container-org171eb4e" class="outline-3">
+<h3 id="org171eb4e"><span class="section-number-3">11.3</span> goroutine 实现、调度</h3>
+<div class="outline-text-3" id="text-11-3">
+<p>
+<a href="https://wudaijun.com/2018/01/go-scheduler/">https://wudaijun.com/2018/01/go-scheduler/</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcbb2648" class="outline-2">
+<h2 id="orgcbb2648"><span class="section-number-2">12</span> 通道（channel）</h2>
+<div class="outline-text-2" id="text-12">
+</div>
+<div id="outline-container-orgf20cc9c" class="outline-3">
+<h3 id="orgf20cc9c"><span class="section-number-3">12.1</span> 除了 mutex 意外还有那些方式安全读写共享变量？</h3>
+</div>
+
+<div id="outline-container-org1e8a137" class="outline-3">
+<h3 id="org1e8a137"><span class="section-number-3">12.2</span> 什么是 channel，为什么它可以做到线程安全</h3>
+</div>
+
+<div id="outline-container-orgb1aaebb" class="outline-3">
+<h3 id="orgb1aaebb"><span class="section-number-3">12.3</span> channel 是通过注册相关 groutine id 实现消息通知的。</h3>
+</div>
+
+<div id="outline-container-org71effe0" class="outline-3">
+<h3 id="org71effe0"><span class="section-number-3">12.4</span> channel 关闭原则</h3>
+<div class="outline-text-3" id="text-12-4">
+<p>
+<a href="https://juejin.im/post/5ac9e62e5188255c272234e3">https://juejin.im/post/5ac9e62e5188255c272234e3</a>
+</p>
+
+<p>
+不要在消费端关闭 channel，不要在有多个并行的生产者时对 channel 执行关闭操作。
+</p>
+
+<p>
+也就是说应该只在[唯一的或者最后唯一剩下]的生产者协程中关闭 channel，来通知消费者已经没有值可以继续读了。只要坚持这个原则，就可以确保向一个已经关闭的 channel 发送数据的情况不可能发生。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org496cdd1" class="outline-3">
+<h3 id="org496cdd1"><span class="section-number-3">12.5</span> channel 缓冲区是使用循环队列实现的。</h3>
+</div>
+
+<div id="outline-container-org5ddb6c1" class="outline-3">
+<h3 id="org5ddb6c1"><span class="section-number-3">12.6</span> 如何用 channel 实现一个令牌桶？</h3>
+</div>
+</div>
+
+<div id="outline-container-org159b377" class="outline-2">
+<h2 id="org159b377"><span class="section-number-2">13</span> fmt 系列函数内部实现</h2>
+<div class="outline-text-2" id="text-13">
+<ol class="org-ol">
+<li>使用反射判断参数类型</li>
+<li>基础函数都实现了打印函数。</li>
+<li>未知类型看是否实现了 Formmater 接口</li>
+<li>字符串格式看是否实现了 Stringer 接口。</li>
+</ol>
+
+<p>
+介绍：<a href="https://cloud.tencent.com/developer/article/1399913">https://cloud.tencent.com/developer/article/1399913</a>
+</p>
+
+<p>
+代码注释：<a href="https://www.cnblogs.com/pluse/p/8031386.html">https://www.cnblogs.com/pluse/p/8031386.html</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf4a4358" class="outline-2">
+<h2 id="orgf4a4358"><span class="section-number-2">14</span> sync.Pool 有什么用处？</h2>
+</div>
+
+<div id="outline-container-orgb9c9465" class="outline-2">
+<h2 id="orgb9c9465"><span class="section-number-2">15</span> sync.mutex 是怎么实现的，用了什么底层指令？</h2>
+</div>
+
+<div id="outline-container-org7c36ea9" class="outline-2">
+<h2 id="org7c36ea9"><span class="section-number-2">16</span> 垃圾回收</h2>
+<div class="outline-text-2" id="text-16">
+</div>
+<div id="outline-container-orgadb83d4" class="outline-3">
+<h3 id="orgadb83d4"><span class="section-number-3">16.1</span> 回收原理</h3>
+</div>
+<div id="outline-container-org20a0006" class="outline-3">
+<h3 id="org20a0006"><span class="section-number-3">16.2</span> 失效情形</h3>
+</div>
+<div id="outline-container-org7167fed" class="outline-3">
+<h3 id="org7167fed"><span class="section-number-3">16.3</span> 什么是小对象？为什么小对象多了会造成 gc 压力？</h3>
+</div>
+</div>
+
+<div id="outline-container-org7ce4624" class="outline-2">
+<h2 id="org7ce4624"><span class="section-number-2">17</span> context 包的用途</h2>
+<div class="outline-text-2" id="text-17">
+<p>
+Context 通常被译作上下文，它是一个比较抽象的概念，其本质，是【上下上下】存在上下层的传递，上会把内容传递给下。在 Go 语言中，程序单元也就指的是 Goroutine
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6937162" class="outline-2">
+<h2 id="org6937162"><span class="section-number-2">18</span> 实现生产者和消费者</h2>
+</div>
+
+
+<div id="outline-container-org8a5de2f" class="outline-2">
+<h2 id="org8a5de2f"><span class="section-number-2">19</span> 常见的坑</h2>
+<div class="outline-text-2" id="text-19">
+<ul class="org-ul">
+<li>channel 一定要记得 close。</li>
+<li>goroutine 记得 return 或者中断。</li>
+<li>append slice 的时候要关注底层数组的变化。</li>
+<li><a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html">http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html</a></li>
+<li>for i,v :=range(slice) 中 v 是元素的复制。</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org136c291" class="outline-2">
+<h2 id="org136c291"><span class="section-number-2">20</span> netgo，cgo 有什么区别？</h2>
+</div>
+
+<div id="outline-container-org7a90fdf" class="outline-2">
+<h2 id="org7a90fdf"><span class="section-number-2">21</span> 如何调试一个 go 程序？</h2>
+</div>
+</div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-22 五 13:35</p>
+<p class="date">Created: 2020-06-08 一 17:18</p>
 <p class="validation"></p>
 </div>
 </body>

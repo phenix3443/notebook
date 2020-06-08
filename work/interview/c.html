@@ -6,7 +6,7 @@
 <!-- 2020-06-08 一 17:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NAT、STUN、TURN、COTURN、ICE</title>
+<title>C/C++</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,199 +306,76 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">NAT、STUN、TURN、COTURN、ICE</h1>
+<h1 class="title">C/C++</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org06a5591">1. NAT</a>
+<li><a href="#org0164a86">1. C</a>
 <ul>
-<li><a href="#orgb332847">1.1. NAT 模型</a></li>
-<li><a href="#org3819824">1.2. NAT 穿透方案</a></li>
+<li><a href="#org5334ef8">1.1. 定义一个宏，比较两个数 a、b 的大小，不能使用大于、小于、if 语句</a></li>
 </ul>
 </li>
-<li><a href="#org8ae3e40">2. STUN</a></li>
-<li><a href="#orge93645d">3. TURN</a></li>
-<li><a href="#org12189f3">4. 实现</a>
+<li><a href="#org99ce1af">2. C++</a>
 <ul>
-<li><a href="#org033c9bd">4.1. COTURN</a></li>
-<li><a href="#orgf3292b7">4.2. ICE</a></li>
+<li><a href="#orgbb3143f">2.1. 函数重载中 name mangle 具体过程</a></li>
+<li><a href="#org1606f05">2.2. auto_ptr 为什么不能作为容器的元素？</a></li>
+<li><a href="#org38eab57">2.3. 重载、覆盖、重写区别</a></li>
+<li><a href="#org9f29519">2.4. C++内存模型</a></li>
+<li><a href="#org5dc9b12">2.5. 实现字符串类</a>
+<ul>
+<li><a href="#orga5698f2">2.5.1. 容器底层实现方式</a></li>
+<li><a href="#orgfb96dec">2.5.2. 为什么 auto_ptr 不能放在容器中。</a></li>
 </ul>
 </li>
-<li><a href="#orgc08e839">5. FOOTNOTE</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org06a5591" class="outline-2">
-<h2 id="org06a5591"><span class="section-number-2">1</span> NAT</h2>
+<div id="outline-container-org0164a86" class="outline-2">
+<h2 id="org0164a86"><span class="section-number-2">1</span> C</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-NAT（Network Address Translation，网络地址转换） 是一种网络地址翻译技术，主要是将内部的私有 IP 地址（private IP）转换成可以在公网使用的公网 IP（public IP）。
-</p>
-
-
-<p>
-优点：
-</p>
-<ul class="org-ul">
-<li>解决公网 IP 地址不够的问题。</li>
-<li>屏蔽内网拓扑细节，提高内部网络的安全性。</li>
-</ul>
-
-<p>
-缺点：
-</p>
-<ul class="org-ul">
-<li>NAT 设备会对数据包进行编辑修改，降低了数据发送效率。</li>
-<li>有些协议不能通过 NAT 。</li>
-</ul>
 </div>
-
-<div id="outline-container-orgb332847" class="outline-3">
-<h3 id="orgb332847"><span class="section-number-3">1.1</span> NAT 模型</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>静态 NAT：私网 IP 和公网 IP 一一对应。</li>
-<li>NATP：端口多路复用技术。对外只有一个公网 IP，通过端口来区别不同私有 IP 主机的数据。我们通常说的 NAT 也是这种。
-<ul class="org-ul">
-<li>完全锥型（Full Cone NAT，后面简称 FC）
-<ul class="org-ul">
-<li>特点：IP 和（外部访问）端口都不受限。</li>
-<li>规则：将内部主机的套接字 A（IP_IN_A:PORT_IN_A）的监听、请求，映射到公网 IP 某个套接字 B（IP_OUT_B:PORT_OUT_B）。任意外部套接字与 NAT 公网套接字 B 的访问都将转发到内部主机的套接字 A 上。</li>
-</ul></li>
-<li>受限锥型
-<ul class="org-ul">
-<li>特点：IP 受限，（外部访问）端口不受限。</li>
-<li>规则：只有内部主机对外部 IP 发起过连接，然后外部主机才能和内部主机进行通信，但是外部主机的端口不做限制。</li>
-</ul></li>
-<li>端口受限锥形
-<ul class="org-ul">
-<li>特点：IP 和端口都受限。</li>
-<li>规则：只有内部主机对外部 IP 发起过连接，而且外部主机端口必须是之前连接时使用的端口，外部主机才能和内部主机进行通信，。</li>
-</ul></li>
-<li>对称型 NAT
-<ul class="org-ul">
-<li>特点：对每个外部主机或端口的会话都会映射为不同的端口</li>
-<li>规则：
-<ul class="org-ul">
-<li>只有有来自同一内部 IP:PORT、且针对同一目标 IP:PORT 的请求才被 NAT 转换至同一个公网（外部）IP:PORT。否则的话，NAT 将为之分配一个新的外部（公网）IP:PORT。(注意，这一条是对内部主机的限制)</li>
-<li>只有曾经收到过内部主机请求的外部主机才能向内部主机发送数据包。内部主机用同一 IP 与同一端口与外部多 IP 通信。</li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
-
-<p>
-所以要是位于 NAT 内部的主机之间进行通讯，在穿透的时候必需考虑面对的是何种路由类型。
-</p>
+<div id="outline-container-org5334ef8" class="outline-3">
+<h3 id="org5334ef8"><span class="section-number-3">1.1</span> 定义一个宏，比较两个数 a、b 的大小，不能使用大于、小于、if 语句</h3>
 </div>
 </div>
-
-<div id="outline-container-org3819824" class="outline-3">
-<h3 id="org3819824"><span class="section-number-3">1.2</span> NAT 穿透方案</h3>
-<div class="outline-text-3" id="text-1-2">
-<ul class="org-ul">
-<li>ALG 应用层网关识别技术</li>
-<li>探针技术 STUN 和 TURN</li>
-<li>中间件技术：UPNP</li>
-<li>中继代理技术</li>
-<li>特定协议的自穿越技术</li>
-<li>SBC 会话边界控制</li>
-<li>ICE 交互式连接建立</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8ae3e40" class="outline-2">
-<h2 id="org8ae3e40"><span class="section-number-2">2</span> STUN</h2>
+<div id="outline-container-org99ce1af" class="outline-2">
+<h2 id="org99ce1af"><span class="section-number-2">2</span> C++</h2>
 <div class="outline-text-2" id="text-2">
-<p>
-STUN (Simple Traversal of UDP Through NATs) 是一种网络协议，它允许位于 NAT（或多重 NAT）后的客户端找出自己的公网地址，查出自己位于哪种类型的 NAT 之后以及 NAT 为某一个本地端口所绑定的 Internet 端端口。这些信息被用来在两个同时处于 NAT 路由器之后的主机之间建立 UDP 通信。该协议由 RFC 5389 定义。
-</p>
-
-<p>
-STUN 由三部分组成：
-</p>
-<ul class="org-ul">
-<li>STUN 客户端；</li>
-<li>STUN 服务器端；</li>
-<li>NAT 路由器。</li>
-</ul>
-
-<p>
-STUN 服务端部署在一台有着两个公网 IP 的服务器上，大概的结构参考下图。STUN 客户端通过向服务器端发送不同的消息类型，根据服务器端不同的响应来做出相应的判断，一旦客户端得知了 Internet 端的 UDP 端口，通信就可以开始了。
-</p>
-
-<p>
-<a href="https://user-gold-cdn.xitu.io/2017/9/25/396acc21f1825c34bf7982cdfe3afa50?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">stun</a>
-</p>
 </div>
+<div id="outline-container-orgbb3143f" class="outline-3">
+<h3 id="orgbb3143f"><span class="section-number-3">2.1</span> 函数重载中 name mangle 具体过程</h3>
 </div>
-
-
-<div id="outline-container-orge93645d" class="outline-2">
-<h2 id="orge93645d"><span class="section-number-2">3</span> TURN</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-TURN (Traversal Using Relays around NAT:Relay Extensions to Session Traversal Utilities for NAT) 则是 STURN 的增强版，在无法使用 STURN 进行穿透时，通过中继的方式实现 P2P 互通。
-</p>
-
-<p>
-简单的说，TURN 与 STUN 的共同点都是通过修改应用层中的私网地址达到 NAT 穿透的效果，异同点是 TURN 是通过两方通讯的“中间人”方式实现穿透。
-</p>
+<div id="outline-container-org1606f05" class="outline-3">
+<h3 id="org1606f05"><span class="section-number-3">2.2</span> auto_ptr 为什么不能作为容器的元素？</h3>
 </div>
+<div id="outline-container-org38eab57" class="outline-3">
+<h3 id="org38eab57"><span class="section-number-3">2.3</span> 重载、覆盖、重写区别</h3>
 </div>
-
-<div id="outline-container-org12189f3" class="outline-2">
-<h2 id="org12189f3"><span class="section-number-2">4</span> 实现</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org033c9bd" class="outline-3">
-<h3 id="org033c9bd"><span class="section-number-3">4.1</span> COTURN</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org9f29519" class="outline-3">
+<h3 id="org9f29519"><span class="section-number-3">2.4</span> C++内存模型</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="HTML">
 <p>
-TURN 和 STUN Server 的免费开源实现。
-</p>
-</div>
-</div>
 
-<div id="outline-container-orgf3292b7" class="outline-3">
-<h3 id="orgf3292b7"><span class="section-number-3">4.2</span> ICE</h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-与 STUN 和 TURN 相比， ICE 并非是解决 NAT 穿透问题的协议，而是一个框架，在这个框架中，可以整合其他现存的 NAT 穿透协议，如 STUN、 TURN、 RSIP 等。
 </p>
 
-<p>
-区别于其他的 NAT 穿透解决方案， ICE 是一种探索和更新式的解决方案，通过搜集自身和对端尽可能多的网络信息（各种网络地址），尝试在这些地址间建立数据通道，并在这一过程中不断更新先前收集到的信息，从而找出和选择能够进行 NAT 穿透的数据通道。
-</p>
-
-<p>
-ICE 的过程主要分为 5 步：
-</p>
-
-<p>
-1, 收集候选传输地址
-2, 在信令通道中交换候选选项
-3, 执行连接检查
-4, 选择选定的对并启动媒体
-5, 心跳检测
-</p>
 </div>
 </div>
 </div>
-
-
-
-<div id="outline-container-orgc08e839" class="outline-2">
-<h2 id="orgc08e839"><span class="section-number-2">5</span> FOOTNOTE</h2>
-<div class="outline-text-2" id="text-5">
-<ul class="org-ul">
-<li><a href="https://juejin.im/entry/59c8d3695188256c4b726181">https://juejin.im/entry/59c8d3695188256c4b726181</a></li>
-<li><a href="http://www.52im.net/thread-50-1-1.html">http://www.52im.net/thread-50-1-1.html</a></li>
-</ul>
+<div id="outline-container-org5dc9b12" class="outline-3">
+<h3 id="org5dc9b12"><span class="section-number-3">2.5</span> 实现字符串类</h3>
+<div class="outline-text-3" id="text-2-5">
+</div>
+<div id="outline-container-orga5698f2" class="outline-4">
+<h4 id="orga5698f2"><span class="section-number-4">2.5.1</span> 容器底层实现方式</h4>
+</div>
+<div id="outline-container-orgfb96dec" class="outline-4">
+<h4 id="orgfb96dec"><span class="section-number-4">2.5.2</span> 为什么 auto_ptr 不能放在容器中。</h4>
+</div>
 </div>
 </div>
 </div>
