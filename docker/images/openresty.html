@@ -6,7 +6,7 @@
 <!-- 2020-07-07 二 12:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>synergy &amp; barrier</title>
+<title>openresty</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,53 +306,110 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">synergy &amp; barrier</h1>
+<h1 class="title">openresty</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga1f2f61">1. 概述</a></li>
-<li><a href="#org9018c09">2. 安装</a>
-<ul>
-<li><a href="#org6a4b18a">2.1. snap</a></li>
-<li><a href="#orgcce7802">2.2. windows &amp; mac</a></li>
-</ul>
-</li>
+<li><a href="#orgf505ded">1. 镜像</a></li>
+<li><a href="#orge35b6db">2. 使用</a></li>
+<li><a href="#org6967d59">3. 配置文件</a></li>
+<li><a href="#org568cf7d">4. LuaRocks</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga1f2f61" class="outline-2">
-<h2 id="orga1f2f61"><span class="section-number-2">1</span> 概述</h2>
+
+
+<div id="outline-container-orgf505ded" class="outline-2">
+<h2 id="orgf505ded"><span class="section-number-2">1</span> 镜像</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://symless.com/synergy">Synergy</a>可以让多个电脑共用一套鼠标和键盘。可运行在 windows、linux、和 macOS 上。<a href="https://github.com/debauchee/barrier">barrier</a> 是 synergy 的开源版本，推荐使用。
+<a href="https://hub.docker.com/r/openresty/openresty">openresty</a> 构建了两种镜像：
+</p>
+<ul class="org-ul">
+<li>从上游构建，这种构建基于特定系统的包管理系统以及对应的 openresty 源。</li>
+<li>从源码构建，包括依赖的第三方库。旨在用于更高级和自定义的用法。</li>
+</ul>
+
+
+<p>
+从 1.13.6.1 开始，发行版使用 <code>&lt;openresty-version&gt;-&lt;image-version&gt;-&lt;flavor&gt;</code> 进行标记。最新的镜像版本也被标记为 <code>&lt;openresty-version&gt;-&lt;flavor&gt;</code> 。 master 分支的 HEAD 也标明为 <code>&lt;flavor&gt;</code> 。内部版本由 Travis-CI 和 Appveyor 管理（适用于 Windows 镜像）。
+</p>
+
+<p>
+从 1.15.8.1 开始，对于不支持 SSE 4.2 的系统（例如，较旧的系统和嵌入式系统），还有 <code>-nosse42</code> 镜像。它们是使用 <code>-mno-sse4.2</code> 附加到构建参数 <code>RESTY_LUAJIT_OPTIONS</code> 来构建的。如果系统支持 SSE 4.2，则强烈建议不要使用这些选项，因为 CRC32 指令会大大提高大字符串的性能。这些仅适用于从源构建的镜像，例如 <code>1.15.8.1-3-bionic-nosse42、1.15.8.1-3-alpine-nosse42、1.15.8.1-3-alpine-fat-nosse42</code> 。
+</p>
+
+<p>
+强烈建议使用基于上游的镜像以获得最佳支持。为了获得最佳稳定性，请将镜像固定在完整标签上，例如 <code>1.15.8.1-3-bionic</code> 。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9018c09" class="outline-2">
-<h2 id="org9018c09"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-orge35b6db" class="outline-2">
+<h2 id="orge35b6db"><span class="section-number-2">2</span> 使用</h2>
 <div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org6a4b18a" class="outline-3">
-<h3 id="org6a4b18a"><span class="section-number-3">2.1</span> snap</h3>
-<div class="outline-text-3" id="text-2-1">
 <p>
-ubuntu 和 mint 可以通过此方法安装。
+docker-openresty 将 <code>/usr/local/openresty/nginx/logs/access.log</code> 和 <code>error.log</code> 分别软链接到了 <code>/dev/stdout</code>  和 <code>/dev/stderr</code> ，以便 docker logging 可以正常工作。如果更改 <code>nginx.conf</code> 中的日志路径，则也应该对这些路径进行符号链接。
+</p>
+
+<p>
+临时目录（例如 <code>client_body_temp_path</code> ）存储在 <code>/var/run/openresty/</code> 中。可以考虑挂载该卷，而不是写入容器本地目录。 Windows 尚未完成此操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6967d59" class="outline-2">
+<h2 id="org6967d59"><span class="section-number-2">3</span> 配置文件</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Docker 工具会安装自己的 nginx.conf 文件。如果要直接覆盖它，则可以在自己的 Dockerfile 或通过卷绑定安装替换它。
+</p>
+
+<p>
+对于 Linux 镜像， <code>nginx.conf</code> 中有指令 <code>include /etc/nginx/conf.d/*.conf;</code> ，因此将包含该目录中的所有 nginx 配置。默认虚拟主机配置具有原始的 OpenResty 配置，并已复制到 <code>/etc/nginx/conf.d/default.conf</code> 。
+</p>
+
+<p>
+可以直接覆盖 <code>default.conf</code> 或将 <code>/etc/nginx/conf.d</code> 目录绑定到自己的配置目录：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">docker run -v /my/custom/conf.d:/etc/nginx/conf.d openresty/openresty:alpine
+</pre>
+</div>
+
+<p>
+如果您在 selinux 主机（例如 CentOS）上运行，则可能需要在卷绑定参数添加 <code>:Z</code>
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">snap install barrier
+<pre class="src src-sh">docker run -v /my/custom/conf.d:/etc/nginx/conf.d:Z openresty/openresty:alpine
+</pre>
+</div>
+
+<p>
+使用 Windows 镜像时，您可以直接更改主要配置：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">docker run -v C:/my/custom/nginx.conf:C:/openresty/conf/nginx.conf openresty/openresty:windows
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcce7802" class="outline-3">
-<h3 id="orgcce7802"><span class="section-number-3">2.2</span> windows &amp; mac</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-org568cf7d" class="outline-2">
+<h2 id="org568cf7d"><span class="section-number-2">4</span> LuaRocks</h2>
+<div class="outline-text-2" id="text-4">
 <p>
-直接安装 release 下载包。
+在 alpine-fat，centos 和 xenial 变体中包含 LuaRocks。aipine 中没有是因为它通常需要构建系统，我们希望保持该变体的精简。
 </p>
+
+<p>
+它位于 <code>/usr/local/openresty/luajit/bin/luarocks</code> 。可以在依赖的 Dockerfiles 中添加包，如下所示：
+</p>
+<div class="org-src-container">
+<pre class="src src-dockerfile"><span style="color: #a1db00;">RUN</span> /usr/local/openresty/luajit/bin/luarocks install &lt;rock&gt;
+</pre>
 </div>
 </div>
 </div>

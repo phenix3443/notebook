@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 二 12:51 -->
+<!-- 2020-07-07 二 12:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>synergy &amp; barrier</title>
+<title>VPS 实践</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,61 +306,151 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">synergy &amp; barrier</h1>
+<h1 class="title">VPS 实践</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga1f2f61">1. 概述</a></li>
-<li><a href="#org9018c09">2. 安装</a>
+<li><a href="#org2fc13f2">1. vps 厂商</a>
 <ul>
-<li><a href="#org6a4b18a">2.1. snap</a></li>
-<li><a href="#orgcce7802">2.2. windows &amp; mac</a></li>
+<li><a href="#org8c5451d">1.1. vultr</a></li>
+<li><a href="#org7ba80a0">1.2. goolge cloud platform（GCP）</a></li>
 </ul>
 </li>
+<li><a href="#org70a5718">2. 一些有意思应用</a>
+<ul>
+<li><a href="#org29bf24f">2.1. 代理</a></li>
+<li><a href="#orgd2b6279">2.2. VPN</a></li>
+<li><a href="#orgdab03ec">2.3. GPS 跟踪</a></li>
+<li><a href="#orge5e373b">2.4. owncloud</a></li>
+</ul>
+</li>
+<li><a href="#orgaa86a83">3. 开启 bbr</a></li>
+<li><a href="#org409a398">4. 安装 shadowsocks</a></li>
+<li><a href="#org4d37e99">5. 安装 v2ray</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga1f2f61" class="outline-2">
-<h2 id="orga1f2f61"><span class="section-number-2">1</span> 概述</h2>
+
+<div id="outline-container-org2fc13f2" class="outline-2">
+<h2 id="org2fc13f2"><span class="section-number-2">1</span> vps 厂商</h2>
 <div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org8c5451d" class="outline-3">
+<h3 id="org8c5451d"><span class="section-number-3">1.1</span> vultr</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
-<a href="https://symless.com/synergy">Synergy</a>可以让多个电脑共用一套鼠标和键盘。可运行在 windows、linux、和 macOS 上。<a href="https://github.com/debauchee/barrier">barrier</a> 是 synergy 的开源版本，推荐使用。
+推荐使用 vultr 家的主机，使用我的<a href="http://www.vultr.com/?ref=6862956">推荐链接</a> 可以有优惠。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9018c09" class="outline-2">
-<h2 id="org9018c09"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-org7ba80a0" class="outline-3">
+<h3 id="org7ba80a0"><span class="section-number-3">1.2</span> goolge cloud platform（GCP）</h3>
+</div>
+</div>
+
+<div id="outline-container-org70a5718" class="outline-2">
+<h2 id="org70a5718"><span class="section-number-2">2</span> 一些有意思应用</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org6a4b18a" class="outline-3">
-<h3 id="org6a4b18a"><span class="section-number-3">2.1</span> snap</h3>
+<div id="outline-container-org29bf24f" class="outline-3">
+<h3 id="org29bf24f"><span class="section-number-3">2.1</span> 代理</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-ubuntu 和 mint 可以通过此方法安装。
+使用 shadowsocks 或者 v2ray 搭建代理。
 </p>
-<div class="org-src-container">
-<pre class="src src-sh">snap install barrier
-</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd2b6279" class="outline-3">
+<h3 id="orgd2b6279"><span class="section-number-3">2.2</span> VPN</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+搭建 vpn。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdab03ec" class="outline-3">
+<h3 id="orgdab03ec"><span class="section-number-3">2.3</span> GPS 跟踪</h3>
+</div>
+
+<div id="outline-container-orge5e373b" class="outline-3">
+<h3 id="orge5e373b"><span class="section-number-3">2.4</span> owncloud</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+搭建自己的网络存储。
+</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcce7802" class="outline-3">
-<h3 id="orgcce7802"><span class="section-number-3">2.2</span> windows &amp; mac</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgaa86a83" class="outline-2">
+<h2 id="orgaa86a83"><span class="section-number-2">3</span> 开启 bbr</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-sh">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh &amp;&amp; chmod +x bbr.sh &amp;&amp; sudo ./bbr.sh
+</pre>
+</div>
+
+<pre class="example">
+sysctl net.ipv4.tcp_available_congestion_control
+</pre>
+
 <p>
-直接安装 release 下载包。
+返回值一般为：
+</p>
+<pre class="example">
+net.ipv4.tcp_available_congestion_control = reno cubic bbr
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-sh">sysctl net.ipv4.tcp_congestion_control
+</pre>
+</div>
+
+<p>
+返回值一般为：
+</p>
+<pre class="example">
+net.ipv4.tcp_congestion_control = bbr
+</pre>
+
+
+<pre class="example">
+sysctl net.core.default_qdisc
+</pre>
+
+<p>
+返回值一般为：
+</p>
+<pre class="example">
+net.core.default_qdisc = fq
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-sh">lsmod | grep bbr
+</pre>
+</div>
+<p>
+返回值有 tcp_bbr 模块即说明 bbr 已启动。
 </p>
 </div>
 </div>
+
+<div id="outline-container-org409a398" class="outline-2">
+<h2 id="org409a398"><span class="section-number-2">4</span> 安装 shadowsocks</h2>
+</div>
+
+<div id="outline-container-org4d37e99" class="outline-2">
+<h2 id="org4d37e99"><span class="section-number-2">5</span> 安装 v2ray</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-07-07 二 12:51</p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2020-07-07 二 12:50</p>
 <p class="validation"></p>
 </div>
 </body>

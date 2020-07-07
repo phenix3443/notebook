@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-08 一 17:19 -->
+<!-- 2020-07-07 二 12:52 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>算法训练营</title>
@@ -348,6 +348,7 @@ for the JavaScript code in this tag.
 <li><a href="#org556979c">5.3. 239 滑动窗口最大值</a></li>
 <li><a href="#orgbecfadf">5.4. 641 设计循环双端队列</a></li>
 <li><a href="#org0943967">5.5. 84 柱状图形中最大的矩形</a></li>
+<li><a href="#org0faef3c">5.6. 42-接雨水</a></li>
 </ul>
 </li>
 <li><a href="#org0e6c16a">6. 第五课 哈希表、映射、集合</a>
@@ -360,9 +361,10 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgdadf6aa">7.1. 94 二叉树的中序遍历</a></li>
 <li><a href="#orgf3996c0">7.2. 144 二叉树的前序遍历</a></li>
-<li><a href="#org902d2ed">7.3. 589 N叉树的前序遍历</a></li>
-<li><a href="#org4d42c21">7.4. 590 N叉树的后序遍历</a></li>
-<li><a href="#orgb8f1756">7.5. 树总结</a></li>
+<li><a href="#org992edeb">7.3. 145-二叉树的后续遍历</a></li>
+<li><a href="#org902d2ed">7.4. 589 N叉树的前序遍历</a></li>
+<li><a href="#org4d42c21">7.5. 590 N叉树的后序遍历</a></li>
+<li><a href="#orgb8f1756">7.6. 树总结</a></li>
 </ul>
 </li>
 <li><a href="#orgc104a07">8. 第七课 堆、二叉堆、图</a>
@@ -371,7 +373,7 @@ for the JavaScript code in this tag.
 <li><a href="#org8af504b">8.2. 215 数组中的第k个最大元素</a></li>
 <li><a href="#org9fbb602">8.3. 347 前k个高频元素</a></li>
 <li><a href="#orgbb99a51">8.4. 239 滑动窗口的最大值</a></li>
-<li><a href="#orgca75d93">8.5. 49 丑数</a></li>
+<li><a href="#orgb81fdc6">8.5. 264 丑数</a></li>
 </ul>
 </li>
 <li><a href="#org70b85e5">9. 第七课 泛型递归、树的递归（recursion）</a>
@@ -382,8 +384,8 @@ for the JavaScript code in this tag.
 <li><a href="#orgefa8a60">9.4. 二叉树的遍历</a></li>
 <li><a href="#org42efc1b">9.5. 226 翻转二叉树</a></li>
 <li><a href="#orge5564cb">9.6. 101 对称二叉树</a></li>
-<li><a href="#orga7ffd0f">9.7. 108-将有序数组转换为二叉搜索树</a></li>
-<li><a href="#org2a72231">9.8. 110 平衡二叉树</a></li>
+<li><a href="#org2a72231">9.7. 110 平衡二叉树</a></li>
+<li><a href="#orga7ffd0f">9.8. 108-将有序数组转换为二叉搜索树</a></li>
 <li><a href="#orgbe30a36">9.9. 51 N皇后</a></li>
 </ul>
 </li>
@@ -397,14 +399,16 @@ for the JavaScript code in this tag.
 <li><a href="#orgeae341c">10.6. 51-N皇后</a></li>
 </ul>
 </li>
-<li><a href="#org2b5c76f">11. 第九课 深度优先和广度优先</a></li>
-<li><a href="#org2717da5">12. 第十课 贪心算法</a></li>
-<li><a href="#org34f8f56">13. 第十一课 二分查找</a></li>
-<li><a href="#org5eb578f">14. 动态规划</a>
+<li><a href="#org2b5c76f">11. 第九课 深度优先和广度优先</a>
 <ul>
-<li><a href="#orgbe9e4a6">14.1. 动态规划（DP） vs 回溯 vs 贪心</a></li>
+<li><a href="#orgd097d76">11.1. DFS（深度遍历）</a></li>
+<li><a href="#orgc8e6aa6">11.2. BFS（广度遍历）</a></li>
+<li><a href="#orga9955c9">11.3. 二叉树的层序遍历</a></li>
 </ul>
 </li>
+<li><a href="#org2717da5">12. 第十课 贪心算法</a></li>
+<li><a href="#org34f8f56">13. 第十一课 二分查找</a></li>
+<li><a href="#org8ebe299">14. 第十二课 动态规划</a></li>
 </ul>
 </div>
 </div>
@@ -578,6 +582,7 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 </ul>
 </div>
 </div>
+
 
 <div id="outline-container-org8498cfc" class="outline-3">
 <h3 id="org8498cfc"><span class="section-number-3">4.2</span> <a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">26 删除数组中的重复项</a></h3>
@@ -776,14 +781,13 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 考察如下内容：
 </p>
 <ul class="org-ul">
-<li>链表指针的基本操作，一般需要 preHead 指针，该指针是 null 还是 node，取决于是否需要更改前面节点的 next。</li>
+<li>链表指针的基本操作，一般需要 preHead 指针，该指针是 null 还是 node，取决于是否需要更改前面节点的 next。要明确 pre 指针代表的含义。</li>
 <li>单链表特性：只能单向访问。所以如果要 O(n)遍历，需要双指针。</li>
 <li>单链表只能单向访问，所以一般使用双指针、栈、递归来辅助遍历。</li>
 </ul>
 </div>
 </div>
 </div>
-
 
 <div id="outline-container-org9b017be" class="outline-2">
 <h2 id="org9b017be"><span class="section-number-2">5</span> 第四课 栈、队列、优先队列、双端队列</h2>
@@ -833,6 +837,15 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 </ul>
 </div>
 </div>
+
+<div id="outline-container-org0faef3c" class="outline-3">
+<h3 id="org0faef3c"><span class="section-number-3">5.6</span> <a href="https://leetcode-cn.com/problems/trapping-rain-water/">42-接雨水</a></h3>
+<div class="outline-text-3" id="text-5-6">
+<ul class="org-ul">
+<li>考察点：单调栈</li>
+</ul>
+</div>
+</div>
 </div>
 
 <div id="outline-container-org0e6c16a" class="outline-2">
@@ -879,16 +892,19 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 </ul>
 </div>
 </div>
-<div id="outline-container-org902d2ed" class="outline-3">
-<h3 id="org902d2ed"><span class="section-number-3">7.3</span> <a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/description/">589 N叉树的前序遍历</a></h3>
+
+<div id="outline-container-org992edeb" class="outline-3">
+<h3 id="org992edeb"><span class="section-number-3">7.3</span> <a href="https://leetcode-cn.com/problems/binary-tree-postorder-traversal/">145-二叉树的后续遍历</a></h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>考察点：递归</li>
+<li>堆栈</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org4d42c21" class="outline-3">
-<h3 id="org4d42c21"><span class="section-number-3">7.4</span> <a href="https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/">590 N叉树的后序遍历</a></h3>
+
+<div id="outline-container-org902d2ed" class="outline-3">
+<h3 id="org902d2ed"><span class="section-number-3">7.4</span> <a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/description/">589 N叉树的前序遍历</a></h3>
 <div class="outline-text-3" id="text-7-4">
 <ul class="org-ul">
 <li>考察点：递归</li>
@@ -896,9 +912,18 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 </div>
 </div>
 
-<div id="outline-container-orgb8f1756" class="outline-3">
-<h3 id="orgb8f1756"><span class="section-number-3">7.5</span> 树总结</h3>
+<div id="outline-container-org4d42c21" class="outline-3">
+<h3 id="org4d42c21"><span class="section-number-3">7.5</span> <a href="https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/">590 N叉树的后序遍历</a></h3>
 <div class="outline-text-3" id="text-7-5">
+<ul class="org-ul">
+<li>考察点：递归</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb8f1756" class="outline-3">
+<h3 id="orgb8f1756"><span class="section-number-3">7.6</span> 树总结</h3>
+<div class="outline-text-3" id="text-7-6">
 <ul class="org-ul">
 <li>树是链表的二维化，所以链表的一些操作技巧可以用在树上。</li>
 </ul>
@@ -962,11 +987,11 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 </div>
 </div>
 
-<div id="outline-container-orgca75d93" class="outline-3">
-<h3 id="orgca75d93"><span class="section-number-3">8.5</span> <a href="https://leetcode-cn.com/problems/chou-shu-lcof/">49 丑数</a></h3>
+<div id="outline-container-orgb81fdc6" class="outline-3">
+<h3 id="orgb81fdc6"><span class="section-number-3">8.5</span> <a href="https://leetcode-cn.com/problems/ugly-number-ii/">264 丑数</a></h3>
 <div class="outline-text-3" id="text-8-5">
 <ul class="org-ul">
-<li>考察点：</li>
+<li>考察点：使用最小堆</li>
 </ul>
 </div>
 </div>
@@ -1054,19 +1079,14 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 
 <div id="outline-container-orge5564cb" class="outline-3">
 <h3 id="orge5564cb"><span class="section-number-3">9.6</span> <a href="https://leetcode-cn.com/problems/symmetric-tree/">101 对称二叉树</a></h3>
-<div class="outline-text-3" id="text-9-6">
-<p>
-解法：<a href="https://leetcode-cn.com/problems/symmetric-tree/solution/jie-shi-de-hen-ming-bai-de-di-gui-jie-fa-by-pang-h/">https://leetcode-cn.com/problems/symmetric-tree/solution/jie-shi-de-hen-ming-bai-de-di-gui-jie-fa-by-pang-h/</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga7ffd0f" class="outline-3">
-<h3 id="orga7ffd0f"><span class="section-number-3">9.7</span> <a href="https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/">108-将有序数组转换为二叉搜索树</a></h3>
 </div>
 
 <div id="outline-container-org2a72231" class="outline-3">
-<h3 id="org2a72231"><span class="section-number-3">9.8</span> <a href="https://leetcode-cn.com/problems/balanced-binary-tree/">110 平衡二叉树</a></h3>
+<h3 id="org2a72231"><span class="section-number-3">9.7</span> <a href="https://leetcode-cn.com/problems/balanced-binary-tree/">110 平衡二叉树</a></h3>
+</div>
+
+<div id="outline-container-orga7ffd0f" class="outline-3">
+<h3 id="orga7ffd0f"><span class="section-number-3">9.8</span> <a href="https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/">108-将有序数组转换为二叉搜索树</a></h3>
 </div>
 
 <div id="outline-container-orgbe30a36" class="outline-3">
@@ -1121,6 +1141,51 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 
 <div id="outline-container-org2b5c76f" class="outline-2">
 <h2 id="org2b5c76f"><span class="section-number-2">11</span> 第九课 深度优先和广度优先</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-orgd097d76" class="outline-3">
+<h3 id="orgd097d76"><span class="section-number-3">11.1</span> DFS（深度遍历）</h3>
+<div class="outline-text-3" id="text-11-1">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #a1db00;">def</span> <span style="color: #ffd700;">DFS</span>(node,visited):
+    <span style="color: #a1db00;">if</span> node <span style="color: #a1db00;">in</span> visited:
+        <span style="color: #a1db00;">return</span>
+
+    visited.add(node)
+
+    <span style="color: #a1db00;">for</span> next_node <span style="color: #a1db00;">in</span> node.children():
+        <span style="color: #a1db00;">if</span> <span style="color: #a1db00;">not</span> next_node <span style="color: #a1db00;">in</span> visited:
+            dfs(next_node,visited)
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc8e6aa6" class="outline-3">
+<h3 id="orgc8e6aa6"><span class="section-number-3">11.2</span> BFS（广度遍历）</h3>
+<div class="outline-text-3" id="text-11-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #a1db00;">def</span> <span style="color: #ffd700;">BFS</span>(root):
+    <span style="color: #c6c6c6; background-color: #303030;">queue</span> = []
+    queue.append(root)
+
+    <span style="color: #a1db00;">while</span> queue:
+        <span style="color: #c6c6c6; background-color: #303030;">node</span> = queue.pop()
+
+        process(node)
+
+        <span style="color: #c6c6c6; background-color: #303030;">nodes</span> = generate_related_nodes(node)
+
+        queue.push(nodes)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga9955c9" class="outline-3">
+<h3 id="orga9955c9"><span class="section-number-3">11.3</span> <a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/">二叉树的层序遍历</a></h3>
+</div>
 </div>
 
 <div id="outline-container-org2717da5" class="outline-2">
@@ -1131,45 +1196,14 @@ redis 为什么使用跳表 而不是红黑树（知乎）？
 <h2 id="org34f8f56"><span class="section-number-2">13</span> 第十一课 二分查找</h2>
 </div>
 
-<div id="outline-container-org5eb578f" class="outline-2">
-<h2 id="org5eb578f"><span class="section-number-2">14</span> 动态规划</h2>
-<div class="outline-text-2" id="text-14">
-<p>
-四点：
-</p>
-<ol class="org-ol">
-<li>递归+记忆化-&gt;递推</li>
-<li>状态定义：数组每个维度都是都是一个变量条件。</li>
-<li>状态转义方程，边界条件。</li>
-<li>最优子结构</li>
-</ol>
-
-<p>
-DP 优化：
-</p>
-<ol class="org-ol">
-<li>剪枝</li>
-<li>滚动数组</li>
-<li>单一滚动数组</li>
-</ol>
-</div>
-
-<div id="outline-container-orgbe9e4a6" class="outline-3">
-<h3 id="orgbe9e4a6"><span class="section-number-3">14.1</span> 动态规划（DP） vs 回溯 vs 贪心</h3>
-<div class="outline-text-3" id="text-14-1">
-<ul class="org-ul">
-<li>回溯（递归）是一种自顶向下的思维方式，弊端是计算过程中可能有重复计算，导致时间复杂度为指数级别。</li>
-<li>贪心-永远局部最优</li>
-<li>动态规划，正好与递归相反，是一种自底向上的思维方式，在计算过程中，通过最优子问题</li>
-</ul>
-</div>
-</div>
+<div id="outline-container-org8ebe299" class="outline-2">
+<h2 id="org8ebe299"><span class="section-number-2">14</span> 第十二课 动态规划</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-06-08 一 17:19</p>
+<p class="date">Created: 2020-07-07 二 12:52</p>
 <p class="validation"></p>
 </div>
 </body>

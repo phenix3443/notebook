@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:52 -->
+<!-- 2020-07-07 二 12:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ShadowSocks</title>
+<title>Shadowsocks</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="刘尚亮" />
 <style type="text/css">
@@ -306,34 +306,27 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">ShadowSocks</h1>
+<h1 class="title">Shadowsocks</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgba3a4f9">1. 简介</a></li>
 <li><a href="#org9142f8d">2. 安装</a></li>
-<li><a href="#org9ba4150">3. ss-server</a></li>
-<li><a href="#orgc501634">4. ss-local</a></li>
+<li><a href="#org4519f2b">3. ss-server</a></li>
+<li><a href="#org5ef2032">4. ss-local</a></li>
 <li><a href="#orgec9fffa">5. 基本配置</a></li>
 <li><a href="#org6581188">6. 开机自启动</a>
 <ul>
-<li><a href="#org4519f2b">6.1. ss-server</a></li>
-<li><a href="#org5ef2032">6.2. ss-local</a></li>
+<li><a href="#org43b012e">6.1. ss-server</a></li>
+<li><a href="#orged29575">6.2. ss-local</a></li>
 </ul>
 </li>
-<li><a href="#org7c96a9f">7. 优化</a>
-<ul>
-<li><a href="#orgc2ac0ed">7.1. 内核 TCP 优化</a></li>
-<li><a href="#org98c941d">7.2. bbr</a></li>
-</ul>
-</li>
+<li><a href="#org1460634">7. 多用户</a></li>
+<li><a href="#org7c96a9f">8. 优化</a></li>
 </ul>
 </div>
 </div>
-<p>
-当然，首先你需要有一台 VPS，参看《<a href="VPS-practices.html">VPS 实践</a>》。
-</p>
 
 <div id="outline-container-orgba3a4f9" class="outline-2">
 <h2 id="orgba3a4f9"><span class="section-number-2">1</span> 简介</h2>
@@ -346,10 +339,41 @@ for the JavaScript code in this tag.
 ShadowSocks 主要由三个模块组成:
 </p>
 <ul class="org-ul">
-<li>ss-local：工作在本地的命令行客户端。</li>
-<li>ss-redirect:</li>
-<li>ss-server：工作在远程主机上的服务器端。</li>
+<li>ss-server：服务端。</li>
+<li>ss-local：客户端，主要提供 sock5 代理。在 Linux 上，可以使用 ss-local + privoxy，来间接使用 ss-local 提供的 socks5 代理。privoxy 有一个 socks5 转发功能，也就是说，我们只要将 privoxy 当做普通 http 代理来使用就好了，它会自动使用 socks5 协议与后端的 ss-local 进行通信。</li>
+<li><p>
+ss-redirect:shadowsocks-libev 提供的 socks5 透明代理工具。<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+</p>
+
+<p>
+正向代理 正向代理，即平常我们所说的代理，比如 http 代理、socks5 代理等，都属于正向代理。 正向代理的特点就是：如果需要使用正向代理访问互联网，就必须在客户端进行相应的代理设置。
+</p>
+
+<p>
+透明代理 透明代理和正向代理的作用是一样的，都是为了突破某些网络限制，访问网络资源。 但是透明代理对于客户端是透明的，客户端不需要进行相应的代理设置，就能使用透明代理访问互联网。
+</p>
+
+<p>
+反向代理 当然，这个不在本文的讨论范畴之内，不过既然提到了前两种代理，就顺便说说反向代理。 反向代理是针对服务端来说的，它的目的不是为了让我们突破互联网限制，而是为了实现负载均衡。
+</p>
+
+<p>
+举个栗子： ss-local，提供 socks5 正向代理，我们必须通过专业的代理软件来配置，才能使用它，不然是不会经过代理的； ss-redir，提供 socks5 透明代理，我们只要配置了适当的 iptables 规则，就可以不修改任何软件设置使用它。
+</p></li>
+
+<li><p>
+ss-tunnel
+</p>
+
+<p>
+shadowsocks-libev 提供的本地端口转发工具，通常用于解决 dns 污染问题。
+</p>
+
+<p>
+假设 ss-tunnel 监听本地端口 53，转发的远程目的地为 8.8.8.8:53；系统 dns 为 127.0.0.1。 去程：上层应用请求 dns 解析 -&gt; ss-tunnel 接收 -&gt; ss 隧道 -&gt; ss-server 接收 -&gt; 8.8.8.8:53； 回程：8.8.8.8:53 响应 dns 请求 -&gt; ss-server 接收 -&gt; ss 隧道 -&gt; ss-tunnel 接收 -&gt; 上层应用。
+</p></li>
 </ul>
+
 
 <p>
 传输的时候，本地网络客户端首先使用 SOCKS5 连接到 ss-local，这里面的流量传输都是明文的，然后 ss-local 将流量打包传输到 ss-server 上，这里的流量是加密的，然后 ss-server 解码 SOCKS5 数据包，访问目的服务器。
@@ -366,12 +390,21 @@ ShadowSocks 主要由三个模块组成:
 </div>
 </div>
 </div>
-<div id="outline-container-org9ba4150" class="outline-2">
-<h2 id="org9ba4150"><span class="section-number-2">3</span> ss-server</h2>
+
+<div id="outline-container-org4519f2b" class="outline-2">
+<h2 id="org4519f2b"><span class="section-number-2">3</span> ss-server</h2>
 </div>
-<div id="outline-container-orgc501634" class="outline-2">
-<h2 id="orgc501634"><span class="section-number-2">4</span> ss-local</h2>
+
+<div id="outline-container-org5ef2032" class="outline-2">
+<h2 id="org5ef2032"><span class="section-number-2">4</span> ss-local</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-sh">ss-local -s &lt;server-ip&gt; -p 443 -l 1080 -k &lt;passwd&gt; -m chacha20-ietf-poly1305 --fastopen
+</pre>
 </div>
+</div>
+</div>
+
 <div id="outline-container-orgec9fffa" class="outline-2">
 <h2 id="orgec9fffa"><span class="section-number-2">5</span> 基本配置</h2>
 <div class="outline-text-2" id="text-5">
@@ -380,7 +413,7 @@ ss-server 与 ss-local 配置文件是 json 格式的，默认名字是 config.j
 </p>
 <div class="org-src-container">
 <pre class="src src-json">{
-    <span style="color: #a1db00;">"server"</span>:<span style="color: #ff4ea3;">"server-ip"</span>,
+    <span style="color: #a1db00;">"server"</span>:<span style="color: #ff4ea3;">"server-ip"</span>,       // &#26381;&#21153;&#31471;&#21487;&#20889;<span style="color: #5fafd7;">0.0</span>.<span style="color: #5fafd7;">0.0</span>
     <span style="color: #a1db00;">"server_port"</span>:<span style="color: #5fafd7;">443</span>,
     <span style="color: #a1db00;">"local_address"</span>:<span style="color: #ff4ea3;">"127.0.0.1"</span>,
     <span style="color: #a1db00;">"local_port"</span>:<span style="color: #5fafd7;">1080</span>,
@@ -458,8 +491,8 @@ ss-server 与 ss-local 配置文件是 json 格式的，默认名字是 config.j
 使用 systemd 控制启动：
 </p>
 </div>
-<div id="outline-container-org4519f2b" class="outline-3">
-<h3 id="org4519f2b"><span class="section-number-3">6.1</span> ss-server</h3>
+<div id="outline-container-org43b012e" class="outline-3">
+<h3 id="org43b012e"><span class="section-number-3">6.1</span> ss-server</h3>
 <div class="outline-text-3" id="text-6-1">
 <pre class="example">
     [Unit]
@@ -491,8 +524,8 @@ systemctl status ss-server.service
 </div>
 </div>
 </div>
-<div id="outline-container-org5ef2032" class="outline-3">
-<h3 id="org5ef2032"><span class="section-number-3">6.2</span> ss-local</h3>
+<div id="outline-container-orged29575" class="outline-3">
+<h3 id="orged29575"><span class="section-number-3">6.2</span> ss-local</h3>
 <div class="outline-text-3" id="text-6-2">
 <pre class="example">
     [Unit]
@@ -521,101 +554,40 @@ systemctl status ss-local.service
 </div>
 </div>
 </div>
-
-<div id="outline-container-org7c96a9f" class="outline-2">
-<h2 id="org7c96a9f"><span class="section-number-2">7</span> 优化<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div id="outline-container-org1460634" class="outline-2">
+<h2 id="org1460634"><span class="section-number-2">7</span> 多用户</h2>
 <div class="outline-text-2" id="text-7">
-</div>
-<div id="outline-container-orgc2ac0ed" class="outline-3">
-<h3 id="orgc2ac0ed"><span class="section-number-3">7.1</span> 内核 TCP 优化</h3>
-<div class="outline-text-3" id="text-7-1">
 <p>
-如果出现
-</p>
-<pre class="example">
-   error: too many open files
-</pre>
-
-<p>
-那么应该对系统做一些优化:
-</p>
-<div class="HTML">
-<p>
-&lt;script src="<a href="https://gist.github.com/phenix3443/89ad4733748e8925ac1d2d1f2a1d1301.js">https://gist.github.com/phenix3443/89ad4733748e8925ac1d2d1f2a1d1301.js</a>"&gt;&lt;/script&gt;
-</p>
-
-</div>
-
-<p>
-应用更新：
+当前，Python 和 Go 服务器支持多个用户。可以在不同的端口上使用不同的密码，如下所示：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">sysctl --system
+<pre class="src src-json">{
+    <span style="color: #a1db00;">"server"</span>: <span style="color: #ff4ea3;">"0.0.0.0"</span>,
+    <span style="color: #a1db00;">"port_password"</span>: {
+        <span style="color: #a1db00;">"8381"</span>: <span style="color: #ff4ea3;">"foobar1"</span>,
+        <span style="color: #a1db00;">"8382"</span>: <span style="color: #ff4ea3;">"foobar2"</span>,
+        <span style="color: #a1db00;">"8383"</span>: <span style="color: #ff4ea3;">"foobar3"</span>,
+        <span style="color: #a1db00;">"8384"</span>: <span style="color: #ff4ea3;">"foobar4"</span>
+    },
+    <span style="color: #a1db00;">"timeout"</span>: <span style="color: #5fafd7;">300</span>,
+    <span style="color: #a1db00;">"method"</span>: <span style="color: #ff4ea3;">"aes-256-cfb"</span>
+}
 </pre>
 </div>
 </div>
 </div>
-
-<div id="outline-container-org98c941d" class="outline-3">
-<h3 id="org98c941d"><span class="section-number-3">7.2</span> bbr</h3>
-<div class="outline-text-3" id="text-7-2">
-<p>
-使用 google 的 bbr 用塞控制算法，查看内核 &gt;= 4.9
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">uname -r
-</pre>
-</div>
-
-<p>
-切换到 root 权限：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sudo su
-</pre>
-</div>
-<p>
-查看 bbr 是否已安装：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">lsmod | grep bbr
-</pre>
-</div>
-<p>
-没有的话安装：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">modprobe tcp_bbr
-<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"tcp_bbr"</span> &gt;&gt; /etc/modules-load.d/modules.conf
-<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"net.core.default_qdisc=fq"</span> &gt;&gt; /etc/sysctl.conf
-<span style="color: #d18aff;">echo</span> <span style="color: #ff4ea3;">"net.ipv4.tcp_congestion_control=bbr"</span> &gt;&gt; /etc/sysctl.conf
-</pre>
-</div>
-
-<p>
-应用更新：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sysctl --system
-</pre>
-</div>
-
-<p>
-验证安装生效：
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">sysctl net.ipv4.tcp_available_congestion_control
-sysctl net.ipv4.tcp_congestion_control
-</pre>
-</div>
-</div>
-</div>
+<div id="outline-container-org7c96a9f" class="outline-2">
+<h2 id="org7c96a9f"><span class="section-number-2">8</span> 优化<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></h2>
 </div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://ivo-wang.github.io/2018/02/24/ss-redir/">http://ivo-wang.github.io/2018/02/24/ss-redir/</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
 <a href="https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks">Optimizing ShadowSocks</a>
 </p></div></div>
 
@@ -625,7 +597,7 @@ sysctl net.ipv4.tcp_congestion_control
 <div id="postamble" class="status">
 <p class="author">Author: 刘尚亮</p>
 <p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:52</p>
+<p class="date">Created: 2020-07-07 二 12:50</p>
 <p class="validation"></p>
 </div>
 </body>
