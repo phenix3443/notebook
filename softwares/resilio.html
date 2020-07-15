@@ -6,9 +6,9 @@
 <!-- 2020-07-15 三 10:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>certbot申请 Let's Encrypt泛域名证书</title>
+<title>Resilio</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="liushangliang" />
+<meta name="author" content="刘尚亮" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -306,228 +306,233 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">certbot申请 Let's Encrypt泛域名证书</h1>
+<h1 class="title">Resilio</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3def742">1. 概述</a></li>
-<li><a href="#org012ab0a">2. 申请证书</a></li>
+<li><a href="#org8a0a94b">1. 概述</a></li>
+<li><a href="#orgc6db9f2">2. 安装</a></li>
+<li><a href="#orga641090">3. 使用</a>
+<ul>
+<li><a href="#orgc66ea21">3.1. ubuntu</a></li>
+<li><a href="#orgdda2ca2">3.2. 文件夹权限问题</a></li>
+<li><a href="#orgb824f68">3.3. 作为服务端安配置</a>
+<ul>
+<li><a href="#org8412746">3.3.1. 配置 https 进行访问</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgfd171f4">4. 附录</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org3def742" class="outline-2">
-<h2 id="org3def742"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org8a0a94b" class="outline-2">
+<h2 id="org8a0a94b"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://letsencrypt.org/">Let's Encrypt</a> 是一个于 2015 年三季度推出的数字证书认证机构，旨在以自动化流程消除手动创建和安装证书的复杂流程，并推广使万维网服务器的加密连接无所不在，为安全网站提供免费的 SSL/TLS 证书。  <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+Resilio Sync（以前称为 BitTorrent Sync）是 Resilio，Inc.发布的免费，快速，p2p 文件共享和同步工具。它可用于 Linux，Mac，FreeBSD，Windows，Android，iOS 和 NAS 设备。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org012ab0a" class="outline-2">
-<h2 id="org012ab0a"><span class="section-number-2">2</span> 申请证书</h2>
+<div id="outline-container-orgc6db9f2" class="outline-2">
+<h2 id="orgc6db9f2"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-使用 certbot 生成免费的证书:
+Windows 和 Mac 使用软件包进行安装，Linux 安装指南 <a href="https://help.resilio.com/hc/en-us/articles/206178924">https://help.resilio.com/hc/en-us/articles/206178924</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga641090" class="outline-2">
+<h2 id="orga641090"><span class="section-number-2">3</span> 使用</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgc66ea21" class="outline-3">
+<h3 id="orgc66ea21"><span class="section-number-3">3.1</span> ubuntu<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+ubuntu 上 resilio 使用 web 作为 gui 界面，服务以守护程序运行。
+</p>
+
+<p>
+启动 Resilio Sync：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">apt install software-properties-common &amp;&amp; <span style="color: #ff4ea3;">\</span>
-add-apt-repository -r ppa:certbot/certbot &amp;&amp; <span style="color: #ff4ea3;">\</span>
-apt update &amp;&amp; <span style="color: #ff4ea3;">\</span>
-apt install certbot python3-certbot-nginx
+<pre class="src src-sh">sudo systemctl start resilio-sync
 </pre>
 </div>
 
 <p>
-输入命令：
+设置开机启动：
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">certbot --nginx <span style="color: #ff4ea3;">\</span>
---agree-tos <span style="color: #ff4ea3;">\</span>
---redirect <span style="color: #ff4ea3;">\</span>
- --hsts <span style="color: #ff4ea3;">\</span>
- --staple-ocsp <span style="color: #ff4ea3;">\</span>
---preferred-challenges dns <span style="color: #ff4ea3;">\</span>
---manual <span style="color: #ff4ea3;">\</span>
---email phenix3443@gmail.com <span style="color: #ff4ea3;">\</span>
--d www.panghuli.cn
+<pre class="src src-sh">sudo systemctl enable resilio-sync
 </pre>
 </div>
 
 <p>
-解释一下参数：
+检查服务运行状态：
 </p>
-<ul class="org-ul">
-<li>&#x2013;certonly 获取或更新证书，但是不安装到本机。这个参数默认是 run，即获取或更新证书并安装。另一个值是 renew，即更新证书。</li>
-<li>&#x2013;nginx 使用 nginx 插件</li>
-<li>&#x2013;agree-tos 同意 ACME 服务器的订阅协议</li>
-<li>&#x2013;redirect: Force HTTPS by 301 redirect.</li>
-<li>&#x2013;hsts：将 Strict-Transport-Security 标头添加到每个 HTTP 响应中。强制浏览器始终对域使用 TLS。防御 SSL / TLS 剥离。</li>
-<li>&#x2013;staple-ocsp：启用 OCSP 装订。将有效的 OCSP 响应装订到服务器在 TLS 期间提供的证书。</li>
-<li>&#x2013;preferred-challenges dns 以 DNS Plugins 的方式进行验证</li>
-<li>&#x2013;manual 采用手动交互式的方式验证</li>
-<li>&#x2013;email 接收有关账户的重要通知的邮箱地址，非必要，建议最好带上</li>
-<li>-d yourdomain.com -d *.yourdomain.com 指定要验证的域名。注意，不带 www 的一级域名 yourdomain.com，和通配符二级域名 *.yourdomain.com 都要写，如果只写 *.yourdomain.com 生成出来的证书是无法识别 yourdomain.com 的</li>
-</ul>
-
+<div class="org-src-container">
+<pre class="src src-sh">systemctl status resilio-sync
+</pre>
+</div>
 
 <p>
-接着生成如下输入：
+运行后，Resilio Sync 守护程序将侦听 <code>/etc/resilio-sync/config.json</code> 配置文件中指定的 <code>127.0.0.1:8888</code> 。现在，可以在 Web 浏览器地址栏输入 <code>https://127.0.0.1:8888</code> 访问 Resilio Sync Web UI。
+</p>
+
+<p>
+将被要求设置用户名和密码来保护 Web UI。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdda2ca2" class="outline-3">
+<h3 id="orgdda2ca2"><span class="section-number-3">3.2</span> 文件夹权限问题</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+可能会遇到以下错误消息。这是因为 Resilio Sync 以 rslsync 用户身份运行。
 </p>
 <pre class="example">
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Plugins selected: Authenticator manual, Installer None
-Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org
-Obtaining a new certificate
-Performing the following challenges:
-dns-01 challenge for panghuli.cn
-dns-01 challenge for panghuli.cn
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-NOTE: The IP of this machine will be publicly logged as having requested this
-certificate. If you're running certbot in manual mode on a machine that is not
-your server, please ensure you're okay with that.
-
-Are you OK with your IP being logged?
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-(Y)es/(N)o: y
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Please deploy a DNS TXT record under the name
-_acme-challenge.panghuli.cn with the following value:
-
-2fiKjb9LXrz2E94v_TBF73sf-S4QjYoJfUWO5UrTipk
-
-Before continuing, verify the record is deployed.
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Press Enter to Continue
+Don’t have permissions to write to selected folder.
 </pre>
-
 <p>
-确认 TXT 记录生效：
+假设选择了主文件夹 <code>/home/your-username/</code> 作为共享文件夹。要解决以上错误，需要做的就是使用以下命令将主文件夹的权限授予 rslsync 用户。
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">dig  -t txt  _acme-challenge.panghuli.cn @8.8.8.8
-
-; &lt;&lt;&gt;&gt; DiG 9.11.3-1ubuntu1.5-Ubuntu &lt;&lt;&gt;&gt; -t txt _acme-challenge.panghuli.cn @8.8.8.8
-;; global options: +cmd
-;; Got answer:
-;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 13563
-<span style="color: #ffff00; font-weight: bold;">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span>
-
-<span style="color: #ffff00; font-weight: bold;">;; OPT PSEUDOSECTION:</span>
-<span style="color: #ffff00; font-weight: bold;">; EDNS: version: 0, flags:; udp: 512</span>
-<span style="color: #ffff00; font-weight: bold;">;; QUESTION SECTION:</span>
-<span style="color: #ffff00; font-weight: bold;">;_acme-challenge.panghuli.cn.   IN  TXT</span>
-
-<span style="color: #ffff00; font-weight: bold;">;; ANSWER SECTION:</span>
-<span style="color: #ffff00; font-weight: bold;">_acme-challenge.panghuli.cn. 599 IN TXT "Th6e8n4c5cNz7sDwM6wAytiKiT7vZ44--5t68Ghh1Xc"</span>
-
-<span style="color: #ffff00; font-weight: bold;">;; Query time: 690 msec</span>
-<span style="color: #ffff00; font-weight: bold;">;; SERVER: 8.8.8.8#53(8.8.8.8)</span>
-<span style="color: #ffff00; font-weight: bold;">;; WHEN: Sat Apr 20 22:33:18 CST 2019</span>
-<span style="color: #ffff00; font-weight: bold;">;; MSG SIZE  rcvd: 112</span>
+<pre class="src src-sh">sudo setfacl -R -m <span style="color: #ff4ea3;">"u:rslsync:rwx"</span> /home/your-username
 </pre>
 </div>
 
 <p>
-回车确认，因为有两个域名，所以还需要验证一个：
+上面的命令不会更改共享文件夹的所有者。所有者拥有与往常相同的权限。它的作用是向另一个用户 rslsync 授予读取，写入和执行权限。请注意，-R（递归）标志必须在-m（修改）标志之前，然后紧随其后的是访问控制列表条目（u：rslsync：rwx）。
+</p>
+
+<p>
+如果看到以下错误：
 </p>
 <pre class="example">
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Please deploy a DNS TXT record under the name
-_acme-challenge.panghuli.cn with the following value:
-
-rIoJAOlRKF9tQxT1UAN24SznR8FSHozqzj_pTUc_OrA
-
-Before continuing, verify the record is deployed.
-(This must be set up in addition to the previous challenges; do not remove,
-replace, or undo the previous challenge tasks yet. Note that you might be
-asked to create multiple distinct TXT records with the same name. This is
-permitted by DNS standards.)
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Press Enter to Continue
+sudo: setfacl: command not found
 </pre>
 <p>
-注意： <b>要重新添加一条 TXT 记录，不要覆盖以前前一条记录</b> 。
-</p>
-
-
-
-<div class="org-src-container">
-<pre class="src src-sh">Waiting for verification...
-Cleaning up challenges
-Resetting dropped connection: acme-v02.api.letsencrypt.org
-
-IMPORTANT NOTES:
- - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/panghuli.cn/fullchain.pem
-   Your key file has been saved at:
-   /etc/letsencrypt/live/panghuli.cn/privkey.pem
-   Your cert will expire on 2019-07-19. To obtain a new or tweaked
-   version of this certificate<span style="color: #a1db00;"> in</span> the future, simply run certbot
-   again. To non-interactively renew *all* of your certificates, run
-   <span style="color: #ff4ea3;">"certbot renew"</span>
- - If you like Certbot, please consider supporting our work by:
-
-   Donating to ISRG / Let<span style="color: #ff4ea3;">'s Encrypt:   https://letsencrypt.org/donate</span>
-<span style="color: #ff4ea3;">   Donating to EFF:                    https://eff.org/donate-le</span>
-</pre>
-</div>
-
-<p>
-根据上面的提示可以看到，证书有效期只有三个月，到期以后需要重新申请。
-</p>
-
-<p>
-证书目录：
+然后安装 acl 软件包并重新运行上面的 setfacl 命令。
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">tree /etc/letsencrypt/live/panghuli.cn
-/etc/letsencrypt/live/panghuli.cn
-&#9500;&#9472;&#9472; cert.pem -&gt; ../../archive/panghuli.cn/cert1.pem
-&#9500;&#9472;&#9472; chain.pem -&gt; ../../archive/panghuli.cn/chain1.pem
-&#9500;&#9472;&#9472; fullchain.pem -&gt; ../../archive/panghuli.cn/fullchain1.pem
-&#9500;&#9472;&#9472; privkey.pem -&gt; ../../archive/panghuli.cn/privkey1.pem
-&#9492;&#9472;&#9472; README
+<pre class="src src-sh">sudo apt install acl
 </pre>
 </div>
+</div>
+</div>
 
+<div id="outline-container-orgb824f68" class="outline-3">
+<h3 id="orgb824f68"><span class="section-number-3">3.3</span> 作为服务端安配置</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
-校验证书信息：
+nginx 配置文件：resilio.proxy.nginx.conf
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">openssl x509 -in /etc/letsencrypt/live/panghuli.cn/cert.pem  -noout -text
+<pre class="src src-nginx"><span style="color: #a1db00;">server</span> {
+    <span style="color: #a1db00;">listen</span> 80;
+    <span style="color: #a1db00;">server_name</span> resilio.your-domain;
+
+    <span style="color: #a1db00;">access_log</span> /var/log/nginx/resilio.access.log;
+    <span style="color: #a1db00;">error_log</span> /var/log/nginx/resilio.error.log;
+    <span style="color: #a1db00;">location</span> <span style="color: #ffd700;">/</span> {
+        <span style="color: #a1db00;">proxy_pass</span> http://127.0.0.1:8888;
+        <span style="color: #a1db00;">proxy_set_header</span> Host <span style="color: #ff8700;">$host</span>;
+        <span style="color: #a1db00;">proxy_set_header</span> X-Real-IP <span style="color: #ff8700;">$remote_addr</span>;
+        <span style="color: #a1db00;">proxy_set_header</span> X-Forwarded-For <span style="color: #ff8700;">$proxy_add_x_forwarded_for</span>;
+    }
+}
 </pre>
+</div>
+<p>
+设置 resilio web gui 密码：/etc/resilio-sync/config.json
+</p>
+<div class="org-src-container">
+<pre class="src src-json">{
+    <span style="color: #a1db00;">"storage_path"</span> : <span style="color: #ff4ea3;">"/var/lib/resilio-sync/"</span>,
+    <span style="color: #a1db00;">"pid_file"</span> : <span style="color: #ff4ea3;">"/var/run/resilio-sync/sync.pid"</span>,
+
+    <span style="color: #a1db00;">"webui"</span> :
+    {
+        <span style="color: #a1db00;">"listen"</span> : <span style="color: #ff4ea3;">"127.0.0.1:8888"</span>,
+        <span style="color: #a1db00;">"login"</span>:<span style="color: #ff4ea3;">"username"</span>,
+        <span style="color: #a1db00;">"password"</span>:<span style="color: #ff4ea3;">"password"</span>
+    }
+}
+</pre>
+</div>
+<p>
+然后就可以通过 <a href="http://resilio.your-domain/gui">http://resilio.your-domain/gui</a> 进行访问了，要注意，此时 <b>只能通过 http 进行访问</b> 。
+</p>
 </div>
 
+<div id="outline-container-org8412746" class="outline-4">
+<h4 id="org8412746"><span class="section-number-4">3.3.1</span> 配置 https 进行访问</h4>
+<div class="outline-text-4" id="text-3-3-1">
 <p>
-关键输出：
+给 resilio.your-domain 申请好阿里云免费的 HTTPs 证书后，修改 resilio.proxy.nginx.conf 文件。
 </p>
-<pre class="example">
-X509v3 Subject Alternative Name:
-                DNS:*.panghuli.cn, DNS:panghuli.cn
+<div class="org-src-container">
+<pre class="src src-nginx"><span style="color: #a1db00;">server</span> {
+    <span style="color: #a1db00;">listen</span> 443 ssl;
+    <span style="color: #a1db00;">server_name</span> resilio.your-domain;
+
+    <span style="color: #a1db00;">ssl_certificate</span> /home/phenix/nginx/ssl/resilio.your-domain.pem;   <span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">&#23558;domain name.pem&#26367;&#25442;&#25104;&#24744;&#35777;&#20070;&#30340;&#25991;&#20214;&#21517;&#12290;</span>
+    <span style="color: #a1db00;">ssl_certificate_key</span> /home/phenix/nginx/ssl/resilio.your-domain.key;   <span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">&#23558;domain name.key&#26367;&#25442;&#25104;&#24744;&#35777;&#20070;&#30340;&#23494;&#38053;&#25991;&#20214;&#21517;&#12290;</span>
+    <span style="color: #a1db00;">ssl_session_timeout</span> 5m;
+    <span style="color: #a1db00;">ssl_ciphers</span> ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;  <span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">&#20351;&#29992;&#27492;&#21152;&#23494;&#22871;&#20214;&#12290;</span>
+    <span style="color: #a1db00;">ssl_protocols</span> TLSv1 TLSv1.1 TLSv1.2;   <span style="color: #6c6c6c; font-style: italic;">#</span><span style="color: #6c6c6c; font-style: italic;">&#20351;&#29992;&#35813;&#21327;&#35758;&#36827;&#34892;&#37197;&#32622;&#12290;</span>
+    <span style="color: #a1db00;">ssl_prefer_server_ciphers</span> <span style="color: #5fafd7;">on</span>;
+
+    <span style="color: #a1db00;">access_log</span> /var/log/nginx/resilio.access.log;
+    <span style="color: #a1db00;">error_log</span> /var/log/nginx/resilio.error.log;
+
+    <span style="color: #a1db00;">location</span> <span style="color: #ffd700;">/</span> {
+        <span style="color: #a1db00;">proxy_pass</span> http://127.0.0.1:8888<span style="color: #ff8700;">$request_uri</span>;
+        <span style="color: #a1db00;">proxy_set_header</span> Host <span style="color: #ff8700;">$host</span>;
+        <span style="color: #a1db00;">proxy_set_header</span> X-Real-IP <span style="color: #ff8700;">$remote_addr</span>;
+        <span style="color: #a1db00;">proxy_set_header</span> X-Forwarded-For <span style="color: #ff8700;">$proxy_add_x_forwarded_for</span>;
+    }
+}
+
+<span style="color: #a1db00;">server</span> {
+    <span style="color: #a1db00;">listen</span> 80;                  <span style="color: #6c6c6c; font-style: italic;"># </span><span style="color: #6c6c6c; font-style: italic;">&#37325;&#23450;&#21521;HTTP&#35831;&#27714;&#20026;HTTPs</span>
+    <span style="color: #a1db00;">server_name</span> resilio.your-domain;
+    <span style="color: #a1db00;">return</span> 301 https://resilio.your-domain<span style="color: #ff8700;">$request_uri</span>;
+}
 </pre>
 </div>
+<p>
+现在可以通过 http(s)://resilio.your-domain 直接访问 resilio web gui 域名
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfd171f4" class="outline-2">
+<h2 id="orgfd171f4"><span class="section-number-2">4</span> 附录</h2>
 </div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-<a href="https://zh.wikipedia.org/zh-hans/Let's_Encrypt">https://zh.wikipedia.org/zh-hans/Let's_Encrypt</a>
+<a href="https://www.linuxbabe.com/ubuntu/install-resilio-sync-ubuntu-16-04-16-10">https://www.linuxbabe.com/ubuntu/install-resilio-sync-ubuntu-16-04-16-10</a>
 </p></div></div>
 
 
 </div>
 </div></div>
 <div id="postamble" class="status">
-<p class="author">Author: liushangliang</p>
-<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
 <p class="date">Created: 2020-07-15 三 10:27</p>
 <p class="validation"></p>
 </div>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-26 日 10:52 -->
+<!-- 2020-07-15 三 10:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>acme申请 Let’s Encrypt 泛域名 SSL 证书</title>
@@ -319,11 +319,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
+
 <div id="outline-container-org6ff67d8" class="outline-2">
 <h2 id="org6ff67d8"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="certbot-get-ssl-ca.html">《certbot申请 Let's Encrypt泛域名证书》</a> 一文中介绍了使用Let's Encrypte 官方客户端申请泛域名证书的方法，但是申请和续期过程需要手动介入，现在介绍一种更加自动化的方法。
+<a href="certbot-get-ssl-ca.html">《certbot申请 Let's Encrypt泛域名证书》</a> 一文中介绍了使用 Let's Encrypte 官方客户端申请泛域名证书的方法，但是申请和续期过程需要手动介入，现在介绍一种更加自动化的方法。
 </p>
 
 <p>
@@ -331,7 +332,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-以下所有步骤参照了<a href="https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E">acme.sh官方wiki</a>，由于脚本更新频繁，将来以下步骤可能不适合，请大家直接参考wiki。
+以下所有步骤参照了<a href="https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E">acme.sh官方wiki</a>，由于脚本更新频繁，将来以下步骤可能不适合，请大家直接参考 wiki。
 </p>
 </div>
 </div>
@@ -347,7 +348,7 @@ curl https://get.acme.sh | sh
 </p>
 
 <p>
-以后更新acme程序：
+以后更新 acme 程序：
 </p>
 <pre class="example">
 acme.sh --upgrade
@@ -359,7 +360,7 @@ acme.sh --upgrade
 <h2 id="org5568576"><span class="section-number-2">3</span> 申请证书</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-添加dns api相关key和秘钥。
+添加 dns api 相关 key 和秘钥。
 </p>
 <pre class="example">
 export Ali_Key="ali-key"
@@ -433,7 +434,7 @@ export Ali_Secret="ali-secret"
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-04-26 日 10:52</p>
+<p class="date">Created: 2020-07-15 三 10:27</p>
 <p class="validation"></p>
 </div>
 </body>

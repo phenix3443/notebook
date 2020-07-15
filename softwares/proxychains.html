@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-19 二 16:39 -->
+<!-- 2020-07-15 三 10:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>proxychains</title>
@@ -311,8 +311,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc26decc">1. 概述</a></li>
-<li><a href="#orgafe6659">2. 安装</a></li>
+<li><a href="#orgc26decc">1. 概述</a>
+<ul>
+<li><a href="#orgbea553a">1.1. 什么时候使用呢？</a></li>
+<li><a href="#org326d14a">1.2. 一些很酷的功能：</a></li>
+</ul>
+</li>
+<li><a href="#orgafe6659">2. 安装</a>
+<ul>
+<li><a href="#orge99f8cf">2.1. 源码</a></li>
+<li><a href="#orgc9c1e7e">2.2. debian</a></li>
+</ul>
+</li>
+<li><a href="#org9ad31b8">3. 配置</a></li>
+<li><a href="#org26b79fc">4. 使用</a></li>
 </ul>
 </div>
 </div>
@@ -321,7 +333,7 @@ for the JavaScript code in this tag.
 <h2 id="orgc26decc"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a> 是一个 UNIX 程序，它在动态链接程序中通过预加载的 DLL（dlsym()，LD_PRELOAD）hook 与网络相关的 libc 函数，并通过 SOCKS4a/5 或 HTTP 代理重定向连接。它仅支持 TCP（不支持 UDP/ICMP 等）。
+<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a> 是一个 UNIX 程序，它通过预加载的 DLL（dlsym()，LD_PRELOAD）hook 动态链接程序中与网络相关的 libc 函数，然后通过 SOCKS4a/5 或 HTTP 代理重定向连接。它仅支持 TCP（不支持 UDP/ICMP 等）。
 </p>
 
 <p>
@@ -339,48 +351,93 @@ for the JavaScript code in this tag.
 <p>
 支持的平台：Linux，BSD，Mac。
 </p>
+</div>
 
-<p>
-此程序可用于规避审查。在某些国家/地区这样做可能非常危险。
-</p>
-
-<p>
-在将其用于任何正式的事情之前,始终确保代理链可以正常工作。这涉及到要使用的程序和代理。
-</p>
-
-<p>
-例如，可以连接到“我的 IP 是什么”服务 如 ifconfig.me，以确保它没有使用您的真实 IP。
-</p>
-
-<p>
-只有在知道自己在做什么时，再使用代理链。
-</p>
-
-<p>
-代理链的作者和维护者不对任何滥用或误用本软件和结果负责。
-</p>
+<div id="outline-container-orgbea553a" class="outline-3">
+<h3 id="orgbea553a"><span class="section-number-3">1.1</span> 什么时候使用呢？</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>当从局域网连接“外部”的唯一方法是通过代理服务器。</li>
+<li>从筛选出端口的限制性防火墙后面出来。</li>
+<li>要在链中使用两个（或多个）代理： 如：your_host &lt;-&gt; proxy1 &lt;-&gt; proxy2 &lt;-&gt; target_host</li>
+<li>“代理”某些没有内置代理支持的程序（例如 telnet）</li>
+<li>通过代理从外部访问 Intranet。</li>
+<li>在代理后面使用 DNS。</li>
+<li>访问隐藏的洋葱服务。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org326d14a" class="outline-3">
+<h3 id="org326d14a"><span class="section-number-3">1.2</span> 一些很酷的功能：</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>该程序可以在同一链中混合使用不同的代理类型如：your_host &lt;-&gt; socks5 &lt;-&gt; http &lt;-&gt; socks4 &lt;-&gt; target_host</li>
+<li>支持不同的链路选项
+<ul class="org-ul">
+<li>随机顺序</li>
+<li>确切顺序</li>
+<li>动态顺序（智能从链中排除死代理）</li>
+</ul></li>
+<li>可以将其用于大多数 TCP 客户端应用程序，甚至可以用于网络扫描程序，只要它们使用标准的 libc 功能。基于 pcap 的扫描不起作用。</li>
+<li>可以将其与 squid，sendmail 等服务器一起使用。</li>
+<li>通过代理解析 DNS。</li>
+</ul>
+</div>
 </div>
 </div>
 
 <div id="outline-container-orgafe6659" class="outline-2">
 <h2 id="orgafe6659"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orge99f8cf" class="outline-3">
+<h3 id="orge99f8cf"><span class="section-number-3">2.1</span> 源码</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
 需要一个有效的 C 编译器，最好是 gcc
 </p>
 <div class="org-src-container">
 <pre class="src src-sh">  ./configure --prefix=/usr --sysconfdir=/etc
-  make
-  [optional] sudo make install
-  [optional] sudo make install-config (installs proxychains.conf)
+  make &amp;&amp; make install &amp;&amp; make install-config (installs proxychains.conf)
 </pre>
 </div>
 <p>
 如果不安装，则可以使用 build 目录中的 proxychains：
 </p>
+</div>
+</div>
 
+<div id="outline-container-orgc9c1e7e" class="outline-3">
+<h3 id="orgc9c1e7e"><span class="section-number-3">2.2</span> debian</h3>
+<div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
-<pre class="src src-sh">./proxychains4 -f src/proxychains.conf telnet google.com 80
+<pre class="src src-sh">apt install proxychains4
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9ad31b8" class="outline-2">
+<h2 id="org9ad31b8"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+proxychains 按以下顺序查找配置文件：
+</p>
+<ol class="org-ol">
+<li>环境变量 <code>PROXYCHAINS_CONF_FILE</code> 中列出的文件或 作为-f 参数提供给 proxychains 脚本或二进制文件。</li>
+<li><code>./proxychains.conf</code></li>
+<li><code>$(HOME)/.proxychains/proxychains.conf</code></li>
+<li><code>$(sysconfdir)/proxychains.conf</code> ，通常是 <code>/etc/proxychains.conf</code></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org26b79fc" class="outline-2">
+<h2 id="org26b79fc"><span class="section-number-2">4</span> 使用</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-sh">proxychains4 -f src/proxychains.conf telnet google.com 80
 </pre>
 </div>
 
@@ -394,7 +451,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <p class="author">Author: liushangliang</p>
 <p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
-<p class="date">Created: 2020-05-19 二 16:39</p>
+<p class="date">Created: 2020-07-15 三 10:27</p>
 <p class="validation"></p>
 </div>
 </body>
