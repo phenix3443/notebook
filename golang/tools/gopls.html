@@ -6,7 +6,7 @@
 <!-- 2020-09-14 Mon 13:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gocode</title>
+<title>gopls</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,44 +306,63 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gocode</h1>
+<h1 class="title">gopls</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4d421fa">1. 概述</a></li>
-<li><a href="#org63d5531">2. 安装</a></li>
-<li><a href="#orgb9ec497">3. 配置</a></li>
-<li><a href="#org16b85c6">4. 使用</a></li>
+<li><a href="#org112c7c5">1. 概述</a></li>
+<li><a href="#org6c7169f">2. 安装</a></li>
+<li><a href="#org4ab66e4">3. 配置</a></li>
+<li><a href="#orgf8ed8ce">4. 使用</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org4d421fa" class="outline-2">
-<h2 id="org4d421fa"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org112c7c5" class="outline-2">
+<h2 id="org112c7c5"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/mdempsky/gocode">gocode</a> 是一个用来进行 golang 语法分析的模块，现在已经不再维护，不要使用该功能。
+<a href="https://github.com/golang/tools/blob/master/gopls/README.md">gopls</a> （发音为“go please”）是 Go 的语言服务器协议（LSP）的实现。 LSP 允许使用类似 IDE 的功能扩展任何文本编辑器。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org63d5531" class="outline-2">
-<h2 id="org63d5531"><span class="section-number-2">2</span> 安装</h2>
+<div id="outline-container-org6c7169f" class="outline-2">
+<h2 id="org6c7169f"><span class="section-number-2">2</span> 安装</h2>
 <div class="outline-text-2" id="text-2">
-<pre class="example">
-go get -u github.com/nsf/gocode
+<p>
+要安装或更新 gopls，请运行：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">go get golang.org/x/tools/gopls@latest
 </pre>
 </div>
+
+<p>
+不要使用 <code>-u</code> 标志，因为它会将您的依赖项更新为不兼容的版本。
+</p>
+
+<p>
+如果您看到此错误：
+</p>
+<pre class="example">
+$ go get golang.org/x/tools/gopls@latest
+go: cannot use path@version syntax in GOPATH mode
+</pre>
+<p>
+运行 <code>GO111MODULE=on go get golang.org/x/tools/gopls@latest</code> 。如果您使用 Go 模块，则需要将编辑器打开到包含 go.mod 文件的目录。
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgb9ec497" class="outline-2">
-<h2 id="orgb9ec497"><span class="section-number-2">3</span> 配置</h2>
+<div id="outline-container-org4ab66e4" class="outline-2">
+<h2 id="org4ab66e4"><span class="section-number-2">3</span> 配置</h2>
 </div>
 
-<div id="outline-container-org16b85c6" class="outline-2">
-<h2 id="org16b85c6"><span class="section-number-2">4</span> 使用</h2>
+
+<div id="outline-container-orgf8ed8ce" class="outline-2">
+<h2 id="orgf8ed8ce"><span class="section-number-2">4</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">

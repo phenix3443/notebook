@@ -6,7 +6,7 @@
 <!-- 2020-09-14 Mon 13:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gocode</title>
+<title>GOPATH</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="liushangliang" />
 <style type="text/css">
@@ -306,44 +306,61 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
 </div><div id="content">
-<h1 class="title">gocode</h1>
+<h1 class="title">GOPATH</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4d421fa">1. 概述</a></li>
-<li><a href="#org63d5531">2. 安装</a></li>
-<li><a href="#orgb9ec497">3. 配置</a></li>
-<li><a href="#org16b85c6">4. 使用</a></li>
+<li><a href="#org8d8a98c">1. 概述</a></li>
+<li><a href="#org56b131a">2. 设置</a></li>
 </ul>
 </div>
 </div>
 
-
-<div id="outline-container-org4d421fa" class="outline-2">
-<h2 id="org4d421fa"><span class="section-number-2">1</span> 概述</h2>
+<div id="outline-container-org8d8a98c" class="outline-2">
+<h2 id="org8d8a98c"><span class="section-number-2">1</span> 概述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<a href="https://github.com/mdempsky/gocode">gocode</a> 是一个用来进行 golang 语法分析的模块，现在已经不再维护，不要使用该功能。
+Go 路径用于解析 import 语句。它实现和文档位于 go/build 包。
+</p>
+
+<p>
+GOPATH 环境变量列出了查找 Go 代码的位置。在 Unix 上，该值是以冒号分隔的字符串。在 Windows 上，该值是以分号分隔的字符串。在 Plan 9 中，值是一个列表。
+</p>
+
+<p>
+如果未设置环境变量，GOPATH 默认为用户主目录中名为“go”的子目录（在 Unix 上为 <code>$HOME/go</code> ，在 Windows 上为 <code>％USERPROFILE％\go</code> ），除非该目录包含 Go 分发。运行 <code>go env GOPATH</code> 查看当前的 GOPATH。
+</p>
+
+<p>
+GOPATH 中列出的每个目录都必须具有规定的结构：
+</p>
+<ul class="org-ul">
+<li>src 目录包含源代码。 src 下面的路径确定导入路径或可执行文件名。</li>
+<li>pkg 目录包含已安装的包对象。在 Go 树一样，每个目标操作系统和体系结构对都有自己的子目录 pkg（pkg/GOOS_GOARCH）。</li>
+<li><p>
+bin 目录保存已编译的命令。每个命令都以其源目录命名，但仅以最终元素命名，如果设置了 GOBIN 环境变量，则命令将安装到它命名的目录而不是 DIR/bin。 GOBIN 必须是绝对路径。
+</p>
+
+<p>
+如果 DIR 是 GOPATH 中列出的目录，则可
+</p>
+<ul class="org-ul">
+<li>以将包含 DIR/src/foo/bar 源的包通过“foo/bar”导入。</li>
+<li>go build 产生的编译结果位于 <code>DIR/bin/bar</code> 。</li>
+<li>编译形式安装到 <code>DIR/pkg/GOOS_GOARCH/foo/bar.a</code> 。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org56b131a" class="outline-2">
+<h2 id="org56b131a"><span class="section-number-2">2</span> 设置</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+参见<a href="https://github.com/golang/go/wiki/SettingGOPATH">https://github.com/golang/go/wiki/SettingGOPATH</a>
 </p>
 </div>
-</div>
-
-<div id="outline-container-org63d5531" class="outline-2">
-<h2 id="org63d5531"><span class="section-number-2">2</span> 安装</h2>
-<div class="outline-text-2" id="text-2">
-<pre class="example">
-go get -u github.com/nsf/gocode
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgb9ec497" class="outline-2">
-<h2 id="orgb9ec497"><span class="section-number-2">3</span> 配置</h2>
-</div>
-
-<div id="outline-container-org16b85c6" class="outline-2">
-<h2 id="org16b85c6"><span class="section-number-2">4</span> 使用</h2>
 </div>
 </div>
 <div id="postamble" class="status">
