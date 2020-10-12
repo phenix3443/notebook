@@ -1,0 +1,35 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 概述
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  scrapy 是一个 python 编写的爬虫框架。
+
+* 优点
+  1. 抽象爬虫的工作流程，实现了很多通用的模块，如下载模块，解析模块。我们只要关注核心的业务模块就可以了。
+  2. 提供了很多内置的功能，例如内置的几种 export 模块。
+  3. 可以高性能、分布式的爬取信息。scrapy 基于 twisted 实现了异步请求，可以异步处理爬虫任务。
+
+* 请求库
+** urlib
+** requests
+
+* 解析库
+
+** re
+   正则表达式。
+
+** lxml
+   lxml 是 Python 的一个解析库，支持 HTML 和 XML 的解析，支持 XPath 解析方式，而且解析效率非常高。
+
+** Beautiful Soup
+   Beautiful Soup 依赖于 lxml 库，它拥有强大的 API 和多样的解析方式，
+
+** pyquery
+   pyquery 同样是一个强大的网页解析工具，它提供了和 jQuery 类似的语法来解析 HTML 文梢，支持 css 选择器，使用非常方便
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install scrapy
+  #+END_SRC

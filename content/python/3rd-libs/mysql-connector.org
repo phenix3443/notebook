@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: mysql-connnect
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  mysql 的 python client 驱动。
+
+  manual：https://dev.mysql.com/doc/connector-python/en/
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install --user mysql-connector
+  #+END_SRC
+* 使用

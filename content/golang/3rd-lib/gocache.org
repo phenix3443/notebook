@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: gocache
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://godoc.org/github.com/patrickmn/go-cache][go-cache]] 基于内存的 kv 缓存系统。

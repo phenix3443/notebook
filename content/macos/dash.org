@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: dash
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://kapeli.com/dash][Dash]] 是 API 文档浏览器和代码片段管理器。 Dash 存储代码片段并立即搜索 200 多个 API，100 多个备忘单等的离线文档集。您甚至可以生成自己的 docsets 或请求包含 docset。

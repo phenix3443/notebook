@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE:nginx practices
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 编译
+  #+BEGIN_SRC
+apt install -y build-essential perl libpcre3-dev zlib1g-dev libssl-dev
+./configure && make && make install
+  #+END_SRC
+
+* 安装
+
+* 使用
+
+* Footnotes
+
+[fn:1] http://nginx.org/en/linux_packages.html

@@ -1,0 +1,29 @@
+# -*- coding:utf-8-*-
+#+TITLE: 使用指纹解锁
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+*  安装 fingerprint-gui
+   #+BEGIN_SRC
+sudo add-apt-repository ppa:fingerprint/fingerprint-gui
+sudo apt update
+sudo apt install fingerprint-gui policykit-1-fingerprint-gui libbsapi
+   #+END_SRC
+   其中 libbsapi 是专为 UPEK 芯片安装的
+
+* 确定启用了指纹登录
+  #+BEGIN_SRC
+sudo pam-auth-update
+  #+END_SRC
+
+
+  确认第一项是 "Fingerprint authentication by FingerprintGUI”，并且是选中启用的，如果不是，使用下面命令：
+  #+BEGIN_SRC
+sudo pam-auth-update –force
+  #+END_SRC
+
+* 录入指纹
+  运行 fingerprint-gui 程序，录入指纹。有任何问题可以查看安装日志：/var/log/auth.log，以查找问题原因。
+
+* 使用体验
+  thinkpad x230 指纹识别太慢了。

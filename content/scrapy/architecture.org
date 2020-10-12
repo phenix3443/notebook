@@ -1,0 +1,51 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 整体架构
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 架构[fn:1]
+  #+CAPTION: scrapy_architecture
+  #+NAME: fig:1
+  [[https://docs.scrapy.org/en/latest/_images/scrapy_architecture_02.png]]
+
+** Engine
+   引擎，负责控制数据流在系统中所有组件中流动，并在相应动作发生时触发事件。
+
+** Scheduler
+   调度器，用来接受引擎发过来的请求，压入队列中，并在引擎再次请求的时候返回.可以想像成一个 URL（抓取网页的网址或者说是链接）的优先队列，由它来决定下一个要抓取的网址是什么，同时去除重复的网址。
+
+** Downloader
+   下载器，用于下载网页内容，并将网页内容返回给爬虫。下载器是建立在 twisted 这个高效的异步模型上的。
+
+** Spiders
+   爬虫（蜘蛛），其内定义了爬取的逻辑和网页的解析规则 ，它主要负责解析响应并生成提取结果和新的请求。
+
+** requests and responses
+   scrapy 抓取过程中使用 request 和 response 对象。通常，爬虫生成 request 对象并在系统中传递，直到它们到达 Downloader，Downloader 执行请求并返回一个 Response 对象，该对象返回发出请求的爬虫。
+
+** Item
+   它定义了爬取结果的数据结构，爬取的数据会被赋值成该 Item 对象。
+
+** Pipeline
+   管道，负责处理被 spider 提取出来的 item。典型的处理有清理、验证及持久化（例如存取到数据库中）。
+
+** Downloader middlewares
+   下载器中间件，在引擎及下载器之间的特定钩子，处理 Downloader 传递给引擎的 response。其提供了一个简便的机制，通过插入自定义代码来扩展 Scrapy 功能。
+
+** Spider middlewares
+   Spider 中间件，在引擎及 Spider 之间的特定钩子，处理 spider 的输入（response）和输出（items 及 requests）。其提供了一个简便的机制，通过插入自定义代码来扩展 Scrapy 功能。
+
+
+* 数据流
+  Scrapy 中的数据流由执行引擎控制，其过程如下：
+  1. Spider 从要抓取的 URL 生成 request 对象， 传递给 engine。
+  2. engine 将 request 传递给 scheduler。
+  3. scheduler 将待要爬取的 request 给 engine，engin 通过下载中间件转发给 Downloader。
+  4. 一旦页面下载完毕，downloader 成一个该页面的 Response，并将其通过下载中间件发送给 engine。
+  5. engine 将接收的 Response 对象通过 Spider 中间件发送给 Spider 处理。
+  6. Spider 处理 Response 并生成 Item 或新的 Request 给 engine。
+  7. engine 将产生的 Item 给 Item Pipeline，将 Request 给调度器。
+
+
+* Footnotes
+
+[fn:1] [[https://docs.scrapy.org/en/latest/topics/architecture.html][scrapy 架构]]

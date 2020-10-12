@@ -1,0 +1,10 @@
+# -*- coding:utf-8; -*-
+#+title: 关于并发（行）的一些概念
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* concurrency and parallel
+  二者的区别
+* semaphore
+* mutex
+* lock

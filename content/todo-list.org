@@ -1,0 +1,21 @@
+# -*- coding:utf-8; -*-
+#+TITLE:todo list
+* emacs
+** auto-header 自动添加文件头部信息
+** 自动给函数添加注释信息 doxgen
+** yasnippet 代码补全功能
+** 代码风格的自动格式化
+** 自动编译
+** emacs25 不能使用现有配置文件
+** windows gnutls maralade 更新
+* org-mode
+
+* xfce
+** 了解基本功能模块，快捷键
+** 学习配置
+* git
+** 了解 git log 的使用
+** 跨平台的 gui git client
+** 了解 git config 命令
+* HHKB
+** 整理配置

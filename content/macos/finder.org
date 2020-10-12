@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: finder
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 快捷键
+  + 全屏： control + command + f
+  + 剪切： command + option + v 或者直接拖动到目标文件夹。
+  + 最大化：按住 Option 双击左上角或右下角，最大化。
+  + 关闭所有窗口： Command + option + w
+  + 一般的双击就是默认打开方式，双击的同时按下 Command 键就是以 tab 或 new window 来打开
+  + 弹出地址栏：command+shift+g
+  + 复制绝对路径： command+option+c
+  + Command + 上箭头：到上一级目录
+
+* Footnotes
+
+[fn:1] https://www.jianshu.com/p/6505ead00d59

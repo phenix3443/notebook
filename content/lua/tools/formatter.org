@@ -1,0 +1,38 @@
+# -*- coding:utf-8-*-
+#+TITLE: formatter
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  lua 代码格式化工具。
+
+* 安装
+  该程序依赖 checks。
+  #+BEGIN_SRC sh
+luarocks install checks
+luarocks install Formatter
+  #+END_SRC
+
+* 使用
+  #+BEGIN_SRC
+luaformatter [option] [files]
+  #+END_SRC
+
+  可用参数：
+  #+BEGIN_EXAMPLE
+  -a, --autosave Flush formatted Lua in given file instead of stdout.
+  -s, --spaces (default 2) Spaces to use as indentation.
+  -t, --tabs   (default 0) Tabulation(s) to use as indentation.
+  -d, --delimiter (default unix) Type of new line to detect and use while formatting:
+    * unix: '\n' LF Line feed.
+    * windows: '\r\n' CR+LF
+    * mac: '\r' CR Carriage Return of Macs before OSX.
+  -h, --help This help.
+  [files] Files to format.
+
+  #+END_EXAMPLE
+
+  示例：
+  #+BEGIN_SRC sh
+luaformatter -a -s 4 test.lua
+  #+END_SRC

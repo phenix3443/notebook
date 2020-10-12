@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: helm
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-helm/helm][helm]] 是一个Emacs框架，用于增量补全和缩小选择范围。 它为希望在Emacs中构建自己的Helm应用程序的开发人员提供了一个易于使用的API，以及强大的搜索工具和几十个已经内置的命令，几乎可以补全所有任务。 对于任何使用Emacs作为主要工作环境的人来说，它都是必备的。 Helm已被许多Emacs高级用户广泛采用。 它在Melpa中可用，可以从Emacs包管理器轻松安装。
+
+* 配置
+
+* 使用
+
+  在任何helm会话中，在 helm buffer 中出现候选者的时候， =C-h m= 弹出一个 org 缓冲区，其中包含有关当前命令的详细文档以及有关helm的更多通用信息。

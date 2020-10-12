@@ -1,0 +1,12 @@
+# -*- coding:utf-8-*-
+#+TITLE: company-statistics
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/company-mode/company-statistics][company-statistics]] 是一个基于 company-mode 的全局 minor mode。 设想 shi 记录一定数量选择过的补全候选项以及一些上下文信息，以便下次选择时来对候选项进行排名-更期望的候选项位于补全列表的前面。
+
+  company-statistics 是 company-mode 的附加组件，但只与它松散耦合（它通过向 company-transformers 添加排序函数以及向 company-completion-finished-hook 添加处理程序实现）。 对于记录的上下文信息和候选者的评分方式，它的设计考虑了一些灵活性：默认的函数对只是示例！ 统计信息在会话之间自动持久化。
+* 配置
+
+* 使用

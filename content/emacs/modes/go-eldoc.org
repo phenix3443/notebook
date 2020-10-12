@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-eldoc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] 提供 Go 语言的 eldoc。 go-eldoc.el 显示函数的变量，函数和当前参数位置的类型信息。
+
+* 安装
+  依赖 gocode 和 go-mode。
+
+* 配置
+
+* 使用

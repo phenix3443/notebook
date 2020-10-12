@@ -1,0 +1,69 @@
+# -*- coding:utf-8-*-
+#+title: Linux mint 实践
+#+author: 刘尚亮
+#+email: phenix3443+github@gmail.com
+
+* 查看版本
+  #+BEGIN_SRC sh :exports both
+lsb_release -a
+  #+END_SRC
+
+* 查看对应的 ubuntu codename
+  #+BEGIN_SRC sh :exports both
+grep DISTRIB_CODENAME /etc/upstream-release/lsb-release | grep -o --colour=never "[a-z-]*$"
+  #+END_SRC
+* 更新软件
+  安装一些必要开发软件：
+  #+BEGIN_SRC sh
+sudo apt install -y aptitude build-essential automake autoconf libtool cmake tmux im-config
+sudo apt upgrade
+  #+END_SRC
+* 添加用户
+  #+BEGIN_SRC sh
+adduser <username>
+  #+END_SRC
+* 添加用户到 sudo
+  #+BEGIN_SRC
+usermod -aG sudo <username>
+  #+END_SRC
+* 设置快捷键
+
+** 常规
+   + Super + D 显示桌面
+   + Super + L 锁定屏幕
+   + Super + E 进入主目录
+
+   + Ctrl + Alt + T 打开终端
+
+   + Ctrl + Alt + Del 注销
+   + Ctrl + Alt + End 关机
+   + Ctrl + Alt + Escape 重启
+
+** 窗口
+*** 定位
+    + 将窗口移动到【左右上下】角
+
+*** 大小
+    + Alt + F8 改变窗口大小
+    + Alt + F9 最小化窗口
+    + Alt + F10 最大化窗口
+    + Super + [Left|Right|Up|Down] 将窗口向【左右上下】 平铺
+    + Ctrl + Super + [Left|Right|Up|Down] 将窗口向【左右上下】 吸附（好像作用和上面的差不多）
+
+*** 移动
+    + Alt + TAB 在打开的窗口间循环
+    + Alt + F7 移动窗口
+    + Shift + Super + [Left|right|Up|Down] 将窗口移动到【左|右|上|下】方的显示器
+    + Shift + Ctrl + Alt + [Left|Right] 将窗口移动【左|右】侧工作区
+
+
+** 工作区
+   + Alt + F2 类似 Windows 下的 Win + R 组合键
+   + Ctrl + Alt + [Left|Right] 切换到【左|右】侧工作区
+
+** 抓屏
+   + Print 抓取屏幕截图
+   + Shift + Print 选区截图（但是不知道为什么没有生效，使用 shutter -s 替换）
+   + Ctrl + Shift + Print 复制选区截图到剪贴板（但是不知道为什么没有生效）
+   + Alt + Print 对窗口截图（使用 shutter -a 替换）
+   + Ctrl + Alt + Print 复制窗口截图到剪贴板

@@ -1,0 +1,70 @@
+# -*- coding:utf-8; -*-
+#+title:Ruby 基础教程读书笔记
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 第一章 Ruby 初探
+  + 单引号中的特殊字符不经过转义。
+  + p 方法可以区分输出的是数字还是字符串。
+  + 使用 ~#~ 作为注释符号。 ~=begin~ 和 ~=end~ 括起来的部分也是注释。
+  + 使用 ~inlucde~ 导入库。
+  + 条件判断： ~if then else end~
+  + 循环：
+	+ ~while do end~
+	+ ~循环次数.times do~
+
+* 第二章 便利的对象
+  + 数组
+	+ 形式：
+	  #+BEGIN_SRC ruby
+lang = ["c", "c++", "ruby"]
+	  #+END_SRC
+	+ 可以用来保存对象，支持不同类型对象的混合保存，下标从 0 开始。
+	+ 方法：
+	  #+BEGIN_SRC ruby
+print(lang.size)
+	  #+END_SRC
+	+ 遍历：
+	  #+BEGIN_SRC ruby
+lang.each do |e|
+  print(e)
+end
+	  #+END_SRC
+  + 散列
+	+ 形式：
+	  #+BEGIN_SRC ruby
+person = {name: "ruby", :age => 18}
+	  #+END_SRC
+
+	+ 存储键值对
+	+ 散列中使用符号做 key 要比字符串更有效率。
+	+ 遍历：
+	  #+BEGIN_SRC ruby
+person.each do |key, value|
+  print(key,value)
+end
+	  #+END_SRC
+  + 正则表达式
+	+ 形式： /模式/
+	  #+BEGIN_SRC ruby
+/Ruby/ =~ "ruby"
+	  #+END_SRC
+
+	+ 使用 ~=~~ 来匹配字符串，成功返回匹配部分的位置，失败返回 nil。
+
+* 第三章 创建命令
+  + 内置数组 ARGV 表示命令行传递的参数。0 表示第一个参数，而不是脚本文件。
+  + 遍历文件：
+	#+BEGIN_SRC ruby
+file = File.open('test.txt')
+file.each_line do |line|
+  puts(line)
+end
+	#+END_SRC
+  + 定义方法：
+	#+BEGIN_SRC ruby
+def say_hello
+  puts("hello")
+end
+	#+END_SRC
+  + 使用 require 引用其他文件。

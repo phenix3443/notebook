@@ -1,0 +1,17 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 requests 和 response
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* request
+
+** url
+
+** callback
+
+** errback
+
+* response
+
+** follow()

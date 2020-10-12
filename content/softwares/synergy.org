@@ -1,0 +1,17 @@
+# -*- coding:utf-8-*-
+#+TITLE: synergy & barrier
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://symless.com/synergy][Synergy]]可以让多个电脑共用一套鼠标和键盘。可运行在 windows、linux、和 macOS 上。[[https://github.com/debauchee/barrier][barrier]] 是 synergy 的开源版本，推荐使用。
+
+* 安装
+
+** snap
+   ubuntu 和 mint 可以通过此方法安装。
+   #+BEGIN_SRC sh
+snap install barrier
+   #+END_SRC
+
+** windows & mac
+   直接安装 release 下载包。

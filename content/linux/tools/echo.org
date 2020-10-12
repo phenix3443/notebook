@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: echo
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  常用参数：
+  #+BEGIN_EXAMPLE
+-e 默认不会解释字符串中的转义字符，添加选项解释字符串中的转义字符。
+-n 选项输出后不在末尾进行换行。
+  #+END_EXAMPLE

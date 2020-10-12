@@ -1,0 +1,67 @@
+# -*- coding:utf-8-*-
+#+TITLE: yapf
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/google/yapf][yapf]] 是 goolge 开发的一个 python 代码格式化工具。
+
+  目前，大多数用于 Python 的格式化程序，例如 autopep8 和 pep8ify，都是用来从代码中删除 lint 错误的。这有一些明显的局限性。例如，可能不会重新格式化符合 PEP 8 准则的代码。但这并不意味着代码看起来不错。
+
+  YAPF 采用不同的方法。它基于 Daniel Jasper 开发的'clang-format'。从本质上讲，即使源码没有违反编码风格，该算法也会将代码重新格式化为符合编码风格的最佳格式。这个想法也类似于 Go 编程语言的“ gofmt”工具：结束所有关于编码格式的圣战：如果在源码进行修改后，只要将整个项目的代码库简单地通过 YAPF 进行格式化，整个项目中保持一致的编码风格，并且在每次代码审查中都没有争论样式。
+
+  最终目标是，YAPF 生成的代码与程序员遵循样式指南所编写的代码一样好。它消除了维护代码的繁琐工作。
+
+  通过 [[https://yapf.now.sh/][在线演示]] 尝试 YAPF。
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install --user yapf
+  #+END_SRC
+
+  YAPF 支持 Python 2.7 和 3.6.4+。 （请注意，某些 Python 3 特性可能无法使用 3.6.4 之前的 Python 版本进行解析。）
+
+  YAPF 要求其格式化的代码与 YAPF 本身运行的版本保持一致。因此，如果使用 YAPF 格式化 Python 3 代码，请在 Python 3 下运行 YAPF 本身（对于 Python 2 同样如此）。
+
+* 使用
+  #+BEGIN_SRC sh :exports both :results output scalar
+yapf --help
+  #+END_SRC
+
+** 返回值
+   通常，YAPF 在成功终止程序时返回零，否则返回非零。
+
+   如果提供了 =--diff= ，则 YAPF 在不需要更改时返回零，否则返回非零（包括程序错误）。您可以在 CI 工作流程中使用它来测试代码是否经过 YAPF 格式化。
+
+** 排除文件
+   除了命令行上提供的排除模式外，YAPF 还会在 =.yapfignore= 文件中查找指定的其他模式，该文件位于调用 YAPF 的工作目录中。
+
+** 格式化样式
+   YAPF 使用的格式化样式是可配置的，并且有许多“配置项”可用于调整 YAPF 进行格式化的方式。有关完整列表，请参见 =style.py=  模块。
+
+   要控制样式，请使用 =--style= 参数运行 YAPF。它接受预定义的样式（例如 pep8 或 google），或者指定所需样式的配置文件路径，或一些键/值对字典。
+
+   配置文件是不区分大小写的 ~key=value~ 键值对的简单列表，该文件使用 =[yapf]= 开始。例如：
+   #+begin_example
+[yapf]
+based_on_style = pep8
+spaces_before_comment = 4
+split_before_logical_operator = true
+   #+end_example
+
+   =based_on_style= 确定此自定义样式所基于的预定义样式（将其视为子类）。预定义了四种样式：pep8（默认设置），铬，谷歌和 Facebook（请在 =style.py= 中查看 =_STYLE_NAME_TO_FACTORY= ）。
+
+   也可以在命令行上使用字典进行相同的操作。例如：
+   #+BEGIN_SRC sh
+--style='{based_on_style: chromium, indent_width: 4}'
+   #+END_SRC
+
+   这将采用 chromium 风格，并将其修改为使用四个空格缩进。
+
+   YAPF 将按照以下顺序搜索风格样式：
+   1. 命令行上指定
+   2. 当期目录或所有父目录中找到的第一个 =.style.yapf= 文件的 =[style]= 部分中，
+   3. 当前目录或所有父目录中找到的第一个 =setup.cfg= 文件的 =[yapf]= 部分中。
+   4.主目录中 =~/.config/yapf/style= 文件的 =[style]=部分中。
+
+   如果找不到这些文件，则使用默认样式（PEP8）。

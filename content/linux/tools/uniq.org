@@ -1,0 +1,16 @@
+# -*- coding:utf-8-*-
+#+TITLE: uniq
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  文件去重，uniq 只能判断相邻行是否重复。使用前需要先将文件内容排序。
+
+  常用参数：
+  #+BEGIN_EXAMPLE
+-c 参数输出重复次数。
+-d 只输出重复的行，每组一个
+-f 跳过每行前 N 个域进行比较。
+-s 跳过每行前 N 个字符进行比较。
+-u 只输出不重复的行。
+  #+END_EXAMPLE

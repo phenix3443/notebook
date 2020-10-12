@@ -1,0 +1,4 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang 常见问题
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com

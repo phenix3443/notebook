@@ -1,0 +1,226 @@
+# -*- coding:utf-8-*-
+#+TITLE: Effective Modern CMake
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+本文翻译自 [[https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1][Effective Modern CMake]]
+
+* 概述
+  有关 CMake 的简短用户级介绍，请观看 C++ Weekly，第 78 集，Jason Turner 讲述的 [[https://llvm.org/docs/CMakePrimer.html][CMake简介]]。 LLVM 的 [[https://llvm.org/docs/CMakePrimer.html][CMake Primer]] 提供了对 CMake 语法的高级介绍。
+
+  之后，观看 Mathieu Ropert 的 CppCon 2017 演讲，[[https://www.youtube.com/watch?v=eC9-iRN2b04][使用现代 CMake 模式进行良好的模块化设计]]（[[https://github.com/CppCon/CppCon2017/blob/master/Tutorials/Using%2520Modern%2520CMake%2520Patterns%2520to%2520Enforce%2520a%2520Good%2520Modular%2520Design/Using%2520Modern%2520CMake%2520Patterns%2520to%2520Enforce%2520a%2520Good%2520Modular%2520Design%2520-%2520Mathieu%2520Ropert%2520-%2520CppCon%25202017.pdf][幻灯片]]）。它提供了对现代 CMake 的全面解释，以及为什么它比“老派”CMake 好得多。该演讲中的模块化设计思想基于 John Lakos 的《大规模 C++ 软件设计》（[[https://book.douban.com/subject/26220142/][中文]]）（[[https://book.douban.com/subject/1459011/][英文]]）。
+
+  下一部关于现代 CMake 细节的视频是 Daniel Pfeifer 的 C++ Now 2017 talk [[https://www.youtube.com/watch?v=bsXLMQ6WgIk][Effective CMake]]（[[https://github.com/boostcon/cppnow_presentations_2017/blob/master/05-19-2017_friday/effective_cmake__daniel_pfeifer__cppnow_05-19-2017.pdf][幻灯片]]）。
+
+  本文深受 Mathieu Ropert 和 Daniel Pfeifer 的谈话影响。 如果您对 CMake 的历史和内部架构感兴趣，请查看[[http://aosabook.org/en/index.html][《开源应用程序架构》（The Architecture of Open Source Applications）]]一书中的 [[http://www.aosabook.org/en/cmake.html][CMake]] 一文。
+
+* 通用
+  + 至少使用 CMake 3.0.0 版。
+
+    Modern CMake 仅适用于 3.0.0 版本。
+
+
+  + 像生产代码一样处理 CMake 代码。
+
+    CMake 是代码。因此它应该是干净的。对于 CMakeLists.txt 和模块使用与代码库相同的原则。
+
+  + 全局定义项目属性。
+
+    例如，项目可能使用一组通用的编译器警告。在顶级 CMakeLists.txt 文件中全局定义此类属性可防止由于依赖目标使用更严格的编译器选项，导致依赖目标不能编译的情况，。全局定义此类项目属性可以更轻松地管理具有所有目标的项目。
+
+  + 忘记命令 add_compile_options，include_directories，link_directories，link_libraries。
+
+    这些命令在目录级别上运行。在该级别定义的所有目标都继承这些属性。这增加了隐藏依赖的机会。更好地直接对目标进行操作。
+
+  + 不要使用 CMAKE_CXX_FLAGS。
+
+    不同的编译器使用不同的命令行参数格式。在 CMAKE_CXX_FLAGS 中通过 ~-std=c++14~ 设置 C++ 标准将来可能会有问题，因为这些要求也在 C++ 17 等其他标准中得到满足，并且编译器选项在旧编译器上并不相同。因此，最好告诉 CMake 编译功能，以便它可以找出要使用的相应编译器选项。
+
+  + 不要滥用使用 requirements
+
+    例如，不要将 =-Wall= 添加到 target_compile_options 的 PUBLIC 或 INTERFACE 部分，因为构建依赖目标并不需要它。
+
+* 模块
+  + 使用现代查找模块来声明导出目标
+
+    从 CMake 3.4 开始，越来越多的 find 模块导出可以通过 target_link_libraries 使用的目标。
+
+  + 使用外部包的导出目标。
+
+    不要回到使用外部包定义的变量的旧 CMake 样式。通过 target_link_libraries 使用导出的目标。（何意？）
+
+  + 使用 find 模块用于不支持 CMake 的第三方库。
+
+    CMake 为第三方库提供了一系列查找模块。例如，Boost 不支持 CMake。相反，CMake 提供了一个在 CMake 中使用 Boost 的查找模块。
+
+  + 如果第三方库不支持使用 CMake，请将其作为 bugg 报告给作者。如果库是开源项目，请考虑发送补丁。
+
+    CMake 在行业中占主导地位。如果库作者不支持 CMake，这是一个问题。
+
+  + 为不支持 CMake 的第三方库编写查找模块。
+
+    可以通过查找模块正确导出目标来改装为不支持 CMake 的外部程序包。
+
+  + 如果您是库作者，请导出库接口。
+
+    请参阅 Daniel Pfeifer 的 C++ Now 2017 talk  [[https://www.youtube.com/watch?v=bsXLMQ6WgIk][Effective CMake]]（[[https://github.com/boostcon/cppnow_presentations_2017/blob/master/05-19-2017_friday/effective_cmake__daniel_pfeifer__cppnow_05-19-2017.pdf][幻灯片]]）了解如何执行此操作。请记住导出正确的信息。使用 BUILD_INTERFACE 和 INSTALL_INTERFACE 生成器表达式作为过滤器。
+
+* 项目
+  + 避免在项目命令的参数中使用自定义变量。
+
+    保持简单。不要引入不必要的自定义变量。不要用 =add_library(a ${MY_HEADERS} ${MY_SOURCES})= ，请执行 =add_library(a b.h b.cpp)= 。
+
+  + 不要在项目中使用文件（GLOB）。
+
+    CMake 是构建系统生成器，而不是构建系统。它在生成构建系统时将 GLOB 表达式计算为文件列表。然后，构建系统对此文件列表进行操作。因此，构建系统无法检测到文件系统中发生了某些变化。
+
+    CMake 不能只将 GLOB 表达式转发到构建系统，以便在构建时评估表达式。 CMake 希望成为受支持的构建系统的共同点。并非所有构建系统都支持此功能，因此 CMake 也不能支持它。
+
+  + 将特定于 CI 的设置放在 CTest 脚本中，而不是放在项目中。
+
+    它只会让事情变得简单。有关详细信息，请参阅 CTest 脚本中的 Dashboard Client。
+
+  + 遵循测试名称的命名约定。
+
+    当通过 CTest 运行测试时，这简化了正则表达式的过滤。
+
+* 目标属性
+  + 考虑目标和属性。
+
+    通过根据目标定义属性（即编译定义，编译选项，编译功能，包含目录和库依赖性），它有助于开发人员在目标级别思考构建系统。开发人员了解单个目标不需要了解整个系统。构建系统处理传递性。
+
+  + 将目标当做对象。
+
+    调用成员函数会修改对象的成员变量。
+
+    类似于构造函数：
+    + add_executable
+    + add_library
+
+    类比成员变量：
+    + 目标属性（这里列出太多）
+
+    类比成员函数：
+    + target_compile_definitions
+    + target_compile_features
+    + target_compile_options
+    + target_include_directories
+    + target_link_libraries
+    + target_sources
+    + get_target_property
+    + set_target_property
+
+  + 保持内部属性 PRIVATE。
+
+    如果目标需要内部属性（即编译定义，编译选项，编译功能，包含目录和库依赖项），请将它们添加到 target_ *命令的 PRIVATE 部分。
+
+  + 使用 target_compile_definitions 声明编译定义。
+
+    这将编译定义与其对目标的可见性（PRIVATE，PUBLIC，INTERFACE）相关联。这比使用 add_compile_definitions 要好，后者与目标无关。
+
+  + 使用 target_compile_options 声明编译选项。
+
+    这将编译选项与其可见性（PRIVATE，PUBLIC，INTERFACE）关联到目标。这比使用与目标没有关联的 add_compile_options 更好。但要注意不要声明影响 ABI 的编译选项。全局声明这些选项。请参阅“不要使用 target_compile_options 来设置影响 ABI 的选项。”
+
+  + 使用 target_compile_features 声明编译功能。
+
+    有待讨论。
+
+  + 使用 target_include_directories 声明包含目录。
+
+    这会将 include 目录与其可见性（PRIVATE，PUBLIC，INTERFACE）关联到目标。这比使用 include_directories 更好，include_directories 与目标没有关联。
+
+  + 使用 target_link_libraries 声明直接依赖项。
+
+    这会将使用要求从依赖目标传播到依赖目标。该命令还解决了传递依赖性。
+
+  + 不要将 target_include_directories 与组件目录之外的路径一起使用。
+
+    使用组件目录外部的路径是隐藏的依赖项。相反，通过 target_link_directories 将 include 目录作为使用要求传播到依赖目标。
+
+  + 使用 target_ *时，始终显式声明属性 PUBLIC，PRIVATE 或 INTERFACE。
+
+    显式说明减少了无意中引入隐藏依赖项的机会。
+
+  + 不要使用 target_compile_options 来设置影响 ABI 的选项。
+
+    对多个目标使用不同的编译选项可能会影响 ABI 兼容性。防止此类问题的最简单方法是全局定义编译选项（另请参阅“全局定义项目属性”。）
+
+  + 使用在同一 CMake 树中定义的库应该与使用外部库相同。（何意？）
+
+    可以直接访问在同一 CMake 树中定义的包。通过 CMAKE_PREFIX_PATH 可以使预构建的库。如果在同一构建树中定义包，可使用 find_package 查找包。将目标 Bar 导出到名称空间 Foo 时，还可以通过 =add_library(Foo::Bar ALIAS Bar)= 创建别名 =Foo::Bar= 。创建一个列出所有子项目的变量。定义宏 find_package 以包装原始的 find_package 命令（现在可以通过_find_package 访问）。如果变量包含包的名称，则宏禁止对_find_package 的调用。有关详细信息，请参阅 Daniel Pfeifer 的 C ++ Now 2017 talk Effective CMake（幻灯片 31ff。）。
+
+* 函数和宏
+  + 只要合理，首选函数优于宏。
+
+    除基于目录的作用域外，CMake 函数也有自己的作用域。这意味着在父范围内看不到函数内设置的变量。宏不是这样。
+
+  + 使用宏仅定义非常小的功能位或包装具有输出参数的命令。否则创建一个函数。
+
+    函数有自己的范围，宏没有。这意味着在宏中设置的变量将在调用范围中可见。
+
+    宏的参数未设置为变量，而是在执行宏之前在宏中解析对参数的解引用。使用未引用的变量时，这可能会导致意外行为。一般来说，这个问题并不常见，因为它需要使用名称在父作用域中重叠的非解除引用的变量，但重要的是要注意，因为它可能导致细微的错误。
+
+  + 不要使用影响目录树中所有目标的宏，例如 include_directories，add_definitions 或 link_libraries。
+
+    那些宏是邪恶的。如果在顶层使用，则所有目标都可以使用它们定义的属性。例如，所有目标都可以使用（即#include）include_directories 定义的头。如果目标不需要链接（例如，接口库，内联模板），则在这种情况下甚至不会出现编译器错误。通过这些宏的其他目标很容易意外地创建隐藏的依赖项。
+
+* 参数
+  + 使用 cmake_parse_arguments 作为处理基于参数的行为或可选参数的推荐方法。
+
+    不要重新发明轮子。
+
+* 循环
+  + 使用现代 foreach 语法。
+    + foreach(var IN ITEMS foo bar baz)
+    + foreach(var IN LISTS my_list)
+    + foreach(var IN LISTS my_list ITEMS foo bar baz)
+
+* 包
+  CPack 是 CMake 的一部分，并与它很好地集成。
+  + 编写 CPackConfig.cmake 生成 CMake 对应产物
+
+    这样就可以设置不需要出现在项目中的其他变量。
+
+* 交叉编译
+  + 使用工具链进行交叉编译。
+
+    工具链文件封装了工具链以进行交叉编译。
+
+  + 保持工具链文件简单。
+
+    它更容易理解，更易于使用。不要将逻辑放在工具链文件中。为每个平台创建一个工具链文件。
+
+* 警告和错误
+  + 正确处理构建错误。
+    + 修复它们。
+    + 拒绝拉取请求。
+    + 阻止发布。
+  + 将警告视为错误。
+
+    要将警告视为错误，请不要将 =-Werror= 传递给编译器。如果这样做，编译器会将警告视为错误。不能再将警告视为错误，因为您不再收到任何警告。你得到的只是错误。
+    + 除非已经达到零警告，否则无法启用-Werror。
+
+    + 除非您已修复该级别引入的所有警告，否则无法增加警告级别。
+
+    + 除非已经修复了编译器在警告级别报告的所有新警告，否则无法升级编译器。
+
+    + 除非您已将代码移出现在 =\[\[deprecated\]\]= 的任何符号，
+
+    + 否则无法更新依赖项。只要仍然使用内部代码，您就不能 =\[\[deprecated\]\]= 。
+
+    + 但是一旦它不再使用，你也可以删除它。将新警告视为错误。在开发周期开始时（例如，sprint），允许引入新警告。
+
+    + 提高警告级别，明确启用新警告。更新编译器。更新依赖项。将符号标记为 =\[\[deprecated\]\]= 。
+
+  + 降低警告的数量。
+  + 重复。
+
+* 静态分析
+  + 多个支持的分析仪。
+
+    使用 clang-tidy（<lang> _CLANG_TIDY），cpplint（<lang> _CPPLINT），include-you-you-use（<lang> _INCLUDE_WHAT_YOU_USE）和 LINK_WHAT_YOU_USE 可以帮助您在代码中找到问题。这些工具的诊断输出将显示在构建输出和 IDE 中。
+
+  + 对于每个头文件，必须有一个关联的源文件，在顶部 =#include= 头文件，即使该源文件否则为空。
+
+    大多数分析工具都会报告当前源文件和相关标头的诊断信息。不会分析没有关联源文件的头文件。可能可以自定义头文件的过滤器，但头文件可能会分析多次。

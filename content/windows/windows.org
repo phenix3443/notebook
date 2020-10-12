@@ -1,0 +1,60 @@
+# -*- coding:utf-8-*-
+#+TITLE: windows 日常使用
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+
+* 软件
+
+** 7zip
+   解压缩工具。
+** beyond compare
+   文件对比工具。
+** brook
+   翻墙工具。
+
+** charles
+   前端调试工具。
+
+** chrome
+   浏览器。
+
+** emacs
+   现在正在使用的 Emacs 版本是：
+
+   #+BEGIN_SRC elisp :results html :exports results
+(emacs-version)
+   #+END_SRC
+
+** everything
+   文件查找工具。
+
+** foxit reader
+   pdf 工具。
+
+** Internet Download Manager(IDM)
+   下载工具。
+
+** PotPlayer
+
+   播放器
+** sourcetree
+   代码仓库管理工具。
+
+** sublime
+   编辑器。
+
+** teamviewer
+   远程工具。
+
+** virtualbox
+   虚拟机。
+
+** xshell,xftp,xmanager
+   远程登陆工具。
+
+** 坚果云
+   文件同步工具。
+
+** 网易云音乐
+   音乐播放。

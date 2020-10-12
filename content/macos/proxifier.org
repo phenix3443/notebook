@@ -1,0 +1,8 @@
+# -*- coding:utf-8-*-
+#+TITLE: proxifier
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  有些应用程序没有设置网络代理的选项，通过 [[https://www.proxifier.com/][Proxifier]] ，让这些程序也可以通过 SOCKS 或 HTTPS 代理链接网络。

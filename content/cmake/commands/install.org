@@ -1,0 +1,50 @@
+# -*- coding:utf-8-*-
+#+TITLE: install
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  此命令生成项目的安装规则。在源目录中调用此命令指定的规则在安装期间按顺序执行。跨目录的顺序是未定义的。
+
+* 公共选项
+  此命令有多个 *签名* 。其中一些定义了文件和目标的安装 *选项* 。此处介绍了多个签名共有的选项，但它们仅对指定它们的签名有效。常见的选项是：
+
+** DESTINATION
+   指定要安装文件的磁盘上的目录。如果给出了完整路径（带有前导斜杠或驱动器号），则直接使用它。如果给出了相对路径，则相对于 [[https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX][CMAKE_INSTALL_PREFIX]] 变量的值进行解释。可以使用 CMAKE_INSTALL_PREFIX 变量文档中说明的 DESTDIR 机制在安装时重定位前缀。
+
+** PERMISSIONS
+   指定已安装文件的权限。有效权限为 =OWNER_READ，OWNER_WRITE，OWNER_EXECUTE，GROUP_READ，GROUP_WRITE，GROUP_EXECUTE，WORLD_READ，WORLD_WRITE，WORLD_EXECUTE，SETUID 和 SETGID= 。再忽略某些权限的平台上有些权限没有意义。
+
+** CONFIGURATIONS
+   指定应用安装规则的构建配置列表（Debug, Release 等）。
+
+** COMPONENT
+   指定与安装规则关联的安装组件名称，例如 “runtime” 或“development”。在特定于组件的安装期间，将仅执行与给定组件名称关联的安装规则。在完整安装期间，将安装所有组件。如果未提供 COMPONENT，则会创建默认组件 “Unspecified”。可以使用 CMAKE_INSTALL_DEFAULT_COMPONENT_NAME 变量控制默认组件名称。
+
+** RENAME
+
+   指定可能与原始文件不同的已安装文件的名称。仅当命令安装单个文件时才允许重命名。
+
+** OPTIONAL
+   如果要安装的文件不存在，指出这不是错误。
+
+* 签名
+
+** TARGETS
+
+** FILES/PROGRAMS
+
+** DIRECTORY
+
+** SCRIPT
+
+   #+BEGIN_SRC cmake
+install([[SCRIPT <file>] [CODE <code>]] [...])
+   #+END_SRC
+   SCRIPT 将在安装期间调用给定的 CMake 脚本文件。 如果脚本文件名是相对路径，则将根据当前源目录解释它。CODE 将在安装期间调用给定的 CMake 代码。code 是在双引号中的字符串。 例如，代码
+
+   #+BEGIN_SRC cmake
+install(CODE "MESSAGE(\"Sample install message.\")")
+   #+END_SRC
+
+** EXPORT

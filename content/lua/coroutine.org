@@ -1,0 +1,133 @@
+# -*- coding:utf-8-*-
+#+TITLE: 深入理解coroutine
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+实现类似管道类型的生产者消费者模型。
+* 生产者、消费者练习
+  #+BEGIN_SRC lua
+-- 消费者驱动 :tangle lua-analysis/producer-consumer.lua
+producer = coroutine.create(function(status)
+        while status do
+            local product = io.read()
+            status = coroutine.yield(product)
+        end
+end)
+function consumer()
+    while true do
+        local status,value = coroutine.resume(producer,true)
+        if value ~= "quit" then  --判断是否要退出程序
+            print(value)
+        else
+            coroutine.resume(producer,false)
+            break
+        end
+    end
+end
+consumer()
+  #+END_SRC
+
+* 添加过滤的生产者、消费者程序
+  #+BEGIN_SRC lua :tangle lua-analysis/producer-filter-consumer.lua
+function prod()
+    return coroutine.create(function (is_run)
+            while is_run do
+                local str = io.read()
+                is_run = coroutine.yield(str)
+            end
+    end)
+end
+
+function filter(p)
+    return coroutine.create(function (is_run)
+            local i = 0
+            while is_run do
+                local status,str = coroutine.resume(p,true)
+                if str ~= "quit" then
+                    i = i + 1
+                    str = string.format("%d ",i) .. str
+                end
+                is_run = coroutine.yield(str)
+            end
+            coroutine.resume(prod,false) --close producer
+    end)
+end
+
+function consumer(f)
+    while true do
+        local status, data = coroutine.resume(f,true)
+        if data ~= "quit"then
+            print(data)
+        else
+            coroutine.resume(f,false) --close filter
+            break
+        end
+    end
+end
+
+consumer(filter(prod()))
+  #+END_SRC
+
+* 非抢先式多线程
+  协同程序预常规的多线程的不同之处在于，协同程序是非抢占式的。就是说当一个协同程序运行时，是无法从外部停止它的。
+  #+BEGIN_SRC lua
+require "socket"
+function Download(host, file)
+    local c = assert(sokcet.connect(host, 80))
+    local count = 0             -- 记录接受到的字节数
+    c:send("GET" .. file .. "HTTP/1.0\r\n\r\n")
+    while true do
+        local s, status, partial = Receive(c)
+        count = count + #(s or partial)
+        if status == "closed" then
+            break
+        end
+    end
+
+    c:close()
+    print(file,count)
+end
+
+function Receive(conncetion)
+    connection::settimeout(0)   -- 此处不会阻塞，所以节省了时间
+    local s,status,partial = connection:receive(2^10)
+    if status == "timeout" then
+        coroutine.yield(connection)
+    end
+    return s or partial, status
+end
+
+threads = {}
+
+function Get(host,file)
+    local co = coroutine.create(function ()
+            Download(host,file)
+    end)
+    table.insert(threads, co)
+end
+
+function Dispatch()
+    local i = 1
+    while true do
+        if threads[i] == nil then -- 是否还有下载线程
+            if threads[1] ==  nil then -- 下载列表是否为空
+                break
+            end
+            i = 1
+        end
+        local status, res = coroutine.resume(threads[i])
+        if not res then
+            table.remove(threads, i)
+        else
+            i = i + 1
+        end
+    end
+end
+
+local host = "www.w3.org"
+Get(host, "TR/htlm1401/htlm40.txt")
+Get(host, "TR/2002/REC-xhtml11-20020801/xhtlm1.pdf")
+
+Dispatch()
+  #+END_SRC

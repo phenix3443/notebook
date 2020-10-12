@@ -1,0 +1,73 @@
+# -*- coding:utf-8; -*-
+#+title: redis 入门指南
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介
+  + 存储结构：字符串、散列、列表、集合、有序集合。
+  + 主要用来做数据库、缓存系统、消息队列。
+* 准备
+  测试环境：
+  #+BEGIN_SRC sh
+uname -a
+  #+END_SRC
+** 安装
+
+   #+BEGIN_SRC sh
+sudo apt install redis-server redis-tools
+   #+END_SRC
+** 启动和停止
+   + 通过 redis-server 启动服务器
+   + 通过 redis-cli 执行命令
+** 配置文件
+   + 初始化脚本放在/etc/init/redis_端口号
+   + 配置文件/etc/redis/端口号.conf
+   + 持久化文件/var/redis/端口号
+   + 配置项：daemonize、pidfile、port、dir。
+* 入门
+  + 所有的 Redis 命令都是原子操作。
+** 字符串
+	+ 可执行的操作：SET、GET、MSET、MGET、SETNX、INCR、INCRBY、INCRBYFLOAT、DECR、DECRBY、APPEND、STRLEN、GETBIT、SETBIT、BITOP
+** 散列
+	+ 散列的值只能是字符串。
+	+ 可执行的操作：HSET、HGET、HMSET、HMGET、HGETALL、HSETNX、HINCRBY、HDEL
+** 列表
+	+ 列表的内部是使用双向列表实现的。
+	+ 可执行的操作：
+	  + LPUSH、LPOP
+	  + RPUHS、RPOP
+	  + LLEN、LRANGE、LREM、LINDEX、LTRIM、LINSERT、RPOPLPUSH
+** 集合
+	+ 集合内不使用值为空的散列表实现。
+	+ 可执行的操作：SADD、SREM、SMEMBERS、SISMEMBER、SDIFF、SINTER、SUNION、SCARD、SDIFFSTORE、SINTERSTORE、SUNIONSTORE、SRANDMEMBER、SPOP
+** 有序集合
+	+ 有序集合是使用散列表和跳跃表实现的。
+	+ 有序集合比列表类型更耗内存。
+	+ 可执行的操作：ZADD、ZSCORE、ZRANGE、ZREVRANGE、ZRANGEBYSCORE、ZINCRBY、ZCARD、ZCOUNT、ZREM、ZREMRANGEBYRANK、ZREMRANGEBYSCORE、ZRANK、ZINTERSTORE
+
+* 进阶
+** 事务
+   + 命令：MULTI、EXEC、WATCH
+   + 如果执行时候事务中的一条命令出错了，事务中的其他命令还是会继续执行。
+   + 事务没有回滚操作。
+** 生存时间
+   + 命令：EXPIRE、TTL、PERSIST、PEXPIRE
+   + 使用 SET 或 GETSET 命令为键赋值会清楚键的生存时间。
+** 排序
+   + 命令：SORT、BY、GET、STORE
+   + SORT 命令的时间复杂度是 O(n+mlogm)。
+** 消息通知
+   + 命令：BRPOP、PUBLISH、SUBSCRIBE、PSUBSCRIBE PUNSUBSCRIBE
+   + 如果先 publish，然后 subscribe，将收不到信息。
+** 管道
+   + 管道通过减少客户端与 Redis 的通信次数来实现降低往返时延累计值的目的。
+** 节省空间
+   + 精简键名和键值。
+   + 内部编码优化，Redis 为每种数据类型提供了两种内部编码实现：（需要深入了解）
+	 + 字符串：raw、int
+	 + 散列：ht、ziplist
+	 + 列表：linkedlist、ziplist
+	 + 集合：ht、intset
+	 + 有序集合：skiplist、ziplist
+
+* 实践

@@ -1,0 +1,57 @@
+# -*- coding:utf-8-*-
+#+TITLE: exec-path-from-shell
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+
+  [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] 是一个 GNU Emacs 库，用于确保 Emacs 中的环境变量与用户 shell 中的环境变量相同。
+
+* 原理
+  你是否曾经发现在 shell 中正常运行的命令，但在 Emacs 中无法找到？
+
+  这在 OS X 上经常发生，因为以 GUI 启动的 Emacs 实例继承了一组默认的环境变量。
+
+  这个库通过从用户的 shell 复制重要的环境变量来解决这个问题：它的工作原理是让你的 shell 打印变量，然后将它们复制到 Emacs 环境中。
+
+
+* 兼容性
+  如果在 Emacs 中通过对 =(getenv"SHELL")= 求值打印的路径指向 bash 或 zsh，这应该可以正常工作。
+
+  至少，这个包假定你的 shell 至少是 UNIX-y：如果 =(getenv"SHELL")= 求值为类似 ="... / cmdproxy.exe"= ，这个包可能不适合你。
+
+  此外，如果使用非 POSIX 标准 shell（如 tcsh 或 fish），则会要求您的 shell 将 sh 作为子 shell 执行，以便可以用可靠解析的格式打印变量。在这种情况下，sh 必须是符合 POSIX 的 shell。
+
+  请注意，尚未导出为环境变量的 shell 变量（例如，使用"export"关键字）可能对`exec-path-from-shell'不可见。
+
+* 安装
+
+* 配置
+  将以下内容添加到 init.el 中（在调用 package-initialize 之后）：
+  #+BEGIN_SRC elisp
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+  #+END_SRC
+
+  这将从您的 shell 设置$ MANPATH，$ PATH 和 exec-path，但仅限于 OS X 和 Linux。
+
+  可以通过在调用 exec-path-from-shell-initialize 之前自定义 exec-path-from-shell-variables，或者通过调用 exec-path-from-shell-copy-env 来复制其他环境变量的值，例如：
+  #+BEGIN_SRC elisp
+(exec-path-from-shell-copy-env "PYTHONPATH")
+#+END_SRC
+
+  也可以交互地调用该函数。
+
+** 正确设置 shell 启动文件
+   请注意，当 shell 由 exec-path-from-shell 运行时，shell 将继承 Emacs 的环境变量- 以避免意外，配置文件应将环境变量设置为其确切的所需最终值，即不要执行此操作：
+   #+BEGIN_SRC sh
+export PATH=/usr/local/bin:$PATH
+   #+END_SRC
+
+   而是这样做：
+   #+BEGIN_SRC sh
+export PATH=/usr/local/bin:/usr/bin:/bin
+   #+END_SRC
+
+   您还应该设置环境变量，以便它们可用于交互式 shell 和非交互式 shell。实际上，对于大多数人来说，这意味着将它们设置在 =~/.profile，~/.bash_profile，~/.zshenv= 而不是 =~/.bashrc= 和 =~/.zshrc= 中。默认情况下，exec-path-from-shell 会以一些执行时间为代价检查此错误。如果您的配置文件设置正确，您可以在调用 exec-path-from-shell-initialize 之前适当地设置 exec-path-from-shell-arguments（通常为 nil）以避免此开销。进一步帮助

@@ -1,0 +1,32 @@
+# -*- coding:utf-8-*-
+#+TITLE: redis
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+
+* redis 分布式部署，怎么减少同步？
+
+* 为什么单进程还那么高效？
+  + 完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于 HashMap，HashMap 的优势就是查找和操作的时间复杂度都是 O(1)；
+  + 数据结构简单，对数据操作也简单，Redis 中的数据结构是专门进行设计的；
+  + 采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；
+  + 使用多路 I/O 复用模型，非阻塞 IO；AE 事件框架。
+  + 使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis 直接自己构建了 VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；
+
+* 数据备份方式：RDB 和 AOF。
+* redis 数据类型及其底层数据结构。
+  + 列表对象 列表对象的编码可以是 ziplist 或者 linkedlist。
+  + 哈希对象 哈希对象的底层实现可以是 ziplist 或者 hashtable。
+  + 集合对象 集合对象的编码可以是 intset 或者 hashtable
+  + 有序集合对象 有序集合的编码可能两种，一种是 ziplist，另一种是 skiplist 与 dict 的结合。
+
+* 内存淘汰策略。
+  + volatile-lru：从设置过期时间的数据集(server.db[i].expires)中挑选出最近最少使用的数据淘汰。没有设置过期时间的 key 不会被淘汰，这样就可以在增加内存空间的同时保证需要持久化的数据不会丢失。
+  + volatile-ttl：除了淘汰机制采用 LRU，策略基本上与 volatile-lru 相似，从设置过期时间的数据集(server.db[i].expires)中挑选将要过期的数据淘汰，ttl 值越大越优先被淘汰。
+  + volatile-random：从已设置过期时间的数据集(server.db[i].expires)中任意选择数据淘汰。当内存达到限制无法写入非过期时间的数据集时，可以通过该淘汰策略在主键空间中随机移除某个 key。
+  + allkeys-lru：从数据集(server.db[i].dict)中挑选最近最少使用的数据淘汰，该策略要淘汰的 key 面向的是全体 key 集合，而非过期的 key 集合。
+  + allkeys-random：从数据集(server.db[i].dict)中选择任意数据淘汰。
+  + no-enviction：禁止驱逐数据，也就是当内存不足以容纳新入数据时，新写入操作就会报错，请求可以继续进行，线上任务也不能持续进行，采用 no-enviction 策略可以保证数据不被丢失，这也是系统默认的一种淘汰策略。
+
+    https://www.cnblogs.com/survivalist/p/8119891.html

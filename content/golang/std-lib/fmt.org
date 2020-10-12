@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: fmt
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/fmt/][fmt]] 使用与 C 的 printf 和 scanf 类似的功能实现格式化的 I/O。格式“verbs”派生自 C，但更简单。
+
+* 打印
+  常用格式化字符
+  + =%v= 以默认格式打印值，如果是 struct， =%+v= 会打印字段名。
+
+* func Errof
+  #+BEGIN_SRC go
+func Errorf(format string, a ...interface{}) error
+  #+END_SRC
+  Errorf 根据格式说明符设置格式，并返回字符串作为满足 error 的值。
+
+  如果格式说明符包含 =％w= 动词，并且后续也有 error 类型的实参，则返回的 error 将实现 Unwrap 方法，以返回该实参。包含多个 =％w= 动词或向其提供未实现 error 接口的操作数是无效的。另外， =％w= 动词是 =％v= 的同义词。

@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: luacov
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://github.com/keplerproject/luacov][LuaCov]] 是一个简单的 Lua 脚本覆盖分析器。当加载 luacov 模块运行 Lua 脚本时，它会生成一个 stats 文件，其中包含脚本每行的执行次数及其加载的模块。 然后，luacov 命令行脚本处理此文件，生成一个报告文件，该文件允许用户可视化未遍历的代码路径，这对于验证测试套件的有效性非常有用。
+
+* 安装
+  可以使用 LuaRocks 进行安装：
+  #+BEGIN_SRC sh
+luarocks install luacov
+  #+END_SRC
+  CLuaCov 是一个实验性 C 扩展，可以提高性能和分析的准确性。
+  #+BEGIN_SRC sh
+luarocks install cluacov
+  #+END_SRC
+
+* 使用
+  使用 LuaCov 包括两个步骤：运行脚本以收集覆盖数据，然后对收集的数据运行 luacov 以生成报告。
+
+  要收集覆盖数据，脚本需要加载 luacov 模块。这可以从命令行完成，无需修改脚本，如下所示：
+  #+BEGIN_SRC sh
+lua -lluacov test.lua
+  #+END_SRC
+  或者，可以将 =require("luacov")= 添加到脚本的第一行。
+
+  运行脚本后，将生成一个名为 =luacov.stats.out=  的文件。如果该文件已存在，则会向其添加统计信息。这对于在测试套件中进行具有不同输入参数的一系列运行是有用的。要从头开始计数，只需删除统计文件。
+
+  要生成报告，只需运行 luacov 命令行脚本即可。它希望在当前目录中找到一个名为 =luacov.stats.out= 的文件，并输出一个名为 luacov.report.out 的文件。该脚本采用以下参数：
+  #+BEGIN_SRC
+luacov [-c = configfile] [filename ...]
+  #+END_SRC
+
+  对于 =-c= 选项，请参阅下面的配置。filename（实际上是 Lua 模式）表示要包含在报告中的文件，在此处指定它们等于将它们添加到配置文件中的包含列表中，不需要.lua 扩展名。
+
+  请注意，要生成报告，luacov 将读取源文件。 因此，它希望在 luacov 模块运行时的相同位置找到它们（stats 文件存储文件名，但不存储源本身）。
+
+  要使关闭一些行的缺失报告告警，请在它们周围添加放置内联注释 =luacov: disable= 和 =luacov: enable= 。
+
+  #+BEGIN_SRC lua
+if SOME_DEBUG_CONDITION_THAT_IS_ALWAYS_FALSE_IN_TESTS then
+   -- luacov: disable
+
+   -- Lines here are not marked as missed even though they are not covered.
+
+   -- luacov: enable
+end
+  #+END_SRC
+
+  LuaCov 在正常程序终止时保存其统计数据。 如果你的程序是守护进程 - 换句话说，如果它没有正常终止 - 你可以使用 luacov.tick 模块或 tick 配置选项，它定期保存 stats 文件。 例如，要在 Xavante 上运行 LuaCov，只需修改 xavante_start.lua 的第一行:
+  #+BEGIN_SRC sh
+#!/usr/bin/env lua -lluacov.tick
+  #+END_SRC
+
+ 或者在 =.luacov= 配置文件添加
+ #+BEGIN_SRC lua
+tick = true
+ #+END_SRC
+
+* 配置
+  LuaCov 包含几个配置选项，其默认值存储在 =src/luacov/defaults.lua= 中。 这些是全局默认值。 要使用项目特定的配置，请创建 Lua 脚本，其中设置选项作为全局变量或返回带有一些选项的表，并将其作为 =.luacov= 存储在运行 luacov 的项目目录中。 例如，此配置通知 LuaCov 只应覆盖 foo 模块及其子模块，并且它们位于 src 目录中：
+  #+BEGIN_SRC lua
+modules = {
+   ["foo"] = "src/foo/init.lua",
+   ["foo.*"] = "src"
+}
+  #+END_SRC
+  其他配置选项，参见[[https://keplerproject.github.io/luacov/doc/modules/luacov.defaults.html][luacov.default]]

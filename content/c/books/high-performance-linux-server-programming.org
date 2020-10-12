@@ -1,0 +1,237 @@
+# -*- coding:utf-8-*-
+#+TITLE: Linux 高性能服务器编程
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: num:nil
+
+
+* 第一章 TCP/IP 协议族
+
+* 第二章 IP 协议详解
+
+* 第三章 TCP 协议详解
+
+* 第四章 TCP/IP 通信案例
+
+* 第五章 Linux 网络编程基础 API
+
+** 字节序
+   大端（人类书写习惯），小端。参见 [[https://github.com/phenix3443/test/blob/master/c/network/endianness.c][endianness.c]]
+
+** socket 地址 API
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/addr_api.c][addr_api.c]]
+
+** socket 基础 API
+   主要定义在 sys/socket.h 中，包括 socket 创建、命令、监听、绑定、发起连接、读写数据等。
+
+   + int socket(int domain, int type, int protocol);
+     + socketfd 和普通的 fd 有什么区别？
+     + socket 描述符指向一个数据结构， 例如 listenfd 指向的结构是这样的：（0.0.0.0,*,server_ip,server_port），connfd 指向的结构是(client_ip,client_port,server_ip,server_port)。
+
+   + int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+     + 也称为命名 socket。绑定本质上是做了什么？
+     + 常见错误：
+       + EACCES 地址受保护，用户不是超级用户。
+       + EADDRINUSE 给定的地址已被使用。
+
+   + int listen(int sockfd, int backlog);
+     + listen()将 sockfd 引用的套接字标记为被动套接字，即作为套接字使用 accept（2）系统调用接受传入的连接请求。
+     + backlog 参数定义 sockfd 的挂起连接队列可能增长的最大长度。 如果连接请求在队列已满时到达，则客户端可能会收到带有 ECONNREFUSED 指示的错误，或者，如果基础协议支持重新传输，则可以忽略该请求，以便稍后在连接时重新尝试成功。
+
+   + int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+     + *阻塞 IO* 。
+     + 参数 addr 是一个指向 sockaddr 结构的指针。如通信层所知，该结构填充有对等套接字的地址。返回地址的确切格式由套接字的地址族决定。当 addr 为 NULL 时，不会填充任何内容;在这种情况下，不使用 addrlen，也应该为 NULL。
+     + addrlen 参数是一个 value-result 参数：调用者必须初始化它以包含 addr 指向的结构的大小（以字节为单位）;返回时它将包含对等地址的实际大小。
+
+   + int connect(int socket, const struct sockaddr *address, socklen_t address_len);
+
+   + ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+     + send（）和 write（2）之间的唯一区别是标志的存在。使用零标志参数，send（）等效于 write（2）。
+     + 如果发送缓冲区太小
+       + 阻塞
+       + 非阻塞情况下，返回-1，并设置 errno 为 EAGAIN or EWOULDBLOCK。
+
+   + ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+     + 返回 0 表示对方已经关闭连接。
+     + 如果没有数据可接收：
+       + 阻塞
+       + 非阻塞 IO 情况下，返回-1，并设置 errno 为 EAGAIN or EWOULDBLOCK。
+
+   + sendto
+   + recvfrom
+   + getsockopt
+   + setsockopt
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/sock_api.c][sock_api.c]]
+
+   + getsockname
+   + getpeername
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/get_remote_addr_by_getpeername.c][get_remote_addr_by_getpeername.c]]
+
+** 工作流程
+   服务器端在调用 listen 之后，内核会建立两个队列，SYN 队列和 ACCEPT 队列，其中 ACCPET 队列的长度由 backlog 指定。
+
+   服务器端在调用 accpet 之后，将阻塞，等待 ACCPT 队列有元素。
+
+   客户端在调用 connect 之后，将开始发起 SYN 请求，请求与服务器建立连接，此时称为第一次握手。
+
+   服务器端在接受到 SYN 请求之后，把请求方放入 SYN 队列中，并给客户端回复一个确认帧 ACK，此帧还会携带一个请求与客户端建立连接的请求标志，也就是 SYN，这称为第二次握手。
+
+   客户端收到 SYN+ACK 帧后，connect 返回，并发送确认建立连接帧 ACK 给服务器端。这称为第三次握手。
+
+   服务器端收到 ACK 帧后，会把请求方从 SYN 队列中移出，放至 ACCEPT 队列中，而 accept 函数也等到了自己的资源，从阻塞中唤醒，从 ACCEPT 队列中取出请求方，重新建立一个新的 sockfd，并返回。
+
+** 网络信息 API
+   主要定义在 netdb.h 中，包括主机名和 IP 地址的转换、服务名和端口号之间的转换等。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/netinfo_api.c][netinfo.c]]
+
+* 第六章 高级 IO 函数
+  + pipe：创建管道，实现进程间通信。
+  + dup 和 dup2：创建指向同一文件的描述符。
+  + readv 和 writev：分散读和集中写。
+  + sendfile：在两个文件描述符间传递数据，几乎是专门为在网络上传输文件而设计的。
+  + mmap 和 munmap： 设置进程间通信的共享内存。
+  + splice： 两个文件描述符之间移动数据，零拷贝操作。
+  + tee： 两个管道描述符间复制数据，但它不消耗数据。
+  + fcntl：对文件描述符的各种控制操作。
+
+* 第七章 Linux 服务器程序规范
+** 日志
+** 用户信息
+** 进程间关系
+** 系统资源限制
+** 改编工作目录和根目录
+** 服务器程序后台话
+* 第八章 高性能服务器编程框架
+** 8.1 服务器模型
+   + C/S
+   + P2P
+
+** 8.2 服务器编程框架
+   + IO 处理单元
+   + 逻辑单元
+   + 网络存储单元
+
+   各个单元之间通过 *请求队列* 进行解耦。
+
+** 8.3 I/O 模型
+   socket 基础 api 中，可能被阻塞系统调用包括 accept、send、recv、connect。
+
+   只有在事件已经发生的情况下操作非阻塞 IO（读写）才能提高程序的效率，因此非阻塞 IO 通常要和其他 IO 通知机制一起使用，比如 IO 复用和 SIGIO 信号。
+
+   Linux 上 常用的 IO 复用函数是 select、pool、epoll_wait，IO 复用函数本身是阻塞的，它们能提高效率的原因在于它们具有同时监听多个 IO 事件的能力。
+
+   阻塞 IO、IO 复用和信号驱动 IO 都是同步 IO 模型，因为这三种 IO 模型中，IO 的读写操作都是在 IO 事件发生后，由应用程序完成的。
+
+   异步 IO 模型，用户可以直接对 IO 执行读写操作，这些操作告诉内核用户读写缓冲区的位置，以及 IO 操作完成后内核通知应用程序的方式。异步 IO 总是立即返回，而不论 IO 是否阻塞的，真正的读写操作由内核接管。
+
+   同步 IO 要求用户代码自行执行 IO 操作（数据读写），异步 IO 由内核执行 IO 操作。
+   同步 IO 向应用程序通知的 IO 就绪事件，异步 IO 向应用程序通知的事 IO 完成事件。
+
+** 8.4 两种高效的事件处理方式
+   + reactor
+   + proactor
+
+** 8.5 两种高效的并发模式
+   + 半同步/半异步
+   + 领导者/追随者
+
+** 8.6 有限状态机
+   一种高效的逻辑处理方式。
+
+** 8.7 提高服务器性能的其他建议
+   + 池
+   + 数据复制
+   + 上下文切换和锁
+
+* 第九章 I/O 复用
+  IO 复用是的程序能够同时监听多个描述符，这对提高程序的性能至关重要。
+
+  但是，IO 复用函数本身是阻塞，当多个文件描述符就绪时，如果不采用额外措施，程序只能按序处理其中的每个文件描述符，这使得程序看起来是串行工作的，如果要实现并发，只能使用多进程或多线程等手段。
+
+  参见 [[https://github.com/phenix3443/test/blob/master/c/network/echo_server_block.c][echo_server_block.c]]
+
+** 9.1 select
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/echo_server_select.c][echo_server_select.c]]
+
+** 9.2 poll
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/echo_server_poll.c][echo_server_poll.c]]
+
+** 9.3 epoll
+   [[https://zhuanlan.zhihu.com/p/64746509][epoll 的本质]]
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/network/echo_server_epoll.c][echo_server_epoll.c]]
+
+*** ET 一定比 LT 高效么？
+
+** 文件描述符就绪条件
+
+** 为什么 IO 复用要使用非阻塞 socket
+   作者：晨随
+   链接：https://www.zhihu.com/question/33072351/answer/55929520
+   来源：知乎
+   著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+   select 的手册有如下内容：
+   #+begin_example
+   Under Linux, select() may report a socket file descriptor as "ready for reading", while nevertheless a subsequent read blocks. This could for example happen  when  data has arrived but upon examination has wrong checksum and is discarded.  There may be other circumstances in which a file descriptor is spuriously reported as ready.  Thus it may be safer to use O_NONBLOCK on sockets that should not block.
+   #+end_example
+   当某个 socket 接收缓冲区有新数据分节到达，然后 select 报告这个 socket 描述符可读，但随后，协议栈检查到这个新分节检验和错误，然后丢弃这个分节，这时候调用 read 则无数据可读，如果 socket 没有被设置 nonblocking，此 read 将阻塞当前线程。可以看出，select 返回某个描述符读写就绪，并不意味着接下来的读写操作全过程就一定不会阻塞。所以 I/O 多路复用绝大部分时候是和非阻塞的 socket 联合使用。
+
+* 第十章 信号
+**  linux 信号概述
+
+*** 发送信号
+
+    + int kill(pid_t pid, int sig);
+
+*** 信号处理方式
+
+    + typedef void (*__singhandler_t)(int)
+
+    信号处理函数应该可重入的，否则容易引发一些竟态条件。所以在信号的处理函数中严禁调用一些不安全的函数。
+
+*** Linux 信号
+
+*** 中断系统调用
+    程序处于阻塞状态下的系统调用时接收到信号，并且为该信号设置了信号处理函数，默认情况下系统调用将会中断，并且 errno 设置为 EINTER。可以使用 sigaction 函数为信号设置 SA_RESTART 标志咦自动重启被该信号中断的系统调用。
+
+** 信号函数
+
+*** signal 函数
+    参见 [[https://github.com/phenix3443/test/blob/master/c/system/signal.c][signal.c]]
+
+*** sigaction 函数
+
+** 信号集
+
+** 统一事件源
+   信号处理 [[https://github.com/phenix3443/test/blob/master/c/network/signal_as_event.c][signal_as_events.c]]
+
+* 第十一章 定时器
+  三种定时方法：
+  + socket 选项
+  + SIGALARM 信号：alarm 和 settimer
+  + IO 复用系统调用的超时参数。
+
+* 第十二章 高性能 I/O 框架 Libevent
+  reactor 模式的 IO 框架组件：
+  + 句柄：当内核检测到就绪事件时，它将通过句柄来通知应用程序这一事件。
+  + 事件多路分发器：IO 复用技术。
+  + 事件处理器和具体事件处理器
+
+* 第十三章 多进程编程
+
+* 第十四章 多线程编程
+  内核线程由内核调用，用户线程由线程库调用。
+
+  单进程单线程->单进程多线程->多进程多线程
+
+* 第十五章 进程池和线程池
+
+* 第十六章 服务器调制、调试和测试
+
+* 第十七章 系统检测工具

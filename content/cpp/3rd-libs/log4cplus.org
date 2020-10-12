@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: log4cplus
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+* 概述
+* 编译
+* 使用
+
+  #+BEGIN_SRC sh
+log4cplus::initialize();
+  #+END_SRC

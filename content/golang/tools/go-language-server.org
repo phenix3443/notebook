@@ -1,0 +1,12 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-langserver
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/sourcegraph/go-langserver][go-langserver]] 是一个 Go 语言服务器，它使用语言服务器协议(Language Server Protocol)。它支持编辑器功能，例如 Go 项目的 go-to-definition，hover 和 find-references。
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u github.com/sourcegraph/go-langserver
+  #+END_SRC

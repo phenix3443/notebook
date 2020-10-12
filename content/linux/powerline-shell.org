@@ -1,0 +1,22 @@
+# -*- coding:utf-8-*-
+#+TITLE: powerline-shell
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://github.com/b-ryan/powerline-shell][powerline-shell]] 是 Bash，ZSH，Fish 和 tcsh 的一个漂亮而有用的提示生成器。
+
+  + 显示有关 git/svn/hg/fossil 分支的一些重要细节（见下文）
+  + 如果最后一个命令退出并显示失败代码，则更改颜色。
+  + 如果您对目录树太深，请使用省略号缩短显示的路径。
+  + 显示当前的 Python virtualenv 环境。
+  + 它易于定制和扩展。
+
+  生成的提示类似于 [[file:powerline.org][powerline]] ，但此项目与 powerline 线无关。
+
+* 安装
+
+* 配置
+
+* 使用

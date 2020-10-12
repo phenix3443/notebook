@@ -1,0 +1,81 @@
+# -*- coding:utf-8-*-
+#+TITLE: pgFormatter
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/darold/pgFormatter][pgFormatter]] 是 PostgreSQL 和 SQL 的代码格式化工具。可以识别 SQL-92、SQL-99、SQL-2003，SQL-2008，SQL-2011 和 PostgreSQL 中特定的关键字，也适用于任何其他数据库。
+
+  pgFormatter 可以作为控制台程序或 CGI 使用。它会自动检测所处环境并根据上下文输出为文本或 HTML。
+
+  高亮关键字显示仅在 CGI 上下文中可用。
+
+* 安装
+  #+BEGIN_SRC sh
+git clone git@github.com:darold/pgFormatter.git
+cd pgFormatter/
+perl Makefile.PL
+make && sudo make install
+  #+END_SRC
+
+* 配置
+
+* 使用
+
+** 终端/控制台执行
+   #+BEGIN_EXAMPLE
+pg_format [options] file.sql
+   #+END_EXAMPLE
+
+   Options:
+   + -a | --anonymize : 隐藏查询中的所有文字，有助于在格式化之前隐藏机密数据。
+   + -b | --comma-start    : 在参数列表中，以逗号开头（参见 -e）。
+   + -B | --comma-break    : 在 insert 语句中，在每个逗号后添加换行符。
+   + -d | --debug：启用调试模式。默认情况下禁用。
+   + -e | --comma-end：在参数列表中，以逗号结尾（默认）
+   + -f | --function-case N：更改保留关键字的大小写。默认值保持不变：0。值：0 => 未更改，1 => 小写，2 => 大写，3 => 大写。
+   + -F | --format STR：输出格式：text 或 html。默认值：text。
+   + -h | --help：显示此消息并退出。
+   + -m | --maxlength SIZE：查询的最大长度，超过给定大小将被切割。默认值：无截断。
+   + -n | --nocomment：从 SQL 代码中删除任何注释。
+   + -o | --output file：定义输出的文件名。默认值：stdout。
+   + -p | --placeholder re：设置正则表达式以查找不得更改的代码。
+   + -s | --spaces size：更改空格缩进，默认为 4 个空格。
+   + -S | --separator STR：动态代码分隔符，默认为单引号。
+   + -t | --format-type：为某些语句尝试另一种格式化类型。
+   + -u | --keyword-case N：更改保留关键字的大小写。默认值为大写：2。值：0 => 未更改，1 => 小写，2 => 大写，3 => 大写。
+   + -v | --version：显示 pg_format 版本并退出。
+
+   示例：
+   #+BEGIN_SRC sh
+cat samples/ex1.sql | pg_format -
+pg_format -n samples/ex1.sql
+pg_format -f 2 -n -o result.sql samples/ex1.sql
+   #+END_SRC
+
+** CGI context
+   Install pg_format into your cgi-bin folder, grant execution on it as a CGI script (maybe you should add the .cgi extension) and get it from your favorite browser. Copy files logo_pgformatter.png and icon_pgformatter.ico in the CGI directory, pg_format.cgi look for them in the same repository.
+
+   将 pg_format 安装到 cgi-bin 文件夹，授予其作为 CGI 脚本的执行权（可能应该添加 =.cgi= 扩展名），并在浏览器中将其打开。 将文件 logo_pgformatter.png 和 icon_pgformatter.ico 复制到 CGI 目录中，pg_format.cgi 在同一个目录中查找它们。
+
+   You have a live example without limitation than ten thousand characters in your SQL query here: http://sqlformat.darold.net/
+
+   这里有一个示例，可处理超过一万个字符的 SQL 查询：http：//sqlformat.darold.net/
+
+
+
+   pg_format will automatically detected that it is running in a CGI environment and will output all html code needed to run an online code formatter site. There's nothing more to do.
+
+   pg_format 能自动检测到它在 CGI 环境中运行，并将输出运行在线代码格式化程序站点所需的所有 html 代码。
+
+   You need to install Perl CGI module first if it is not already the case:
+
+   可能需要根据不同发行版安装 Perl CGI 模块：
+
+   #+BEGIN_SRC sh
+yum install perl-cgi
+   #+END_SRC
+   或者
+   #+BEGIN_SRC
+apt-get install libcgi-pm-perl
+   #+END_SRC

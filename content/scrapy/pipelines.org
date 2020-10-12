@@ -1,0 +1,72 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 pipeline
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 实践
+  在 tutorial/tutorial/pipelines.py 中添加自定义的管道：
+  #+BEGIN_EXPORT html
+<script src="https://gist.github.com/phenix3443/dc706c98f96525b8d13ee670f0d8fa38.js"></script>
+  #+END_EXPORT
+
+  CSVPipeline 将 item 保存到 csv 文件中。
+
+  注意： *process_item 最后要将 item 返回* ，需要注意这样一个事实：一个 item 是可以经过多个 pipeline 处理的，如果返回 item，后面的 pipeline 就不能继续处理了。
+
+  现在修改设置，向 scrapy 框架注册 pipeline，这样 scrapy 才可以调用 pipeline 处理 item。
+
+  修改 tutorial/tutorial/settings.py：
+  #+BEGIN_SRC python
+ITEM_PIPELINES = {
+    'tutorial.pipelines.TutorialPipeline': 300,
+    'tutorial.pipelines.CSVPipeline': 400
+}
+  #+END_SRC
+  pipeline 后面的数据表示优先级，数字越小，优先级越高。
+
+* 控制 spider 数据流向
+  实际项目中不可能只有一个爬虫， 一般来说， *一个有效的页面解析对应一个爬虫* 。我们添加一个解析格言作者信息的爬虫：
+  #+BEGIN_EXPORT html
+<script src="https://gist.github.com/phenix3443/47dffe4e2a05607b3796f501fbcadbdd.js"></script>
+  #+END_EXPORT
+
+  现在有两个 spider，他们解析到了不同的数据，如何控制各自 spider 产生的数据经过不同 pipeline 呢？有两种方法：
+  + 方法一通过 pipeline 中的 spider.name 来做判断。
+  + 方法二通过在 spdier 中的 custom_settings 来指定。
+
+  #+BEGIN_SRC python
+custom_settings = {
+        'ITEM_PIPELINES': {
+            '<project_name>.pipelines.<pipeline_name>': 100
+        }
+    }
+  #+END_SRC
+
+  实践中：通常用第二种方法指定 spider 特定的 pipeline。在 settings.py 中制定所有 spider 都要经过的 pipeline。
+
+  现在只需要 quotes_spider 将输出写到 csv 文件，修改后 quotes_spider.py：
+  #+BEGIN_SRC python
+# -*- coding: utf-8 -*-
+import scrapy
+from tutorial.items import QuoteItem
+
+
+class QuotesSpider(scrapy.Spider):
+    name = 'quotes'
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'tutorial.pipelines.CSVPipeline': 400
+        }
+    }
+    allowed_domains = ['quotes.toscrape.com']
+.......
+  #+END_SRC
+  还需要对应修改 tutorial/tutorial/settings.py：
+  #+BEGIN_SRC python
+ITEM_PIPELINES = {
+    'tutorial.pipelines.TutorialPipeline': 300,
+    # 'tutorial.pipelines.CSVPipeline': 400
+}
+  #+END_SRC

@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: c11
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  2011 年发布了新标准：ISO/IEC 9899:2011
+
+
+* gcc
+  #+BEGIN_SRC sh
+-std=c11
+  #+END_SRC

@@ -1,0 +1,72 @@
+# -*- coding:utf-8-*-
+#+TITLE: snap
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://snapcraft.io/][snap]] 将应用程序和所有依赖项打包在一起，可以在所有流行的 Linux 发行版上运行。它们会自动更新并优雅地回滚。
+
+* 安装
+
+** apt
+   #+BEGIN_SRC sh
+sudo apt install snapd
+   #+END_SRC
+** yum
+   Snap 在 CentOS 7.6+和 Red Hat Enterprise Linux 7.6+ 可用，可从企业 Linux 附加软件包（EPEL）存储库中获取。可以使用以下命令将 EPEL 存储库添加到系统中：
+   #+BEGIN_SRC sh
+sudo yum install epel-release
+   #+END_SRC
+
+   安装 snap：
+   #+BEGIN_SRC sh
+sudo yum install snapd
+   #+END_SRC
+
+   安装完成后，需要启用用于管理主快照通信套接字的 systemd 单元：
+   #+BEGIN_SRC
+sudo systemctl enable --now snapd.socket
+   #+END_SRC
+
+   为了支持 classic snap，建立符号链接：(什么是 classic snap ?)
+   #+BEGIN_SRC sh
+sudo ln -s /var/lib/snapd/snap /snap
+   #+END_SRC
+
+* 使用
+
+  列出计算机上所有 snap 安装情况：
+  #+BEGIN_SRC sh
+snap list
+  #+END_SRC
+
+  在应用商店中查找 snap：
+  #+BEGIN_SRC sh
+sudo snap find <软件包名>
+  #+END_SRC
+
+  安装 Snap 软件：
+  #+BEGIN_SRC sh
+sudo snap install <snap 软件包名>
+  #+END_SRC
+
+  更新 Snap 软件：
+  #+BEGIN_SRC sh
+sudo snap refresh <snap 软件包名>
+  #+END_SRC
+
+  更新所有的 snap 软件包：
+
+  #+BEGIN_SRC sh
+sudo snap refresh all
+  #+END_SRC
+
+  要将 Snap 还原到以前安装的版本：
+  #+BEGIN_SRC sh
+sudo snap revert <snap 软件包名>
+  #+END_SRC
+
+  卸载 snap 软件：
+  #+BEGIN_SRC sh
+sudo snap remove <snap 软件包名>
+  #+END_SRC

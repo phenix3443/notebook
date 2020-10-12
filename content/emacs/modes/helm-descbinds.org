@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: helm-descbinds
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-helm/helm-descbinds][helm-descbinds]] 提供一个界面来展示 Emacs 按键绑定。

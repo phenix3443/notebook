@@ -1,0 +1,44 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 selectors
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  解析抓取的网页是爬虫很重要的步骤，常见的解析库有：
+
+  + re，使用正则表达式解析。
+  + BeautifulSoup，缺点是慢。
+  + lxml
+
+  scrapy 有一套自己的解析机制：选择器（selectors）[fn:1]。基于 lxml 构建，使用 xpath 和 css 两种方式来选取页面元素，实际上，CSS 选择器在引擎下转换为 XPath。
+
+  实践中，我们通常结合 xpath，css，快速的选定元素，例如：
+
+  #+BEGIN_SRC python
+response.css('img').xpath('@src').extract()
+  #+END_SRC
+
+  甚至可以和 re 一起使用。
+  #+BEGIN_SRC python
+response.xpath('//a[contains(@href, "image")]/text()').re(r'Name:\s*(.*)')
+  #+END_SRC
+
+* xpath
+  xpath 当前的版本是 3.0，但 scrapy 没有实现 1.0 以上的版本。这在 scrapy 1.4 文档中有说明：
+  #+BEGIN_QUOTE
+lxml itself is built using the C library libxml2, which has a conformant XPath 1.0 engine. You should be able to run the same XPath expressions with any XPath 1.0 engine, and get the same results.
+
+This tutorial only showcases XPath 1.0. (XPath has reached version 3, but you can already do a lot with XPath 1.0 and Python. And there’s no XPath>1.0 implementation in Python today.)
+  #+END_QUOTE
+
+  可以通过以下资料学习 xpath：
+  1. [[http://www.zvon.org/comp/r/tut-XPath_1.html][XPath 1.0 Tutorial]] 。
+  2. [[https://blog.scrapinghub.com/2014/07/17/xpath-tips-from-the-web-scraping-trenches?_ga%3D2.114780999.112294409.1541677742-253032679.1540900009][some useful tips]]
+  3. To learn more about XPath, we recommend this tutorial to [[http://zvon.org/comp/r/tut-XPath_1.html][ learn XPath through examples]],
+  4. this tutorial to learn “[[http://plasmasturm.org/log/xpath101/][how to think in XPath]]”.
+
+* css
+
+* Footnotes
+
+[fn:1] [[https://docs.scrapy.org/en/latest/topics/selectors.html][selectors in scrapy]]

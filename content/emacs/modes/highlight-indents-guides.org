@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: highlight-indent-guides
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/DarthFennec/highlight-indent-guides][highlight-indent-guide]] ,可以使用字符的形式显示当前模块的缩进，同时还可以动态展示当前光标所处位置的缩进级别。

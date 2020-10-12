@@ -1,0 +1,27 @@
+# -*- coding:utf-8-*-
+#+TITLE: libevent
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://libevent.org/][libevent]] API 提供了一种机制，用于在文件描述符上发生特定事件或达到超时后执行回调函数。此外，libevent 还支持由于信号或定期超时引起的回调。
+
+  libevent 旨在替换事件驱动的网络服务器中的事件循环。应用程序只需调用 event_dispatch()，然后动态添加或删除事件，而无需更改事件循环。
+
+  目前，libevent 支持 /dev/poll，kqueue(2)，event ports，POSIX select(2)，Windows select()，poll(2)和 epoll(4)。内部事件机制完全独立于公开的事件 API，而 libevent 的简单更新可以提供新功能，而无需重新设计应用程序。因此，Libevent 允许可移植的应用程序开发，并提供操作系统上可用的最可扩展的事件通知机制。 Libevent 还可用于多线程应用程序，可以通过隔离每个 event_base 以便只有一个线程访问它，或者通过锁定访问单个共享 event_base。 Libevent 应该在 Linux，*BSD，Mac OS X，Solaris，Windows 等上编译。
+
+  Libevent 还为缓冲网络 IO 提供了一个复杂的框架，支持套接字，过滤器，速率限制，SSL，零拷贝文件传输和 IOCP。 Libevent 包括对几种有用协议的支持，包括 DNS，HTTP 和最小的 RPC 框架。
+
+
+* 安装
+
+* 文档
+  #+BEGIN_SRC sh
+doxygen Doxyfile
+  #+END_SRC
+  然后打开浏览器 =<path-to-libevent>/doxygen/html/index.html= ,就能看到 doxygen 生成的文档
+
+* 使用
+  参见 [[https://www.jianguoyun.com/p/DRJ5LBAQvdqoBxjQ0OgB][libevent 参考手册]] ，该文档是官网推荐手册的中文版。
+
+  代码参见 https://github.com/phenix3443/test/tree/master/c/libevent

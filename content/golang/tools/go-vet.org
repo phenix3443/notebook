@@ -1,0 +1,18 @@
+# -*- coding:utf-8-*-
+#+TITLE: govet
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+* 概述
+   Vet 检查 Go 源代码并报告可疑构造，例如其参数与格式字符串不对齐的 Printf 调用。 Vet 使用的启发式方法并不能保证所有报告都是真正的问题，但它可以找到编译器未捕获的错误。
+
+  更多请参考 https://golang.org/cmd/vet/
+
+* 安装
+
+* 使用
+  通常通过 go 命令调用 Vet。此命令将检查当前目录中的包：
+  #+BEGIN_SRC sh
+go vet
+  #+END_SRC

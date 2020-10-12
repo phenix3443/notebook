@@ -1,0 +1,31 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 items
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  为了定义通用输出数据格式，Scrapy 提供了 Item 类。Item 对象是用于收集已抓取数据的简单容器。它们提供类似字典的 API，用来声明其可用字段。
+
+  各种 Scrapy 组件使用 Items 提供的额外信息：导出器查看声明的字段以确定要导出的列，可以使用 Item 字段元数据自定义序列化，trackref 跟踪 Item 实例以帮助查找内存泄漏（请参阅使用 trackref 调试内存泄漏）等。
+
+* 声明
+  #+BEGIN_SRC python
+import scrapy
+
+class Product(scrapy.Item):
+    name = scrapy.Field()
+    price = scrapy.Field()
+    stock = scrapy.Field()
+    last_updated = scrapy.Field(serializer=str)
+  #+END_SRC
+
+* Item
+  Field 对象用于指定每个字段的元数据。例如，上面示例中说明的 last_updated 字段的序列化函数。
+
+  可以为每个字段指定任何类型的元数据。Field 对象接受的值没有限制。出于同样的原因，没有所有可用元数据键的参考列表。Field 对象中定义的每个键可以由不同的组件使用，只有那些组件知道它。  也可以根据自己的需要在项目中定义和使用任何其他 Field 键。Field 对象的主要目标是提供一种在一个地方定义所有字段元数据的方法。通常，行为取决于每个字段的那些组件使用某些字段键来配置该行为。必须参考其文档以查看每个组件使用的元数据键。
+
+  请务必注意，用于声明项目的 Field 对象不会保留为类属性。相反，可以通过 Item.fields 属性访问它们。
+
+* 实践
+
+** 元数据

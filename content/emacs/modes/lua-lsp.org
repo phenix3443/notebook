@@ -1,0 +1,33 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua-lsp
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  lua 语言的 lsp-server，缺点：
+  + 功能补全。
+  + module 不能识别。
+
+* 安装
+   #+BEGIN_SRC sh
+sudo luarocks install --server=http://luarocks.org/dev lua-lsp
+   #+END_SRC
+   这将安装 lua-lsp 命令，然后 lsp-client 可以使用 stdio 作为传输与此过程进行通信。
+
+   lua-lsp 在安装时自动与常见的 lua 软件包集成。
+
+   lua-lsp 读取几个项目级配置文件来完成它的工作：
+
+   + 要配置 linting，需要读取标准 =.luacheckrc= 文件。
+   + 对于自动补全支持，需要重新实现 atom-autocomplete-lua 创建 [[https://github.com/dapetcu21/atom-autocomplete-lua#configuration][.luacompleterc]] 格式。特别是，需要 luaVersion 来正确理解你的代码。
+
+   目前没有怎么使用这个插件。
+
+* 插件
+  lua-lsp 在安装时会自动与常用的 lua 软件包集成。对于 linting 使用 luacheck，对于代码格式化，目前支持 Formatter 和 LCF。Formatter 仅支持 5.1，而 lcf 仅支持 5.3。
+
+** [[https://github.com/mpeterv/luacheck][lua-check]]
+   参见[[file:~/github/notebook/org/lua/luacheck.org][luacheck 实践]]
+
+** Formatter
+   参见[[file:~/github/notebook/org/lua/formatter.org][Formatter 实践]]

@@ -1,0 +1,24 @@
+# -*- coding:utf-8-*-
+#+TITLE: pyls
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/palantir/python-language-server][python-language-server]] (pylsp)是纯 python 开发的 lsp server。
+
+** 安装
+   #+BEGIN_SRC sh
+pip3 install --user python-language-server[all]
+   #+END_SRC
+
+   安装以下 lib：
+   + Rope：补全和重命名
+   + Pyflakes： 检测各种错误的 linter
+   + McCabe： 用于复杂性检查
+   + pycodestyle：用于代码风格检查的  linter
+   + pydocstyle：用于文档字符串样式检查的 linter（默认情况下禁用）
+   + autopep8 用于代码格式化
+   + YAPF 用于代码格式化（优先于 autopep8）
+
+** 使用
+   目前该配置 pyls 使用还比较卡顿，暂时放弃。

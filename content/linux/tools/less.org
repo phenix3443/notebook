@@ -1,0 +1,38 @@
+# -*- coding:utf-8-*-
+#+TITLE: less
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+* 概述
+  less 与 more 类似，用来对文件或其他输出进行分页展示。但它的功能更多
+
+* 使用
+  less [options] filename ..
+
+
+** options
+   + ~-i~ 搜索时忽略大小写。
+   + ~-N~ 显示行号。
+
+
+** command
+   + h 显示帮助页面。
+   + q 退出。
+   + f 向前滚动一个屏幕。
+   + b 向后滚动一个屏幕。
+   + d 向前滚动半个屏幕。
+   + u 向后滚动半个屏幕
+   + j 向前滚动一行。
+   + k 向后滚动一行。
+   + g 文档顶部。
+   + G 文档底部。
+   + m 后跟一个小写字母，使用该字母标记当前位置。
+   + ' 跳转到之前标记的地方。
+   + /pattern 向前搜索。
+   + ?pattern 向后搜索。
+   + n 向前重复之前的搜索。
+   + N 向前重复之前的搜索。
+   + &pattern 只显示包含 pattern 的行。
+
+* 示例

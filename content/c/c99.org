@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: c99
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  C89 是最早的 C语言规范，于 1989 年提出，1990 年先由 ANSI(美国国家标准委员会，American National Standards Institute)推出 ANSI 版本，后来被接纳为 ISO 国际标准(ISO/IEC9899:1990)，因而有时也称为 C90，最经典的 C语言教材[K&R]就是基于这个版本的。
+
+  C99(ISO/IEC9899:1999）是在 1999 年推出的，加入了许多新的特性，这里主要介绍常用的一些特性。
+
+* features[fn:1]
+
+** 指定初始化
+   在初始化结构体和数组时，可以通过指定具体成员名或数组下标来赋初值。
+
+** 变长数组(vlna)
+
+** long long 类型
+
+** inline 函数
+
+** bool 类型
+
+** 复合常量（Compound Literals）
+   简单来说复合常量就是允许你定义一个匿名的结构体或数组变量。如：
+
+** for 循环变量初始化（for loop intializers）
+
+** 新增头文件
+   C89 中标准的头文件：
+   + <assert.h>           定义宏 assert()
+   + <ctype.h>            字符处理
+   + <errno.h>            错误报告
+   + <float.h>            定义与实现相关的浮点值勤
+   + <limits.h>           定义与实现相关的各种极限值
+   + <locale.h>           支持函数 setlocale()
+   + <math.h>             数学函数库使用的各种定义
+   + <setjmp.h>           支持非局部跳转
+   + <signal.h>           定义信号值
+   + <stdarg.h>           支持可变长度的参数列表
+   + <stddef.h>           定义常用常数
+   + <stdio.h>            支持文件输入和输出
+   + <stdlib.h>           其他各种声明
+   + <string.h>           字符串函数
+   + <time.h>             支持系统时间函数
+
+   C99 新增的头文件
+   + <complex.h>          支持复杂算法
+   + <fenv.h>             给出对浮点状态标记和浮点环境的其他方面的访问
+   + <inttypes.h>         定义标准的、可移植的整型类型集合,也支持处理最大宽度整数的函数
+   + <iso646.h>           首先在此 1995 年第一次修订时引进,用于定义对应各种运算符的宏
+   + <stdbool.h>          支持布尔数据类型类型,定义宏 bool,以便兼容于 C++
+   + <stdint.h>           定义标准的、可移植的整型类型集合,该文件包含在<inttypes.h>中
+   + <tgmath.h>           定义一般类型的浮点宏
+   + <wchar.h>            首先在 1995 年第一次修订时引进,用于支持多字节和宽字节函数
+   + <wctype.h>           首先在 1995 年第一次修订时引进,用于支持多字节和宽字节分类函数
+
+* gcc
+  #+BEGIN_SRC sh
+-std=c99
+  #+END_SRC
+
+* clang
+
+* Footnotes
+
+[fn:1] https://www.cnblogs.com/wuyudong/p/c99-new-feature.html
+[fn:2] https://blog.csdn.net/churehill123/article/details/9407735

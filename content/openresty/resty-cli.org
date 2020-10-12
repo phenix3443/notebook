@@ -1,0 +1,49 @@
+# -*- coding:utf-8-*-
+#+TITLE: resty-cli
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/openresty/resty-cli][resty]] 命令行实用程序可像 lua 或 luajit 命令行实用程序一样，直接从命令行运行 OpenResty 的 Lua 脚本。它可以使用 OpenResty Lua 创建各种命令行实用程序。
+
+  该工具通过创建 head-less nginx 实例，禁用守护程序，master_process，access_log 以及其他不需要的东西来工作。没有配置 =server {}= ，因此根本不涉及侦听套接字。
+
+  Lua 代码由 init_worker_by_lua 指令启动，并在 ngx.timer 回调的上下文中运行。因此，在 ngx.timer 回调上下文中可用的所有 ngx_lua 的 Lua API 也可以在 resty 实用程序中使用。不过，我们将来可能会删除一些剩余的限制。
+
+* 使用
+
+** =--errlog-level LEVEL=
+
+   Set nginx error_log level.Can be debug, info, notice, warn, error, crit, alert,or emerg.
+
+   执行：
+   #+BEGIN_SRC sh
+./bin/resty --errlog-level=debug -e 'ngx.say("hello")'
+   #+END_SRC
+** =--http-include PATH=
+   nginx http 配置块中包含的文件，可以包含多个配置文件。
+
+** =-I DIR=
+   添加搜索 lua 库的目录。
+   #+BEGIN_SRC sh
+./bin/resty -I /Users/lsl/.luarocks/share/lua/5.3/ resty-cli/lib.lua
+   #+END_SRC
+
+** =--ns IP=
+   指定名字服务地址。
+
+** =--shdict 'NAME SIZE'=
+   在 HTTP 代码块中创建内存字典，可以同时设置多个。
+
+   #+BEGIN_SRC sh
+./bin/resty --shdict 'dogs 1m' resty-cli/shm.lua
+   #+END_SRC
+
+** =--stap=
+   使用 sysetmtap 运行底层 nginx C process.
+
+** =--stap-opts OPTS=
+   systemtap 命令行选项。
+
+** =-V=
+   打印版本号和 nginx 配置。

@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: format-all
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/lassik/emacs-format-all-the-code][format-all]] 目的是使用同一命令格式化多种语言源码，而不需要学习每种语言的不同 Emacs 软件包和格式化命令。
+
+  只要执行 =M-x format-all-buffer= ，就可以执行代码格式化。要在保存时自动格式化代码，请使用 =format-all-mode= minor mode，该模式会在保存代码的时候自动格式化当前 buffer。

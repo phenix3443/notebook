@@ -1,0 +1,44 @@
+# -*-coding:utf-8-*-
+#+title:流量复制
+#+author:刘尚亮
+#+email:phenix3443+github@gmail.com
+
+* 概述
+
+* 工具
+** tcpcopy
+   参考 [[http://blog.gaoyuan.xyz/2014/01/08/use-tcpcopy-test-online/][use-tcpcopy-online]]
+
+   1. 启动内核模块ip_queue
+      #+BEGIN_SRC sh
+modprobe ip_queue
+      #+END_SRC
+
+   2. 设置要截获的端口，并且设置对output截获
+      #+BEGIN_SRC sh
+iptables -I OUTPUT -p tcp --sport <port> -j QUEUE
+      #+END_SRC
+
+      注意这里的port就是服务器监听的端口
+
+   3. 启动intercept
+      #+BEGIN_SRC sh
+intercept
+      #+END_SRC
+
+   注意：配置好iptbales之后不要去运行service iptables start，不然新加的配置又会被清空了，如果iptables没有启动，可以在加规则之前启动；如果1,2已经设置并起效的话，只要运行intercept就好了；测试完成之后要调用iptables -F 把过滤规则去掉。
+
+   然后启动TCP Client进行包的转发。
+   #+BEGIN_SRC sh
+./tcpcopy -x 线上服务器监听端口号-测试服务器ip地址：测试服务器监听端口
+   #+END_SRC
+
+   另外可以加 -n 参数，进行多重复制，此参数的值就是代表复制过去的流量是在线的n 倍。
+
+   #+BEGIN_SRC sh
+iptables -I OUTPUT -p tcp --sport 80 -j QUEUE
+tcpcopy -x 80-61.155.184.113:80
+   #+END_SRC
+
+** goreplay
+   https://github.com/buger/goreplay

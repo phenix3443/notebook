@@ -1,0 +1,38 @@
+# -*- coding:utf-8-*-
+#+TITLE: 反爬虫策略
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+本文说明常见的反爬虫手段和应对措施。
+
+* 抓取频率
+  scrapy 中默认开启 ~RANDOMIZE_DOWNLOAD_DELAY~ ，可以在访问同一站点页面延迟一段时间（0.5*DOWNLOAD_DELAY 到 1.5*DOWNLOAD_DELAY）。通过如下设置生效：
+  #+BEGIN_EXAMPLE
+DOWNLOAD_DELAY = 3
+  #+END_EXAMPLE
+
+* user-agent
+
+* cookie
+
+* 代理 IP
+** 付费代理
+   知乎《[[https://www.zhihu.com/question/47419361][国内有什么好的代理 IP(http) 提供商?]]》
+
+   + 无忧代理
+
+** 免费代理
+*** haipproxy
+*** dungproxy
+
+* 验证码
+** tessserocr
+   tesserocr 是 Python 的一个 OCR 识别库，可以用来识别图形验证码。其实是对 tesseract 做的一层 Python API 封装。
+
+** 滑动验证码
+   使用 selenium 模拟人操作。
+
+** 点触验证码
+   使用 selenium 模拟人操作。
+
+* 鼠标轨迹

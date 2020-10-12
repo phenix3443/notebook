@@ -1,0 +1,93 @@
+# -*- coding:utf-8-*-
+#+TITLE: diff
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/r3labs/diff][diff]] 是一个用于区分 golang 结构和值的库。
+
+  利用字段标签和反射，它可以比较两个相同类型的结构并创建所有修改值的变更日志。产生的变更日志可以轻松地序列化为 json。
+
+  注意：现在，所有活动开发都在 v2 分支上进行。
+
+* 安装
+
+  #+BEGIN_SRC sh
+go get github.com/r3labs/diff/v2
+  #+END_SRC
+
+* 使用
+
+  当使用 Diff 差异两个结构时，将生成一个变更日志。任何检测到的更改都将使用 Change 类型填充 changelog 数组：
+
+  #+BEGIN_SRC go
+type Change struct {
+	Type string      // The type of change detected; can be one of create, update or delete
+	Path []string    // The path of the detected change; will contain any field name or array index that was part of the traversal
+	From interface{} // The original value that was present in the "from" structure
+	To   interface{} // The new value that was detected as a change in the "to" structure
+}
+  #+END_SRC
+
+  例如比较下面两个差异的数组：
+  #+BEGIN_SRC go
+from := []int{1, 2, 3, 4}
+to := []int{1, 2, 4}
+
+changelog, _ := diff.Diff(from, to)
+  #+END_SRC
+  比较结果：
+  #+BEGIN_SRC go
+Change{
+    Type: "delete",
+    Path: ["2"],
+    From: 3,
+    To:   nil,
+}
+  #+END_SRC
+
+** 标签
+   为了比较结构字段，必须使用给定名称对其进行标记。所有标签值均以 diff 作为前缀。即 =diff:"items"=
+   | Tag        | Usage                                                                                                                                                        |
+   |------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | -          | 不比较该字段的值                                                                                                                                             |
+   | identifier | 如果需要按匹配的标识符而不是按顺序比较数组，则可以指定标识符标签。如果在 from 和 to 结构中均找到可识别的元素，则将直接比较它们。即 =diff:"name, identifier"= |
+   | immutable  | 将忽略该结构域。使用 diff.StructValues()时，这些值将添加到返回的变更日志中。使用场景是：当我们没有什么可与之比较的结构并且想要显示其所有相关值时。           |
+
+
+   #+BEGIN_SRC go
+import "github.com/r3labs/diff"
+
+type Order struct {
+    ID    string `diff:"id"`
+    Items []int  `diff:"items"`
+}
+
+func main() {
+    a := Order{
+        ID: "1234",
+        Items: []int{1, 2, 3, 4},
+    }
+
+    b := Order{
+        ID: "1234",
+        Items: []int{1, 2, 4},
+    }
+
+    changelog, err := diff.Diff(a, b)
+    ...
+}
+   #+END_SRC
+
+   在此示例中，更改日志中生成的输出将指示已从项目中删除值为“3”的第三个元素。将变更日志编组为 json 时，输出如下所示：
+
+   #+BEGIN_SRC go
+[
+    {
+        "type": "delete",
+        "path": ["items", "2"],
+        "from": 3,
+        "to": null
+    }
+]
+   #+END_SRC

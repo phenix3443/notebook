@@ -1,0 +1,457 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua-nginx-module
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述[fn:1]
+
+  Lua-nginx-module 将 Lua 集成到 NginX 中，并提供高并发和非阻塞请求处理能力，而无需强制开发人员明确地将业务逻辑划分为状态机。开发人员可以用简单的顺序方式编写程序，而 lua-nginx-module 将在可阻塞的 I/O 操作中自动中断程序逻辑，保存上下文，并将这些 I/O 操作委托给 NginX 的事件机制。完成 I/O 操作后，lua-nginx-module 将恢复上下文并恢复程序逻辑。用户程序本身会像往常一样感觉到从未被打断过。
+
+  Lua-nginx-module 使用 one-coroutine-per-request 请求处理模型，即对于每个传入请求，lua-nginx-module 创建一个协程来处理请求，协程将在请求处理完成后销毁。
+
+  每个协程都有自己独立的全局环境，它继承了共享的只读公共数据。因此，用户代码注入的任何全局值都不会影响其他请求的处理，并且在请求处理完成时将被释放。您可以想象用户代码在 “沙箱” 中运行，该沙箱与请求本身共享相同的生命周期。通过这种方式，lua-nginx-module 可以防止因滥用用户代码中的全局值而导致的内存泄漏，从而提高健壮性。
+
+  受益于 Lua 卓越的协程支持，lua-nginx-module 可以以极低的内存开销处理数万个并发请求。根据我们的测试，如果使用 LuaJIT，lua-nginx-module 中每个请求的内存开销仅为 2 KB 甚至更小。显然，lua-nginx-module 是实现广泛并发服务的良好候选者。
+
+  与 Apache 的 mod_lua 和 Lighttpd 的 mod_magnet 不同，只要使用该模块提供的 Lua 的 Nginx API 处理 MySQL，PostgreSQL，Memcached，Redis 或 HTTP Web 服务 等上游服务的请求，使用此模块执行的 Lua 代码在网络传输就是 100％无阻塞的。
+
+  几乎所有 Nginx 模块都可以通过 ngx.location.capture 或 ngx.location.capture_multi 与此 ngx_lua 模块一起使用，但建议使用那些 =lua-resty-*= 库，而不是创建子请求来访问 Nginx 上游模块，因为前者通常更灵活，内存效率更高。
+
+  Lua 解释器或 LuaJIT 实例在单个 nginx 工作进程中的所有请求之间共享，但请求上下文使用轻量级 Lua 协程进行隔离。
+
+  加载的 Lua 模块在 nginx 工作进程级别中持续存在，所以，即使负载很重的情况下，Lua 代码内存占用量很小。
+
+  该模块插入 NGINX 的 “http” 子系统，因此它使用 HTTP 系列中的下游通信协议（HTTP 0.9/1.0/1.1/2.0，WebSockets 等）。 如果要使用 TCP 与下游客户端进行通信，则应使用具有兼容 Lua API 的 ngx_stream_lua 模块。
+
+* 安装
+  强烈建议使用集成 Nginx，ngx_lua，LuaJIT 2.1 以及其他强大的配套 Nginx 模块和 Lua 库的 OpenResty 版本。 不鼓励用 nginx 自己构建这个模块，因为设置完全正确是很棘手的。
+
+  手动编参考[[https://github.com/openresty/lua-nginx-module#installation][Installation]]
+
+* Directives
+** lua_capture_error_log
+** lua_use_default_type
+** lua_malloc_trim
+** lua_code_cache
+   在 *_by_lua_file 指令（如 set_by_lua_file 和 content_by_lua_file）和 Lua 模块中启用或禁用 Lua 代码的 Lua 代码缓存。
+
+   关闭时，从 0.9.3 版本开始，ngx_lua 处理的每个请求都将在单独的 Lua VM 实例中运行。因此，set_by_lua_file，content_by_lua_file，access_by_lua_file 等中引用的 Lua 文件不会被缓存，所有使用的 Lua 模块都将从头开始加载。有了这个，开发人员可以编辑代码后可以不用重新加载代码。
+
+   但是请注意，在 nginx.conf 中编写内联的 Lua 代码（如 set_by_lua，content_by_lua，access_by_lua 和 rewrite_by_lua 指定的内容），在编辑后不会更新，因为只有 Nginx 配置文件解析器可以正确解析 nginx.conf 文件，唯一的方法是通过发送 HUP 信号重新加载配置文件或重新启动 Nginx。
+
+   即使启用了代码缓存，也无法缓存由 *_by_lua_file 中的 dofile 或 loadfile 加载的 Lua 文件（除非您自己缓存结果）。通常可以使用 init_by_lua 或 init_by_lua_file 指令加载所有这些文件，或者让这些 Lua 文件成为真正的 Lua 模块并通过 require 加载它们。
+
+   ngx_lua 模块不支持 Apache mod_lua 模块可用的 stat 模式。
+
+   强烈不推荐在生产环境中禁用 Lua 代码缓存，该功能只应在开发期间使用，因为它会对整体性能产生显著的负面影响。例如，在禁用 Lua 代码缓存后，“hello world” Lua 示例的性能可能会下降一个数量级。
+
+** lua_regex_cache_max_entries
+** lua_regex_match_limit
+** lua_package_path
+** lua_package_cpath
+** init_by_lua
+   当 Nginx 主进程加载 Nginx 配置文件时，在全局 Lua VM 级别运行由参数<lua-script-str>指定的 Lua 代码。
+
+   当 Nginx 收到 HUP 信号并开始重新加载配置文件时，Lua VM 也将被重新创建，init_by_lua 将在新的 Lua VM 上再次运行。 如果关闭 lua_code_cache 指令（默认打开），init_by_lua 处理程序将在每个请求时运行，因为在此特殊模式下，始终为每个请求创建一个独立的 Lua VM。
+
+   通常，可以通过 hook 在服务器启动时预加载 Lua 模块，因为此上下文中的 Lua 代码在 Nginx fork 其工作进程（如果有）之前运行，所以此处加载的数据或代码将享受许多操作系统提供的写时复制（COW）功能，从而节省了很多内存。
+
+   不要在此上下文中初始化自己的 Lua 全局变量，因为使用 Lua 全局变量会导致性能损失，并可能导致全局命名空间污染。 推荐的方法是使用正确的 Lua 模块文件（但不要使用标准的 module()来定义 Lua 模块，因为它也会污染全局命名空间），并调用 require() 来在 init_by_lua 或其他上下文中加载您自己的模块文件（require()会将加载的 Lua 模块缓存在 Lua 注册表中的全局 package.loaded 表中，这样该模块对于整个 Lua VM 实例加载一次）。
+
+** init_by_lua_block
+** init_by_lua_file
+** init_worker_by_lua
+   启用主进程时，在每个 Nginx 工作进程启动时运行指定的 Lua 代码。 当主进程被禁用时，将在 =init_by_lua*= 之后运行。
+
+   此挂钩通常用于创建每个 worker 重复发生的计时器（通过 ngx.timer.at），用于后端运行状况检查或其他定时例行工作。
+
+   思考：
+   + 该指令与 init_by_lua 有何不同？
+
+     init_by_lua 主要声明公共模块。
+
+   + 为什么不能在 init_by_lua 中初始化定时器？
+
+     因为 fork 的时候不能 fork 定时器。
+
+** init_worker_by_lua_block
+** init_worker_by_lua_file
+** set_by_lua
+** set_by_lua_block
+** set_by_lua_file
+** content_by_lua
+** content_by_lua_block
+** content_by_lua_file
+** rewrite_by_lua
+** rewrite_by_lua_block
+** rewrite_by_lua_file
+** access_by_lua
+   请注意，此处理程序始终在标准 ngx_http_access_module 之后运行。
+
+   与其他访问阶段处理程序一样，access_by_lua 不会在子请求中运行。
+
+   请注意，在 access_by_lua 处理程序中调用 ngx.exit（ngx.OK）时，nginx 请求处理控制流仍将继续到内容处理程序。 要从 access_by_lua 处理程序中终止当前请求，成功退出请调用 ngx.exit(status) （200(ngx.HTTP_OK)<= status<300(ngx.HTTP_SPECIAL_RESPONSE)），失败退出请调用 ngx.exit（ngx.HTTP_INTERNAL_SERVER_ERROR）（或其其他类似）。
+
+** access_by_lua_block
+** access_by_lua_file
+** header_filter_by_lua
+   用来定义输出的 header 过滤器。
+
+** header_filter_by_lua_block
+** header_filter_by_lua_file
+** body_filter_by_lua
+** body_filter_by_lua_block
+** body_filter_by_lua_file
+** log_by_lua
+   在 v0.9.17 版本之后，不鼓励使用此指令。 请改用 log_by_lua_block 指令。
+
+   在日志请求处理阶段运行作为 <lua-script-str> 内联的 Lua 源代码。这不会替换当前的访问日志，而是先与其运行。
+
+   请注意，此上下文中当前禁用了以下 API 函数：
+   + 输出 API 函数（例如，ngx.say 和 ngx.send_headers）
+   + 控制 API 函数（例如，ngx.exit）
+   + 子请求 API 函数（例如，ngx.location.capture 和 ngx.location.capture_multi）
+   + Cosocket API 函数（例如，ngx.socket.tcp 和 ngx.req.socket）。
+
+** log_by_lua_block
+** log_by_lua_file
+** balancer_by_lua_block
+** balancer_by_lua_file
+** lua_need_request_body
+** ssl_certificate_by_lua_block
+** ssl_certificate_by_lua_file
+** ssl_session_fetch_by_lua_block
+** ssl_session_fetch_by_lua_file
+** ssl_session_store_by_lua_block
+** ssl_session_store_by_lua_file
+** lua_shared_dict
+** lua_socket_connect_timeout
+** lua_socket_send_timeout
+** lua_socket_send_lowat
+** lua_socket_read_timeout
+** lua_socket_buffer_size
+** lua_socket_pool_size
+** lua_socket_keepalive_timeout
+** lua_socket_log_errors
+** lua_ssl_ciphers
+** lua_ssl_crl
+** lua_ssl_protocols
+** lua_ssl_trusted_certificate
+** lua_ssl_verify_depth
+** lua_http10_buffering
+** rewrite_by_lua_no_postpone
+** access_by_lua_no_postpone
+** lua_transform_underscores_in_response_headers
+** lua_check_client_abort
+** lua_max_pending_timers
+** lua_max_running_timers
+
+* Nginx API for Lua
+** Introduction
+   用户代码中的网络 I/O 操作应该只通过 Nginx Lua API 调用来完成，因为 Nginx 事件循环可能会被阻止，这样性能会急剧下降。 相对少量数据的磁盘操作可以使用标准 Lua io 库完成，但应尽可能避免大量文件读取和写入，因为它们可能会显着阻止 Nginx 进程。 为了获得最佳性能，强烈建议将所有网络和磁盘 I/O 操作委派给 Nginx 的子请求（通过 ngx.location.capture 方法和类似方法）。
+
+** ngx.arg
+** ngx.var.VARIABLE
+   用来读写 nginx 变量值。
+
+   请注意，只能写入已定义的 nginx 变量。
+
+   小心：从 Nginx 变量读取时，Nginx 将在每个请求内存池中分配内存，该内存池仅在请求终止时释放。 因此，当需要在 Lua 代码中重复读取 Nginx 变量时，将 Nginx 变量值缓存到自己的 Lua 变量中，例如，
+   #+BEGIN_SRC lua
+local val = ngx.var.some_var
+ --- use the val repeatedly later
+   #+END_SRC
+   防止（临时）内存在当前请求的生命周期内泄漏。 缓存结果的另一种方法是使用 ngx.ctx 表。
+
+   此 API 需要相对昂贵的元方法调用，建议避免在热代码路径上使用它。
+
+   不要处于 worker 级别的数据共享，在 module 级别将 ngx.ctx 赋值给本地变量。
+
+** Core constants
+   ngx.null 常量是一个 NULL light userdata，通常用于表示 Lua 表等中的 nil 值，类似于 lua-cjson 库的 cjson.null 常量。
+
+** HTTP method constants
+** HTTP status constants
+** Nginx log level constants
+** print
+** ngx.ctx
+   此表可用于存储每个请求的 Lua 上下文数据，并具有与当前请求相同的生命周期（与 Nginx 变量一样）。
+
+   每个请求（包括子请求）都有自己的表 *副本* 。
+
+   内部重定向将销毁原始请求 ngx.ctx 数据（如果有），新请求将具有空的 ngx.ctx 表。
+
+   ngx.ctx 查找需要相对昂贵的元方法调用，并且比通过您自己的函数参数显式传递每个请求数据要慢得多。 因此，不要滥用此 API 来保存自己的函数参数，因为它通常会对性能产生很大的影响。
+
+** ngx.location.capture
+   发出同步但仍无阻塞的 Nginx 子请求。
+
+   另请注意，子请求只是模仿 HTTP 接口，但没有额外的 HTTP / TCP 流量，也没有涉及 IPC。一切都在内部，高效，在 C 级别上运作。
+
+   请注意，ngx.location.capture 发出的子请求默认会继承当前请求的所有请求头部，这可能会对子请求响应产生意外的副作用。在子请求位置将 proxy_pass_request_headers 设为 off 可忽略原始请求头。
+
+   每个主要请求可能存在的并发子请求数存在硬编码上限。 在旧版本的 Nginx 中，限制是 50 个并发子请求，而在更新版本中，Nginx 1.1.x 以上，这增加到 200 个并发子请求。 超出此限制时，将在 error.log 文件中添加以下错误消息：
+   #+BEGIN_EXAMPLE
+[error] 13983#0: *1 subrequests cycle while processing "/uri"
+   #+END_EXAMPLE
+
+
+** ngx.location.capture_multi
+** ngx.status
+   读取和写入当前请求的响应状态。 应该在发送响应头之前调用它。
+** ngx.header.HEADER
+** ngx.resp.get_headers
+** ngx.req.is_internal
+** ngx.req.start_time
+   返回一个浮点数，表示创建当前请求时的时间戳（包括作为小数部分的毫秒数）。
+
+   以下示例在纯 Lua 中模拟 =$request_time= 变量值（由 ngx_http_log_module 提供）：
+
+   #+BEGIN_SRC lua
+local request_time = ngx.now() - ngx.req.start_time()
+   #+END_SRC
+
+** ngx.req.http_version
+** ngx.req.raw_header
+** ngx.req.get_method
+** ngx.req.set_method
+** ngx.req.set_uri
+** ngx.req.set_uri_args
+** ngx.req.get_uri_args
+** ngx.req.get_post_args
+** ngx.req.get_headers
+** ngx.req.set_header
+** ngx.req.clear_header
+** ngx.req.read_body
+** ngx.req.discard_body
+** ngx.req.get_body_data
+** ngx.req.get_body_file
+** ngx.req.set_body_data
+** ngx.req.set_body_file
+** ngx.req.init_body
+** ngx.req.append_body
+** ngx.req.finish_body
+** ngx.req.socket
+** ngx.exec
+** ngx.redirect
+** ngx.send_headers
+** ngx.headers_sent
+** ngx.print
+** ngx.say
+** ngx.log
+** ngx.flush
+** ngx.exit
+** ngx.eof
+** ngx.sleep
+** ngx.escape_uri
+** ngx.unescape_uri
+** ngx.encode_args
+** ngx.decode_args
+** ngx.encode_base64
+** ngx.decode_base64
+** ngx.crc32_short
+** ngx.crc32_long
+** ngx.hmac_sha1
+** ngx.md5
+** ngx.md5_bin
+** ngx.sha1_bin
+** ngx.quote_sql_str
+** ngx.today
+** ngx.time
+   从 nginx 缓存时间返回当前时间戳记的纪元的经过 *秒数* （与 Lua 的日期库不同，不涉及系统调用）。
+** ngx.now
+   从 nginx 缓存时间返回从当前时间戳的纪元开始的经过时间（包括作为小数部分的毫秒）的 *浮点数* （与 Lua 的日期库不同，不涉及系统调用）。
+
+** ngx.update_time
+** ngx.localtime
+** ngx.utctime
+** ngx.cookie_time
+** ngx.http_time
+** ngx.parse_http_time
+** ngx.is_subrequest
+** ngx.re.match
+** ngx.re.find
+** ngx.re.gmatch
+** ngx.re.sub
+** ngx.re.gsub
+** ngx.shared.DICT
+   获取由 lua_shared_dict 指令定义的名为 DICT 的共享内存区域对应的 Lua 字典对象。 共享内存区域始终由当前 nginx 服务器实例中的所有 nginx 工作进程共享。
+
+   所有这些方法都是原子操作，也就是说，对于同一个 lua_shared_dict 区域的多个 nginx 工作进程的并发访问是安全的。
+
+** ngx.shared.DICT.get
+   检索字典 ngx.shared.DICT 中的 key。如果 key 不存在或已过期，则返回 nil
+
+** ngx.shared.DICT.get_stale
+   与 get 方法类似，但即使 key 已经过期，也会返回该值。
+
+** ngx.shared.DICT.set
+   无条件的在 ngx.shared.DICT 中设置键值对。value 参数可以是 Lua 布尔值，数字，字符串或 nil。
+
+** ngx.shared.DICT.safe_set
+   与 set 方法类似，但在共享内存区域中的存储空间不足时，永远不会覆盖存储中（最近最少使用的）未过期的项目。在这种情况下，它将立即返回 nil 和字符串“no memory”。
+
+** ngx.shared.DICT.add
+   类似 set 方法，但是只有键不存在，才将键值对存储到字典 ngx.shared.DICT 中。
+
+   如果键参数已存在于字典中（并且未确定过期），则成功返回值将为 false，并且错误返回值将为 “exists”。
+
+** ngx.shared.DICT.safe_add
+   与 add 方法类似，但在共享内存区域中的存储空间不足时，永远不会覆盖存储中（最近最少使用的）未过期的项目。在这种情况下，它将立即返回 nil 和字符串“no memory”。
+
+** ngx.shared.DICT.replace
+   就像 set 方法一样，但是只有 key 确实存在，才将键值对存储到字典 ngx.shared.DICT 中。
+
+** ngx.shared.DICT.delete
+   无条件地从 ngx.shared.DICT 中删除键值对。
+
+** ngx.shared.DICT.incr
+   通过步长值增加 ngx.shared.DICT 中的 key 的 value（数值）。如果操作成功完成，则返回新的结果数，否则返回 nil 和错误消息。
+
+   当 key 不存在或已在共享字典中过期时：
+   1. 如果未指定 init 参数或取值为 nil，则此方法将返回 nil 并且错误字符串 “not found”，或者
+   2. 如果 init 参数采用数字值，则此方法将创建一个值为 init + value 的新 key。
+
+   类似 add 方法，当共享内存区域中的存储空间不足时，它还会覆盖存储中（最近最少使用的）未过期的项目。
+
+   可选的 init_ttl 参数指定了在以 init 参数初始化后 key 的到期时间（以秒为单位）。时间分辨率为 0.001 秒。如果 init_ttl 取值 0（默认值），则该项将永不过期。该参数必须和 init 一起使用，并且如果该值已经存在则无效（例如，如果它先前是通过 set 或其他类似操作）。
+
+** ngx.shared.DICT.lpush
+** ngx.shared.DICT.rpush
+** ngx.shared.DICT.lpop
+** ngx.shared.DICT.rpop
+** ngx.shared.DICT.llen
+** ngx.shared.DICT.ttl
+** ngx.shared.DICT.expire
+   更新 ngx.shared.DICT 中键值对的 exptime（以秒为单位）。 如果操作完成返回指示成功的布尔值，否则返回 nil 和错误消息。
+
+   如果该键不存在，则此方法将返回 nil 并且错误字符串 “not found”。
+
+   exptime 参数的分辨率为 0.001 秒。 如果 exptime 为 0，则该项将永不过期。
+
+** ngx.shared.DICT.flush_all
+   刷新字典中的所有项目。此方法不会释放字典中的所有内存块，而只是将所有现有项目标记为已过期。
+
+** ngx.shared.DICT.flush_expired
+   刷新字典中的过期项，直到可选的 max_count 参数指定的最大数量。 当 max_count 参数给定 0 或根本没有给出时，则表示无限制。 返回实际刷新的项目数。
+
+   与 flush_all 方法不同，此方法实际上释放了过期项目使用的内存。
+
+** ngx.shared.DICT.get_keys
+** ngx.shared.DICT.capacity
+** ngx.shared.DICT.free_space
+   检索 ngx.shared.DICT 的可用页面大小（以字节为单位）。可用于告警。
+
+** ngx.socket.udp
+** udpsock:setpeername
+** udpsock:send
+** udpsock:receive
+** udpsock:close
+** udpsock:settimeout
+** ngx.socket.stream
+** ngx.socket.tcp
+   创建并返回一个 TCP 或面向流的 unix 域套接字对象（也称为“cosocket”对象的一种类型）。此对象支持以下方法：
+
+** tcpsock:connect
+** tcpsock:sslhandshake
+** tcpsock:send
+** tcpsock:receive
+** tcpsock:receiveany
+** tcpsock:receiveuntil
+** tcpsock:close
+** tcpsock:settimeout
+** tcpsock:settimeouts
+** tcpsock:setoption
+** tcpsock:setkeepalive
+** tcpsock:getreusedtimes
+** ngx.socket.connect
+** ngx.get_phase
+** ngx.thread.spawn
+** ngx.thread.wait
+** ngx.thread.kill
+** ngx.on_abort
+** ngx.timer.at
+   #+BEGIN_EXAMPLE
+syntax: hdl, err = ngx.timer.at(delay, callback, user_arg1, user_arg2, ...)
+   #+END_EXAMPLE
+
+   Nginx 核心将自动调用用户回调，其参数为 premature，user_arg1，user_arg2 等，其中，premature 参数采用一个布尔值，指示它是否是一个 premature timer expiration。
+
+   premature timer expiration 发生在当 Nginx worker 进程尝试关闭时，例如在 HUP 信号触发的 Nginx 配置重新加载或 Nginx 服务器关闭时。 当 Nginx 工作者试图关闭时，人们不能再调用 ngx.timer.at 来创建具有非零延迟的新计时器，在这种情况下，ngx.timer.at 将返回 “conditional false” 值和描述错误的字符串 ，即 “process exiting”。
+
+   当计时器到期时，计时器回调中的用户 Lua 代码在完全脱离创建计时器的原始请求的 “轻线程” 中运行。 因此，与创建它们的请求具有相同生命周期的对象（如 cosockets）无法在原始请求和计时器用户回调函数之间共享。
+** ngx.timer.every
+** ngx.timer.running_count
+** ngx.timer.pending_count
+** ngx.config.subsystem
+** ngx.config.debug
+** ngx.config.prefix
+** ngx.config.nginx_version
+** ngx.config.nginx_configure
+** ngx.config.ngx_lua_version
+   该字段采用整数值表示当前使用的 ngx_lua 模块的版本号。例如，版本号 0.9.3 导致 Lua 号 9003。
+** ngx.worker.exiting
+** ngx.worker.pid
+** ngx.worker.count
+** ngx.worker.id
+** ngx.semaphore
+** ngx.balancer
+** ngx.ssl
+** ngx.ocsp
+** ndk.set_var.DIRECTIVE
+** coroutine.create
+** coroutine.resume
+** coroutine.yield
+** coroutine.wrap
+** coroutine.running
+** coroutine.status
+
+* Known Issues
+
+** Data Sharing within an Nginx Worker
+   要在同一个 nginx 工作进程处理的所有请求之间全局共享数据，需要将共享数据封装到 Lua 模块中，使用 Lua =require= 导入模块，然后使用 Lua 操作共享数据。 之所以可以这么做是因为所需的 Lua 模块只加载一次，并且所有协程将共享模块的 *相同副本（包括其代码和数据）* 。 但请注意，由于每个请求的一个协程的隔离设计，Lua 全局变量（注意，不是模块级变量）不会在请求之间保持不变。
+
+   请注意，此数据共享基于 per-worker 而不是基于 per-server。也就是说，当 Nginx 主机下有多个 nginx 工作进程时，数据共享不能跨越这些工作进程之间的进程边界。
+
+   通常建议以这种方式共享只读数据。只要在计算过程中没有非阻塞 I/O 操作（包括 ngx.sleep），也可以在每个 nginx 工作进程的所有并发请求之间共享可更改的数据。只要不将控制权交给 nginx 事件循环和 ngx_lua 的轻量级线程调度程序（包括隐式的转移控制权），就不会有任何竞争条件。因此，当想要在 worker 级别共享可更改数据时，请务必非常小心。可能导致 bug 的优化很容易导致以调试的竞争条件。
+
+   如果需要服务器范围的数据共享，请使用以下一种或多种方法：
+   + 使用此模块提供的 ngx.shared.DICT API。
+   + 仅使用单个 nginx 工作器和单个服务器（但是，如果在单个计算机中存在多核 CPU 或多个 CPU，则不建议使用此方法）。
+   + 使用数据存储机制，如 memcached，redis，MySQL 或 PostgreSQL。内嵌该模块的 OpenResty 软件包附带了一组配套的 Nginx 模块和 Lua 库，它们提供与这些数据存储机制交互的接口。
+
+** Lua Variable Scope
+
+   待补充
+
+** Cosockets Not Available Everywhere
+   待补充
+
+** Special Escaping Sequences
+   待补充
+
+* third-party
+
+** lua-resty-string
+   主要提供了一系列 to_hex() 和 atoi()两个函数。
+
+** lua-resty-logger-socket
+   这个 lua 库是 ngx_lua 的远程日志记录模块。旨在取代 Nginx 的标准 ngx_http_log_module，以通过非阻塞套接字将访问日志推送到远程服务器。该库利用了 ngx_lua 的 cosocket API，后者确保了 100％的非阻塞行为。
+
+** lua-resty-mysql
+
+** lua-resty-redis
+
+** lua-resty-upload
+
+** [[https://github.com/cloudflare/lua-resty-cookie][lua-resty-cookie]]
+
+** [[https://github.com/openresty/stream-lua-nginx-module][stream-lua-nginx-module]]
+
+** [[https://github.com/openresty/openresty-systemtap-toolkit][openresty-systemtap-toolkit]]
+
+
+* Footnotes
+
+[fn:1] 该文档主要来自[[https://github.com/openresty/lua-nginx-module][lua-nginx-module on github]]

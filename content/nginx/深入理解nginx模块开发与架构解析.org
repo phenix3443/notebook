@@ -1,0 +1,93 @@
+# -*- coding:utf-8-*-
+#+TITLE:深入理解 nginx 模块开发与架构解析（2nd）
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: num:nil
+
+* 前言
+  作者网站以及在线支持 https://www.taohui.pub
+* 第一章
+** 1.3 准备工作
+   使用 nginx-1.12.2
+
+  #+BEGIN_SRC sh
+docker run --name nginx_test -v /home/lsl/Downloads/nginx-1.12.2:/work/nginx -i -t ubuntu /bin/bash
+  #+END_SRC
+
+   准备编译环境：
+   #+BEGIN_SRC sh
+apt install build-essential libtool libpcre3 libpcre3-dev  zlib1g-dev  openssl
+   #+END_SRC
+
+   编译命令：
+   #+BEGIN_SRC sh
+./configure
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+Configuration summary
+  + using system PCRE library
+  + OpenSSL library is not used
+  + using system zlib library
+
+  nginx path prefix: "/usr/local/nginx"
+  nginx binary file: "/usr/local/nginx/sbin/nginx"
+  nginx modules path: "/usr/local/nginx/modules"
+  nginx configuration prefix: "/usr/local/nginx/conf"
+  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+  nginx error log file: "/usr/local/nginx/logs/error.log"
+  nginx http access log file: "/usr/local/nginx/logs/access.log"
+  nginx http client request body temporary files: "client_body_temp"
+  nginx http proxy temporary files: "proxy_temp"
+  nginx http fastcgi temporary files: "fastcgi_temp"
+  nginx http uwsgi temporary files: "uwsgi_temp"
+  nginx http scgi temporary files: "scgi_temp"
+
+   #+END_EXAMPLE
+
+   #+BEGIN_SRC
+make && make install
+   #+END_SRC
+
+** 1.6
+   优雅的停止服务：
+   #+BEGIN_SRC sh
+usrlocal/nginx/sbin/nginx -s quit
+   #+END_SRC
+
+   平滑升级 nginx 程序
+   #+BEGIN_SRC sh
+kill -s SIGUSR2 <nginx master pid>
+   #+END_SRC
+
+   如何监控 nginx 服务？
+
+   如何切割 nginx 日志？
+
+* 第二章
+** 2.1 运行中的 nginx 进程间的关系
+   nginx 为什么使用的是多进程模型而不是多线程模型？
+   + master 和 work 分离，权限分离，work 进程处理请求出错不会影响 master 进程。减少请求出错对其他请求的影响。
+   + 多进程模型充分利用 SMP 多核架构。
+   + work 进程与请求之间是 1：n 的关系，这样做有以下好处：
+     + 减少请求之间的影响，而且在架构设计上，不同进程处理请求几乎没有同步锁的限制。
+     + “一个 worker 进程可以同时处理的请求数只受限于内存大小”，这个如何理解？。
+
+** 2.3 nginx 服务的基本配置
+
+*** 调试进程和定位问题
+    调试指定客户端数据 debug 日志。
+
+    #+BEGIN_EXAMPLE
+debug_connection[IP|CIDR]
+    #+END_EXAMPLE
+
+*** 正常运行
+
+*** 优化性能
+    每个 worker 进程都是单线程的进程， 它们会调用各个模块以实现多种多样的功能。 如果这些模块确认不会出现阻塞式的调用， 那么， 有多少 CPU 内核就应该配置多少个进程； 反之， 如果有可能出现阻塞式调用， 那么需要配置稍多一些的 worker 进程
+* 第三章
+
+* 第四章

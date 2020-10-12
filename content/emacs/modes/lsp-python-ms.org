@@ -1,0 +1,54 @@
+# -*- coding:utf-8-*-
+#+TITLE: lsp-python-ms
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/andrew-christianson/lsp-python-ms/][lsp-python-ms]] 使用微软实现的 python 的 lsp server。
+
+* 安装
+  1. [[https://docs.microsoft.com/zh-cn/dotnet/core/install/linux-ubuntu][install dotnet-sdk]]
+
+     + apt
+       #+BEGIN_SRC sh
+# ubuntu 20.04
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+
+# 安装SDk
+sudo apt-get update; \
+  sudo apt-get install -y apt-transport-https && \
+  sudo apt-get update && \
+  sudo apt-get install -y dotnet-sdk-3.1 aspnetcore-runtime-3.1
+       #+END_SRC
+
+       #+RESULTS:
+
+     + brew
+       #+BEGIN_SRC sh
+brew cask install dotnet-sdk
+       #+END_SRC
+
+  2. build [[https://github.com/Microsoft/python-language-server][python-language-server]]
+     #+BEGIN_SRC sh
+git clone https://github.com/Microsoft/python-language-server.git
+cd python-language-server/src/LanguageServer/Impl
+dotnet publish -c Release -r osx-x64   # mac
+dotnet publish -c Release -r linux-x64 # Most desktop distributions like CentOS, Debian, Fedora, Ubuntu, and derivatives)
+     #+END_SRC
+     根据您的体系结构和操作系统更改-r 标志。有关系统的正确值，请参见 Microsoft 的 [[https://docs.microsoft.com/en-us/dotnet/core/rid-catalog][Runtime ID 目录]] 。
+
+  3. 添加可执行权限
+     #+BEGIN_SRC sh
+chmod a+x $(git rev-parse --show-toplevel)/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer
+     #+END_SRC
+  4. 拷贝 =.emacs.d= 目录下。
+     #+BEGIN_SRC sh
+mkdir ~/.emacs.d/mspyls
+cp -r $(git rev-parse --show-toplevel)/output/bin/Release/osx-x64/publish/* ~/.emacs.d/mspyls
+cp -r $(git rev-parse --show-toplevel)/output/bin/Release/linux-x64/publish/* ~/.emacs.d/mspyls
+     #+END_SRC
+
+
+* 配置
+  配置参见 [[https://github.com/phenix3443/emacs.d/blob/master/lisps/python-ide.el][python-ide.el]]

@@ -1,0 +1,18 @@
+# -*- coding:utf-8-*-
+#+TITLE: black
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/psf/black][black]] 是 Python 代码格式化程序。
+
+  black 通过产生尽可能小的差异使代码检查更快。
+
+  可以尝试一下 [[https://black.now.sh/][black playground]]。观看 [[https://youtu.be/esZLCuWs_2Y][PyCon 2019]] 演讲以了解更多信息。
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install --user black
+  #+END_SRC
+
+* 配置

@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: iterm2
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://www.iterm2.com/index.html][iterm2]]

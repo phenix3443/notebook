@@ -1,0 +1,41 @@
+# -*- coding:utf-8-*-
+#+TITLE: 通用 IDE
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 辅助编辑
+
+** flycheck
+
+** smart-comment
+
+** auto-highlight-symbo
+
+** helm-dash
+   参见 [[file:modes/helm-dash.org][helm-dash]] 。
+
+** zeal-at-point
+   参见 [[file:modes/zeal-at-point.org][zeal-at-point]] 。
+
+   相比 helm-dash 需要在浏览器中打开对应的文档链接，zeal-at-point 在本地使用 zeal 打开已经缓存好的 docsets，这种方法更方便。
+
+* 代码补全
+** yasnippet
+   参见 [[file:modes/yasnippet-mode.org][yasnippet]] 。
+
+** helm-gtags
+   参见 [[file:modes/helm-gtags.org][helm-gtags]] 。
+
+** company-mode
+   参见 [[file:modes/company-mode.org][company-mode]] 。
+
+** lsp-mode
+   参见 [[file:modes/lsp-mode.org][lsp-mode]] 。
+
+** smart-compile
+
+
+* 代码导航
+
+* 语法检查
+** flycheck

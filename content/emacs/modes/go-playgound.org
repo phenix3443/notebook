@@ -1,0 +1,24 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-playground
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://github.com/grafov/go-playground][go-playerground]] 是 GNU / Emacs 的简单模式，用于在本地 设置 Go 语言游乐场，功能类似 play.golang.org 上的服务，且在 go-mode 的帮助下甚至超越！。你可以把它当做 go 版本的 REPL。这不是在 Emacs 中使用来 play.golang.org 的包装器（它已经通过原始的 go-mode 完成），这是在 Emacs 中设置本地游乐场而不使用浏览器进行代码片段实验的完全替代方案。
+
+  play.golang.org 上的网络游乐场是个不错的主意。它不需要设置，它可以在一个不会损坏系统的受限环境中执行代码。但它也带来了很多限制，特别是当你想使用额外的助手来处理你的代码时：格式化程序，代码完成程序等.Emacs 为 Go 开发提供了许多这样的工具，所以它是最舒适的用 Emacs 内部的片段而不是粗鲁的 webeditor。当然，当地游乐场需要你设置 Go 环境，但如果你在 Go 中开发（或者你想要这样做），你无论如何都需要设置 go-mode 和 helper 工具以便以舒适的方式处理代码。
+
+* 特性
+  + 它在 go-mode 下工作，并可使用安装的所有插件（如自动补全，linters 等）
+  + 在 GOPATH 下的子目录中保存 playground 文件，这有助于保留有用的片段库
+  + 它可以将代码分成任意数量的文件
+  + 它可以从你的 GOPATH 导入任何外部包
+  + 在您的代码段目录中使用 vendored packages
+
+* 安装
+  首先安装 go-mode 和 gotest - 这些都是强制性的。为 Golang 设置你想要的任何其他工具（参见 Emacs Wiki 获取指南或 google 获取“emacs + golang”）。我个人建议使用 goimports 自动将导入子句添加到你的片段。因为通常当您测试一些想法时，您希望尽快获得工作代码。而 goimports 帮助它。
+
+  从 MELPA 安装游乐场：
+  #+BEGIN_SRC sh
+M-x package-install RET go-playground
+  #+END_SRC
+  如果你想要共享片段，请从 go-mode 使用 go-play-buffer。如果你想在 github.com 上发布 gists，请从 MELPA 安装 gist-buffer。

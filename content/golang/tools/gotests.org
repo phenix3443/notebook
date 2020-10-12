@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: gotests
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/cweill/gotests][gotests]] 使编写 Go 测试变得容易。这是一个 Golang 命令行工具，可根据其目标源文件的函数和方法签名生成表驱动的测试。测试文件中的所有新依赖项都将自动导入。

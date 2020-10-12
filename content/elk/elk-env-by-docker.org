@@ -1,0 +1,24 @@
+# -*- coding:utf-8-*-
+#+TITLE: 使用docker搭建elk日志系统
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+** logstash
+   Logstash 是具有实时流水线功能的开源数据收集引擎。 Logstash 可以动态统一来自不同来源的数据，并将数据规范化为您选择的目标。
+
+   收集是通过许多可配置的输入插件完成的，包括原始套接字/数据包通信，文件尾部和几个消息总线客户端。输入插件收集到数据后，可以使用任意数量的修改和注释事件数据的过滤器对其进行处理。最后，事件被路由到输出插件，这些插件可以将事件转发到各种外部程序，包括 Elasticsearch，本地文件和多个消息总线实现。
+
+** elasticsearch
+   Elasticsearch 是一个分布式的 RESTful 搜索和分析引擎，能够解决越来越多的用例。作为 Elastic Stack 的核心，它集中存储您的数据，以便您发现期望的数据并发现意外的数据。
+
+** kibana
+   Kibana 是一个旨在与 Elasticsearch 一起使用的开源分析和可视化平台。可以使用 Kibana 对 Elasticsearch 索引中存储的数据进行搜索、查看和交互。可以轻松地执行高级数据分析，并在各种图表，表格和地图中可视化数据。
+
+* 安装
+  #+BEGIN_SRC sh
+docker pull elasticsearch:7.3.2
+docker pull kibana:7.3.2
+docker pull logstash:7.3.2
+docker pull docker.elastic.co/beats/filebeat:7.5.2
+  #+END_SRC

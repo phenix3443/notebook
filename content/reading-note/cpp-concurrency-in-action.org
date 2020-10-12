@@ -1,0 +1,25 @@
+#+TITLE:c++并发编程
+
+c++ concurrency in action 是一本讲述如何使用C++11进行并发编程的书籍，内容从 std::thread、std::mutex、std::future 和 std::async 等基础类的使用，到内存模型和原子操作、基于锁和无锁数据结构的构建，再扩展到并行算法、线程管理，最后还介绍了多线程代码的测试工作。已有网友将该书翻译成中文放在网上[fn:1]
+
+* c++ 的并发世界
+** 你好，并发世界
+   #+BEGIN_SRC c++ :tangle cpp-concurrency/hello-concurrency.cc
+#include <iostream>
+#include <thread>
+
+void Hello(void) {
+	std::cout << "Hello,concurrency world" << std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::thread t(Hello);
+	t.join();
+
+    return 0;
+}
+   #+END_SRC
+* Footnotes
+
+[fn:1] [[https://www.gitbook.com/book/chenxiaowei/cpp_concurrency_in_action/details][C++并发编程中文翻译版]]

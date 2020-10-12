@@ -1,0 +1,21 @@
+# -*- coding:utf-8-*-
+#+TITLE: C/C++ IDE
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* clang
+  #+BEGIN_SRC sh
+sudo apt install clang clang-format clang-tools
+  #+END_SRC
+
+* cquery[fn:1]
+  [[https://github.com/cquery-project/cquery][cquery]] 是 C/C++的 language server。它提供准确而快速的语义分析，而不会中断工作流程。
+
+  cquery 实现了几乎所有的语言服务器协议，并提供了一些额外的功能来启动：
+
+* ccls
+
+* gnu global
+
+* Footnotes
+[fn:1] [[http://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]

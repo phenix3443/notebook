@@ -1,0 +1,55 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  lua-mode 是在 Emacs 中编辑 Lua 源的主要模式。主要支持以下功能：
+  + 代码缩进和高亮。
+  + 在 lua 子进程中对代码行（lines），块（regions），函数（functions），文件（files）求值，或直接与其进行交互。
+  + 使用在线或离线手册进行文档查找。
+
+* 配置
+** lua-indent-level
+   缩进量
+
+** lua-documentation-url
+   文档查找的 url，默认是 =http://www.lua.org/manual/5.1/manual.html#pdf-= ，可以定制该变量查找 lua5.1，lua5.2 或 lua5.3 的文档。
+
+** lua-documentation-function
+   用于显示文档的函数，默认是 =browse-url= ，Emacs 25 可选 eww。
+
+** lua-default-application
+   启动交互式解析器（REPL）的命令，默认是 =lua= 。
+
+** lua-default-command-switches
+   在启动 REPL 时传递的参数，默认为 =-i= ，（如果希望以交互方式使用 Lua shell，请确保-i 在那里）。
+
+** lua-always-show
+   发送内容后显示 REPL buffer。
+
+* 使用
+
+  以下的这些功能都有助于方便的调试 lua 代码：
+
+** lua-show-process-buffer
+   switch to REPL buffer
+
+** lua-hide-process-buffer
+   隐藏展示 REPL buffer 的 window。
+
+** lua-send-buffer
+   求值当前 buffer
+
+** lua-send-current-line
+   求值当前行
+
+** lua-send-defun
+   求值当前函数
+
+** lua-send-region
+   求值激活的 region
+
+** lua-restart-with-whole-file
+
+   重启 REPL 并发送整个缓冲区

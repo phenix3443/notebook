@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: terminus
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  类似于 SecureCRT 的远程登录客户端。
+* 安装
+
+** snap
+   #+BEGIN_SRC sh
+sudo snap install termius-app
+   #+END_SRC

@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: google-this
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/Malabarba/emacs-google-this][google-this]] 是一个包，提供一组功能和键绑定，用于从emacs中启动谷歌搜索。
+
+* 使用
+  + google-search (C-c / RET)
+  + google-word (C-c / w)
+  + google-symbol (C-c / s)
+  + google-line (C-c / l)
+  + google-region (C-c / SPC)
+  + google-this (C-c / t)
+  + google-this-ray (C-c / a) google 当前 point 到 行尾的文本。
+  + google-this-translate-query-or-region (C-c / c) 翻译。
+  + google-this-lucky-search (C-c / g) google lucky。
+  + google-this-forecast (C-c / f) google搜索天气。

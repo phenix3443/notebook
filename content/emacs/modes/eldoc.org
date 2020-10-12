@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: eldoc-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  Eldoc 是一个 buffer-local 辅助模式，有助于查找 Lisp 文档。当启用后，回显区会显示当前 buffer 中 point 处 Lisp 函数和变量的一些有用信息；函数显示参数列表，变量显示变量文档字符串的第一行。
+
+* 安装
+
+* 配置
+
+* 使用

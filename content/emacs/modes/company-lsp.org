@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: company-lsp
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://github.com/tigersoldier/company-lsp][company-lsp]] 使用 lsp-mode 作为 company 的后端，它提供了 lsp-mode + company-capf 没有的功能：
+  + 支持触发字符。比如输入 =.= 的时候触发 TypeScript 的补全。
+  + 使用补全条目的标签作为补全标签，如果可用的话，将其替换为对应的 insertText。（？）
+  + 异步获取补全的候选项。
+  + 不过不能补全，不缓存补全候选项。
+  + 补全时候扩展 snippet（需要 yasnippet）
+
+* 配置
+
+** company-lsp-enable-recompletion
+   如果设置为 non-nil，则当 company-lsp 完成补全，它会检查当前点是否在任何完成触发器字符之前。如果是，则重新触发另一个完成请求。
+
+   C++ 中，这种情况有利于 std 按照 =std::= 进行补全。
+
+* 使用

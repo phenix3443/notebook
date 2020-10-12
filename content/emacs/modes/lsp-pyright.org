@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: lsp-pyright
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-lsp/lsp-pyright/][lsp-pyright]] 支持 . [[https://github.com/microsoft/pyright][Pyright ]]是用于大型 Python 源库的快速类型检查器。它可以在“监视”模式下运行，并在修改文件后执行快速的增量更新。相比 mspyls，pyright 更快，vs code 也计划使用基于 pyright 构建的 Pylance 替代 mspyls。
+
+* 配置
+** pyright
+  #+BEGIN_SRC sh
+sudo npm i -g pyright
+  #+END_SRC
+
+* 使用

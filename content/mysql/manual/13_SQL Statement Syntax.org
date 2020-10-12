@@ -1,0 +1,375 @@
+# -*- coding:utf-8 -*-
+#+TITLE:SQL Statement Syntax
+#+author: 刘尚亮
+#+email:phenix3443@gmail.com
+#+STARTUP:overview
+* SQL Statement Syntax
+** 13.1 Data Definition Statements
+*** 13.1.1 ALTER DATABASE Syntax
+*** 13.1.2 ALTER EVENT Syntax
+*** 13.1.3 ALTER LOGFILE GROUP Syntax
+*** 13.1.4 ALTER FUNCTION Syntax
+*** 13.1.5 ALTER PROCEDURE Syntax
+*** 13.1.6 ALTER SERVER Syntax
+*** 13.1.7 ALTER TABLE Syntax
+*** 13.1.8 ALTER TABLESPACE Syntax
+*** 13.1.9 ALTER VIEW Syntax
+*** 13.1.10 CREATE DATABASE Syntax
+*** 13.1.11 CREATE EVENT Syntax
+*** 13.1.12 CREATE FUNCTION Syntax
+*** 13.1.13 CREATE INDEX Syntax
+*** 13.1.14 CREATE LOGFILE GROUP Syntax
+*** 13.1.15 CREATE PROCEDURE and CREATE FUNCTION Syntax
+*** 13.1.16 CREATE SERVER Syntax
+*** 13.1.17 CREATE TABLE Syntax
+***** 13.1.17.3 Using FOREIGN KEY Constraints
+
+	  MySQL supports foreign keys, which let you cross-reference related data across tables, and foreign key constraints, which help keep this spread-out data consistent. The essential syntax for a foreign key constraint definition in a CREATE TABLE or ALTER TABLE statement looks like this:
+
+	  MySQL 支持外键，这有助于表间交叉引用相关数据；也支持外键约束，有助于保持广泛数据的一致性。CREATE TABLE 或 ALTER TABLE 语句中外键约束定义语法如下：
+
+	  #+BEGIN_SRC mysql
+[CONSTRAINT [symbol]] FOREIGN KEY
+    [index_name] (index_col_name, ...)
+    REFERENCES tbl_name (index_col_name,...)
+    [ON DELETE reference_option]
+    [ON UPDATE reference_option]
+
+reference_option:
+    RESTRICT | CASCADE | SET NULL | NO ACTION
+	  #+END_SRC
+
+	  index_name represents a foreign key ID. The index_name value is ignored if there is already an explicitly defined index on the child table that can support the foreign key. Otherwise, MySQL implicitly creates a foreign key index that is named according to the following rules:
+
+	  index_name 代表外键 ID。如果支持外键的子表上已有一个显式定义的索引，就忽略该 index_name 值，否则，MySQL 根据以下规则隐式创建一个外键索引：
+
+	  + If defined, the CONSTRAINT symbol value is used. Otherwise, the FOREIGN KEY index_name value is used.
+
+		如果定义了 CONSTRAINT 符号，就使用该值。否值使用 FOREIGN KEY index_name。
+
+	  + If neither a CONSTRAINT symbol or FOREIGN KEY index_name is defined, the foreign key index name is generated using the name of the referencing foreign key column.
+
+		如果 CONSTRAINT symbol or FOREIGN KEY index_name 都没有定义，使用引用的外键列名生成外键索引名字。
+
+	  Foreign keys definitions are subject to the following conditions:
+
+	  外键定义应当具备以下条件：
+
+	  + Foreign key relationships involve a parent table that holds the central data values, and a child table with identical values pointing back to its parent. The FOREIGN KEY clause is specified in the child table. The parent and child tables must use the same storage engine. They must not be TEMPORARY tables.
+
+		外键关系包括父表和子表，父表包含中央数据值，子表中有相同值指向父表。外键关系在子表中指定。父表和子表必须使用同样的存储引擎，它们都不能是临时表。
+
+		In MySQL 5.6, creation of a foreign key constraint requires at least one of the SELECT, INSERT, UPDATE, DELETE, or REFERENCES privileges for the parent table as of 5.6.22.
+
+		MySQL 5.6 中，创建外键约束要求至少有父表的 SELECT, INSERT, UPDATE, DELETE, or REFERENCES 权限中的一个。
+
+	  + Corresponding columns in the foreign key and the referenced key must have similar data types. The size and sign of integer types must be the same. The length of string types need not be the same. For nonbinary (character) string columns, the character set and collation must be the same.
+
+		外键中相应的列和引用的键必须有类似的数据类型。整数类型的大小和符号必须要相同。string 类型长度可以有不同。非二进制字符串列，字符编码和校对必须相同。
+
+	  + When foreign_key_checks is enabled, which is the default setting, character set conversion is not permitted on tables that include a character string column used in a foreign key constraint. The workaround is described in Section 13.1.7, “ALTER TABLE Syntax”.
+
+		forerign_key_checks 启动时，该选项默认启动，如果表中一个字符串列用过外键约束，不允许该表进行字符集转换。13.1.7 中描述了方法。
+
+	  + MySQL requires indexes on foreign keys and referenced keys so that foreign key checks can be fast and not require a table scan. In the referencing table, there must be an index where the foreign key columns are listed as the first columns in the same order. Such an index is created on the referencing table automatically if it does not exist. This index might be silently dropped later, if you create another index that can be used to enforce the foreign key constraint. index_name, if given, is used as described previously.
+
+		Mysql 要求在外键和引用键上建立索引，这样不需要扫描全表就可以进行快速的外键检查。在引用表，外键列以相同顺序作为第一列必须有索引，如果不存在，引用表的时候会自动创建该索引。如果后来创建另外用于执行外键的索引，该索引可能会悄悄删除。 如果给定了 index_name,会向前面描述的一样使用。
+
+	  + InnoDB permits a foreign key to reference any index column or group of columns. However, in the referenced table, there must be an index where the referenced columns are listed as the first columns in the same order.
+
+		InnoDB 允许外键引用任何索引列或组合列。然而，被引用的表中，被引用的列如果同样顺序作为第一列必须要建立索引。
+
+		NDB requires an explicit unique key (or primary key) on any column referenced as a foreign key.
+
+		NDB 要求作为外键被引用的列要显式声明为 unique key（或 primary key）。
+
+	  + Index prefixes on foreign key columns are not supported. One consequence of this is that BLOB and TEXT columns cannot be included in a foreign key because indexes on those columns must always include a prefix length.
+
+		不支持外键列上的索引前缀。这样做的后果之一是外键不能包含 BLOB 和 TEXT 列，因为这些列上的索引总是必须要包含前缀长度。
+
+	  + If the CONSTRAINT symbol clause is given, the symbol value, if used, must be unique in the database. A duplicate symbol will result in an error similar to: ERROR 1022 (2300): Can't write; duplicate key in table '#sql- 464_1'. If the clause is not given, or a symbol is not included following the CONSTRAINT keyword, a name for the constraint is created automatically.
+
+		如果给出 CONSTRAINT symbol，如果被使用，符号值在数据库中必须唯一。重复的符号将会导致此类错误：ERROR 1022 (2300): Can't write; duplicate key in table '#sql- 464_1'. 如果没有给出 clause，或者 CONSTRAINT 关键字后没有符号，自动创建约束名字。
+
+	  + InnoDB does not currently support foreign keys for tables with user-defined partitioning. This includes both parent and child tables.
+
+		InnoDB 当前不支持用户自定义分区表上的外键。包括父表和子表。
+
+		This restriction does not apply for NDB tables that are partitioned by KEY or LINEAR KEY (the only user partitioning types supported by the NDB storage engine); these may have foreign key references or be the targets of such references.
+
+		该限制不适用与使用 KEY 或 LINEAR KEY 分区的 NDB 表（NDB 存储引擎支持的唯一分区类型）；这些可以有外键或作为外键引用的目标。
+
+	  + For NDB tables, ON UPDATE CASCADE is not supported where the reference is to the parent table's primary key.
+
+		对于 NDB 表，党引用不是父表的 primary key 时，不支持 ON UPDATE CACADE。
+
+*Referential Actions* （参考行为）
+
+	This section describes how foreign keys help guarantee referential integrity.
+
+	改节描述外键如何有助于保证引用完整性。
+
+	For storage engines supporting foreign keys, MySQL rejects any INSERT or UPDATE operation that attempts to create a foreign key value in a child table if there is no a matching candidate key value in the parent table.
+
+	对于支持外键的存储引擎，如果父表中没有匹配的候选键，Mysql 拒绝任何企图在子表中创建外键值的 INSERT 和 UPDATE 操作。
+
+	When an UPDATE or DELETE operation affects a key value in the parent table that has matching rows in the child table, the result depends on the referential action specified using ON UPDATE and ON DELETE subclauses of the FOREIGN KEY clause. MySQL supports five options regarding the action to be taken, listed here:
+
+	当 UPDATE 或 DELETE 操作影响父表中的键值，而这些键值在子表中有匹配行，结果取决于使用 FOREIGN KEY 条款的 ON UPDATE 和 ON DELETE 子条款指定的参考行为。mysql 对于要采取的行为支持五各选项，如下所列：
+
+	+ CASCADE: Delete or update the row from the parent table, and automatically delete or update the matching rows in the child table. Both ON DELETE CASCADE and ON UPDATE CASCADE are supported. Between two tables, do not define several ON UPDATE CASCADE clauses that act on the same column in the parent table or in the child table.
+
+	  CASCADE:从父表中删除或更新表，在子表中自动山删除或更新匹配的行。ON DELETE CASCADE and ON UPDATE CASCADE 都支持。两表之间，不要在父表或子表中相同的列上定义多个 ON UPDATE CASCADE 子条目。
+
+	  	  #+BEGIN_EXAMPLE
+Note
+Cascaded foreign key actions do not activate triggers.
+
+级联的外键行为不会机会触发器。
+	  #+END_EXAMPLE
+
+
+	+ SET NULL: Delete or update the row from the parent table, and set the foreign key column or columns in the child table to NULL. Both ON DELETE SET NULL and ON UPDATE SET NULL clauses are supported.
+
+	  SET NULL：从父表中删除或更新行，在子表中将外键（组合列）设置为 NULL。同时支持 ON DELETE SET NULL and ON UPDATE SET NULL 子条目。
+
+	  If you specify a SET NULL action, make sure that you have not declared the columns in the child table as NOT NULL.
+
+	  如果指定一个 SET NUll 行为，确保没有将子表中的该列声明为 NOT NULL。
+
+	+ RESTRICT: Rejects the delete or update operation for the parent table. Specifying RESTRICT (or NO ACTION) is the same as omitting the ON DELETE or ON UPDATE clause.
+
+	  RESTRICT:拒绝执行父表的删除和更新操作。作为省略 ON DELETE or ON UPDATE 条目，指定 RESTRICT (or NO ACTION)是相同的。
+
+	+ NO ACTION: A keyword from standard SQL. In MySQL, equivalent to RESTRICT. The MySQL Server rejects the delete or update operation for the parent table if there is a related foreign key value in the referenced table. Some database systems have deferred checks, and NO ACTION is a deferred check. In MySQL, foreign key constraints are checked immediately, so NO ACTION is the same as RESTRICT.
+
+	  NO ACTION:标准 sql 关键字。Mysql 中，等于 RESTRICT。mysql 服务拒绝父表的删除和更新操作，如果被引用的表中有相关的外键值。一些数据库系统有延迟的检查，NO ACTION 就是一个延迟的检查。Mysql 中，立即检查外键约束，所以有 NO ACTION 和 RESTRICT 是一样的。
+
+	+ SET DEFAULT: This action is recognized by the MySQL parser, but both InnoDB and NDB reject table definitions containing ON DELETE SET DEFAULT or ON UPDATE SET DEFAULT clauses.
+
+	  SET DEFAULT:mysql 解析器识别该操作，但 InnoDB 和 NDB 拒绝包含 ON DELETE SET DEFAULT or ON UPDATE SET DEFAULT 条目的表定义。
+
+	For an ON DELETE or ON UPDATE that is not specified, the default action is always RESTRICT.
+
+	没有指定 ON DELETE or ON UPDATE 的默认操作是 RESTRICT。
+
+	MySQL supports foreign key references between one column and another within a table. (A column cannot have a foreign key reference to itself.) In these cases, “child table records” really refers to dependent records within the same table.
+
+	Mysql 支持表内的列间的外键引用（列不能使用外键引用自身）。这种情况喜爱,“子表引用记录列”实际上指向同表综的依赖记录。
+
+*Examples of Foreign Key Clauses* （外键条目举例）
+
+	Here is a simple example that relates parent and child tables through a single-column foreign key:
+
+	此处的简单例子使用单列外键关联父表和子表。
+
+	#+BEGIN_SRC sql
+CREATE TABLE parent (
+    id INT NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=INNODB;
+
+CREATE TABLE child (
+    id INT,
+    parent_id INT,
+    INDEX par_ind (parent_id),
+    FOREIGN KEY (parent_id)
+        REFERENCES parent(id)
+        ON DELETE CASCADE
+) ENGINE=INNODB;
+	#+END_SRC
+
+
+	A more complex example in which a product_order table has foreign keys for two other tables. One foreign key references a two-column index in the product table. The other references a single-column index in the customer table:
+
+	更复杂的例子：product_order 表中有两个表的外键。一个外键引用了 product 表的两个列组成的索引，另一个 custom 表中的单列索引。
+
+	#+BEGIN_SRC sql
+CREATE TABLE product (
+    category INT NOT NULL, id INT NOT NULL,
+    price DECIMAL,
+    PRIMARY KEY(category, id)
+)   ENGINE=INNODB;
+
+CREATE TABLE customer (
+    id INT NOT NULL,
+    PRIMARY KEY (id)
+)   ENGINE=INNODB;
+
+CREATE TABLE product_order (
+    no INT NOT NULL AUTO_INCREMENT,
+    product_category INT NOT NULL,
+    product_id INT NOT NULL,
+    customer_id INT NOT NULL,
+
+    PRIMARY KEY(no),
+    INDEX (product_category, product_id),
+    INDEX (customer_id),
+
+    FOREIGN KEY (product_category, product_id)
+      REFERENCES product(category, id)
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+
+    FOREIGN KEY (customer_id)
+      REFERENCES customer(id)
+)   ENGINE=INNODB;
+	#+END_SRC
+
+
+*Adding foreign keys* （添加外键）
+
+	You can add a new foreign key constraint to an existing table by using ALTER TABLE. The syntax relating to foreign keys for this statement is shown here:
+
+	可以使用 ALTER TABLE 向现有表添加外键约束。和外键相关显式和如下：
+
+	#+BEGIN_SRC sql
+ALTER TABLE tbl_name
+    ADD [CONSTRAINT [symbol]] FOREIGN KEY
+    [index_name] (index_col_name, ...)
+    REFERENCES tbl_name (index_col_name,...)
+    [ON DELETE reference_option]
+    [ON UPDATE reference_option]
+	#+END_SRC
+
+
+	The foreign key can be self referential (referring to the same table). When you add a foreign key constraint to a table using ALTER TABLE, remember to create the required indexes first.
+
+	外键可以是字引用的（引用相同的表）。使用 ALTER TABLE 添加外键约束时，记得先创建所需的索引。
+
+*Dropping Foreign Keys* (删除外键)
+
+	You can also use ALTER TABLE to drop foreign keys, using the syntax shown here:
+
+	还可以使用 ALTER TABLE 删除外键，使用如下语法：
+
+	#+BEGIN_SRC sql
+ALTER TABLE tbl_name DROP FOREIGN KEY fk_symbol;
+	#+END_SRC
+
+	If the FOREIGN KEY clause included a CONSTRAINT name when you created the foreign key, you can refer to that name to drop the foreign key. Otherwise, the fk_symbol value is generated internally when the foreign key is created. To find out the symbol value when you want to drop a foreign key, use a SHOW CREATE TABLE statement, as shown here:
+
+	如果创建外键的时候 FOREIGN KEY 子条目包含 CONSTRAINT 名字，可以引用该名字删除外键。否则，创建外键时自内部自动创建 fk_symbol。使用 SHOW CREATE TABLE 语句查找想要删除的外键的符号值，如下所示：
+	#+BEGIN_SRC sh
+mysql> SHOW CREATE TABLE ibtest11c\G
+*************************** 1. row ***************************
+       Table: ibtest11c
+Create Table: CREATE TABLE `ibtest11c` (
+  `A` int(11) NOT NULL auto_increment,
+  `D` int(11) NOT NULL default '0',
+  `B` varchar(200) NOT NULL default '',
+  `C` varchar(175) default NULL,
+  PRIMARY KEY  (`A`,`D`,`B`),
+  KEY `B` (`B`,`C`),
+  KEY `C` (`C`),
+  CONSTRAINT `0_38775` FOREIGN KEY (`A`, `D`)
+REFERENCES `ibtest11a` (`A`, `D`)
+ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `0_38776` FOREIGN KEY (`B`, `C`)
+REFERENCES `ibtest11a` (`B`, `C`)
+ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB CHARSET=latin1
+1 row in set (0.01 sec)
+
+mysql> ALTER TABLE ibtest11c DROP FOREIGN KEY `0_38775`;
+	#+END_SRC
+
+	Prior to MySQL 5.6.6, adding and dropping a foreign key in the same ALTER TABLE statement may be problematic in some cases and is therefore unsupported. Separate statements should be used for each operation. As of MySQL 5.6.6, adding and dropping a foreign key in the same ALTER TABLE statement is supported for ALTER TABLE ... ALGORITHM=INPLACE but remains unsupported for ALTER TABLE ... ALGORITHM=COPY.
+
+	mysql 5.6.5 之前，同一 ALTER TABLE 语句中添加和删除外键某些情况可能会问题，因为没有值贺词。每个操作使用单独的语句。mysql 5.6.6，ALTER TABLE ... ALGORITHM=INPLACE 支持同一 ALTER TABLE 语句中添加和删除外键，但 ALTER TABLE ... ALGORITHM=COPY 不支持。
+
+	Before MySQL 5.6.7, using ALTER TABLE to change the definition of a foreign key column could cause a loss of referential integrity. For example, changing a foreign key column that contained NULL values to be NOT NULL caused the NULL values to be the empty string. Similarly, an ALTER TABLE IGNORE that removed rows in a parent table could break referential integrity.
+
+	As of 5.6.7, the server prohibits changes to foreign key columns with the potential to cause loss of referential integrity. A workaround is to use ALTER TABLE ... DROP FOREIGN KEY before changing the column definition and ALTER TABLE ... ADD FOREIGN KEY afterward.
+
+*Foreign Keys and Other MySQL Statements*
+
+
+	Table and column identifiers in a FOREIGN KEY ... REFERENCES ... clause can be quoted within backticks (`). Alternatively, double quotation marks (") can be used if the ANSI_QUOTES SQL mode is enabled. The setting of the lower_case_table_names system variable is also taken into account.
+
+	FOREIGN KEY ... REFERENCES ... 条目中定义的表和列标识符可以使用反引号。或者如果启用 ANSI_QUOTES SQL 模式也可以使用双引号。系统变量 lower_case_table_names 也要考虑在内。
+
+	You can view a child table's foreign key definitions as part of the output of the SHOW CREATE TABLE statement:
+
+	在 SHOW CREATE TABLE 语句输出部分中查看子表的外键定义。
+
+	#+BEGIN_SRC sql
+SHOW CREATE TABLE tbl_name;
+	#+END_SRC
+
+
+	You can also obtain information about foreign keys by querying the INFORMATION_SCHEMA.KEY_COLUMN_USAGE table.
+
+	通过查询 INFORMATION_SCHEMA.KEY_COLUMN_USAGE table 了解有关外键的更多信息。
+
+	You can find information about foreign keys used by InnoDB tables in the INNODB_SYS_FOREIGN and INNODB_SYS_FOREIGN_COLS tables, also in the INFORMATION_SCHEMA database.
+
+	在 INNODB_SYS_FOREIGN and INNODB_SYS_FOREIGN_COLS 中查看 InnoDB 表使用的外键信息，INFORMATION_SCHEMA 数据库中也可以看到。
+
+
+	mysqldump produces correct definitions of tables in the dump file, including the foreign keys for child tables.
+
+	mysqldump 在转储文件中产生表的正确信息，包括子表的外键。
+
+	To make it easier to reload dump files for tables that have foreign key relationships, mysqldump automatically includes a statement in the dump output to set foreign_key_checks to 0. This avoids problems with tables having to be reloaded in a particular order when the dump is reloaded. It is also possible to set this variable manually:
+
+	为了更容易的加载包含外键关系的表的转储文件，mysqldump 在转储输出中自动包含语句将 forerign_key_checks 设置为 0。 这避免了加载转储时表必须以特定顺序加载的问题。也可以手动设置这个变量：
+
+	#+BEGIN_SRC sh
+mysql> SET foreign_key_checks = 0;
+mysql> SOURCE dump_file_name;
+mysql> SET foreign_key_checks = 1;
+	#+END_SRC
+
+	This enables you to import the tables in any order if the dump file contains tables that are not correctly ordered for foreign keys. It also speeds up the import operation. Setting foreign_key_checks to 0 can also be useful for ignoring foreign key constraints during LOAD DATA and ALTER TABLE operations. However, even if foreign_key_checks = 0, MySQL does not permit the creation of a foreign key constraint where a column references a nonmatching column type. Also, if a table has foreign key constraints, ALTER TABLE cannot be used to alter the table to use another storage engine. To change the storage engine, you must drop any foreign key constraints first.
+
+	如果转储文件包含的表没有针对正确排序，这样就可以任意顺序导入表。这同样加快了导入操作。foreign_key_checks 设置为 0 同样有助于在 LOAD DATA and ALTER TABLE 操作中忽略外键约束。然而，即使 foreign_key_checks = 0，mysql 不允许创建列引用了不匹配的类类型的外键约束。同样，如果一个表包含外键约束，不能使用 ALTER TABLE 修改表的存储引擎。为了修改存储引擎，必须要先删除外键约束。
+
+	You cannot issue DROP TABLE for a table that is referenced by a FOREIGN KEY constraint, unless you do SET foreign_key_checks = 0. When you drop a table, any constraints that were defined in the statement used to create that table are also dropped.
+
+	不可以删除被外键约束引用的表，除非将 foreign_key_checks 设置为。删除表时，创建该表时定义的所有约束都会被删除。
+
+	If you re-create a table that was dropped, it must have a definition that conforms to the foreign key constraints referencing it. It must have the correct column names and types, and it must have indexes on the referenced keys, as stated earlier. If these are not satisfied, MySQL returns Error 1005 and refers to Error 150 in the error message, which means that a foreign key constraint was not correctly formed. Similarly, if an ALTER TABLE fails due to Error 150, this means that a foreign key definition would be incorrectly formed for the altered table.
+
+	如果重建删除的表，它必须有一个保证外键约束引用到它的定义。它必须有正确的列名和类型，必须索引被引用的键。如果不满足这些，mysql 将会返回 1005 错误，在错误信息中指向 150 错误，意味这外键约束没有正确的形成。类似的，如果 ALTER TABLE 由于错误 150 失败，这意味修改的表没有正确形成外键定义。
+
+	For InnoDB tables, you can obtain a detailed explanation of the most recent InnoDB foreign key error in the MySQL Server, by checking the output of SHOW ENGINE INNODB STATUS.
+
+	对于 InnoDB 表，可以通过 检查 SHOW ENGINE INNODB STATUS 的输出，获取关于大多数 mysql 服务端最近 InnoDB 外键错误更详细的解释。
+
+	#+BEGIN_QUOTE
+	Important
+
+	For users familiar with the ANSI/ISO SQL Standard, please note that no storage engine, including InnoDB, recognizes or enforces the MATCH clause used in referential-integrity constraint definitions. Use of an explicit MATCH clause will not have the specified effect, and also causes ON DELETE and ON UPDATE clauses to be ignored. For these reasons, specifying MATCH should be avoided.
+
+	The MATCH clause in the SQL standard controls how NULL values in a composite (multiple-column) foreign key are handled when comparing to a primary key. MySQL essentially implements the semantics defined by MATCH SIMPLE, which permit a foreign key to be all or partially NULL. In that case, the (child table) row containing such a foreign key is permitted to be inserted, and does not match any row in the referenced (parent) table. It is possible to implement other semantics using triggers.
+
+	Additionally, MySQL requires that the referenced columns be indexed for performance reasons. However, the system does not enforce a requirement that the referenced columns be UNIQUE or be declared NOT NULL. The handling of foreign key references to nonunique keys or keys that contain NULL values is not well defined for operations such as UPDATE or DELETE CASCADE. You are advised to use foreign keys that reference only UNIQUE (including PRIMARY) and NOT NULL keys.
+
+	Furthermore, MySQL parses but ignores “inline REFERENCES specifications” (as defined in the SQL standard) where the references are defined as part of the column specification. MySQL accepts REFERENCES clauses only when specified as part of a separate FOREIGN KEY specification. For storage engines that do not support foreign keys (such as MyISAM), MySQL Server parses and ignores foreign key specifications.
+	#+END_QUOTE
+
+
+*** 13.1.18 CREATE TABLESPACE Syntax
+*** 13.1.19 CREATE TRIGGER Syntax
+*** 13.1.20 CREATE VIEW Syntax
+*** 13.1.21 DROP DATABASE Syntax
+*** 13.1.22 DROP EVENT Syntax
+*** 13.1.23 DROP FUNCTION Syntax
+*** 13.1.24 DROP INDEX Syntax
+*** 13.1.25 DROP LOGFILE GROUP Syntax
+*** 13.1.26 DROP PROCEDURE and DROP FUNCTION Syntax
+*** 13.1.27 DROP SERVER Syntax
+*** 13.1.28 DROP TABLE Syntax
+*** 13.1.29 DROP TABLESPACE Syntax
+*** 13.1.30 DROP TRIGGER Syntax
+*** 13.1.31 DROP VIEW Syntax
+*** 13.1.32 RENAME TABLE Syntax
+*** 13.1.33 TRUNCATE TABLE Syntax
+
+** 13.2 Data Manipulation Statements
+** 13.3 MySQL Transactional and Locking Statements
+** 13.4 Replication Statements
+** 13.5 SQL Syntax for Prepared Statements
+** 13.6 MySQL Compound-Statement Syntax
+** 13.7 Database Administration Statements
+** 13.8 MySQL Utility Statements

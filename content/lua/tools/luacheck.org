@@ -1,0 +1,84 @@
+# -*- coding:utf-8-*-
+#+TITLE: luacheck
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  luacheck 是一个静态分析器和 linter。luacheck 可以检测各种问题，例如使用未定义的全局变量、未使用的变量和值、访问未初始化的变量、无法访问的代码等等。
+
+  luacheck 支持使用 Lua 5.1，Lua 5.2，Lua 5.3 和 LuaJIT 的语法检查 Lua 文件。luacheck 本身是用 Lua 编写的，并且运行在所有提到的 Lua 版本上。
+
+  luacheck 还可以通过 LuaLanes 并行检查，提高检查速度
+
+* 安装
+  #+BEGIN_SRC sh
+luarocks install luacheck
+luarcoks install lanes
+  #+END_SRC
+
+* 配置
+
+  检查的大多数方面都是可配置的：用于定义自定义项目相关全局变量的选项，用于选择标准全局变量集（Lua 标准库的版本），用于按类型和相关变量名称过滤警告等。
+
+** 命令行选项（CLI Option）
+   luacheck 尝试从当前目录中的 =.luacheckrc= 文件加载配置。如果没有找到，它将在父目录中查找它，依此类推，直到它到达文件系统根目录。可以使用 =--config= 选项设置 config 的路径，在这种情况下，它将在递归加载期间使用。配置中的路径相对于加载目录进行解释。
+
+   可以使用 --no-config 标志禁用配置加载。
+
+** 配置文件选项(ConfigureFile Option)
+
+   如果未使用 =--config= 、 =-no-config= 和 =--no-default-config= 选项，则 luacheck 将尝试从 =--default-config= 选项或 =％LOCALAPPDATA％\luacheck\.luacheckrc= 的值加载配置（在 Windows 上）， =~/Library/Application Support/luacheck/.luacheckrc= （OS X/macOS 上），以及其他系统上的 =$XDG_CONFIG_HOME/luacheck/.luacheckrc= 或 =~/.config/luacheck/.luacheckrc= 默认情况下。默认配置中的路径相对于当前目录进行解释。
+
+   配置只是 luacheck 执行的 Lua 脚本。它可以通过赋值全局变量或通过返回带有选项名称作为键的表来设置各种选项。
+
+   从配置文件加载的选项具有最低优先级：可以使用 CLI 选项或内联选项覆盖它们。
+
+   其他详见 [[https://luacheck.readthedocs.io/en/stable/config.html][luacheck 文档]] 。
+
+
+** 内联选项(Inline Option)
+   luacheck 支持在已检查的文件中使用内联配置注释直接设置一些选项。这些内联选项具有最高优先级，覆盖配置选项和 CLI 选项。
+
+   内联配置注释是一个以 =luacheck= 标记开头的简短注释，可位于空格之后。注释的主体应包含逗号分隔选项，其中选项由其名称和空格分隔的参数组成。它还可以包含用括号括起来的注释，这些注释将被忽略。
+   #+BEGIN_SRC lua
+-- luacheck: globals g1 g2, ignore foo
+local foo = g1(g2) -- No warnings emitted.
+
+-- The following unused function is not reported.
+local function f() -- luacheck: ignore
+   -- luacheck: globals g3
+   g3() -- No warning.
+end
+
+g3() -- Warning is emitted as the inline option defining g3 only affected function f.
+   #+END_SRC
+
+   不带参数的选项可以带有前缀，以反转其含义。例如，使用 =--luacheck: no unused args= 禁用未使用的参数警告。
+
+   要对内联选项可见性进行细粒度控制，请使用 =luacheck:push= 和 =luacheck:pop= 指令：
+   #+BEGIN_SRC lua
+-- luacheck: push ignore foo
+foo() -- No warning.
+-- luacheck: pop
+foo() -- Warning is emitted.
+   #+END_SRC
+
+** 常见选项
+
+*** 全局变量（1xx）
+    对于每个文件，Luacheck 构建了可在此处使用的已定义全局变量和字段的列表。 默认情况下，只定义 Lua 标准库中的全局变量;  可以使用 =--globals= CLI 选项或 =globals= 配置选项添加自定义全局变量，并且可以使用 =--std= CLI 选项或 =std= 配置文件选项选择标准库的版本。 当设置，修改或访问未定义的全局或字段时，Luacheck 会发出警告。
+
+**** std
+     可以通过改变全局 stds 变量为自定义集命名，以便可以在 =-std= CLI 选项和 =std= inline 和 配置文件选项中使用它们。
+
+*** 隐式定义的全局变量
+    Luacheck 可以设置为在某些条件下赋值的全局变量是被隐式定义的。 当使用 =-d/-allow_defined= CLI 选项或 =allow_defined= 配置文件选项时，对 globals 的所有赋值都会定义它们;  当使用 =-t/-allow_defined_top= CLI 选项或 =allow_defined_top= 配置文件选项时，顶级函数范围（也称为主块）中的全局变量的赋值定义它们。未被访问的隐式定义的全局变量会产生警告。
+
+*** 模块
+    可以使用 =-m/-module= CLI 选项或 module 配置文件选项将文件标记为模块，以模拟不推荐使用的 module 功能的语义。 隐含在模块内部定义的 Globals 是其接口的一部分，在外部不可见，并且不会报告为未使用。不允许对其他全局变量进行赋值，即使是已定义的全局变量。
+
+* 使用
+  安装 luacheck 后，从命令行运行 luacheck 程序。传递一个文件列表，rockspecs 或目录（需要 LuaFileSystem）来检查：
+  #+BEGIN_SRC sh
+luacheck src extra_file.lua another_file.lua
+  #+END_SRC

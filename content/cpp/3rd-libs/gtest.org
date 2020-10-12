@@ -1,0 +1,42 @@
+# -*- coding:utf-8-*-
+#+TITLE:gtest
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/google/googletest][gtest]]（Google Test Framwork） 是 google 一套开源的 C++测试框架。主要包括两个部分：gtest和gmock两个部分。
+
+** gtest
+
+   参考文档：[[http:https://github.com/google/googletest/blob/master/googletest/docs/Primer.md][google test primer]]
+
+** gmock
+
+* 安装
+  #+BEGIN_SRC sh
+sudo apt install libgtest-dev
+  #+END_SRC
+
+  注意：这只是安装了gtest的源码文件，库文件需要手动编译。查找文件安装路径：
+
+  #+BEGIN_SRC sh
+dpkg -L libgtest-dev
+  #+END_SRC
+
+  可以看到源码安装位置 =/usr/src/gtest= ，编译
+
+  #+BEGIN_SRC sh
+cd /usr/src/gtest
+sudo cmake . && make
+sudo cp *.a /usr/lib
+  #+END_SRC
+
+* 使用
+  配合cmake使用如下：
+  #+BEGIN_SRC cmake
+cmake_minimum_required(VERSION 3.0)
+add_executable(main main.cpp)
+find_package(GTest REQUIRED)
+target_link_libraries(main gtest ${GTEST_LIBRARIES} pthread)
+  #+END_SRC
+  注意libgtest需要和pthread库一起编译。

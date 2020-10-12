@@ -1,0 +1,101 @@
+# -*- coding:utf-8-*-
+#+TITLE: cc-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  cc-mode 支持编辑 C，C ++，Objective-C，Java，CORBA 的接口定义语言，Pike1 和 AWK 文件。 尽管 AWK 尚未像其他语言一样整合，但通过这种方式，可以轻松设置一致的字体锁定和编码风格，以便用于编辑所有这些语言。
+
+  请注意，此软件包的名称是 “cc mode”，但没有顶级 cc mode 入口点。cc mode 中的所有变量，命令和函数都以 c-thing，c-mode，c ++-mode，objc-mode，java-mode，idl-mode，pike-mode 和 awk-mode 入口点为前缀。 该软件包旨在替代 c-mode.el，c++-mode.el 和 awk-mode.el。
+
+* 基本使用
+** 缩进量
+   #+BEGIN_SRC elisp
+(setq c-basic-offset 6)
+   #+END_SRC
+
+** 缩进样式
+   #+BEGIN_SRC elisp
+(setq c-default-style '((java-mode . "java")
+                        (awk-mode . "awk")
+                        (other . "linux")))
+   #+END_SRC
+
+** 自动缩进
+   当输入标点符号（';'或'{'）是，自动缩进的当前行。
+   #+BEGIN_SRC elisp
+(setq-default c-electric-flag t)
+   #+END_SRC
+   回车键自动缩进新行。
+
+** 快捷键
+  挑选几个没有注意到的
+
+*** C-c C-q (c-indent-defun)
+    缩进 point 所在的整个顶级函数、类或宏定义的范围。 此函数不能用于重新嵌套括号结构，例如嵌套类或函数或 Java 方法。 被重新缩进的顶级构造必须是完整的，即它必须同时具有开始大括号和结束大括号。
+
+*** C-M-h (c-mark-function)
+    虽然不是严格意义的缩进命令，但对于将当前顶级函数或类定义标记为当前区域很有用。 和 c-indent-defun 一样，这个命令在顶层构造上运行，并且不能用来标记一个 Java 方法。
+
+*** C-M-a (c-beginning-of-defun)
+
+*** C-M-e (c-end-of-defun)
+
+*** M-a (c-beginning-of-statement)
+
+*** M-e (c-end-of-statement)
+
+*** C-c C-u (c-up-conditional)
+
+*** M-x c-up-conditional-with-else
+
+*** M-x c-down-conditional-with-else
+
+*** C-c C-p (c-backward-conditional)
+
+*** C-c C-n (c-forward-conditional)
+
+* minor modes
+  cc-mode 包含几个类似 minor-mode 的特性，可能在编写新代码或编辑旧代码时发现有用：
+** electric mode
+   启用此功能后，输入某些可见字符会时导致重新格式化。这通常很有帮助，但在编辑乱码格式的代码时可能会造成麻烦。
+
+   这个有用，可以开启。
+
+** auto-newline mode
+   这会如期望的那样自动插入换行符，例如输入'} 之后。
+
+   auto-newline 仅在以下条件成立时触发：
+   + auto-newline minor mode 启用，此时 modeline 上 mode 名称后的指示符显示'a'（例如'C/a'或'C/la'）。
+   + 字符在一行的末尾输入，或者仅在后面输入空格，并且可能用'\'转义新行。
+   + 字符已不在自己的行中。 （这仅适用于在字符前插入换行符。）
+   + 该字符不是在文字中键入的。
+   + 没提供给该命令的数字参数（即，它是正常输入的，没有 C-u 前缀）。
+
+** hungry-delete mode
+   这使您可以使用单个键删除包含空白符的连续块：例如，auto-newline 产生的新行和自动缩进前写入注释时。
+
+** subword mode
+   这种模式使得像 M-f（forward-word）和 M-b（backward-word）这样的基本字移动命令将傻傻的符号的部分视为不同的字。例如，'NSGraphicsContext'被视为三个单词‘NS’, ‘Graphics’, and ‘Context.
+
+** syntactic-indentation mode
+   当它启用时（通常情况下），缩进命令（如 C-j）根据其语法结构缩进代码行。否则，一行简单地缩进到与前一行相同的级别，<TAB> 以 c-basic-offset 的步长调整缩进。
+
+* hooks
+  cc-mode 提供了几个 hook，可以使用这些 hook 将 cc-mode 设定为指定的编码风格。 主要的 hook 是 c-mode-common-hook; 通常，会将大部分自定义设置放在此处。 另外，每种语言模式都有自己的 hook，允许针对不同的 cc-mode 语言单独调整设置，并且有一个程序包初始化 hook。 最后，还有 c-special-indent-hook，它可以解决异常缩进问题。
+
+  打开 buffer 时，cc-mode 首先使用当前活动的样式对其进行初始化。 然后它调用 c-mode-common-hook，最后它调用语言特定的 hook。 因此，在这些 hook 中完成的任何样式设置都将覆盖由 c-default-style 设置的样式。
+
+* style
+** build-in style
+   gnu k&r bsd whitesmith stroustrup ellemtel linux python java awk user
+
+** 选择 style
+
+** 添加和修改 style
+
+** 猜测 style
+   除了指定 style，还可以通过让 cc-mode 检查已经格式化的代码缓冲区来猜测样式。
+
+   为此，请在样本缓冲区中调用 c-guess（或其他 5 个猜测命令之一）。
+
+   然后，可以使用 c-guess-install 在任何 cc-mode 缓冲区中设置猜测的样式。 可以使用 c-guess-view 显示样式，并将其复制到 =.emacs= 中以备将来使用。

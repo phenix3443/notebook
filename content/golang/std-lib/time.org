@@ -1,0 +1,53 @@
+# -*- coding:utf-8-*-
+#+TITLE: time
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/time/][time]] 提供了用于测量和显示时间的功能。日历计算始终采用公历，没有[[https://zh.wikipedia.org/wiki/%25E9%2597%25B0%25E7%25A7%2592][闰秒]]。
+** 单调时钟
+   操作系统同时提供“挂钟(wall clock)”和“单调时钟(monotonic clock)”，“挂钟”会随时钟同步的变化而变化，单调时钟不会。一般规则是挂钟用于指示时间，单调时钟用于测量时间。在该程序包中，没有拆分 API，time.Now 返回的 Time 结构既包含挂钟读数又包含单调时钟读数。后续的计时操作将使用挂钟读数，而时间测量操作（特别是比较和减法）将使用单调时钟读数。
+
+   例如，即使在计时操作期间更改了挂钟，此代码也始终会计算约 20 毫秒的间隔时间：
+
+   #+BEGIN_SRC go
+start := time.Now()
+... operation that takes 20 milliseconds ...
+t := time.Now()
+elapsed := t.Sub(start)
+   #+END_SRC
+
+   类似的其他用法，例如 time.Since(start)，time.Until(deadline)和 time.Now()。 Before(deadline)，对挂钟重置也同样有效。
+
+   本节的其余部分提供了有关操作如何使用单调时钟的精确详细信息，但是使用此程序包不需要了解这些详细信息。
+
+   time.Now 返回的 Time 结构包含单调时钟读数。如果时间 t 具有单调时钟读数，则 t.Add 将相同的持续时间添加到挂钟和单调时钟读数中以计算结果。因为 t.AddDate(y，m，d)，t.Round(d)和 t.Truncate(d)是挂钟时间计算，所以它们总是从结果中剥离任何单调时钟读数。因为使用 t.In，t.Local 和 t.UTC 影响墙壁时间，所以它们也会从结果中剥离任何单调时钟读数。剥离单调时钟读数的典型方法是使用 t = t.Round(0)。
+
+   如果 Time 结构 t 和 u 都包含单调时钟读数，则仅使用单调时钟读数执行操作 t.After(u)，t.Before(u)，t.Equal(u)和 t.Sub(u)，忽略挂钟读数。如果 t 或 u 不包含单调时钟读数，则这些操作将退回到使用墙上时钟读数。
+
+   在某些系统上，如果计算机进入睡眠状态，单调时钟将停止。在这样的系统上，t.Sub(u)可能无法准确反映 t 和 u 之间经过的实际时间。
+
+   由于单调时钟读数在当前进程之外没有任何意义，因此 t.GobEncode，t.MarshalBinary，t.MarshalJSON 和 t.MarshalText 生成的序列化形式将忽略单调时钟读数，而 t.Format 不为其提供任何格式。同样，构造函数 time.Date，time.Parse，time.ParseInLocation 和 time.Unix，以及解析器 t.GobDecode 和 t.UnmarshalBinary、t.UnmarshalJSON 和 t.UnmarshalText 始终创建没有单调时钟读数的时间。
+
+   请注意，Go 中 ~==~ 运算符不仅会比较即时时间，还会比较“位置”和单调时钟读数。有关时间值的相等性测试的讨论，请参见时间类型的文档。
+
+   对于调试，t.String 的结果确实包括单调时钟读数(如果存在)。如果由于不同的单调时钟读数而导致 t！ = u，则在打印 t.String() 和 u.String() 时，可以看到该差异。
+
+* Time
+  时间代表具有纳秒精度的即时时间。
+
+  使用时间的程序通常应将其存储并作为值（而不是指针）传递。也就是说，时间类型的变量和结构字段的类型应该是 time.Time，而不是* time.Time。
+
+  多个 goroutine 可以同时使用同一 Time 值，但 GobDecode，UnmarshalBinary，UnmarshalJSON 和 UnmarshalText 方法不是并发安全的。
+
+  可以使用 Before，After 和 Equal 方法比较时间。 Sub 方法减去两个时间，产生持续时间间隔。 Add 方法添加一个时间和一个持续时间，生成一个时间。
+
+  时间类型的零值为 1 年 1 月 1 日，00：00：00.000000000 UTC。由于实际上不太可能出现此时间，因此 IsZero 方法提供了一种检测未明确初始化的时间的简单方法。
+
+  每个时间都与一个位置相关联，在计算时间的表示形式（例如在格式，小时和年份方法中）时会参考该位置。方法 Local，UTC 和 In 返回带有特定位置的 Time。以这种方式更改位置只会更改表示方式；它不会改变实际的时间，因此不会影响前面段落中描述的计算。
+
+  GobEncode，MarshalBinary，MarshalJSON 和 MarshalText 方法保存的 Time 值的表示形式存储 Time.Location 的偏移量，但不存储位置名称。因此，他们会丢失有关夏令时的信息。
+
+  除了所需的“挂钟”读数外，“时间”还可以包含当前过程的单调时钟的可选读数，以提供更高的比较或减法精度。有关详细信息，请参见包装文档中的“单调时钟”部分。
+
+  请注意，Go ~==~ 运算符不仅会比较即时时间，还会比较“位置”和单调时钟读数。因此，在不首先确保已为所有值设置相同的“位置”的情况下，不应将“时间”值用作映射或数据库键，这可以通过使用 UTC 或“本地”方法来实现，并且单调时钟读数已被设置 t = t.Round（0）通常，最好使用 t.Equal（u）而不是 t == u，因为 t.Equal 使用最精确的比较并可以正确处理仅当其参数之一具有单调时钟读数的情况。

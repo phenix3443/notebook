@@ -1,0 +1,85 @@
+# -*- coding:utf-8-*-
+#+TITLE: luarocks
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/luarocks/luarocks][luarocks]] 是 lua 的包管理库。类似与 python 的 pip。
+
+* 安装
+  直接通过系统包管理工具进行安装：
+  #+BEGIN_SRC sh
+apt install luarocks
+  #+END_SRC
+
+* 使用
+  有如下命令行参数
+  #+BEGIN_SRC sh :exports both :results output scalar
+luarocks --help
+  #+END_SRC
+
+  luarocks 默认安装在 =/usr/= 目录下，但很多时候由于权限原因，需要另外指定安装位置，可通过全局参数 =--tree= 做到这点。
+
+* 使用举例
+** 显示子命令帮助
+   进一步显示 lua 子命令的参数和用法：
+  #+BEGIN_SRC sh
+luarocks help <command>
+  #+END_SRC
+
+** 查找包
+   #+BEGIN_SRC sh
+luarocks search json
+   #+END_SRC
+   可以看到有各种版本的 json 实现。
+
+** 安装包
+   #+BEGIN_SRC sh
+luarocks intall lua-cjson
+   #+END_SRC
+   会安装 lua-cjson 到默认目录。
+
+   可以使用 ==--local== 安装到用户目录，这样没有 root 权限的额问题。
+** 查看安装路径
+   #+BEGIN_SRC sh :exports both :results output scalar
+luarocks path
+   #+END_SRC
+   打印结果可以直接在 shell 中执行以修改 =LUA_PATH= 和 =LUA_CPATH= 两个环境变量。
+
+   如果不想修改环境变量，还可以只打印路径：
+   #+BEGIN_SRC sh :exports both :results output scalar
+luarocks path --lr-path
+   #+END_SRC
+
+   然后添加到代码文件中的 luapath 和 luacpath 后就可以使用 require 进行调用。
+
+** 查看安装后信息
+
+   #+BEGIN_SRC sh
+luarocks show lua-cjson
+   #+END_SRC
+
+   安装完成以后，这样查看安装了哪些文件以及位置。
+
+** 查看包帮助文档
+   #+BEGIN_SRC sh
+luarocks doc lua-cjson
+   #+END_SRC
+
+   该命令会在浏览器中打开包的帮助文档。
+
+** 查看已安装的包
+   #+BEGIN_SRC sh
+luarocks list
+   #+END_SRC
+   会打印已经安装的所有包。使用 =--outdated= 仅打印可升级的软件包。
+
+** 删除所有安装包
+   #+BEGIN_SRC sh
+luarocks --tree /home/test purge
+   #+END_SRC
+
+   该命令中， =--tree= 是必需的，luarocks 不会默认指定要删除的位置。
+
+* 制作 package
+  主要介绍如何安装，如何参考[[https://github.com/luarocks/luarocks/wiki/Documentation][Documentation]]。

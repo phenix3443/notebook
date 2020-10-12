@@ -1,0 +1,21 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-gen-test
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://github.com/s-kostyaev/go-gen-test][go-gen-test]] 是 Emacs 中为 go 代码生成测试用例的 package。它简单包装了 gotests。
+
+* 使用
+  + go-gen-test-dwim
+
+    生成所需功能的测试。如果在区域处于活动状态时调用此函数，它将提取在该区域中定义的函数并为其生成测试。否则，它会为导出的或所有功能生成测试。您可以使用 go-gen-test-default-functions 自定义此行为。
+
+  + go-gen-test-all
+
+    Generate tests for all functions.
+
+  + go-gen-test-exported
+
+    Generate tests for all exported functions.

@@ -1,0 +1,44 @@
+# -*- coding:utf-8-*-
+#+TITLE: mysql 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+** ubuntu
+   #+BEGIN_SRC sh
+sudo apt install -y mysql-server
+   #+END_SRC
+   如果在安装过程中，没有出现安全设置界面来设置 root 账号的密码，那么安装后将无法通过空密码登录：
+   #+BEGIN_SRC sh
+ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+   #+END_SRC
+   此时，可通过如下方法设置密码：
+   #+BEGIN_SRC sh
+sudo mysql -uroot
+   #+END_SRC
+   修改安全策略，降低密码要求等级：
+   #+BEGIN_SRC sh
+set global validate_password_policy=0;
+   #+END_SRC
+   否则设置密码会提示：
+   #+begin_example
+ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+   #+end_example
+
+   设置密码：
+   #+BEGIN_SRC sh
+ALTER user 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+   #+END_SRC
+
+   然后登录：
+   #+BEGIN_SRC sh
+mysql -uroot -ppassword
+   #+END_SRC
+
+** centos
+
+** macos
+
+* 使用

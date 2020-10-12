@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: Ásbrú Connection Manager
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/asbru-cm/asbru-cm][asbru-cm]] 是一个类似的 windows 上 xshell 的远程连接管理软件。
+
+* 安装
+
+** Debian / Ubuntu
+   #+BEGIN_SRC sh
+curl -s https://packagecloud.io/install/repositories/asbru-cm/asbru-cm/script.deb.sh | sudo bash
+sudo apt-get install asbru-cm
+   #+END_SRC

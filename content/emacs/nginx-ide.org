@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: nginx IDE
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* nginx-mode
+  [[https://github.com/ajc/nginx-mode/tree/a2bab83c2eb233d57d76b236e7c141c2ccc97005][nginx-mode]] 用来编辑 nginx 配置文件的 major mode，主要提供了关键词高亮功能。该模式在打开以下文件时自动激活：
+  + nginx.conf
+  + 以 =nginx= 目录下以 =.conf= 结尾的文件。
+
+* company-nginx
+
+  [[https://github.com/stardiviner/company-nginx][company-nginx]] 结合 company-mode 提供编辑 nginx 配置文件时的自动补全功能，主要是通过 company-nginx-keywords 数据，将 nginx 关键字写入 company-keywords-alist，然后通过 company-keywords 后端实现补全。

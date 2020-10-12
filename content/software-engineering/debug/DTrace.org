@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: DTrace.org
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://en.wikipedia.org/wiki/DTrace][DTrace]]
+
+* 安装
+
+* 使用
+
+* 扩展阅读
+
++ [[https://openresty.org/posts/dynamic-tracing/][动态追踪技术漫谈]]

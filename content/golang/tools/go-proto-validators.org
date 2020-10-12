@@ -1,0 +1,91 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-proto-validators
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://github.com/mwitkow/go-proto-validators][go-proto-validators]] 是一个 protoc 插件，它基于 =.proto= 文件中的字段选项（field option）在 Go proto 结构上生成 =Validate() error= 函数。验证函数是代码生成的，因此不会因对嵌套消息的基于标签的反射而影响性能。
+
+  支持：
+  + Go 1.11, 1.12, 1.13
+  + Protobuf @ v3.8.0
+  + Go Protobuf @ v1.3.2
+  + Gogo Protobuf @ v1.3.0
+
+* 安装
+  #+BEGIN_SRC sh
+go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
+  #+END_SRC
+
+* 使用
+
+  #+BEGIN_SRC protobuf
+syntax = "proto3";
+package validator.examples;
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+message InnerMessage {
+  // some_integer can only be in range (0, 100).
+  int32 some_integer = 1 [(validator.field) = {int_gt: 0, int_lt: 100}];
+  // some_float can only be in range (0;1).
+  double some_float = 2 [(validator.field) = {float_gte: 0, float_lte: 1}];
+}
+
+message OuterMessage {
+  // important_string must be a lowercase alpha-numeric of 5 to 30 characters (RE2 syntax).
+  string important_string = 1 [(validator.field) = {regex: "^[a-z0-9]{5,30}$"}];
+  // proto3 doesn't have `required`, the `msg_exist` enforces presence of InnerMessage.
+  InnerMessage inner = 2 [(validator.field) = {msg_exists : true}];
+}
+  #+END_SRC
+
+  由于 go-proto-validators 会在 =.proto= 文件本身中使用字段选项，因此需要在 protoc 包含路径上使用 =.proto= 定义（以及 Google =descriptor.proto= 本身）。因此命令是：
+
+  #+BEGIN_SRC sh
+protoc  \
+  --proto_path=$(go env GOPATH)/src \
+  --proto_path=$(go env GOPATH)/src/github.com/google/protobuf/src \
+  --proto_path=. \
+  --go_out=. \
+  --govalidators_out=. \
+  example.proto
+  #+END_SRC
+
+  生成文件 =example.validator.pb= ：
+  #+BEGIN_SRC go
+func (this *InnerMessage) Validate() error {
+	if !(this.SomeInteger > 0) {
+		return fmt.Errorf("validation error: InnerMessage.SomeInteger must be greater than '0'")
+	}
+	if !(this.SomeInteger < 100) {
+		return fmt.Errorf("validation error: InnerMessage.SomeInteger must be less than '100'")
+	}
+	if !(this.SomeFloat >= 0) {
+		return fmt.Errorf("validation error: InnerMessage.SomeFloat must be greater than or equal to '0'")
+	}
+	if !(this.SomeFloat <= 1) {
+		return fmt.Errorf("validation error: InnerMessage.SomeFloat must be less than or equal to '1'")
+	}
+	return nil
+}
+
+var _regex_OuterMessage_ImportantString = regexp.MustCompile("^[a-z0-9]{5,30}$")
+
+func (this *OuterMessage) Validate() error {
+	if !_regex_OuterMessage_ImportantString.MatchString(this.ImportantString) {
+		return fmt.Errorf("validation error: OuterMessage.ImportantString must conform to regex '^[a-z0-9]{5,30}$'")
+	}
+	if nil == this.Inner {
+		return fmt.Errorf("validation error: OuterMessage.Inner message must exist")
+	}
+	if this.Inner != nil {
+		if err := validators.CallValidatorIfExists(this.Inner); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+  #+END_SRC
+
+* 约束规则
+
+  参见[[https://github.com/mwitkow/go-proto-validators/blob/master/validator.proto][validator.proto]]

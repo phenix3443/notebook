@@ -1,0 +1,13 @@
+# -*- coding:utf-8; -*-
+#+TITLE: magit
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 简介
+  [[https://github.com/magit/magit][magit]] 是版本控制系统 Git 的 Emacs 接口。
+
+* 安装
+
+* 配置
+
+* 使用

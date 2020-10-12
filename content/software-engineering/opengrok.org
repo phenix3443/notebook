@@ -1,0 +1,12 @@
+# -*- coding:utf-8-*-
+#+TITLE: opengrok 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://oracle.github.io/opengrok/][OpenGrok]] 是一种快速可用的源代码搜索和交叉引用引擎。 它可以辅助搜索，交叉引用和导航源码树。 它理解许多源代码管理系统中的各种程序文件格式和历史记录。它是用 Java 编写的。
+* 安装
+
+* 配置
+
+* 使用

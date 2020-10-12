@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: yarn
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  yarn 是一个包管理工具。更多信息参考[[https://juejin.im/post/5b14909de51d4506bd72bb61][《npm\yarn\pnpm》]]
+
+
+* 安装
+  #+BEGIN_SRC sh
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+apt update
+apt install yarn
+  #+END_SRC
+  测试安装成功：
+  #+BEGIN_SRC sh
+yarn --version
+  #+END_SRC

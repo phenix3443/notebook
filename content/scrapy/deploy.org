@@ -1,0 +1,61 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 爬虫部署
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 从脚本启动爬虫
+  之前都是从命令行启动爬虫，但有时候需要从脚本启动爬虫，比如爬虫项目是另外一个项目的子项目。具体方法参见[[https://doc.scrapy.org/en/latest/topics/practices.html][Run Scrapy from a script]] 。
+
+* Scrapyd
+  可以通过定时任务让爬虫程序定时执行。但是如果有多个爬虫，就需要并行执行来提高效率。
+
+  scrapy 提供了更好的方式来部署爬虫：[[https://scrapyd.readthedocs.io/en/latest/index.html][scrapyd]]。  scrapyd 是 demon 程序，提供了 HTTP 接口对爬虫进行方便的部署、运行和监控。。
+
+  #+BEGIN_SRC sh
+sudo pip3 install scrapyd
+  #+END_SRC
+
+* Scrapyd-client
+  [[https://github.com/scrapy/scrapyd-client][scrapyd-client ]]但是提供了更方便的操作方式。
+
+  #+BEGIN_SRC sh
+sudo pip3 install --upgrade git+https://github.com/scrapy/scrapyd-client
+  #+END_SRC
+  注意：使用 =pip3 install scrapyd-client= 安装的程序将会在命令行找不到 =scrapyd-client= 命令，所以需要用 github 代码进行更新升级。
+
+  现在进入 scrapy.cfg 目录下（爬虫的 root 目录）：
+  #+BEGIN_SRC sh
+tutorial$ scrapyd-deploy
+  #+END_SRC
+
+  scrapyd 接口返回如下信息：
+  #+BEGIN_EXAMPLE
+Packing version 1517472918
+Deploying to project "tutorial" in http://localhost:6800/addversion.json
+Server response (200):
+{"project": "tutorial", "spiders": 2, "node_name": "lsl-ThinkPad-X1-Carbon-5th", "status": "ok", "version": "1517472918"}
+  #+END_EXAMPLE
+
+  上述信息说明：名为 tutorial 的 project 部署成功，它有两个 spider，具体看下：
+  #+BEGIN_SRC sh
+scrapyd-client spiders -p tutorial
+  #+END_SRC
+  正式代码中实现的两个 spider。
+  #+BEGIN_EXAMPLE
+tutorial:
+  author
+  quotes
+  #+END_EXAMPLE
+  运行 quotes 的爬虫：
+  #+BEGIN_SRC sh
+scrapyd-client schedule -p tutorial quotes
+  #+END_SRC
+
+  scrapyd-client 并没有完整的支持 scrapyd 所有 HTTP 接口，比如查询爬虫进度的接口：
+  #+BEGIN_SRC sh
+curl http://localhost:6800/listjobs.json?project=tutorial | python -m json.tool
+  #+END_SRC
+* Scrapyrt
+  Scrapyrt 为 Scrapy 提供了一个调度的 HTTP 接口，有了它，我们就不需要再执行 Scrapy 命令而是通过请求一个 HTTP 接口来调度 Scrapy 任务了 。Scrapyrt 比 Scrapyd 更轻量，如果不需要分布式多任务的话，可以简单使用 Scrapyrt 实现远程 Scrapy 任务的调度。

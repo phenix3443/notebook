@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: staticcheck
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://staticcheck.io/][staticcheck]] 是 Go 的一套静态分析工具。它专注于查找错误，代码简单，性能和编辑器集成。
+
+  Staticcheck 是开源的，免费提供。通过新的和改进的检查不断增强。
+
+* 安装
+  #+BEGIN_SRC sh
+go get honnef.co/go/tools/cmd/staticcheck
+  #+END_SRC
+
+* 配置
+
+* 使用
+  参见 https://staticcheck.io/docs/

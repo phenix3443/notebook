@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: head and tail
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  head 和 tail 分别用来输出文件的头部和尾部。
+
+* 示例
+** 输出指定区域
+  比如要显示 test.log 1000-2000 行之间的文本：
+  #+BEGIN_SRC sh
+head -n 2000 test.log | tail -n 1000
+  #+END_SRC

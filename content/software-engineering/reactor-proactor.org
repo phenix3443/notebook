@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: reactor-proactor
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* reactor
+  Reactor模式采用同步IO。
+
+  在Reactor中，事件分离器负责等待文件描述符或socket为读写操作 *准备就绪* ，然后将就绪事件传递给对应的处理器，最后由处理器负责完成实际的读写工作。
+
+* proactor
+  而Proactor采用异步IO。
+
+  而在Proactor模式中，处理器--或者兼任处理器的事件分离器，只负责发起异步读写操作。IO操作本身由操作系统来完成。

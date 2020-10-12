@@ -1,0 +1,30 @@
+# -*- coding:utf-8-*-
+#+TITLE: 抓取动态页面
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+主要介绍动态渲染页面的抓取。
+* 动态页面技术
+** Ajax
+   Ajax，全称为 Asynchronous JavaScript and XML，即异步的 JavaScript 和 XML。 它不是一门编程语言，而是利用 JavaScript 在保证页面不被刷新、页面链接不改变的情况下与服务器交换数据并更新部分网页的技术 。
+
+   通过 chrome 或者 Firefox 自带的开发者工具分析 Ajax 请求的网络连接。
+
+* 请求库
+
+** Selenium
+   用于驱动浏览器执行特定的动作。
+
+** ChromeDriver
+   配置 selenium 操作 chrome 浏览器。
+
+** GeckoDriver
+   配合 selenium 操作 Firefox 浏览器
+
+** PhantomJS
+   PhantomJS 是一个无界面的 、可脚本编程的 WebKit 浏览器引擎，它原生支持多种 Web 标准 ：DOM 操作、css 选择器、JSON、Canvas 以及 SVG。
+
+   Selenium 支持 PhantomJS，这样在运行的时候就不会再弹出 一个浏览器了 。
+
+** appunim
+   Appium 是移动端的自动化测试工具，类似于前面所说的 Selenium，利用它可以驱动 Android、iOS 等设备完成向动化测试，比如模拟点击、滑动、输入等操作。

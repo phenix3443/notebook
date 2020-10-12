@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: gflags
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/gflags/gflags][gflags]] 包含一个实现命令行标志处理的 C++库。它包括对标准类型（如字符串）的内置支持，以及在使用它们的源文件中定义标志的功能。[[https://gflags.github.io/gflags/][在线文档]]
+
+* 使用

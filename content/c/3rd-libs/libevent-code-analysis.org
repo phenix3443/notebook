@@ -1,0 +1,404 @@
+# -*- coding:utf-8 -*-
+
+#+OPTIONS: ^
+#+TITLE: libevent 源码分析
+
+* 高性能 IO 框架库概述
+
+* libevent 简介
+  Libevent is a library for writing fast portable nonblocking IO. Its design goals are:
+
+  Libevent 是一个用来编写快速、跨平台、非阻塞 IO 的库。它的设计目标是：
+
+  + Portability(跨平台性)
+
+	A program written using Libevent should work across all the platforms Libevent supports. Even when there is no really good way to do nonblocking IO, Libevent should support the so-so ways, so that your program can run in restricted environments.
+
+	使用 libevent 编写的程序应该可以在所有 libevent 支持的平台工作。即使没有真的很好的方法来做非阻塞 IO,Libevent 应该支持一般方法,这样你的程序在受限制的环境中也可以运行。
+
+  + Speed (速度)
+
+	Libevent tries to use the fastest available nonblocking IO implementations on each platform, and not to introduce much overhead as it does so.
+
+	libevent 在每个平台上尝试使用可用的的最快非阻塞 IO 实现，同时不引入过多的开销。
+
+  + Scalability（可扩展性）
+
+	Libevent is designed to work well even with programs that need to have tens of thousands of active sockets.
+
+	libevent 被设计成即使同需要成千上万套接字的程序也能很好的功能工作。
+
+  + Convenience（方便性）
+
+	Whenever possible, the most natural way to write a program with Libevent should be the stable, portable way.
+
+	只要有可能,使用 libevent 编写程序最自然的方式应该是稳定的、可移植的。
+* 安装
+  标准 GNU 软件安装过程：
+
+  #+BEGIN_SRC bash
+      ./configure && make && sudo make install
+  #+END_SRC
+
+  Libevent is divided into the following components:
+
+  lilbevent 分为以下几个组件：
+
+  + evutil
+
+	Generic functionality to abstract out the differences between different platforms' networking implementations.
+
+	用来抽象不同平台网络实现差异的通用功能。
+
+  + event and event_base
+
+	This is the heart of Libevent. It provides an abstract API to the various platform-specific, event-based nonblocking IO backends. It can let you know when sockets are ready to read or write, do basic timeout functionality, and detect OS signals.
+
+	这是 libevent 的核心。针对各种平台特定的、基于事件的非阻塞 IO 后端，它提供了一个抽象的 API。它可以让你知道 socket 何时可读写，实现基本的超时功能，检测系统信号。
+
+  + bufferevent
+
+	These functions provide a more convenient wrapper around Libevent’s event-based core. They let your application request buffered reads and writes, and rather than informing you when sockets are ready to do, they let you know when IO has actually occurred.
+
+	这些函数针对 libevent 的基于事件的核心提供了一个更方便的包装。他们可以让你的程序请求缓存的读和写，而不是等到 socket 可以读写了再通知你，当 IO 实际发生的时候就让你知道。
+
+	The bufferevent interface also has multiple backends, so that it can take advantage of systems that provide faster ways to do nonblocking IO, such as the Windows IOCP API.
+
+	bufferevent 接口也有多个后端，这样它可以利用系统来提供最快的方式来做非阻塞 IO，比如 windows IOCP API。
+
+  + evbuffer
+
+	This module implements the buffers underlying bufferevents, and provides functions for efficient and/or convenient access.
+
+	这个模块实现了 bufferevent 底层的缓冲区，并提供函数来高效方便的访问。
+
+  + evhttp
+
+	A simple HTTP client/server implementation.
+
+	一个简单的 HTTP 客户端/服务器实现。
+
+  + evdns
+
+	A simple DNS client/server implementation.
+
+	一个简单的 DNS 客户端/服务器实现。
+
+  + evrpc
+
+	A simple RPC implementation.
+
+	一个简单的 RPC 实现。
+
+* 库文件
+  When Libevent is built, by default it installs the following libraries:
+
+  libevent 编译之后，默认安装以下库：
+
+  + libevent_core
+
+	All core event and buffer functionality. This library contains all the event_base, evbuffer, bufferevent, and utility functions.
+
+	所有的核心事件和缓冲功能。
+
+  + libevent_extra
+
+	This library defines protocol-specific functionality that you may or may not want for your application, including HTTP, DNS, and RPC.
+
+	该库定义了程序中可以用到的协议相关的功能。
+
+  + libevent
+
+	This library exists for historical reasons; it contains the contents of both libevent_core and libevent_extra. You shouldn’t use it; it may go away in a future version of Libevent.
+
+	该库由于历史原因继续存在，不应该继续使用它。
+
+  The following libraries are installed only on some platforms:
+
+  下面的库只在一些平台上安装：
+
+  + libevent_pthreads
+
+	This library adds threading and locking implementations based on the pthreads portable threading library. It is separated from libevent_core so that you don’t need to link against pthreads to use Libevent unless you are actually using Libevent in a multithreaded way.
+
+	该库基于 phtread 可移植线程库添加了线程和锁实现。它和 libevent_core 分开，所以你不必再去链接 pthread 来使用 libenent，除非你想用多线程的方式来使用 libevent。
+
+  + libevent_openssl
+
+	This library provides support for encrypted communications using bufferevents and the OpenSSL library. It is separated from libevent_core so that you don’t need to link against OpenSSL to use Libevent unless you are actually using encrypted connections.
+
+
+* 源代码组织结构
+  #+BEGIN_SRC bash
+      sudo apt-get install -y tree
+  #+END_SRC
+  libevent 源代码中的目录和文件分为如下部分：
+  #+BEGIN_SRC bash  :session source-tree
+      cd ~/projects/libevent-2.0.22-stable/
+      tree -d
+  #+END_SRC
+
+  #+RESULTS:
+  |        |             |        |
+  | .      |             |        |
+  | ├── | compat      |        |
+  | │     | └──      | sys    |
+  | ├── | include     |        |
+  | │     | └──      | event2 |
+  | ├── | m4          |        |
+  | ├── | sample      |        |
+  | ├── | test        |        |
+  | └── | WIN32-Code  |        |
+  | └── | event2      |        |
+  |        |             |        |
+  | 9      | directories |        |
+
+  + 通用数据结构目录 compat/sys
+	#+BEGIN_SRC bash  :session source-tree
+        tree compat
+	#+END_SRC
+
+	#+RESULTS:
+	| compat |            |   |      |
+	| └── | sys        |   |      |
+	| └── | queue.h    |   |      |
+	|        |            |   |      |
+	| 1      | directory, | 1 | file |
+	该目录下面只有一个文件--queue.h。它封装了跨平台的基础数据结构，包括单向链表、双向链表、队列、尾队列和循环队列。
+  + include/event2/ 头文件目录
+	#+BEGIN_SRC bash  :session source-tree
+        tree include
+	#+END_SRC
+
+	#+RESULTS:
+	| include |             |                      |       |
+	| ├──  | event2      |                      |       |
+	| │      | ├──      | buffer_compat.h      |       |
+	| │      | ├──      | bufferevent_compat.h |       |
+	| │      | ├──      | bufferevent.h        |       |
+	| │      | ├──      | bufferevent_ssl.h    |       |
+	| │      | ├──      | bufferevent_struct.h |       |
+	| │      | ├──      | buffer.h             |       |
+	| │      | ├──      | dns_compat.h         |       |
+	| │      | ├──      | dns.h                |       |
+	| │      | ├──      | dns_struct.h         |       |
+	| │      | ├──      | event_compat.h       |       |
+	| │      | ├──      | event-config.h       |       |
+	| │      | ├──      | event.h              |       |
+	| │      | ├──      | event_struct.h       |       |
+	| │      | ├──      | http_compat.h        |       |
+	| │      | ├──      | http.h               |       |
+	| │      | ├──      | http_struct.h        |       |
+	| │      | ├──      | keyvalq_struct.h     |       |
+	| │      | ├──      | listener.h           |       |
+	| │      | ├──      | rpc_compat.h         |       |
+	| │      | ├──      | rpc.h                |       |
+	| │      | ├──      | rpc_struct.h         |       |
+	| │      | ├──      | tag_compat.h         |       |
+	| │      | ├──      | tag.h                |       |
+	| │      | ├──      | thread.h             |       |
+	| │      | └──      | util.h               |       |
+	| ├──  | Makefile    |                      |       |
+	| ├──  | Makefile.am |                      |       |
+	| └──  | Makefile.in |                      |       |
+	|         |             |                      |       |
+	| 1       | directory,  | 28                   | files |
+
+	该目录是子 libevent 主版本升级到 2.0 后引入的，在 1.4 及更老的版本中并无此目录。该目录中的头文件是 libevent 提供给应用程序使用的。头文件分三大类：
+	+ API 头文件
+	  定义了 libevent 当前对外的公共接口，这些文件没有特别的后缀。
+	  各文件作用如下：
+	  - bufferevent_ssl.h
+	  - buffer.h 网络读写的缓冲区管理
+	  - dns.h 异步 DNS 解析
+	  - event-config.h 编译 libevent 过程中 autoconf 产生的头文件。不要编辑该文件。
+	  - event.h libevent 主要的头文件
+	  - http.h 文件提供 http 协议相关服务
+	  - listener.h
+	  - rpc.h 头文件提供远程过程调用支持。
+	  - tag.h
+	  - thread.h 多线程编程的函数
+	  - util.h 可移植非阻塞网络代码的工具函数
+	+ 兼容性头文件
+	  定义弃用的函数，除非从旧版本的 libevent 移植程序，否则不应该使用这些文件。这些文件后缀是“_compat.h”。
+	+ 结构头文件
+	  这些头文件定义了相对不稳定布局的结构。有些是因为逆序要快速访问结构元素而暴露，有些因为历史原因暴露。直接依赖头文件中的结构会破坏你程序同其他版本的二进制兼容性，有哦写时候很难调试。这些头文件后缀是“_struct.h”。
+
+  + sample 目录，提供一些示例程序。
+  + test 目录。提供一下测试代码。
+  + WIN32-Code 目录。提供 windows 平台上一些专用代码。
+  + 源码根目录下头文件。这些头文件分为两类：一类是 include/event2 目录下的部分文件的包装，另外一类是提供 libevent 内 ibushiyongde 辅助性头文件，他们的文件名都具有*-internal.h 的形式。
+  + event.c 文件。该文件实现 libevent 整体框架，主要是 event 和 event_base 两个结构体的相关操作。
+  + devpool.c、kqueue.c、evport.c、select.c、win32select.c、poll.c 和 epoll.c 文件。他们分别封装了了如下 I/O 复用机制：/dev/poll、kqueue、event ports、POSIX select、windows select、poll 和 epoll。这些文件的主要内容相似，都是针对结构体 eventop 所定义的具体是 ixan。
+  + minheap-internal.h 文件。该文件实现了一个时间堆，一提供对定时事件的支持。
+  + signal.c 文件。它提供对信号的支持，其内容也是针对结构体 eventop 所定义的接口函数的具体实现。
+  + evmap.c 文件。它维护句柄（文件描述符或信号）与事件处理器的映射关系。
+  + event_tagging.c 文件。它提供往缓冲区中天极标记数据（比如一个整数），以及从缓冲区读取标记数据的函数。
+  + event_iocp.c 文件。它提 Windows IOCP 的支持。
+  + buffer*.c 文件。它提供对网络 I/O 缓冲的控制，包括：输入输出数据过滤，传输速率限制，使用 SSL 协议对应用数据进行保护，以及零拷贝文件传输等。
+  + evthread*.c 文件。它提供对多线程的支持。
+  + listener.c 文件。他是 libevent 的日志系统。
+  + evutil.c、evutil_rand.c、strlcpy.c 和 arc4random.c 文件。他们提供一些基本操作，比如生成随机数、获取 socket 地址信息、读取文件 设置 socket 属性等。
+  + evdns.c、http.c 和 evrpc.c 文件。他们分别提供了对 DNS 协议，HTTP 协议和 RPC 协议的支持。
+  + epoll_sub.c 文件。该文件未见使用。
+整个源码中，event_internal.h、include/event2/event_struct.h、event.c、evmap.c 等 4 个文件最为重要。它们定义了 event 和 event_base 结构体，并实现了这两个结构体的相关操作。
+* sample
+** hello-world.c
+   #+BEGIN_SRC c :tangle ./libevent-code-analysis/hello-world.c
+       /*
+         This exmple program provides a trivial server program that listens for TCP
+         connections on port 9995.  When they arrive, it writes a short message to
+         each client connection, and closes each connection once it is flushed.
+
+         Where possible, it exits cleanly in response to a SIGINT (ctrl-c).
+       ,*/
+
+
+       #include <string.h>
+       #include <errno.h>
+       #include <stdio.h>
+       #include <signal.h>
+       #ifndef WIN32
+       #include <netinet/in.h>
+       # ifdef _XOPEN_SOURCE_EXTENDED
+       #  include <arpa/inet.h>
+       # endif
+       #include <sys/socket.h>
+       #endif
+
+       #include <event2/bufferevent.h>
+       #include <event2/buffer.h>
+       #include <event2/listener.h>
+       #include <event2/util.h>
+       #include <event2/event.h>
+
+       static const char MESSAGE[] = "Hello, World!\n";
+
+       static const int PORT = 9995;
+
+       static void listener_cb(struct evconnlistener *, evutil_socket_t,
+           struct sockaddr *, int socklen, void *);
+       static void conn_writecb(struct bufferevent *, void *);
+       static void conn_eventcb(struct bufferevent *, short, void *);
+       static void signal_cb(evutil_socket_t, short, void *);
+
+       int
+       main(int argc, char **argv)
+       {
+           struct event_base *base;
+           struct evconnlistener *listener;
+           struct event *signal_event;
+
+           struct sockaddr_in sin;
+       #ifdef WIN32
+           WSADATA wsa_data;
+           WSAStartup(0x0201, &wsa_data);
+       #endif
+
+           base = event_base_new();
+           if (!base) {
+               fprintf(stderr, "Could not initialize libevent!\n");
+               return 1;
+           }
+
+           memset(&sin, 0, sizeof(sin));
+           sin.sin_family = AF_INET;
+           sin.sin_port = htons(PORT);
+
+           listener = evconnlistener_new_bind(base, listener_cb, (void *)base,
+               LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, -1,
+               (struct sockaddr*)&sin,
+               sizeof(sin));
+
+           if (!listener) {
+               fprintf(stderr, "Could not create a listener!\n");
+               return 1;
+           }
+
+           signal_event = evsignal_new(base, SIGINT, signal_cb, (void *)base);
+
+           if (!signal_event || event_add(signal_event, NULL)<0) {
+               fprintf(stderr, "Could not create/add a signal event!\n");
+               return 1;
+           }
+
+           event_base_dispatch(base);
+
+           evconnlistener_free(listener);
+           event_free(signal_event);
+           event_base_free(base);
+
+           printf("done\n");
+           return 0;
+       }
+
+       static void
+       listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
+           struct sockaddr *sa, int socklen, void *user_data)
+       {
+           struct event_base *base = user_data;
+           struct bufferevent *bev;
+
+           bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
+           if (!bev) {
+               fprintf(stderr, "Error constructing bufferevent!");
+               event_base_loopbreak(base);
+               return;
+           }
+           bufferevent_setcb(bev, NULL, conn_writecb, conn_eventcb, NULL);
+           bufferevent_enable(bev, EV_WRITE);
+           bufferevent_disable(bev, EV_READ);
+
+           bufferevent_write(bev, MESSAGE, strlen(MESSAGE));
+       }
+
+       static void
+       conn_writecb(struct bufferevent *bev, void *user_data)
+       {
+           struct evbuffer *output = bufferevent_get_output(bev);
+           if (evbuffer_get_length(output) == 0) {
+               printf("flushed answer\n");
+               bufferevent_free(bev);
+           }
+       }
+
+       static void
+       conn_eventcb(struct bufferevent *bev, short events, void *user_data)
+       {
+           if (events & BEV_EVENT_EOF) {
+               printf("Connection closed.\n");
+           } else if (events & BEV_EVENT_ERROR) {
+               printf("Got an error on the connection: %s\n",
+                   strerror(errno));/*XXX win32*/
+           }
+           /* None of the other events can happen here, since we haven't enabled
+            ,* timeouts */
+           bufferevent_free(bev);
+       }
+
+       static void
+       signal_cb(evutil_socket_t sig, short events, void *user_data)
+       {
+           struct event_base *base = user_data;
+           struct timeval delay = { 2, 0 };
+
+           printf("Caught an interrupt signal; exiting cleanly in two seconds.\n");
+
+           event_base_loopexit(base, &delay);
+       }
+    #+END_SRC
+	编译代码
+	#+BEGIN_SRC bash
+        gcc -g sample-1.c -o sample-1 -levent
+	#+END_SRC
+	注意最后的 - levent 很重要，表示要链接 event   静态函数库。如果没有这一句，那么整个链接将会出错。
+	sample-1.c 代码简单，但是基本上描述了 libevent 库的主要逻辑：
+	+ 调用 event_base_new 函数创建 event_base 对象。一个 event_base 对象相当于一个 Reactor 实例。
+	+ 创建具体的事件处理器，并设置他们从属的 Reactor 实例。evsignal_new 和 evtimer_new 分别用于创建信号处理时间处理器和定时时间处理器，他们是定义在 inclulde/event2/event.h 中的宏，最终的入口 event_new 函数。
+	+ 调用 event_add 函数将时间处理器添加到注册时间堆劣种，并将该事件处理器对应的事件添加到事件多路分发器中。
+	+ 调用 event_base_dispatch 函数来执行事件循环。
+	+ 事件循环结束后，使用*_free 系列函数释放系统资源。
+** 多线程使用
+   #+BEGIN_SRC c :tangle ./libevent-code-analysis/sample-2.c
+
+   #+END_SRC

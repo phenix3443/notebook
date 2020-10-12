@@ -1,0 +1,104 @@
+# -*- coding:utf-8-*-
+#+TITLE: albert 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/albertlauncher/albert][Albert]] 是一种统一、高效的机器访问方式。 从技术上讲，它是一个用 C/Qt 编写的键盘启动器。 基于插件的架构使其非常灵活和强大。 插件可用于创建模块化前端或本地扩展。 扩展也可以使用嵌入式 Python 模块或通过任何语言的 CGI 方法来实现。 自带的前端重点是可定制性。
+
+  Mac 上同类的工具是 alfred。
+
+* 安装[fn:1]
+  当前版本：albert 0.16.1
+
+  #+BEGIN_SRC sh
+curl https://build.opensuse.org/projects/home:manuelschneid3r/public_key | sudo apt-key add -
+sudo sh -c "echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/home:manuelschneid3r.list"
+apt update
+apt install albert
+  #+END_SRC
+
+* 配置
+  首次安装时会弹出配置界面，此时需要在 General 页设置快捷键。常见的配置项如下：
+
+** General
+*** 快捷键
+    + 首先配置 =Ctrl+Shift+?= 作为 alter 的快捷键。
+    + Incremental sort 使用增量排序，常用的选项会排在前面.
+    + Autostart on login 登录后自启动。
+    + Amount of results 增加候选项数目。
+
+** 扩展
+*** Application
+    安装的应用程序。
+
+*** Calculator
+    计算器。
+
+*** Chrome bookmarks
+    直接打开 chrome 中的书签。
+
+*** Files
+    本地文件，可以自己添加要搜索的文件路径。可以简单 =locate= 命令。
+
+*** Python
+    Python 扩展。格式：输入前缀+空格+查询
+
+**** Base Converter
+     进制转换。前缀： =base=
+
+**** Currency converter
+     钱币转换
+
+**** DateTime
+    将 date，time，datetime 等转换为时间戳。
+
+**** Google Translate
+     google 翻译，前缀 =tr=
+
+**** IP Address
+     显示外部 IP 和内部 IP。前缀 =ip= ，注意输入后要加空格。
+
+**** zeal
+     在 zeal 中查询。
+
+*** Secure Shell
+    该扩展会扫描 =/etc/ssh/config= 和 =~/.ssh/config= 配置，然后可以直接登录配置中的主机。
+
+*** System
+    执行锁屏，挂起，关机等系统操作。
+
+*** Terminal
+    直接在终端中执行命令行操作。
+
+*** WebSearch
+    使用常见搜索引擎搜索。
+** 备份
+   配置位于 =~/.config/albert= ，备份其中的 =alber.conf= 即可。
+* 使用[fn:2]
+
+  当 albert 运行时，可以通过托盘图标配置或退出应用程序。
+
+  常用操作是在输入框中键入查询，然后与排序后的结果进行交互。
+
+  通过按热键，显示启动器，等待查询。如果再次按 Esc 或热键，或者窗口失去焦点，则窗口会隐藏。在输入框中输入的查询被委托给一组插件，这些插件又返回以某种方式与查询相关的项目。
+
+  键入查询时，Albert 会立即在输入框下方的垂直列表中显示结果。可以像常规列表视图一样浏览这些结果。使用键 =⬆= 和 =⬇= 选择可以移动单个项目， =PgUp= 和 =PgDn= 按可见项目的数量移动选择， =Ctrl+Home= 和 =Ctrl+End= 分别将选择移动到第一个和最后一个项目。如果找到了要查找的项目，则可以通过使用 =⏎，=Enter= 或鼠标单击激活项目来运行其关联操作。
+
+  如果查询没有产生任何结果，则会提供几个后备项。后备项是可以处理每个查询的项，例如在浏览器或本地词典应用程序中打开外部搜索引擎（如 google）的项目。
+
+  项目可以有多个替代操作。通过按住 =Alt= ，将显示包含替代操作的列表。只要此列表可见，箭头向上和向下键就会移动此列表中的光标。释放 =Alt= 以返回结果项，此时操作列表消失。
+
+  按住 =Meta= 可用作默认回退操作的快捷方式。在激活项目时按住 =Meta= 会使用输入的查询运行第一个后备项目。
+
+  激活项目时，Albert 会存储输入查询。此查询历史记录条目是唯一的，并按时间顺序排序。如果输入行包含文本，则此文本用作基于子字符串的历史记录搜索的搜索项。请注意，空字符串匹配所有历史记录条目。您可以使用 =Ctrl+⬆= 和 =Ctrl+⬇= 导航历史搜索结果。为方便起见，当选择结果中的第一项时， =⬆= 的行为类似于 =Ctrl+⬆= 。
+
+  在输入框中，一个小齿轮正在旋转。如果您左键单击此齿轮，将出现设置对话框。或者，只需按 =Ctrl+.= 或 =Alt+.= 即可打开设置对话框。右键单击打开上下文菜单，提供一些操作，包括 “退出” 操作。单击此项将退出该应用程序。或者可以通过按 =Alt+F4= 退出应用程序。
+
+  作为参考，下表列出了可用于控制 Albert 的所有键：
+
+* Footnotes
+
+[fn:2] https://albertlauncher.github.io/docs/using/
+
+[fn:1] https://software.opensuse.org/download.html?project=home:manuelschneid3r&package=albert

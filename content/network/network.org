@@ -1,0 +1,18 @@
+# -*- coding:utf-8-*-
+#+TITLE: 网络协议实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  主要介绍网络协议的学习路径。
+* 理论
+** TCP/IP 三卷
+
+* 工具
+** tcpdump
+** wireshark
+   《wireshark 数据包分析实战》主要介绍了如何使用 wireshark 分析网络数据。该书既介绍了 wireshark 捕获捕获、保存、分析数据包的基本操作，也介绍了使用 wireshark 中 analysis 和 statics 分析网络情况的高级用法。既有 eth、arp、ip、tcp、udp、dns 等网络协议的基本介绍，也教授读者分析解决具体的实际问题的思路，是不错的入门书籍。
+
+   《wireshark 网络分析就这么简单》《wireshark 网络分析的艺术》两本书有更多的实践示例，可供进一步参考练习。
+
+** scapy
+   Scapy 是一个可以让用户发送、侦听和解析并伪装网络报文的 Python 程序。这些功能可以用于制作侦测、扫描和攻击网络的工具。

@@ -1,0 +1,30 @@
+# -*- coding:utf-8-*-
+#+TITLE: bash-language-server
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/mads-hartmann/bash-language-server][bash-language-server]] 是 bash 的 language server，支持：
+  + 跳转到声明
+  + 查找引用
+  + 代码大纲、显示符号
+  + 高亮显示
+  + 代码补全（常用的 shell 命令）
+  + 简单的诊断报告
+  + 悬停标志的说明文档
+
+* 安装
+  #+BEGIN_SRC sh
+sudo npm i -g bash-language-server
+  #+END_SRC
+
+* 配置
+
+** emacs
+   Lsp-mode 具有内置的客户端，可以通过 use-package 安装。将配置添加到您的 =.emacs.d/init.el=
+   #+BEGIN_SRC elisp
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (sh-mode . lsp))
+   #+END_SRC

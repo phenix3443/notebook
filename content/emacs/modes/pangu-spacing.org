@@ -1,0 +1,16 @@
+# -*- coding:utf-8-*-
+#+TITLE: pangu-space
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/coldnew/pangu-spacing][pangu-spacing]] pangu-spacing-mode 是一种在中英文字符之间自动添加空格的辅助模式。 请注意，这些空白字符并未要真正添加到内容中。
+
+* 安装
+
+* 配置
+  默认不会真的在中英文之间插入空格，如果确实想这么做，作如下配置：
+  #+BEGIN_SRC sh
+(setq pangu-spacing-real-insert-separtor t)
+  #+END_SRC
+* 使用

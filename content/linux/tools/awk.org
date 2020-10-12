@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: awk
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+* 内置函数
+** match
+   只打印正则表达式匹配的部分。
+   #+BEGIN_SRC awk
+gawk 'match($0, pattern, ary) {print ary[1]}'
+# example:
+echo "abcdef" | gawk 'match($0, /b(.*)e/, a) {print a[1]}'
+   #+END_SRC

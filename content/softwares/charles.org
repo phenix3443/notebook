@@ -1,0 +1,40 @@
+# -*- coding:utf-8-*-
+#+TITLE: charles
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://www.charlesproxy.com/][charles]] 是一个网络抓包工具，相比 Fiddler，其功能更为强大，而且跨平台支持得更好
+
+* 安装
+
+** ubuntu
+   + install the GPG public key for the repository
+     #+BEGIN_SRC sh
+wget -q -O - https://www.charlesproxy.com/packages/apt/PublicKey | sudo apt-key add -
+     #+END_SRC
+
+     或者
+
+     #+BEGIN_SRC sh
+sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 1AD28806
+     #+END_SRC
+   + Then add the repository to your sources:
+     #+BEGIN_SRC sh
+sudo sh -c 'echo deb https://www.charlesproxy.com/packages/apt/ charles-proxy main > /etc/apt/sources.list.d/charles.list'
+     #+END_SRC
+
+   + update your sources and install Charles:
+     #+BEGIN_SRC sh
+sudo apt update
+sudo apt install charles-proxy
+     #+END_SRC
+
+** windows
+
+** macos
+
+* 配置
+
+* 使用
+  参考 https://juejin.im/post/5c0a430f51882516207d205d

@@ -1,0 +1,22 @@
+# -*- coding:utf-8-*-
+#+TITLE: penlight
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/stevedonovan/Penlight][penlight]] 是一组纯 Lua 库，专注于输入数据处理（如读取配置文件），函数式编程（如 map，reduce，占位符表达式等）和 OS 路径管理。 许多功能都受到 Python 标准库的启发。
+
+* 安装
+  使用 luarocks 安装：
+  #+BEGIN_SRC sh
+luarocks install penlight
+  #+END_SRC
+
+  或者拷贝 =lua/pl= 目录到 Lua module path. 该目录在 linux 系统上通常位于 =/usr/local/share/lua/5.x= ，windows 系统上位于 =C:\Program Files\Lua\5.x\lua= 。
+
+
+  penglight 还依赖 LuaFileSystem，如果使用路径相关的库，需要将其拷贝到对应的路径。
+
+* 使用
+
+  使用参考[[https://stevedonovan.github.io/Penlight/api/index.html][api 文档]]

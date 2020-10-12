@@ -1,0 +1,75 @@
+# -*-coding:utf-8-*-
+#+title:gnome 实践
+#+author:刘尚亮
+#+email:phenix3443+github@gmail.com
+
+操作系统版本 ubuntu 18.04 LTS
+* 概述
+
+* gnome-shell
+
+** gnome-tweak-tool
+   使用 gnome-tweak-tool 来定制 gnome3 的桌面环境。
+
+   #+BEGIN_SRC sh
+sudo apt install gnome-tweak-tool
+   #+END_SRC
+   可以设置如下内容：
+   + 开机子自动程序，如 chrome，emacs，shutter 等。
+   + top bar 时间显示设置。
+
+
+** gnome-shell Extensions
+   参考 https://zhuanlan.zhihu.com/p/34608388
+   #+BEGIN_SRC sh
+sudo apt install gnome-shell-extensions
+   #+END_SRC
+   已经安装的扩展：
+
+   + Hide top bar
+
+     可以设置自动隐藏顶部栏，因为 18.04 应用上框不会和顶部栏合并，比较占面积。
+
+   + user themes[fn:1]
+     对于 Gnome 桌面，你最需要连接的就是这个网站 https://www.gnome-look.org/，它提供了包括主题、图标、字体等在内的很多包。
+因为在上述中安装了 User Themes 扩展，所以我们可以把下载好的主题放置在自己的家目录下，为此，在家目录下的.local/share 中新建 themes、fonts、icons 三个文件夹，分别存放主题、字体和图标 。
+
+
+* 配置
+** 快捷键
+   可以阅读这篇文章：[[https://wiki.gnome.org/Projects/GnomeShell/CheatSheet][GNOME Shell cheat sheet]] 以了解如何高效地使用 GNOME shell，它展示了 GNOME shell 的特色与使用快捷键。文章内容包括怎么切换任务，使用键盘，窗口控制，使用面板，预览模式等。 部分常用的快捷键：
+   + Super： 进入预览模式
+   + Super + m： 显示消息托盘
+   + Super + a：显示应用程序菜单
+   + Alt + F2：输入命令以快速启动应用
+
+     Alt + F2，然后输入 r 或 restart，再  Enter：重启 GNOME shell。这一条在你遇到 shell 图形界面错误时十分有用。
+
+* 故障排除
+
+*** 终端冻结
+	此时可能需要重启 GNOME shell，当修改过界面之后你可能需要重启 GNOME shell。你可以重新登陆，不过有一个简单快捷的方法。 按 Alt + F2 再输入  r 再  Enter。
+
+	如果这样也不行，尝试使用 Ctrl + Alt + F2 切换到其他 TTY，然后执行：
+
+	#+BEGIN_SRC sh
+pkill -HUP gnome-shell
+	#+END_SRC
+
+	以这种方式重新启动 shell 不需要用户注销。如果这样还不行，只能重新启动 Xorg server 了：
+
+	#+BEGIN_SRC sh
+# for console logins
+pkill X
+# for GDM logins
+systemctl restart gdm
+	#+END_SRC
+
+	重启 Xorg sever 会导致用户注销。
+
+*** 添加打印机
+	gnome 添加打印机的模块找网络打印机很不方便，目前还是先使用系统自带的打印机界面，Alt F2 后输入 system-config-printer。
+
+* Footnotes
+
+[fn:1] 参考 https://blog.csdn.net/zyqblog/article/details/80152016

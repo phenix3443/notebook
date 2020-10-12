@@ -1,0 +1,25 @@
+# -*- coding:utf-8-*-
+#+TITLE: dlv
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/go-delve/delve][delve]] 是 Go 语言的调试器。
+
+* 安装
+  #+BEGIN_SRC sh
+go get github.com/go-delve/delve/cmd/dlv
+  #+END_SRC
+* 配置
+
+* 使用
+  出现错误：
+  #+BEGIN_SRC sh
+Could not attach to pid 6814: set /proc/sys/kernel/yama/ptrace_scope to 0
+  #+END_SRC
+  原因：
+  https://www.kernel.org/doc/Documentation/security/Yama.txt, you will need to set that to 0 in order to attach to a running process.
+  解决办法：
+  #+BEGIN_SRC sh
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+  #+END_SRC

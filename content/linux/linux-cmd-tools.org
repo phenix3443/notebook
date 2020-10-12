@@ -1,0 +1,69 @@
+# -*- coding:utf-8 -*-
+#+title:linux 常用命令说明
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+#+startup:overview
+
+* 查找
+  + find
+  + locate
+  + whereis
+  + which
+
+
+* 数据统计
+  + awk
+  + sed
+  + wc
+  + uniq
+  + cut
+  + grep
+  + head
+  + tail
+  + tee
+
+* 系统性能
+  + ps
+  + psstack
+  + pstree
+  + sar
+  + ulimit
+
+* 程序调试
+  + gdb
+  + pstack
+  + strace
+  + pmap
+  + readelf
+  + objdump
+  + nm
+  + ldd
+  + sar
+  + c++filt
+
+* 网络
+  + ip
+  + tracert
+  + route
+  + netstat
+  + ss
+  + whois
+  + ifconfig
+  + ping
+
+* 打包压缩解压
+  + gzip
+  + gunzip
+  + tar
+  + xz
+
+* 文件传输
+  + ftp
+  + scp
+  + rsync
+  + rzsz
+
+* 其他
+  + cron
+  + nohup
+  + xargs

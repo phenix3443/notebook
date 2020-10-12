@@ -1,0 +1,29 @@
+# -*- coding:utf-8-*-
+#+TITLE: beego
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://beego.me/][beego]] 是一个简易的 HTTP 开发框架。
+
+* 安装
+
+* 配置
+
+* 使用
+
+  #+BEGIN_SRC sh
+bee new project
+  #+END_SRC
+  或者创建 api 项目
+  #+BEGIN_SRC sh
+bee new api-project
+cd api-project
+bee run
+  #+END_SRC
+
+  打开 =http://localhost:8080/= 就能看到简单的启动页面了。
+
+  常用的其他命令：
+  + bee pack 打包发布
+  + bee dockerize 生成 docker 镜像

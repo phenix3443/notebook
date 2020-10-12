@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: wrk--HTTP 基准测试工具
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/wg/wrk][wrk]] 是一款现代 HTTP 基准测试工具，在单个多核 CPU 上运行时，也能够产生大量负载。它结合了多线程设计和可扩展的事件通知系统，例如 epoll 和 kqueue。
+
+  可选的 LuaJIT 脚本可以生成 HTTP 请求，处理响应和自定义报告。
+
+* 安装
+
+  #+BEGIN_SRC sh
+brew install wrk
+  #+END_SRC
+* 使用
+
+** 基本使用
+   #+BEGIN_SRC sh
+wrk -t12 -c400 -d30s http://127.0.0.1:8080/index.html
+   #+END_SRC
+
+   它使用 12 个线程，并保持 400 个 HTTP 连接打开的状态，运行 30 秒的基准测试。
+
+   #+begin_example
+Running 30s test @ http://127.0.0.1:8080/index.html
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max     +/- Stdev
+    Latency   635.91us    0.89ms  12.92ms   93.69%
+    Req/Sec    56.20k     8.07k   62.00k    86.54%
+  22464657 requests in 30.00s, 17.76GB read
+Requests/sec: 748868.53 （平均每秒处理请求书）
+Transfer/sec:    606.33MB （平均每秒传输数据）
+   #+end_example
+
+   标准差：反映数据集的离散程度。
+
+   | 项目      | 	名称               | 	说明                         |
+   |-----------+------------------------+----------------------------------|
+   | Avg	   | 平均值                 | 	每次测试的平均值             |
+   | Stdev	 | 标准偏差	           | 结果的离散程度，越高说明越不稳定 |
+   | Max	   | 最大值                 | 	最大的一次结果               |
+   | +/- Stdev | 	正负一个标准差占比 | 	结果的离散程度，越大越不稳定 |
+   | Latency   |                        | 可以理解为响应时间               |
+   | Req/Sec   |                        | 每个线程每秒钟的完成的请求数     |
+
+
+** 常用参数
+   + =-c, --connections <N>= : 要保持打开状态的 HTTP 连接总数。每个线程处理 ~N=connections/threads~
+   + =-d, --duration <T>=: 测试的持续时间，例如 2s，2m，2h -t。
+   + =-t, --threads <N>=: 要使用的线程总数。
+   + =-s, --script <S>=: LuaJIT 脚本
+   + =-H, --header <H>=: 要添加到请求中的 HTTP 标头，例如  "User-Agent: wrk"
+   + =--latency=: 打印详细的延迟统计信息
+   + =--timeout <T>=: 如果未在其中收到响应，则记录在这个总的超时时间里。
+
+   数字参数可以带 SI unit (1k, 1M, 1G)
+
+   时间参数可以带 time unit (2s, 2m, 2h)
+
+
+** 使用脚本
+   参考 https://www.cnblogs.com/xinzhao/p/6233009.html
+
+* 基准测试注意
+  运行 wrk 的计算机必须具有足够数量的临时端口，并且关闭的 socket 应快速回收。为了处理突发的连接初始化，服务器的 listen(2) backlog 应该大于正在测试的并发连接的数量。
+
+  仅更改 HTTP 方法、path，添加 header 或 body 的用户脚本不会对性能产生影响。每个请求的操作，特别是构建新的 HTTP 请求以及使用 response() 必然会减少可以生成的请求量。

@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: source
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  引用其他文件。

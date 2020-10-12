@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: goimports
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://godoc.org/golang.org/x/tools/cmd/goimports][goimports]] 更新您的 Go 导入行，添加缺失的行并删除未引用的行。
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u golang.org/x/tools/cmd/goimports
+  #+END_SRC
+
+  除了修复导入之外，goimports 还以与 gofmt 相同的样式格式化您的代码，因此它可以用作编辑器的 gofmt-on-save 挂钩的替代品。对于 emacs，请确保您拥有最新的 go-mode.el：

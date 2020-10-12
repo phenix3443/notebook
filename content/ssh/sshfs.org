@@ -1,0 +1,131 @@
+# -*- coding:utf-8-*-
+#+TITLE: sshfs 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 简介[fn:1]
+  SSHFS（SSH Filesystem）是一种通过普通 ssh 连接来挂载和与远程服务器或工作站上的目录和文件交互的文件系统客户端。
+
+  该种客户端通过 SSH 文件传输协议（SFTP）与远程文件系统交互，这是一种通过任何可靠数据流提供文件访问、文件传输和文件管理功能的网络协议，它在设计上是 Secure Shell（SSH）协议 2.0 版的一个扩展。
+
+* 安装
+  #+BEGIN_SRC sh
+apt install sshfs
+  #+END_SRC
+
+* 使用[fn:2]
+
+** 挂载
+   #+BEGIN_SRC sh
+sshfs [user@]host:[dir] mountpoint [options]
+   #+END_SRC
+   如果使用 SSH 秘钥授权，需要指定公共秘钥的路径：
+   #+BEGIN_SRC sh
+sshfs -o IdentityFile=<full path of private key file> [user@]hostname:[directory] mountpoint
+
+   #+END_SRC
+   建议以常规用户身份运行 SSHFS（而不是 root 用户）。 为此，mountpoint 必须由用户拥有。 如果省略 username，则 SSHFS 将使用本地用户名。 如果省略该目录，SSHFS 将挂载（远程）主目录。 如果你需要输入密码，sshfs 会要求它（实际上它只是运行 ssh，如果需要，它会要求输入密码）。
+
+   注意：
+   + 即使省略 =directory= ，也不能省略之前的冒号。
+   + IdentityFile 使用绝对路径
+
+
+   然后可以使用 =ls= 检查挂载目录下的文件，或者使用 =df -hT= 命令检查挂载点：
+   #+BEGIN_SRC sh
+df -hT mountpoint
+   #+END_SRC
+** options
+*** SSHFS options:
+    + reconnect
+
+      reconnect to server
+
+    + delay_connect
+
+      delay connection to server
+
+    + idmap=TYPE
+
+      user/group ID mapping (default: none)
+
+      none   no translation of the ID space
+
+      user   only translate UID/GID of connecting user
+
+      file   translate UIDs/GIDs based upon the contents of uidfile  and gidfile
+
+*** FUSE options:
+      + allow_other
+
+        授予其他用户读/写访问权限。
+
+      + allow_root
+
+        allow access to root
+
+      + nonempty
+
+        allow mounts over non-empty file/dir
+
+      + default_permissions enable permission checking by kernel
+
+** 卸载
+   #+BEGIN_SRC
+fusermount -u mountpoint
+   #+END_SRC
+
+** 自动挂载[fn:3]
+   自动挂载可以在引导时或按需（在访问目录时）发生。两者都在 fstab 中设置。
+
+   注意：
+   + 自动挂载是通过 root 用户完成的，因此不能使用普通用户的 =.ssh/config= 中配置的 host。要让 root 用户使用普通用户的 SSH 密钥，请在选项 IdentityFile 中指定其完整路径。
+   + 最重要的是，在 root 时手动使用每个 sshfs 至少一次，以便将主机的签名添加到 =.ssh/known_hosts= 文件中。
+
+*** 按需挂载
+
+    #+BEGIN_EXAMPLE
+    [user@]hostname:[directory] mountpoint fuse.sshfs noauto,x-systemd.automount,_netdev,allow_other,reconnect,users,idmap=user,IdentityFile=/home/user/.ssh/id_rsa 0 0
+    #+END_EXAMPLE
+
+    这里重要的挂载选项是：
+   + =noauto= 不要在启动时挂载。
+   + =x-systemd.automount= 实现按需挂载。
+   + =_netdev= 说明是网络设备，而不是块设备，否则可能发生 “No such device” 错误。
+
+   编辑 =/etc/fstab= 后，（重新）启动所需的服务：
+   #+BEGIN_SRC sh
+systemctl daemon-reload && systemctl restart <target>
+   #+END_SRC
+   通过运行可以找到 =<target>=
+   #+BEGIN_SRC sh
+systemctl list-unit-files --type automount
+   #+END_SRC
+
+*** 启动时挂载
+    #+BEGIN_EXAMPLE
+    USERNAME@HOSTNAME_OR_IP:/REMOTE/DIRECTORY  /LOCAL/MOUNTPOINT  fuse.sshfs  defaults,_netdev  0  0
+    #+END_EXAMPLE
+
+    例如：
+    #+BEGIN_EXAMPLE
+    llib@192.168.1.200:/home/llib/FAH  /media/FAH2  fuse.sshfs  defaults,_netdev  0  0
+    #+END_EXAMPLE
+
+    上面的内容将自动生效。如果您为用户使用 SSH 密钥，请参阅使用 SSH 密钥。 如果要将 sshfs 用于多个用户：
+
+    #+BEGIN_EXAMPLE
+    user@domain.org:/home/user  /media/user   fuse.sshfs    defaults,allow_other,_netdev    0  0
+    #+END_EXAMPLE
+
+    同样，重要的是设置 =_netdev= 挂载选项以确保在尝试挂载之前网络可用。xs
+
+    fstab 格式参见 ~man fstab~ 。
+
+* Footnotes
+
+[fn:1] [[https://zh.wikipedia.org/wiki/SSHFS][SSHFS on wikipedis]]
+
+[fn:2] [[https://github.com/libfuse/sshfs][sshfs on github]]
+
+[fn:3] [[https://wiki.archlinux.org/index.php/SSHFS][sshfs on archwiki]]

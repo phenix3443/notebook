@@ -1,0 +1,56 @@
+# -*- coding:utf-8-*-
+#+TITLE: irony-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  irony-mode 是一个 Emacs minor-mode，旨在改进 C，C++和 Objective-C 语言的编辑体验。它通过组合使用 Emacs package 和 C++ 程序（irony-sever）来工作。
+
+  特性：
+  + 代码补全。
+
+    通过 Emacs 内置的 completion-at-point-functions 配合 company-mode 的后端 company-irony 完成。
+
+  + 语法检查
+
+    使用 flycheck 的检查器：flycheck-irony
+
+  + 集成 eldoc：irony-doc
+
+  + 集成 counsel: https://oremacs.com/2017/03/28/emacs-cpp-ide/
+
+* 安装
+
+** 依赖
+   参见 [[https://github.com/Sarcasm/irony-mode#dependencies][Dependencies]]
+
+* 配置
+
+* 使用
+  首次运行时, irony-mode 会要求编译安装 irony-server。输入 =M-x irony-install-server RET= 完成安装。
+
+  为了提供符合上下文和准确的信息，irony-mode 需要知道用于解析当前缓冲区的编译器标志。 达到此目的的最佳方法是使用编译数据库。
+
+** Compilation Database
+   为了正确工作，irony-mode 需要知道编译标志。irony-cdb 在用户输入最少的情况下尽可能自动的发现编译标志。
+
+   请参考 irony-cdb-autosetup-compile-options 和 irony-cdb-compilation-databases。
+
+   目前，irony-cdb 支持以下编译数据库：
+   + JSON 编译数据库 - 由各种构建工具生成的 JSON 格式的文件。该文件名为 compile_commands.json，它列出了与项目中每个文件关联的编译选项。
+     + CMake> = 2.8.5
+
+       使用
+       #+BEGIN_SRC sh
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS = ON <...>
+       #+END_SRC
+       在构建目录中生成生成编译数据库。
+
+     + ninja> = 1.2 使用 compdb 工具生成 JSON 编译数据库。
+
+     + Bear 通过 “监视” 项目的构建来生成 JSON 编译数据库文件。基于 make 的项目的典型用法是
+       #+BEGIN_SRC sh
+bear - make -B
+       #+END_SRC
+
+   + .clang_complete - 位于项目根目录，该文件每行一个编译标志。这与插件 =Rip-Rip/clang_complete= 兼容。如果想自动生成 =.clang_complete= ，请查看 =cc_args.py= 文档。

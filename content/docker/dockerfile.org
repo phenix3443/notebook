@@ -1,0 +1,187 @@
+# -*- coding:utf-8-*-
+#+TITLE: Dockerfile reference
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* Usage
+  docker build 命令从 Dockerfile 和上下文构建映像。上下文是 PATH 或 URL 指定位置处的文件集。PATH 是本地文件系统上的目录。URL 是 Git 仓库位置。
+
+  上下文被递归处理。因此，PATH 包括任何子目录，URL 包括存储库及其子模块。
+
+  构建由 Docker 守护程序运行，而不是由 CLI 运行。构建过程所做的第一件事是将整个上下文（递归地）发送到守护进程。在大多数情况下，最好以空目录作为上下文，并将 Dockerfile 保存在该目录中。仅添加构建 Dockerfile 所需的文件。
+
+  警告：不要将根目录用作 PATH，因为它会导致构建将硬盘驱动器的全部内容传输到 Docker 守护程序。
+
+  Dockerfile 通过指令（例如 COPY 指令）中指定的文件，引用构建上下文中的文件。要提高构建的性能，请在 =.dockerignore= 添加要在上下文目录中排除的文件和目录。有关如何创建 =.dockerignore= 文件的信息，请参阅此页面上的文档。
+
+  传统上，Dockerfile 称为 Dockerfile，位于上下文的根目录中。可以将 =-f= 标志与 docker build 一起使用，以指向文件系统中任何位置的 Dockerfile。
+
+  Docker 守护程序逐个运行 Dockerfile 中的指令，在必要时将每条指令的结果提交为新的 image，最后输出新 image 的 ID。Docker 守护程序将自动清理发送的上下文。
+
+  请注意，每条指令都是独立运行的，并且会导致创建新 imgme，因此 =RUN cd/tmp= 对下一条指令不会产生任何影响。
+
+  只要有可能，Docker 将重新使用中间 image（缓存），以显着加速 docker 构建过程。 这由控制台输出中的 “Using cache” 消息指示。（有关更多信息，请参阅 Dockerfile 最佳实践指南中的 Build cache 部分）：
+
+  构建缓存仅用于具有本地父链的 image。 这意味着这些 image 是由以前的版本创建的，或者整个图像链都使用 =docker load= 装载。如果希望使用特定 image 的构建缓存，可以使用 =--cache-from= 选项指定它。 使用 ==--cache-from= 指定的映像不需要具有父链，可以从其他 registries 中提取。
+
+* BuildKit
+
+  从版本 18.09 开始，Docker 支持一个新的后端，用于执行 moby/buildkit 项目提供的构建。 与旧的实现相比，BuildKit 后端提供了许多好处。
+
+* Format
+  Dockerfile 的格式如下：
+  #+BEGIN_SRC dockerfile
+# Comment
+INSTRUCTION arguments
+  #+END_SRC
+
+  指令不区分大小写。但是，惯例是让它们成为大写，以便更容易将它们与参数区分开来。
+
+  Docker 按顺序在 Dockerfile 中运行指令。Dockerfile 必须以 “FROM” 指令开头。FROM 指令指定要构建的基本映像。FROM 之前只能有一个或多个 ARG 指令，这些指令声明在 Dockerfile 中的 FROM 行中使用的参数。
+
+  Docker 将以 =＃= 开头的行视为注释，除非该行是有效的解析器指令。行中任何其他位置的 =＃= 标记都被视为参数。 这允许这样的陈述：
+
+  注释中不支持续行符。
+
+* Parser directives
+
+  解析器指令是可选的，并且会影响 Dockerfile 中其后续行的处理方式。解析器指令不会向构建添加层，也不会显示为构建步骤。解析器指令以 ~＃directive = value~ 的形式编写为特殊类型的注释。 单个指令只能使用一次。
+
+  一旦处理了注释，空行或构建器指令，Docker 就不再寻找解析器指令。相反，它将格式为解析器指令的任何内容视为注释，并且不会尝试验证它是否可能是解析器指令。因此，所有解析器指令必须位于 Dockerfile 的最顶层。
+
+  解析器指令不区分大小写。但是，惯例是它们是小写的。还约定任何解析器指令后面有空行。 解析器指令不支持行继续符。
+
+  由于这些规则，以下示例均无效：
+
+  由于行继续而无效：
+  #+BEGIN_SRC dockerfile
+# direc \
+tive=value
+  #+END_SRC
+
+  由于出现两次而无效：
+  #+BEGIN_SRC dockerfile
+# directive=value1
+# directive=value2
+
+FROM ImageName
+  #+END_SRC
+
+  由于在构建器指令后出现而被视为注释：
+  #+BEGIN_SRC dockerfile
+FROM ImageName
+# directive=value
+  #+END_SRC
+
+  由于在不是解析器指令的注释之后出现而被视为注释：
+  #+BEGIN_SRC dockerfile
+# About my dockerfile
+# directive=value
+FROM ImageName
+  #+END_SRC
+
+  由于未被识别，未知指令被视为注释。此外，由于出现在不是解析器指令的注释之后，已知指令被视为注释。
+
+  #+BEGIN_SRC dockerfile
+# unknowndirective=value
+# knowndirective=value
+  #+END_SRC
+
+  解析器指令中允许使用非换行空格。因此，以下几行都是相同的处理：
+  #+BEGIN_SRC dockerfile
+#directive=value
+# directive =value
+#	directive= value
+# directive = value
+#	  dIrEcTiVe=value
+  #+END_SRC
+
+  支持以下解析器指令：
+  + syntax
+  + escape
+
+** syntax
+
+** escape
+
+   请注意，无论 escape 解析器指令是否包含在 Dockerfile 中，都不会在 RUN 命令中执行转义，除非在行尾。
+
+* Environment replacement
+
+* .dockerignore file
+
+* FROM
+
+* RUN
+
+  exec form 可以避免 shell 字符串重写，并使用不包含指定 shell 可执行文件的基本镜像来运行 RUN 命令。
+
+  exec form 被解析为 JSON 数组，这意味着必须使用双引号（“）来围绕单词而不是单引号（'）。
+
+  注意：与 shell form 不同，exec form 不会调用命令 shell。这意味着不会发生正常的 shell 处理。 例如， =RUN [“echo”，“$HOME”]=  不会对 =$HOME= 执行变量替换。 如果你想要 shell 处理，那么要么使用 shell form，要么直接执行 shell，例如： =RUN [“sh”，“ -c”，“echo $HOME”]= 。 当使用 exec form 并直接执行 shell 时（如 shell 表单的情况），执行环境变量扩展的是 shell，而不是 docker。
+
+
+  shell form 命令运行在 shell 中，exec from
+
+* CMD
+
+  CMD 的主要目的是为容器执行提供默认值。
+
+* LABEL
+
+* EXPOSE
+
+  EXPOSE 指令实际上不会发布端口。
+
+* ENV
+
+* ADD
+
+* COPY
+
+* ENTRYPOINT
+
+* VOLUME
+  VOLUME 指令创建具有指定名称的安装点，并将其标记为从本机主机或其他容器保存外部安装的卷。
+
+  docker run 命令使用基本映像中指定位置存在的任何数据初始化新创建的卷。例如，请考虑以下 Dockerfile 片段：
+* USER
+
+* WORKDIR
+
+* ARG
+  ARG 指令定义一个变量，用户可以使用带有 ~--build-arg <varname>=<value>~ 标志的 docker build 命令在构建时将该变量传递给构建器。
+
+** Default values
+
+** Scope
+   ARG 变量定义从 Dockerfile 中定义的行开始生效，而不是从命令行或其他地方的参数使用。
+
+   ARG 指令在构建阶段结束时失效。要在多个阶段中使用 arg，每个阶段必须包含 ARG 指令。
+
+** Using ARG variables
+   可以使用 ARG 或 ENV 指令指定 RUN 指令可用的变量。使用 ENV 指令定义的环境变量始终覆盖同名的 ARG 指令。
+
+   变量扩展技术允许从命令行传递参数，并通过利用 ENV 指令将它们保存在最终 image 中。
+
+** Predefined ARGs
+
+** Automatic platform ARGs in the global scope
+
+** Impact on build caching
+   ARG 变量不会像 ENV 变量那样持久保存到构建的镜像中。但是，ARG 变量会以类似的方式影响构建缓存。 如果 Dockerfile 定义了一个值与先前构建不同的 ARG 变量，则在第一次使用时，而不是其定义时，会发生 “缓存未命中”。 特别是，ARG 指令之后的所有 RUN 指令都隐式地使用 ARG 变量（作为环境变量），因此可能导致缓存未命中。 除非 Dockerfile 中存在匹配的 ARG 语句，否则所有预定义的 ARG 变量都将免于缓存。
+
+
+* STOPSIGNAL
+
+* HEALTHCHECK
+  HEALTHCHECK 指令告诉 Docker 如何测试容器以检查它是否仍在工作。 这也可以检测到即使服务器进程仍在运行，但因陷入无限循环而无法处理新连接的 Web 服务器等情况。
+
+* SHELL
+  SHELL 指令允许覆盖用于 shell 形式命令的默认 shell。
+
+* External implementation features
+
+* Dockerfile examples

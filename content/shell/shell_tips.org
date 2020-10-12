@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: shell常见的语句
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 查找目录下最大的文件
+
+  #+BEGIN_SRC
+find /usr/ -type f | xargs du -sk | sort -rn | head -1
+  #+END_SRC

@@ -1,0 +1,34 @@
+# -*- coding:utf-8-*-
+#+TITLE: gb
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[http://getgb.io/][gb]] 将单个项目当做 workspace，与 $GOPATH 无关。
+
+  gb 两个重要的目录
+  + src/ 业务代码
+  + vendor/src/ 第三方的依赖
+
+* 安装
+  #+BEGIN_SRC sh
+go get github.com/constabulary/gb/...
+  #+END_SRC
+
+* 使用
+
+** gb（[[https://godoc.org/github.com/constabulary/gb/cmd/gb-vendor][doc]]）
+
+   #+BEGIN_SRC sh :exports both :results output scalar
+gb help
+   #+END_SRC
+
+** gb-vendor
+
+   使用 gb vendor（[[https://godoc.org/github.com/constabulary/gb/cmd/gb-vendor][doc]]）处理依赖，例如：
+   #+BEGIN_SRC
+gb vendor fetch github.com/urfave/cli
+   #+END_SRC
+
+
+** gitlab CI

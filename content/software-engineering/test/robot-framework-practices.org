@@ -1,0 +1,51 @@
+# -*-coding:utf-8-*-
+#+TITLE: robotframework 实践
+#+AUTHOR: liushanglinag
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 安装
+
+** robotframework
+   #+BEGIN_SRC sh
+pip install robotframework
+   #+END_SRC
+
+** robotframework-ride
+   该版本现在只支持 32 位 python2，不推荐安装
+   #+BEGIN_SRC sh
+git clone https://github.com/robotframework/RIDE.git
+cd RIDE
+python setup.py install
+   #+END_SRC
+
+   ride 需要安装 wxPython-2.8，不容易安装。
+*** wxPython-2.8
+	#+BEGIN_SRC sh
+cd
+.configure && make && sudo make install
+CFLAGS=-Wno-error=format-security CPPFLAGS=-Wno-error=format-security python setup.py install --record install_location.txt
+	#+END_SRC
+
+* 实践
+  测试续费触达各个接口，先安装以下库：
+
+  + [[https://github.com/bulkan/robotframework-requests][robotframework-requests]]
+
+	测试 HTTP 接口，会用到前一个 Python 库。
+
+  + [[https://franz-see.github.io/Robotframework-Database-Library/][robotframework-databaselibrary]]
+
+	测试数据库。
+
+   #+BEGIN_SRC sh
+pip install -U requests
+pip install -U robotframework-requests
+   #+END_SRC
+
+* 技巧
+  + 卸载通过 ~pytho setup.py install~ 安装的软件：
+	#+BEGIN_SRC sh
+python setup.py install --record files.txt to generate the list
+cat files.txt | xargs rm -rf to remove the files recorded by the previous step.
+	#+END_SRC

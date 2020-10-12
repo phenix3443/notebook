@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-10-12 Mon 19:40 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>go test</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">go test</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org87b1cae">1. 概述</a></li>
+<li><a href="#orgd09e5f7">2. 使用</a></li>
+<li><a href="#orgc8ad4b7">3. testflag</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org87b1cae" class="outline-2">
+<h2 id="org87b1cae"><span class="section-number-2">1</span> 概述</h2>
+</div>
+
+<div id="outline-container-orgd09e5f7" class="outline-2">
+<h2 id="orgd09e5f7"><span class="section-number-2">2</span> 使用</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-sh">go test [build/test flags] [packages] [build/test flags &amp; <span style="color: #0000ff; font-weight: bold;">test</span> binary flags]
+</pre>
+</div>
+
+<p>
+“go test” 自动测试由 import 路径命名的软件包。使用以下格式打印测试结果的摘要：
+</p>
+<pre class="example">
+	ok   archive/tar   0.011s
+	FAIL archive/zip   0.022s
+	ok   compress/gzip 0.033s
+	...
+</pre>
+
+<p>
+然后是每个失败 package 的详细输出。
+</p>
+
+<p>
+“go test”会重新编译每个软件包，以及名为 “*_test.go” 的所有文件。这些文件可以包含测试函数，基准函数和示例函数。有关更多信息，请参见“ go help testfunc”。每个列出的 package 都会执行单独的测试二进制文件。忽略以“_”（包括“_test.go”）或 “.” 开头的文件
+</p>
+
+<p>
+后缀为 “_test” 的测试文件中声明的 package 将被编译为单独的程序包，然后与主测试二进制文件链接并运行。
+</p>
+
+<p>
+go 工具将忽略名为 “testdata” 的目录，使其可用于保存测试所需的辅助数据。
+</p>
+
+<p>
+作为构建测试二进制文件的一部分， <code>go test</code> 对软件包及其测试源文件运行 <code>go vet</code> 以发现重大问题。go teste 会报告 go vet 发现的任何问题，并且不运行测试二进制文件。只使用 go vet 的 high-confidence 检查。该子集是： <code>'atomic', 'bool', 'buildtags', 'nilfunc', and 'printf'</code> 。 可以通过 “go doc cmd/vet” 查看这些和其他 vet 测试文档。要禁用 go vet 的运行，请使用 <code>-vet=off</code> 标志。
+</p>
+
+<p>
+所有测试输出和摘要行都将打印到 go 命令的标准输出中，即使测试将它们打印成自己的标准错误也是如此。（go 命令的标准错误保留用于构建测试的打印错误。）
+</p>
+
+<p>
+Go 测试以两种不同的模式运行：
+</p>
+
+<p>
+第一种称为本地目录模式，发生在没有包参数的情况下调用 go 测试时（例如，“go test” 或 “go test -v” ）。在这种模式下，go test 会编译在当前目录中找到的包和测试，然后运行生成的测试二进制文件。在这种模式下，缓存（下面讨论）被禁用。软件包测试完成后，go test 将打印摘要行，其中显示测试状态（“ok”或“FAIL”），软件包名称和经过时间。
+</p>
+
+<p>
+第二种称为程序包列表模式，发生在使用显式程序包参数调用 go test 时（例如“ go test math”，“go test ./&#x2026;”，甚至“ go test .”）。在这种模式下，go test 编译并测试命令行上列出的每个软件包。如果包装测试通过，则 go test 仅打印最后的“确定”摘要行。如果包装测试失败，则执行测试将打印完整的测试输出。如果使用 <code>-bench</code> 或 <code>-v</code> 标志调用，则 go test 会打印完整的输出，即使通过包测试也是如此，以便显示请求的基准测试结果或详细的日志记录。在所有列出的软件包的测试完成并且输出了它们的输出之后，如果任何软件包测试失败，go test 将打印最终的“失败”状态。
+</p>
+
+<p>
+仅在软件包列表模式下，go test 会缓存成功的软件包测试结果，以避免不必要的重复运行测试。当可以从缓存中恢复测试结果时，go test 将重新显示先前的输出，而不是再次运行测试二进制文件。如果发生这种情况，go test 在摘要行中打印 “(cached)” 以代替经过的时间。
+</p>
+
+<p>
+缓存中匹配项的规则是，运行涉及相同的测试二进制文件，并且命令行上的标志完全来自一组受限制的“可缓存”测试标志: <code>-cpu，-list，-parallel，-run ，-short 和-v</code> 。 除此之外，不会缓存结果。要禁用测试缓存，请使用除可缓存标志以外的任何测试标志或参数。显式禁用测试缓存的惯用方式是使用 <code>-count=1</code> 。测试是否在包的源根目录（通常是$ GOPATH）中打开文件，或参考环境变量的测试仅与文件和环境变量未更改的将来运行相匹配。缓存的测试结果被视为立即执行，因此无论 <code>-timeout</code> 设置如何，成功的软件包测试结果都将被缓存并重新使用。
+</p>
+
+<p>
+除了构建标志之外，“go test”本身处理的标志还有：
+</p>
+<pre class="example">
+-args
+    Pass the remainder of the command line (everything after -args) o the test binary, uninterpreted and unchanged.  Because this flag consumes the remainder of the command line, the package list (if present) must appear before this flag.
+
+-c
+    Compile the test binary to pkg.test but do not run it (where pkg is the last element of the package's import path). The file name can be changed with the -o flag.
+
+-exec xprog
+    Run the test binary using xprog. The behavior is the same as in 'go run'. See 'go help run' for details.
+
+-i
+    Install packages that are dependencies of the test. Do not run the test.
+
+-json
+    Convert test output to JSON suitable for automated processing.  See 'go doc test2json' for the encoding details.
+
+-o file
+    Compile the test binary to the named file.  The test still runs (unless -c or -i is specified).
+</pre>
+
+<p>
+测试二进制文件还接受控制测试执行的标志。 这些标志也可以通过“ go test”访问。 有关详细信息，请参见“ go help testflag”。
+</p>
+
+<p>
+For more about build flags, see 'go help build'.
+</p>
+
+<p>
+For more about specifying packages, see 'go help packages'.
+</p>
+
+<p>
+See also: go build, go vet.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc8ad4b7" class="outline-2">
+<h2 id="orgc8ad4b7"><span class="section-number-2">3</span> testflag</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+“go test” 命令的标志同时适用于 “go test” 和测试二进制文件。
+</p>
+
+<p>
+几个标志控制 profiling ，并生成适合 “go tool pprof” 执行的配置文件； 运行 “go tool pprof -h” 以获取更多信息。 pprof 的 <code>--alloc_space，--alloc_objects 和--show_bytes</code> 选项控制如何显示信息。
+</p>
+
+<p>
+“go test”命令可以识别以下标志，这些标志控制测试执行：
+</p>
+
+<ul class="org-ul">
+<li><p>
+bench regexp
+</p>
+
+<p>
+仅运行与正则表达式匹配的基准测试。
+</p>
+
+<p>
+默认情况下，不运行任何基准测试。 要运行所有基准，请使用 “-bench”。 或 “-bench=”。
+</p>
+
+<p>
+regexp 由无括号的斜杠（/）字符拆分为一系列正则表达式，并且基准标识符的每个部分都必须与序列中的相应元素（如果有）匹配。 匹配中父项（如果有）通过 <code>b.N=1</code> 标识子基准进行运行。 例如，在给定 <code>-bench=X/Y</code> 的情况下，与 X 匹配的顶级基准测试使用 <code>b.N=1</code> 来以找到与 Y 匹配的任何子基准，然后将其完整运行。
+</p></li>
+
+<li><p>
+benchtime t
+</p>
+
+<p>
+通过 t 指示对每个基准运行足够的迭代， t 为 <code>time.Duration=（例如 =-benchtime 1h30s</code> ）。
+</p>
+
+<p>
+缺省值为 1 秒（1s）。特殊语法 <code>Nx</code> 表示要运行基准测试 N 次（例如， <code>-benchtime 100x</code> ）。
+</p></li>
+
+<li><p>
+count n
+</p>
+
+<p>
+运行每个测试和基准测试 n 次（默认为 1）。
+</p>
+
+<p>
+如果设置了-cpu，则对每个 GOMAXPROCS 值运行 n 次。 Examples 始终运行一次。
+</p></li>
+
+<li><p>
+cover
+</p>
+
+<p>
+启用覆盖率分析。 请注意，由于覆盖率是通过在编译之前对源代码进行注释来实现的，因此启用覆盖率的编译和测试失败可能会报告与原始源不对应的行号。
+</p></li>
+
+<li><p>
+covermode set,count,atomic
+</p>
+
+<p>
+Set the mode for coverage analysis for the package[s] being tested. The default is "set" unless -race is enabled, in which case it is "atomic".
+</p>
+
+<p>
+设置要测试 package 覆盖率分析的模式。 默认为 ”set”，启用 <code>-race</code> 后为“ atomic”。
+</p>
+
+<p>
+The values:
+</p>
+<ul class="org-ul">
+<li>set: bool: does this statement run?</li>
+<li>count: int: how many times does this statement run?</li>
+<li>atomic: int: count, but correct in multithreaded tests; significantly more expensive. Sets -cover.</li>
+</ul></li>
+
+<li><p>
+coverpkg pattern1,pattern2,pattern3
+</p>
+
+<p>
+只对与模式匹配的 package 的测试使用将覆盖率分析。默认设置是每个测试仅分析要测试的软件包。
+</p>
+
+<p>
+See 'go help packages' for a description of package patterns.
+</p>
+
+<p>
+Sets -cover.
+</p></li>
+
+<li><p>
+cpu 1,2,4
+</p>
+
+<p>
+Specify a list of GOMAXPROCS values for which the tests or benchmarks should be executed. The default is the current value of GOMAXPROCS.
+</p>
+
+<p>
+指定应为其执行测试或基准的 GOMAXPROCS 值的列表。 默认值为 GOMAXPROCS 的当前值。
+</p></li>
+
+<li><p>
+failfast
+</p>
+
+<p>
+首次测试失败后，请勿开始新的测试。
+</p></li>
+
+<li><p>
+list regexp
+</p>
+
+<p>
+列出与正则表达式匹配的测试，基准或示例。
+</p>
+
+<p>
+不会运行任何测试，基准测试或示例。 这只会列出顶级测试。 不显示子测试或子基准。
+</p></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><p>
+parallel n
+</p>
+
+<p>
+允许并行执行调用 <code>t.Parallel</code> 的测试函数。
+</p>
+
+<p>
+该标志的值是可以同时运行的最大测试数。 默认情况下，它设置为 GOMAXPROCS 的值。
+</p>
+
+<p>
+请注意，-parallel 仅适用于单个测试二进制文件。 根据-p 标志的设置，“ go test”命令也可以并行运行针对不同软件包的测试（请参阅“ go help build”）。
+</p></li>
+
+<li><p>
+run regexp
+</p>
+
+<p>
+仅运行与正则表达式匹配的那些测试和示例。
+</p>
+
+<p>
+对于测试，正则表达式由无括号的斜杠（/）字符拆分为一系列正则表达式，并且测试标识符的每个部分都必须与序列中的相应元素（如果有）匹配。 请注意，也可能运行匹配项的父项，因此 <code>-run=X/Y</code> 匹配并运行并报告所有与 X 匹配的测试的结果，甚至是那些没有与 Y 匹配的子测试的测试，因为它必须运行它们以查找那些子测试。
+</p></li>
+
+<li><p>
+short
+</p>
+
+<p>
+告诉长时间运行的测试以缩短其运行时间。
+</p>
+
+<p>
+它默认情况下是关闭的，但是在 all.bash 期间设置，以便安装 Go 树可以运行健全性检查，而不花费时间运行详尽的测试。
+</p></li>
+
+<li><p>
+timeout d
+</p>
+
+<p>
+如果测试二进制文件的运行时间超过持续时间 d，则出现 panic。 如果 d 为 0，则禁用超时。 默认值为 10 分钟（10m）。
+</p></li>
+
+<li><p>
+v
+</p>
+
+<p>
+详细的输出：在运行所有测试时记录它们。 即使测试成功，也要打印 Log 和 Logf 调用中的所有文本。
+</p></li>
+
+<li><p>
+vet list
+</p>
+
+<p>
+将“ go test”期间的“ go vet”调用配置为使用逗号分隔的 vet 检查列表。
+</p>
+
+<p>
+如果列表为空，则“ go test”将运行“ go vet”，并带有经过整理的被认为总是值得解决的检查清单。
+</p>
+
+<p>
+如果列表为“ off”，则“ go test”根本不会运行“ go vet”。
+</p></li>
+</ul>
+
+
+<p>
+以下标记也可以被“go test”识别，并且可以在执行期间用于分析测试：
+</p>
+
+<ul class="org-ul">
+<li><p>
+benchmem
+</p>
+
+<p>
+打印基准的内存分配统计信息。
+</p></li>
+
+<li><p>
+blockprofile block.out
+</p>
+
+<p>
+Write a goroutine blocking profile to the specified file when all tests are complete.
+</p>
+
+<p>
+所有测试完成后，将 goroutine 阻塞分析写入指定的文件。
+</p>
+
+<p>
+像-c 那样写测试二进制文件。
+</p></li>
+
+<li><p>
+blockprofilerate n
+</p>
+
+<p>
+通过使用 n 调用 runtime.SetBlockProfileRate 来控制 goroutine 阻塞分析中提供的详细信息。 请参阅“转到 doc runtime.SetBlockProfileRate”。
+</p>
+
+<p>
+profiler 的目的是程序花费的每 n 纳秒中平均采样一个阻塞事件。 默认情况下，如果设置了 <code>-test.blockprofile</code> 而没有此标志，则将记录所有阻塞事件，等效于 <code>-test.blockprofilerate=1</code> 。
+</p></li>
+
+<li><p>
+coverprofile cover.out
+</p>
+
+<p>
+所有测试通过后，将 coverage 配置文件写入文件。 需设置 <code>-cover</code> 。
+</p></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><p>
+cpuprofile cpu.out
+</p>
+
+<p>
+退出之前，将 CPU 分析文件写入指定的文件。
+</p>
+
+<p>
+Writes test binary as -c would.
+</p></li>
+
+<li><p>
+memprofile mem.out
+</p>
+
+<p>
+所有测试通过后，将内存分配分析写入文件。
+</p>
+
+<p>
+Writes test binary as -c would.
+</p></li>
+
+<li><p>
+memprofilerate n
+</p>
+
+<p>
+通过设置 runtime.MemProfileRate 启用更精确（且 expensive）的内存分配分析。 请参阅“go doc runtime.MemProfileRate”。
+</p>
+
+<p>
+To profile all memory allocations, use -test.memprofilerate=1.
+</p></li>
+
+<li><p>
+mutexprofile mutex.out
+</p>
+
+<p>
+所有测试完成后，将互斥锁争用分析写入指定的文件。
+</p>
+
+<p>
+Writes test binary as -c would.
+</p></li>
+
+<li><p>
+mutexprofilefraction n
+</p>
+
+<p>
+Sample 1 in n stack traces of goroutines holding a contended mutex.
+</p>
+
+<p>
+从持有竞争互斥量的 goroutine 的 n 个堆栈跟踪中采样 1。
+</p></li>
+
+<li><p>
+outputdir directory
+</p>
+
+<p>
+将 profile 文件中的输出文件放在指定目录中，默认情况下是运行“ go test”的目录。
+</p></li>
+
+<li><p>
+trace trace.out
+</p>
+
+<p>
+退出之前，将执行跟踪记录写入指定的文件。
+</p></li>
+</ul>
+
+<p>
+这些标志中的每一个也可以通过可选的“test.”前缀来识别。 如 -test.v 。 但是，当直接调用生成的测试二进制文件（“ go test -c”的结果）时，前缀是必需的。
+</p>
+
+<p>
+“go test” 命令在调用测试二进制文件之前，视情况在可选软件包列表之前和之后重写或删除已识别的标志。
+</p>
+
+<p>
+For instance, the command
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">go test -v -myflag testdata -cpuprofile=prof.out -x
+</pre>
+</div>
+
+<p>
+will compile the test binary and then run it as
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pkg.test -test.v -myflag testdata -test.cpuprofile=prof.out
+</pre>
+</div>
+
+<p>
+（-x 标志被删除，因为它仅适用于 go 命令的执行，不适用于测试本身。）
+</p>
+
+<p>
+生成 profile 文件的测试标记（除了覆盖率以外）还将测试二进制文件保留在 pkg.test 中，以便在分析配置文件时使用。
+</p>
+
+<p>
+当“ go test”运行测试二进制文件时，它将在相应程序包的源代码目录中运行。取决于测试，直接调用生成的测试二进制文件时可能需要执行相同的操作。
+</p>
+
+<p>
+命令行软件包列表（如果存在）必须出现在 go test 命令未知的任何标志之前。继续上面的示例，程序包列表必须出现在-myflag 之前，但可能出现在-v 的任一侧。
+</p>
+
+<p>
+当“ go test”以程序包列表模式运行时，“ go test”会缓存成功的程序包测试结果，以避免不必要的重复运行测试。要禁用测试缓存，请使用除可缓存标志以外的任何测试标志或参数。显式禁用测试缓存的惯用方式是使用 <code>-count=1</code> 。
+</p>
+
+<p>
+为了避免将测试二进制文件的参数解释为已知标志或程序包名称，请使用-args（请参阅“ go help test”），该参数会将命令行的其余部分传递给未经解释和更改的测试二进制文件。
+</p>
+
+<p>
+For instance, the command
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">go test -v -args -x -v
+</pre>
+</div>
+
+<p>
+will compile the test binary and then run it as
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">pkg.test -test.v -x -v
+</pre>
+</div>
+
+<p>
+Similarly,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">go test -args math
+</pre>
+</div>
+
+<p>
+will compile the test binary and then run it as
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">pkg.test math
+</pre>
+</div>
+
+<p>
+在第一个示例中，-x 和第二个-v 不变地传递到测试二进制文件，并且对 go 命令本身没有影响。 在第二个示例中，参数 math 传递给测试二进制文件，而不是被解释为程序包列表。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2020-10-12 Mon 19:40</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

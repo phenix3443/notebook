@@ -1,0 +1,10 @@
+# -*- coding:utf-8-*-
+#+TITLE: json-ide
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  编辑 json 文件所使用的 package。
+* packages
+
+** json-mode

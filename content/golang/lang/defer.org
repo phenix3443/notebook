@@ -1,0 +1,6 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang defer
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 坑

@@ -1,0 +1,311 @@
+# -*- coding:utf-8-*-
+#+TITLE: git 分支模型介绍
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* branch model
+  分支（brach）是 git 很重要的一个特性，通过分支可以同时并行开发多个 feature，但同时也带来一个问题：不同的分支间应该如何合并？下面将逐步介绍一下 git 分支模型的演化过程。
+
+** master
+   所有工作在 master 分支。
+
+   工作流程：
+   #+BEGIN_SRC sh
+git checkout master
+.....develop.....
+.....test.....
+.....release.....
+   #+END_SRC
+
+   优点：简单
+
+   缺点：master 上开发影响其上的构建。
+
+   适用：
+   + 单 feature。
+   + 项目无构建过程。
+
+** master/develop
+   + master 是主分支。
+   + develop 是开发分支，开发完成后合并到 master 分支。
+
+   工作流程：
+   #+BEGIN_SRC sh
+git checkout -b develop # from master
+git rebase master
+.....develop.....
+.....test.....
+.....release.....
+
+git checkout master
+git merge develop
+git branch --delete develop
+   #+END_SRC
+
+   优点：
+   + develop 分支上开发不会影响到 master 分支的构建过程。
+
+   缺点：
+   + 不利于同时开发多个 feature，所有 feature 都工作在 develop 分支，相互之间会干扰。
+
+   适用：
+   + 单 feature。
+   + 项目需要从 master 构建。
+
+** master/develop/feature
+   + master 和develop 是主分支。
+   + 开发人员工作在各自的 feature 分支上，经过开发、模块测试后合并到 develop 分支。
+   + develop 分支代码经过系统测试，release 之后合并到 master 分支。
+
+   工作流程：
+   #+BEGIN_SRC sh
+git chechout -b feature # from develop
+.....develop.....
+.....feature test.....
+
+git checkout develop
+git merge feature
+git branch --delete feature
+.....system test.....
+.....release.....
+
+git checkout master
+git merge develop
+   #+END_SRC
+
+   优点：
+   + develop 结合多个 feature 分支有利于多人合作。
+
+   缺点：
+   + 由于 release 从develop 构建，而 develop 是不断变化的，所以 release 过程中出现的 bug 修复和 develop 分支上来自正在进行的 feature 代码变更会相互影响。
+
+   适用：
+   + 多 feature。
+   + develop 在release 过程中不能修改。
+
+** master/develop/feature/release
+   + release 版本的构建和 bug 修复在单独的 release 分支上进行。
+
+   工作流程：
+   #+BEGIN_SRC sh
+git chechout -b feature # from develop
+.....develop.....
+.....feature test.....
+
+git checkout develop
+git merge feature
+git branch --delete feature
+
+git checkout -b release # from develop
+.....test.....
+.....fix bug.....
+.....release.....
+
+git checkout develop
+git merge release
+
+git checkout master
+git merge release
+
+git branch --delete release
+   #+END_SRC
+
+   优点：
+   + release 版本的工作不会影响 develop 上正在进行的开发。
+
+   + 如果线上线上 bugfix 可能会和 develop 冲突。如果 release 版本出现 bug，如果基于 develop 创建分支，此时 develop 分支可能与 master 分支已经不一致。
+
+   适用：
+   + 多 feature 同时开发
+   + develop 的功能不受 release 影响。
+
+** master/develop/feature/release/bugfix
+   考虑这样一直情况：
+   + 线上正在运行的 0.1 版本出现了问题，需要进行修复
+   + 我们正在测试 release 版本是 1.0
+
+   这是应该从 master 新建一个 bugfix 分支进行修复，那么 bugfix 分支应该如何与其他分支进行合并呢？
+
+   工作流程：
+   #+BEGIN_SRC sh
+git checkout -b bugfix # from master
+.....fix.....
+.....test.....
+
+git checkout master
+git merge bugfix
+
+git checkout develop
+git merge bugfix
+
+git branch --delete bugfix
+
+git checkout release # from develop
+git rebase develop
+
+git checkout develop
+git merge release
+
+git checkout master
+git merge release
+
+git branch --delete release
+
+   #+END_SRC
+
+   优点：
+   + 解决了 bugfix 和develop 版本冲突的问题。
+
+   适用：
+   + 多 feature 开发。
+   + release 不受线上版本 bugfix 影响。
+
+** 总结：
+   上面介绍的这些 git branch model 的演化过程中，问题的出现归根结底来来自于：
+   + feature 开发、develop 上更新、release 发布、bugfix 修复都是异步进行的。
+
+* git-flow
+  Vincent Driessen 为了解决分支管理的问题，写了一篇文章[[http://nvie.com/posts/a-successful-git-branching-model/][《A Successful Git Branching Modelgit-flow》]]，这就是 git-flow 的来源。
+
+  git-flow 也是基于 master/develop/feature/release/bugfix 模型，它并不是为了替代 git，只是把上面分支操作中繁多的命令做了组合。
+
+  #+CAPTION: git-flow 流程图
+  #+NAME: figure-1
+  [[http://nvie.com/img/git-model@2x.png]]
+
+  git-flow 要点：
+  + master 只能用来包括产品代码。 *不能直接工作在 master 分支上* ，而是在其他指定的、独立的特性分支中。不直接提交改动到 master 分支上也是很多工作流程的一个共同的规则。
+  + develop 是 *进行任何新的开发的基础分支* 。当开始一个新的功能分支时，它将是开发的基础。另外，该分支也汇集所有已经完成的功能，并等待被整合到 master 分支中。
+  + develop 代码来自于 feature，release 和bugfix 分支。
+  + master 代码来自于 release 和bugfix 分支。
+
+    master 和develop 被称作为 长期分支。它们会存活在项目的整个生命周期中。而其他的分支，例如针对功能的分支，针对发行的分支，仅仅只是临时存在的。它们是根据需要来创建的，当它们完成了自己的任务之后就会被删除掉。
+
+* 安装
+  使用[[https://github.com/petervanderdoes/gitflow-avh][gitflow-avh]] 这个版本，该版本功能更加丰富，还增加了 support 分支支持。
+  #+BEGIN_SRC sh
+sudo apt install git-flow
+  #+END_SRC
+
+  另外还有[[https://github.com/petervanderdoes/git-flow-completion][git-flow-complete ]]项目提供 git-flow 命令行补全。
+  #+BEGIN_SRC sh
+sudo apt install git-core bash-completion
+git clone git@github.com:petervanderdoes/git-flow-completion.git
+cp git-flow-completion.bash /etc/bash_completion.d/
+sudo cp git-flow-completion/git-flow-completion.bash /etc/bash_completion.d/
+  #+END_SRC
+
+* 使用
+
+** 初始化
+   首先初始化仓库：
+   #+BEGIN_EXAMPLE
+$ git flow init -d
+Initialized empty Git repository in /home/lsl/Downloads/gitflow-test/.git/
+No branches exist yet. Base branches must be created now.
+Branch name for production releases: [master]
+Branch name for "next release" development: [develop]
+
+How to name your supporting branch prefixes?
+Feature branches? [feature/]
+Bugfix branches? [bugfix/]
+Release branches? [release/]
+Hotfix branches? [hotfix/]
+Support branches? [support/]
+Version tag prefix? []
+Hooks and filters directory? [/home/lsl/Downloads/gitflow-test/.git/hooks]
+   #+END_EXAMPLE
+
+   通过交互式的引导完成初始化工作，此过程，可以修改不同分支对应的命名格式。
+
+** feature
+   开发新功能的时候创建该分支。
+   #+BEGIN_EXAMPLE
+$ git flow feature start readme
+Switched to a new branch 'feature/readme'
+
+Summary of actions:
+- A new branch 'feature/readme' was created, based on 'develop'
+- You are now on branch 'feature/readme'
+
+Now, start committing on your feature. When done, use:
+
+     git flow feature finish readme
+
+   #+END_EXAMPLE
+
+   现在就可以进行开发和 feature 测试了。此处新建一个 readme.md 文件，并提交。
+
+   #+BEGIN_EXAMPLE
+$ touch readme.md
+$ git add readme.md
+$ git commit -m "add readme"
+[feature/readme 96f360d] add readme
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 readme
+   #+END_EXAMPLE
+
+   提交 feature。
+   #+BEGIN_EXAMPLE
+$ git flow feature finish readme
+Switched to branch 'develop'
+Updating d37f6ad..96f360d
+Fast-forward
+ readme | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 readme
+Deleted branch feature/readme (was 96f360d).
+
+Summary of actions:
+- The feature branch 'feature/readme' was merged into 'develop'
+- Feature branch 'feature/readme' has been locally deleted
+- You are now on branch 'develop'
+   #+END_EXAMPLE
+   这时已经切换到 develop 分支，需要进一步做的工作：
+   + 进行系统测试，检测多模块的合作是否有问题。
+
+** release
+   需要发布版本的时候创建该分支：
+   #+BEGIN_EXAMPLE
+$ git flow release start 0.1
+Switched to a new branch 'release/0.1'
+
+Summary of actions:
+- A new branch 'release/0.1' was created, based on 'develop'
+- You are now on branch 'release/0.1'
+
+Follow-up actions:
+- Bump the version number now!
+- Start committing last-minute fixes in preparing your release
+- When done, run:
+
+     git flow release finish '0.1'
+   #+END_EXAMPLE
+
+   提交 release：
+   #+BEGIN_EXAMPLE
+$ git flow release finish 0.1
+Switched to branch 'master'
+Merge made by the 'recursive' strategy.
+ readme | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 readme
+Switched to branch 'develop'
+Already up-to-date!
+Merge made by the 'recursive' strategy.
+Deleted branch release/0.1 (was 96f360d).
+
+Summary of actions:
+- Release branch 'release/0.1' has been merged into 'master'
+- The release was tagged '0.1'
+- Release tag '0.1' has been back-merged into 'develop'
+- Release branch 'release/0.1' has been locally deleted
+- You are now on branch 'develop'
+   #+END_EXAMPLE
+
+   可以看到finish release操作步骤：
+   1. merge release to master
+   2. merge master to develop
+   3. delete release branch
+
+** bugfix

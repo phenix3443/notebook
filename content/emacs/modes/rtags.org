@@ -1,0 +1,793 @@
+# -*- coding:utf-8-*-
+#+TITLE:RTags 使用
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+本文是对 Github 上 RTags [[https://github.com/Andersbakken/rtags][README]] 文档的翻译。
+
+* 简介
+  RTags is a client/server application that indexes C/C++ code and keeps a persistent file-based database of references, declarations, definitions, symbolnames etc. There’s also limited support for ObjC/ObjC++. It allows you to find symbols by name (including nested class and namespace scope). Most importantly we give you proper follow-symbol and find-references support. We also have neat little things like rename-symbol, integration with clang’s “fixits” (http://clang.llvm.org/diagnostics.html). We also integrate with flymake using clang’s vastly superior errors and warnings. Since RTags constantly will reindex “dirty” files you get live updates of compiler errors and warnings. Since we already know how to compile your sources we have a way to quickly bring up the preprocessed output of the current source file in a buffer.
+
+  RTags 是一个客户端/服务器应用程序，它可以索引 C/C++代码，并将引用、声明、定义、符号名等保留到一个基于文件的数据库中。也有限支持 ObjC/OjbC++。可以通过名字查找符号（包括嵌套的类和命名空间）。更重要的是支持合适的后续付豪和引用查找。还有一些小功能，比如重命名符号，与 clang 的“fixits”集成（http://clang.llvm.org/diagnostics.html）。 还将 clang 处理错误为和警告方面的优势与 flymake 整合在一起。RTags 不断重新索引“脏”文件，因而会收到编译器错误和警告的实时更新。由于我们已经知道如何编译源代码，因此我们可以快速将当前源文件的预处理输出显示在缓冲区中。
+
+  While existing taggers like gnu global, cscope, etags, ctags etc do a decent job for C they often fall a little bit short for C++. With its incredible lexical complexity, parsing C++ is an incredibly hard task and we make no bones about the fact that the only reason we are able to improve on the current tools is because of clang (http://clang.llvm.org/). RTags is named RTags in recognition of Roberto Raggi on whose C++ parser we intended to base this project but he assured us clang was the way to go. The name stuck though.
+
+  虽然其他已有的标签工具，如 gnu global，cscope，etags，ctags 等可以很好的处理 C，但是 C++就要差一点。由于 C++难以置信的词法复杂性，解析 C++是一项困难至极的任务，我们能不顾这个事实，在当前工具上作出改进的唯一原因是 clang(http://clang.llvm.org/)。RTags 名字是也出于对 Roberto Raggi 的认同，我们计划基于它的 C++解析器构建该项目，但是他向我们保证 clang 是一条可行的路。
+
+* 快速入门
+** 编译 Rtags
+  #+BEGIN_SRC sh
+git clone --recursive https://github.com/Andersbakken/rtags.git
+cd rtags
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+make
+  #+END_SRC
+** 启动 rtags daemon（rdm）
+   #+BEGIN_SRC sh
+./bin/rdm &
+   #+END_SRC
+
+** 索引 rtags 项目
+   #+BEGIN_SRC sh
+./bin/rc -J .
+   #+END_SRC
+
+** 使用 Emacs 打开文件
+   #+BEGIN_SRC sh
+emacs +73:34 src/rdm.cpp
+   #+END_SRC
+
+
+** Load rtags.el
+   #+BEGIN_EXAMPLE
+M-: (load-file "rtags.el") RET
+   #+END_EXAMPLE
+
+** 确保能找到 rc
+   #+BEGIN_EXAMPLE
+M-x set-variable RET rtags-path RET "../bin" RET
+   #+END_EXAMPLE
+
+** 调用 rtags-find-symbol-at-point
+   #+BEGIN_EXAMPLE
+M-x rtags-find-symbol-at-point RET
+   #+END_EXAMPLE
+
+   当前未知就是 =Server::instance()= 的定义。
+
+* 安装
+  参见 [[https://github.com/Andersbakken/rtags#installing-rtags][官方说明]]
+
+* Setup
+
+  rdm runs in the background and monitors all your indexed files for changes, and reindexes when a source file or one of its dependencies is modified. Since clang is a fully compliant compiler it needs specific information about how your sources are compiled to be able to properly index them. This is done through telling rdm about the compile line like this:
+
+  运行在后台的 rdm 监控所有索引文件的更改，当一个源码文件或者它的依赖修改后它会重新索引。因为 clang 是一个完全兼容的编译器，需要知道如何编译源码的特定信息才能正确的索引它们。这通过如下的编译行来告诉 rdm：
+
+  #+BEGIN_EXAMPLE
+  rc -c gcc -I... -fsomeflag -c foobar.c
+  rc -J /path/to/a/directory/containing/compile_commands.json
+  #+END_EXAMPLE
+
+  You can generate a =compile_commands.json= with various different tools, one might fit better than the other, depending on your project build system.
+
+  可以使用各种工具生成 compile_commands.json，工具的选择取决于项目的构建系统：
+
+** ninja
+
+   #+BEGIN_SRC sh
+ninja -t compdb cxx cc > compile_commands.json
+rc -J
+   #+END_SRC
+   With ninja it’s also possible to pipe the commands directly to rc.
+
+   使用 ninja 可以使用管道命令直接输出到 rc。
+
+   #+BEGIN_SRC sh
+ninja -t commands | rc -c -
+# Parse commands for a specific target only
+ninja -t commands rdm | rc -c -
+   #+END_SRC
+
+** cmake
+
+   cmake can generate a compile_commands.json file as well.
+
+   cmake 也能生成 compile_commands.json。
+
+   #+BEGIN_SRC sh
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+rc -J
+   #+END_SRC
+
+** Bear
+
+   For other projects you can use bear to generate a compile_commands.json file. However, if you are cross-compiling you probably need to adjust the command entries in the compile_commands.json file to match the correct compiler. Furthermore, make sure you clean your project before invoking bear.
+
+   对于其他项目也可以使用 bear 生成 compile_commands.json 文件。然而，交叉编译可能需要调整 compile_command.json 文件中的命令条目来匹配正确的编译器。此外，调用 bear 之前确保清理了工程。
+
+   #+BEGIN_SRC sh
+make clean
+bear make
+rc -J
+# Parse commands for a specific target only
+make clean
+bear make rdm
+rc -J
+   #+END_SRC
+
+** make
+
+   You can ask make to only print the recipes without actually doing something. This way may be perfectly fine for not too complex Makefiles.
+
+   可以让 make 只打印信息而不执行任何事情。这种方式可能对于不是很复杂的 makefile 有用。
+
+   #+BEGIN_SRC sh
+make clean
+make -nk | rc -c -
+   #+END_SRC
+
+   There are very likely similar things you can do with other build systems that we’re unfamiliar with, please let us know if you do.
+
+   其他一些我们不熟悉的构建系统很可能做类似的事情，如果愿意的话，请告诉我们。
+
+   A different approach to get your files indexed is the man-in-the-middle
+
+   索引文件的另一种方法是中间人，可以这样做：
+
+   #+BEGIN_SRC sh
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/gcc
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/c++
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/cc
+ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/g++
+   #+END_SRC
+
+   例如：
+
+   #+BEGIN_SRC sh
+which -a gcc | xargs file
+/home/abakken/bin/gcc: symbolic link to `/home/abakken/dev/rtags/bin/gcc-rtags-wrapper.sh'
+/usr/bin/gcc:         symbolic link to `gcc-4.7'
+   #+END_SRC
+
+   Now every time you compile a file with which gcc rc will get its grubby hands all over your command line and make sure RTags knows about it.
+
+   现在每次使用 =which gcc= 编译文件，rc 都会处理你所有的命令行，以确保 RTage 知道。
+
+   RTags will group source files into projects based on some heuristics.
+
+   RTags 基于一些启发式会将工程中的源码文件分组。
+
+   Essentially it will look for certain files/dirs (like configure/CMakeLists.txt/scons.1/.git) etc to try to determine the likely project root for each source file. For generated source files that end up in the build directory we try to find the source root based on similar heuristics around config.status/CMakeCache.txt etc. Usually this works out reasonably well. If it doesn’t for you, you can pass --project-root /path/to/the/project/root to rc.
+
+   本质上它会查看特定文件/目录（比如 configure/CMakeLists.txt/scons.1/.git）等来尝试确定每个源码文件的可能的项目根目录。也会尝试根据源码在编译目录中生成的 config.status/CMakeCache.txt 等找到源码根目录。这通常可以很好的解决问题。如果不适合你，可以给 rc 传递 =--project-root /path/to/the/project/root= 。
+
+   RTags only gives you information about current project when you ask for things by name. You can explicitly change the current project using:
+
+   当通过名字查询时，Rtags 只会给出和当前工程有关的信息。使用如下命令可以显示改变当前工程：
+
+   #+BEGIN_SRC sh
+rc -w foobar
+   #+END_SRC
+
+   We try to do it automatically for you by passing along information about the current buffer when we call rc from elisp so that rdm can update its current project on demand.
+
+   当从 elisp 调用 rc 时，将尝试自动传递当前 buffer 的信息，以便 rdm 可以根据需求自动更新它当前的项目，
+
+   RTags keeps a cache of indexed data so you don’t have to reindex everything if you restart it.
+
+   RTags 缓存了索引数据，因而重启后无需重建索引。
+
+   The location of this data is by default ~/.rtags but can be overridden by passing --data-dir /other/dir to rdm or putting something like this in your ~/.rdmrc:
+
+   数据的默认位置 =~/.rtags= ，但是通过给 rdm 传递 =--data-dir /other/dir= ，或者在 =~/.rdmrc= 中写入类似的内容进行覆盖，。
+
+   #+BEGIN_EXAMPLE
+   $ cat ~/.rdmrc
+   --data-dir=/other/dir
+   #+END_EXAMPLE
+** Integration with systemd (GNU Linux)
+
+   On GNU/Linux distributions based on the systemd service manager, rdm can also be socket acivated.
+
+   基于 systemd 服务管理的 GNU/Linux 发行版中，rdm 可以通过 socket 激活。
+
+   Add the following to ~/.config/systemd/user/rdm.socket
+
+   将下面的代码写入 =~/.config/systemd/user/rdm.socket=
+
+   #+BEGIN_EXAMPLE
+   [Unit]
+   Description=RTags daemon socket
+
+   [Socket]
+   ListenStream=%h/.rdm
+
+   [Install]
+   WantedBy=multi-user.target
+   #+END_EXAMPLE
+
+   Add the following to =~/.config/systemd/user/rdm.service=
+
+   #+BEGIN_EXAMPLE
+   [Unit]
+   Description=RTags daemon
+
+   Requires=rdm.socketp
+
+   [Service]
+   Type=simple
+   ExecStart=$RDM -v --inactivity-timeout 300
+   #+END_EXAMPLE
+
+
+   Replace $RDM with the path to your copy of rdm, and add any command line parameters you might usually use.
+
+   将 =$RDM= 替换为 =rdm= 的路径，添加可能使用的任何命令行参数。
+
+   You have to use absolute paths here. %h is expanded to your home directory. Environment variables are not expanded inside strings.
+
+   这里必须使用绝对路径。%h 将会扩展为 home 目录，字符串中的环境变量不会扩展。
+
+   Run the following command from the terminal:
+
+   从终端运行如下命令：
+
+   #+BEGIN_SRC sh
+ systemctl --user enable rdm.socket
+ systemctl --user start rdm.socket
+   #+END_SRC
+
+   Systemd will create the rdm socket automatically.
+
+   Systemd 将会自动创建 rdm 套接字。
+
+   如果你更喜欢使用 SystemV，可以这样使用：
+
+   #+BEGIN_SRC bash
+#!/bin/bash
+#
+# chkconfig: 35 90 12
+# description: Foo server
+#
+
+# Get function from functions library
+. /etc/init.d/functions
+
+# Start the service FOO
+start() {
+        initlog -c "echo -n Starting FOO server: "
+        /path/to/FOO &
+        ### Create the lock file ###
+        touch /var/lock/subsys/FOO
+        success $"FOO server startup"
+        echo
+}
+
+# Restart the service FOO
+stop() {
+        initlog -c "echo -n Stopping FOO server: "
+        killproc FOO
+        ### Now, delete the lock file ###
+        rm -f /var/lock/subsys/FOO
+        echo
+}
+
+### main logic ###
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status FOO
+        ;;
+  restart|reload|condrestart)
+        stop
+        start
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 1
+esac
+
+exit 0
+   #+END_SRC
+
+* 使用
+
+  Now that your files are indexed you can start using RTags. Normally you would do this from your editor but the way to extract this information from rdm is to use the command line tool rc.
+
+  现在可以启动 RTags 索引文件了。通常希望从编辑器进行操作，但从 rdm 提取信息的方法是使用命令行工具 rc。 例如：
+
+  #+BEGIN_SRC sh
+$ rdm &
+$ ninja -t commands | rc -c
+$ rc --follow-location Job.cpp:20:10
+/home/abakken/dev/rtags/src/Job.h:10:18      List<RegExp> *mPathFiltersRegExp;
+  #+END_SRC
+
+  A location has the format of file:line:column.
+
+  location 格式是 ~file:line:column~ 。
+
+  For Emacs we maintain a set of elisp bindings that allows you to control RTags from your editor. There are projects that provide integration for other editors out there.
+
+  针对 Emacs 我们维护了一组 elisp 绑定，方便从编辑器控制 RTags。有些别的项目为其他编辑器提供了整合。
+
+  Vim: https://github.com/lyuts/vim-rtags and https://github.com/shaneharper/vim-rtags
+
+  Sublime Text: https://github.com/rampage644/sublime-rtags
+
+  Atom: https://github.com/artagnon/atomic-rtags and https://github.com/rajendrant/atom-rtags
+
+  rc has a vast number of commands and options and we intend to write a man page at some point. Most users will have limited interest in ever calling them manually and would rather just use the interactive elisp functions.
+
+  rc 有大量的命令和选项，我们计划编写一个 man page。大多数用户对手动调用它们兴趣有限，他们更愿意使用交互的 elisp 函数。
+
+* Elisp
+
+** Functions
+
+   #+BEGIN_SRC elisp
+(rtags-start-process-unless-running)
+   #+END_SRC
+
+   Start the rdm process unless the process is already running. You may create hook to automatically call this function upon entering, e.g. c-mode or c++mode.
+
+   启动 rdm 进程，除非该进程已经运行。可以创建钩子函数在输入时自动调用该函数，例如 c-mode 或 c++-mode 中。例如：
+
+   #+BEGIN_SRC elisp
+(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+
+   #+END_SRC
+
+   #+BEGIN_SRC elisp
+(rtags-restart-process)
+   #+END_SRC
+
+   Restart the rdm process.
+
+   重启 rdm 进程。
+
+   #+BEGIN_SRC emacs-lisp
+ (rtags-find-symbol-at-point)
+   #+END_SRC
+
+   Follow symbol under cursor. For references this goes to the definition (or declaration if no definition is known of the symbol. For declarations it goes to the definition and vice versa. For definitions of variables/parameters with constructors it goes to the constructor in question. If you pass a prefix argument, limit to current source file, if you pass a prefix argument and have narrowed the current file, limit to the narrowed region. This prefix argument is the same for: rtags-find-references-at-point, rtags-find-symbol, rtags-find-references
+
+   跟踪 cursor 下的符号。对于引用会跳转到定义（如果该符号没有定义则跳转到声明。对于声明跳转到定义。对于有构造函数的变量/参数的定义跳转到构造函数。如果传递前缀参数，限制在当前源码文件，如果传递前缀参数并 narrow 了当前文件，会限制于 narrowed 区域。前缀参数同样适用于 rtags-find-references-at-point, rtags-find-symbol, rtags-find-references）
+
+   #+BEGIN_SRC emacs-lisp
+ (rtags-find-references-at-point)
+   #+END_SRC
+
+   Find all references to symbol under cursor. If symbol is itself a reference it will find all references to the referenced symbol。
+
+   查找当前 cursor 下符号的所有引用。如果符号本身是一个引用，将会查找该符号的所有引用。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-find-symbol)
+   #+END_SRC
+
+   Prompt for name of symbol to go to. Imagine the following code:
+
+   提示想要跳转的符号，考虑下面的代码：
+
+   #+BEGIN_SRC C++
+       namespace N
+       {
+           class C
+           {
+           public:
+               int func(int);
+           };
+       };
+
+       using namespace N;
+       int C::func(int val)
+       {
+           return val * 2;
+       }
+   #+END_SRC
+
+   ~int N::C::func(int)~ will now be accessible by the following names:
+
+   通过下面的代码可以访问到 ~int N::C::func(int)~ ：
+
+   #+BEGIN_SRC C++
+func
+func(int)
+C::func(int)
+C::func
+N::C::func(int)
+N::C::func
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-find-references)
+   #+END_SRC
+
+   Prompt for name of symbol to find references to. Same as above but find references to symbol rather than declarations and definitions.
+
+   提示要查找引用的符号。除了是查找引用而不是声明和定义，和上面没差别。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-diagnostics)
+   #+END_SRC
+
+   Start an async process in a buffer to receive warnings/errors from clang whenever a file gets reindexed. It integrates with flymake to put highlighting on code with warnings and errors。
+
+   重新索引文件时，在 buffer 中启用异步进程接收来自 clang 的警告/错误。它和 flymake 整合在一起，高亮带有警告和错误的代码。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-enable-standard-keybindings)
+   #+END_SRC
+
+   Sets up a ton of standard keybindings under C-c r. If you pass a mode to the function it will set it up on that mode, otherwise it will use c-mode-base-map). You can choose a different prefix than C-c r like this:
+
+   在 C-c r 下建立大量的标准键绑定。如果给该函数传递一个模式，将会设置在该模式下，否则使用 c-mode-base-map。可以这样选择不同于 =C-c r= 的前缀：
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-enable-standard-keybindings c-mode-base-map "\C-xr")
+
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-find-file)
+   #+END_SRC
+
+   Lets you jump to file by name (partial or full, concept kinda stolen from gtags.el) with completion in the project. This includes all files under what we determine to be the root of the project, not just source files.
+
+   在项目补全时通过名字（部分或全部，概念有点来自 gtags.el）跳转到文件。包括项目根目录下面的所有文件，不只是源码文件。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-find-virtuals-at-point)
+   #+END_SRC
+
+   For virtual functions, show the various reimplementations of the function at point。
+
+   对于虚函数，显示当前 point 处函数的各种实现。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-fixit)
+   #+END_SRC
+
+   Apply clang’s automatic fixits in current file. If you pass a prefix arg use ediff to apply it. See (http://clang.llvm.org/diagnostics.html) for more info.
+
+   在当前文件应用 clang 的自动修正。如果传递前缀参数，使用 ediff 来应用它。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-imenu)
+   #+END_SRC
+
+   Provides an ido-based imenu like interface to a subset of the symbols in the current file. Note that it does not actually use imenu infrastructure.
+
+   为当前文件中的部分符号提供基于 ido 的类似 imenu 的接口。注意，它并不会使用 imenu 功能。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-location-stack-back)
+(rtags-location-stack-forward)
+   #+END_SRC
+
+   Whenever RTags jumps somewhere it pushes a location onto its stack. Jump back and forward in this stack。
+
+   RTags 跳转时都会将位置压栈。可以在栈中前后跳转。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-next-match)
+(rtags-previous-match)
+   #+END_SRC
+
+   For functions that return more than one match, jump to the next/previous one.
+
+   对于返回多个匹配的函数，跳转到下一个或下一个。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-preprocess-file)
+   #+END_SRC
+
+   Preprocess current file according to known C(XX)Flags and show the result in a buffer. If region is active only display the preprocessed output for that region.
+
+   通过已知的 C(XX)标识预处理当前文件，在 buffer 中显示结果。如果激活了区域则只显示区域的处理结果。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-print-symbol-info)
+   #+END_SRC
+
+   Print some info about symbol under cursor
+
+   打印 cursor 下符号的一些信息
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-symbol-type)
+   #+END_SRC
+
+   Print the type of the symbol under cursor.
+
+   打印 cursor 下符号的类型
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-print-dependencies)
+   #+END_SRC
+
+   Open a buffer showing files that depend on current file/files that current file depends on.
+
+   打开 buffer 显示当前文件所依赖的文件。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-print-enum-value-at-point)
+   #+END_SRC
+
+   Print integral value of enum value at point
+
+   打印 point 处枚举变量的整数值。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-quit-rdm)
+   #+END_SRC
+
+   Shut down rdm
+
+   关闭 rdm
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-rename-symbol)
+   #+END_SRC
+
+   Rename symbol under cursor. Make sure all files are saved and fully indexed before using.
+
+   重命名 cursor 下的符号。使用之前确保所有的文件已保存并全部被索引。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-reparse-file)
+   #+END_SRC
+
+   Explicitly trigger a reparse of current file. Mostly for debugging. Unless we have bugs it should not be necessary.
+
+   显示触发重新解析当前文件。多用于调试。除非我们有不必要的 bug。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-show-rtags-buffer)
+   #+END_SRC
+
+   Switch to ~*RTags*~ buffer. This is the buffer where a number of functions display their alternatives when they have more than one match.
+
+   切换到 ~*RTags*~ buffer。如果在该 buffer 中显示函数的多个匹配。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-include-file)
+
+   #+END_SRC
+
+   Insert selected or entered include, e.g. “string.h”/<string.h> in current buffer, either at the top, after the first include statement or with prefix argument (C-u) at current point.
+
+   在当前 buffer 插入选中或输入的头文件，比如“string.h”/<string.h>，在顶部第一个头文件声明之后插入，使用前缀参数(C-u)在当前 point 处插入。
+
+   #+BEGIN_SRC emacs-lisp
+(rtags-get-include-file-for-symbol)
+   #+END_SRC
+
+   Insert include for entered symbol or symbol under courser in current buffer, either at the top, after the first include statement or with prefix argument (C-u) at current point.
+
+   插入正在输入的符号或 cursor 下符号对应的头文件，在顶部第一个头文件声明之后插入，使用前缀参数(C-u)在当前 point 处插入。
+
+* Variables
+
+** rtags-path
+   Path to rc/rdm if they’re not in $PATH.
+
+   如果 =rc/rdm= 不在 =$PATH= 中，改变量说明它们的路径。
+
+** rtags-jump-to-first-match
+   Similar to compilation-auto-jump-to-first-error. Whether to jump to the first match automatically when there’s more than one.
+
+   类似 compilation-auto-jump-to-first-error。当有多个匹配时，是否自动跳转到第一个匹配。
+
+** rtags-find-file-case-insensitive
+   Whether to match files case-insensitively
+
+   匹配文件是否区分大小写。
+
+** rtags-find-file-prefer-exact-match
+   Whether to exclude partial matches for file names when an exact match is found. E.g. /foobar.cpp /bar.cpp If rtags-find-file-prefer-exact-match is t a query for bar.cpp would only return /bar.cpp, otherwise both foobar.cpp and bar.cpp would be returned.
+
+   是否在找到完全匹配时排除文件名的部分匹配。 例如。 /foobar.cpp /bar.cpp 如果 rtags-find-file-prefer-exact-match 是 t，查询 bar.cpp，则只会返回 / bar.cpp，否则将返回 foobar.cpp 和 bar.cpp。
+
+* Fall back to other taggers（回退到其他 tagger）
+
+  You can do something like the following to fall back to e.g. gtags if RTags doesn’t have a certain project indexed:
+
+  如果 RTags 不能索引特定项目，可以使用下面的代码回退，比如 gtags。
+
+  #+BEGIN_SRC emacs-lisp
+(defun use-rtags (&optional useFileManager)
+  (and (rtags-executable-find "rc")
+       (cond ((not (gtags-get-rootpath)) t)
+             ((and (not (eq major-mode 'c++-mode))
+                   (not (eq major-mode 'c-mode))) (rtags-has-filemanager))
+             (useFileManager (rtags-has-filemanager))
+             (t (rtags-is-indexed)))))
+
+(defun tags-find-symbol-at-point (&optional prefix)
+  (interactive "P")
+  (if (and (not (rtags-find-symbol-at-point prefix)) rtags-last-request-not-indexed)
+      (gtags-find-tag)))
+(defun tags-find-references-at-point (&optional prefix)
+  (interactive "P")
+  (if (and (not (rtags-find-references-at-point prefix)) rtags-last-request-not-indexed)
+      (gtags-find-rtag)))
+(defun tags-find-symbol ()
+  (interactive)
+  (call-interactively (if (use-rtags) 'rtags-find-symbol 'gtags-find-symbol)))
+(defun tags-find-references ()
+  (interactive)
+  (call-interactively (if (use-rtags) 'rtags-find-references 'gtags-find-rtag)))
+(defun tags-find-file ()
+  (interactive)
+  (call-interactively (if (use-rtags t) 'rtags-find-file 'gtags-find-file)))
+(defun tags-imenu ()
+  (interactive)
+  (call-interactively (if (use-rtags t) 'rtags-imenu 'idomenu)))
+
+(define-key c-mode-base-map (kbd "M-.") (function tags-find-symbol-at-point))
+(define-key c-mode-base-map (kbd "M-,") (function tags-find-references-at-point))
+(define-key c-mode-base-map (kbd "M-;") (function tags-find-file))
+(define-key c-mode-base-map (kbd "C-.") (function tags-find-symbol))
+(define-key c-mode-base-map (kbd "C-,") (function tags-find-references))
+(define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+(define-key c-mode-base-map (kbd "M-i") (function tags-imenu))
+
+(define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
+(define-key global-map (kbd "M-,") (function tags-find-references-at-point))
+(define-key global-map (kbd "M-;") (function tags-find-file))
+(define-key global-map (kbd "C-.") (function tags-find-symbol))
+(define-key global-map (kbd "C-,") (function tags-find-references))
+(define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+(define-key global-map (kbd "M-i") (function tags-imenu))
+  #+END_SRC
+
+* Code Completion in Emacs:（代码补全）
+
+  To enable code completion in Emacs with company mode do the following:
+
+  Emacs 中结合 company mode 启用代码补全：
+
+  + Enable rtags-diagnostics. The easiest way is to:
+
+    启用 rtags-diagnostics，最简单的方式如下：
+
+    #+BEGIN_SRC emacs-lisp
+(setq rtags-autostart-diagnostics t)
+    #+END_SRC
+
+  + but you can also explicitly start it with
+
+    也可以显示启动：
+
+    #+BEGIN_EXAMPLE
+    M-x rtags-diagnostics <RET>
+    #+END_EXAMPLE
+
+  + Enable completions in RTags:
+
+    使用 RTags 补全：
+
+    #+BEGIN_SRC emacs-lisp
+(setq rtags-completions-enabled t)
+    #+END_SRC
+
+  + Enable company-mode
+
+    启用 company-mode
+
+    #+BEGIN_SRC emacs-lisp
+(require 'company)
+(global-company-mode)
+    #+END_SRC
+
+  + Add company-rtags to company-backends:
+
+    company-rtags 添加到 company-backends:
+
+    #+BEGIN_SRC emacs-lisp
+(push 'company-rtags company-backends)
+    #+END_SRC
+
+    This minimal init.el configuration should be enough to get completion to work.
+
+    最小的 init.el 应该足以完成启用补全。
+    #+BEGIN_SRC emacs-lisp
+(require 'package)
+(package-initialize)
+(require 'rtags)
+(require 'company)
+
+(setq rtags-autostart-diagnostics t)
+(rtags-diagnostics)
+(setq rtags-completions-enabled t)
+(push 'company-rtags company-backends)
+(global-company-mode)
+(define-key c-mode-base-map (kbd "<C-tab>") (function company-complete))
+    #+END_SRC
+
+    To enable completion in Emacs with auto-complete-mode do the following: …TODO…
+
+    Emacs 中配合 auto-complete-mode 启用补全。。还未实现。。。
+
+* RTags Flycheck integration
+
+  To turn on RTags Flycheck support you need to load the flycheck-rtags package.
+
+  RTags Flycheck 需要加载 flycheck-rtags package.
+
+  #+BEGIN_SRC emacs-lisp
+(require 'flycheck-rtags)
+  #+END_SRC
+
+** Optional
+
+   You may explicitly select the RTags Flycheck checker for some major modes for better experience.
+
+   可以为某些 major mode 显式选择 RTags Flycheck 检查以获得的更好体验。
+
+   At the moment there is no customize option available to choose between rtags-diagnostics overlays or Flycheck overlays, nor is it planned right now. We recommend setting flycheck-highlighting-mode locally to nil as the RTags overlays are more accurate.
+
+   目前没有可用的定制选项选择 rtags-diagnostics overlays or Flycheck overlays，现在也不计划这么做。推荐局部设置 flycheck-highlighting-mode 为 nil，因为 RTags overlays 更准确。
+
+   Further, Flycheck will trigger automatically, based on events, the syntax checker for the current buffer, this is however, pretty useless in conjunction with RTags. We trigger it manually because we find it gives you a better experience. To turn off the automatic Flycheck syntax checking, set the variable flycheck-check-syntax-automatically locally to nil.
+
+   此外，Flycheck 将根据事件自动激活针对当前 buffer 的语法检查器，然而这与 RTags 结合在一起显得相当无用。手动激活它将会有更好的体验。将 flycheck-check-syntax-automatically 局部设置为 nil 关闭 Flycheck 自动语法检查。
+
+   #+BEGIN_SRC emacs-lisp
+(defun my-flycheck-rtags-setup ()
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil))
+;; c-mode-common-hook is also called by c++-mode
+(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+   #+END_SRC
+
+* Debugging RTags（调试 RTags）
+
+  If you find that rp is crashing (leading to output like this: “job crashed 191 9698036154370 0x331e7e30”). You should be able to do the following:
+
+  如果发现 rp 崩溃了（出现类似的输出“job crashed 191 9698036154370 0x331e7e30”）。应该如下处理：
+
+  #+BEGIN_SRC sh
+rdm --suspend-rp-on-crash
+  #+END_SRC
+
+
+  When rp crashes the rp process will stay alive, enabling you to debug it with something like this:
+
+  当 rp 崩溃，rp 继承仍然存活，可以如下调试：
+
+  #+BEGIN_SRC sh
+gdb -p `pidof rp`
+  #+END_SRC
+
+* Support for other editors（支持其他编辑器）
+
+  There are several other projects integrating RTags with other editors.
+
+  有一些其他的项目将 RTags 与其他编辑器整合。
+
+  Sublime Text: https://github.com/rampage644/sublime-rtags
+
+  Vim: https://github.com/lyuts/vim-rtags https://github.com/shaneharper/vim-rtags https://github.com/mattn/vim-rtags
+
+  Note to those maintainers. If you need RTags to behave differently or add features to make these other integration’s easier (like produce output in other formats etc), just drop us a note.
+
+  这些维护者请注意，如果需要 RTags 有所不同或添加功能让这些其他集成更简单（比如产生其他格式输出），请给我们留言。
+
+* Disclaimer（免责声明）
+
+  RTags is still under development and is not the most stable piece of software you’ll ever find. We’re constantly working to improve on it.
+
+  RTags 仍处于开发阶段，你会发现它并不是最稳定的软件。我们正为了改进它坚持不懈的工作。

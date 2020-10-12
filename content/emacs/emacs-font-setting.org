@@ -1,0 +1,34 @@
+#+BLOG:panghuli
+#+POSTID:3256
+#+DATE:Tue Aug 12 10:22:41 2014
+#+OPTIONS:
+#+CATEGORY:专业知识
+#+TAGS:Emacs
+#+DESCRIPTION:主要介绍如何在 Emacs 设置中英文字体。
+#+TITLE:Emacs 中的字体设置
+
+#+BEGIN_SRC sh
+  M-x emacs-version
+#+END_SRC
+
+今天主要说说 Emacs 中的字体设置。
+
+符合我要求的字体系统应该是这样：
+1) 编码应该选用 UTF-8 。这应该是一个趋势，很受不了 SI 的一个地方就是它不支持 UTF-8，导致代码的中文注释没有办法添加或经常显示乱码。恩，虽然有脚本可以支持，但毕竟不是原生的 UTF-8 啊。
+2) 字体要适合 programer，程序代码中易混淆的字符，例如数字0和字母O，数字1、大写的字幕I、小写的字母l，要能分辨清楚。
+3) 中文英文应该使用不同的字体，网上有人把中文和等宽英文字体合并为新的字体以方便编程使用，比如之前使用的微软雅黑 Monaco 字体就很不错，但这种方法的缺点在于你没办法单独换英文字体或中文字体，要换只能新做一个字体整体换掉。而且网上做的字体里面，并没有包含斜体，样式不够丰富。
+4) 不仅支持当前窗口，对通过 C-x 5 2 或者 M-x new-frame 创建的新 frame 也应该起作用。
+5) 要能根据不同的 OS 选择合适的中英文字体。
+
+想清楚需求以后，通过阅读 Emacs 手册和网上的配置，最终的解决办法如下：
+1) 编码系统和区域语言设置有密切的关系。设置语言环境为 utf-9。
+2) 经过 Emacser 的多年实践，总结出了 Linux 和 Windows 下比较好的字体选择，分别是：英文 DeJaVu san 和 consolas ，中文 文泉驿系列和微软雅黑系列。
+3) 变量 default-frame-alist 变量设置对 Emacs 中的所有 frame 都有影响。
+4) 分别针对英文和中文给出字体候选列表，使用能在系统中找到的第一个字体。
+
+最终效果参考配置文件 misc.el 和 frame-conf.el。
+
+参考文章
++ [[http://www.gnu.org/software/emacs/manual/html_node/emacs/index.html][Emacs Manual]] 中的 22.14~16 21.8 21.11 14.8，主要说明了 Emacs 中的编码系统、字体定义和修改、frame设置。
++ [[http://zhuoqiang.me/torture-emacs.html][折腾Emacs]] : 主要说明了字体设置过程中一些考虑的方面。
++ [[http://ergoemacs.org/emacs/emacs_list_and_set_font.html][李杀网-如何设置 Emacs 字体]] ：配置过程以及一些用用的链接。

@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: ntfstool
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/ntfstool/ntfstool][ntfstool]] 支持 NTFS 磁盘读写，安装，启动，管理和其他功能。

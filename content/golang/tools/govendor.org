@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: govendor
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u github.com/kardianos/govendor
+  #+END_SRC
+* 配置
+
+* 使用

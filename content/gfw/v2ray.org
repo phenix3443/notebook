@@ -1,0 +1,14 @@
+# -*- coding:utf-8 -*-
+#+TITLE:v2ray
+#+author:刘尚亮
+#+email: phenix3443@gmail.com
+
+* 概述
+  [[https://www.v2ray.com/][v2ray]] 是一款翻墙工具，
+
+* 安装
+
+* 配置的文件
+
+* 附录
+  [[http://www.jianshu.com/p/b59150fd8f47][V2Ray 环境搭建]]

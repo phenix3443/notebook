@@ -1,0 +1,106 @@
+# -*- coding:utf-8 -*-
+#+title:GitProV2 读书笔记
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+* 第一章 起步
+  + Git 直接记录文件快照，而非差异比较。
+	+ 这么做的好处是什么？
+	+ 文件不会迅速膨胀？
+
+* 第二章 Git 基础
+  + .gitignore 格式规范如下：
+	+ 所有空行或以#开头的行都会被 Git 忽略。
+	+ 可以使用标准的 glob 匹配。
+	+ 匹配模式可以以（/）开头防止递归。
+	+ 匹配模式可以以（/）结尾指定目录。
+	+ 要忽略指定模式意外以外的文件或目录，可以在模式前加上惊叹号（！）取反。
+  + git diff 查看尚未暂存的改动。
+  + git diff --staged 查看将要添加到下次提交的内容。
+  + git rm --cached 只是将文件从暂存区删除，而在当前目录保留
+  + git log
+	+ -p 按补丁格式显示每个更新之间的差异。
+	+ --stat 显示每次更新的文件修改统计信息。
+	+ --shortstat 只显示 --stat 中最后的行数修改添加移除统计。
+	+ --name-only 仅在提交信息后显示已修改的文件清单。
+	+ --name-status 显示新增、修改、删除的文件清单。
+	+ --abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。
+	+ --relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。
+	+ --graph 显示 ASCII 图形表示的分支合并历史。
+	+ --pretty 使用其他格式显示历史提交信息。可用的选项包括 oneline，short，full，fuller 和 format（后跟指定格式）。
+
+	+ -(n) 仅显示最近的 n 条提交
+	+ --since, --after 仅显示指定时间之后的提交。
+	+ --until, --before 仅显示指定时间之前的提交。
+	+ --author 仅显示指定作者相关的提交。
+	+ --committer 仅显示指定提交者相关的提交。
+	+ --grep 仅显示含指定关键字的提交
+	+ -S 仅显示添加或移除了某个关键字的提交
+  + git remote
+  + git tag
+	+ -l 轻量级标签
+	+ -a 附注标签
+	+ 后期打标签
+	+ 检出标签
+
+  + git 别名
+
+* 第三章 Git 分支
+  + Git 的分支，其本质上仅仅是指向提交对象的可变指针。
+  + HEAD 指针指向当前所在的 *本地* 分支。
+  + git branch
+	+ -d 删除本地分支。
+  + git fetch 会抓取服务器上本地没有的所有数据。
+  + 要特别注意的一点是当抓取到新的远程跟踪分支时，本地不会自动生成一份可编辑的副本（拷贝）。 换一句话说，这种情况下，不会有一个新的 serverfix 分支 - 只有一个不可以修改的 origin/serverfix 指针。
+  + 跟踪分支，git checkout --trach origin/branch
+  + 推送分支后不要执行变基操作。
+
+* 第四章 服务器上的 Git
+
+* 第五章 分布式 Git
+
+* 第六章 GitHub
+
+* 第七章 Git 工具
+  + git log 双点号，三点号等应用
+  + git stas
+  + git clean
+	+ 默认情况下，git clean 命令只会移除没有忽略的未跟踪文件。
+	+ -d
+	+ -n
+	+ -f
+  + git grep
+  + git log
+	+ -S
+	+ -L
+  + git submodule
+	+ 不能添加一个空的子模块。
+** 7.11 Git 工具-子模块
+
+   1. 优雅的删除子模块
+      #+BEGIN_SRC sh
+# 逆初始化模块，其中{MOD_NAME}为模块目录，执行后可发现模块目录被清空
+git submodule deinit {MOD_NAME}
+# 删除.gitmodules 中记录的模块信息（--cached 选项清除.git/modules 中的缓存）
+git rm --cached {MOD_NAME}
+      #+END_SRC
+
+   2. 修改某模块 URL
+      + 修改'.gitmodules'文件中对应模块的”url“属性;
+      + 使用 git submodule sync 命令，将新的 URL 更新到文件.git/config；
+        #+BEGIN_SRC sh
+git submodule sync
+      #+END_SRC
+
+
+* 第八章 自定义 Git
+
+* 第九章 Git 与其他系统
+
+* 第十章 Git 内部原理
+  + 从根本上来讲 Git 是一个内容寻址文件系统。
+  + 所有内容均以树对象和数据对象的形式存储，其中树对象对应了 UNIX 中的目录项，数据对象则大致上对应了 inodes 或文件内容。
+  + 三种主要的 Git 对象——数据对象、树对象、提交对象。树对象代表了不通过项目快照。提交对象记录了树对象的一些额外信息。
+  + Git 分支的本质：一个指向某一系列提交之首的指针或引用。
+  + 标签对象（tag object）非常类似于一个提交对象——它包含一个标签创建者信息、一个日期、一段注释信息，以及一个指针。 主要的区别在于，标签对象通常指向一个提交对象，而不是一个树对象。
+  + Git 时常会自动对仓库进行重新打包以节省空间，最新版本完整保存了文件内容，而原始的版本反而是以差异方式保存的。

@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: centos使用
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述
+
+* tips
+  1. 修改文件编码，解决中文乱码问题
+     #+BEGIN_SRC sh
+localectl  set-locale LANG=zh_CN.UTF8
+     #+END_SRC
+     然后重启机器。

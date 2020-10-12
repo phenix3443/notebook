@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-redis
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/go-redis/redis][go-redis]]
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u github.com/go-redis/redis
+  #+END_SRC
+
+* 使用

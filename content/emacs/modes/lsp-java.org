@@ -1,0 +1,30 @@
+# -*- coding:utf-8-*-
+#+TITLE: lsp-java
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-lsp/lsp-java][lsp-java]] 模式支持以下 JDT 功能：
+  + 输入时分析和编译错误的报告时（通过 =flycheck / lsp-ui=）
+  + 代码补全，使用 =company-lsp= 或内置的 =complete-at-poin=
+  + Javadoc 悬停-使用 =lsp-ui=
+  + 代码操作-使用 =lsp-ui=
+  + 代码大纲-使用内置的 imenu
+  + 代码导航-使用内置的 xref
+  + Code Lens（参​​​​考/实现）-使用内置的 xref
+  + 代码高亮
+  + 代码格式化
+  + Maven pom.xml 项目支持
+  + 有限的 Gradle 支持
+  + 可视化调试器， =dap-mode=
+  + 测试运行器  =dap-mode=
+  + 项目资源管理器集成-TreeMacs
+  + 与 Spring Initializr 集成
+
+** [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT Language Server]]
+   lsp-java 将自动检测服务器是否存在，并将在首次启动之前下载 Eclipse JDT Language Server。服务器安装将在 lsp-java-server-install-dir 中。它将检测是否存在 dap-mode 并下载所需的服务器端插件/组件。如果要更新服务器，则可以运行 lsp-java-update-server。要运行特定版本的 Eclipse JDT Language Server，请使用 lsp-java-server-install-dir。
+
+* 使用
+
+
+* 配置

@@ -1,0 +1,198 @@
+# -*- coding:utf-8-*-
+# -*- coding:utf-8-*-
+#+TITLE: company-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述
+  [[https://company-mode.github.io/][company-mode]] 是 Emacs 的一个文本补全框架。这个名字代表“complete anything”。它使用插件化的后端和前端检索和显示补全选项。
+
+  它自带了几个后端，如 =Elisp, Clang, Semantic, Eclim, Ropemacs, Ispell, CMake, BBDB, Yasnippet, dabbrev, etags, gtags, files, keywords= 等其他几个。
+
+  =CAPF= 后端作为与标准 completion-at-point-functions 功能之间的桥梁，能够与任何定义了正确补全函数的主模式一起工作。
+
+* 安装
+  该软件包是 GNU ELPA 的一部分，可以使用 =M-x list-packages= 进行安装。
+
+* 配置
+** company-idle-delay
+   开始自动补全前的延迟秒数。输入前缀长度必须要满足 company-minimum-prefix-length，该值为 nil 表示没有延迟。
+
+** company-minimum-prefix-length
+   补全的最小前缀长度。
+
+** company-backends
+   company-backends 是激活的后端（backends）（补全引擎）的列表。
+
+   company 从 =company-backends= 获得补全数据，并使用 =company-frontends= 展示候选项。 如果想启动指定后端, 直接调用其即可，或使用 =company-begin-backend=.
+
+   那么后端间（backends）如何协同工作呢？
+
+   每次补全只能使用一个后端，这取决于后端在列表中的顺序，以及它们响应“prefix”命令的返回值：
+   + non-nil，停止尝试下个后端，调用 candidates 命令获取候选项列表。
+   + nil，说明该后端不能补全该 prefix，尝试下一个后端。
+
+*** 组合后端
+    但选中的后端也可以是一个“组合后端”，从这些后端中返回的候选项将被合并。
+
+    组合还可以包含关键字。当前定义了 =:with= 和 =:separate= 关键字。
+
+    如果组合包含关键字 =:with= ，出于 prefix 命令的目的（判断后端是否可以补全 prefix），将忽略该关键字后面的后端。
+
+    如果组合包含关键字 =:separate= ，来自不同后端的候选项将在组合列表中单独排序。
+
+    如果将候选项作为参数的后端命令（例如 meta），该命令将分派到候选项来自的后端。其他情况下（除‘duplicates’ and ‘sorted’外），返回所有后端中第一个 non-nil 值。
+
+    默认情况下，补全列表按字母排序，除非后端另有选择，或 =company-transformers= 做了修改.
+
+    + company-transformers 用于更改从后端获取的候选项列表的函数集合。每个函数使用前一个函数的返回值作为参数，传递给第一个函数的是一个已经排序的无重复的候选项列表。
+
+* 使用
+  安装之后，使用 =M-x company-mode= 启用 company-mode。
+
+  输入几个字母后就会自动进行补全。使用 M-n 和 M-p 选中候选项， =<return>= 补全， =<tab>= 补全公共部分。使用 =C-s, C-r and C-o= 搜索补全项。输入 =M-数字= 快速选中前 10 个中的候选项进行补全。
+
+  =M-x company-complete= 手动开始补全。
+
+  出现补全候选项后，按下 =<f1>= 显示选中后选项的文档，或者 =C-w= 查看它的源码。注意：不是所有的补全后端支持该功能。
+
+  下面的代码添加到 init 文件中就可以在所有的 buffer 中使用 company-mode：
+
+  #+BEGIN_SRC emacs-lisp
+(add-hook 'after-init-hook 'global-company-mode)
+  #+END_SRC
+
+  要查看或更改已启用的后端列表，请键入 =M-x customize-variable RET company-backends= 。
+
+** company-complete-common
+   自动插入所有候选项的公共部分。
+
+** company-complete-selection
+   插入选中的后选项。
+
+** company-complete
+   插入所有候选项的公共部分或当前选中项。首次被调用时，插入公共部分，第二次或改变选中项后，插入选中项。
+** company-select-next
+   选择列表中的下一项。
+
+** company-select-previous 选择列表中的前一项。
+
+   如果这些命令在 company-idle-delay 前调用，也会开始补全。
+
+   可以使用‘company-search-candidates’ or ‘company-filter-candidates’搜索候选项。未激活补全也可以使用。
+
+** 判断来源
+   如何判断，当前候选项，来自哪个 company-backends？
+
+   =m-x diminish-undo= ，然后选择 company-mode 后，mode-line 会显示当前补全的候选项来自哪个 company-backends。
+
+* 第三方插件
+** company-capf
+   使用 completion-at-point-functions 的后端，但是在 cc-mode 中做补全时，发现会导致 buffer 中输入卡顿，暂时不使用该后端。
+
+** company-dabbrev
+   使用 dabbrev（Dynamic Abbreviation
+）的后端，主要用来补全当前 buffer 中出现的 word。很有用。
+
+** company-dabbrev-code
+   类似 company-dabbrev，但是不在注释或者字符串中查找符号。编程很有用。
+
+** company-eclim
+   eclipse 补全后端。
+
+** company-files
+   补全文件系统的路径后端。
+
+** company-ispell
+   ispell 使用的后端。
+
+** company-keywords
+   使用当前文件所属编程语言的语法关键词补全。
+
+** company-yasnippet
+   使用 yasnippet 补全的后端。
+
+** company-lsp
+   lsp-mode 配合使用补全后端。
+
+* 后端
+  后端（backend）是一个接受可变数量参数的函数，第一个参数是请求后端的命令。它是以下之一：
+
+   + prefix
+
+     后端应该返回待补全的文本。它必须是紧接在 point 之前的文字。从该命令返回 nil 会将控制权交给下个后端。如果应该补全但不能补全，例如当在符号中间，该函数应该返回“stop”。
+
+     后端可能返回一个 (PREFIX . LENGTH)， 而不是 string。当与 company-minimum-prefix-length 比较时，LENGTH 替代 PREFIX 长度。LENGTH 也可能是 t，这种情况下，比较测试自动成功。
+
+   + candidates
+
+     第二个参数是待补全的前缀（prefix）。返回值应该是匹配前缀的候选项列表。
+
+     还支持非前缀匹配（候选项不以前缀开始，但通过后端定义的方式匹配）。使用这种功能的后缀必须禁用 cache（对'no-cache'返回 t），并且可能还想响应'match'。
+
+   其他可选命令：
+
+   + sorted
+
+     返回 t 表示后选项已排序，不需要重新排序。
+
+   + duplicates
+
+     如 non-nil，company 负责从列表中删除重复项。
+
+   + no-cache
+
+     通常补全过程中，company 不会再次查询候选项，除非该命令后端返回 t。第二个参数是最新的前缀。
+
+   + ignore-case
+
+     如果后端返回不缺分大小写的后选项，该命令返回 t。该值用于确定最长公共前缀（如 company-complete-common 所用），和过滤从 cache 中获取的候选项。
+
+   + meta
+
+     第二个参数是补全候选项。返回其（简短）文档字符串。
+
+   + doc-buffer
+
+     第二个参数是补全候选项。返回候选项文档的 buffer，最好使用 company-doc-buffer。如果不是所有的 buffer 内容都属于该候选项，返回 buffer 和窗口开始位置组成的的 cons。
+
+   + location
+
+     第二个参数是补全候选项。返回 buffer 和 buffer 位置，或文件和行号组成的 cons，这些是候选项定义的位置。
+
+   + annotation
+
+     第二个参数是补全候选项。返回与候选项在弹出窗口（popup）一起显示的字符串。如果是 company 负责删除重复项，带有不同 annotation 的相同候选项会保留。为了此项正常工作，后端应该使用文本属性保存候选项的相关信息。
+
+   + match
+     第二个参数是补全候选项。返回候选项字符串中匹配前缀（不一定是以前缀开始）位置的索引。该命令在渲染弹出窗口的时候有用。该命令只对提供非前缀匹配的后端有用。
+
+   + require-match
+
+     如果返回 t，用户不得输入任何不是候选项的内容。不要在正常的后端中使用该值。默认值 nil 给用户提供 company-require-match 所带的选择。返回值‘never’会以相反的方式覆盖该选项。
+
+   + init
+
+     每个 buffer 调用一次。后端可以检查外部程序和文件，并加载任何所需的库。此处发生错误将在消息日志中显示一次，该后端将不会用于补全。
+
+   + post-completion
+
+     候选项插入 buffer 之后调用。第二个参数是补全候选项。可以用来修改候选项，例如，扩展 snippet。
+
+   后端对于所有不支持或不知道的命令应该返回 nil。它应该可以交互调用，或使用 company-begin-backend 启动自身。
+
+* 编写后端
+   当输入 =foo= 的时候，下面这个后端将会提示： =foobar foobaz foobarbaz= 。
+
+   #+BEGIN_SRC elisp
+(defun company-my-backend (command &optional arg &rest ignored)
+    (interactive (list 'interactive))
+    (case command
+      (interactive (company-begin-backend 'company-my-backend))
+      (prefix (when (looking-back "foo\\>")
+                (match-string 0)))
+      (candidates (when (equal arg "foo")
+                    (list "foobar" "foobaz" "foobarbaz")))
+      (meta (format "This value is named %s" arg))))
+   #+END_SRC

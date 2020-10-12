@@ -1,0 +1,56 @@
+# -*- coding:utf-8-*-
+#+TITLE: helm-dash
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  此程序在 Emacs 中使用 [[http://www.kapeli.com/dash][Dash]] docsets 浏览文档。它不需要 Dash 应用程序。这是一篇解释它的基本用法的文章。
+
+* 安装
+
+** 安装 docsets
+   Helm-dash 使用与 Dash 相同的 docset。可以使用 =m-x helm-dash-install-docset= 安装官方 docsets，也可以使用 =m-x helm-dash-install-user-docset= 安装用户提供的 docsets（实验性）。
+
+   注意：安装过程中可能会失败，多试几次。
+
+* 配置
+  helm-dash-docsets-path 是 docsets 的前缀。 默认为 =~/.docsets=
+
+  helm-dash-min-length 设置 helm-dash 开始搜索的长度。默认为 3。
+
+  helm-dash-browser-func 是一个封装浏览 Dash docsets 的方法的函数。默认为 browse-url。例如，如果您想使用 eww 浏览您的 docsets，执行： =(setq helm-dash-browser-func'eww)= 。
+
+  当 helm-dash-enable-debugging 不是 nil，会捕获来自 sqlite 的标准错误并显示在缓冲区中。 默认值为 t。 将此设置为 nil 可能会加快某些计算机上的查询速度（捕获 stderr 需要为每个查询创建和删除临时文件）。
+
+
+* 使用
+  =m-x helm-dash RET= 将在加载了生效的 docset 的情况下运行 helm。键入待搜索的字符串。
+  + 搜索从 3 个字符开始。
+
+  + 使用 =m-x helm-dash-install-docset= 安装新的 docsets
+
+  + 安装新的 docset 之后，将 docset 的名称添加到 =helm-dash-common-docsets= 或 =helm-dash-docsets= 。
+
+  =m-x helm-dash-at-point RET=  就像 helm-dash，但它会使用 point 处的符号作为搜索。
+
+  命令 =helm-dash-reset-connections= 将清除与所有 sqlite db 的连接。添加新文档集出现错误时使用它。下一次调用 helm-dash 将重新创建它们。
+
+* Docsets 集合
+
+** common docsets
+   helm-dash-common-docsets 是一个列表，应该包含在所有缓冲区中始终处于活动状态的 docsets。
+
+** Buffer local docsets
+
+   可以根据缓冲区激活不同的 docset 子集。目前（它可能在将来发生变化）我们认为它是一个普通的局部变量，应该为每种不同的文件类型设置。 通过这种方式，还可以设置类似项目的 docsets 集：
+
+   #+BEGIN_SRC elisp
+(defun go-doc ()
+  (interactive)
+  (setq-local helm-dash-docsets '("Go")))
+(add-hook 'go-mode-hook 'go-doc)
+   #+END_SRC
+
+** only one docset
+
+   要将搜索范围缩小到一个 docset，请在搜索开头键入其名称，后跟空格。docset 可以包含空格。

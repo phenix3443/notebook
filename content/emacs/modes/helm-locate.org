@@ -1,0 +1,79 @@
+# -*- coding:utf-8-*-
+#+TITLE: helm-locate
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-helm/helm/wiki/Locate][helm-locate]]是 locate 命令在 helm 中的接口，该命令用来在已经使用 updatedb 建立索引的系统中查找文件。
+
+* 配置
+  可以通过变量 helm-locate-command 自定义 helm-locate 执行的确切命令。 默认值适用于 locate 的大多数版本和变体。
+
+  在更新版本的 locate 中，可能希望通过 =--regex= 选项使用多重匹配：
+
+  #+BEGIN_SRC elisp
+(setq helm-locate-command "locate %s -e -A --regex %s")
+  #+END_SRC
+
+  更新：版本 >=2.4.0 的 helm-locate 中，这是默认值。
+
+* 使用
+
+  执行 helm-locate 命令, 然后在提示符下输入文件名或 pattern。 一些选项如下：
+
+  | 选项     |  说明                 |
+  |----------+--------------------------|
+  | =-b=     | 仅使用基本名称（无目录） |
+  | =-e=     | 仅包含实际存在的文件     |
+  | =-n=     | 限制搜索结果的数量       |
+
+  示例模式：
+  #+BEGIN_EXAMPLE
+emacs -b -e -n 12
+  #+END_EXAMPLE
+
+  请注意，在模式结尾添加选项会禁用模糊匹配。应该在其他选项的末尾添加 =-b= 选项，让 helm 正确地高亮显示候选者的正确部分（即 basename）。
+
+** 启动 grep
+   搜索完成后，可以使用操作菜单（TAB）中的 grep 操作搜索特定文件或目录。 也可以使用 =（C-u）M-g= 启动 Helm grep 而无需切换到操作面板。
+
+** 在 locate 中启用模糊匹配
+   唯一要做的就是：
+   #+BEGIN_SRC elisp
+(setq helm-locate-fuzzy-match t)
+   #+END_SRC
+
+   启用此功能后，helm-locate 将基于文件 basename 进行搜索，并自动添加 =-b= 标志。 一旦在模式之间添加空格，就会发生多重匹配而不是模糊，每个模式上都有正则表达式匹配（不是每个模式的模糊匹配），当切换到多重匹配时，在整个路径而不是 basename 完成搜索。
+
+   当模糊匹配时，候选者使用 helm-locate-fuzzy-sort-fn 进行排序，默认使用 helm 模糊匹配默认排序函数 helm-locate-default-fuzzy-sort-fn，如果需要，可以自定义。
+
+* 其他平台
+** windows
+   在 Windows 上，应该使用 Everything，它类似 locate。 它非常快，不需要手动更新数据库。
+
+   helm-locate 使用 Everything，需要名为 es 的命令行工具。请务必修改 PATH 环境变量以包含指向包含 es 的目录的路径。 同样取消设置 helm-locate-fuzzy-match，否则 Everything 将不会给出任何结果。
+
+   在 Windows 上使用 es 时，可能希望使用其最后一个版本（>= es 1.1.0.4a）提供的排序功能（将最后访问的文件置于顶部），为此必须添加必需的参数，
+   #+BEGIN_SRC sh
+   es -sort run-count
+   #+END_SRC
+   并且每次访问文件时都会通过运行
+   #+BEGIN_SRC sh
+es -inc-run-count
+   #+END_SRC
+   来通知 Everything 数据库跳转到某个文件，也可以在 helm-find-many-file-after-hook 添加一个函数来执行该操作。
+
+   #+BEGIN_SRC elisp
+(setq helm-locate-command "es %s -sort run-count %s")
+(defun helm-es-hook ()
+  (when (and (equal (assoc-default 'name (helm-get-current-source)) "Locate")
+             (string-match "\\`es" helm-locate-command))
+    (mapc (lambda (file)
+            (call-process "es" nil nil nil
+                          "-inc-run-count" (convert-standard-filename file)))
+          (helm-marked-candidates))))
+(add-hook 'helm-find-many-files-after-hook 'helm-es-hook)
+   #+END_SRC
+
+** os x
+   使用 mdfind，需禁用 helm-locate-fuzzy-match。 如果该值设置为 t 并且使用 mdfind，则 helm-locate 将不会显示任何结果。

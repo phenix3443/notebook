@@ -1,0 +1,27 @@
+# -*- coding:utf-8-*-
+#+TITLE: Emacs 配置文件组织方式
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* Emacs 启动过程
+
+* .emacs vs .emacs.d
+
+  =〜/.emacs.d/= 目录是用来额外存放每个用户 Emacs 特定文件的标准位置。各种 package 将信息存储在这个目录中。由于它位于主目录（〜/），因此它对于每个用户都是唯一的，就像 =〜/.emacs=  配置文件一样。请注意，由于 =.emacs.d= 以点开头，通常在 Unix 系统中隐藏，只有显示所有文件和文件夹（ls -a）时才会显示出来。
+
+  从 Emacs 22 开始，如果 =〜/.emacs= 不存在，Emacs 会尝试 =〜/.emacs.d/init.el= 和 =〜/.emacs.d/init.elc= 。还可以将 shell 初始化文件 =.emacs_SHELL= 放在 =〜/.emacs.d= 下。
+
+  从 Emacs 23 开始，user-emacs-directory 保存 =.emacs.d= 的位置。在 Windows 上，位置取决于 HOME 环境变量：如果设置为 =C:\=，则 =.emacs= 位于 =C:\.emacs= ， =.emacs.d= 位于 =C:\.emacs.d= 。在 Windows 7 上，默认值为 =C:\Users\epich\AppData\Roaming\.emacs and .emacs.d= ，其中 epich 用户名。
+
+  用户目录本身不是加载路径的一部分，因为它包含了除库之外的其他内容，所以应该让它保留原样（不要添加到 load-path 中）。相反，应该将软件包安装在专用子目录（例如 =〜/.emacs.d/elisp/= ）中，并将其添加到加载路径中。
+
+  使用 =.emacs.d= 而不是 =.emacs= 存放配置有以下优点：
+  + 当 =.emacs= 中配置很多的时候， 使用 =.emacs.d= 可以对配置进行分解，分解的配置放在 =〜/.emacs.d/lisps/= 目录下， =〜/.emacs.d/init.el= 加载这些分解的配置，组织更加灵活，也更好修改。
+  + =〜/.emacs.d/= 更利于版本控制，可以直接使用一下命令下载配置
+    #+BEGIN_SRC sh
+git clone /my/emacs/config.git ~/.emacs.d
+    #+END_SRC
+    也可以使用 dropbox 同步配置，这些都更有利于在不同电脑上同步配置。
+
+* .emcacs.d 组织方式
+  参见我的 emacs.d 项目：[[https://github.com/phenix3443/emacs.d][phenix3443-emacs.d]]

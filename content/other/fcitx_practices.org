@@ -1,0 +1,78 @@
+# -*- coding:utf-8-*-
+#+TITLE: Fcitx 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 安装
+  打开终端输入下面的命令：
+
+  #+BEGIN_SRC sh
+sudo add-apt-repository ppa:Fcitx-team/nightly
+sudo apt-get update
+sudo apt-get install Fcitx Fcitx-googlepinyin
+# 安装之后需要重启 Fcitx
+Fcitx -r
+  #+END_SRC
+
+  修改为默认输入法：然后在终端中输入下面的命令打开输入法配置:
+
+  #+BEGIN_SRC sh
+sudo apt-get install im-config
+im-config
+  #+END_SRC
+
+  点击 OK 按钮，再点击 Yes 按钮，将 Fcitx 设为默认的输入法框架，最后点击 OK。
+
+* 卸载
+  1. 卸载相关程序
+
+  #+BEGIN_SRC sh
+sudo apt-get purge fcitx
+  #+END_SRC
+  2. 设置 ibus 为默认输入法
+	 #+BEGIN_SRC sh
+im-switch -s ibus -z default
+	 #+END_SRC
+  3. 重启
+
+* 故障排除
+** 与 gdm3.16 冲突
+
+   #+BEGIN_SRC sh
+gsettings set org.gnome.settings-daemon.plugins.xsettings overrides "{'Gtk/IMModule':<'Fcitx'>}"
+   #+END_SRC
+
+** gnome shell（未测试）
+   设置 dbus 启动前的 envvars
+
+   这些 envvars 须传给 dbus. 否则在 gnome-terminal 中无法呼起 Fcitx.我的配置在~/.xinitrc 就这么写的.(启动 dbus 时依赖这些 envvars).
+
+
+   #+BEGIN_SRC sh
+#设置 im 的 envvars
+export XMODIFIERS=@im=Fcitx
+export GTK_IM_MODULE=Fcitx
+export QT_IM_MODULE=Fcitx
+
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+  for f in /etc/X11/xinit/xinitrc.d/*; do #dbus 的启动脚本位于 xinitrc.d 中的 30-dbus
+    [ -x "$f" ] && . "$f"
+  done
+  unset f
+fi
+
+exec gnome-session
+   #+END_SRC
+
+** Emacs 不能输入中文
+
+   更新到了 24+，切换 Fcitx 中文输入法的时候无效。原因是系统环境为英文，ubuntu 启动先加载 gonme-settings-daemon，后加载 Fcitx。
+
+   解决办法:
+
+   1. 在终端启动, 亲测可用
+	  #+BEGIN_SRC sh
+	env LANG=zh_CN.utf-8 emacs
+	  #+END_SRC
+
+   2. 改变 gonme-settings-daemon 和 Fcitx 的启动顺序，网上看的，我没试。先起动输入法 Fcitx，接着起动 gnome-settings-daemon。

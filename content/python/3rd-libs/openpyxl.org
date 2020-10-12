@@ -1,0 +1,16 @@
+# -*- coding:utf-8-*-
+#+TITLE: openpyxl
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://openpyxl.readthedocs.io/en/stable/index.html][openpyxl]] 可以用来操作 excel 。
+  使用 openpyxl 的一般流程为：
+  1. 创建/读取 excel 文件
+  2. 选择 sheet 对象
+  3. 对表单/cell 进行操作
+  4. 保存 excel
+
+* 使用
+
+  https://geek-docs.com/python/python-tutorial/python-openpyxl.html

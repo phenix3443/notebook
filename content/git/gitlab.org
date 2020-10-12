@@ -1,0 +1,33 @@
+# -*- coding:utf-8; -*-
+#+title:gitlab
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* GFM
+  [[https://docs.gitlab.com/ee/user/markdown.html][GitLab Flavored Markdown (GFM) ]]
+
+* go get
+  go get 底层使用 git 去操作。可以配置 =.gitconfig= 将 clone 时使用的 http 转为 ssh，来避免 http 需要输入密码的问题：
+  #+BEGIN_SRC sh
+git config --global url."git@mygitlab.com:".insteadOf "http://mygitlab.com/"
+  #+END_SRC
+
+  #+begin_example
+$ cat ~/.gitconfig
+[url "git@mygitlab.com:"]
+    insteadOf = http://mygitlab.com/
+  #+end_example
+  注意： git@mygitlab.com: 后面有个冒号 =:=, 且 http://mygitlab.com/ 末尾有个斜杠 =/= ，这样
+  #+BEGIN_SRC sh
+git clone https://github.com/golang/go.git
+  #+END_SRC
+
+  就变成
+  #+BEGIN_SRC sh
+git clone git@github.com:golang/go.git
+  #+END_SRC
+
+  同样还可以处理 github 上的私人仓库:
+  #+BEGIN_SRC sh
+git config --global url."git@github.com:".insteadOf "http://github.com/"
+  #+END_SRC

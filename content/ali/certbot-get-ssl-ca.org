@@ -1,0 +1,166 @@
+# -*- coding:utf-8-*-
+#+TITLE: certbot申请 Let's Encrypt泛域名证书
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://letsencrypt.org/][Let's Encrypt]] 是一个于 2015 年三季度推出的数字证书认证机构，旨在以自动化流程消除手动创建和安装证书的复杂流程，并推广使万维网服务器的加密连接无所不在，为安全网站提供免费的 SSL/TLS 证书。  [fn:1]
+
+* 申请证书
+  使用 certbot 生成免费的证书:
+  #+BEGIN_SRC sh
+apt install software-properties-common && \
+add-apt-repository -r ppa:certbot/certbot && \
+apt update && \
+apt install certbot python3-certbot-nginx
+  #+END_SRC
+
+  输入命令：
+  #+BEGIN_SRC sh
+certbot --nginx \
+--agree-tos \
+--redirect \
+ --hsts \
+ --staple-ocsp \
+--preferred-challenges dns \
+--manual \
+--email phenix3443@gmail.com \
+-d www.panghuli.cn
+  #+END_SRC
+
+  解释一下参数：
+  + --certonly 获取或更新证书，但是不安装到本机。这个参数默认是 run，即获取或更新证书并安装。另一个值是 renew，即更新证书。
+  + --nginx 使用 nginx 插件
+  + --agree-tos 同意 ACME 服务器的订阅协议
+  + --redirect: Force HTTPS by 301 redirect.
+  + --hsts：将 Strict-Transport-Security 标头添加到每个 HTTP 响应中。强制浏览器始终对域使用 TLS。防御 SSL / TLS 剥离。
+  + --staple-ocsp：启用 OCSP 装订。将有效的 OCSP 响应装订到服务器在 TLS 期间提供的证书。
+  + --preferred-challenges dns 以 DNS Plugins 的方式进行验证
+  + --manual 采用手动交互式的方式验证
+  + --email 接收有关账户的重要通知的邮箱地址，非必要，建议最好带上
+  + -d yourdomain.com -d *.yourdomain.com 指定要验证的域名。注意，不带 www 的一级域名 yourdomain.com，和通配符二级域名 *.yourdomain.com 都要写，如果只写 *.yourdomain.com 生成出来的证书是无法识别 yourdomain.com 的
+
+
+  接着生成如下输入：
+  #+BEGIN_EXAMPLE
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator manual, Installer None
+Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org
+Obtaining a new certificate
+Performing the following challenges:
+dns-01 challenge for panghuli.cn
+dns-01 challenge for panghuli.cn
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+NOTE: The IP of this machine will be publicly logged as having requested this
+certificate. If you're running certbot in manual mode on a machine that is not
+your server, please ensure you're okay with that.
+
+Are you OK with your IP being logged?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es/(N)o: y
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please deploy a DNS TXT record under the name
+_acme-challenge.panghuli.cn with the following value:
+
+2fiKjb9LXrz2E94v_TBF73sf-S4QjYoJfUWO5UrTipk
+
+Before continuing, verify the record is deployed.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Press Enter to Continue
+  #+END_EXAMPLE
+
+  确认 TXT 记录生效：
+  #+BEGIN_SRC sh
+dig  -t txt  _acme-challenge.panghuli.cn @8.8.8.8
+
+; <<>> DiG 9.11.3-1ubuntu1.5-Ubuntu <<>> -t txt _acme-challenge.panghuli.cn @8.8.8.8
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13563
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;_acme-challenge.panghuli.cn.	IN	TXT
+
+;; ANSWER SECTION:
+_acme-challenge.panghuli.cn. 599 IN	TXT	"Th6e8n4c5cNz7sDwM6wAytiKiT7vZ44--5t68Ghh1Xc"
+
+;; Query time: 690 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Sat Apr 20 22:33:18 CST 2019
+;; MSG SIZE  rcvd: 112
+  #+END_SRC
+
+  回车确认，因为有两个域名，所以还需要验证一个：
+  #+BEGIN_EXAMPLE
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please deploy a DNS TXT record under the name
+_acme-challenge.panghuli.cn with the following value:
+
+rIoJAOlRKF9tQxT1UAN24SznR8FSHozqzj_pTUc_OrA
+
+Before continuing, verify the record is deployed.
+(This must be set up in addition to the previous challenges; do not remove,
+replace, or undo the previous challenge tasks yet. Note that you might be
+asked to create multiple distinct TXT records with the same name. This is
+permitted by DNS standards.)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Press Enter to Continue
+  #+END_EXAMPLE
+  注意： *要重新添加一条 TXT 记录，不要覆盖以前前一条记录* 。
+
+
+
+  #+BEGIN_SRC sh
+Waiting for verification...
+Cleaning up challenges
+Resetting dropped connection: acme-v02.api.letsencrypt.org
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/panghuli.cn/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/panghuli.cn/privkey.pem
+   Your cert will expire on 2019-07-19. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot
+   again. To non-interactively renew *all* of your certificates, run
+   "certbot renew"
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+  #+END_SRC
+
+  根据上面的提示可以看到，证书有效期只有三个月，到期以后需要重新申请。
+
+  证书目录：
+  #+BEGIN_SRC sh
+tree /etc/letsencrypt/live/panghuli.cn
+/etc/letsencrypt/live/panghuli.cn
+├── cert.pem -> ../../archive/panghuli.cn/cert1.pem
+├── chain.pem -> ../../archive/panghuli.cn/chain1.pem
+├── fullchain.pem -> ../../archive/panghuli.cn/fullchain1.pem
+├── privkey.pem -> ../../archive/panghuli.cn/privkey1.pem
+└── README
+  #+END_SRC
+
+  校验证书信息：
+  #+BEGIN_SRC sh
+openssl x509 -in /etc/letsencrypt/live/panghuli.cn/cert.pem  -noout -text
+  #+END_SRC
+
+  关键输出：
+  #+BEGIN_EXAMPLE
+X509v3 Subject Alternative Name:
+                DNS:*.panghuli.cn, DNS:panghuli.cn
+  #+END_EXAMPLE
+
+* Footnotes
+
+[fn:1] https://zh.wikipedia.org/zh-hans/Let%27s_Encrypt

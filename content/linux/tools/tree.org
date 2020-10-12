@@ -1,0 +1,36 @@
+# -*- coding:utf-8-*-
+#+TITLE: tree
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  tree 命令以树状格式列出目录的内容。
+
+* 语法
+  #+BEGIN_SRC sh
+tree [-acdfghilnpqrstuvxACDFQNSUX] [-L level [-R]] [-H baseHREF] [-T title]
+[-o filename] [--nolinks] [-P pattern] [-I pattern]  [--inodes]  [--device]
+[--noreport]  [--dirsfirst]  [--version]  [--help]  [--filelimit  #] [--si]
+[--prune] [--du] [--timefmt format] [--matchdirs] [--] [directory ...]
+  #+END_SRC
+
+
+* options
+  下面介绍常用的选项
+
+** LISTING OPTIONS
+   + =-a= 显示所有文件。
+   + =-d= 只显示目录。
+   + =-L level= 目录的最大显示深度。
+   + =-P pattern= 只列出与通配符模式匹配的文件。
+   + =-I pattern= 不显示与通配符模式匹配的文件。
+
+** FILE OPTIONS
+
+** SORTING OPTIONS
+
+** GRAPHICS OPTIONS
+
+** XML/JSON/HTML OPTIONS
+   + =-X= 开始 XML 输出。
+   + =-J= 开始 JSON 输出。

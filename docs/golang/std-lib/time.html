@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-10-12 Mon 19:40 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>time</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">time</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org69bc40d">1. 概述</a>
+<ul>
+<li><a href="#orge19ab86">1.1. 单调时钟</a></li>
+</ul>
+</li>
+<li><a href="#org7619bd5">2. Time</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org69bc40d" class="outline-2">
+<h2 id="org69bc40d"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://golang.org/pkg/time/">time</a> 提供了用于测量和显示时间的功能。日历计算始终采用公历，没有<a href="https://zh.wikipedia.org/wiki/%E9%97%B0%E7%A7%92">闰秒</a>。
+</p>
+</div>
+<div id="outline-container-orge19ab86" class="outline-3">
+<h3 id="orge19ab86"><span class="section-number-3">1.1</span> 单调时钟</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+操作系统同时提供“挂钟(wall clock)”和“单调时钟(monotonic clock)”，“挂钟”会随时钟同步的变化而变化，单调时钟不会。一般规则是挂钟用于指示时间，单调时钟用于测量时间。在该程序包中，没有拆分 API，time.Now 返回的 Time 结构既包含挂钟读数又包含单调时钟读数。后续的计时操作将使用挂钟读数，而时间测量操作（特别是比较和减法）将使用单调时钟读数。
+</p>
+
+<p>
+例如，即使在计时操作期间更改了挂钟，此代码也始终会计算约 20 毫秒的间隔时间：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #ffff00;">start</span> := time.<span style="color: #0000ff; font-weight: bold;">Now</span>()
+... operation <span style="color: #00ff00;">that</span> takes <span style="color: #00ff00;">20</span> milliseconds ...
+<span style="color: #ffff00;">t</span> := time.<span style="color: #0000ff; font-weight: bold;">Now</span>()
+<span style="color: #ffff00;">elapsed</span> := t.<span style="color: #0000ff; font-weight: bold;">Sub</span>(start)
+</pre>
+</div>
+
+<p>
+类似的其他用法，例如 time.Since(start)，time.Until(deadline)和 time.Now()。 Before(deadline)，对挂钟重置也同样有效。
+</p>
+
+<p>
+本节的其余部分提供了有关操作如何使用单调时钟的精确详细信息，但是使用此程序包不需要了解这些详细信息。
+</p>
+
+<p>
+time.Now 返回的 Time 结构包含单调时钟读数。如果时间 t 具有单调时钟读数，则 t.Add 将相同的持续时间添加到挂钟和单调时钟读数中以计算结果。因为 t.AddDate(y，m，d)，t.Round(d)和 t.Truncate(d)是挂钟时间计算，所以它们总是从结果中剥离任何单调时钟读数。因为使用 t.In，t.Local 和 t.UTC 影响墙壁时间，所以它们也会从结果中剥离任何单调时钟读数。剥离单调时钟读数的典型方法是使用 t = t.Round(0)。
+</p>
+
+<p>
+如果 Time 结构 t 和 u 都包含单调时钟读数，则仅使用单调时钟读数执行操作 t.After(u)，t.Before(u)，t.Equal(u)和 t.Sub(u)，忽略挂钟读数。如果 t 或 u 不包含单调时钟读数，则这些操作将退回到使用墙上时钟读数。
+</p>
+
+<p>
+在某些系统上，如果计算机进入睡眠状态，单调时钟将停止。在这样的系统上，t.Sub(u)可能无法准确反映 t 和 u 之间经过的实际时间。
+</p>
+
+<p>
+由于单调时钟读数在当前进程之外没有任何意义，因此 t.GobEncode，t.MarshalBinary，t.MarshalJSON 和 t.MarshalText 生成的序列化形式将忽略单调时钟读数，而 t.Format 不为其提供任何格式。同样，构造函数 time.Date，time.Parse，time.ParseInLocation 和 time.Unix，以及解析器 t.GobDecode 和 t.UnmarshalBinary、t.UnmarshalJSON 和 t.UnmarshalText 始终创建没有单调时钟读数的时间。
+</p>
+
+<p>
+请注意，Go 中 <code>==</code> 运算符不仅会比较即时时间，还会比较“位置”和单调时钟读数。有关时间值的相等性测试的讨论，请参见时间类型的文档。
+</p>
+
+<p>
+对于调试，t.String 的结果确实包括单调时钟读数(如果存在)。如果由于不同的单调时钟读数而导致 t！ = u，则在打印 t.String() 和 u.String() 时，可以看到该差异。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7619bd5" class="outline-2">
+<h2 id="org7619bd5"><span class="section-number-2">2</span> Time</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+时间代表具有纳秒精度的即时时间。
+</p>
+
+<p>
+使用时间的程序通常应将其存储并作为值（而不是指针）传递。也就是说，时间类型的变量和结构字段的类型应该是 time.Time，而不是* time.Time。
+</p>
+
+<p>
+多个 goroutine 可以同时使用同一 Time 值，但 GobDecode，UnmarshalBinary，UnmarshalJSON 和 UnmarshalText 方法不是并发安全的。
+</p>
+
+<p>
+可以使用 Before，After 和 Equal 方法比较时间。 Sub 方法减去两个时间，产生持续时间间隔。 Add 方法添加一个时间和一个持续时间，生成一个时间。
+</p>
+
+<p>
+时间类型的零值为 1 年 1 月 1 日，00：00：00.000000000 UTC。由于实际上不太可能出现此时间，因此 IsZero 方法提供了一种检测未明确初始化的时间的简单方法。
+</p>
+
+<p>
+每个时间都与一个位置相关联，在计算时间的表示形式（例如在格式，小时和年份方法中）时会参考该位置。方法 Local，UTC 和 In 返回带有特定位置的 Time。以这种方式更改位置只会更改表示方式；它不会改变实际的时间，因此不会影响前面段落中描述的计算。
+</p>
+
+<p>
+GobEncode，MarshalBinary，MarshalJSON 和 MarshalText 方法保存的 Time 值的表示形式存储 Time.Location 的偏移量，但不存储位置名称。因此，他们会丢失有关夏令时的信息。
+</p>
+
+<p>
+除了所需的“挂钟”读数外，“时间”还可以包含当前过程的单调时钟的可选读数，以提供更高的比较或减法精度。有关详细信息，请参见包装文档中的“单调时钟”部分。
+</p>
+
+<p>
+请注意，Go <code>==</code> 运算符不仅会比较即时时间，还会比较“位置”和单调时钟读数。因此，在不首先确保已为所有值设置相同的“位置”的情况下，不应将“时间”值用作映射或数据库键，这可以通过使用 UTC 或“本地”方法来实现，并且单调时钟读数已被设置 t = t.Round（0）通常，最好使用 t.Equal（u）而不是 t == u，因为 t.Equal 使用最精确的比较并可以正确处理仅当其参数之一具有单调时钟读数的情况。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="email">Email: <a href="mailto:phenix3443+github@gmail.com">phenix3443+github@gmail.com</a></p>
+<p class="date">Created: 2020-10-12 Mon 19:40</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

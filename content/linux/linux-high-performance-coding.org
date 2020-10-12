@@ -1,0 +1,37 @@
+# -*- coding:utf-8 -*-
+#+title:Linux高性能服务器编程读书笔记
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+
+* TCP/IP 协议族
+
+* IP 协议详解
+
+* TCP 协议详解
+
+* TCP/IP 通信案例
+
+* linux 网络编程基础
+
+* 高级 IO 函数
+
+* linux 服务器程序规范
+
+* 高性能服务器程序框架
+
+* IO 复用
+
+* 信号
+
+* 定时器
+
+* 高性能 IO 框架库 libevent
+
+* 多进程编程
+
+* 多线程编程
+
+* 进程池和线程池
+
+* 服务器调制、调试和测试

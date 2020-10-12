@@ -1,0 +1,37 @@
+# -*- coding:utf-8; -*-
+#+title: golang
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 概述
+  测试情景：
+  + local function
+  + package function
+  + interface
+  + struct method
+
+
+  测试方法：
+  + 子测试(subtests)
+  + 表格驱动测试(table-driven tests)
+  + 帮助函数(helpers)
+  + 网络测试和基准测试(Benchmark)
+
+  如何编写可测试的代码：
+  + 使用 interface？
+* 测试框架
+** testing
+** gotests
+** gocheck
+** gunit
+** ginkgo
+** gomock
+   [[https://godoc.org/github.com/golang/mock/gomock][gomock]] 似乎是和 interface 有关？
+** mockery
+   [[https://github.com/vektra/mockery][mockery]]
+** testify
+** monkey
+   [[https://github.com/bouk/monkey][monkey]]
+
+
+* 参考文章

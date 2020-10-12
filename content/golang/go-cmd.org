@@ -1,0 +1,85 @@
+# -*- coding:utf-8-*-
+#+TITLE: go命令工具
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 常用命令
+  可以使用 =go help <command>= 来进一步了解相关命令信息。
+
+** build
+** clean
+** doc
+** env
+   env 打印 Go 环境信息。
+
+   默认情况下，env 将信息作为 shell 程序脚本输出（在 Windows 中为批处理文件）。 如果给定一个或多个变量名作为参数，则 env 在其自己的行上打印每个命名变量的值。
+
+   + -json 标志以 JSON 格式而不是 shell 脚本打印环境。
+   + -u 标志需要一个或多个参数，并且如果已使用'go env -w'进行设置，则会取消设置命名环境变量的默认设置。
+   + -w 标志需要一个或多个 NAME = VALUE 形式的参数，并将命名环境变量的默认设置更改为给定值。
+
+** fix
+** fmt
+** generate
+** get
+** install
+** list
+** mod
+
+** run
+** test
+** tool
+** vet
+
+* 其他帮助主题
+** buildmode
+** c
+** enviroment
+** filetype
+** go.mod
+** gopath
+** gopath-get
+** goproxy
+   Go 模块代理是可以响应 指定格式的 URL 的 GET 请求的任何 Web 服务器。请求没有查询参数，因此即使通过固定文件系统（包括 =file:///URL= ）提供服务的网站可以是模块代理。
+
+   发送到 Go 模块代理的 GET 请求是：
+
+   + GET $GOPROXY/<module>/@v/list 返回给定已知版本的列表模块，每行一个。
+   + GET $GOPROXY/<module>/@v/<version>.info 以 JSON 格式返回模块指定版本的元数据。
+   + GET $GOPROXY/<module>/@v/<version>.mod 返回指定模块指定版本的 go.mod 文件。
+   + GET $GOPROXY/<module>/@v/<version>.zip 返回给定模块指定版本 zip 存档文件。
+   + GET $GOPROXY/<module>/@latest 以 json 格式返回指定给定模块最新版本的元数据，格式与 <module>/@v/<version>.info 相同。最新版本应该是  <module>/@v/list 为空或所有列出版本都不适用时 go 命令使用的版本。
+
+     <module>/@latest 是可选的，模块代理可能没有实现。
+
+     解析模块的最新版本时，go 命令将请求 <module>/@v/list。如果没有找到合适的版本，使用 <module>/@latest 。
+
+     go 命令按顺序优选：语义上最高的发行版本，语义上最高的预发行版本以及按时间顺序排列的最新伪版本。 在 Go 1.12 和更早的版本中，go 命令将  <module>/@v/list 中的伪版本视为预发行版本，但是从 Go 1.13 开始不再适用。
+
+     为了避免由于文件系统区分大小写出现问题，<module>和<version>元素采用大小写编码，对于没个大写字母，使用感叹号后跟相应的小写字母替换： =github.com/Azure=  编码为  =github.com/!azure= 。
+
+     有关给定模块的 JSON 格式的元数据与此 Go 数据结构相对应，将来可能会扩展：
+
+     #+BEGIN_SRC go
+type Info struct {
+        Version string    // version string
+        Time    time.Time // commit time
+    }
+     #+END_SRC
+
+     给定模块的特定版本的 zip 归档文件是标准的 zip 文件，其中包含与模块的源代码和相关文件相对应的文件树。归档文件使用斜杠分隔的路径，并且归档文件中的每个文件路径都必须以 <module>@<version>/ ，其中模块和版本直接替换，不区分大小写。模块文件树的根对应于归档文件中的 <module>@<version>/ 前缀。
+
+     即使直接从版本控制系统下载，go 命令也可以合成显式信息、mod 和 zip 文件，并将 hem 存储在其本地缓存 $GOPATH/pkg/mod/cache/download 中，就像直接从版本库中下载它们一样代理。
+
+     缓存的布局与代理 URL 空间相同，因此在 https://example.com/proxy 部署的 =$GOPATH/pkg/mod/cache/download= 可以使其他用户通过 ~GOPROZY=https://example.com/proxy~ 访问这些缓存模块的版本。
+
+** importpath
+** modules
+** module-get
+** module-auth
+** module-private
+** packages
+** testflag
+** testfunc

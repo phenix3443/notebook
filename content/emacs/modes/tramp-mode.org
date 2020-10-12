@@ -1,0 +1,1413 @@
+# -*- coding:utf-8-*-
+#+TITLE: TRAMP
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+
+《[[https://www.gnu.org/software/tramp/][TRAMP 2.4.4 User Manual]]》是 TRAMP 2.4.4 的文档，tramp 是 Emacs 的远程文件编辑软件包。
+
+TRAMP 代表“Transparent Remote (file) Access, Multiple Protocol”。该软件包提供了远程文件编辑，类似于 Ange FTP。
+
+区别在于，Ange FTP 使用 FTP 在本地和远程主机之间传输文件，而 TRAMP 使用 rsh 和 rcp 或其他类似工作的程序（例如 ssh / scp）的组合。
+
+* An overview of TRAMP
+
+  TRAMP 用于 Emacs 中透明地访问远程文件。TRAMP 可以为远程文件提供简单，方便且一致的界面，就好像它们是本地文件一样。 TRAMP 的透明性扩展到编辑，版本控制和导航。
+
+  TRAMP 可以使用多种访问方法（例如 rsh，rlogin，telnet 和相关程序）访问远程主机。如果这些程序可以成功传递 ASCII 字符，则 TRAMP 可以使用它们。 TRAMP 不需要也不要求 8 位纯净连接。
+
+  TRAMP 最常见的访问方法是 ssh，一种比 ftp 和其他旧访问方法更安全的替代方法。
+
+  MS Windows 操作系统上的 TRAMP 与 PuTTY 软件包集成，并使用 plink 程序。
+
+  TRAMP 大多数情况下使用连接程序在后台透明地运行。只要这些程序启用远程登录并可以使用终端，TRAMP 便可以对其进行调整以实现无缝和透明的访问。
+
+  TRAMP 临时将远程文件的内容传输到本地主机进行编辑和相关操作。TRAMP 还可以使用标准 Emacs 接口在主机之间传输文件，这是在 Emacs 中直接集成 TRAMP 的好处。
+
+  TRAMP 可以使用很多主机程序传输远程文件，例如 rcp，scp，rsync 或 pscp（在 MS Windows 下）。TRAMP 提供了指定这些程序的简便方法，并可为特定文件，主机或访问方法进行自定义。
+
+  为更快传输小文件，TRAMP 使用 mimencode 或 uuencode 直接通过 shell 支持编码传输，前提是远程主机上提供了此类工具。
+
+** TRAMP behind the scenes
+   通过 TRAMP 访问远程文件需要一系列操作，其中许多操作对用户是透明的。然而，某些操作可能需要用户响应（例如输入密码或填写文件名）。此处介绍了打开远程主机上文件的一种典型场景，以说明所涉及的步骤：
+
+   =C-x C-f= 启动查找文件，输入文件名的 TRAMP 部分，然后点击 TAB 进行补全。如果这是第一次连接到该主机，执行以下操作：
+
+   + TRAMP 调用 ‘telnet host’ 或 ‘rsh host -l user’，建立外部过程以连接到远程主机。 TRAMP 通过 Emacs 缓冲区与进程进行通信，该缓冲区还显示远程主机的输出。
+   + 远程主机可能会提示在缓冲区中输入登录名（例如，用于 telnet）。另一方面，如果登录名包含在文件名部分中，则 TRAMP 发送登录名后跟换行符。
+   + 然后，远程主机可能提示输入密码或密码短语（用于 rsh 或用于 telnet）。TRAMP 在 mini buffer 中显示密码提示。TRAMP 然后将输入的内容发送到远程主机，然后是换行符。
+   + 现在，TRAMP 等待 shell 提示或失败的登录消息。
+
+     如果 TRAMP 在超时时间段（例如一分钟）内未收到任何消息，则 TRAMP 会以一条错误消息作为响应，提示您找不到远程 Shell 提示符。如果来自远程主机的任何消息，TRAMP 会在缓冲区中显示它们。
+
+     对于来自远程主机的任何“登录失败”消息，TRAMP 会中止登录尝试，并再次重复登录步骤。
+
+   + 成功登录后，TRAMP 会从远程主机识别出 shell 提示，TRAMP 通过关闭回显，设置 shell 提示和其他事务来准备 shell 环境。
+
+     请注意，对于远程 shell，TRAMP 调用 =/bin/sh= 。远程主机必须识别 =exec /bin/sh= 并执行适当的 shell。此 shell 必须支持 Bourne shell 语法。
+
+   + TRAMP 执行 cd 和 ls 命令以查找远程主机上存在哪些文件。TRAMP 有时使用带有 [[https://en.wikipedia.org/wiki/Glob_(programming)][globbing]] 的 echo。TRAMP 通过 test 检查文件或目录是否可写。在每个命令之后，TRAMP 解析远程主机的输出以完成下一个操作。
+
+   + 远程文件名完成后，TRAMP 从远程主机传输文件内容。
+
+     对于内联传输，TRAMP 发送命令，例如 'mimencode -b /path/to /remote/file'，等到输出在缓冲区中累积后，对该输出进行解码以产生文件的内容。
+
+     对于外部传输，TRAMP 发送如下命令：
+     #+BEGIN_SRC sh
+rcp user@host:/path/to/remote/file /tmp/tramp.4711
+     #+END_SRC
+
+     TRAMP 将本地临时文件 =/tmp/tramp.4711= 读入缓冲区，然后删除临时文件。
+
+   + 正常编辑，修改，更改缓冲区内容，然后使用 =C-x C-s= 保存缓冲区。
+
+   + TRAMP 使用适当的内联或外部程序以与过程相反的方式将缓冲区内容传输到远程主机。
+
+   我希望这为您提供了使用 TRAMP 打开文件时幕后发生的事情的基本概述。
+
+* Obtaining TRAMP
+  TRAMP 作为 Emacs 的一部分包含在内（自 Emacs 22.1 起）。
+
+* Installing TRAMP into Emacs
+* Short introduction how to use TRAMP
+  TRAMP 通过远程组件扩展 Emacs 文件名语法。远程文件名始终看起来像 =/method:user@host:/path/to/file= 。
+
+  使用远程文件的方法与普通文件相同，这意味着您可以通过 =C-x C-f /method:user@host:/path/to/file RET= 方法打开文件或目录，编辑文件并保存。您还可以在文件操作中将本地文件和远程文件与两个参数混合使用，比如 copy-file 和 rename-file。最后，如果缓冲区具有远程默认目录，甚至可以在该缓冲区调用远程主机上的进程。
+
+** File name syntax
+   远程文件名由方法，用户和主机部分作为前缀。所有这些以及本地文件名部分都是可选的，如果缺少部分，则使用默认值。空本地文件名部分的默认值是远程用户的主目录。因此，最短的远程文件名是 =/-::= 。出于语法原因，默认主机使用“-”符号表示。
+
+   方法部分描述了用于访问远程主机的连接方法，请参见下文。
+
+   方法（method）部分描述了用于到达远程主机的连接方法，请参见下文。
+
+   用户（user）部分是用于访问远程主机的用户名。对于 smb 方法，这可能还需要域名，在这种情况下，写作 =user%domain= 。
+
+   主机（host）部分必须是可在本地主机上解析的主机名。它可以是短主机名，完全限定的域名，IPv4 或 IPv6 地址，文件名语法。某些连接方法也支持使用端口的表示法，在这种情况下，它被写为 =host#port= 。
+
+** Using ssh and plink
+   如果本地主机运行 SSH 客户端，并且远程主机运行 SSH 服务器，则最简单的远程文件名是 =/ssh:user@host:/path/to/file= 。远程文件名 =/ssh::= 本地主机上打开与当前主机的远程连接，并经常用于测试 TRAMP。
+
+   在 MS Windows 上，PuTTY 通常用作 SSH 客户端。其 plink 方法可用于打开与运行 ssh 服务器的远程主机的连接: =/plink:user@host:/path/to/file= .
+
+** Using su, sudo and sg
+   有时，必须以不同的权限在本地主机上工作。为此，可以使用 su 或 sudo 连接方法。两种方法都使用 “root” 作为默认用户名，并使用 =(system-name)= 的返回值作为默认主机名。因此，将文件打开为 =/sudo::/path/to/file= 很方便。
+
+   方法 sg 代表 “switch group”; 必须在此处将更改的组名与用户名相同。默认主机名相同。
+
+** Using sudoedit
+   sudoedit 方法类似于 sudo 方法。但是，它是一种不同的实现：它不会在后台保持运行打开的会话。这是出于安全原因；相反，此方法的性能低于 sudo 方法，仅限于 “localhost”，并且不支持外部进程。
+
+** Using smbclient
+   要访问远程 MS Windows 主机或 Samba 服务器，请使用 smbclient 客户端。远程文件名语法为 =/smb:user%domain@host:/path/to/file= 。本地文件名的第一部分是远程主机导出的共享，在此示例中为 “path”。
+
+** Using GVFS-based methods
+   在为 GNOME 桌面安装虚拟文件系统的系统（GVFS）上，TRAMP 可以使用其提供的方法。例如 =/sftp:user@host:/path/to/file, /afp:user@host:/path/to/file (accessing Apple’s AFP file system), /dav:user@host:/path/to/file and /davs:user@host:/path/to/file（对于WebDAV 共享）= 。
+
+** Using GNOME Online Accounts based methods
+   基于 GVFS 的方法还包括 GNOME 在线帐户，它支持文件服务。这些是 Google Drive 文件系统和 OwnCloud/NextCloud 文件系统。文件名语法总是 =/gdrive:john.doe@gmail.com:/path/to/file=(‘john.doe@gmail.com’ 是Google Drive 账号), 或者 =/nextcloud:user@host#8081:/path/to/file= (‘8081’ 表示端口) for OwnCloud/NextCloud files.
+
+** Using Android
+   使用 adb 命令访问通过 USB 连接到本地主机的 Android 设备。不需要用户名或主机名。文件名语法是 =/adb::/path/to/file=.
+
+** Using rclone
+   使用 rclone 命令快速访问系统存储。如果在名称' storage'（例如）下的 rclone 中配置了存储，则可以通过远程文件名语法 =/rclone:storage:/path/to/file= 。不需要用户名。
+
+* Configuring TRAMP for use
+  TRAMP 初始配置使用 scp 程序连接到远程主机。 只需键入 C-x C-f，然后输入文件名 =/scp:user@host:/path/to/file= 。有关详细信息，请参见[[https://www.gnu.org/software/tramp/#Default-Method][Default Method]]，请参见[[https://www.gnu.org/software/tramp/#Default-User][Default User]]，请参阅[[https://www.gnu.org/software/tramp/#Default-Host][Default Host]]。
+
+  有关远程 shell 行为的问题，请参阅[[https://www.gnu.org/software/tramp/#Remote-shell-setup][Remote shell setup]]。
+
+  要更改连接类型和文件访问方法，请参阅[[https://www.gnu.org/software/tramp/#Connection-types][Connection types]] 。
+
+  请注意，这些示例中描述的某些用户选项 Emacs 不会自动加载。所有示例都要求安装和加载 TRAMP：
+  #+BEGIN_SRC elisp
+(customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
+  #+END_SRC
+
+** 远程主机的连接种类
+   内联方法和外部方法（Inline method and external method）是访问方法的两种基本类型。虽然它们都使用相同的远程 shell 访问程序，例如 rsh，ssh 或 telnet，但它们在文件访问方法上有所不同。选择正确的方法对于编辑文件，传输大文件或操作大量文件非常重要。
+
+   外部方法的性能通常优于内联方法，至少对于大型文件。这是由于内联传输时需要对数据进行编码和解码。
+
+   此规则的一个例外是基于 scp 的访问方法。虽然这些方法确实在实际传输文件时看到了更好的性能，但启动时加密协商的开销可能会大于文件传输时间的改进。
+
+   外部方法应该配置为不需要密码（使用 ssh-agent 等）。现代 scp 实现提供了重用现有 ssh 连接的选项，如果可用，默认情况下将启用这些连接。如果不可能，则应考虑密码处理，否则每次复制操作都会提示您输入密码。
+
+** 内联方法
+   内联方法使用相同的登录连接来传输文件内容。对于小文件，内联方法快速简便。它们取决于远程主机上合适的编码和解码程序的可用性。对于本地源和目标，TRAMP 可以使用在 Emacs 中此类程序的内置等效实现。
+
+   内联方法可以在外部传输程序不可用的情况下工作。内联方法也可在同一主机上的不同用户身份之间传输文件。
+
+   TRAMP 检查远程主机是否具有 =tramp-remote-coding-commands= 中定义的命令之一的可用性和可用性。TRAMP 使用它找到的第一个可靠命令。TRAMP 的搜索路径可以自定义，请参阅[[https://www.gnu.org/software/tramp/#Remote-programs][Remote programs]] 。
+
+   如果所有命令都不可用，则 TRAMP 首先将一个小型 Perl 程序传输到远程主机，然后尝试使用该程序进行编码和解码。
+
+   要提高大型文本文件的传输速度，请在编码之前使用压缩。用户选项 =tramp-inline-compress-start-size =指定用于此类优化的文件大小。此功能取决于 =tramp-inline-compress-commands= 中定义的命令之一的可用性和可用性。
+
+   + rsh
+
+     rsh 是连接到本地网络中主机的选项，因为 rsh 不像其他方法那样安全。
+
+   + ssh
+
+     ssh 是一种比其他连接到远程主机更安全的选项。
+
+     ssh 还可以将额外的参数作为端口号。例如，端口 42 上的主机被指定为 =host＃42= 。它与将 '-p 42' 传递给 ssh 命令相同。
+
+   + telnet
+
+	 使用 telnet 连接到远程主机，与 rsh 方法一样不安全。
+
+   + su
+
+     su 程序允许以另一个用户身份进行编辑，而不是连接到远程主机。主机可以是 “localhost”，也可以是函数 =(system-name)= 返回的主机名。这个规则的例外是 [[https://www.gnu.org/software/tramp/#Multi_002dhops][Multi-hops]]。
+
+   + sudo
+
+     与 su 方法类似，sudo 使用 sudo。sudo 必须有足够的权限来启动 shell。
+
+     出于安全原因，在预定义的超时（默认为 5 分钟）后禁用 sudo 连接。这可以更改，请参阅 [[https://www.gnu.org/software/tramp/#Predefined-connection-information][Predefined connection information.]]
+
+   + DOAS
+
+     像 sudo 命令一样，这个方法在 OpenBSD 上使用。与 sudo 方法一样，在预定义超时后禁用 doas 连接。
+
+   + SG
+
+     sg 程序允许编辑为不同的组。主机可以是 “localhost”，也可以是函数 =system-name= 返回的主机。必须指定用户名，但它表示组名。有关此行为的例外，请参阅 [[https://www.gnu.org/software/tramp/#Multi_002dhops][Multi-hops]]。
+
+   + sshx
+
+     像 ssh 一样工作，但没有额外的身份验证提示。sshx 使用 =ssh -t -t host -l user /bin/sh= 使用“标准” 登录 shell 打开连接。
+
+     请注意，sshx 不会绕过身份验证问题。例如，如果远程主机的主机密钥未知，sshx 仍会询问 “您确定要继续连接吗？”。TRAMP 无法处理这些问题。必须设置连接使登录可以在没有这些问题的情况下继续进行。
+
+     当 ssh 触发有关分配伪 tty 的错误时，sshx 对 MS Windows 用户很有用。这是因为缺少 shell 提示使 TRAMP 出错。
+
+     sshx 支持 '-p' 参数。
+
+   + krlogin
+
+     这种方法也类似于 ssh。它只使用 =krlogin -x= 命令登录到远程主机。
+
+   + ksu
+
+     Kerberos 套件的另一种方法，行为类似 su。
+
+   + plink
+
+     plink 方法适用于具有 PuTTY 实现 SSH 的 MS Windows 用户。它使用 =plink -ssh= 登录远程主机。plink 方法支持 '-P' 参数。
+
+   + plinkx
+
+     在 MS Windows 上使用 PuTTY 的另一种方法是使用会话名称而不是主机名。plinkx 调用 'plink -load session -t'。必须在会话中定义用户名和端口号。
+
+     检查该会话的 “如果可能，共享 SSH 连接” 控件。
+
+** 外部方法
+   外部方法通过远程 shell 连接执行某些操作，同时将文件传输委派给外部传输程序，从而通过多个通道进行操作。
+
+   外部方法节省了内联方法的编码和解码开销。
+
+   由于外部方法具有打开新通道的开销，因此小于 tramp-copy-size-limit 的文件仍使用内联方法。
+
+   + rcp
+
+     此方法使用 rsh 和 rcp 命令连接到远程主机并传输文件。这是最快的访问方法。
+
+     替代方法 remcp 使用 remsh 和 rcp 命令。
+
+   + scp
+
+     使用 ssh 连接和 scp 进行传输的组合是最安全的。虽然性能良好，但它比适合较小文件的内联方法慢。虽然没有内联方法的编码和解码开销，但 scp 的加密握手抵消了这些速度增益。
+
+     基于 ssh 的方法支持 '-p' 功能来指定端口号。例如，=host＃42= 将参数列表中的 “-p 42” 传递给 ssh，将参数列表中的 “-P 42” 传递给 scp。
+
+   + rsync
+
+     ssh 命令与 rsync 命令一起连接到传输类似于 scp 方法。
+
+     传输两个主机上存在的文件时，rsync 比 scp 执行得更好。但是，如果文件仅存在于连接的一侧，则会丢失此优点。
+
+     此方法支持 '-p' 参数。
+
+   + scpx
+
+     scpx 有助于避免登录 shell 问题。它在性能上与 scp 相似。scpx 使用' ssh -t -t host -l user /bin/sh' 来打开连接。
+
+     当 ssh 触发有关分配伪 tty 的错误时，scpx 对 MS Windows 用户很有用。这是因为缺少 shell 提示使 TRAMP 出错。
+
+     此方法支持 '-p' 参数。
+
+   + pscp
+   + psftp
+
+     这些方法类似于 scp 或 sftp，但是它们使用 plink 命令连接到远程主机，并且它们使用 pscp 或 psftp 来传输文件。这些程序是 PuTTY 的一部分，PuTTY 是 MS Windows 的 SSH 实现。
+
+     勾选该会话的 “如果可能，共享 SSH 连接” 控件。
+
+     这些方法支持 '-P' 参数。
+
+   + fcp
+
+     此方法类似于 scp，但使用 fsh 连接和 fcp 传输文件。fsh/fcp 是 ssh 的前端，通过提交几个命令重用 ssh 会话。这可以避免由于 scp 的安全连接而导致的启动开销。内联方法具有类似的好处。
+
+     用于此连接的命令是： =fsh host -l user /bin/sh -i=
+
+     fsh 没有内联方法，因为它提供的多路复用对 TRAMP 没用。fsh 连接到远程主机，TRAMP 只保持该连接打开。
+
+   + nc
+
+     使用 telnet 连接和 nc 传输文件有时是唯一适合访问路由器或 NAS 主机的组合。这些设备严重限制了本地 shell，例如 busybox，并且没有任何其他编码或解码程序。
+
+   + sudoedit
+
+     sudoedit 方法允许作为本地主机上的其他用户编辑文件。可以将此视为 TRAMP 对 sudoedit 的实现。与 sudo 方法相反，所有魔术文件名函数都由单个 =sudo ...= 命令实现。目的是使编辑这样的文件尽可能安全；必须没有在 Emacs 后台运行的会话可能会从 Emacs 内部受到攻击。
+
+     因此，未实施外部实现。
+
+     此类远程文件名的主机名必须代表本地主机。由于默认值已经正确，因此建议不要在远程文件名中使用任何主机名，例如 =/sudoedit::/path/to/file= 或者 =/sudoedit:user@:/path/to/file= 。
+
+     与 sudo 方法一样，sudoedit 密码在预定义超时后到期。
+
+   + ftp
+	 当 TRAMP 使用 ftp 时，它会将请求转发给 Ange FTP 指定的任何 ftp 程序。该外部程序必须能够处理来自 TRAMP 的请求。
+
+   + smb
+
+     此非本机 TRAMP 方法通过服务器消息块（SMB）网络协议连接到通常基于 Samba 的文件服务器或 MS Windows。
+
+     在使用 TRAMP 时，使用 smbclient 需要一些调整：
+
+     localname 中的第一个目录必须是远程主机上的共享名称。
+
+     由于某些 SMB 共享名称以 $ 字符结尾，因此 TRAMP 在指定这些共享时必须使用 $$ 以避免环境变量替换。
+
+     当 TRAMP 不是特定于共享名称或使用通用远程目录 / 时，smbclient 返回所有可用共享。
+
+     由于 SMB 身份验证基于每个 SMB 共享，​​因此即使访问同一 SMB 主机上的其他共享，TRAMP 也会提示输入密码。密码处理可以抑制此提示。
+
+     为了适应 MS Windows 授权所需的用户名/域名语法，TRAMP 提供了用户％域格式的扩展语法（其中 user 是用户名，％是百分号，domain 是 MS Windows 域名）。一个例子：
+     #+BEGIN_EXAMPLE
+/smb:daniel%BIZARRE@melancholia:/daniel$$/.emacs
+     #+END_EXAMPLE
+
+     用户 daniel 作为域用户连接到 MS Windows 域 BIZARRE 中的 SMB 主机 melancholia，以编辑位于主目录中的. emacs（共享 daniel$）。
+
+     或者，对于本地 WINS 用户（而不是域用户），使用 UPPERCASE 中的本地主机名替换域名，如下所示：
+     #+BEGIN_EXAMPLE
+/smb:daniel%MELANCHOLIA@melancholia:/daniel$$/.emacs
+     #+END_EXAMPLE
+
+     用户 daniel 以本地用户身份连接到本地域 MELANCHOLIA 中的 SMB 主机 melancholia，以编辑位于主目录中的. emacs（共享 daniel $）。
+
+     域名和用户名对于 smbclient 身份验证是可选的。 如果未指定用户名，则 smbclient 将使用匿名用户（不提示输入密码）。 此行为与其他 TRAMP 方法不同，其中本地用户名被替换。
+
+     如果 Emacs 在 MS Windows 中的本地用户身份验证上下文中运行，则 smb 方法不可用。 但是，此类用户仍然可以使用 UNC 文件名而不是 TRAMP 访问远程文件：
+     #+BEGIN_EXAMPLE
+//melancholia/daniel$$/.emacs
+     #+END_EXAMPLE
+
+     UNC 文件名规范不允许像 smbclient 那样为身份验证指定不同的用户名。
+
+   + adb
+
+     此方法使用 Android Debug Bridge 程序访问 Android 设备。必须在本地安装 Android Debug Bridge 才能使 TRAMP 正常工作。一些 GNU/Linux 发行版提供 Android Debug Bridge 安装包。或者，该程序作为 Android SDK 的一部分安装。TRAMP 通过 PATH 环境变量或用户选项 tramp-adb-program 中设置的绝对路径查找 adb 程序。
+
+     仅当用户选项 tramp-adb-connect-if-not-connected 不为 nil 时，TRAMP 才会使用 adb 连接到 Android 设备。否则，必须在 Emacs 外部建立连接。
+
+     当单个 Android 设备连接到 adb 时，TRAMP 不需要远程文件名的主机名部分。TRAMP 使用 =/adb::= 作为默认名称。adb devices 显示可用的主机名。
+
+     adb 方法通常不需要用户名在 Android 设备上进行身份验证，因为它在 adbd 进程下运行。但是，当指定用户名时，TRAMP 会在语法中应用 su。当身份验证不成功时，尤其是在未 root 的 Android 设备上，TRAMP 会显示登录错误。
+
+     对于通过 TCP/IP 连接的 Android 设备，可以使用设备＃ 42 主机名语法指定端口号，或者 TRAMP 可以使用 adb 命令中声明的默认值。端口号不适用于通过 USB 连接的 Android 设备。
+
+   + rclone
+
+     程序 rclone 允许访问云中的不同系统存储，请参阅https://rclone.org/ 以获取支持的系统列表。如果在 PATH 环境变量中找不到 rclone 程序，可以通过用户选项 tramp-rclone-program 告诉 Tramp 它的绝对路径。
+
+     必须通过 Emacs 外部的 rclone config 命令配置系统存储。如果您在名称' storage'（例如）下的 rclone 中配置了存储，则可以通过远程文件名访问它
+     #+BEGIN_EXAMPLE
+/rclone:storage:/path/to/file
+     #+END_EXAMPLE
+
+     用户名是 rclone 配置的一部分，远程文件名中不需要。如果远程文件名中包含用户名，则会将其忽略。
+
+     在内部，Tramp 将远程系统存储安装在位置 /tmp/tramp.rclone.storage 中，其中存储是已配置系统存储的名称。
+
+     可以将不同 rclone 操作的可选标志作为连接属性传递，请参阅预定义的连接信息。支持的属性是 'mount-args'，'copyto-args' 和 'moveto-args'。
+
+     通过 rclone 访问很慢。如果您有另一种访问系统存储的方法，您应该更喜欢这个。基于 GVFS 的方法，例如，方法 gdrive 和 nextcloud。
+
+     注意：rclone 方法是实验性的，不要在生产系统中使用它！
+
+** 基于 GVFS 的 外部方法
+   GVFS is the virtual file system for the GNOME Desktop, https://en.wikipedia.org/wiki/GVFS. Remote files on GVFS are mounted locally through FUSE and TRAMP uses this locally mounted directory internally.
+
+   Emacs uses the D-Bus mechanism to communicate with GVFS. Emacs must have the message bus system, D-Bus integration active, see (dbus)D-Bus.
+
+   + afp
+
+     This method is for connecting to remote hosts with the Apple Filing Protocol for accessing files on macOS volumes. TRAMP access syntax requires a leading volume (share) name, for example: /afp:user@host:/volume.
+
+   + dav
+   + davs
+
+     dav method provides access to WebDAV files and directories based on standard protocols, such as HTTP. davs does the same but with SSL encryption. Both methods support the port numbers.
+
+     Paths being part of the WebDAV volume to be mounted by GVFS, as it is common for OwnCloud or NextCloud file names, are not supported by these methods. See method nextcloud for handling them.
+
+   + gdrive
+     Via the gdrive method it is possible to access your Google Drive online storage. User and host name of the remote file name are your email address of the Google Drive credentials, like /gdrive:john.doe@gmail.com:/. These credentials must be populated in your Online Accounts application outside Emacs.
+
+     Since Google Drive uses cryptic blob file names internally, TRAMP works with the display-name of the files. This could produce unexpected behavior in case two files in the same directory have the same display-name, such a situation must be avoided.
+
+   + nextcloud
+
+     As the name indicates, the method nextcloud allows you to access OwnCloud or NextCloud hosted files and directories. Like the gdrive method, your credentials must be populated in your Online Accounts application outside Emacs. The method supports port numbers.
+
+   + sftp
+
+     This method uses sftp in order to securely access remote hosts. sftp is a more secure option for connecting to hosts that for security reasons refuse ssh connections.
+
+*** User Option: tramp-gvfs-methods
+    This user option is a list of external methods for GVFS. By default, this list includes afp, dav, davs, gdrive, nextcloud and sftp. Other methods to include are ftp, http, https and smb. These methods are not intended to be used directly as GVFS based method. Instead, they are added here for the benefit of Archive file names.
+
+** 选择默认方法
+   在远程文件名中，使用伪方法 =-= 指示使用默认方法。
+
+   + User Option: tramp-default-method
+
+     传输文件的默认方法。用户选项 tramp-default-method 设置它。TRAMP 使用此用户选项来确定没有指定远程文件名的远程文件名的默认方法。
+
+     #+BEGIN_SRC eslip
+(setq tramp-default-method "ssh")
+     #+END_SRC
+
+   + User Option: tramp-default-method-alist
+
+     也可以通过变量 tramp-default-method-alist 针对特定的 user/host 组合设置不同的方法。
+
+     例如，以下两行指定将 ssh 方法用于匹配 'john' 的所有用户名，并将 rsync 方法用于匹配 'lily' 的所有主机名。第三行指定在主机 'localhost' 上为用户 'root' 使用 su 方法。
+
+     #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-method-alist '("" "john" "ssh"))
+(add-to-list 'tramp-default-method-alist '("lily" "" "rsync"))
+(add-to-list 'tramp-default-method-alist
+ '("\\`localhost\\'" "\\`root\\'" "su"))
+     #+END_SRC
+
+
+   外部方法对大文件的性能更快。请参阅[[https://www.gnu.org/software/tramp/#Inline-methods][Inline method]]。见[[https://www.gnu.org/software/tramp/#External-methods][External methods]]。
+
+   选择访问方法还取决于安全环境。例如，使用明文密码传输的 rsh 和 telnet 方法不适合通过 Internet 连接。安全远程连接应使用提供加密的 ssh。
+
+*** 使用哪种方法？
+    TRAMP 提供最大数量的选择以实现最大的灵活性。选择哪种方法取决于主机，客户端，网络速度和安全上下文。
+
+    首先使用内联方法。
+
+    对于大型文件，外部方法可能更有效，但相比大文件，大多数 TRAMP 用户更频繁地编辑小文件。
+
+    启用压缩，tramp-inline-compress-start-size，以提高大文件的性能。
+
+    由于 ssh 已成为最常用的远程主机访问方法，并且它具有最合理的安全协议，因此请使用 ssh 方法。用于编辑 otherhost 上的 /etc/motd 文件的典型 ssh 用法：
+    #+BEGIN_EXAMPLE
+C-x C-f /ssh:root@otherhost:/etc/motd RET
+    #+END_EXAMPLE
+
+    如果 ssh 由于某种原因不可用，请寻找其他明显的选项。对于 MS Windows，请尝试使用 plink 方法。对于 Kerberos，请尝试使用 krlogin。
+
+    要将本地文件编辑为 su 或 sudo 方法，请尝试缩写 “root” 语法：
+    #+BEGIN_EXAMPLE
+C-x C-f /su::/etc/motd RET
+    #+END_EXAMPLE
+
+    对于编辑大文件，scp 比 ssh 快。pscp 比 plink 快。但这种速度提升并非总是如此。
+
+** 选择默认用户
+   + User Option: tramp-default-user
+
+     TRAMP 文件名可以省略用户名部分，因为 TRAMP 用当前登录的用户名替换。但是，可以使用 tramp-default-user 覆盖此替换。例如：
+     #+BEGIN_SRC elisp
+(customize-set-variable 'tramp-default-user "root")
+     #+END_SRC
+
+   + User Option: tramp-default-user-alist
+
+     tramp-default-user-alist 不是单个默认用户，而是根据访问方法或主机名组合允许多个默认用户值。alist 可以包含多个值。例如，要仅将 “john” 用作域 “somewhere.else” 的默认用户：
+     #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-user-alist
+ '("ssh" ".*\\.somewhere\\.else\\'" "john"))
+     #+END_SRC
+
+     注意：TRAMP 将覆盖 Emacs 外部配置文件中指定的任何默认用户，例如 =~/.ssh/config= 。要停止 TRAMP 应用默认值，请将相应的 alist 条目设置为 nil：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-user-alist
+ '("ssh" "\\`here\\.somewhere\\.else\\'" nil))
+   #+END_SRC
+
+   tramp-default-user-alist 中的最后一个条目应保留为 catch-all 或最常用的登录。
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-user-alist
+ '(nil nil "jonas") t)
+   #+END_SRC
+
+** 选择默认主机
+   + User Option: tramp-default-host
+
+   省略主机名时，TRAMP 将其替换为 tramp-default-host 用户选项中的值。它使用 Emacs 运行的本地主机名初始化。默认方法，默认用户和默认主机可以被覆盖，如下所示：
+   #+BEGIN_SRC elisp
+(custom-set-variables
+ '(tramp-default-method "ssh")
+ '(tramp-default-user "john")
+ '(tramp-default-host "target"))
+   #+END_SRC
+
+   设置了所有默认值后，‘/-::’ 将通过 ssh 将 TRAMP 连接到目标上的 John 的主目录。
+
+   + User Option: tramp-default-host-alist
+
+   tramp-default-host-alist 不是单个默认主机，而是根据访问方法或用户名组合允许多个默认主机值。alist 可以包含多个值。 虽然 tramp-default-host 在大多数情况下已足够，但某些方法（如 adb）需要覆盖默认值。
+
+** 使用多跳连接到远程主机
+   Multi-hops 是到达防火墙后面的主机或从堡垒主机内部到达外部世界的方法。通过 multi-hops，TRAMP 可以在每一跳上通过适当的用户/主机认证来协商。到目前为止，所有方法都是单跳类型，其中连接的起点和终点没有中间检查点。
+
+   + User Option: tramp-default-proxies-alist
+
+   tramp-default-proxies-alist 指定要传递的代理主机。此用户选项是由 (host user proxy)组成的三元组列表。
+
+   第一个匹配是代理主机，通过该主机传递文件名和匹配 user@host 的目标主机。host 和 user 是正则表达式或 nil，解释为始终匹配的正则表达式。
+
+   proxy 是一个 TRAMP 文件名，其本地名称部分被忽略，方法和用户名部分是可选的。
+
+   该方法必须是内联方法（请参阅内联方法）。如果 proxy 为 nil，则不需要额外的跃点到达 user@host。
+
+   例如，要将主机 'bastion.your.domain' 作为用户 'bird' 传递到本地域之外的远程主机：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-proxies-alist
+ '("\\." nil "/ssh:bird@bastion.your.domain:"))
+(add-to-list 'tramp-default-proxies-alist
+ '("\\.your\\.domain\\'" nil nil))
+   #+END_SRC
+
+   注意：add-to-list 在列表的开头添加元素。因此，大多数相关规则必须在列表中排在最后。
+
+   代理主机可以在 alist 中级联。如果有另一个名为 'jump.your.domain' 的主机，它是唯一允许连接到 'bastion.your.domain' 的主机，那么：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-proxies-alist
+ '("\\`bastion\\.your\\.domain\\'"
+ "\\`bird\\'"
+ "/ssh:jump.your.domain:"))
+   #+END_SRC
+
+   代理可以分别为主机或用户设置％ h 或％ u 模式。端口或域（如果它们是跃点文件名的一部分）对应的模式不会被扩展。
+
+   要在域 “your.domain” 中的远程主机上以 “root” 身份登录，但是对于非本地访问禁用以 “root” 身份登录，请使用此 alist 条目：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-proxies-alist
+ '("\\.your\\.domain\\'" "\\`root\\'" "/ssh:%h:"))
+   #+END_SRC
+
+   打开 =/sudo:randomhost.your.domain= ：首先通过您的帐户名 ssh 连接到 'randomhost.your.domain'，然后在该主机上执行 =sudo -u root= 。
+
+   上述示例中的 sudo 方法在到达主机后应用于主机而不是本地主机上是关键。因此，TRAMP 检查此类跃点的主机名是否与前一跃点的主机名匹配。
+
+   主机，用户和代理也可以采用 Lisp list。这些 list 求值必须返回字符串或 nil。
+
+   概括（来自前面的示例）：对于除本地主机之外的所有主机，首先通过 ssh 连接，然后应用 =sudo -u root= ：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-default-proxies-alist
+ '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+ '((regexp-quote (system-name)) nil nil))
+   #+END_SRC
+
+   通过跳跃涉及处理受限制的 shell，例如 rbash。如果 TRAMP 被识别，那么它将仅用于代理。
+
+   + User Option: tramp-restricted-shell-hosts-alist
+
+   运行受限 shell 的主机的正则表达式的列表，例如 rbash。然后 TRAMP 将仅将它们用作代理。
+
+   要从上面的示例中指定堡垒主机作为运行受限 shell：
+
+   #+BEGIN_SRC sh
+(add-to-list 'tramp-restricted-shell-hosts-alist
+ "\\`bastion\\.your\\.domain\\'")
+   #+END_SRC
+
+** 通过防火墙
+   有时，无法直接访问远程主机。可能会有防火墙妨碍，可以通过代理服务器穿过。
+
+   ssh 和 PuTTY 都支持这样的代理设置，通过 CONNECT 命令使用 HTTP 隧道（符合 RFC 2616,2817 规范）。使用 HTTP 1.1 或更高版本协议的代理服务器支持此命令。
+
+*** ssh 隧道
+    使用 ssh，您可以使用 =~/.ssh/config= 中的 ProxyCommand 条目：
+    #+BEGIN_EXAMPLE
+Host host.other.domain
+ ProxyCommand nc -X connect -x proxy.your.domain:3128 %h %p
+    #+END_EXAMPLE
+    nc 是 BSD 的 netcat 程序，它建立 HTTP 隧道。也可以使用具有这种功能的任何其他程序。
+
+    在该示例中，打开 =/ssh:host.your.domain= ：在端口 3128 上通过 HTTP 代理服务器 “proxy.your.domain”。
+
+*** Tunneling with PuTTY
+    PuTTY 不需要外部程序，内置 HTTP 隧道支持。在 PuTTY 配置程序中，为 'host.your.domain' 创建一个会话。在 “Connection/Data” 条目中，选择 HTTP 选项，并将 “proxy.your.domain” 添加为代理主机名，将 3128 添加为 “端口”。
+
+    打开 =/plinkx:host.your.domain= ：在端口 3128 上传递 HTTP 代理服务器 'proxy.your.domain'。
+
+** 使用非标准方法
+   tramp-methods 变量目前有一个详尽的预定义方法列表。可以修改此列表的任何部分更合适的设置。请参阅该变量的 Lisp 文档，可通过 =C-h v tramp-methods RET= 访问。
+
+   在 ELPA 档案中，有几个这样的扩展的例子。它们可以与 Emacs 的软件包管理器一起安装。这包括
+
+   + docker-tramp
+
+   Docker 容器的集成。通过 =/docker:user@container:/path/to/file= 访问容器：其中 'user' 是您要使用的（可选）用户，'container' 是容器的 ID 或名称。
+
+   + kubernetes-tramp
+
+   集成在 Kubernetes 集群中的 Docker 容器。它衍生自 'docker-tramp'。通过 =/kubectl:user@container:/path/to/file= 访问容器，'user' 和 'container' 与 'docker-tramp' 中的含义相同。
+
+   + lxc-tramp
+
+   LXC 容器的集成。通过 =/lxc:container:/path/to/file= 访问容器，'container' 与 'docker-tramp' 中的含义相同。忽略 “user” 规范。
+
+   + lxd-tramp
+
+   LXD 容器的集成。通过 =/lxd:user@container:/path/to/file= 访问容器，'user' 和 'container' 与 'docker-tramp' 中的含义相同。
+
+   + magit-tramp
+
+   使用 magit 浏览 git 存储库。通过 =/git:rev@root-dir:/path/to/file= 访问版本化文件。 'rev' 是一个 git 版本，'root-dir' 是根目录的虚拟主机名，在 magit-tramp-hosts-alist 中指定。
+
+   + tramp-hdfs
+
+   访问 hadoop /hdfs 文件系统。通过 =/hdfs:user@node:/path/to/file= 访问文件，其中 'user' 是您要使用的用户，'node' 是 hadoop 服务器的名称。
+
+   + vagrant-tramp
+
+   访问 vagrant box 的便捷方法。它经常用在像 =/vagrant:box|sudo:box:/path/to/file=这样的多跳文件名中，其中 'box' 是 vagrant 的名称。
+
+** 选择配置文件以补全用户/主机名
+   tramp-completion-function-alist 使用预定义文件来补全用户名和主机名（请参阅文件名完成）。 对于每个方法，它保留一组配置文件和一个可以解析该文件的函数。tramp-completion-function-alist 中的每个条目都是形式（方法 pair1 pair2 ...）。
+
+   每对由（函数文件）组成。function 负责从文件中提取用户名和主机名以完成。有两个函数可以访问这个变量：
+
+   + Function: tramp-get-completion-function method
+
+   此函数返回方法的补全函数列表。
+
+   #+BEGIN_SRC elisp
+(tramp-get-completion-function "rsh")
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+ ⇒ ((tramp-parse-rhosts "/etc/hosts.equiv")
+ (tramp-parse-rhosts "~/.rhosts"))
+   #+END_EXAMPLE
+
+   + Function: tramp-set-completion-function method function-list
+
+   此函数将 function-list 设置为方法的完成函数列表。
+
+   #+BEGIN_SRC elisp
+(tramp-set-completion-function "ssh"
+							 '((tramp-parse-sconfig "/etc/ssh_config")
+								 (tramp-parse-sconfig "~/.ssh/config")))
+
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+⇒ ((tramp-parse-sconfig "/etc/ssh_config")
+ (tramp-parse-sconfig "~/.ssh/config"))
+   #+END_EXAMPLE
+
+
+   下面预定的函数用来分析已经存在的配置文件：
+
+*** tramp-parse-rhosts
+    此函数解析语法等同于 =~/.rhosts= 的文件。如果指定，它将返回主机名和用户名。
+
+*** tramp-parse-shosts
+    此函数解析语法等同于 =~/.ssh/known_hosts= 的文件。由于此类文件中未指定用户名，因此只能返回主机名。
+
+*** tramp-parse-sconfig
+    此函数返回由 =~/.ssh/config= 样式文件中的主机条目定义的主机昵称。
+
+*** tramp-parse-shostkeys
+    SSH2 解析目录 =/etc/ssh2/hostkeys/*= 和 =~/ssh2/hostkeys/*= 。主机以文件名 hostkey_portnumber_host-name.pub 编码。用户名总是 nil。
+
+*** tramp-parse-sknownhosts
+    另一种 SSH2 样式解析目录， =/etc/ssh2/knownhosts/*= 和 =~/ssh2/knownhosts/*= ，在这种情况下，主机名称以文件名 host-name.algorithm.pub 编码。用户名总是 nil。
+
+*** tramp-parse-hosts
+    专用于 /etc/hosts 的主机名函数。
+
+*** tramp-parse-passwd
+    一个解析 /etc/passwd 用户名的函数。
+
+*** tramp-parse-etc-group
+    解析组名的 /etc/group 的函数。
+
+*** tramp-parse-netrc
+    一个解析 =~/.netrc= 和 =~/.authinfo= 样式文件的函数。
+
+    要在自定义结构中保留包含自定义数据的自定义文件，必须提供自定义函数。此功能必须符合以下约定：
+
+    + Function: my-tramp-parse file
+
+    file 必须是主机上的文件，或者是 nil。该函数必须返回（用户主机）列表，这些列表被视为完成用户名和主机名的候选者。
+
+    #+BEGIN_SRC elisp
+ (my-tramp-parse "~/.my-tramp-hosts")
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+ ⇒ ((nil "toto") ("daniel" "melancholia"))
+    #+END_EXAMPLE
+
+** 重用多个连接的密码
+   为避免重复提示输入密码，请考虑本机缓存机制，例如类似 ssh 的方法的 ssh-agent，或类似 plink 的方法的 pageant。
+
+   当原生解决方案无法满足需求时，TRAMP 提供替代方案。
+
+*** 使用身份验证文件
+    最初为 No Gnus 开发的软件包 auth-source.el 从不同的源读取密码，请参阅（auth）auth-source。默认的身份验证文件是~/.authinfo.gpg，但可以通过用户选项 auth-sources 进行更改。
+
+    身份验证文件中的典型条目：
+    #+BEGIN_EXAMPLE
+machine melancholia port scp login daniel password geheim
+    #+END_EXAMPLE
+
+    端口可以​​采用任何 TRAMP 方法（请参阅内联方法，请参阅外部方法）。省略端口值匹配所有 TRAMP 方法。必须将 TRAMP 文件名语法中使用的域和端口附加到计算机和登录项：
+
+    #+BEGIN_EXAMPLE
+machine melancholia#4711 port davs login daniel%BIZARRE password geheim
+    #+END_EXAMPLE
+
+    如果没有正确的条目，则以交互方式读取密码。成功登录（验证密码）后，可以保存相应的条目以供支持此操作的 auth-source 后端进一步使用。可以通过将用户选项 auth-source-save-behavior 设置为 nil 来更改此设置。
+
+    将 auth-source-debug 设置为 t 以调试消息。
+
+    请注意，auth-source.el 不用于 ftp 连接，因为 TRAMP 将工作传递给 Ange FTP。例如，如果您需要使用 =~/.authinfo.gpg= 认证文件，则必须自定义 ange-ftp-netrc-filename：
+
+    #+BEGIN_EXAMPLE
+(customize-set-variable 'ange-ftp-netrc-filename "~/.authinfo.gpg")
+    #+END_EXAMPLE
+
+*** 缓存密码
+    TRAMP 可以在输入时缓存密码，并在需要时重用与访问方法无关的相同用户或主机名。
+
+    password-cache-expiry 设置记住密码的持续时间（以秒为单位）。密码永远不会永久保存，也不会超出当前 Emacs 会话的生命周期。将 password-cache-expiry 设置为 nil 以禁用到期。
+
+    将 password-cache 设置为 nil 以禁用密码缓存。
+
+** 重用连接相关信息
+   为了加快初始连接时间，TRAMP 将先前的连接属性存储在用户选项 tramp-persistency-file-name 指定的文件中。
+
+   tramp-persistency-file-name 的缺省文件名是 =~/.emacs.d/tramp= 。
+
+   TRAMP 在 Emacs 启动期间读取此文件，并在退出 Emacs 时写入该文件。 删除此文件以便 TRAMP 在下一次 Emacs 启动时重新创建一个新文件。
+
+   将 tramp-persistency-file-name 设置为 nil 以禁用持久存储连接。
+
+   当 TRAMP 检测到远程主机中的操作系统版本发生更改时（通过命令 uname -sr），它会刷新该主机的所有连接相关信息并创建新条目。
+
+** 设置连接相关信息
+   为了更精确地定制，可以手动覆盖 tramp-methods 指定的参数。
+
+   设置 tramp-connection-properties 以手动覆盖 tramp-methods。 此列表中的属性采用 =(regexp property value)= 格式。regexp 匹配远程文件名。使用 nil 匹配所有。property 是属性的名称，value 是属性的值。
+
+   property 是 tramp-methods 中包含的任何特定于方法的参数。tramp-methods 中的参数键是符号名称 tramp-<foo>。 要覆盖该属性，请使用字符串 '<foo>' 作为属性。 例如，这会更改远程 shell：
+
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-connection-properties
+			 (list (regexp-quote "/ssh:user@randomhost.your.domain:")
+				 "busybox" t))
+   #+END_SRC
+   远程主机的 tramp-methods 中的参数 tramp-remote-shell 和 tramp-remote-shell-login 现在具有的新值。
+
+   常见用例是覆盖连接的会话超时，即连接被禁用后的时间（以秒为单位），并且必须重新建立。 这可以为任何连接设置； 对于 sudo 和 doas 方法，存在预定义的值。 值为 nil 会禁用此功能。 例如：
+   #+BEGIN_SRC elisp
+ (add-to-list 'tramp-connection-properties
+ (list (regexp-quote "/sudo:root@system-name:")
+ "session-timeout" 30))
+   #+END_SRC
+
+   'system-name' 代表函数 =(system-name)= 返回的主机。
+
+   property 也可以是 tramp-persistency-file-name 中的任何属性。
+
+   要了解受限制的 shell 如何随机删除连接，请设置特殊属性 “busybox”。 例如：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-connection-properties
+ (list (regexp-quote "/ssh:user@randomhost.your.domain:")
+ "busybox" t))
+   #+END_SRC
+
+** TRAMP 如何在远程主机上查找和使用程序
+   TRAMP 需要访问远程主机上的几个命令并对其拥有执行权限：ls，test，find 和 cat。
+
+   除此之外，Inline 方法和外部连接方法还有其他必需的程序。
+
+   为了提高远程文件访问的性能和准确性，TRAMP 在可用时使用 perl（或 perl5）和 grep。
+
+   + 用户选项：tramp-remote-path
+
+   tramp-remote-path 指定 TRAMP 可以搜索远程程序的远程目录路径。
+
+   TRAMP 使用标准默认值，例如 /bin 和 /usr/bin，这对大多数主机都是合理的。为了适应主机和路径的差异，例如，Debian GNU/Linux 上的 =/bin:/usr/bin= 或 Solaris 上的 =/usr/xpg4/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin= ，TRAMP 使用 =getconf PATH= 查询远程主机并更新符号 tramp-default-remote-path。
+
+   对于出于安全原因主机保留路径模糊位置的实例，请手动将此类路径添加到本地. emacs，如下所示，以便在连接时使用 TRAMP。
+
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-remote-path "/usr/local/perl/bin")
+   #+END_SRC
+   查找远程路径的另一种方法是使用远程主机分配给远程用户的路径。登录后 TRAMP 通常不会保留此远程路径。但是，tramp-own-remote-path 会保留路径值，该值可用于更新 tramp-remote-path。
+   #+BEGIN_EXAMPLE elisp
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+   #+END_EXAMPLE
+
+   请注意，仅当您的 remote /bin/sh shell 支持登录参数 '-l' 时，此方法才有效。
+
+   更改远程搜索路径时，必须重新计算本地 TRAMP 缓存。要强制 TRAMP 重新计算，请调用 M-x tramp-cleanup-this-connection RET 或 friends（请参阅清理远程连接）。
+
+** 远程 shell 设置技巧
+   TRAMP 检查通常位置的标准程序的可用性。常见的策略包括先后尝试 =test -e，/usr/bin /test -e= 和 =/bin/test -e= 。 =ls -d= 是另一种方法。但是这些方法对这些新的登录模式没有帮助。
+
+   当 TRAMP 遇到双因素登录或其他挑战问题时，例如输入出生日期或安全代码或密码短语，TRAMP 需要更多配置步骤来适应它们。
+
+   密码提示和密码短语提示之间的区别在于，密码（password）用于完成登录，短语（passphrase）用于授权访问本地身份验证信息（例如 ssh 密钥）。
+
+   没有一种配置可以适应登录安全性的所有变化。然而，TRAMP 提供了一些调整来解决最常见的问题。
+
+   + tramp-shell-prompt-pattern
+
+   tramp-shell-prompt-pattern 用于远程登录 shell 提示符，可能与本地登录 shell 提示符 shell-prompt-pattern 不同。由于大多数主机使用相同的提示，因此 TRAMP 会为两个提示设置类似的默认值。
+
+   + tramp-password-prompt-regexp
+   + tramp-wrong-passwd-regexp
+
+   TRAMP 使用 tramp-password-prompt-regexp 来区分密码提示和密码短语提示。默认情况下，tramp-password-prompt-regexp 处理英语语言环境中的检测。请参阅下面的本地化示例：
+   #+BEGIN_EXAMPLE elisp
+(customize-set-variable
+ 'tramp-password-prompt-regexp
+(concat
+ "^.*"
+ (regexp-opt
+'("passphrase" "Passphrase"
+;; English
+"password" "Password"
+;; Deutsch
+"passwort" "Passwort"
+;; Français
+"mot de passe" "Mot de passe")
+t)
+ ".*:\0? *"))
+   #+END_EXAMPLE
+
+   处理错误的密码提示可能需要类似的本地化，为此 TRAMP 使用 tramp-wrong-passwd-regexp。
+
+   + tramp-terminal-type
+
+   TRAMP 使用用户选项 tramp-terminal-type 为其运行的 shell 设置远程环境变量 TERM。默认情况下，它是 “"dumb"”，但可以更改。dump 终端最适合运行 TRAMP 的后台会话。但是，运行交互式远程 shell 可能需要不同的设置。这可以通过在 process-environment 中调整 TERM 环境变量来实现。
+
+   #+BEGIN_SRC elisp
+(let ((process-environment
+ (cons "TERM=xterm-256color" process-environment)))
+(shell))
+   #+END_SRC
+
+   + Determining a TRAMP session
+
+   有时，需要确定 shell 是否在 TRAMP 控制下运行。 环境变量 TERM 的设置将有助于：
+   #+BEGIN_SRC sh
+if test "$TERM" = "dumb"; then
+ ...
+fi
+   #+END_SRC
+   另一种可能性是检查环境变量 INSIDE_EMACS。 与 Emacs 的所有子进程一样，这将设置为父 Emacs 进程的版本，请参阅（emacs）Interactive Shell。TRAMP 将自己的包版本添加到此字符串中，该字符串可用于 inferior shell 中的进一步测试。 该环境变量的字符串看起来总是如此：
+   #+BEGIN_EXAMPLE
+echo $INSIDE_EMACS
+⇒ 26.2,tramp:2.3.4
+   #+END_EXAMPLE
+   + tset and other questions
+
+   为了抑制对终端类型的不适当提示，TRAMP 在远程登录过程开始之前通过用户选项 tramp-terminal-type 设置 TERM 环境变量（参见上文）。 这将使常见的 tset 相关提示无声。
+
+   TRAMP 处理此类提示的策略（通常从远程主机上的登录脚本触发）是设置环境变量，以便没有提示中断 shell 初始化过程。
+
+   另一种方法是使用字符串配置 TRAMP，这些字符串可以使用 tramp-actions-before-shell 来识别这些问题。 例：
+
+   #+BEGIN_SRC elisp
+(defconst my-tramp-prompt-regexp
+(concat (regexp-opt '("Enter the birth date of your mother:") t)
+		"\\s-*")
+"Regular expression matching my login prompt question.")
+
+(defun my-tramp-action (proc vec)
+"Enter \"19000101\" in order to give a correct answer."
+(save-window-excursion
+	(with-current-buffer (tramp-get-connection-buffer vec)
+	(tramp-message vec 6 "\n%s" (buffer-string))
+	(tramp-send-string vec "19000101"))))
+
+(add-to-list 'tramp-actions-before-shell
+			 '(my-tramp-prompt-regexp my-tramp-action))
+   #+END_SRC
+   + .profile 中用户和变量的名称冲突
+
+   当用户名与本地文件（例如. profile）中的变量名相同时，TRAMP 可能会为环境变量发送不正确的值。要避免不正确的值，请将本地变量名称更改为与用户名不同的名称。例如，如果用户名是 FRUMPLE，则将变量名称更改为 FRUMPLE_DIR。
+
+   + .profile 中的非 Bourne 命令
+
+   当远程主机的. profile 也用于 Bourne shell 以外的 shell 时，.profile 中命令的某些不兼容语法可能会在主机上的 Bourne shell 中触发错误，并且可能无法完成客户端的 TRAMP 连接。
+
+   .profile 中 Bourne shell 不兼容语法的一个示例：使用 ~export FOO=bar~ 而不是 ~FOO=bar; export FOO~ 。远程登录后，TRAMP 将在远程主机上执行 /bin/sh 期间触发错误，因为 Bourne shell 无法识别在. profile 中输入的导出命令。
+
+   同样，路径中的（~）字符会导致错误，因为 Bourne shell 不执行（~）字符扩展。
+
+   避免这些不兼容性的一种方法是使~/.shrc 和~/.profile Bourne shell 中的所有命令兼容，以便 TRAMP 可以完成与该远程的连接。要在该遥控器上使用非 Bourne shell，请使用其他特定于 shell 的配置文件。例如，bash 可以使用~/.bash_profile 并忽略. profile。
+
+   + 交互式 shell 提示符
+
+   TRAMP 在内部重新定义远程 shell 提示以进行强大的解析。此重定义通过命令（如 M-x shell RET）影响交互式远程 shell 中提示的外观。但是，这些提示可以使用这些环境变量重置为更易读和可识别的内容。
+
+   TRAMP 在启动脚本文件~/.emacs_SHELLNAME 中设置 INSIDE_EMACS 环境变量。
+
+   SHELLNAME 是 bash 或等效的 shell 名称。通过在. emacs 中设置环境变量 ESHELL 来更改它，如下所示：
+   #+BEGIN_SRC elisp
+(setenv "ESHELL" "bash")
+   #+END_SRC
+   然后在~/.emacs_SHELLNAME 中重新设置提示字符串，如下所示：
+   #+BEGIN_SRC sh
+# Reset the prompt for remote TRAMP shells.
+if [ "${INSIDE_EMACS/*tramp*/tramp}" == "tramp" ] ; then
+ PS1="[\u@\h \w]$ "
+fi
+
+   #+END_SRC
+   + busybox/nc
+
+   TRAMP 的 nc 方法使用 nc 命令来安装和执行一个监听器，如下所示（请参阅 tramp-methods）：
+   #+BEGIN_SRC sh
+$ nc -l -p 42
+   #+END_SRC
+
+   上面的命令行语法已随 busybox 版本更改。 如果 nc 拒绝 '-p' 参数，则覆盖如下：
+   #+BEGIN_SRC elisp
+(add-to-list
+ 'tramp-connection-properties
+ `(,(regexp-quote "192.168.0.1")
+ "remote-copy-args" (("-l") ("%r"))))
+   #+END_SRC
+
+   其中 '192.168.0.1' 是远程主机 IP 地址（请参阅预定义连接信息）。
+** Android shell 设置技巧
+   TRAMP 使用 adb 方法访问 Android 设备。Android 设备通过 USB 连接提供受限制的 shell 访问。本地主机必须安装 adb 程序。通常，打开文件 /adb::/ 就足够了。然后，可以通过 dired 在文件系统中导航。
+
+   或者，在 Android 设备上运行 sshd 进程的 Termux 或 SSHDroid 等应用程序可以接受任何基于 ssh 的方法，只要这些设置被调整：
+
+   + 必须为远程 shell 指定 sh，因为 Android 设备不提供 /bin/sh。然后，sh 将使用以下设置调用设备上安装的任何 shell：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-connection-properties
+	 (list (regexp-quote "192.168.0.26") "remote-shell" "sh"))
+   #+END_SRC
+
+   where ‘192.168.0.26’ is the Android device’s IP address. (see Predefined connection information).
+
+   + TRAMP 需要从用户设置中保留 PATH 环境变量。Android 设备更喜欢 /system/xbin path over /system/bin。这两个设置如下：
+   #+BEGIN_SRC elisp
+（add-to-list'tramp-connection-properties
+（list（regexp-quote“android”）“remote-shell”“sh”））
+   #+END_SRC
+
+   + 当 Android 设备未 “rooted” 时，请为临时文件指定可写目录：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(add-to-list 'tramp-remote-path "/system/xbin")
+   #+END_SRC
+   + 使用命令 C-x C-f /ssh:192.168.0.26#2222：RET 打开远程连接，其中 sshd 正在侦听端口 '2222'。
+
+   要在~/.ssh/config 文件中添加相应的条目（推荐），请使用以下命令：
+   #+BEGIN_EXAMPLE
+Host android
+ HostName 192.168.0.26
+ User root
+ Port 2222
+   #+END_EXAMPLE
+
+   要使用主机名 'android' 而不是上一个示例中显示的 IP 地址，请按如下所示修复连接属性：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-connection-properties
+	 (list (regexp-quote "android") "remote-shell" "sh"))
+   #+END_SRC
+   使用更简洁的命令 C-x C-f /ssh：android：RET 打开远程连接。
+
+** 自动保存和备份配置
+   为避免 TRAMP 将 “root” 拥有的备份文件保存到其他人可访问的位置，必须更改 backup-directory-alist 中的默认备份设置。
+
+   这是一个可能无意中暴露文件的场景。 默认情况下，Emacs 将备份文件写入与原始文件相同的目录，除非更改为其他位置，例如~/.emacs.d/backups/。 当使用限制文件 =/su:root@localhost:/etc/secretfile= 时，TRAMP 默认也会使用这样的目录。secretfile 文件的备份文件现在由从 TRAMP 登录的用户拥有，而不是 “root”。
+
+   当 backup-directory-alist 为 nil（默认值）时，不会发生此类问题。
+
+   要 “关闭” 远程文件的备份功能并停止 TRAMP 保存到备份目录，请使用以下命令：
+
+   #+BEGIN_SRC elisp
+(add-to-list 'backup-directory-alist
+			 (cons tramp-file-name-regexp nil))
+   #+END_SRC
+
+   禁用备份可以仅针对 su 和 sudo 方法：
+
+   #+BEGIN_SRC elisp
+(setq backup-enable-predicate
+	(lambda (name)
+		(and (normal-backup-enable-predicate name)
+			 (not
+			(let ((method (file-remote-p name 'method)))
+				(when (stringp method)
+				(member method '("su" "sudo"))))))))
+   #+END_SRC
+
+   另一种选择是创建更好的备份文件命名，其中用户名和主机名以文件名为前缀。例如，将 /etc/secretfile 转换为 =~/.emacs.d/backups/!su:root@localhost:!etc!secretfile= ，从现有用户选项 backup-directory 设置 TRAMP 用户选项 tramp-backup-directory-alist。
+
+   然后 TRAMP 备份到一个文件名，该文件名使用由 DIRECTORY 名称组成的前缀进行转换。仅当 DIRECTORY 是绝对本地文件名时才会出现此文件名前缀。
+
+   #+BEGIN_SRC elisp
+(add-to-list 'backup-directory-alist
+			 (cons "." "~/.emacs.d/backups/"))
+(setq tramp-backup-directory-alist backup-directory-alist)
+   #+END_SRC
+   =/su:root@localhost:/etc/secretfile= 备份文件名将是 =/su:root@localhost:~/.emacs.d/backups/!su:root@localhost:!etc!secretfile~=
+
+   与备份文件一样，类似的文件命名问题也会影响自动保存的远程文件。自动保存的文件保存在用户选项 auto-save-file-name-transforms 指定的目录中。默认情况下，它设置为本地临时目录。但是在某些版本的 Debian GNU/Linux 中，这指向编译 Emacs 的源目录。将这些值重置为有效目录。
+
+   将 auto-save-file-name-transforms 设置为 nil，将自动保存的文件保存到与原始文件相同的目录中。
+
+   或者，设置用户选项 tramp-auto-save-directory 以将所有自动保存定向到该位置。
+
+** Cygwin ssh 问题
+   本节不完整。请分享您的解决方案。
+
+   Cygwin 的 ssh 仅适用于 Cygwin 版本的 Emacs。要检查兼容性：键入 M-x eshell RET，然后启动 ssh test.host RET。不兼容性会触发此消息：
+   #+BEGIN_EXAMPLE
+Pseudo-terminal will not be allocated because stdin is not a terminal.
+   #+END_EXAMPLE
+
+   由于 stdin 不是终端，因此不会分配伪终端。
+
+   一些旧版本的 Cygwin 的 ssh 使用 sshx 访问方法。有关详细信息，请参阅https://cygwin.com/faq/ 上的 Cygwin 常见问题解答。
+
+   在 Emacs Wiki 上，它解释了如何使用帮助程序 fakecygpty 来解决这个问题。
+
+   使用 scpx 访问方法时，Emacs 可能会调用带有 MS Windows 文件命名的 scp，例如 c:/foo。但是与 Cygwin 一起安装的 scp 版本不知道 MS Windows 文件命名，这导致它错误地查找名为 c 的主机。
+
+   解决方法：为 scp 编写包装脚本，将 Windows 文件名转换为 Cygwin 文件名。
+
+   在 MS Windows 上使用 ssh-agent 进行无密码交互时，ssh 方法依赖于环境变量 SSH_AUTH_SOCK。但是，当从桌面快捷方式启动 Emacs 并且身份验证失败时，不会设置此变量。
+
+   一种解决方法是使用基于 MS Windows 的 SSH 代理，例如 Pageant。它是 Putty Suite 工具的一部分。
+
+   备用选择是从 shell 启动 Emacs。
+
+* Using TRAMP
+  TRAMP 以透明方式运行，访问远程文件，就像它们是本地文件一样。 但是，TRAMP 采用形式化的远程文件命名语法来透明地执行其功能。 此语法由指定访问方法，身份验证，主机名和文件名的许多部分组成。Ange FTP 使用类似的语法。
+
+  与在 Emacs 中打开本地文件不同，它们是瞬时打开的，因此在 TRAMP 中打开远程文件的速度较慢。有时在迷你缓冲区中出现密码或身份验证提示之前会有明显的延迟。在此间隙期间按 RET 或其他键将由 Emacs 处理。 这种预先输入设施是 Emacs 的一项功能，在使用 TRAMP 时可能会导致错过提示。
+
+** TRAMP file name conventions
+   + /method:host:/path/to/file
+
+   opens file /path/to/file on the remote host host, using the method method.
+
+   + /ssh:melancholia:.emacs
+
+   For the file .emacs located in the home directory, on the host melancholia, using method ssh.
+
+   + /ssh:melancholia.danann.net:.emacs
+
+   For the file .emacs specified using the fully qualified domain name of the host.
+
+   + /ssh:melancholia:~/.emacs
+
+   For the file .emacs specified using the ~, which is expanded.
+
+   + /ssh:melancholia:~daniel/.emacs
+
+   For the file .emacs located in daniel’s home directory on the host, melancholia. The ~<user> construct is expanded to the home directory of that user on the remote host.
+
+   + /ssh:melancholia:/etc/squid.conf
+
+   For the file /etc/squid.conf on the host melancholia.
+
+
+   host 可以使用 IPv4 或 IPv6 地址，如 /ssh:127.0.0.1:.emacs 或 /ssh:[::1::.emacs。 出于语法原因，IPv6 地址必须嵌入方括号 [和] 中。
+
+   缺省情况下，TRAMP 将使用当前本地用户名作为远程用户名登录远程主机。 使用正确的语法指定其他名称将覆盖此默认行为：
+
+   #+BEGIN_EXAMPLE
+/method:user@host:path/to/file
+   #+END_EXAMPLE
+
+   /ssh:daniel@melancholia:.emacs is for file .emacs in daniel’s home directory on the host, melancholia, accessing via method ssh.
+
+   要指定端口号，请将＃<port> 放在主机名后。 例如： =/ssh:daniel@melancholia#42:.emacs= 。
+
+   所有方法，用户名，主机名，端口号和本地名称部分都是可选的，请参见默认方法，请参见默认用户，请参阅默认主机。 出于语法原因，默认方法必须由伪方法指示 - 。
+
+** Alternative file name syntax
+   文件名语法中描述的语法是在 Emacs 启动后的默认语法。 但是，这可以改变。
+
+   + Command: tramp-change-syntax syntax
+
+   此命令更改 TRAMP 用于远程文件名的语法。 除了默认值，语法也可以
+   + simplified
+   远程文件名语法类似于 Ange FTP 使用的语法。远程文件名的格式为 /user@host:path/to/file。user @ part 是可选的，该方法由 Default Method 确定。
+
+   + separate
+
+   远程文件名语法类似于 XEmacs 使用的语法。 远程文件名的格式为/[method/user@host]path/to/file。方法和 user@parts 是可选的。
+
+   + Variable: tramp-file-name-regexp
+
+   此变量保留与所选远程文件名语法匹配的正则表达式。 每次调用 tramp-change-syntax 后，它的值都会发生变化。 但是，不建议在外部包中使用此变量，调用 file-remote-p 更合适。
+
+** File name completion
+   TRAMP 可以补全以下 TRAMP 文件名组件：位于远程主机上的方法名称，用户名，主机名和文件名。通过激活. emacs 中的部分补全来启用此功能。
+
+   例如，键入 =C-x C-f / s TAB=，TRAMP 完成选项显示为
+
+   #+BEGIN_EXAMPLE
+sbin/
+scp:
+scpx:
+sftp:
+sg:
+smb:
+srv/
+ssh:
+sshx:
+su:
+sudo:
+sys/
+   #+END_EXAMPLE
+   'ssh:' 是相应方法的可能完成，'sbin/' 代表本地主机上的目录 /sbin。
+
+   键入 s h：将迷你缓冲区完成为 '/ssh:'。例如，键入 TAB 显示主机名 TRAMP 从~/.ssh/config 文件中提取。
+
+   #+BEGIN_EXAMPLE
+ssh:127.0.0.1:
+ssh:192.168.0.1:
+ssh:[::1]:
+ssh:localhost:
+ssh:melancholia.danann.net:
+ssh:melancholia:
+   #+END_EXAMPLE
+   从上面的列表中选择一个主机，然后继续在该主机上补全文件名。
+
+   当配置（请参阅自定义完成）包括用户名时，完成列表也将考虑用户名。
+
+   来自 auth-sources 搜索的结果（请参阅使用身份验证文件）将添加到完成候选项中。这种搜索可能很烦人，例如由于~/.authinfo.gpg 认证文件的密码短语请求。用户选项 tramp-completion-use-auth-sources 控制是否在补全期间执行此类搜索。
+
+   以前访问过的远程主机或其连续保持连接的主机（请参阅连接缓存）将包含在补全列表中。
+
+   远程主机名补全后，补全远程主机上的文件名。它与本地主机文件完成的工作方式相同，只是使用双斜杠 // 仅删除 TRAMP 文件名语法的文件名部分。三斜杠代表默认行为。
+
+   Example:
+   #+BEGIN_EXAMPLE
+C-x C-f /telnet:melancholia:/usr/local/bin//etc TAB
+	-| /telnet:melancholia:/etc
+
+C-x C-f /telnet:melancholia://etc TAB
+	-| /etc
+
+C-x C-f /telnet:melancholia:/usr/local/bin///etc TAB
+	-| /etc
+   #+END_EXAMPLE
+
+   在文件名补全期间，将定期重新读取远程目录内容，以避免文件系统中可能影响完成候选项的任何更改。此类重新读取可以解释 Emacs 外部应用程序对文件系统的更改（请参阅连接缓存）。
+
+   + 用户选项：tramp-completion-reread-directory-timeout
+
+   超时是自上次远程命令重新读取远程目录内容以来的秒数。在文件名完成期间，值 0 立即重新读取，nil 使用缓存的目录内容。
+
+** Declaring multiple hops in the file name
+   TRAMP 文件名语法可以适应多个代理的 ad-hoc 规范，而无需使用 tramp-default-proxies-alist 配置设置（请参阅多跳）。
+
+   使用与远程主机规范相同的语法减去文件名部分来指定每个代理。每个跃点用 “|” 分隔。将起始主机、代理、目标远程主机名和文件名串起来。例如，通过代理 'bird@bastion' 到 'you@remotehost' 上的远程文件：
+   #+BEGIN_EXAMPLE
+C-x C-f /ssh:bird@bastion|ssh:you@remotehost:/path RET
+   #+END_EXAMPLE
+
+   每个涉及的方法必须是内联方法（请参阅内联方法）。
+
+   代理可以采用％ h 或％ u 的模式。
+
+   TRAMP 动态地将临时定义添加到 tramp-default-proxies-alist，并且可以在该 Emacs 会话期间重用。然后，对同一远程主机的后续 TRAMP 连接可以使用快捷方式：'/ssh:you@remotehost:/path'。
+
+   + 用户选项：tramp-save-ad-hoc-proxies
+
+   要在未来的 Emacs 会话中自动保存在 tramp-default-proxies-alist 中的临时定义，请将 tramp-save-ad-hoc-proxies 设置为 non-nil。
+   #+BEGIN_SRC elisp
+(customize-set-variable 'tramp-save-ad-hoc-proxies t)
+   #+END_SRC
+
+   Ad-hoc 代理可以采用 tramp-default-proxies-alist 中的模式％ h 或％ u。以下文件名扩展为主机 remotehost 上的 root 用户，从主机 remotehost 上的 ssh 会话开始：'/ssh:%h|su:remotehost:'。
+
+   另一方面，如果最后一个未指定主机名，则重用前一跃点的主机名。因此，以下文件名等效于前面的示例：'ssh:remotehost|su::'。
+
+** Integration with other Emacs packages
+   TRAMP 支持在远程主机上启动新的运行进程以发现远程文件名。远程主机上的 Emacs 软件包无需对 TRAMP 的使用进行特定修改。
+
+   这种类型的集成不适用于 ftp 方法，并且不支持 start-file-process 中指定的 pty 关联。
+
+   当变量 default-directory 是远程时，process-file 和 start-file-process 在远程主机上工作：
+   #+BEGIN_SRC elisp
+(let ((default-directory "/ssh:remote.host:"))
+(start-file-process "grep" (get-buffer-create "*grep*")
+"/bin/sh" "-c" "grep -e tramp *"))
+   #+END_SRC
+
+   远程进程不适用于 GVFS（请参阅基于 GVFS 的方法），因为远程文件系统安装在本地主机上，而 TRAMP 只是通过更改 default-directory 进行访问。
+
+   在远程文件或目录缓冲区中执行命令时，TRAMP 启动远程进程。截至目前，这些软件包已经集成到 TRAMP 中：compile.el（诸如 compile 和 grep 之类的命令）和 gud.el（gdb 或 perldb）。
+
+   要使 TRAMP 在远程上找到命令，TRAMP 必须可以通过在第一次连接时设置的默认搜索路径访问它。或者，使用绝对路径或扩展 tramp-remote-path（请参阅远程程序）：
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-remote-path "~/bin")
+(add-to-list 'tramp-remote-path "/appli/pub/bin")
+   #+END_SRC
+
+   自定义用户选项 tramp-remote-process-environment 以适应远程主机的远程程序环境。tramp-remote-process-environment 是一个类似于 process-environment 的字符串列表，其中每个元素都是 'ENVVARNAME=VALUE' 形式的字符串。
+
+   为避免与通过本地配置文件（例如~/.profile）设置的本地主机环境变量发生冲突，请使用 “ENVVARNAME=” 为远程环境取消设置它们。
+
+   使用 add-to-list 添加条目：
+
+   #+BEGIN_SRC elisp
+(add-to-list 'tramp-remote-process-environment "JAVA_HOME=/opt/java")
+   #+END_SRC
+
+   在受限远程主机上修改或删除 tramp-remote-process-environment 列表中已有的值可能不可行。例如，某些系统管理员不允许更改 HISTORY 环境变量。要在使用 TRAMP 时适应此类限制，请通过本地. emacs 文件中的以下代码修复 tramp-remote-process-environment：
+   #+BEGIN_SRC elisp
+(let ((process-environment tramp-remote-process-environment))
+(setenv "HISTORY" nil)
+(setq tramp-remote-process-environment process-environment))
+   #+END_SRC
+
+   设置 ENV 环境变量指示一些 shell 读取初始化文件。默认情况下，TRAMP 已禁用此功能。可以通过求值来覆盖此行为
+   #+BEGIN_SRC elisp
+(let ((process-environment tramp-remote-process-environment))
+(setenv "ENV" "$HOME/.profile")
+(setq tramp-remote-process-environment process-environment))
+   #+END_SRC
+
+   除了 tramp-remote-process-environment 之外，您还可以通过 let-binding process-environment 为各个远程进程调用设置环境变量。TRAMP 应用任何不存在于 process-environment 的全局默认值中的条目（如果它们发生冲突，则覆盖 tramp-remote-process-environment 设置）。例如：
+   #+BEGIN_SRC elisp
+   (let ((process-environment (cons "HGPLAIN=1" process-environment)))
+   (process-file …))
+
+   无论要调用的进程是本地还是远程，以这种方式进行绑定都是有效的，因为 TRAMP 只会添加 HGPLAIN 设置，而本地进程会将进程环境的整个值与 HGPLAIN 的新值一起使用。
+
+   为了集成其他 Emacs 软件包以便 TRAMP 可以远程执行，请提交错误报告。请参阅错误报告。
+
+*** Running remote programs that create local X11 windows
+    要允许远程程序在本地主机上创建 X11 窗口，请在本地. emacs 文件中为远程主机设置 DISPLAY 环境变量，如下所示：
+    #+BEGIN_SRC elisp
+(add-to-list 'tramp-remote-process-environment
+ (format "DISPLAY=%s" (getenv "DISPLAY")))
+    #+END_SRC
+    (getenv "DISPLAY") 应返回本地主机的可识别名称，以便远程主机可以重定向 X11 窗口交互。 如果由于某种原因无法查询可识别的名称，则用硬编码的固定名称替换（getenv “DISPLAY”）。 请注意，此处使用 =:0= 表示 X11 显示名称将无法正常工作。
+
+    另一种方法是在本地主机上的~/.ssh/config 中指定 ForwardX11 yes 或 ForwardX11Trusted yes。
+
+*** Running shell on a remote host
+    在具有不同操作系统的两台主机（例如 'windows-nt' 和 'gnu /linux'）之间使用 TRAMP 时，将 explicit-shell-file-name 设置为适当的 shell 名称。 此选项可确保远程 shell 程序的正确名称。
+
+    当 explicit-shell-file-name 等于 nil 时，以交互方式调用 shell 将提示输入 shell 名称。
+
+    从 Emacs 26 开始，您可以使用连接局部变量为不同的远程主机设置 explicit-shell-file-name 的不同值。
+
+    #+BEGIN_SRC elisp
+(connection-local-set-profile-variables
+'remote-bash
+'((explicit-shell-file-name . "/bin/bash")
+(explicit-bash-args . ("-i"))))
+
+(connection-local-set-profile-variables
+'remote-ksh
+'((explicit-shell-file-name . "/bin/ksh")
+(explicit-ksh-args . ("-i"))))
+
+(connection-local-set-profiles
+'(:application tramp :protocol "ssh" :machine "localhost")
+'remote-bash)
+
+(connection-local-set-profiles
+`(:application tramp :protocol "sudo"
+:user "root" :machine ,(system-name))
+'remote-ksh)
+
+    #+END_SRC
+
+*** Running shell-command on a remote host
+    shell-command 在远程主机上同步或异步执行命令，并在本地主机的缓冲区中显示输出。 例：
+    #+BEGIN_EXAMPLE
+C-x C-f /sudo:: RET
+M-& tail -f /var/log/syslog.log RET
+    #+END_EXAMPLE
+
+    tail 命令连续输出到本地缓冲区， =*Async Shell Command*=
+
+    =M-x auto-revert-tail-mode RET= 运行类似，显示连续输出。
+
+*** Running eshell on a remote host
+    TRAMP 已集成到 eshell.el 中，可在命令提示符下在远程主机上启用交互式 eshell 会话。必须将模块 em-tramp 添加到 eshell-modules-list。 这是在远程主机上打开 M-x eshell RET 后的示例交互：
+    #+BEGIN_EXAMPLE
+~ $ cd /sudo::/etc RET
+/sudo:root@host:/etc $ hostname RET
+host
+/sudo:root@host:/etc $ id RET
+uid=0(root) gid=0(root) groups=0(root)
+/sudo:root@host:/etc $ find-file shadow RET
+#<buffer shadow>
+/sudo:root@host:/etc $
+    #+END_EXAMPLE
+    eshell 添加了自定义 su 和 sudo 命令，可以为 *eshell* 缓冲区正确设置默认目录。TRAMP 使用此目录的条目静默更新 tramp-default-proxies-alist（请参阅多跳）：
+
+    #+BEGIN_EXAMPLE
+~ $ cd /ssh:user@remotehost:/etc RET
+/ssh:user@remotehost:/etc $ find-file shadow RET
+File is not readable: /ssh:user@remotehost:/etc/shadow
+/ssh:user@remotehost:/etc $ sudo find-file shadow RET
+#<buffer shadow>
+
+/ssh:user@remotehost:/etc $ su - RET
+/su:root@remotehost:/root $ id RET
+uid=0(root) gid=0(root) groups=0(root)
+/su:root@remotehost:/root $
+
+    #+END_EXAMPLE
+
+
+*** Running a debugger on a remote host
+    gud.el 为符号调试器提供统一接口，TRAMP 可以通过使用远程文件名调用 gdb 来在远程主机上运行调试：
+    #+BEGIN_EXAMPLE
+M-x gdb RET
+Run gdb (like this): gdb -i=mi /ssh:host:~/myprog RET
+    #+END_EXAMPLE
+
+    由于远程 gdb 和 gdb-inferior 进程不属于远程主机上的同一进程组，因此会出现警告，可以忽略：
+
+    #+BEGIN_EXAMPLE
+&"warning: GDB: Failed to set controlling terminal: Operation not permitted\n"
+    #+END_EXAMPLE
+
+    因此，要调试的进程的 I/O 将受到限制。
+
+    相对文件名基于远程默认目录。当 myprog.pl 存在于 =/ssh:host:/home/user= 中时，有效的调用包括：
+    #+BEGIN_EXAMPLE
+M-x perldb RET
+Run perldb (like this): perl -d myprog.pl RET
+    #+END_EXAMPLE
+
+    只有远程文件名的本地部分，例如 =perl -d /home/user/myprog.pl= ，是不可能的。
+
+    要调试的程序的参数必须是字面的，可以采用相对或绝对路径，但不能采用远程路径。
+
+*** Running remote processes on MS Windows hosts
+    winexe 在远程 MS Windows 主机上运行进程，TRAMP 可以将其用于 process-file 和 start-file-process。
+
+    tramp-smb-winexe-program 指定本地 winexe 命令。从 TRAMP 触发运行的进程需要远程主机上的 Powershell V2.0。
+
+    必须正确设置 explicit-shell-file-name 和 explicit-*-args，以便 M-x shell RET 可以在 MS Windows 主机上打开正确的远程 shell。要打开 cmd，请按如下所示进行设置：
+    #+BEGIN_SRC elisp
+(setq explicit-shell-file-name "cmd"
+explicit-cmd-args '("/q"))
+    #+END_SRC
+
+    要将 PowerShell 作为远程 shell 打开，请使用以下命令：
+    #+BEGIN_SRC elisp
+(setq explicit-shell-file-name "powershell"
+explicit-powershell-args '("-file" "-"))
+    #+END_SRC
+
+** Cleanup remote connections
+   TRAMP 提供了几种刷新远程连接的方法。
+
+   + Command: tramp-cleanup-connection vec
+
+   此命令刷新所有与连接相关的对象。vec 是远程连接的内部表示。 以交互方式调用时，此命令会列出迷你缓冲区中的活动远程连接。 每个连接的格式为 =/method:user@host:= 。 刷新远程连接还会清除密码缓存（请参阅密码处理），文件缓存，连接缓存（请参阅连接缓存）和连接缓冲区。
+
+   + Command: tramp-cleanup-this-connection
+
+   仅刷新当前缓冲区的远程连接对象，与 tramp-cleanup-connection 中的相同。
+
+   + Command: tramp-cleanup-all-connections
+
+   刷新所有活动的远程连接对象，与 tramp-cleanup-connection 中的相同。
+
+   + Command: tramp-cleanup-all-buffers
+
+   就像 tramp-cleanup-all-connections 一样，除了杀死与该远程连接相关的缓冲区之外，还清除所有远程连接。
+
+** Archive file names
+   TRAMP 还提供对文件存档内文件的透明访问。这仅适用于已为 GNOME 桌面（GVFS），基于 GVFS 的方法安装虚拟文件系统的计算机。在内部，文件存档通过 GVFS archive 方法安装。
+
+   文件存档是 /path/to/dir/file.EXT 的常规文件。扩展名 “.EXT” 标识文件存档的类型。文件存档中的文件（称为存档文件名）的名称为 /path/to/dir/file.EXT/dir/file。
+
+   大多数（elisp）魔术文件名操作都是针对归档文件名实现的，不同的是写入文件归档的所有操作，以及与相关处理的操作。因此，类似以下功能
+   #+BEGIN_SRC elisp
+(copy-file "/path/to/dir/file.tar/dir/file" "/somewhere/else")
+   #+END_SRC
+   开箱即用。对于文件名完成以及诸如 dired 或 ediff 之类的库也是如此，它们也接受存档文件名。
+
+   文件存档由文件扩展名 “.EXT” 标识。由于 GVFS 在内部使用库 libarchive（3），因此该库接受的所有后缀也适用于归档文件名。接受的后缀列在常量 tramp-archive-suffix 中。它们是：
+   + ‘.7z’ — 7-Zip archives
+   + ‘.apk’ — Android package kits
+   + ‘.ar’ — UNIX archiver formats
+   + ‘.cab’, ‘.CAB’ — Microsoft Windows cabinets
+   + ‘.cpio’ — CPIO archives
+   + ‘.deb’ — Debian packages
+   + ‘.depot’ — HP-UX SD depots
+   + ‘.exe’ — Self extracting Microsoft Windows EXE files
+   + ‘.iso’ — ISO 9660 images
+   + ‘.jar’ — Java archives
+   + ‘.lzh’, ‘.LZH’ — Microsoft Windows compressed LHA archives
+   + ‘.msu’, ‘.MSU’ — Microsoft Windows Update packages
+   + ‘.mtree’ — BSD mtree format
+   + ‘.odb’, ‘.odf’, ‘.odg’, ‘.odp’, ‘.ods’, ‘.odt’ — OpenDocument formats
+   + ‘.pax’ — Posix archives
+   + ‘.rar’ — RAR archives
+   + ‘.rpm’ — Red Hat packages
+   + ‘.shar’ — Shell archives
+   + ‘.tar’, ‘.tbz’, ‘.tgz’, ‘.tlz’, ‘.txz’ — (Compressed) tape archives
+   + ‘.warc’ — Web archives
+   + ‘.xar’ — macOS XAR archives
+   + ‘.xpi’ — XPInstall Mozilla addons
+   + ‘.xps’ — Open XML Paper Specification (OpenXPS) documents
+   + ‘.zip’, ‘.ZIP’ — ZIP archives
+
+   文件存档也可以压缩，由附加的压缩后缀标识。有效的压缩后缀列在常量 tramp-archive-compression-suffix 中。它们是 ‘.bz2’, ‘.gz’, ‘.lrz’, ‘.lz’, ‘.lz4’, ‘.lzma’, ‘.lzo’, ‘.uu’, ‘.xz’ and ‘.Z’。有效的归档文件名是 /path/to/dir/file.tar.gz/dir/file。甚至可以连续使用几个后缀，例如 /path/to/dir/file.tar.gz.uu/dir/file。
+
+   存档文件名可以是远程文件名，如 =/ftp:anonymous@ftp.gnu.org:/gnu/tramp/tramp-2.3.2.tar.gz/INSTALL= 。由于所有文件操作都在内部映射到 GVFS 操作，因此 tramp-gvfs 支持的远程文件名执行得更好，因为不必首先下载文件存档的本地副本。例如，'/sftp：user @ host：...' 比类似的 '/sftp:user@host:...' 表现更好。有关 tramp-gvfs 支持的方法名称的完整列表，请参阅常量 tramp-archive-all-gvfs-methods。
+
+   如果启用了 url-handler-mode，则可以通过 URL 访问归档，例如 =https://ftp.gnu.org/gnu/tramp/tramp-2.3.2.tar.gz/INSTALL= 。这允许复杂的文件操作:
+   #+BEGIN_SRC elisp
+(progn
+(url-handler-mode 1)
+(ediff-directories
+ "https://ftp.gnu.org/gnu/tramp/tramp-2.3.1.tar.gz/tramp-2.3.1"
+ "https://ftp.gnu.org/gnu/tramp/tramp-2.3.2.tar.gz/tramp-2.3.2" ""))
+   #+END_SRC
+   甚至可以访问文件存档中的文件存档：
+   #+BEGIN_SRC elisp
+(progn
+(url-handler-mode 1)
+(find-file
+ "http://ftp.debian.org/debian/pool/main/c/coreutils/coreutils_8.28-1_amd64.deb/control.tar.gz/control"))
+   #+END_SRC

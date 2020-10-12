@@ -1,0 +1,42 @@
+# -*- coding:utf-8-*-
+#+TITLE:gotest
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/nlamirault/gotest.el][gotest]] 可以直接从 Emacs 中运行 =go test= 。
+
+* 使用
+  有很多命令可以从多角度运行命令。
+
+  + go-test-current-test
+
+    Launch unit tests for the current test.
+
+  + go-test-current-test-cache
+
+    Rerun the current test.
+
+  + go-test-current-file
+
+    Launch unit tests and examples for the current file
+
+  + go-test-current-project
+
+    Launch unit tests and examples for the current project.
+
+  + go-test-current-coverage
+
+    Launch unit tests coverage for the current project.
+
+  + go-test-current-benchmark
+
+    Launch go benchmark on current benchmark
+
+  + go-test-current-file-benchmarks
+
+    Launch go benchmark on current file
+
+  + go-test-current-project-benchmarks
+
+    Launch go benchmark on current project

@@ -1,0 +1,80 @@
+# -*- coding:utf-8; -*-
+#+title: open-falcon 实践
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+
+* 简介
+  详细使用需要阅读[[http://book.open-falcon.org/zh_0_2/][open-falcon 手册]]。
+
+  下面明确一些概念（concept）：
+
+* 数据上报字段
+** 示例
+   #+BEGIN_SRC json
+{
+    "metric": "cpu.idle",
+    "endpoint": `hostname`,
+    "tags": "",
+    "value": 12.34,
+    "timestamp": `date +%s`,
+    "step": 60,
+    "counterType": "GAUGE"
+}
+   #+END_SRC
+** metric
+   metric 即监控指标的名称，比如 disk.io.util、load.1min、df.bytes.free.percent。
+
+** value
+   value 就是这个监控指标的值。
+
+** endpoint
+   endpoint 是这个监控指标所依附的实体，一般设置为 机器的 hostname 或 IP。
+
+** tag
+   监控指标的属性标签，对 metric 进一步描述和细化,。取值是一组逗号分割的键值对，例如 ~project=foo,module=bar~ 。
+
+** timestamp
+   表示上报监控指标时的时间戳，注意是整数，代表的是秒
+
+** step
+   step 是 监控数据的上报周期，这对于后续的配置监控策略很重要，必须明确指定。
+
+   step 是 rrdtool 中的概念，Falcon 后端存储用的 rrdtool，我们需要告诉 rrdtool 这个数据多长时间 push 上来一次。
+
+** counterType
+   counterType 也是 rrdtool 中的概念，目前 Open-Falcon 支持两种类型数据类型：
+   + COUNTER：指标在存储和展现的时候，会被计算为 speed，即（当前值 - 上次值）/ 时间间隔
+   + GAUGE：即用户上传什么样的值，就原封不动的存储
+
+
+* 监控视图
+** project
+   代表一个项目，可以有多个 screen。
+
+** screen
+   视图，里面可以有多个 graph。
+
+** graph
+   展示监控曲线，每条曲线对应一个 counter：
+
+** counter
+   #+BEGIN_EXAMPLE
+counter=$metric/sorted($tags)
+   #+END_EXAMPLE
+
+* 告警
+** 配置告警接收人
+   创建告警通知的 team，并添加成员。
+
+** 创建 hostgroup
+   创建告警针对的 hostgroup，包含告警的机器。
+
+** 创建策略模板
+   创建告警策略，template
+
+** 告警函数
+   参见 [[https://book.open-falcon.org/zh_0_2/usage/func.html][告警函数]]
+
+* 实践与优化
+  + [[https://zhuanlan.zhihu.com/p/25951941][Mt-Falcon——Open-Falcon 在美团点评的应用与实践]]

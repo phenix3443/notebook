@@ -1,0 +1,93 @@
+# -*- coding:utf-8; -*-
+#+title:cpp summary
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+#+startup:overview
+
+* 简介
+** 起源
+** 优点
+** 特性
+** 语言文化
+** 编码规范
+*** 注释
+* 安装运行
+** 安装
+** 运行
+* 相关工具
+** 标准命令
+** 集成开发
+*** Vim
+*** Emacs
+** 静态检查
+*** Coverity
+*** Lint
+*** Splint
+*** Fortify
+*** Codecheck
+*** Understand C++
+** 构建编译
+*** GCC
+** 代码调试
+*** GDB
+*** DDD
+*** TotalView Debugger
+** 内存检查
+*** Purify
+*** Valgrind
+*** KCachegrind
+** 性能分析
+*** gprof
+** 并行检查
+*** Intel 线程分析工具
+
+** 自动测试
+** 文档系统
+** 包管理系统
+   + [[https://conan.io/][conan]]
+** 其他工具
+*** GNU binutils
+* 工程布局
+* 程序结构
+** 函数
+*** 参数
+*** 返回值
+** 变量
+*** 作用域
+* 类型系统
+** 基本类型
+*** 布尔(bool)
+*** 数字(numeric)
+*** 字符串(string)
+** 复合类型
+** 默认值
+** 类型转换
+* 运算符
+** 算数运算符
+** 逻辑运算符
+** 位运算符
+** 通信操作符
+* 表达式
+** 赋值表达式
+   多变量赋值
+* 分支控制
+** 判断
+** 循环
+** 跳转
+
+* 编程范式
+* 程序库
+** 字符串处理
+** 日志
+** 数据库
+** 网络
+* 参考书籍
+** 入门
+   + [[https://book.douban.com/subject/10789789/][C++ Primer Plus]]
+   + [[https://book.douban.com/subject/25708312/][C++ Primer]]
+** 高级
+** 实践
+** 原理
+   + [[https://book.douban.com/subject/10427315/][深度探索 C++ 对象模型]]
+   + [[http:https://book.douban.com/subject/1110934/][STL源码剖析]]
+   + [[https://book.douban.com/subject/10536031/][C++ 语言的设计与演化]]

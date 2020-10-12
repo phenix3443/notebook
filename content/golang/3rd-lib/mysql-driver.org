@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE:mysql-driver
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://godoc.org/github.com/go-sql-driver/mysql][mysql-driver]] mysql 数据库驱动，配合 sql 库使用。

@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: cpplint
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  Cpplint 是一个命令行工具，用于根据 [[http://google.github.io/styleguide/cppguide.html][Google C++ 样式指南]] 检查 C/C++ 文件的样式问题。
+
+* 安装
+
+* 配置
+
+* 使用

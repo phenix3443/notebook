@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: split
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  用来分割文件。
+
+  比较有用的参数：
+  #+BEGIN_EXAMPLE
+-d 使用数字作为后缀，默认是字母 a-z。
+-a 指定后缀的长度。
+-b 按照字节大小分割
+-l 按照行数分割
+--filter=COMMAND 直接将小文件输出到命令处理。
+  #+END_EXAMPLE
+* 示例
+  #+BEGIN_SRC sh
+  split  -a 4 -l 1000 -d bigfile "small/small-"
+  #+END_SRC
+  该命令将 bigfile 每 1000 行分成一个小文件，放在 small 目录下，每个小文件名字为 small-0000，small-0001 等。

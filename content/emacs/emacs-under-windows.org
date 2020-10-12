@@ -1,0 +1,22 @@
+# -*- coding:utf-8-*-
+#+TITLE:Emacs under Windows
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  本文主要记录在 windows 下使用 Emacs 的一些注意事项以及有用的 tips。
+
+  正在使用的 window 系统是：
+
+  #+BEGIN_SRC shell :exports results :results vector raw
+$psversiontable
+  #+END_SRC
+
+  当前的 Emacs 版本：src_elisp[:exports results]{emacs-version}
+
+* tips
+
+** 输入法
+   + 启动 Emacs 后如果发现系统输入法不能再 Emacs 中使用，可以拖动 Emacs 窗口试试，然后就会发现又可以了。
+
+** 快捷键
+   + 使用 ctrl+shift+spc 替代系统默认的 ctrl+spc 来 mark-set。

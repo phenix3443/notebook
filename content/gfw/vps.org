@@ -1,0 +1,66 @@
+# -*- coding:utf-8 -*-
+#+title:VPS 实践
+#+author:刘尚亮
+#+email: phenix3443@gmail.com
+
+* vps 厂商
+
+** vultr
+   推荐使用 vultr 家的主机，使用我的[[http://www.vultr.com/?ref%3D6862956][推荐链接]] 可以有优惠。
+
+** goolge cloud platform（GCP）
+
+* 一些有意思应用
+
+** 代理
+   使用 shadowsocks 或者 v2ray 搭建代理。
+
+** VPN
+   搭建 vpn。
+
+** GPS 跟踪
+
+** owncloud
+   搭建自己的网络存储。
+
+* 开启 bbr
+  #+BEGIN_SRC sh
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && sudo ./bbr.sh
+  #+END_SRC
+
+  #+BEGIN_SRC
+sysctl net.ipv4.tcp_available_congestion_control
+  #+END_SRC
+
+  返回值一般为：
+  #+begin_example
+net.ipv4.tcp_available_congestion_control = reno cubic bbr
+  #+end_example
+
+  #+BEGIN_SRC sh
+sysctl net.ipv4.tcp_congestion_control
+  #+END_SRC
+
+  返回值一般为：
+  #+begin_example
+net.ipv4.tcp_congestion_control = bbr
+  #+end_example
+
+
+  #+BEGIN_SRC
+sysctl net.core.default_qdisc
+  #+END_SRC
+
+  返回值一般为：
+  #+begin_example
+net.core.default_qdisc = fq
+  #+end_example
+
+  #+BEGIN_SRC sh
+lsmod | grep bbr
+  #+END_SRC
+  返回值有 tcp_bbr 模块即说明 bbr 已启动。
+
+* 安装 shadowsocks
+
+* 安装 v2ray

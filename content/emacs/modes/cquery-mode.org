@@ -1,0 +1,69 @@
+# -*- coding:utf-8-*-
+#+TITLE: cquery
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+   [[https://github.com/cquery-project/cquery][cquery]] 是 C/C++的 language server。它提供准确而快速的语义分析，而不会中断工作流程。
+
+  cquery 实现了几乎所有的语言服务器协议，并提供了一些额外的功能来启动：
+  + 代码补全（包括签名帮助和 snippet）
+  + 查找定义和引用
+  + 调用（调用者/被调用者）层次结构，继承（基础/派生）层次结构，成员层次结构
+  + 重命名符号
+  + 问当化符号和工作区符号近似搜索
+  + 悬停信息
+  + 诊断
+  + code actions (clang FixIts)
+  + preprocessor skipped regions
+  + 自动补全 =#include= , undefined type include insertion, include quick-jump (goto definition, document links)
+  + auto-implement functions without a definition
+  + 语义高亮，包括支持彩虹语义高亮（rainbow semantic highlighting）
+
+* 缺点
+  cquery 能够快速响应查询是因为它缓存了大量的信息。 当请求进入时，cquery 只是在缓存中查找它，而不需要执行很多计算。 这存在很大的内存开销。 例如，Chrome 的完整索引大约需要 10GB 的内存。 如果排除 v8，webkit 和 third_party，则会降至 6.5GB 左右。
+
+* 安装
+  #+BEGIN_SRC sh
+git clone https://github.com/cquery-project/cquery --single-branch --depth=1
+cd cquery
+git submodule update --init && ./waf configure build # --variant=debug if you want to report issues.
+  #+END_SRC
+
+  需要安装 clang
+  #+BEGIN_SRC sh
+sudo apt install clang clang-format clang-tool
+  #+END_SRC
+
+** emacs-cquery
+   emacs-cquery 是 cquery 的客户端，
+
+   它利用了 lsp-mode，但也为 LSP 提供了一些 cquery 扩展：
+   + 语义高亮
+   + 注释区域（通过#if false）
+   + 交叉引用
+
+* 使用
+** 项目设置
+*** compile_commands.json (最佳)
+    项目根目录下需要该文件。
+
+*** .cquery
+    另一个方法是在项目根目录下建立 =.cquery= 文件。cquery 递归查找源码文件，并进行索引。子目录中也可以有 =.cquery= 文件，这将会影响子目录中的相关选项。 注意如果您使用 emacs-cquery，请阅读 =cquery-project-root-matchers= 的文档以正确定位项目的根目录。
+
+    如果使用 =%clang= ，则根据扩展名将其扩展为 clang/clang ++。 带有 =%c= 或 =%cpp=  的前缀选项分别针对 C 或 C++。
+
+    =.cquery= 示例文件：
+    #+BEGIN_EXAMPLE
+%clang
+%c -std=gnu11
+%cpp -std=gnu++14
+-pthread
+
+# Includes
+-I/work/cquery/third_party
+-I/work/cquery/another_third_party
+# -I space_is_not_allowed
+    #+END_EXAMPLE
+
+    注意： =.cquery= 不会进行分词或命令替换，不能使用类似的 =%cpp -std=gnu++14 -pthread= 的命令或空格分隔的参数。

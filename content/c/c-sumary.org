@@ -1,0 +1,50 @@
+# -*- coding:utf-8; -*-
+#+title:C 语言总结
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介
+** 起源
+** 优点
+** 特性
+** 语言文化
+* 语言特性
+
+* 编码规范
+
+* 标准库
+
+* 第三方库
+  参见 [[https://github.com/kozross/awesome-c][awesome-c]]
+
+* 参考书籍
+** 入门
+** 高级
+** 实践
+** 原理
+
+* 相关工具
+** 标准命令
+** 集成开发
+   clang-format
+** 静态检查
+   + cppcheck
+
+** 构建编译
+   + gcc
+   + clang
+
+** 代码调试
+   + gdb
+
+** 性能分析
+
+** 自动测试
+   + cmockery
+
+** 文档系统
+   + doxygen
+
+** 包管理
+
+** 其他工具

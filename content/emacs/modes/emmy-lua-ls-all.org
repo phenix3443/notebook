@@ -1,0 +1,34 @@
+# -*- coding:utf-8-*-
+#+TITLE: emmylua-ls-all
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/EmmyLua/EmmyLua-LanguageServer][Emmy Lua Language Server]] 是一个 lua 语言的 lsp-server。该程序需要安装 JDK。
+
+* 安装
+
+  编译：
+  #+BEGIN_SRC sh
+git clone https://github.com/EmmyLua/EmmyLua-LanguageServer.git
+cd EmmyLua-LanguageServer/
+chmod +x gradlew
+./gradlew shadowJar
+  #+END_SRC
+
+  编译 LS 放在 =EmmyLua-LanguageServer/EmmyLua-LS/build/libs/EmmyLua-LS-all.jar=
+
+  最后一步编译不成功，是因为设置 gradle 版本错误。
+
+  或者在 docker 中搭建：
+  #+BEGIN_SRC sh
+docker pull mcr.microsoft.com/java/jdk:8u192-zulu-ubuntu
+docker run --name emmy-lua-build -it -v <abs-paht-to-EmmyLua-LanguageServer>:/EmmyLua-LanguageServer mcr.microsoft.com/java/jdk:8u192-zulu-ubuntu
+  #+END_SRC
+
+
+* 使用
+  启动 LS，然后客户端就可以对接使用了。
+  #+BEGIN_SRC sh
+java -cp EmmyLua-LS-all.jar com.tang.vscode.MainKt
+  #+END_SRC

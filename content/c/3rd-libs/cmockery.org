@@ -1,0 +1,95 @@
+# -*- coding:utf-8-*-
+#+TITLE: cmockery
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  cmockery 是一个轻量级库，用于创建 C 单元测试。
+
+  [[https://github.com/google/cmockery][cmockery]] 测试用例被编译为独立的可执行文件，并与 cmockery 库，标准 C 库和正在被测试模块链接。在测试应用程序中，被测模块外部的任何符号都应该被模拟，替换为返回测试确定的值的函数。尽管代码模块的最终执行环境与测试环境之间可能存在显着差异，但单元测试仍然有效，因为其目标是在功能级别测试代码模块的逻辑，而不是它与目标执行环境的所有交互。
+
+  如果不进行一些修改，可能无法将测试模块编译到测试应用程序中;因此，应该在编译 Cmockery 单元测试应用程序时定义预处理程序符号 =UNIT_TESTING= ，以便模块中的代码可以针对测试进行编译。
+
+
+* 动机
+  有多种 C 单元测试框架可供使用。但是，其中许多都相当复杂，需要最新的编译器技术。一些开发需要使用旧的编译器，这使得使用某些单元测试框架变得困难。此外，许多单元测试框架都假设要测试的代码是针对最终将执行测试的同一平台的应用程序或模块。由于这个假设，许多框架要求在要测试的代码模块中包括标准 C 库标头，这可能与被测试代码使用的 C 库的自定义或不完整实现相冲突。
+
+  Cmockery 仅需要将测试应用程序与标准 C 库链接即可，这样可以最大程度地减少与标准 C 库标头的冲突。另外，Cmockery 尝试避免使用 C 编译器的某些较新功能。
+
+  这导致 Cmockery 是一个相对较小的库，可用于测试各种外来代码。如果开发人员希望使用最新的编译器简单地测试应用程序，则最好使用其他单元测试框架。
+
+* 安装
+
+  #+BEGIN_SRC sh
+git clone git@github.com:google/cmockery.git
+./configure && make && sudo make install && sudo ldconfig
+  #+END_SRC
+
+* 使用
+  有关使用 cmockery 编写测试的机制的更多详细信息，请参阅 [[https://github.com/google/cmockery/blob/master/docs/user_guide.md][docs/user_guide.md]].
+
+** 执行测试
+   单元测试用例是签名为 =void function(void **state)= 的函数。 Cmockery 测试应用程序中需要一个表，测试用例函数指针通过 =unit_test*()= 宏初始化为一个表项，然后将该表传递给 =run_tests()= 宏以执行测试。
+
+   =run_tests()= 在运行每个测试功能之前会设置适当的异常/信号处理程序和其他数据结构。单元测试完成后， =run_tests()= 执行各种检查以确定测试是否成功。
+
+   参见 [[https://github.com/phenix3443/test/tree/master/c/cmockery][overview.c]]
+
+** 处理异常
+   在 =run_tests()= 执行测试函数之前，异常/信号处理程序将被另外的处理程序覆盖，该程序仅显示错误并在发生异常时退出测试函数。如果在测试函数之外（例如在 Cmockery 本身中）发生异常，则应用程序将中止执行并返回错误代码。
+
+** 失效条件
+   如果 =run_tests()= 执行的测试函数时发生故障，则该测试函数将中止，并且应用程序的继续执行下一个测试函数。
+
+   测试失败最终通过 Cmockery 函数 =fail()= 发出信号。以下事件将导致 Cmockery 库发出测试失败的信号：
+   + 断言(assertions)
+   + 异常(exception)
+   + 内存泄漏（memery leaks）
+   + set-up 和 tear-down 函数不匹配
+   + 缺少 mock 返回值
+   + 未使用的 mock 返回值
+   + 预期参数值
+   + 未使用的期望参数值
+
+** 断言(assertions)
+   像标准 C 库的 assert()这样的运行时断言宏应在正在测试的模块中重新定义，以使用 Cmockery 的 =mock_assert()= 函数。通常， =mock_assert()= 表示测试失败。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/assert.c][assert.c]]
+
+   如果使用 =expect_assert_failure()= 宏调用了一个函数，则该函数内对 =mock_assert()= 的任何调用都将导致测试的执行。如果在通过 =expect_assert_failure()= 调用的函数期间未发生对 =mock_assert()= 的调用，则表明测试失败。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/expect_assert_failure.c][expect_assert_failure.c]]
+
+** 断言宏(assert macros)
+
+   Cmockery 提供了各种断言宏，测试应优先使用这些断言宏，而不是 C 标准库的 =assert()= 宏。在断言失败时，Cmockery 断言宏会将故障写入标准错误流，并发出测试失败的信号。由于 C 语言的限制，一般的 C 标准库 =assert()= 和 Cmockery 的 =assert_true()= 和 =assert_false()= 宏只能显示导致断言失败的表达式。 Cmockery 的特定于类型的断言宏 =assert_{type}_equal()= 和 =assert_{type}_not_equal()=  显示导致断言失败的数据，该数据增加了数据可见性，有助于调试失败的测试用例。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/assert_macro.c][assert_macro.c]]
+
+** 动态内存分配(dynamic memory allcation)
+   为了测试内存泄漏，缓冲区溢出和下溢，由 Cmockery 测试的模块应该分别用 =test_malloc()= ， =test_calloc()= 和 =test_free()= 替换对 =malloc()= ， =calloc()= 和 =free()= 的调用。每次使用 =test_free()= 释放一个块时，都会检查其是否损坏。如果发现损坏的块，则表明测试失败。使用 =test_*()= 分配函数分配的所有块均由 Cmockery 库跟踪。测试完成后，如果剩余任何分配的块（内存泄漏），则将报告它们并发出测试失败的信号。
+
+   为简单起见，Cmockery 当前在一个过程中执行所有测试。因此，测试应用程序中的所有测试用例共享一个地址空间，这意味着单个测试用例的内存损坏可能会导致测试应用程序过早退出。
+
+** Mock 函数(mock functions)
+   理想情况下，单元测试应将要测试的函数或模块与任何外部依赖项隔离开。可以通过将被测试模块与模拟函数静态或动态链接来达到目的。当要测试的代码直接引用外部函数时，模拟函数必须静态链接。在被测试模块使用的表中设置函数指针以引用单元测试中定义的模拟函数时才会用到动态链接。
+
+** 返回值(return values)
+   为了简化模拟函数的实现，Cmockery 通过 =will_return()= 在每个测试用例中存储模拟函数的返回值。然后，每个模拟函数都调用 =mock()= 返回这些值。
+
+   传递给 =will_return()= 的值将添加到每个函数指定的队列中。函数每次对 =mock()= 的连续调用都会从队列中删除一个返回值。这使得模拟函数可以使用多次调用 =mock()= 来返回输出参数以及返回值。另外，这允许指定多次调用模拟函数的返回值。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/mock_func.c][mock_func.c]]
+
+** 检查参数(check params)
+   除了存储模拟函数的返回值外，Cmockery 还使用 =expect_*()= 函数存储模拟函数参数的期望值。然后可以使用 ==check_expected()= = 宏来验证模拟函数参数。
+
+   对参数的 =expect_*()= 宏的连续调用将检查指定的参数的值排队。 =check_expected()= 根据使用 =expected_*()= 排队的下一个值检查功能参数，如果参数检查失败，则表示测试失败。此外，如果调用 =check_expected()= 且没有更多的参数值排队，则测试失败。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/mock_func_param.c][mock_func_param.c]]
+
+** Test State
+   Cmockery 允许为每个测试用例指定多种 set-up 和 tear-down 功能。由 =unit_test_setup()= 或 =unit_test_setup_teardown()= 宏指定的 set-up 函数允许在多个测试用例之间共享常见的初始化。另外，由 unit_test_teardown()或 =unit_test_setup_teardown()= 宏指定的 tear-down 函数提供了即使在测试用例失败时也始终执行的代码路径。
+
+   参见 [[https://github.com/phenix3443/test/blob/master/c/cmockery/setup_teardown.c][setup_teardown.c]]
+** 示例（example）

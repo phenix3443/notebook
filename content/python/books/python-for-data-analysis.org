@@ -1,0 +1,53 @@
+# -*- coding:utf-8 -*-
+#+title:利用 Python 进行数据分析读书笔记
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+
+* 第一章 准备工作
+  #+BEGIN_SRC sh
+sudo pip install pandas
+sudo apt install python-tk
+  #+END_SRC
+* 第二章 引言
+  #+BEGIN_SRC python
+import json
+import numpy as np
+import pandas as pd
+
+from pandas import DataFrame, Series
+
+path = 'usagov_bitly_data2012-03-16-1331923249.txt'
+
+records = [json.loads(line) for line in open(path)]
+
+frame = DataFrame(records)
+
+clean_tz = frame['tz'].fillna('Missing')
+
+clean_tz[clean_tz == ''] = 'Unknown'
+
+tz_counts = clean_tz.value_counts()
+
+tz_counts[:10].plot(kind='barh',rot=0)
+  #+END_SRC
+
+* 第三章 IPython
+
+* 第四章 NumPy 基础：数组和矢量计算
+
+* 第五章 pandas 入门
+
+* 第六章 数据加载、存储与文件格式
+
+* 第七章 数据规整化
+
+* 第八章 绘图和可视化
+
+* 第九章 数据聚合与分组运算
+
+* 第十章 时间序列
+
+* 第十一章 金融和经济数据应用
+
+* 第十二章 NumPy 高级应用

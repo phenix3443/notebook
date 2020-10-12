@@ -1,0 +1,42 @@
+# -*- coding:utf-8-*-
+#+TITLE: ls
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  ls 用于显示目录内容。
+
+  常用参数：
+  #+BEGIN_EXAMPLE
+-a 显示隐藏文件
+-A 不显示 . 和 ..
+-B 不显示以～结尾的文件
+-d 只显示目录本身，而不显示其内容
+-h 结合-l 或-s 使用，打印人类可读的大小
+-I, --ignore=PATTERN 忽略匹配正则表达式的文件
+-l 长格式显示文件
+-m 使用逗号分割要显示的文件文件，最后结果是一个字符串列表。
+-R 递归打印子目录内容。
+-S 按照文件大小排序，从大到小
+--sort=WORD 按照 WORD 而不是名字排序: none (-U), size (-S), time (-t),version (-v), extension (-X)
+-t 按修改时间排序
+--time=WORD 按照 WORD 而不是修改时间排序，可以 atime 或 access
+  #+END_EXAMPLE
+
+* 举例
+
+** 只显示目录
+   1. 利用 ls 命令的 -d 选项：
+      #+BEGIN_SRC sh
+ls -d */
+   #+END_SRC
+
+   2. 利用 ls 命令的 -F 选项：
+      #+BEGIN_SRC sh
+ls -F |grep "/$"
+      #+END_SRC
+
+** 只显示文件
+   1. 利用 ls 命令的 -F 选项：
+      #+BEGIN_SRC sh
+ls -F |grep -Ev '@$|/$'
+      #+END_SRC

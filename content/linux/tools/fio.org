@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: fio
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  fio 是一种 I/O 工具，用于基准测试和压力/硬件验证。它支持 19 种不同类型的 I/O 引擎（sync，mmap，libaio，posixaio，SG v3，splice，null，network，syslet，guasi，solarisaio 等），I/O 优先级（适用于较新的 Linux 内核） ，评估 I/O，分叉或线程作业等等。它可以在块设备和文件上工作。fio 以简单易懂的文本格式接受职位描述。包含几个示例作业文件。fio 显示各种 I/O 性能信息，包括完整的 IO 延迟和百分位数。Fio 在许多地方广泛使用，用于基准测试，QA 和验证目的。它支持 Linux，FreeBSD，NetBSD，OpenBSD，OS X，OpenSolaris，AIX，HP-UX，Android 和 Windows。[fn:1]
+
+* Footnotes
+
+[fn:1] https://blog.51cto.com/shaonian/2319175

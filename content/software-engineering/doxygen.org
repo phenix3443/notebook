@@ -1,0 +1,112 @@
+# -*- coding:utf-8 -*-
+#+title:doxygen
+#+author: phenix3443
+#+email: phenix3443+github@gmail.com
+
+* 概述
+  [[http://www.doxygen.nl/][doxygen]]  是用于从带注释的 C 源生成文档的事实上的标准工具，但它也支持其他流行的编程语言，如 C，Objective-C，C＃，PHP，Java，Python，IDL（Corba，Microsoft 和 UNO / OpenOffice 风格），Fortran，VHDL，Tcl，并在某种程度上支持 D. 还可以通过一下插件进行扩展：
+  + [[https://github.com/alecchen/doxygen-lua][doxygen-lua]] 支持 lua 语言。
+  + http://www.doxygen.nl/helpers.html
+
+  Doxygen 可以通过三种方式帮助您：
+  1. 它可以从注释的源文件生成在线文档浏览器（以 HTML 格式）和/或离线参考手册（以 latex 格式）。还支持在 RTF（MS-Word），PostScript，超链接 PDF，压缩 HTML 和 Unix 手册页中生成输出。文档直接从源代码中提取，这使得文档更容易与源代码保持一致。
+  2. 可以配置 doxygen 以从未注释的源文件中提取代码结构。这对于在大型源代码分发中快速找到方法非常有用。 Doxygen 还可以通过依赖图，继承图和协作图来可视化各种元素之间的关系，这些都是自动生成的。
+  3. 也可以使用 doxygen 创建普通文档（就像我为 doxygen 用户手册和网站所做的那样）。
+
+  Doxygen 是在 Mac OS X 和 Linux 下开发的，但它是高度可移植的。因此，它也可以在大多数其他 Unix 版本上运行。此外，还提供 Windows 的可执行文件。
+
+  其他详见 [[http://www.doxygen.nl/manual/index.html][doxygen manual]]
+
+* 安装
+
+** ubuntu
+   #+BEGIN_SRC sh
+apt install -y doxygen doxygen-gui doxygen-doc graphviz graphviz-doc
+   #+END_SRC
+
+** macos
+   #+BEGIN_SRC sh
+brew install doxygen
+   #+END_SRC
+
+   从 [[http://www.doxygen.nl/download.html][官网下载页]] 下载 doxywizard，打开后将 doxygen 拷贝到想要安装的目录即可。
+
+* 配置
+  Doxygen 使用配置文件来决定其所有设置。每个项目都应该有自己的配置文件。一个项目可以只包含一个源文件，也可以是一个源码目录。
+
+  为了简化配置文件的创建，doxygen 可以创建模板配置文件。为此，请使用 =-g= 选项从命令行调用 doxygen：
+
+  #+BEGIN_SRC sh
+doxygen -g <config-file>
+  #+END_SRC
+
+  其中， =<config-file>= 是配置文件的名称。如果省略文件名，将创建一个名为 Doxyfile 的文件。如果已经存在名称为 =<config-file>= 的文件，则 doxygen 会在生成配置模板之前将其重命名为 =<config-file>.bak= 。如果您使用 =-= （即减号）作为文件名，则 doxygen 将尝试从标准输入（stdin）读取配置文件，这对于脚本编写很有用。
+
+  配置文件的格式类似于（简单）Makefile 的格式。它由多种形式的赋值（标签）组成：
+
+  #+begin_example
+TAGNAME = VALUE or
+TAGNAME = VALUE1 VALUE2 ...
+  #+end_example
+
+  生成的模板配置文件中大多数标记的值一般保留为其默认值。有关配置文件的更多详细信息，请参见“配置”部分。
+
+  如果不希望使用文本编辑器编辑配置文件，则应查看 doxywizard，它是一个 GUI 前端，可以创建，读取和写入 doxygen 配置文件，并允许通过对话框输入内容来设置配置选项。
+
+  对于由少数 C/C++ 源文件和头文件组成的小型项目，可以将 INPUT 标记保留为空， doxygen 在当前目录中搜索源码文件。
+
+  如果是较大项目，则应将根目录分赋值给 INPUT 标记，并将一个或多个文件模式添加到 FILE_PATTERNS 标记（例如 *.cpp *.h）。仅匹配任一模式的文件将被解析（如果省略了这些模式，则 doxygen 使用所支持语言默认的文件模块列表）。对于源码树的递归解析，必须将 RECURSIVE 标记设置为 YES。为了进一步微调已解析的文件列表，可以使用 EXCLUDE 和 EXCLUDE_PATTERNS 标记。例如，要忽略源树中的所有测试目录，可以使用：
+
+  #+begin_example
+EXCLUDE_PATTERNS = */test/*
+  #+end_example
+
+  如果在现有项目中使用 doxygen，您可以了解代码结构如何组织，以及文档结果是什么样。为此，必须将配置文件中的 EXTRACT_ALL 标记设置为 YES。然后，doxygen 会假定所有源码都是有文档的。请注意，由于< EXTRACT_ALL 设置为 YES，就不会生成有关未记录成员的警告。
+
+  为了分析现有软件，将一个实体及其定义在源文件中进行交叉引用是很有用的。如果将 SOURCE_BROWSER 标记设置为 YES，Doxygen 将生成此类交叉引用。
+
+  通过将 INLINE_SOURCES 设置为 YES，它也可以直接将源代码包括在文档中（例如，这对于代码审查非常方便）。
+
+* 使用
+  生成文档：
+  #+BEGIN_SRC sh
+doxygen <config-file>
+  #+END_SRC
+
+  根据设置，doxygen 将在输出目录内创建 html，rtf，latex，xml，man，docbook 目录。顾名思义，这些目录包含 HTML，RTF，XML，Unix-Man page 和 DocBook 格式的生成文档。默认输出目录是启动 doxygen 的目录。可以使用 OUTPUT_DIRECTORY 更改输出写入的根目录。可以使用 HTML_OUTPUT，RTF_OUTPUT，LATEX_OUTPUT，XML_OUTPUT，MAN_OUTPUT 和 DOCBOOK_OUTPUT 选择输出目录中特定于格式的目录。如果输出目录不存在，则 doxygen 会尝试为您创建该目录（但不会尝试递归创建整个路径）。
+
+* 注释代码
+  一个特殊的注释块是带有一些附加标记的 C 或 C++样式注释块，因此 doxygen 知道它是一段结构化文本，需要最终生成在文档中。
+
+  对于 Python，VHDL，Fortran 和 Tcl 代码，有不同的注释约定，后面分别介绍。
+
+* comment blocks for c-like language
+  对于代码中的每个实体，都有两种（或在某些情况下为三种）描述类型：可选的简要说明和详细说明，它们一起构成了该实体的文档。对于方法和函数，还有第三种描述，即所谓的主体描述，它由方法或函数主体中找到的所有注释块的串联组成。
+
+  允许有多个简要或详细描述（但不建议使用，因为未指定描述的显示顺序）。
+
+  顾名思义，简短描述只是一个简短的描述，而详细描述则提供了更长，更详细的文档。 函数的主体描述还可以充当详细描述或可以描述实现细节的集合。对于 HTML 输出，简短描述也用于在引用项目的地方提供工具提示。
+
+  有几种方法可以将注释块标记为详细描述（详见手册）。
+
+  对于详细说明也有好几种定义方式（详见手册）。详细说明中的多行文字可以被重组在一起。
+
+  还可以将注释放在成员变量后面（详见手册）
+
+  结构化命令（与所有其他命令一样）以反斜杠（\）开头，或者，如果您更喜欢 Javadoc 样式，则以符号（@）开头，后跟命令名称和一个或多个参数。还有其他的结构化命令：
+  + \class
+  + \struct to document a C-struct.
+  + \union to document a union.
+  + \enum to document an enumeration type.
+  + \fn to document a function.
+  + \var to document a variable or typedef or enum value.
+  + \def to document a #define.
+  + \typedef to document a type definition.
+  + \file to document a file.
+  + \namespace to document a namespace.
+  + \package to document a Java package.
+  + \interface to document an IDL interface.
+
+
+* markdown
+  对于更长的描述，您经常会发现需要更多的结构，例如逐字记录的文本，列表或简单的表。为此，doxygen 支持 Markdown 语法，包括 Markdown Extra 扩展的一部分。

@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: IINA
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  macos 超强播放器。

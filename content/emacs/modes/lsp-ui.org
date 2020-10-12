@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: lsp-ui
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/Emacs-lsp/lsp-ui][lsp-ui]] 包含了 lsp-mode 的所有更高级 UI 模块，如 flycheck 支持和 code lenses。
+
+** lsp-ui-sideline
+   显示当前行上符号的信息。 它还显示了 flycheck 诊断和 LSP 代码动作（code action）。
+
+** lsp-ui-peek
+   [[https://code.visualstudio.com/docs/editor/editingevolved#_peek][peek]] 可以直接打开一个小窗口查看和编辑符号相关的上下文，例如函数的定义和引用等。
+
+** lsp-ui-imenu
+
+** lsp-ui-doc
+   在 child frame 中显示光标处对象的文档。
+
+* 使用

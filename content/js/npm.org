@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: npm
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+
+* 配置
+** 切换源
+   #+BEGIN_SRC sh
+npm config set registry https://registry.npm.taobao.org
+   #+END_SRC

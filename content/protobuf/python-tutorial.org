@@ -1,0 +1,185 @@
+# -*- coding:utf-8-*-
+#+TITLE: python tutorial
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+本教程为 Python 程序员介绍使用 Protocol buffer 的基本知识。通过一个简单的示例应用程序展示：
++ 如何 在 =.proto= 文件中定义 message 格式。
++ 使用 protocol buffer 编译器。
++ 使用 Python protocol buffer API 写入和读取 message。
+
+
+这不是在 Python 中使用 protocol buffer 的全面指南。更多详细的参考信息，请参阅《[[https://developers.google.com/protocol-buffers/docs/proto][protocol buffer语言指南]]》，《[[https://googleapis.dev/python/protobuf/latest/][Python API 参考]]》，《[[https://developers.google.com/protocol-buffers/docs/reference/python-generated][Python 生成代码指南]]》和《[[https://developers.google.com/protocol-buffers/docs/encoding][编码参考]]》。
+
+* 为什么使用 Protocol Buffers?
+  将使用的示例是一个非常简单的“地址簿”应用程序，该应用程序可以在文件中读写人的联系方式。通讯录中的每个人都有姓名，ID，电子邮件地址和联系电话。
+
+  如何像这样序列化和检索结构化数据？有几种方法可以解决此问题：
+  + 使用 Python pickling。这是默认方法，因为它已内置在语言中，但是它不能很好地处理 schema evolution，如果需要与用 C 或 Java 编写的应用程序共享数据，也不能很好地工作。
+  + 可以发明一种将数据项编码为单个字符串的临时方法，例如将 4 个整数编码为 “12:3:-23:67”。尽管确实需要编写一次性的代码用于编码和解码，但是这是一种简单且灵活的方法，而且解析带来的运行时成本很小。这对于编码非常简单的数据最有效。
+  + 将数据序列化为 XML。由于 XML 是人类可读的，并且很多语言都有对应的库，因此这种方法可能非常有吸引力。如果要与其他应用程序/项目共享数据，这可能是一个不错的选择。但是，众所周知，XML 占用大量空间，对它进行编码/解码会给应用程序带来巨大的性能损失。同样，导航 XML DOM 树比通常导航类中的简单字段要复杂得多。
+
+  protocol buffer 是灵活、高效、自动化的解决方案，可以准确地解决此问题。使用 protocol buffer，可以编写要存储的数据结构的 =.proto= 描述。protocol buffer 编译器据此创建了一个类，该类以有效的二进制格式实现 protocol buffer 数据的自动编码和解析。生成的类为构成 protocol buffer 的字段提供获取器和设置器，并处理读写的详细信息。重要的是，protocol buffer 格式支持随时间扩展格式，以使代码仍可以读取以旧格式编码的数据。
+
+* 定义协议格式
+  要创建地址簿应用程序，需要从 =.proto= 文件开始。定义 =.proto= 文件中很简单：为要序列化的每个 *数据结构* 添加一条  *message* ，然后为 *message* 中的每个字段指定名称和类型。以下是定义 message 的 =.proto= 文件， =addressbook.proto= 。
+  #+BEGIN_SRC protobuf
+syntax = "proto2";
+
+package tutorial;
+
+message Person {
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    required string number = 1;
+    optional PhoneType type = 2 [default = HOME];
+  }
+
+  repeated PhoneNumber phones = 4;
+}
+
+message AddressBook {
+  repeated Person people = 1;
+}
+  #+END_SRC
+  可见，语法类似于 C 或 Java。浏览文件的每个部分，看看它的作用。
+
+  =.proto= 文件以 package 声明开头，这有助于防止不同项目之间的命名冲突。在 Python 中，包通常由目录结构决定，因此在 =.proto= 文件中定义的包对生成的代码无效。但是，仍然应该进行声明以避免在 protocol buffer 名称空间以及非 Python 语言中发生名称冲突。
+
+  接下来，定义 message。message 只是一组包含类型的字段的集合。许多标准的简单数据类型可用作字段类型，包括 bool，int32，float，double 和 string。还可以通过使用其他 message 类型作为字段类型，来为 message 添加进一步的结构--在上面的示例中，“Person” 包含 PhoneNumber，而 “AddressBook” 包含 “Person”。甚至可以在 message 中嵌套定义其他 message 类型---如上所示：PhoneNumber 类型在 Person 内部定义。如果希望某个字段具有一个预定义的值列表中的取值，也可以定义枚举类型---此处要指定电话号码可以是 MOBILE、HOME 或 WORK 之一。
+
+  每个元素上的 “=1”，“=2” 是该字段在二进制编码中使用的唯一“标记”。标记编号 1 至 15 与较高的编号相比，编码所需的字节 *减少了一个字节* ，因此， *为了进行优化，可以将这些标记用于常用或重复的元素，而将标签 16 和更高的标签用于较少使用的可选元素。*  重复字段中的每个元素都需要重新编码标记，因此重复字段是此优化的最佳候选者。
+
+  每个字段都必须使用以下修饰符之一进行注释:
+  + 必填（required)：必须提供该字段的值，否则该 message 将被视为“未初始化”。序列化未初始化的 message 将引发异常。解析未初始化的 message 将失败。除此之外，必填字段的行为与可选字段完全相同。
+  + 可选（optional)：可能设置该字段。如果未设置可选字段值，则使用默认值。对于简单类型，可以指定自己的默认值，就像在示例中为电话号码类型所做的那样。否则，将使用系统默认值：
+    + 数字类型为零，
+    + 字符串为空字符串，
+    + 布尔值为 false。
+    + 对于嵌入式 message，默认值始终是 message 的“默认实例”或“原型”，没有设置任何字段。调用访问器以获取未显式设置的可选（或必填)字段的值始终会返回该字段的默认值。
+  + 重复（repeated)：该字段可以重复任意次（包括零次)。重复值的顺序将保留在 protocol buffer 中。将重复字段视为动态大小的数组。
+
+* 编译 protocol buffer
+  现在，有了 =.proto= ，接下来需要做的是生成读取和写入 AddressBook（以及 Person 和 PhoneNumber) message 所需的类。为此，需要在 =.proto= 上运行 protocol buffer 编译器 protoc:
+  + 如果尚未安装编译器，请 [[https://developers.google.com/protocol-buffers/docs/downloads][下载软件]] 并按照 README 中的说明进行操作。
+  + 现在运行编译器，指定源目录（应用程序的源代码所在的位置；如果不提供值，则使用当前目录)，目标目录（希望生成的代码的位置；通常与 =$SRC_DIR= 相同)，以及 =.proto= 文件的路径。
+
+    #+BEGIN_SRC sh
+protoc -I=$SRC_DIR --python_out=$DST_DIR $SRC_DIR/addressbook.proto
+    #+END_SRC
+
+    因为是需要 Python 类，所以使用 =--python_out= 选项，其他受支持的语言也提供了类似的选项。
+
+
+  这将在指定的目标目录中生成 =addressbook_pb2.py= 。
+
+* protocol buffer API
+  与 Java 和 C++ 的 protocol buffer 代码不同，编译器不会为 python 直接生成数据访问代码，而是为所有 message，枚举和字段生成特殊的 descriptor，以及为每个 message 类型生成一些神秘的空类。（译注：这导致 vscode 等工具不能正常对这些类进行自动补全和提示）
+
+  #+BEGIN_SRC python
+class Person(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+
+  class PhoneNumber(message.Message):
+    __metaclass__ = reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _PERSON_PHONENUMBER
+  DESCRIPTOR = _PERSON
+
+class AddressBook(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _ADDRESSBOOK
+  #+END_SRC
+
+  每个类中的重要行是 ~__metaclass__ = Reflection.GeneratedProtocolMessageType~ 。尽管 Python 元类如何工作的详细信息超出了本教程的范围，但可以将它们视为创建类的模板。在加载时，GeneratedProtocolMessageType 元类使用指定的描述符来创建处理每种 message 类型所需的所有 Python 方法，并将它们添加到相关的类中。然后，可以在代码中使用填充好的类。
+
+  所有这些的最终结果是，可以正常使用 Person 类，如同将 Message 基类的每个字段都定义为常规字段一样。例如，可以编写:
+  #+BEGIN_SRC python
+import addressbook_pb2
+person = addressbook_pb2.Person()
+person.id = 1234
+person.name = "John Doe"
+person.email = "jdoe@example.com"
+phone = person.phones.add()
+phone.number = "555-4321"
+phone.type = addressbook_pb2.Person.HOME
+  #+END_SRC
+
+  请注意，这些赋值不只是向 Python 对象添加任意新字段。如果您尝试赋值给 =.proto=  文件中未定义的字段，则会引发 AttributeError。如果将字段赋值错误类型的值，则会引发 TypeError。同样，在设置字段之前读取它的值将返回默认值。
+
+  #+BEGIN_SRC python
+person.no_such_field = 1  # raises AttributeError
+person.id = "1234"        # raises TypeError
+  #+END_SRC
+
+* 枚举
+  元类将枚举扩展为具有整数值的一组符号常量。因此，例如，常量 addressbook_pb2.Person.PhoneType.WORK 的值为 2。
+
+* 标准 message 方法
+  每个 message 类还包含许多其他方法，可用于检查或操作整个 message，包括:
+  + =IsInitialized()= ：检查是否已设置所有必填字段。
+  + =__str __()= ：返回 message 的人类可读表示，对调试特别有用。(通常作为 str(message)或 print message 调用。)
+  + =CopyFrom(other_msg)= ：使用给定 message 的值覆盖 message。
+  + =Clear()= ：将所有元素置为空。
+
+
+  这些方法实现了 Message 接口。有关更多信息，请参见完整的 [[https://googleapis.dev/python/protobuf/latest/google/protobuf/message.html#google.protobuf.message.Message][Message API]] 文档。
+
+* 解析和序列化
+  最后，每个 protocol buffer 类都有使用 protocol buffer 二进制格式写入和读取所选类型的 message 的方法。这些包括:
+  + =SerializeToString()= ：序列化 message 并以字符串形式返回。注意字节是二进制的，不是文本；我们仅将 str 类型用作方便的容器。
+  + =ParseFromString(data)= ：解析给定字符串中的 message。
+
+  这些只是为解析和序列化提供的几个选项。同样，请参阅 [[https://googleapis.dev/python/protobuf/latest/google/protobuf/message.html#google.protobuf.message.Message][Message API]] 参考以获取完整列表。
+
+* 写入信息
+
+  现在，尝试使用 protocol buffer 类。地址簿应用程序能够将个人详细信息写入地址簿文件，然后读取出来。
+
+  #+BEGIN_SRC python
+# -*- coding:utf-8; -*-
+import addressbook_pb2
+
+
+def write_data():
+    address_book = addressbook_pb2.AddressBook()
+    person = address_book.people.add()
+    person.name = "john Doe"
+    person.id = 123
+    person.email = "jdoe@example.com"
+    with open("data.txt", "wb") as f:
+        f.write(address_book.SerializeToString())
+
+
+def read_data():
+    address_book = addressbook_pb2.AddressBook()
+    with open("data.txt", "rb") as f:
+        address_book.ParseFromString(f.read())
+
+    print(address_book.people[0].name)
+
+
+if __name__ == "__main__":
+    read_data()
+
+  #+END_SRC
+
+
+* 扩展 protocol buffer
+  在发布使用 protocol buffer 的代码后，无疑会想要 “改进” protocol buffer 的定义。如果希望新的缓冲区向后兼容，而旧的缓冲区向前兼容，那么需要遵循一些规则。在新版本的 protocol buffer 中:
+  + 不得更改任何现有字段的标号。
+  + 不得添加或删除任何必填字段。
+  + 可以删除可选或重复的字段。
+  + 可以添加新的可选或重复字段，但必须使用新的标签号（即，该 protocol buffer 中从未使用过的标签号，即使删除的字段也从未使用过)。
+
+  （这些规则有一些例外，但很少使用。)
+
+  如果遵循这些规则，旧代码将愉快地读取新 message，而忽略任何新字段。对于旧代码，已删除的可选字段将仅具有其默认值，而删除的重复字段将为空。新代码还将透明地读取旧 message。但是，请记住，新的可选字段不会出现在旧 message 中，因此需要明确检查是否已使用 =has_= 设置它们，或 =.proto=  文件中的标号之后使用 ~[default = value]~ 提供合理的默认值。如果没有为可选元素指定默认值，则使用特定于类型的默认值:对于字符串，默认值为空字符串。对于布尔值，默认值为 false。对于数字类型，默认值为零。还要注意，如果添加了一个新的重复字段，则新代码将无法判断它是空的（由新代码)还是根本没有设置（由旧代码)，因为没有 =has_=  标志。

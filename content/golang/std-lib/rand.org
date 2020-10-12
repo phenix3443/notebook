@@ -1,0 +1,39 @@
+# -*- coding:utf-8-*-
+#+TITLE: rand
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/math/rand/][rand]]
+
+* func Int
+  #+BEGIN_SRC go
+func Int() int
+  #+END_SRC
+  返回一个非负的伪随机整数。
+
+* func Intn
+  #+BEGIN_SRC go
+func Intn() int
+  #+END_SRC
+  返回一个 [0,n) 范围内的非负的伪随机整数。
+
+* func Perm
+  #+BEGIN_SRC go
+func Perm(n int) []int
+  #+END_SRC
+  Perm 返回 [0，n）的伪随机排列。
+
+* func Seed
+  #+BEGIN_SRC go
+func Seed(seed int64)
+  #+END_SRC
+
+  使用 seed 来初始化随机数集合。 Rand.Seed 方法不同，Seed 可以安全地同时使用。
+
+* func Shuffle
+  #+BEGIN_SRC go
+func Shuffle(n int, swap func(i, j int))
+  #+END_SRC
+
+  使用默认的 Source 伪随机化元素的顺序。 n 是元素数。swap 交换索引为 i 和 j 的元素。

@@ -1,0 +1,147 @@
+# -*- coding:utf-8 -*-
+#+title:Shadowsocks
+#+author:刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介
+  [[https://github.com/shadowsocks][Shadowsocks]] 是由 [[https://github.com/clowwindy][clowwindy]] 编写的轻量级服务器中转包传输工具。
+
+  ShadowSocks 主要由三个模块组成:
+  + ss-server：服务端。
+  + ss-local：客户端，主要提供 sock5 代理。在 Linux 上，可以使用 ss-local + privoxy，来间接使用 ss-local 提供的 socks5 代理。privoxy 有一个 socks5 转发功能，也就是说，我们只要将 privoxy 当做普通 http 代理来使用就好了，它会自动使用 socks5 协议与后端的 ss-local 进行通信。
+  + ss-redirect:shadowsocks-libev 提供的 socks5 透明代理工具。[fn:3]
+
+    正向代理 正向代理，即平常我们所说的代理，比如 http 代理、socks5 代理等，都属于正向代理。 正向代理的特点就是：如果需要使用正向代理访问互联网，就必须在客户端进行相应的代理设置。
+
+    透明代理 透明代理和正向代理的作用是一样的，都是为了突破某些网络限制，访问网络资源。 但是透明代理对于客户端是透明的，客户端不需要进行相应的代理设置，就能使用透明代理访问互联网。
+
+    反向代理 当然，这个不在本文的讨论范畴之内，不过既然提到了前两种代理，就顺便说说反向代理。 反向代理是针对服务端来说的，它的目的不是为了让我们突破互联网限制，而是为了实现负载均衡。
+
+    举个栗子： ss-local，提供 socks5 正向代理，我们必须通过专业的代理软件来配置，才能使用它，不然是不会经过代理的； ss-redir，提供 socks5 透明代理，我们只要配置了适当的 iptables 规则，就可以不修改任何软件设置使用它。
+
+  + ss-tunnel
+
+    shadowsocks-libev 提供的本地端口转发工具，通常用于解决 dns 污染问题。
+
+    假设 ss-tunnel 监听本地端口 53，转发的远程目的地为 8.8.8.8:53；系统 dns 为 127.0.0.1。 去程：上层应用请求 dns 解析 -> ss-tunnel 接收 -> ss 隧道 -> ss-server 接收 -> 8.8.8.8:53； 回程：8.8.8.8:53 响应 dns 请求 -> ss-server 接收 -> ss 隧道 -> ss-tunnel 接收 -> 上层应用。
+
+
+  传输的时候，本地网络客户端首先使用 SOCKS5 连接到 ss-local，这里面的流量传输都是明文的，然后 ss-local 将流量打包传输到 ss-server 上，这里的流量是加密的，然后 ss-server 解码 SOCKS5 数据包，访问目的服务器。
+
+* 安装
+  #+BEGIN_SRC sh
+sudo apt install -y shadowsocks-libev
+  #+END_SRC
+
+* ss-server
+
+* ss-local
+  #+BEGIN_SRC sh
+ss-local -s <server-ip> -p 443 -l 1080 -k <passwd> -m chacha20-ietf-poly1305 --fastopen
+  #+END_SRC
+
+* 基本配置
+  ss-server 与 ss-local 配置文件是 json 格式的，默认名字是 config.json，服务器和客户端配置差不多，甚至可以共用一份配置文件。
+  #+BEGIN_SRC json
+{
+    "server":"server-ip",       // 服务端可写0.0.0.0
+    "server_port":443,
+    "local_address":"127.0.0.1",
+    "local_port":1080,
+    "password":"your-password",
+    "timeout":300,
+    "method":"rc4-md5",
+    "fast_open":true,
+}
+  #+END_SRC
+
+  #+CAPTION:配置的说明
+  | Name          | Explaination                                                                                                             |
+  |---------------+--------------------------------------------------------------------------------------------------------------------------|
+  | server        | the address your server listens（服务器 IP）                                                                             |
+  | local_address | the address your local listens（本地代理地址）                                                                           |
+  | local_port    | local port（本地代理端口）                                                                                               |
+  | port_password | password used for encryption(自己设定的服务器端口和密码，可以支持多个用户)                                               |
+  | timeout       | in seconds（超时断开，以秒为单位）                                                                                       |
+  | method        | 加密方式                                                                                                                 |
+  | fast_open     | use TCP_FASTOPEN, true/false，如果客户端和服务器都是 on Linux 3.7+，可以开启 ~fast_open~ 来减少延迟。                    |
+  | workers       | number of workers, available on Unix/Linux（支持类似 nginx 一样使用多个子进程，这个只在 Unix 和 Linux 下有用，可不设置） |
+
+* 开机自启动
+   使用 systemd 控制启动：
+** ss-server
+    #+CAPTION:/lib/systemd/system/ss-server.service
+    #+BEGIN_EXAMPLE
+    [Unit]
+    Description=ShadowSocks Server Daemon
+    After=network.target
+
+    [Service]
+    User=root
+    Group=root
+    ExecStart=/usr/bin/ss-server -c /etc/ShadowSocks-libev/server.json
+    ExecReload=/bin/kill -HUP $MAINPID
+    KillMode=process
+    Restart=on-failure
+    RestartSec=5s
+
+    [Install]
+    WantedBy=multi-user.target
+    #+END_EXAMPLE
+
+    执行以下命令启动服务，并设置开机启动
+
+    #+BEGIN_SRC sh
+systemctl start ss-server.service
+systemctl enable ss-server.service
+systemctl status ss-server.service
+    #+END_SRC
+** ss-local
+    #+CAPTION:/lib/systemd/system/ss-local.service
+    #+BEGIN_EXAMPLE
+    [Unit]
+    Description=ShadowSocks client daemon
+    After=network.target
+
+    [Service]
+    User=root
+    Group=root
+    ExecStart=/usr/bin/ss-local -c  /etc/ShadowSocks-libev/local.json
+    ExecReload=/bin/kill -HUP $MAINPID
+    KillMode=process
+    Restart=on-failure
+    RestartSec=5s
+
+    [Install]
+    WantedBy=multi-user.target
+    #+END_EXAMPLE
+
+    #+BEGIN_SRC sh
+systemctl start ss-local.service
+systemctl enable ss-local.service
+systemctl status ss-local.service
+    #+END_SRC
+* 多用户
+  当前，Python 和 Go 服务器支持多个用户。可以在不同的端口上使用不同的密码，如下所示：
+  #+BEGIN_SRC json
+{
+    "server": "0.0.0.0",
+    "port_password": {
+        "8381": "foobar1",
+        "8382": "foobar2",
+        "8383": "foobar3",
+        "8384": "foobar4"
+    },
+    "timeout": 300,
+    "method": "aes-256-cfb"
+}
+  #+END_SRC
+* 优化[fn:2]
+
+* Footnotes
+
+[fn:3] http://ivo-wang.github.io/2018/02/24/ss-redir/
+
+[fn:1] [[https://shadowsocks.org/en/index.html][ShadowSocks 官网]]
+
+[fn:2] [[https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks][Optimizing ShadowSocks]]

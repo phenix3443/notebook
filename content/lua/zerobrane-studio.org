@@ -1,0 +1,21 @@
+# -*- coding:utf-8-*-
+#+TITLE:
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/pkulchenko/ZeroBraneStudio][ZeroBrane Studio]] 是一个轻量级的跨平台 Lua IDE，具有代码完成，语法高亮，远程调试器，代码分析器，实时编码以及各种 Lua 引擎的调试支持（Lua 5.1，Lua 5.2，Lua 5.3，Lua 5.4，LuaJIT，LÖVE，Moai，Gideros，Corona，Marmalade Quick，Cocos2d-x，OpenResty/Nginx，Torch7，Redis，GSL-shell，Adobe Lightroom，Lapis，Moonscript 等）。http://studio.zerobrane.com/
+
+* 安装[fn:1]
+  #+BEGIN_SRC sh
+wget https://download.zerobrane.com/ZeroBraneStudioEduPack-1.80-linux.sh
+sh ZeroBraneStudioEduPack-1.80-linux.sh
+  #+END_SRC
+
+* 配置
+
+* 使用
+
+* Footnotes
+
+[fn:1] https://studio.zerobrane.com/doc-installation

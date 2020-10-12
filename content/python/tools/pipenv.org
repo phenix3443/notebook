@@ -1,0 +1,44 @@
+# -*- coding:utf-8-*-
+#+TITLE: pipenv
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  pipenv 主要来方便的创建虚拟工作环境。
+
+* 参数
+  #+BEGIN_SRC sh :exports both :results output scalar
+pipenv --help
+  #+END_SRC
+
+* 初次使用
+  1. 使用 =--three= 创建 python3 环境。
+  2. 使用 =pipenv install <package>= 安装需要的包，然后就可以在当前目录下看到生成 Pipfile 文件，里面就是包的依赖内容。
+
+* 重建环境
+  如果有 Pipfile，可以根据 Pipfile 直接重建应用环境。
+  1. 使用 =--three= 创建 python3 环境，还可以使用 =pipenv --rm= 删除创建的虚拟环境。
+  2. 使用 =pipenv update= 自动安装需要的包。
+
+* 运行环境
+  1. 使用 =pipenv shell= 在当前 tty 中进入创建的虚拟工作目录中。
+  2. 或者使用 =pipenv run= 直接在虚拟环境中执行脚本。
+
+* 问题
+** 运行报错
+   #+BEGIN_EXAMPLE
+Locking [dev-packages] dependencies...
+Locking [packages] dependencies...
+env/utils.py", line 402, in resolve_deps
+    req_dir=req_dir
+  File "/usr/local/lib/python3.6/dist-packages/pipenv/utils.py", line 250, in actually_resolve_deps
+    req = Requirement.from_line(dep)
+  File "/usr/local/lib/python3.6/dist-packages/pipenv/vendor/requirementslib/models/requirements.py", line 704, in from_line
+    line, extras = _strip_extras(line)
+TypeError: 'module' object is not callable
+   #+END_EXAMPLE
+
+   需要先升级一下 pip 和 pipenv
+   #+BEGIN_SRC sh
+pip3 install --user --upgrade pip
+pip3 install --user -upgrade pipenv
+   #+END_SRC

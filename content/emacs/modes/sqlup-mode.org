@@ -1,0 +1,18 @@
+# -*- coding:utf-8-*-
+#+TITLE: sqlup-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  sqlup-mode 编写 SQL 时关键字自动大写。该模式还支持 =redis-mode= 。
+
+* 配置
+  可以将 Sqlup 配置为忽略某些关键字，方法是将它们添加到列表 sqlup-blacklist 中。
+
+* 使用
+  使用 =M-x sqlup-mode= 启用该模式，也可由以下键触发：
+  + SPC
+  + (
+  + ,
+  + ;
+  + RET
+  + '

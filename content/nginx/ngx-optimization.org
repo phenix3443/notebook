@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: nginx 性能优化
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  https://imququ.com/post/my-nginx-conf-for-wpo.html

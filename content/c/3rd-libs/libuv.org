@@ -1,0 +1,21 @@
+# -*- coding:utf-8-*-
+#+TITLE: libuv
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[http://docs.libuv.org/en/v1.x/][libuv]] 是一个多平台支持库，专注于异步I/O。它主要是为Node.js开发的，但它也被Luvit，Julia，pyuv和其他人使用。
+
+* 特性
+  + 由epoll，kqueue，IOCP，事件端口支持的全功能事件循环。
+  + 异步TCP和UDP套接字。
+  + 异步DNS解析。
+  + 异步文件和文件系统操作。
+  + 文件系统事件
+  + ANSI转义码控制TTY
+  + IPC与套接字共享，使用Unix域套接字或命名管道（Windows）
+  + 子进程
+  + 线程池
+  + 信号处理
+  + 高分辨率时钟
+  + 线程和同步原语

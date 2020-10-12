@@ -1,0 +1,38 @@
+# -*- coding:utf-8 -*-
+#+title:cmake practice
+#+author:phenix3443
+#+email:phenix3443+github@gmail.com
+
+* 概述
+  主要讲述使用cmake编译的项目布局应该如何组织。
+
+* 项目结构
+  遵循模块话的项目结构，工程目录如下：
+  #+BEGIN_EXAMPLE
+project/
+├── CMakeLists.txt
+├── src
+│   ├── CMakeLists.txt
+│   ├── main
+│   │   ├── CMakeLists.txt
+│   │   └── main.cpp
+│   └── module_1
+│       ├── CMakeLists.txt
+│       ├── person.cpp
+│       └── person.hpp
+└── test
+    └── CMakeLists.txt
+  #+END_EXAMPLE
+
+** src
+   源代码目录，子目录按照项目模块进行组织，各模块都有各自的CMake文件，用于单独编译。
+
+** test
+   存放测试代码，子目录也是按照模块进行组织。
+
+** build
+   为了保证源代码目录下整洁，编译单独在build目录下进行。
+
+* 各cmake文件详解
+
+  参考 [[https://github.com/phenix3443/test/tree/master/cmake/cmake_dir][github代码]] 中cmake 文件中的注释。

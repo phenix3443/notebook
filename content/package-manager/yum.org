@@ -1,0 +1,25 @@
+# -*- coding:utf-8-*-
+#+TITLE: yum
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* EPEL
+  [[https://fedoraproject.org/wiki/EPEL/zh-cn][EPEL]] 的全称叫 Extra Packages for Enterprise Linux 。EPEL 是由 Fedora 社区打造，为 RHEL 及衍生发行版如 CentOS、Scientific Linux 等提供高质量软件包的项目。装上了 EPEL 之后，就相当于添加了一个第三方源。
+
+  查看当前的仓库：
+
+  #+BEGIN_SRC sh
+yum repolist
+  #+END_SRC
+
+  安装 epel：
+  #+BEGIN_SRC
+yum install epel-release
+  #+END_SRC
+
+  更新仓库：
+  #+BEGIN_SRC sh
+yum repolist
+  #+END_SRC

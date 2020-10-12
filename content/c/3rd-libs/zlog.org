@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: zlog
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/HardySimpson/zlog][zlog]] 是一个高可靠性、高性能、线程安全、灵活、概念清晰的纯 C 日志函数库。
+
+* 安装
+  #+BEGIN_SRC sh
+make && make install
+  #+END_SRC
+
+* 使用
+  参见 [[http://hardysimpson.github.io/zlog/UsersGuide-CN.html][使用手册]]

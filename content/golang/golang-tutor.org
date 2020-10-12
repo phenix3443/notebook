@@ -1,0 +1,182 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang tutor
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  参阅 [[https://golang.org/doc/code.html][How to Write Go Code]]
+
+  有三个重要的概念 workspace、repository、pacakge、file：
+  + 程序员通常会将所有 Go 代码保存在一个工作区（workspace）中。
+  + 工作空间包含许多版本控制存储库（repository）（例如，由 Git 管理）。
+  + 每个存储库包含一个或多个包（package）。
+  + 每个包由一个目录中的一个或多个 Go 源文件（source-file）组成。
+  + 程序包目录的路径决定了其导入路径。
+
+** workspace
+   工作空间是一个目录层次结构，其根目录有两个目录：
+   + src 包含 Go 源文件。src 子目录通常包含多个版本控制存储库（例如 Git 或 Mercurial），用于跟踪一个或多个源包的开发。
+   + bin 包含可执行命令。go 工具构建二进制文件并将其安装到 bin 目录。
+
+   实际上的工作区布局如下：
+
+   #+begin_example
+bin/
+    hello                          # command executable
+    outyet                         # command executable
+src/
+    github.com/golang/example/
+        .git/                      # Git repository metadata
+	hello/
+	    hello.go               # command source
+	outyet/
+	    main.go                # command source
+	    main_test.go           # test source
+	stringutil/
+	    reverse.go             # package source
+	    reverse_test.go        # test source
+    golang.org/x/image/
+        .git/                      # Git repository metadata
+	bmp/
+	    reader.go              # package source
+	    writer.go              # package source
+    ... (many more repositories and packages omitted) ...
+   #+end_example
+
+   上面的树显示了一个包含两个存储库（example 和 image）的工作空间。example 存储库包含两个命令（hello 和 outyet）和一个库（stringutffil）。image 存储库包含 bmp 包和其他几个包。
+
+   典型的工作空间包含许多存储库，每个存储库包含许多包（lib）和命令（command）。大多数 Go 程序员将他们所有的 Go 源代码和依赖项保存在一个工作区中。
+
+   请注意，不应使用符号链接将文件或目录链接到工作区。命令和库是从不同类型的源包构建的。我们稍后会讨论这种区别。
+
+   golang规定所有的项目都应该放在同一个workspace下面，如果想要每个项目都把当前目录当做独立的workspace，推荐使用gb 工具。
+
+*** GOPATH 环境变量
+    GOPATH 环境变量指定工作区的位置。它默认为主目录中名为 go 的目录，因此在 unix 上为 =$HOME/go= ，在 Plan 9 上为 =$home/go= ，在 Windows 上为 =％USERPROFILE％\go= （通常为  =C:\Users\YourName\go= ）。
+
+    如果想在其他位置工作，则需要将 GOPATH 设置为该目录的路径。 （另一种常见的设置是设置 ~GOPATH=$HOME~ 。）请注意，GOPATH 不能与 Go 安装的路径相同。
+
+    命令 =go env GOPATH= 打印当前生效的 GOPATH；如果未设置环境变量，它将打印默认位置。
+
+    为方便起见，将工作空间的 bin 子目录添加到 PATH 中：
+    #+BEGIN_SRC sh
+export PATH=$PATH:$(go env GOPATH)/bin
+    #+END_SRC
+
+    注意：这里的GOPATH如果是多个目录的链表，这样用可能不会有想要的效果。
+
+    本文档其余部分中的脚本使用 $GOPATH 而不是 =$(go env GOPATH)= 。如果你没有设置 GOPATH，要使脚本以书面形式运行，你可以在这些命令中替换 =$HOME/go= ，否则运行：
+
+    #+BEGIN_SRC sh
+export GOPATH=$(go env GOPATH)
+
+    #+END_SRC
+
+    要了解有关 GOPATH 环境变量的更多信息，请参阅“[[https://golang.org/cmd/go/#hdr-GOPATH_environment_variable][go help gopath]]”。
+
+    要使用自定义工作空间位置，[[https://golang.org/wiki/SettingGOPATH][设置 GOPATH 环境变量]]。
+
+*** 导入路径
+    导入路径是唯一标识包的字符串。包的导入路径对应于其在工作空间内或远程存储库中的位置（如下所述）。
+
+    标准库中的包具有简短的导入路径，例如“fmt”和“net/http”。对于自己的软件包，必须选择一个基本路径，该路径不太可能与将来添加到标准库或其他外部库中发生冲突。
+
+    导入路径可以描述如何使用诸如Git或Mercurial之类的修订控制系统来获取包源代码。 go工具使用此属性自动从远程存储库获取包。
+
+    例如，本文档中描述的示例也保存在GitHub github.com/golang/example上托管的Git存储库中。如果在包的导入路径中包含存储库URL，则get将自动获取，构建和安装它： $
+
+    #+BEGIN_SRC sh
+go get github.com/golang/example/hello
+$GOPATH/bin/hello
+Hello, Go examples!
+    #+END_SRC
+
+    果工作空间中不存在指定的包，则get将其放置在GOPATH指定的第一个工作空间内。 （如果包已经存在，请跳过远程提取，其行为与go install相同。）
+
+** repository
+    如果将代码保存在某个源存储库中，则应使用该源存储库的根作为基本路径。例如，如果您在 github.com/user 上有一个 GitHub 帐户，那么这应该是您的基本路径。
+
+    请注意，在构建代码之前，无需将代码发布到远程存储库。组织代码只是一个好习惯，好像有一天你会发布它一样。实际上，您可以选择任意路径名称，只要它对标准库和更大的 Go 生态系统是唯一的。
+
+** package
+   package是我们最低的引用实体，package名应该与目录名保持一致。
+
+   一个名为package_name的package中的源码文件都应该位于workspace/repository/package_name目录下，并带有如下说明：
+   #+BEGIN_SRC go
+package package_name
+   #+END_SRC
+
+   然后我们可以如下引用：
+
+   #+BEGIN_SRC go
+import <repository>/package_name
+   #+END_SRC
+   go 工具会在GOPATH中所有目录（workspace）下查找名为src/repository/package_name 的目录，使用使用找到的第一进行导入。
+
+** souce-file
+
+   同一个package的源码可以分布在多个不同的源码文件中，只要每个源码文件都使用相同的package声明。
+
+* 示例
+
+  我们将使用 =~/golang= 作为workspace, 并将该目录添加到 GOPATH 环境变量中。
+
+  #+BEGIN_SRC sh
+mkdir ~/golang && export GOPATH=$(go env GOPATH):${HOME}/golang
+   #+END_SRC
+
+   注意：如果此前没有设置过环境变量GOPATH 的值，此时该值为 =${HOME}/go:${HOME}/golang=
+
+** 命令程序
+   #+BEGIN_EXAMPLE
+golang
+├── env.sh
+└── src
+    ├── lang
+    │   ├── hello_go
+    │   │   └── main.go
+
+  #+END_EXAMPLE
+
+   [[https://github.com/phenix3443/test/blob/master/golang/src/lang/hello-go/main.go][main.go]]
+
+   然后现在可以编译并运行项目：
+
+   #+BEGIN_SRC sh
+go install lang/hello_go
+  #+END_SRC
+
+  注意：可以在系统任何位置运行该命令，go tool将会查找GOPATH中所有目录，找到第一个 =src/lang/hello-go= 的子目录，然后进行编译，并将编译结果放入对应workspace的bin目录下。例子中，生成的hello_go程序放在 ${HOME}/golang/bin 目录下。
+
+** 库程序
+   下面编写一个简单的数学库mymath用作测试，代码目录：
+   #+begin_example
+golang/
+├── bin
+│   └── hello_go
+├── build.sh
+└── src
+    ├── lang
+    │   ├── hello_go
+    │   │   └── main.go
+    │   └── mymath
+    │       ├── add.go
+    │       └── add_test.go
+
+
+   #+end_example
+
+   代码参见 [[https://github.com/phenix3443/test/tree/master/golang/src/lang/mymath][mymath]]，然后我们执行编译：
+
+   #+BEGIN_SRC sh
+go build lang/mymath
+   #+END_SRC
+   同样，该命令可以在系统的任何位置执行。它不会产生输出文件。相反，它将已编译的包保存在本地构建缓存中。
+
+*** 测试
+    Go有一个由go test命令和测试包组成的轻量级测试框架。通过创建名称以 =_test.go= 结尾的文件来编写测试，该文件包含名为 =TestXXX= 且签名为 =func(t * testing.T)= 的函数。测试框架运行每个这样的函数；如果函数调用失败函数（如t.Error或t.Fail），则认为测试失败。通过创建包含以下Go代码的文件 =workspace/src/lang/mymath/add_test.go= ，将测试添加到mymath包中。
+
+    执行测试：
+    #+BEGIN_SRC sh
+go test lang/mymath
+    #+END_SRC

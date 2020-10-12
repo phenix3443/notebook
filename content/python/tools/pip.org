@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: pip
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+
+** macos
+   #+BEGIN_SRC
+python3 -m pip install --user
+   #+END_SRC
+
+   然后将 =~/Library/Python/3.7/bin= 添加到 PATH 变量。

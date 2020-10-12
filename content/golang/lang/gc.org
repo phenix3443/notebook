@@ -1,0 +1,22 @@
+# -*- coding:utf-8-*-
+#+TITLE: Golang垃圾回收机制
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 什么是垃圾回收
+
+* GC 常见算法
+
+* golang 的垃圾回收
+
+  http://legendtkl.com/2017/04/28/golang-gc/
+
+  三色标记法，主要流程如下：
+  + 所有对象最开始都是白色。
+  + 从 root 开始找到所有可达对象，标记为灰色，放入待处理队列。
+  + 遍历灰色对象队列，将其引用对象标记为灰色放入待处理队列，自身标记为黑色。
+  + 处理完灰色对象队列，执行清扫工作
+
+* 如何调优
+
+* 注意事项

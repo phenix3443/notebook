@@ -1,0 +1,26 @@
+# -*- coding:utf-8-*-
+#+TITLE: sogou 拼音输入法
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+  从[[https://pinyin.sogou.com/linux/?r=pinyin][下载页]]下载安装
+
+* 配置
+
+* 问题
+1. sogou 拼音输入法候选词乱码。
+
+   解决办法：重启 fcitx 框架。执行
+   #+BEGIN_SRC sh
+fcitx -r
+   #+END_SRC
+
+   或者
+   #+BEGIN_SRC sh
+pidof fcitx|xargs kill
+fcitx &
+sogou-qimpanel &
+   #+END_SRC

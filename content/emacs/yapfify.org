@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: yapfify
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/JorisE/yapfify][yapfify]] 使用 yapf 格式化 Python buffer。可以在某个 buffer 上显式调用它，但是更方便的是，提供了 minor mode“ yapf-mode”，该功能可以自动运行。
+
+* 配置

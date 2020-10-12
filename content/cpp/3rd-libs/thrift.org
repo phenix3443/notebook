@@ -1,0 +1,50 @@
+# -*- coding:utf-8-*-
+#+TITLE: thrift
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+* 安装[fn:1]
+
+  thrift
+  #+BEGIN_SRC sh
+docker run -it --rm centos:7 /bin/bash
+
+yum -y update && \
+yum -y install epel-release && \
+yum -y update && \
+yum -y groupinstall "Development Tools" && \
+yum -y install wget boost-devel boost-static libevent-devel zlib-devel openssl-devel
+  #+END_SRC
+
+  Upgrade autoconf，可选
+  #+BEGIN_SRC sh
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz && \
+tar xvf autoconf-2.69.tar.gz && \
+cd autoconf-2.69 && \
+./configure && make && make install && cd ..
+  #+END_SRC
+
+  Upgrade automake，可选
+  #+BEGIN_SRC sh
+wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz && \
+tar xvf automake-1.14.tar.gz && \
+cd automake-1.14 && \
+./configure && make &&  make install && cd ..
+  #+END_SRC
+
+  Upgrade bison，可选
+  #+BEGIN_SRC sh
+wget http://ftp.gnu.org/gnu/bison/bison-2.5.1.tar.gz && \
+tar xvf bison-2.5.1.tar.gz && \
+cd bison-2.5.1 && \
+./configure && \
+make && make install && cd ..
+  #+END_SRC
+
+  #+BEGIN_SRC sh
+wget http://mirrors.tuna.tsinghua.edu.cn/apache/thrift/0.12.0/thrift-0.12.0.tar.gz && tar zxf thrift-0.12.0.tar.gz && cd thrift-0.12.0 && ./configure && make && make install
+  #+END_SRC
+* Footnotes
+
+[fn:1] https://thrift.apache.org/docs/install/centos

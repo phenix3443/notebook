@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: 容器相关技术介绍
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* linux 命名空间
+
+* cgroup
+
+* Union 文件系统
+
+* mnt 空间
+
+* chroot

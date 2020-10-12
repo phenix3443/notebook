@@ -1,0 +1,131 @@
+# -*- coding:utf-8-*-
+#+TITLE: testing
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/testing/][testing]] 为 Go 软件包的自动化测试提供支持。它旨在与 “go test” 命令配合使用，该命令可自动执行以下形式的所有函数：
+  #+BEGIN_SRC go
+func TestXxx(*testing.T)
+  #+END_SRC
+  其中 Xxx 不以小写字母开头。函数名称用于标识测试用例。
+
+  在这些功能中，使用 =Error,Fail= 或相关的方法来指示失败。
+
+  要编写新的测试套件，请创建一个名称以 =_test.go= 结尾的文件，其中包含如上所示的 =TestXxx= 函数。将文件与要测试的文件放在同一 package 中。该文件将从常规软件包构建中排除，但在运行 “go test” 命令时将包括在内。有关更多详细信息，请运行 “go help test” 和 “go help testflag”。
+
+  一个简单的测试函数如下所示：
+  #+BEGIN_SRC go
+func TestAbs(t *testing.T) {
+    got := Abs(-1)
+    if got != 1 {
+        t.Errorf("Abs(-1) = %d; want 1", got)
+    }
+}
+  #+END_SRC
+
+* Benchmarks
+
+  #+BEGIN_SRC go
+func BenchmarkXxx(*testing.B)
+  #+END_SRC
+  以上形式的函数被认为是基准测试程序(benchmarks)，并由提供 =-bench= 标志的“go test”命令执行。基准按顺序运行。
+
+  有关测试标志的说明，请参见https://golang.org/cmd/go/#hdr-Testing_flags
+
+  基准测试函数示例如下所示：
+
+  #+BEGIN_SRC go
+func BenchmarkRandInt(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        rand.Int()
+    }
+}
+  #+END_SRC
+
+  基准函数必须运行目标代码 B.N 次。在基准执行期间，将调整 B.N，直到基准功能持续足够长的时间以可靠地计时为止。输出
+  #+begin_example
+BenchmarkRandInt-8   	68453040	        17.8 ns/op
+  #+end_example
+
+  表示该循环以每个循环 17.8 ns 的速度运行了 68453040 次。如果基准测试需要在运行前进行一些昂贵的设置，则可以重置计时器：
+
+  #+BEGIN_SRC go
+func BenchmarkBigLen(b *testing.B) {
+    big := NewBig()
+    b.ResetTimer()
+    for i := 0; i < b.N; i++ {
+        big.Len()
+    }
+}
+  #+END_SRC
+
+  如果基准测试需要在并行设置中测试性能，则可以使用 RunParallel 辅助函数；此类基准旨在与 =go test -cpu= 标志一起使用：
+
+  #+BEGIN_SRC go
+func BenchmarkTemplateParallel(b *testing.B) {
+    templ := template.Must(template.New("test").Parse("Hello, {{.}}!"))
+    b.RunParallel(func(pb *testing.PB) {
+        var buf bytes.Buffer
+        for pb.Next() {
+            buf.Reset()
+            templ.Execute(&buf, "World")
+        }
+    })
+}
+  #+END_SRC
+
+* Examples
+  该程序包还将运行并验证示例代码。示例函数可能包含以“Output:”开头的单行注释，并在运行测试时与函数的标准输出进行比较。（比较将忽略前缀和后缀空格）这些是示例的示例：
+  #+BEGIN_SRC go
+func ExampleHello() {
+    fmt.Println("hello")
+    // Output: hello
+}
+
+func ExampleSalutations() {
+    fmt.Println("hello, and")
+    fmt.Println("goodbye")
+    // Output:
+    // hello, and
+    // goodbye
+}
+  #+END_SRC
+
+  注释前缀 "Unordered output:" 类似 "Output:"，但不匹配出现顺序：
+
+  #+BEGIN_SRC go
+func ExamplePerm() {
+    for _, value := range Perm(5) {
+        fmt.Println(value)
+    }
+    // Unordered output: 4
+    // 2
+    // 1
+    // 3
+    // 0
+}
+  #+END_SRC
+  package, a function F, a type T and method M on type T 对应的 example 声明如下：
+  #+BEGIN_SRC go
+func Example() { ... }
+func ExampleF() { ... }
+func ExampleT() { ... }
+func ExampleT_M() { ... }
+  #+END_SRC
+
+  可以通过在名称后附加一个不同的后缀来提供包/类型/功能/方法的多个示例功能。后缀必须以小写字母开头：
+  #+BEGIN_SRC go
+func Example_suffix() { ... }
+func ExampleF_suffix() { ... }
+func ExampleT_suffix() { ... }
+func ExampleT_M_suffix() { ... }
+  #+END_SRC
+
+  当整个测试文件包含单个示例函数，至少一个其他函数，类型，变量或常量声明，并且不包含测试或基准测试功能时，将以示例形式显示。
+
+* skipping
+
+* Subtests and Sub-benchmarks
+
+* Main

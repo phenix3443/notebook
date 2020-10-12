@@ -1,0 +1,29 @@
+# -*- coding:utf-8-*-
+#+TITLE: LiveServer
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer][Live-Server]] 功能：
+  + 浏览器实时展示，自动重载，方便快速开发。
+  + 通过单击状态栏来启动或停止服务器。
+  + 从资源管理器菜单中打开 HTML 文件以浏览器。
+  + 文件变动监控支持排除文件。
+  + 热键控制。
+  + 可自定义的端口号，服务器根目录，默认浏览器。
+  + 使用高级命令行支持任何浏览器（例如：Firefox Nightly）。
+  + 支持 Chrome 调试绑定。[[[https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome][更多信息]]] [[[https://raw.githubusercontent.com/ritwickdey/vscode-live-server/master/images/Screenshot/ChromeDebugging.gif][gif演示]]]
+  + 通过 WLAN 进行远程连接（例如：与移动设备连接）
+  + 使用首选的主机名（localhost 或 127.0.0.1）。
+  + 为 Live Reload 功能定制标签。
+  + 支持 SVG。
+  + 支持 https 。
+  + 支持代理。
+  + 启用 CORS。
+  + 支持多工作区。
+  + 通过 [[https://github.com/ritwickdey/live-server-web-extension][Live Server Web Extension]] 支持任何文件甚至动态页面。
+
+* 配置
+
+* 使用

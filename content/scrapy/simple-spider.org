@@ -1,0 +1,52 @@
+# -*- coding:utf-8-*-
+#+TITLE: 一个简单爬虫的实现
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  本文实现抓取 http://quotes.toscrape.com 上名人名言的爬虫。
+
+* 创建
+  #+BEGIN_SRC
+scrapy genspider quotes quotes.toscrape.com
+  #+END_SRC
+
+  修改代码：
+  #+BEGIN_EXPORT html
+<script src="https://gist.github.com/phenix3443/7952f5644f7efac391206af6e80fbbff.js"></script>
+  #+END_EXPORT
+
+  + 这个爬虫从网页中提取两个内容：格言的内容（text）和作者（author）。
+  + next_page 表示继续爬取下一页内容。
+  + ~-o~ 参数表示将提取的内容保存到 ~quotes.json~ 文件中。
+
+* 运行
+  通过 ~scrapy runspider~ 可以直接运行一个爬虫，而不用建立工程。
+  #+BEGIN_SRC sh
+scrapy runspider quotes_spider.py -o quotes.json
+  #+END_SRC
+
+* 结果
+  #+BEGIN_SRC json
+[{
+    "author": "Jane Austen",
+    "text": "\u201cThe person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.\u201d"
+},
+{
+    "author": "Groucho Marx",
+    "text": "\u201cOutside of a dog, a book is man's best friend. Inside of a dog it's too dark to read.\u201d"
+},
+{
+    "author": "Steve Martin",
+    "text": "\u201cA day without sunshine is like, you know, night.\u201d"
+},
+...]
+  #+END_SRC
+
+  上面保存的文件中，有些编码\uxxx，这是 json 库编码问题，通过 scrapy 设置项可解决。
+
+* 基本概念
+** spider
+** requests
+** responese
+** selector

@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: ldoc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  ldoc 用于生成 lua 代码文档。
+
+* 安装
+  可以使用 luarocks 进行安装：
+  #+BEGIN_SRC sh
+sudo luarocks install lua-discount
+sudo luarocks install ldoc
+  #+END_SRC
+
+* 配置
+
+* 使用
+  参见[[file:ldoc-manual.org][ldoc manual]]

@@ -1,0 +1,79 @@
+# -*- coding:utf-8-*-
+#+TITLE: top
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  该命令用于显示进程的实时状态。
+
+* 使用
+  + ~-p~ 指定进程 ID，可指定多个。
+  + ~-b~ 批处理模式启动。
+
+* 视图[fn:1]
+  #+BEGIN_EXAMPLE
+top - 22:50:47 up  3:09,  1 user,  load average: 0.30, 0.46, 0.35
+Tasks: 309 total,   1 running, 230 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  3.7 us,  1.3 sy,  0.0 ni, 94.2 id,  0.8 wa,  0.0 hi,  0.1 si,  0.0 st
+KiB Mem : 16239164 total,  5903100 free,  5344076 used,  4991988 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.  9934060 avail Mem
+
+PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+  #+END_EXAMPLE
+
+
+  第一行，任务队列信息：
+  + 当前时间。
+  + 登录用户数量。
+  + 系统 1 分钟，5 分钟，15 分钟负载（load average）。load average 数据是每隔 5 秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑 CPU 的数量，结果高于 5 的时候就表明系统在超负荷运转了。
+
+  第二行，系统进程统计。
+
+  第三行，CPU 状态信息
+  + us  用户空间占用 CPU 的百分比。
+  + sy  内核空间占用 CPU 的百分比。
+  + ni  改变过优先级的进程占用 CPU 的百分比。
+  + id  空闲 CPU 百分比。
+  + wa  IO 等待占用 CPU 的百分比。
+  + hi  硬中断（Hardware IRQ）占用 CPU 的百分比。
+  + si  软中断（Software Interrupts）占用 CPU 的百分比。
+  + st  虚拟机占用百分比
+
+  第四行，内存状态：
+  + total  物理内存总量。
+  + free  空闲内存总量。
+  + used  使用中的内存总量。
+  + buffers  缓存的内存量。
+
+  第五行，swap 交换分区信息：
+  + total  交换区总量
+  + free  空闲交换区总量
+  + used  使用的交换区总量
+  + cached  缓冲的交换区总量
+
+  第七行以下：各进程（任务）的状态监控：
+  + PID  进程 id。
+  + USER  进程所有者。
+  + PR  进程优先级。
+  + NI  nice 值。负值表示高优先级，正值表示低优先级。
+  + VIRT  进程使用的虚拟内存总量，单位 kb。VIRT=SWAP+RES。
+  + RES  进程使用的、未被换出的物理内存大小，单位 kb。RES=CODE+DATA。
+  + SHR  共享内存大小，单位 kb。
+  + S  进程状态。D（不可中断的睡眠状态），R（运行），S（睡眠），T（跟踪/停止），Z（僵尸进程）。
+  + % CPU  上次更新到现在的 CPU 时间占用百分比。
+  + % MEM  进程使用的物理内存百分比。
+  + TIME+  进程使用的 CPU 时间总计，精确到 1/100 秒。
+  + COMMAND  进程名称（命令名 / 命令行）。
+
+* 交互命令
+  + h 显示帮助。
+  + f 调整要展示的列。
+  + <,> 指定排序的列，默认是%CPU 排序。
+  + x 高亮排序的列。配合<，>更容易展示。
+  + c 切换显示完整命令行。
+  + M 根据驻留内存排序。
+  + P 根据 CPU 使用百分比大小进行排序。
+  + V 树视图。
+
+* Footnotes
+
+[fn:1] https://linux.cn/article-2352-1.html

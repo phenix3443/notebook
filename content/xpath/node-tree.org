@@ -1,0 +1,96 @@
+# -*- coding:utf-8-*-
+#+TITLE: xpath 之节点树
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 前言
+
+  建议首先阅读 [[https://zh.wikipedia.org/wiki/XPath][xpath on wiki]] ，了解 xpath 的基本用法，这是将 xpath 介绍的最清楚的文章了，比 w3c 上文章要好。
+
+  然后可以阅读相关标准：[[https://www.w3.org/TR/1999/REC-xpath-19991116/][XML Path Language (XPath) Version 1.0]]
+
+  本文内容根据标准，结合 wiki 整理。
+
+* 概述
+  XPath 将 XML 文档建模为 *节点* 树（nodes tree），通过计算 *表达式* （expression）来寻找节点（node）。
+
+  表达式计算过程需要结合 *节点上下文* ，经过计算生成 *对象* 。
+
+* 节点类型
+  XPath 定义了每种类型节点计算字符串值（string-value）的方法。对于某些类型的节点，字符串值是节点的一部分; 对于其他类型的节点，字符串值是从后代节点的字符串值计算的。
+
+** 根（root node）
+   根节点是树的根。document 元素的元素节点是根节点的子节点。
+
+** 元素（element node）
+   文档中的每个元素都有一个元素节点。
+
+** 文本（text nodes）
+   字符数据被分组为文本节点。尽可能多的字符数据被分组到每个文本节点中：文本节点永远不会有文本节点类型的兄弟节点。
+
+** 属性（attribute nodes）
+   每个元素节点都有一组相关的属性节点; 元素是每个属性节点的父节点; 但是，属性节点不是其父元素的子节点。注意：这与 DOM 不同，DOM 不会将带有属性的元素视为属性的父元素
+
+** 命名空间（namespace nodes）
+   每个元素都有一组关联的命名空间节点，每个节点都在元素范围内的每个不同的命名空间前缀。
+
+** 指令处理（processing instruction nodes）
+   每个处理指令都有一个处理指令节点。寻找 XML 处理指令如 =<?php echo $a; ?>= 将符合 processing-instruction('php')会传回值。
+
+** 注释（comment nodes）
+   每个注释都有一个注释节点。 注释的字符串值是注释的内容，不包括开头 =<!-= 或结束 =->= 。
+
+* 表达式
+  XPath 中的主要语法结构是表达式，包括：
+  + 函数调用（function calls）
+  + 节点集（node-sets）
+  + 布尔值
+  + 数字
+  + 字符串
+  + 字面量
+
+* 节点上下文
+  表达计算在节点上下文中发生。上下文包括：
+  + a node (the context node)
+  + a pair of non-zero positive integers (the context position and the context size)
+  + a set of variable bindings
+  + a function library
+  + the set of namespace declarations in scope for the expression
+
+* 对象类型
+  对象有四种基本类型：
+  + node-set (an unordered collection of nodes without duplicates)
+  + boolean (true or false)
+  + number (a floating-point number)
+  + string (a sequence of UCS characters)
+
+* 函数与运算符
+** 运算符
+   有效的运算符有：
+   + /、//以及..运算符，一般用于轴描述。
+   + 合集运算符 | 把两个节点形成联集。
+   + 布尔运算符 and、or 以及 not() 函数。
+   + 数学运算符 +、-、*、div（除）以及 mod（取余数）。
+   + 比较操作子 =、!=（不等于）、<、>、<=、>=
+
+** 函数
+
+*** 文字运算函数
+    concat(), substring(), contains(), substring-before(), substring-after(), translate(), normalize-space(), string-length()
+
+*** 数学运算函数
+    sum(), round(), floor(), ceiling()
+
+*** 节点属性取得函数
+    name(), local-name(), namespace-uri()
+
+*** 处理上下文数据取得函数
+    position(), last()
+
+*** 类型转换函数
+    string(), number(), boolean()
+
+*** 布尔函数
+    not(boolean)
+
+    布尔否运算函数。

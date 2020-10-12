@@ -1,0 +1,17 @@
+# -*- coding:utf-8-*-
+#+TITLE: gocode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://github.com/mdempsky/gocode][gocode]] 是一个用来进行 golang 语法分析的模块，现在已经不再维护，不要使用该功能。
+
+* 安装
+  #+BEGIN_SRC
+go get -u github.com/nsf/gocode
+  #+END_SRC
+
+* 配置
+
+* 使用

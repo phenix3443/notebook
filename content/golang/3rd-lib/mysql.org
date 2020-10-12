@@ -1,0 +1,107 @@
+# -*- coding:utf-8; -*-
+#+title: mysql
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 概述
+  [[https://github.com/go-sql-driver/mysql][mysql]] : golang 中的数据库主要是用到了 database/sql 包，但是这个包指示提供了 sql 的操作接口，具体的 sql 驱动还需要额外的包提供，比如 github.com/go-sql-driver/mysql。
+
+* 导入
+  #+BEGIN_SRC go
+import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+)
+  #+END_SRC
+  分别导入 sql 操作接口和 mysql 驱动。
+* 连接数据库
+  #+BEGIN_SRC go
+dsn := "root:toor@tcp(127.0.0.1:3306)/touch_manager"
+db, err := sql.Open("mysql", dsn)
+if err != nil {
+	fmt.Println(err.Error())
+}
+
+if ok := db.Ping(); ok == nil {
+	println("db still alive")
+}
+  #+END_SRC
+
+  #+BEGIN_SRC go
+func Open(driverName, dataSourceName string) (*DB, error)
+  #+END_SRC
+
+  DB 对象代表了和数据数据库的连接池。sql 包会自动创建和释放链接。   open 接口仅验证参数是否正确，并不会创建和数据库的链接。为了确认可以进行链接，需要调用 Ping 命令。
+
+* 增删改
+  #+BEGIN_SRC go
+res, err := db.Exec("replace into touch_rule values (?,?);", 1, "test")
+if err != nil {
+	log.Fatal(err)
+}
+id, _ := res.LastInsertId()
+count, _ := res.RowsAffected()
+  #+END_SRC
+  (*DB).Exec 处理不需要任何返回的查询，例如 INSERT, UPDATE, DELETE。
+
+* 查询
+
+** 单行
+   #+BEGIN_SRC go
+var content string
+err := db.QueryRow("select content from touch_rule where rule_id = ?", 1).Scan(&content)
+if err != nil {
+	log.Fatal(err)
+}
+   #+END_SRC
+** 多行
+   #+BEGIN_SRC go
+rows, err := db.Query("select * from touch_rule;")
+defer rows.Close()
+
+if err != nil {
+	log.Fatal(err)
+}
+
+for rows.Next() {
+	var id uint32
+	var content string
+	err = rows.Scan(&id, &content)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(id, content)
+}
+
+if err = rows.Err(); err != nil {
+	log.Fatal(err)
+}
+   #+END_SRC
+   有几点需要注意：
+   + 检查遍历是否有 error
+   + defer rows.Close()非常重要。结果集 (rows) 未关闭前，底层的连接处于繁忙状态。当遍历读到最后一条记录时，会发生一个内部 EOF 错误，自动调用 rows.Close()，但是如果提前退出循环，rows 不会关闭，连接不会回到连接池中，连接也不会关闭。所以手动关闭非常重要。rows.Close()可以多次调用，是无害操作。
+
+* 事务
+  #+BEGIN_SRC go
+  #+END_SRC
+
+
+* Null 处理
+  自定义了数据类型，比如，NullBool 表示该字段是 bool 类型，但是有可能设置为 null。简单说就是设计数据库的时候不要出现 null，处理起来非常费力。Null 的 type 很有限，例如没有 sql.NullUint64; null 值没有默认零值。
+  #+BEGIN_SRC go
+var content sql.NullString
+err := db.QueryRow("select content from touch_rule where rule_id = ?", 2).Scan(&content)
+if err != nil {
+	log.Fatal(err)
+}
+if content.Valid {
+	fmt.Println(content.String)
+} else {
+	fmt.Println("null")
+}
+  #+END_SRC
+
+
+* Footnotes
+
+[fn:1] [[https://segmentfault.com/a/1190000003036452][关于 Golang 中 database/sql 包的学习笔记]]

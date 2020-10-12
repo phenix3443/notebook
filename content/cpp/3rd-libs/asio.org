@@ -1,0 +1,6 @@
+# -*- coding:utf-8-*-
+#+TITLE: asio
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://think-async.com/Asio/][Asio]] 是一个用于网络和低级I/O编程的跨平台C++库，它使用现代C++方法为开发人员提供一致的异步模型。

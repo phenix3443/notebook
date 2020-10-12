@@ -1,0 +1,42 @@
+# -*- coding:utf-8-*-
+#+TITLE: zeal-at-point
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  用 Zeal 搜索单词 Zeal 是一个简单的离线 API 文档浏览器，受 Dash（OS X 应用程序）的启发，适用于 Linux 和 Windows。
+
+* 安装
+
+* 配置
+
+  在 point 处运行 zeal-at-point 启动 Zeal 并搜索单词。使用前缀参数 C-u 先编辑搜索的字符串。
+
+  #+BEGIN_SRC sh
+(global-set-key "\C-cd" 'zeal-at-point)
+  #+END_SRC
+
+  可以使用 docset 前缀缩小 Zeal 查询的范围。自定义文档集和主要模式之间的关系：
+
+  #+BEGIN_SRC elisp
+(add-to-list 'zeal-at-point-mode-alist '(perl-mode . "perl"))
+;; Use multiple docsets
+(add-to-list 'zeal-at-point-mode-alist '(python-mode . ("python" "django")))
+  #+END_SRC
+
+   Additionally, the buffer-local variable zeal-at-point-docset can be set in a specific mode hook (or file/directory local variables) to programmatically override the guessed docset. For example:
+   此外，buffer-local 变量 zeal-at-point-docset 可以在特定 mode（或文件/目录局部变量）中设置 hoook，以覆盖猜测的 docset。例如：
+   #+BEGIN_SRC elisp
+(add-hook 'rinari-minor-mode-hook
+    (lambda () (setq zeal-at-point-docset "rails")))
+
+;; Use multiple docsets
+(add-hook 'python-mode-hook
+    (lambda () (setq zeal-at-point-docset '("python" "django"))))
+   #+END_SRC
+
+   You are also possible to set docset for current buffer with zeal-at-point-set-docset
+
+   还可以使用 zeal-at-point-set-docset 为当前缓冲区设置 docset。
+
+* 使用

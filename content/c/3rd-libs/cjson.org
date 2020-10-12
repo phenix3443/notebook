@@ -1,0 +1,46 @@
+# -*- coding:utf-8-*-
+#+TITLE: cjson
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/DaveGamble/cJSON][cjson]] 是用 ANSI C 编写的超轻量级 JSON 解析器。
+
+* 编译
+  使用 cmake 进行编译。
+  #+BEGIN_SRC sh
+mkdir build
+cd build
+cmake ..
+make
+  #+END_SRC
+
+  可以传递给 CMake 的不同选项列表来更改构建过程。使用 =On and Off= 打开和关闭：
+
+* 使用
+
+** 数据结构
+   cJSON 使用 cJSON 结构数据类型表示 JSON 数据：
+   #+BEGIN_SRC c
+/* The cJSON structure: */
+typedef struct cJSON
+{
+    struct cJSON *next;
+    struct cJSON *prev;
+    struct cJSON *child;
+    int type;
+    char *valuestring;
+    /* writing to valueint is DEPRECATED, use cJSON_SetNumberValue instead */
+    int valueint;
+    double valuedouble;
+    char *string;
+} cJSON;
+   #+END_SRC
+
+   此类型的项表示 JSON 值。类型作为位标志存储在 =type= 中（这意味着只通过比较类型的值找不到类型）。要检查项目的类型，请使用相应的 =cJSON_Is ...= 函数。它执行 =NULL= 检查，然后进行类型检查，如果项目属于此类型，则返回布尔值。
+
+   对于每个值类型，都有一个 =cJSON_Create ...= 函数，可用于创建该类型的项目。所有这些都将分配一个 cJSON 结构，以后可以使用 cJSON_Delete 删除它。请注意，必须在某个时候删除它们，否则会出现内存泄漏。要点：如果已将项添加到数组或对象中，则不得使用 cJSON_Delete 将其删除。将它添加到数组或对象会转移其所有权，以便在该数组或对象删除时，其中的项也会删除。
+
+** 解析 json
+
+** 打印 json

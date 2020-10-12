@@ -1,0 +1,27 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang deepcopy
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+
+  浅拷贝（shadow copy）和 深拷贝（deep copy）是经常遇到的两种情况。
+
+* 实现
+  golang 中实现的三种方式：
+  + 序列化后反序列化：json 和 gob
+  + 反射实现基本类型的拷贝。
+
+** json vs gob（[[）https://stackoverflow.com/questions/46790190/quicker-way-to-deepcopy-objects-in-golang][参考]]）
+   encoding/gob 包需要传输类型定义：
+   #+begin_example
+该实现为流中的每种数据类型编译自定义编解码器，当使用单个 Encoder 传输值流时，效率最高，从而摊销了编译成本。
+   #+end_example
+   当“首次”序列化类型的值时，必须包含/传输类型的定义，因此解码器可以正确地解释和解码流，《[[https://stackoverflow.com/questions/37618399/efficient-go-serialization-of-struct-to-disk/37620399#37620399][将 struct 高效序列化到磁盘]]》对此进行详细说明。：
+   #+begin_example
+gobs 流是自描述的。流中的每个数据项之前都有其类型的规范，以一小套预定义类型表示。
+   #+end_example
+
+   JSON 格式编码/解码，表示中不包含类型描述。
+
+** 对比
+   https://github.com/antlabs/deepcopy

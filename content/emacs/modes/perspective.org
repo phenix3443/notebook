@@ -1,0 +1,30 @@
+# -*- coding:utf-8-*-
+#+TITLE: perspective
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/nex3/perspective-el][perspective]] 在 Emacs 中标记工作区，类似于窗口管理器中的工作区，窗口管理器类似 Awesome 和 XMonad（有点类似于 Gnome 中的多个桌面或 OS X 中的 Spaces）。
+
+  perspective.el 为每个 Emacs 框架提供多个工作区（或 “perspective”）。 这使得在许多单独的项目中工作变得容易，而不会迷失在所有缓冲区中。
+
+  每个 perspective 由窗口配置和一组缓冲区组成。切换到 perspective 会激活其窗口配置，而在 perspective 中，默认情况下只有其缓冲区可用。
+
+* 安装
+  建议您从 MELPA 安装 perspective.el。 或者，可以将它放在加载路径中并运行 =(require 'perspective)= 。
+
+  Debian 9 或更高版本或 Ubuntu 16.04 或更高版本的用户可能只需要 =apt-get install elpa-perspective= 。
+
+* 配置
+
+* 使用
+ =persp-mode= 激活 perspective。命令都以 C-x x 为前缀。 以下是主要命令：
+ + s -- persp-switch: 查询要切换或创建的 perspective。
+ + k -- persp-remove-buffer:查询从当前 perspective 中删除的 buffer。
+ + c -- persp-kill : 查询要杀死的 perspective。
+ + r -- persp-rename: 重命名当前 perspective。
+ + a -- persp-add-buffer: 在当前 perspective 中添加 buffer。
+ + A -- persp-set-buffer: 将 buffer 添加到当前 perspective 并将其从其他 perspective 中删除。
+ + i -- persp-import: 从另一个框架导入给定的 perspective。
+ + n, <right> -- persp-next : 切换到下一个 perspective。
+ + p, <left> -- persp-prev: 切换到前一个 perspective。

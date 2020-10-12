@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: strings
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/strings/][strings]] 实现简单的函数来处理 UTF-8 编码的字符串。
+
+* 使用

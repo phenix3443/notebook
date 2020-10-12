@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: gocheck
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+   [[https://labix.org/gocheck][gocheck]] 单元测试。没什么好说的，看手册吧。

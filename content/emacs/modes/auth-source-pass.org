@@ -1,0 +1,191 @@
+# -*- coding:utf-8-*-
+#+TITLE: auth-source-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* Overview
+
+  The auth-source library is simply a way for Emacs and Gnus, among others, to answer the old burning question “What are my user name and password?”
+
+  (This is different from the old question about burning “Where is the fire extinguisher, please?”.)
+
+  The auth-source library supports more than just the user name or the password (known as the secret).
+
+  Similarly, the auth-source library supports multiple storage backend, currently either the classic “netrc” backend, examples of which you can see later in this document, or the Secret Service API. This is done with EIEIO-based backends and you can write your own if you want.
+
+  Next: Secret Service API, Previous: Overview, Up: Top   [Contents][Index]
+
+* Help for users
+
+  “Netrc” files are a de facto standard. They look like this:
+
+  “netrc”文件有一个事实标准，他们看起来是这个样子：
+  #+BEGIN_EXAMPLE
+machine mymachine login myloginname password mypassword port myport
+  #+END_EXAMPLE
+
+  The machine is the server (either a DNS name or an IP address). It’s known as :host in auth-source-search queries. You can also use host.
+
+  machine 指的是服务（可以是 DNS 名字或者是 IP 地址）。auth-source-search 查询中的:host。也可以使用 host 代替
+
+  The port is the connection port or protocol. It’s known as :port in auth-source-search queries.
+
+  port 是连接端口或协议。
+
+  The user is the user name. It’s known as :user in auth-source-search queries. You can also use login and account.
+
+  user 是用户名。也可以使用 login 或者 account。
+
+  Spaces are always OK as far as auth-source is concerned (but other programs may not like them). Just put the data in quotes, escaping quotes as you’d expect with ‘\’.
+
+  对于 auth-source 来说空格是没问题的（但是其他程序可能不喜欢他们）。可以把数据放在括号里，如你所想，括号可以通过‘\’进行转义。
+
+  All these are optional. You could just say (but we don’t recommend it, we’re just showing that it’s possible)
+
+  所有的这些都是可选的，也可以仅仅这样写（但是我们不推荐这样，我们只是展示一下这样是可行的）
+  #+BEGIN_EXAMPLE
+  password mypassword
+  #+END_EXAMPLE
+
+  to use the same password everywhere. Again, DO NOT DO THIS or you will be pwned as the kids say.
+
+  所有地方都是用相同的密码。再次强调，别这样做，否则你就会如同孩子所说的那样被玩弄。
+
+  “Netrc” files are usually called .authinfo or .netrc; nowadays .authinfo seems to be more popular and the auth-source library encourages this confusion by accepting both, as you’ll see later.
+
+  “netrc”文件通常被称作.authinfo 或者.neterc；现在.authinfo 看起来更流行。auto-source 库也通过接手两者来鼓励这种混淆，正如你后面看到的。
+
+  If you have problems with the search, set auth-source-debug to 'trivia and see what host, port, and user the library is checking in the *Messages* buffer. Ditto for any other problems, your first step is always to see what’s being checked. The second step, of course, is to write a blog entry about it and wait for the answer in the comments.
+
+  如果搜索的过程中遇到了问题，将 auth-source-debug 设置为'trivia，可以在 *Messages*  buffer 中看到库正在检查的 host port 和 user 信息。同样对于任何其他问题，第一步总是查看在检查什么。第二步，当然，是写一个关于它的博客，在评论中等待答案。
+
+
+  You can customize the variable auth-sources. The following may be needed if you are using an older version of Emacs or if the auth-source library is not loaded for some other reason.
+
+  可以定制 auto-soources 变量。如果使用旧版本的 Emacs 或者由于某些问题 auto-source 库没有加载，你可能需要下面的代码：
+  #+BEGIN_SRC elisp
+(require 'auth-source)             ;; probably not necessary
+(customize-variable 'auth-sources) ;; optional, do it once
+  #+END_SRC
+
+  Variable: auth-sources
+
+  The auth-sources variable tells the auth-source library where your netrc files or Secret Service API collection items live for a particular host and protocol. While you can get fancy, the default and simplest configuration is:
+
+  变量 auth-sources 告诉 auto-source 库 netrc 文件或者一个特定主机和协议的 Secret Service API 集合条目。可以想象一下，默认和最简单的配置是这样的：
+
+  #+BEGIN_SRC elisp
+;;; old default: required :host and :port, not needed anymore
+(setq auth-sources '((:source "~/.authinfo.gpg" :host t :port t)))
+  ;;; mostly equivalent (see below about fallbacks) but shorter:
+(setq auth-sources '((:source "~/.authinfo.gpg")))
+  ;;; even shorter and the default:
+(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+  ;;; use the Secrets API Login collection
+  ;;; (see Secret Service API)
+(setq auth-sources '("secrets:Login"))
+
+  #+END_SRC
+  通过向 auth-sources 添加主机和协议相关的条目，可以为该主机和协议指定 netrc 文件。通常没必要这么做，但是如果共享 netrc 文件或有其他不寻常的设置，这样做可能有意义。（90%的 Emacas 用户有不寻常的配置，剩下的 10%是真的不寻常）。
+
+  这是使用两个 source 的混合例子：
+  #+BEGIN_SRC elisp
+(setq auth-sources '((:source (:secrets default)
+							  :host "myserver" :user "joe")
+					 "~/.authinfo.gpg"))
+  #+END_SRC
+
+  如果不配置 auth-sources，就要使用默认配置：没有加密的 netrc 文件~/.authinfo 文件将会用于任何主机和端口。
+
+  如果失败了，任何主机和端口就会在~/.authinfo.gpg 文件中查看，这是 GnuPG 加密过的文件。
+
+  这个例子描述了 netrc 文件中行的典型格式：
+  #+BEGIN_EXAMPLE
+  machine YOURMACHINE login YOU password YOURPASSWORD
+  #+END_EXAMPLE
+
+  这将会匹配任何验证端口。很简单，对吧？对单如果这台机器 433 端口开了 SMTP 服务需要一个和 IMAP 服务不同的密码怎么办？
+  #+BEGIN_EXAMPLE
+  machine YOURMACHINE login YOU password SMTPPASSWORD port 433
+  machine YOURMACHINE login YOU password GENERALPASSWORD
+  #+END_EXAMPLE
+
+  For url-auth authentication (HTTP/HTTPS), you need to put this in your netrc file:
+
+  对于 url-auth 验证来说（HTTP/HTTPS），要在 netrc 文件中这样写：
+  #+BEGIN_EXAMPLE
+  machine yourmachine.com:80 port http login testuser password testpass
+  #+END_EXAMPLE
+
+  这将会匹配基于 HTTP 的任何领域和认证方法（基本或 digest）。HTTPS 也是类似的，如果想要更好的控制，探索 url-auth 的源码和变量。
+
+  对于 tram 验证，使用：
+  #+BEGIN_EXAMPLE
+machine yourmachine.com port scp login testuser password testpass
+  #+END_EXAMPLE
+
+  注意 port 表示 Tramp 连接方法。如果不指定 port 字段，会匹配早先介绍的任意的 Tramp 方法。由于 Tramp 有大约 88 中连接方法，如果有不寻常的设置的话这可能是有用的。
+
+* Secret Service API
+
+  Secret Service API 是来自 freedesktop.org 的一个标准，用来安全的存储密码或其他机密信息。该 API 被系统守护进程，入 GNOME Keyring 或 KDE Wallet 实现。
+
+  auth-source 使用 secrets.el 库来连接这些 API。也可以在其他 packages 中使用该库，它并不是 auth-source 独有的。
+
+  + Variable: secrets-enabled
+
+  + Command: secrets-show-secrets
+
+  + Function: secrets-list-collections
+
+  + Function: secrets-set-alias collection alias
+
+  + Function: secrets-get-alias alias
+
+  + Function: secrets-list-items collection
+
+  + Function: secrets-create-item collection item password &rest attributes
+
+  + Function: secrets-get-secret collection item
+
+  + Function: secrets-delete-item collection item
+
+  + Function: secrets-get-attribute collection item attribute
+
+  + Function: secrets-get-attributes collection item
+
+  + Function: secrets-search-items collection &rest attributes
+
+* Appendix A GnuPG and EasyPG Assistant Configuration
+  If the auth-sources variable contains ~/.authinfo.gpg before ~/.authinfo, the auth-source library will try to read the GnuPG encrypted .gpg file first, before the unencrypted file.
+
+  如果变量 auth-source 中~/.authifno.gpg 在~/.authinfo 之前，auth-source 会先尝试限度去 GnuPG 加密的.gpg 文件。
+
+  In Emacs 23 or later there is an option auto-encryption-mode to automatically decrypt *.gpg files. It is enabled by default. If you are using earlier versions of Emacs, you will need:
+
+  Emacs 23 和更高的版本中哟一个选项来 auto-encryption-mode 来自动解密 *.gpg 文件。如果使用的是早期版本的 Emacs，需要：
+
+  #+BEGIN_SRC elisp
+(require 'epa-file)
+(epa-file-enable)
+  #+END_SRC
+
+  If you want your GnuPG passwords to be cached, set up gpg-agent or EasyPG Assistant (see (epa)Caching Passphrases).
+
+  如果想要缓存 GnuPG 密码，设置 gpg-agent 或者 EasyPG Assistant。
+
+  To quick start, here are some questions:
+
+  为了快速开始，这里有一些问题：
+
+  + Do you use GnuPG version 2 instead of GnuPG version 1?
+  + Do you use symmetric encryption rather than public key encryption?
+  + Do you want to use gpg-agent?
+
+  Here are configurations depending on your answers:
+
+  这里是根据答案进行的配置：
+
+* Footnotes
+
+[fn:1] [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][emacs auth-source manual]]

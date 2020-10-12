@@ -1,0 +1,16 @@
+# -*- coding:utf-8-*-
+#+TITLE: golint
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+* 概述
+
+  Golint 与 gofmt 不同。 Gofmt 重新格式化 Go 源代码，而 golint 打印出样式错误。
+
+  Golint 与 govet 不同。 Govet 关心的是正确性，而 golint 则关注编码风格。 Golint 在谷歌使用，它寻求匹配开源 Go 项目的公认风格。golint 仅是提出建议。 Golint 并不完美，既有误报。不要将其输出视为黄金标准。我们不会添加编译指示或其他旋钮来抑制特定警告，因此不要指望或要求代码完全“完全不告警”。 Golint 为 Effective Go 和 CodeReviewComments 中列出的许多可机械检查项目提出建议。
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u golang.org/x/lint/golint
+  #+END_SRC

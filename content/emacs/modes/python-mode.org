@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: python-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacsmirror/python-mode][python-mode]] 是 python 的 major mode。

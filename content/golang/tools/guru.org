@@ -1,0 +1,17 @@
+# -*- coding:utf-8-*-
+#+TITLE: guru
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://godoc.org/golang.org/x/tools/cmd/guru][Guru]] 代码导航工具。
+
+* 安装
+  #+BEGIN_SRC sh
+go get golang.org/x/tools/cmd/guru
+  #+END_SRC
+
+* 使用
+  这里有 [[http://www.jianshu.com/p/994e85e21135][说明]] 。
+
+  [[https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit][原版文档]]

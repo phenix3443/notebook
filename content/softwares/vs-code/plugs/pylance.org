@@ -1,0 +1,31 @@
+# -*- coding:utf-8-*-
+#+TITLE: pylance
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://devblogs.microsoft.com/python/announcing-pylance-fast-feature-rich-language-support-for-python-in-visual-studio-code/][Microsoft 已经发布的 Pylance]] 是 Language Server 协议的一种实现，可以在 Visual Studio Marketplace 上免费获得，它使用 Microsoft 的 Pyright 静态类型检查工具来提供丰富的类型信息。该扩展还包括一些针对流行模块的自动完成和启用类型检查的存根。
+
+
+  + 类型信息
+
+    类型信息现在可以在函数签名中以及在符号上悬停时使用，从而为您提供有用的信息，以确保您正确调用了函数，从而提高了所编写代码的质量。
+
+  + 自动导入
+
+    通过自动导入，可以在补全列表中获取已安装和标准库模块的智能导入建议。
+
+  + 类型检查诊断
+
+    如果对 Python 中的类型感到兴奋，可以通过将 python.analysis.typeCheckingMode 设置为 basic 或 strict 来尝试 Pylance 的类型检查模式。此设置使用 Pyright 的类型检查，分别在代码库上应用一组基本或全面的规则。通过这种模式产生的诊断信息可以帮助提高代码质量，并帮助更轻松地找到边缘情况。
+
+  + 可与 Visual Studio Code 中的 Python 插件 一起使用。
+
+    安装后，Python 扩展程序将识别出已经安装了 Pylance，并提示选择它作为语言服务器。如果尚未在 VS Code 中使用 Python 扩展，则安装 Pylance 也将获取该扩展。
+
+
+  根据微软的说法，Pylance 最终将取代最初于 2018 年发布的 Microsoft Python Language Server。微软程序经理 Savannah Ostrowski 表示，目前，微软还没有开放源代码的计划，该计划禁止 Pylance 与第三方编辑器一起使用。
+
+* 配置
+
+* 使用

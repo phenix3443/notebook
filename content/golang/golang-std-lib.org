@@ -1,0 +1,40 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang 标准库
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* [[https://golang.org/pkg/bytes/][bytes]]
+   实现了操作 bytes 序列的相关操作，类似 strings。
+
+* [[https://golang.org/pkg/encoding/binary/][binary]]
+    实现 bytes 和数字之间的转换。
+
+* [[https://golang.org/pkg/errors/][errors]]
+    错误处理。
+
+* [[https://golang.org/pkg/encoding/hex/][hex]]
+    实现十六进制字符串 bytes 的转换。
+
+* [[https://golang.org/pkg/encoding/json/][json]]
+    实现了 json 序列化的操作。
+
+* [[https://golang.org/pkg/net/][net]]
+    底层网络接口
+
+* [[https://golang.org/pkg/net/http/][http]]
+     http 协议，client，server 相关实现。
+* [[https://golang.org/pkg/os/][os]]
+
+
+* [[https://golang.org/pkg/path/filepath/][filepath]]
+
+* [[https://golang.org/pkg/database/sql/][sql]]
+
+* [[https://golang.org/pkg/strconv/][strconv]]
+   实现字符串和基础数据结构中之间的转换。
+
+* [[https://golang.org/pkg/strings/][strings]]
+    实现了字符串相关操作，例如，查找，切片，strip，split 等。
+
+* [[https://golang.org/pkg/time/][time]]
+  实现日期时间相关的函数。

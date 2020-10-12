@@ -1,0 +1,12 @@
+# -*- coding:utf-8-*-
+#+TITLE: vc-msg
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/redguardtoo/vc-msg][vc-msg]] 显示当前行的版本控制软件（VCS）提交消息。该软件包是 emacs-git-messenger 的扩展.x
+
+* 配置
+
+* 使用
+  =M-x vc-msg-show=

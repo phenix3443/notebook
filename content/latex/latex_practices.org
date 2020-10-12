@@ -1,0 +1,411 @@
+# -*- coding:utf-8 -*-
+#+TITLE:latex practices
+
+* TeX 介绍
+  TEX（希腊语：/tɛx/，音译 “泰赫”，文本模式下写作 TeX），是一个由美国计算机教授高德纳（Donald Ervin Knuth）编写的功能强大的排版软件。
+
+  与 Word、WPS 等其他文档软件相比，TeX 特别适合于科技论文和书籍的排版，并且在某些方面（如数学公式的编排）仍然是目前排版质量最好的系统。利用它可以在计算机上生成与印刷品几乎完全一样的作品，目前在国外已经被广泛地用于编排书籍、档案、学位论文和私人信件，以及各种复杂的公式、目录、索引和参考文献等。
+
+  稍有经验的人都会知道，即使再好的字处理软件打印出来的效果也都会跟屏幕上看到的有所差异。而 TeX 系统的输出是与设备无关的 DVI（DeVice Independent）文件，因此无论是在针式打印机、喷墨打印机、激光打印机或是照排机上，其效果都是完全相同的，仅仅只是文字或者图形的分辩率因设备的不同而稍有差异。从某种意义上说，TeX 才是真正的 "所见即所得"。[fn:1]
+** 历史
+   TeX 系统的发明者 Knuth 教授也是享有盛誉的计算机程序设计系列专著《计算机编程的艺术》（The Art of Computer Programming）的作者，TeX 的出现与这本举世闻名的计算机理论书籍有着密不可分的联系。
+
+   1977 年，当出版社要求 Knuth 教授对他六十年代的力作《计算机编程的艺术》出修订版时，他感到以手工方式对原稿进行修改存在种种不便，于是便放下手头的工作，开始设计一套高质量的计算机排版系统。原先计划只花半年时间来改进排版技术然后继续写作的 Knuth 教授，最后却整整耗费了十年心血，终于研制成功了闻名于世的 TeX 系统。[fn:1]
+** 优点[fn:2]
+   + 高质量的输出：提供专业级的排版设计，使你的文档看起来如同印刷好的一样。
+   + 高度的灵活性：TeX 自从出现以来其内核只有微小的改动。但是由于其内核的设计方式，世界上的 TeX 使用者可以让 TeX 做几乎任何工作。你可以用 TeX 来排版英文文本，也可以排版德文，俄文，中文等多种语言。甚至 来排版乐谱，象棋，围棋棋谱等等。
+   + 超常的稳定性：自从 TeX 出现以来，只有一些微小的改动。稳定性还体现在 TeX 系统极少会崩溃，可以处理任意大小的文件，即使你的计算机的内存很少，TeX 也可自如的工作。
+   + 创造性：TeX 是可编程的，TeX 是一种宏命令编程语言，可以用很少的命令来完成非常复杂的工作，可以方便地排版数学公式，很容易地生成脚注、索引、目录和参考文献等复杂的结构。同时有大量免费的可添加宏包，协助你完成许多基本的 TeX 未直接支持的排版任务。例如，支持在文档中插入 PostScript 图形的宏包和排版符合各类标准的参考文献的宏包等。如果需要的话，你也可以重新定义 TeX 的所有命令来得到特殊的效果。
+   + 跨平台性：TeX 几乎在所有的计算机操作系统平台上得到实现。TeX 的源文件可在不同的平台之间自由的交换，而得到的输出是完全相同的。
+   + TeX 是免费软件，它的源程序也是免费的。同时由于 TeX 并不是被某个公司所垄断开发，所以世界各地的使用者设计了统一的技术支持的方式。
+** 不足
+   + 掌握 TeX 需要一个比较长而且艰难的学习过程。TeX 的一些扩展如 LaTeX 则要相对简单的多，使用起来也比 TeX 方便，一个新手完全可以在一个下午或者更短的时间内学会开始使用 LaTeX。
+   + 当发生错误的时候，TeX 会给出一些信息来提示你。但很多情况下并不足以使你迅速准确的找到错误之所在。尤其对刚刚开始学习的新手来说更是如此。
+   + 像 TeX 这种宏语言不同于其它的计算机语言，如 C，Pascal 等，大多数人并不了解。因此，当你想要写自己的宏命令时，你需要对 TeX 有比较深入的了解才能写出牢固可靠的宏命令。
+   + 一般来说是不能在输入文章的同时看到最终的输出效果，但是将文章编译之后，是可以在屏幕上预览最终的输出效果的，这个实际上页很方便。
+** 生态
+   TeX 家族可以分成几个层次[fn:3]
+*** 格式
+	格式是一些宏的集合，并且这些宏大致具有常用、底层的特点。常见格式有 Knuth 的 [[#fl-plaintex][plainTeX]], 著名的 [[#fl-latex][LaTeX]], 以及生力军 [[#fl-context][ConTeXt]].
+*** 引擎
+	引擎是各位开发者根据 Knuth 的算法做的各种实现，是真正进行排版作业的程序，在不同的硬件和操作系统上可能由不同的实现（想想 C 和 gcc、vs）。比如[[#fl-tex][TeX]], [[#fl-pdftex][PdfTeX]], [[#fl-xetex][XeTeX]], [[#fl-luatex][LuaTeX]], 再比如日系的 [[#fl-ptex][pTeX]], [[#fl-eptex][e-pTeX]], [[#fl-euptex][e-upTeX]], 这些都是引擎。
+*** 命令
+	不同的引擎都可以编译上面几种格式的文档，不同的组合需要使用不同的命令。[fn:4]
+*** 宏包
+	宏包也是宏的集合，但通常没有格式那么常用或者底层。宏包基本上是为了一定的目的专门编写的，与格式和引擎搭配使用。
+
+*** 周边工具
+	为了自动化方便，一些软件提供 TeX 本身实现起来麻烦的功能。比如 [[#fl-bibtex][BibTeX]] 用来排版参考文献，比如 [[#fl-makeindex][makeindex]] 用来排版文章索引，[[#fl-metapost][Metapost]] 用来画图。
+*** 发行版
+	上面单独的任何一个层次都是没法给一般用户使用的（想想 linux 内核与众多发行版的关系），所谓发行版就是上面所有东西的集合（还包括一些说明文档和字体之类的东西）。比如 [[#fl-miktex][MikTeX]] 和 [[#fl-ctex][CTeX]] 是简体中文 Windows 用户常用的发行版，更通用的则是 TUG 维护的 [[#fl-texlive][TeX Live]], Mac 上有[[#fl-mactex][MacTeX]]。
+
+** 排版流程
+   根据附录中关于[[#fl-format][格式]]的介绍决定主要学习 LaTeX 这种格式。
+
+   LaTeX 源文件是普通的文本文件格式，其中不仅包括所要排版的文本，还包括 LaTeX 所能识别的排版命令。通过编译之后才能生成需要的输出文件。LaTeX 支持 DVI 和 PDF 格式的输出，如配合其他软件可以很容易地生成 PostScript、PNG、JPG 等格式的输出。
+   #+CAPTION: 不同引擎排版流程对比
+   file:img/latex-practices/workflow-compare.jpg
+*** latex+dvips 命令排版流程
+	在使用 latex+dvips 进行排版时，从输入文本到最后在打印机上得到输出结果，通常需要经过下图所示的几个步骤。
+	#+CAPTION: latex dvips 排版流程
+	file:img/latex-practices/latex-workflow.png
+**** 编辑
+	 用编辑器编写文稿（源文件），同时插入排版命令。需要注意的是，源文件必须是 utf8 纯文本格式的，并且通常以.tex 作为其扩展名（如 test.tex）。在 Linux 下建议使用 Emacs 或者 VIM 编辑器，它们都能够识别 LaTeX 语法并且可以高亮显示 LaTeX 命令中的关键字。
+**** 编译
+	 生成的 LaTeX 源文件中如果没有语法错误，那么就可以使用 LaTeX 命令进行编译，生成 DVI 文件：
+	 #+BEGIN_SRC sh
+		 latex hello.tex
+	 #+END_SRC
+	 在处理过程中 LaTeX 会显示页号以及可能会有的错误和警告信息，如果在该过程中出现错误，则表明源文件中的某些排版命令有误，此时应该重新对源文件进行修改。当 LaTeX 成功结束这一处理过程后，将生成一个名为 hello.dvi 的文件，该文件是与设备无关的，它由格式化后的文本以及所需要的字体信息组成，但是与要使用的打印机的特征无关，该文件通常也称为元文件（metafile）。
+**** 查看
+	 在正式打印输出或者照排制版之前，可以先在计算机屏幕上显示 DVI 文件，察看文件内容或者排版结果是否合乎要求，如果有不满意之外，则应重新对 LaTeX 源文件进行修改。在 Linux 下有许多软件可以用来查看 DVI 文件，其中最常用的是 X-Window 环境下的 xdvi，下面的命令可以用来查看 hello.dvi：
+	 #+BEGIN_SRC sh
+		 xdvi hello.dvi
+	 #+END_SRC
+	 由于 DVI 文件是与设备无关的，因而用 xdvi 在屏幕上看到的结果是不会受到输出设备、操作系统、硬件环境等因素影响的。
+**** 打印
+	 DVI 元文件中的信息最终要被转化成可以在特定打印机上输出的形式，该过程是由一个称为打印驱动程序来完成的，它是与具体打印机相关的。例如，在 Linux 下可以用下面的命令将 hello.dvi 送到惠普激光打印机上打印：
+	 #+BEGIN_SRC sh
+  dvihp hello.dvi
+	 #+END_SRC
+**** 输出
+	 在很多场合下，使用 latex 得到的 DVI 文件并不总是需要打印出来，而是要转化成更加便于阅读的格式，如 PDF（Portable Document Format）或者 PS（PostScript），LaTeX 系统提供了相应的工具在这些格式之间进行转换。要将 hello.dvi 转化成 hello.pdf 和 hello.ps，可以分别使用如下的命令：
+	 #+BEGIN_SRC sh
+		 dvipdf hello.dvi
+		 dvips hello.dvi -o
+	 #+END_SRC
+*** pdflatex、xelatex 排版流程
+**** 编辑
+**** 编译
+* 引擎选择
+  引擎的选择主要是考虑到要支持中文。latex+dvips 的方式最古老，不便于中文文档的排版，其他几种方式都能较好的进行中文排版。用 latex 和 pdflatex 命令排版在处理中文时都是用 CJK 宏包的机制，而 xelatex 则使用新的 xeCJK 宏包机制，原生支持系统字体，这意味着我们无需再额外编译字体，系统安装了什么字体，我们就能使用什么字体。这两大优点简直就是大家一直以来梦寐以求的功能，所有的 CJK 环境、pdflatex 这些老工具完全都可以抛弃了。[fn:5]
+
+* 安装
+** 光盘安装
+   TeXLive 是以光盘镜像（ISO）的形式发布的，在 [[http://www.ctan.org][CTAN 的官方网站]]上可以下载到最新的压缩包 texlive2015-20150523.iso，用 mount 命令将其作为文件系统加载后使用：
+   #+BEGIN_SRC sh
+        mount -t iso9660 -o ro,loop texlive2015-20150523.iso
+        cd /mnt/texlive
+   #+END_SRC
+
+   TeXLive 的安装比较容易，首先是将光盘根目录下的 bin 和 texmf 子目录整个拷贝到硬盘上：
+   #+BEGIN_SRC sh
+        mkdir /usr/local/texlive
+        cp /mnt/texlive/bin/ /usr/local/texlive/ -R
+        cp /mnt/texlive/texmf/ /usr/local/texlive/ -R
+   #+END_SRC
+
+   然后再将 TeX 系统可执行程序所在的目录添加到当前用户的环境变量 PATH 中去，就可以完成安装了：
+   #+BEGIN_SRC sh
+        export PATH=/usr/local/texlive/bin/i386-linux/:$PATH
+   #+END_SRC
+   [xiaowp@xpcdev latex]$
+   安装好 TexLive 之后，在命令行方式下输入 tex 命令，如果能够看到如下的提示信息，则表明 TeX 系统已经能够正常工作了：
+   #+BEGIN_SRC sh
+	tex
+   #+END_SRC
+
+   输入
+   #+BEGIN_SRC sh
+        \relax\bye
+   #+END_SRC
+   退出 TeX，之后就可以在 Linux 下使用 LaTeX 来编排高质量的文档了。
+** 网络安装
+   《texlive2015 中文指南》[fn:19]中详细描述了安装过程，这里只说一下注意的地方：
+   + 使用管理员权限或者 sudo 安装。
+   + 安装的时候注意选择软件源，能加快下载速度。
+
+	 #+CAPTION: 勾选切换软件源
+	 file:img/latex-practices/change-default-repository-1.png
+
+	 #+CAPTION: 选择 USTC
+	 file:img/latex-practices/change-default-repository-2.png
+
+   + ubuntu 下安装程序依赖 perl-tk。
+	 #+BEGIN_SRC sh
+		sudo apt-get install perl-tk
+	 #+END_SRC
+   + 安装过程中出一些 tar 不完整的错误重新安装可以解决，之前下载的安装包也不会重复下载。
+   + XeTEX 和 LuaTEX 的系统字体配置
+
+	 XeTEX 和 LuaTEX 可以使用任何系统安装的字体，而不只是 TEX 目录树中的那些。它们使用类似但不完全一致的方式实现这一功能。在 Windows 下 TEX Live 提供的字体会自动为 XeTEX 所用。但如果你在 Unix 兼容的系统中安装了 xetex 软件包，则需要把系统配置一番 XeTEX 才能找到随 TEX Live 安装的那些字体。
+
+	 为了进行配置， 需要先安装 xetex 集合：
+	 #+BEGIN_SRC sh
+		 sudo tlmgr install collection-xetex
+	 #+END_SRC
+	 安装后都会在 ~TEXMFSYSVAR/fonts/conf/texlive-fontconfig.conf~ 创建一个必需的配置文件。要在整个系统中使用 TEX Live 的字体 (假定你有足够的权限)，请依照下面的步骤来做：
+	 #+BEGIN_SRC sh
+           sudo cp /usr/local/texlive/2015/texmf-var/fonts/conf/texlive-fontconfig.conf /etc/fonts/conf.d/09-texlive.conf
+           sudo fc-cache -fsv
+	 #+END_SRC
+
+	 如果你没有足够的权限执行上述操作，或者只需要把 TEX Live 字体提供给你自己，可以这么做：
+	 #+BEGIN_SRC sh
+           cp /usr/local/texlive/2015/texmf-var/fonts/conf/texlive-fontconfig.conf ~/.fonts.conf
+           fc-cache -fv
+	 #+END_SRC
+
+** 中文支持
+   xelatex 虽然能够正常使用系统字体，但是无法分别指定中英文字体[fn:6]，这需要借助 xecjk 宏包实现，
+
+   #+BEGIN_SRC latex :tangle latex-practices/zh-en-test.tex
+       \documentclass[12pt,a4paper]{article}
+       \usepackage{xltxtra,fontspec,xunicode}
+       \usepackage[slantfont,boldfont]{xeCJK} % 允许斜体和粗体
+
+       \setCJKmainfont{文泉驿等宽微米黑}   % 设置缺省中文字体
+       \setCJKmonofont{文泉驿微米黑}   % 设置等宽字体
+       \setmainfont{DejaVu Serif}   % 英文衬线字体
+       \setmonofont{DejaVu Sans Mono}   % 英文等宽字体
+       \setsansfont{DejaVu Sans} % 英文无衬线字体
+
+       \begin{document}
+       \begin{verse}
+         Stray birds of summer come to my window to sing and fly away. \\
+         And yellow leaves of autumn, which have no songs, \\
+         flutter and fall there with a sign.\\
+         \hfill \emph{Rabindranath Tagore}
+       \end{verse}
+
+       \begin{verse}
+         夏天的飞鸟，飞到我的窗前唱歌，又飞去了。\\
+         秋天的黄叶，它们没有什么可唱，只叹息一声，飞落在那里。\\
+         \hfill \emph{罗宾德拉纳特·泰戈尔}
+       \end{verse}
+       \end{document}
+   #+END_SRC
+   todo:有的字体找不到需要解决。
+* 附录
+** 格式
+   :PROPERTIES:
+   :CUSTOM_ID: fl-format
+   :END:
+*** Tex 宏
+	与其它计算机排版系统不同的是，在用 TeX 编排文档时，除了需要输入正文内容之外，同时还需要加入一些排版命令（TeX 宏），这些命令通常不是由编辑人员添加的，而是要由作者本人自己完成。TeX 系统提供的排版命令十分灵活，作者可以直接使用这些命令，也可以利用已有的功能来定义新的排版命令，使之适应特定场合的需要。
+*** plainTex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-plaintex
+	:END:
+	TeX 与 Linux 的 Kernel 一样，只是一套核心技术，实际应用时往往需要在 TeX 的基础上继续开发。最初的 TeX 系统提供了 300 多条基本命令，功能虽然强大，但使用起来却不那么方便。为此 Knuth 教授在这些基本命令的基础上定义了 600 多条复合命令，构成了名为 Plain TeX 的宏包，只可惜由于无法与普通 PC 机兼容，因此流传得并不十分广泛。
+*** LaTeX[fn:8]
+	:PROPERTIES:
+	:CUSTOM_ID: fl-latex
+	:END:
+	Plain TeX 虽然比原始的 TeX 更加方便，但其重点还只放在如何排版的层次上，而不是从一位作者的观点出发。PlainTeX 在排版复杂公式时仍然需要大量命令，并且在挖掘它的深层功能时往往需要相当丰富的排版和编程技巧。
+
+	好在 TeX 系统提供了非常强大的宏定义功能，因此很多人开始在 TeX 之上进行二次开发，产生了一些 TeX 系统的衍生版本，其中最著名的是由美国数学会（AMS）组织人员开发的 AMS-TeX 和美国计算机学家 Leslie Lamport 在二十世纪八十年代初开发的 LaTeX，其中前者适合于排版复杂的数学公式，而后者则适合于排版普通文章和书籍。
+
+	AMS-TeX 是美国数学会提供的，在 Plain TeX 基础上开发的 TeX 宏集。它主要用于排版含有很多数学符号和公式的科技类文章或书籍。AMS-TeX 给出了许多高级命令，可以让使用者很方便地排版大型的、复杂的数学公式。AMS-TeX 排版数学公式等的功能通过 AMS-LaTeX 中的宏包 amsmath 在 LaTeX 中得到实现。AMS-TeX 最新版本为 2.1。
+
+	AMS-LaTeX 包括两部分，一是上面提到的 amsmath 宏包，主要的目的是用来排版数学符号和公式。另一部分是 amscls，提供了美国数学会要求的论文和书籍的格式。AMS-LaTeX 目前的版本为 2.0。在提供 AMS-TeX 和 AMS-LaTeX 的同时，美国数学会还提供一套数学符号的字库，AMSFonts。这套字库中增加了很多 TeX 的标准字库 Computer Modern 所没有的一些数学符号，粗体数学符号等。AMSFonts 现在的版本为 2.2，有 Metafont 和 Type1 两种字库提供下载。
+
+	Leslie Lamport 开发的 LaTeX 是当今世界上最流行和使用最为广泛的 TeX 宏集。它构筑在 Plain TeX 的基础之上，并加进了很多的功能以使得使用者可以更为方便的利用 TeX 的强大功能。使用 LaTeX 基本上不需要使用者自己设计命令和宏等，因为 LaTeX 已经替你做好了。因此，即使使用者并不是很了解 TeX，也可以在短短的时间内生成高质量的文档。轻轻松松地完成标题、章节、表格、目录、索引、公式、图表等的编排；对于生成复杂的数学公式，LaTeX 表现的更为出色。
+
+*** LaTeX2e
+	由于 LaTeX 相当普及，以及它在许多原本没有想像到的领域中的扩展，再加上计算机技术的日新月异，特别是价格低廉， 但功能强大的激光打印机的出现， 使得相当广泛的一类格式都冠以 LaTeX 的标签。 为了尝试建立一个真正的改进标准，在 1989 年由 Leslie Lamport, Frank Mittelbach, Chris Rowley 和 Rainer Schöpf 创立了 LaTeX3 项目。 他们的目标是建立一个最优的，有效的命令集合，这些命令是来自于各种软件包为了实现 某一目的而设计出来的。
+	正如项目名称所表明的，它的目标就是得到 LaTeX 的一个新版本 3。然而，由于这是一个长期目标，朝向这个目标 迈进的第一步就是在 1994 年中发行了 LaTeX2e 及出版了 Lamport 基本手册第二版，同时还有一本新书，专门描述 在新系统中许多可用的扩展软件包和 LaTeX 程序设计。LaTeX2e 是在 LaTeX3 出现之前的现行标准版本。
+	实际上，在 LaTeX2e 出现之前，其处理字体安装和选择的一些部分已经以 新字体选择框架 (或 NFSS) 的形式公开了，而且被许多组织 或个人集成到其软件中。这种框架有两个版本，而且不幸的 是它们并不兼容，但分别是相应于 LaTeX2.09 和 LaTeX2e。后来以一种完全 与 2.09 版本兼容的方式对 NFSS 进行了重新实现。
+*** ConTeXt
+	:PROPERTIES:
+	:CUSTOM_ID: fl-context
+	:END:
+	ConTeXt 是 TeX 的一种格式，是荷兰 Pragma-ADE 公司设计的一种高端的文档制造工具。用 ConTeXt 可以做出非常漂亮的 PDF 文档。特别适合做幻灯片和一些非正式的文档，你其实也可以用它写论文。它做出的 PDF 有多样的交互功能。你甚至可以用它作出一个 PDF 计算器！[fn:9]
+** 引擎
+*** Knuth TeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-tex
+	:END:
+	把 Tex 语言转换为排版的程序，也叫 Tex。为和格式概念中的 TeX 称这个 TeX 程序叫 Knuth TeX。
+	最基本的 TeX 程序只是由一些很原始的命令组成， 它们可以完成简单的排版操作和程序设计功能。 然而，TeX 也允许用这些原始命令定义一些更复杂的高级命令。这样就可以利用低级的块结构，形成一个用户界面相当友好的环境。
+
+	在处理器运行期间，该程序首先读取所谓的格式文件， 其中包含各种以原始语言写成的高级命令，也包含分割单词的连字号安排模式。接着处理程序就处理源文件，其中包含要处理的真正文本，以及在格式文件中已定义了的格式命令。
+
+	创建新格式是一件需要由具有丰富知识程序员来做的事情。 把定义写到一个源文件中，这个文件接着被一个名叫 iniTeX 的特殊版本的 TeX 程序处理。它采用一种紧凑的方式存贮这些新格式，这样就可以被通常 TeX 程序很快地读取。
+*** PdfTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-pdftex
+	:END:
+	pdfTeX[fn:10] 具有一些标准 TeX 软件所不具备的功能：
+	+ 原生 TrueType 及 Type 1 font 嵌入。
+	+ 微排印扩展如留边字距调整及展开字体。
+	+ 直接取得超链接、目录和文档信息等 PDF 特性。
+
+	TeX 和 pdfTeX 之间主要的不同之处在于 TeX 输出 DVI 文件，pdfTeX 直接输出 PDF 文件。通过使用 hyperref 这样的软件包可以紧密结合 PDF 特性，如超链接和目录。另一方面，一些软件包（如 PSTricks）早期所运用的从 DVI 到 PostScript 的转换进程可能会失败，即使像 PGF/TikZ 这样的替代品已经编写出来。也不可以直接嵌入 PostScript 图形，但可以通过 eps2pdf 之类的软件转换 EPS 文件到 PDF，然后由 pdfTeX 直接插入。
+
+	pdfTeX 也是可以输出 DVI 的，等同于 TeX 的功能，pdflatex 可用标准 LaTeX 宏调用 pdfTeX 程序来编排 LaTeX 文档。
+
+	pdfTeX 包含于 LaTeX 和 ConTeXt 最现代的发行版（包含 TeX Live、MacTeX 和 MiKTeX）并用作默认 TeX 引擎。
+*** XeTeX[fn:11]
+	:PROPERTIES:
+	:CUSTOM_ID: fl-xetex
+	:END:
+	XETEX[fn:12]（/ˈziːtɛx/ 或 /ˈziːtɛk/，文本模式下写作 XeTeX）是一种使用 Unicode 的 TeX 排版引擎，默认其输入文件为 UTF-8 编码。最初只是为 Mac OS X 所开发，但它现在在各主要平台上都可以运作。
+
+	XETEX 可以在不进行额外配置的情况下直接使用操作系统中安装的字体，因此可以直接利用 OpenType、Graphite 中的高级特性，例如额外的字形，花体，合字，可变的文本粗细等等。XETEX 提供了对 OpenType 中本地排版约定（locl 标签）的支持，也允许向字体传递 OpenType 的元标签。它亦支持使用包含特殊数学字符的 Unicode 字体排版数学公式，例如使用 Cambria Math 或 Asana Math 字体代替传统的 TeX 字体。
+
+	使用 OpenType 字体（Hoefler Text）渲染合字
+	XETEX 分两个阶段处理输入文件。在第一阶段中，XETEX 输出扩展 DVI（xdv）文件，然后由驱动转换为 PDF 文件。在默认模式下，xdv 文件被直接通过管道送入驱动，不产生任何用户可见的中间文件。同时，也可以只运行 XETEX 的第一阶段，保存 xdv 文件，但在截至 2008 年 7 月 尚无可以阅读这种格式的阅读器。
+
+	有两种后端驱动可以从 xdv 文件产生 PDF 文件：
+	+ xdv2pdf：它使用 AAT 技术（Apple Advanced Typography），只能在 Mac OS X 上工作。
+	+ xdvipdfmx：它是 dvipdfmx 的修改版。它在标准的 FreeType 和 fontconfig 上采用了修改版本的 Unicode 国际化组件（ICU），可以在所有平台上工作。
+
+	从 0.997 版开始，所有平台上的默认驱动都是 xdvipdfmx。在 0.9999 版中 xdv2pdf 不再得到支持，其开发也被中止。
+
+	XETEX 可以很好的支持 LaTEX 和 ConTeXt 巨集包。其中，LaTeX 部分以 xelatex 的方式引用。并通常与 fontspec 一起使用，该巨集包提供字体的配置方式，并允许重新命名复杂的字体名称以便于再利用 。
+
+	XETEX 包含在 TEX Live、MacTEX 和 MiKTEX 发行包中。
+*** LuaTex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-luatex
+	:END:
+	LuaTeX[fn:13]是作为带有 Lua 脚本引擎嵌入的 pdfTeX 版本发起的基于 TEX 的电脑排版系统。经过一段时间的开发后被 pdfTeX team 采纳作为 pdfTeX 的继任者。
+	项目的主要目的是提供完全内部接入 Lua 的 TeX 版本。接通 TeX 的进程中许多内部代码被重写。不像在 TeX 本身硬编码新特性，用户（或微软件包编写者）可以写他们自己的扩展。LuaTeX 提供对 OpenType 字体的原生支持。相比于 XETEX，字体不是经过系统自带的库读取，是通过基于 FontForge 的库。
+
+	与之相关的项目是 MPLib（一个扩展的 MetaPost 库模块），给 TeX 提供图形引擎。
+
+	LuaTeX 小组由 Taco Hoekwater、Hartmut Henkel 和 Hans Hagen 组成。
+*** pTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-pdftex
+	:END:
+
+*** e-pTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-eptex
+	:END:
+
+*** e-upTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-euptex
+	:END:
+** 宏包
+** 周边工具
+*** BibTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-bibtex
+	:END:
+*** makeindex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-makeindex
+	:END:
+*** Metapost
+	:PROPERTIES:
+	:CUSTOM_ID: fl-metapost
+	:END:
+** 发行版
+*** MiKTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-miktex
+	:END:
+	MiKTeX[fn:14]是一种 Microsoft Windows 系统上运行的文字处理系统，由 Christian Schenk 开发。
+
+	MiKTeX 包含了 TeX 及其相关程序。MiKTeX 提供了文字处理所需的工具，这些工具是以 TeX/LaTeX 标识语言所构成的。而 MiKTeX 上提供一个简易的文字编辑器：TeXworks。
+
+*** CTeX
+	:PROPERTIES:
+	:CUSTOM_ID: fl-ctex
+	:END:
+	CTEX[fn:15] 是 TEX 中的一个版本，CTEX 是 Chinese TEX 套装的简称。它是把 MiKTEX 和一些常用的相关工具，如 GSview，WinEdt 等包装在一起制作的一个简易安装程序，并对其中的中文支持部分进行了配置，达到对中文完整支持的目的。
+
+	最新版本（v2.9.2） 包含以下内容：
+	+ MiKTeX 2.9
+	+ WinEdt 7.0
+	  + GSview 5.0
+	  + Ghostscript 9.05
+	+ 中文系统
+	+ 宏包与模板
+
+*** TexLive
+	:PROPERTIES:
+	:CUSTOM_ID: fl-texlive
+	:END:
+	TEX Live[fn:16] 是由国际 TEX 用户组（TEX Users Group，TUG）整理和发布的 TEX 软件发行套装，包含与 TEX 系统相关的各种程序、编辑与查看工具、常用宏包及文档、常用字体及多国语言支持。TEX Live 是许多 Linux/Unix 系统默认或推荐的 TEX 套装，同时也支持包括 Windows 和 Mac OS X 等在内的其它操作系统。TEX Live 是开发状态最为活跃的 TEX 发行版之一，保持着每年一版的更新频率。TEX Live 属于免费软件[fn:17]。
+**** 内容
+	 以最新版本的 TEX Live 为例，此套件中包含以下内容：
+	 + Web2C：集合了 TEX 及其扩展版本、MetaPost、MetaFont 与 BIBTEX 等，是整个 TEX Live 的核心。
+	 + DVIOUT DVI viewer：查看.dvi 文件的工具。
+	 + PS_View：查看.ps 和.eps 文件的工具。
+	   + TeX Live Manager：管理和更新 TEX Live 的工具。
+	 + TeXworks：文本编辑工具，是 TEX Live 的前端界面。
+	   + 文档系统：包括宏包文档和 TEX Live 文档
+**** 安装
+	 TEX Live 可以通过网络或 DVD 安装，二者所提供的安装文件是完全一致的，其区别在于通过网络安装可得到当前可用的最新宏包，另外通过网络安装时用户可自行选择可用镜像站点。Windows 用户可通过执行 install-tl.bat 启动安装程序，Linux/Unix 用户可以通过命令行终端执行 perl install-tl 启动安装程序，Mac OS X 用户则推荐使用 MacTEX。
+
+*** MacTex
+	 :PROPERTIES:
+	 :CUSTOM_ID: fl-mactex
+	 :END:
+	 MacTeX[fn:18]实际上是对 TEX Live 的封装，加入了很多与 Mac OS X 系统相关的特性。
+
+*** ptex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-ptex
+	:END:
+*** eptex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-eptex
+	:END:
+*** euptex
+	:PROPERTIES:
+	:CUSTOM_ID: fl-euptex
+	:END:
+** 查看系统安装的字体
+   #+BEGIN_SRC sh
+       fc-list :lang=zh family style file spacing | awk -F: 'BEGIN {OFS=" : "} {print $2 , $1 , $3 }' | sort > chinesefontname
+   #+END_SRC
+   相应的英文：
+   #+BEGIN_SRC sh
+       fc-list :lang=en family style file spacing | awk -F: 'BEGIN {OFS=" : "} {print $2 , $1 , $3 }' | sort > englishfontname
+   #+END_SRC
+** 安装字体
+   #+BEGIN_SRC sh
+       sudo apt-get install ttf-wqy-zenhei ttf-wqy-microhei xfonts-wqy fonts-arphic-ukai fonts-arphic-uming
+   #+END_SRC
+
+   更新字体缓存
+   #+BEGIN_SRC sh
+       fc-cache -fv # 安装在~/.fonts.conf
+       # 或者
+       fc-cache -fsv # 安装在/etc/fonts/
+   #+END_SRC
+* Footnotes
+
+[fn:19] 百度网盘下载链接：http://pan.baidu.com/s/1pJtMtyb
+
+[fn:1] [[https://www.ibm.com/developerworks/cn/linux/l-latex/][专业的 LaTeX: 在 Linux 下编写高质量的文档]]
+
+[fn:2] [[http://baike.baidu.com/view/209690.htm][百度百科--TeX]]
+
+[fn:3] [[http://www.zhihu.com/question/20638337/answer/21527805][知乎孟晨回答]]
+
+[fn:4] 参见<latex 入门>第 31 页
+
+[fn:5] [[http://blog.jqian.net/post/xelatex.html][使用 xelatex 生成中文 pdf]]
+
+[fn:6] [[http://wenq.org/cloud/fcdesigner.html][字体描述]]
+
+[fn:7] [[https://github.com/ctex-org/ctex-kit][ctex-kit on github]]
+
+[fn:8] [[http://www.luatex.org/][luatex HomePage]]
+
+[fn:9] [[http://www.math.zju.edu.cn/ligangliu/latexforum/tex_context.htm][context 资料]]
+
+[fn:10] [[https://www.tug.org/applications/pdftex/][pdfTex Homepage]]
+
+[fn:11] [[https://zh.wikipedia.org/wiki/XeTeX][xetex on wiki]]
+
+[fn:12] [[https://tug.org/xetex/][xetex Homepage]]
+
+[fn:13] [[http://www.luatex.org/][LuaTeX Homepage]]
+
+[fn:14] [[http://miktex.org/][MiKTeX Homepage]]
+
+[fn:15] [[http://www.ctex.org/HomePage][CTEX HomePage]]
+
+[fn:16] [[https://www.tug.org/texlive/][Tex Live Homepage]]
+
+[fn:17] [[https://zh.wikipedia.org/wiki/TeX_Live][TeXLive wiki]]
+
+[fn:18] [[https://tug.org/mactex/][MacTeX Homepage]]

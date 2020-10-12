@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: C/C++
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* C
+** 定义一个宏，比较两个数 a、b 的大小，不能使用大于、小于、if 语句
+* C++
+** 函数重载中 name mangle 具体过程
+** auto_ptr 为什么不能作为容器的元素？
+** 重载、覆盖、重写区别
+** C++内存模型
+   #+BEGIN_HTML
+
+   #+END_HTML
+** 实现字符串类
+
+*** 容器底层实现方式
+*** 为什么 auto_ptr 不能放在容器中。

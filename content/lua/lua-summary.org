@@ -1,0 +1,245 @@
+# -*- coding:utf-8-*-
+#+TITLE: Lua Summary
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 简介
+** 起源
+** 优点
+** 特性
+** 语言文化
+* 程序结构
+** 总览
+   #+BEGIN_HTML
+
+   #+END_HTML
+** 注释
+   单行注释：
+   #+BEGIN_SRC lua
+-- single line comment
+   #+END_SRC
+   块注释
+   #+BEGIN_SRC lua
+--[[
+    block comment
+--]]
+   #+END_SRC
+** 符号
+*** 字面量
+*** 标识符
+*** 关键字
+*** 运算符
+**** 算数运算符
+     加、减、乘、除、mod
+
+     算数运算符对整数来说，计算结果的符号永远与第二个参数相同。对实数来说，它有一些额外的用途。例如，x%1 表示 x 的小数部分，x-x%1 表示 x 的整数部分。类似的，x-x%0.01 将 x 精确到小数点后 2 位。
+
+**** 关系运算符
+     gt,ge,lt,le,eq,noteq
+**** 赋值运算符
+**** 逻辑运算符
+**** 位运算符
+**** 其他
+** 表达式
+** 语句
+*** 声明与定义
+*** 赋值
+*** 函数调用
+*** 执行控制
+**** 分支
+**** 循环
+     为什么 Lua 没有 continue？官方也有作出了[[http://www.luafaq.org/#T1.26][解释]]。
+
+     那么如何用别的机制来代码 continue 呢？有一个比较简单的方法：在循环内套一个 repeat ... until true，再将想用 continue 的地方写成 break。如：
+     #+BEGIN_SRC lua
+for i = 1, 10 do
+    repeat
+        if i == 5 then
+            break
+        end
+        print(i)
+    until true
+end
+     #+END_SRC
+**** 跳转
+** 函数
+*** 闭包
+	简单地讲，一个 closure 就是一个函数加上该函数所需访问的所有“非局部的变量”。感觉类似 C++中的 lamda 捕获。
+
+	主要作用有两个：返回回调函数和定义沙盒函数。
+
+** 模块
+* 类型系统
+** 数值类型
+** 字符类型
+   可以 *用一对匹配的双方括号来界定一个字母字符串* ，就像写块注释那样。 *以这种形式书写的字符串可以延伸多行，且 Lua 不会解释其中的转义序列，* 如果字符串的第一个字符是换行符，则 Lua 会忽略它，这种写法对那种含有程序代码的字符串尤为有用，比如：
+   #+BEGIN_SRC lua
+page = [[
+    <html>
+    <head>
+    <title>An HTML Page</title>
+    </head>
+    <body>
+    <a href="http://www.lua.org">lua</a>
+    </body>
+    </html>
+    ]]
+   #+END_SRC
+   有时候字符串中可能包含这样的内容： ~a=b[c[i]]~ 或者 *包含已经被注释掉的代码。为了解决这种问题，需要在两个方括号之间加上任意数量的等号，* 如： ~[===[~ ，这样字符串只有遇到内嵌有相同数量等号的双右括号时才会结束，即 ~]===]~ ，否则 Lua 会忽略它。通过这种方式，就可以不用对此进行转义了。同理，注释块时也可以采用这种机制，即 ~--[===[~ 开始， ~]===]~  结束。
+
+** 布尔类型
+   true false, false 和 nil 都认为是假。
+** 空类型
+   nil 表示空。
+** 存储类型
+   table 可用作数组、字典。
+
+   在 Lua 中， *table 既不是值也不是变量，而是对象* 。可以将一个 table 想象成一种动态分配的对象，程序仅持有一个对它们的引用或指针。
+
+   Lua 将 nil 作为界定数组结尾的标志，当一个数组有空隙（Hole）时，即中间含有 nil 时，长度操作符会认为这些 nil 元素就是结尾标记，因此，应该避免对含有空隙的数组使用长度操作符。当然，可以使用函数 table.maxn 来返回一个 table 的最大正索引数：
+   #+BEGIN_SRC lua
+print(table.maxn[a])        -->10000
+   #+END_SRC
+
+** 自定义类型
+   由于 userdata 类型可以将任意的 C 语言数据存储到 Lua 变量中，所以这种类型没有太多的预定义操作，只能进行赋值和相等性测试。userdata 用于表示一种由应用程序或 C 语言库所创建的新类型，例如标准的 I/O 库就用 userdata 来表示文件。
+
+** 类型转换
+   #+BEGIN_SRC lua
+tonumber() tostring()
+   #+END_SRC
+
+** 类型判断
+   #+BEGIN_SRC lua
+type()
+   #+END_SRC
+* 数据结构
+* 错误处理
+  Lua 遇到任何意外情况都会抛出 *异常* 。例如相加的不是数字，被索引不是 table 等。
+  #+BEGIN_SRC lua :exports both
+local a
+print(a[1])
+  #+END_SRC
+** error
+   也可以通过 =error()= 函数抛出错误。
+   #+BEGIN_EXAMPLE
+error(message[,level])
+   #+END_EXAMPLE
+
+   error 终止正在执行的函数，并将 message 的内容作为错误错误信息返回。Level 参数指示获得错误的位置:
+   + Level=1[默认]：为调用 error 位置 (文件 + 行号)
+   + Level=2：指出哪个调用 error 的函数的函数（为什么没有生效呢？）
+   + Level=0: 不添加错误位置信息
+** assert
+   “如果条件不满足，就引发错误”这种逻辑如此常见，所以单独提供 =assert()= 函数以供使用。
+** pcall
+   #+BEGIN_EXAMPLE
+pcall (f [, arg1, ···])
+   #+END_EXAMPLE
+   通过该函数来捕获异常。如果调用的函数没有异常，返回 true 和函数的返回值，否则返回 false 和异常消息。
+** xpcall
+   在错误发生时，希望获得更多调试信息，而不只是发生错误的位置。但 pcall 返回时，它已经销毁了调用桟的部分内容。
+
+   #+BEGIN_EXAMPLE
+xpcall (f, err) --lua5.1
+xpcall (f, msgh [, arg1, ···]) --lua5.3
+   #+END_EXAMPLE
+
+   Lua 提供了 xpcall 函数，xpcall 接收第二个参数：—一个错误处理函数，当错误发生时，Lua 会在调用桟展看（unwind）前调用错误处理函数，于是就可以在这个函数中使用 debug 库来获取关于错误的额外信息了。
+
+   debug 库提供了两个通用的错误处理函数:
+   + debug.debug：提供交互模式，让用户来检查错误的原因。
+   + debug.traceback：根据调用桟来构建一个扩展的错误消息。
+
+   注意：该函数 5.1 和 5.3 用法不一样
+
+** 实践
+   当函数发现意外情况时，可以采取两种方法：
+   + 返回（return） 错误代码，通常为 nil 或 false。
+   + 通过调用 =error()= 引发异常（error 函数永远都不会返回）
+
+   二者之间如何选择没有固定的规则，可以使用以下指南： 一个 *容易避免* 的异常应该 *引发异常* ， 否则，它应该返回错误代码。
+
+* 编码规范
+  + 避免使用下划线（_）开始的标识符，它们仅限于 Lua 的特殊用途。
+
+* 高级特性
+
+** 元表（metatable）
+   表的行为由其元表控制。元表有很多有用的元方法：
+   + setmetatable 和 getmetatable
+   + 算术类元方法： =__add  __ sub  __mul  __div  __unm  __mod  __pow __concat= ，分别对应操作 加，减，乘，除，相反数，取模，乘幂，连接（ =..= ）。
+   + 关系类元方法： =__eq __lt __le= ，分别对应  ~=,<,<=~
+   + 访问的元方法： =__index __newindex rawget rawset=
+   + 序列化元方法： =__tostring=
+
+*** 使用元表实现 OOP
+    实际上，Lua 有一个非常通用的机制来扩展表的行为，如果元表具有 =__index= 函数或表，它将处理查找原始表中找不到的任何内容。这使得实现类变得简单。
+
+    *类只是一个带有指向自身的 =__index= 键的表。*
+
+    *创建一个对象包括创建一个表并将其 metatable 设置为该类。*
+
+    在处理 =obj.fun= 时，Lua 首先在表 obj 中查找，如果没有找到，它在类中查找它。 =obj:fun（a）= 只是 =obj.fun(obj,a)= 的缩写。 因此，使用 metatable 机制和这一点语法糖，可以直接实现经典的面向对象。
+
+    生产中使用 penlight 库的表。
+** 协程
+   协程与线程差不多，也就是一条执行序列，拥有自己独立的栈、局部变量和指令指针，同时又与其他协程共享全局变量和其他大部分东西。
+
+   协程和线程的主要区别基本上就是非抢占式和抢占式的区别。
+
+   现在的操作系统的进程/线程 调度模型是抢占式的。在用户空间下无法完全自主控制进程/线程 的切换。抢占又引发竞争。在高并发的情况下，由于强行切换导致的资源竞争冲突会经常性发生，严重影响性能。
+   而协程是非抢占式的，程序逻辑可以保证不在锁没有释放的情况下切换，从而每个获得执行权的协程都可以有效的执行逻辑，避免资源竞争引起的并发冲突。
+
+   非抢占式（协程）模型下，要求程序逻辑主动、及时的释放执行权。在最初的 windows3,windows95 系统是非抢占式的，一旦某个进程/线程不主动释放执行权，整个系统就会被卡死，所以现在的操作系统的进程/线程调度方式都是抢占式的。由于非抢占式（协程）模型在高并发下有其优势，很多程序使用这种模式调度其并发逻辑。
+
+   *当一个协同程序调用 yield 时，它不是进入了一个新的函数，而是从一个悬而未决的调用中返回。同样的，对于 resume 的调用也不会启动一个新函数，而是从一次 yeild 调用中返回。* 要深刻理解这一点，有利于分析协程的执行过程。同时也说明了协程和回调函数的区别。
+
+** 线程
+** 与 C 程序相互调用
+** 与 C++ 程序相互调用
+** 迭代器与泛型 for
+* 程序库
+** [[https://github.com/wahern/luaossl][luaossl]]
+** lua-iconv
+** [[https://luarocks.org/modules/luarocks/lua-cjson][lua-cjson]]
+** [[https://github.com/Neopallium/lualogging][lualogging]]
+** [[https://github.com/diegonehab/luasocket][luasocket]]
+** [[https://keplerproject.github.io/luafilesystem/][luafilesystem]]
+** [[http://loop.luaforge.net/][loop]]
+** [[https://luarocks.org/modules/djungelorm/protobuf][protobuf]]
+** [[http://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html][lpeg]]
+** [[https://github.com/iryont/lua-struct][lua-struct]]
+** [[https://github.com/pkulchenko/serpent][serpent]]
+** [[https://github.com/bluebird75/luaunit][luaunit]]
+** [[http://olivinelabs.com/busted/][busted]]
+
+* 参考书籍
+** 入门
+   + [[https://book.douban.com/subject/26932940/][Programming in Lua]]
+** 高级
+** 实践
+   + [[https://www.lua.org/gems/][Lua Programming Gems]]
+   + [[http://lua-users.org/wiki/OptimisationTips][Optimisation Tips]]
+** 原理
+   + [[https://www.codingnow.com/temp/readinglua.pdf][Lua 源码欣赏]]
+* 相关工具
+** 安装运行
+** 标准命令
+** 集成开发
+** 静态检查
+*** [[https://github.com/mpeterv/luacheck][lua-check]]
+** 构建编译
+** 代码调试
+** 内存检查
+** 性能分析
+** 自动测试
+** 文档系统
+** 包管理
+*** [[https://luarocks.org/][luarocks]]
+** 其他工具
+* 扩展阅读
++ [[https://www.lua.org/manual/5.3/][Lua 5.3 Reference Manual]]
++ [[https://cloudwu.github.io/lua53doc/manual.html][云风翻译的Lua 5.3 参考手册]]
++ [[http://www.lua.org/gems/][Lua 编程精粹（programming Gems）]]

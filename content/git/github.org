@@ -1,0 +1,23 @@
+# -*- coding:utf-8-*-
+#+TITLE: github实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443@gmail.com
+
+* 概述
+  github 是全球最大的程序员交友社区，关于 github 入门使用，[[https://book.douban.com/subject/26462816/][《GitHub入门与实践》]] 进行了很好的描述：github 网站基本界面与使用，如何管理项目，合作项目的 fork 与 pull request（PR），git page，git gist，开发流程 git-follow，以及如何在持续集成中将 github 与其他工具配合使用，概述具有实践指导意义。
+
+* branch
+  github 网站本身不支持分支合并，只能是在本地合并后，推送到 github 的远程分支。
+
+
+* gist
+
+
+* tips
+
+** 使用 git 协议替代 http
+   使用 git 协议可以避免 http 协议下载需要输入密码的麻烦。
+   #+BEGIN_SRC sh
+git config --global url."git@github.com:".insteadOf "https://github.com/"
+cat ~/.gitconfig
+   #+END_SRC

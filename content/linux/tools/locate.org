@@ -1,0 +1,26 @@
+# -*- coding:utf-8-*-
+#+TITLE: locate
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  在整个系统范围内查找文件，windows 上类似的工具是 everything search。
+
+  查找的数据库通过 =updatedb= 命令进行更新。
+
+  如果未指定 --regex，则 PATTERN 可以包含通配符。如果任何 PATTERN 不包含通配符，则 locate 的行为就像是模式是 * PATTERN *。
+
+  #+BEGIN_EXAMPLE
+locate [OPTION]... PATTERN...
+  #+END_EXAMPLE
+
+  注意，可以包含多个 pattern。
+
+  常用参数：
+  #+BEGIN_EXAMPLE
+-A 仅打印与所有 PATTERN 匹配的条目，而不是仅要求其中一个匹配。
+   可用此来匹配文件路径多个词组，精确匹配文件。
+-b 参数来只查找 basename，而扩展为*basename*
+-i 忽略大小写。
+-r 使用正则表达式。
+  #+END_EXAMPLE

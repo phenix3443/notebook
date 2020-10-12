@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang channel
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  如何优雅的关闭channel https://www.jianshu.com/p/d24dfbb33781

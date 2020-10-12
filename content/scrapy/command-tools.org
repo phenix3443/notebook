@@ -1,0 +1,80 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 命令行工具
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  scrapy 提供很多命令[fn:1]可以方便的建立爬虫项目、改变项目设置、调试爬虫等。
+  #+BEGIN_SRC sh :exports both :results output
+scrapy --help
+  #+END_SRC
+  有些命令是只能在爬虫项目内部执行的，比如 crawl，list 等。
+
+* 实践
+
+** startproject
+   #+BEGIN_EXAMPLE
+   Syntax: scrapy startproject <project_name> [project_dir]
+   Requires project: no
+   #+END_EXAMPLE
+   在 project_dir 目录下创建名为 project_name 的新 Scrapy 项目。如果未指定 project_dir，则 project_dir 将与 project_name 相同。
+
+** genspider
+   #+BEGIN_EXAMPLE
+   Syntax: scrapy genspider [-t template] <name> <domain>
+   Requires project: no
+   #+END_EXAMPLE
+   在当前文件夹中创建新爬虫，如果从项目内部调用，则当前项目的 spiders 文件夹中创建。<name> 参数设置为爬虫的名称，而 <domain> 用于生成爬虫的 allowed_domains 和 start_urls 属性。
+
+** crawl
+   #+BEGIN_EXAMPLE
+   Syntax: scrapy crawl <spider>
+   Requires project: yes
+   #+END_EXAMPLE
+
+   运行爬虫。
+
+** list
+   #+BEGIN_EXAMPLE
+Syntax: scrapy list
+Requires project: yes
+   #+END_EXAMPLE
+
+   列出当前项目中的所有可用爬虫。
+
+** view
+   #+BEGIN_EXAMPLE
+   Syntax: scrapy view <url>
+   Requires project: no
+   #+END_EXAMPLE
+
+   在浏览器中打开给定的 URL，内容正如 Scrapy spiders 所见。有时爬虫会看到不同于普通用户的页面，因此可以用来检查爬虫“看到”的内容并确认它是所期望的。
+
+** shell
+   #+BEGIN_EXAMPLE
+Syntax: scrapy shell [url]
+Requires project: no
+   #+END_EXAMPLE
+
+   启动 Scrapy shell，如果给定 URL，会返回请求结果。还支持 UNIX 样式的本地文件路径，包括相对或绝对路径。有关详细信息，请参阅 [[https://docs.scrapy.org/en/latest/topics/shell.html#topics-shell][Scrapy shell]]。
+
+** parse
+   #+BEGIN_EXAMPLE
+Syntax: scrapy parse <url> [options]
+Requires project: yes
+   #+END_EXAMPLE
+
+   获取给定 URL 并使用处理它的爬虫解析它，如果没有 parse 方法，使用 =--callback= 选项传递的方法。
+
+** runspider
+   #+BEGIN_EXAMPLE
+Syntax: scrapy runspider <spider_file.py>
+Requires project: no
+   #+END_EXAMPLE
+
+   无需创建项目，直接运行 Python 文件中的爬虫。
+
+
+* Footnotes
+
+[fn:1] [[https://docs.scrapy.org/en/latest/topics/commands.html#][scrapy command line]]

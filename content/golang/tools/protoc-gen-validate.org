@@ -1,0 +1,88 @@
+# -*- coding:utf-8-*-
+#+TITLE: protoc-gen-validate
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://github.com/envoyproxy/protoc-gen-validate][protoc-gen-validate]] （PGV） 是一个 protoc 插件，用于生成多语言的消息验证器。尽管协 protocol buffers 有效地保证了结构化数据的类型，但它们不能对值强制执行语义规则。该插件为协议生成的代码添加了支持，以验证此类约束。
+
+  支持：
+  + 当前只支持 proto3
+
+  注意：该工具现在处于 alpha 阶段，api 可能不稳定，并且可能会改变。
+
+* 安装
+
+  #+BEGIN_SRC sh
+go get -u github.com/envoyproxy/protoc-gen-validate
+  #+END_SRC
+
+* 使用
+  开发人员导入 PGV 扩展名，并使用约束规则在其原型文件中注释消息和字段(=example.proto=)：
+
+  #+BEGIN_SRC protobuf
+syntax = "proto3";
+
+package examplepb;
+
+import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
+
+message Person {
+  uint64 id    = 1 [(validate.rules).uint64.gt    = 999];
+
+  string email = 2 [(validate.rules).string.email = true];
+
+  string name  = 3 [(validate.rules).string = {
+                      pattern:   "^[^[0-9]A-Za-z]+( [^[0-9]A-Za-z]+)*$",
+                      max_bytes: 256,
+                   }];
+
+  Location home = 4 [(validate.rules).message.required = true];
+
+  message Location {
+    double lat = 1 [(validate.rules).double = { gte: -90,  lte: 90 }];
+    double lng = 2 [(validate.rules).double = { gte: -180, lte: 180 }];
+  }
+}
+  #+END_SRC
+
+  使用 PGV 和目标语言的默认插件执行 protoc，生成 =example.pb.validate.go=
+  #+BEGIN_SRC sh
+protoc \
+  --proto_path=./ \
+  --proto_path=$(go env GOPATH)/src \
+  --go_out=":." \
+  --validate_out="lang=go:." \
+  example.proto
+  #+END_SRC
+
+   在生成的类型上创建 Validate 方法，以 go 语言为例：
+
+  #+BEGIN_SRC go
+p := new(Person)
+
+err := p.Validate() // err: Id must be greater than 999
+p.Id = 1000
+
+err = p.Validate() // err: Email must be a valid email address
+p.Email = "example@lyft.com"
+
+err = p.Validate() // err: Name must match pattern '^[^\d\s]+( [^\d\s]+)*$'
+p.Name = "Protocol Buffer"
+
+err = p.Validate() // err: Home is required
+p.Home = &Location{37.7, 999}
+
+err = p.Validate() // err: Home.Lng must be within [-180, 180]
+p.Home.Lng = -122.4
+
+err = p.Validate() // err: nil
+  #+END_SRC
+
+* 约束规则
+  [[https://github.com/envoyproxy/protoc-gen-validate/blob/master/validate/validate.proto][提供的约束规则]] 以 JSON Schema 中的模型为模型建模。 PGV 规则可以在同一字段中混合使用；该插件确保在代码生成之前，应用于字段的规则不会矛盾。
+
+  检查 [[https://github.com/envoyproxy/protoc-gen-validate/blob/master/rule_comparison.md][约束规则比较矩阵]] 以了解特定于语言的约束功能。
+
+  更详细的使用参考 github 网页。

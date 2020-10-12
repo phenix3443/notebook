@@ -1,0 +1,213 @@
+# -*- coding:utf-8-*-
+#+TITLE: limit_req 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  nginx 可以使用 limit_req 相关指令做限流。
+
+* 实验
+** 没有限制
+   #+BEGIN_EXAMPLE
+   ab -n 10 -c 10 http://control-pre.onethingpcs.com/echo
+
+   Concurrency Level:      10
+   Time taken for tests:   0.078 seconds
+   Complete requests:      10
+   Failed requests:        0
+   Total transferred:      2220 bytes
+   HTML transferred:       230 bytes
+   Requests per second:    128.06 [#/sec] (mean)
+   Time per request:       78.089 [ms] (mean)
+   Time per request:       7.809 [ms] (mean, across all concurrent requests)
+   Transfer rate:          27.76 [Kbytes/sec] received
+   #+END_EXAMPLE
+
+   10 个请求都正常响应。
+
+** 不设置 burst 和 nodelay
+   #+BEGIN_SRC nginx
+location /echo {
+    limit_req zone=xy_limit;
+    default_type text/plain;
+    echo remote_addr: $remote_addr;
+
+}
+
+   #+END_SRC
+   #+BEGIN_EXAMPLE
+   Concurrency Level:      10
+   Time taken for tests:   0.078 seconds
+   Complete requests:      10
+   Failed requests:        9
+   (Connect: 0, Receive: 0, Length: 9, Exceptions: 0)
+   Non-2xx responses:      9
+   Total transferred:      3606 bytes
+   HTML transferred:       1994 bytes
+   Requests per second:    127.43 [#/sec] (mean)
+   Time per request:       78.476 [ms] (mean)
+   Time per request:       7.848 [ms] (mean, across all concurrent requests)
+   Transfer rate:          44.87 [Kbytes/sec] received
+   #+END_EXAMPLE
+
+   可以看到一共 10 个请求，只有一个响应成功，且 0.08 秒就完成了压测，没有延迟。
+
+** 只设置 burst
+   #+BEGIN_SRC nginx
+location /echo {
+    limit_req zone=xy_limit burst=5;
+    default_type text/plain;
+    echo remote_addr: $remote_addr;
+
+}
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+   Concurrency Level:      10
+   Time taken for tests:   5.069 seconds
+   Complete requests:      10
+   Failed requests:        4
+   (Connect: 0, Receive: 0, Length: 4, Exceptions: 0)
+   Non-2xx responses:      4
+   Total transferred:      2836 bytes
+   HTML transferred:       1014 bytes
+   Requests per second:    1.97 [#/sec] (mean)
+   Time per request:       5069.196 [ms] (mean)
+   Time per request:       506.920 [ms] (mean, across all concurrent requests)
+   Transfer rate:          0.55 [Kbytes/sec] received
+   #+END_EXAMPLE
+
+   查看 access 日志：
+   #+BEGIN_EXAMPLE
+   [31/Jul/2018:20:18:28 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:28 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:28 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:28 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:28 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:29 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:30 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:31 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:32 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:18:33 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   #+END_EXAMPLE
+   可以看到第 1 个请求成功，第 2-5 请求失败。6-10 被延迟处理， 每隔一秒成功执行一次。
+
+** 设置 burst 和 nodelay
+   #+BEGIN_SRC nginx
+location /echo {
+    limit_req zone=xy_limit burst=5 nodelay;
+    default_type text/plain;
+    echo remote_addr: $remote_addr;
+}
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+   Concurrency Level:      10
+   Time taken for tests:   0.079 seconds
+   Complete requests:      10
+   Failed requests:        4
+   (Connect: 0, Receive: 0, Length: 4, Exceptions: 0)
+   Non-2xx responses:      4
+   Total transferred:      2836 bytes
+   HTML transferred:       1014 bytes
+   Requests per second:    127.05 [#/sec] (mean)
+   Time per request:       78.709 [ms] (mean)
+   Time per request:       7.871 [ms] (mean, across all concurrent requests)
+   Transfer rate:          35.19 [Kbytes/sec] received
+   #+END_EXAMPLE
+
+   #+BEGIN_EXAMPLE
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 200 34 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   [31/Jul/2018:20:55:43 +0800] 127.0.0.1 remote_user GET /echo HTTP/1.1 - 503 219 - ApacheBench/2.3 - -
+   #+END_EXAMPLE
+   可以看到 1-6 个请求立即响应成功，超过突发大小的四个请求失败
+
+** 设立白名单
+   不对白名单中的 IP 限速。
+
+
+** 设立黑名单
+   不对黑名单中的 IP 限速。
+
+* 参考
+
+** ngx_http_limit_req_module
+   ngx_http_limit_req_module 模块用于限制每个定义 key 的请求处理速率，特别是来自单个 IP 地址的请求的处理速率。使用“漏桶”方法进行限制。
+
+   示例：
+   #+BEGIN_SRC nginx
+http {
+    limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
+    server {
+        location /search/ {
+            limit_req zone=one burst=5;
+        }
+   #+END_SRC
+
+*** limit_req_zone
+    #+BEGIN_EXAMPLE
+Syntax: limit_req_zone key zone=name:size rate=rate;
+Default:    —
+Context:    http
+    #+END_EXAMPLE
+
+    设置共享内存区域的参数，该区域将保留各种键的状态。特别是，存储当前的过多请求数的状态。key 可以包含文本，变量及其组合。 *具有空键值的请求不计算在内* 。
+
+*** limit_req
+    #+BEGIN_EXAMPLE
+    Syntax: limit_req zone=name [burst=number] [nodelay];
+    Default: —
+    Context: http, server, location
+    #+END_EXAMPLE
+
+    =limit_req= 设置共享内存区域，以及请求的最大突发大小（burst）。 如果请求速率超过 zone 配置的速率，则延迟其处理，以便按照定义的速率处理请求。 超出的请求被延迟，直到它们的数量超过最大突发大小，在这种情况下请求以错误终止。 默认情况下，最大突发大小等于零。
+
+    如果不希望在请求受限的情况下，延迟处理超出的请求，则应使用参数 nodelay 与 burst 一起使用。
+
+** geo 模块
+   ngx_http_geo_module 模块根据客户端 IP 地址的值创建变量。
+
+   #+BEGIN_EXAMPLE
+   Syntax:  geo [$address] $variable { ... }
+   Default: —
+   Context: http
+   #+END_EXAMPLE
+
+   描述 variabl 的值与客户端 IP 地址的映射关系。默认情况下，地址取自 =$remote_addr= 变量，但也可以从另一个变量（0.7.27）获取，例如：
+
+   #+BEGIN_SRC nginx
+geo $arg_remote_addr $geo {
+    ...;
+}
+   #+END_SRC
+
+   该指令支持一些特殊的参数：
+    + delete:删除指定的网络。
+    + default：如果客户端 IP 不匹配任何指定的地址，使用默认值位 variable 赋值。
+    + include：包含指定的地址和对应的值。可以有多个包含。
+    + proxy：定义信任的地址。请求来自可信地址时，将使用来自“X-Forwarded-For”请求头字段的地址。与常规地址相反，可靠地址被顺序检查（是指顺序检查 x-forwarded-for 里面的地址？）。
+    + proxy_recursive：启用递归地址搜索。 如果禁用递归搜索，则不使用与其中一个可信地址匹配的原始客户端地址，而是使用 “X-Forwarded-For” 中发送的最后一个地址。 如果启用递归搜索，则不使用与其中一个可信地址匹配的原始客户端地址，而是使用在 “X-Forwarded-For” 中发送的最后一个不可信地址。
+    + range：用来指示地址是一个范围。
+
+** map
+   #+BEGIN_EXAMPLE
+   Syntax:  map string $variable { ... }
+   Default: —
+   Context: http
+   #+END_EXAMPLE
+
+   创建一个新变量 variable，其值取决于第一个参数中指定的一个或多个源变量的值。
+
+   块内的参数指定源和结果值之间的映射。
+
+   源值指定为字符串或正则表达式（0.9.6）。
+
+   字符串匹配忽略大小写。

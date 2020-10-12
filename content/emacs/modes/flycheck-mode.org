@@ -1,0 +1,447 @@
+# -*- coding:utf-8-*-
+#+TITLE: Flycheck
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/flycheck/flycheck][Flycheck]]  是 GNU Emacs 的现代动态语法检查扩展，旨在取代旧版的 Flymake 扩展，它是 GNU Emacs 的一部分。有关 Flymake 的详细比较，请参阅 Flycheck 与 Flymake。
+
+  它使用各种语法检查和 linting 工具在键入时自动检查缓冲区的内容，并直接在缓冲区或可选的错误列表中报告警告和错误：
+
+  开箱即用的 Flycheck 支持超过 40 中不同的编程语言和超过 80 种不同的语法检查工具，并带有一个简单的接口可以定义新的语法检查器。See [[http://www.flycheck.org/manual/latest/Supported-languages.html#Supported-languages][Supported languages]].
+
+  很多 [[http://www.flycheck.org/extensions.html][3rd party extensions]] 提供新的语法检查和其他功能，比如替代的错误显示和模式行指示符。
+
+  + 超过 40 种语言和 70 款检查器。
+  + 全自动、防故障、动态检查 buffer。
+  + buffer 中使用边缘标识高亮错误。
+  + 错误导航。
+  + 自动更新错误列表
+  + 许多定制选项。
+  + 全面的手册。
+  + 使用简单的 API 就可以添加新语言和工具。
+
+* Installation
+
+** Prerequisites
+   Flycheck 需要 GNU Emacs 24.3+，并且在 Linux 或 macOS 等类 Unix 系统上运行得最好。它不支持较旧版本的 GNU Emacs 或其他版本的 Emacs（例如 XEmacs，Aquamacs 等）。
+
+   Flycheck 没有明确支持 windows，但试图维护 windows 兼容性，在 windows 行也应该运行良好。不过，没有活跃的 windows 用户的帮助，我们也不能回答关于 windows 的问题，或修复发生在 windows 上的错误。
+
+** Syntax checking tools
+
+   Flycheck 并不自己检查 buffer。它依赖那些需要单独安装的外部工具检查 buffer。
+
+   大部分这种程序都能在 Linux 发行版的包容器中找到，或者在特定语言的标准包管理器中。（比如 Rubygems、NPM、Cacal 等）。
+
+** Installation
+
+   通过 Emacs 自带的包管理器或 MELPA 标准容器安装 Flycheck。
+
+   #+BEGIN_EXAMPLE
+ M-x package-install RET flycheck
+   #+END_EXAMPLE
+
+   也可以使用 MELPA 容器，上次有最近的开发版本。注意 GNU Emacs 默认不包括这些容器。
+
+   可以通过在 init 文件中添加以下代码来显示启用他们：
+   #+BEGIN_SRC elisp
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+   #+END_SRC
+
+** Cask
+   If you use Cask to manage your packages, add the following to your Cask file:
+   #+BEGIN_SRC elisp
+(source gnu)
+(source melpa-stable)
+
+(depends-on "flycheck")
+   #+END_SRC
+
+* Quickstart
+** Install and enable Flycheck
+   在 [[https://www.flycheck.org/en/latest/glossary.html#term-init-file][emacs init 文件]] 中添加以下代码启用 flycheck。
+   #+BEGIN_SRC elisp
+(add-hook 'after-init-hook #'global-flycheck-mode)
+   #+END_SRC
+
+** Install syntax checker tools
+   现在，需要为要使用 Flycheck 的语言安装语法检查程序。[[https://www.flycheck.org/en/latest/languages.html#flycheck-languages][支持的语言列表]] 显示了 Flycheck 支持哪些语言以及它使用哪些程序。
+
+   例如，您可以为 Python 安装 Pylint，为 Javascript 安装 ESLint：
+   #+BEGIN_SRC sh
+$ pip install pylint
+$ npm install eslint
+   #+END_SRC
+
+** Check syntax in a buffer
+   现在您已准备好在 Python 或 Javascript 缓冲区中使用 Flycheck。访问 Python 或 Javascript 文件，使用 =C-c ! v= 检查 Flycheck 是否完成设置。
+
+   如果一切都是绿色，Flycheck 现在将在您编辑时立即开始检查缓冲区。每当你犯下 eslint 或 Pylint 可以捕获的错误时，Flycheck 会突出显示缓冲区中相应的位置，并带有错误下划线，其颜色反映了问题的严重性。此外，Flycheck 会在受影响的行的边缘放置一个符号，并在模式行中显示缓冲区中的错误和警告总数。
+
+** Navigate and list errors
+
+   使用 =C-c ! n (flycheck-next-error)= and =C-c ! p (flycheck-previous-error)= 在错误位置间进行导航。如果光标在 error 位置短暂延迟后 Flycheck 会在回显区显示错误消息。也可以你使用鼠标悬位置，在 tooltip 中查看错误消息。
+
+   使用 =C-c ! l(flycheck-list-error)= 来弹出当前 buffer 中所有错误的列表。当修正错误、引入新错误、或切换到新的 buff 时列表会自动更新。如果选中了错误列表，则可以键入 n 和 p 以在错误之间上下移动并跳转到缓冲区中的相应位置。
+
+** More features
+
+    所有 Flycheck 命令都在 Emacs Tools 菜单下 “Syntax checking” 菜单中。
+
+* Usage
+  本章深入讲解 Flycheck 的用法。
+
+  注意：本章的所有命令都是使用 =C-c != 命令前缀。可以通过 flycheck-keymap-prefix 定制该前缀，但是阅读本章的时候请记得定制的前缀。
+
+** Checking buffers
+   flycheck-mode 辅助模式在单独的 buffer 中启用语法检查。globa-flycheck-mode 自动在所有 buffer 中启用 flycheck-mode。可用 flycheck-global-modes 从 global-flycheck-mode 中排除特定的主模式。
+
+   注意：global-flycheck-mode 不会为远程文件或加密文件启用 flycheck-mode。前者可能是片段，并且非常慢。后者可能会泄露机密数据到临时目录。可以在这些目录中通过 M-x flycheck-mode 手动启用 flycheck-mode。然而，正如刚才所说原因并不推荐这样做。
+
+   将下面的代码添加到 init 文件来永久启用语法检查：
+
+   #+BEGIN_SRC elisp
+(add-hook 'after-init-hook #'global-flycheck-mode)
+   #+END_SRC
+
+   启动 flycheck-mode 后，下面这些情况，Flycheck 会自动检查 buffer：
+
+   + the buffer is saved,
+   + new lines are inserted,
+   + or a short time after you stopped to make changes to the buffer.
+
+   可以通过改变 flycheck-check-syntax-automatically 定制这种行为:
+
+   User Option: flycheck-check-syntax-automatically
+
+   A list of events that trigger a new syntax check in the current buffer:
+
+   当前 buffer 中触发语法检查的事件列表：
+
+   + save
+
+     保存 buffer 后立即检查。
+
+   + idle-change
+
+     buffer 最后更改一段时间后检查。通过 flycheck-idle-change-delay 定制延迟时间。
+
+   + new-line
+
+     插入新行后立刻检查缓冲区。
+
+   + mode-enabled
+
+     Flycheck mode 启用后立即检查。
+
+   例如，如果 init 文件中是下面的代码，只有在保存 buffer 的时候才会检查，更改 buffer 不会检查。
+   #+BEGIN_SRC elisp
+(setq flycheck-check-syntax-automatically '(mode-enabled save))
+   #+END_SRC
+
+
+   除了自动语法检查，还可以手动检查当前 buffer：
+   + C-c ! c
+   + M-x flycheck-buffer
+
+     Check syntax in the current buffer.
+
+   注意：如果语法检查不工作，请检查设置：
+
+   + C-c ! v
+   + M-x flycheck-verify-setup
+
+     弹出显示当前 buffer 的 Flycheck 设置信息的 buffer。
+
+     显示可用于当前 buffer 的语法检查器，以及它们设置中可能存在的问题。
+
+   语法检查过程中 Flycheck 创建临时文件将当前 buffer 内容传递给外部程序。可通过 flycheck-mtp-prefix 改变这些临时文件名字的前缀。
+
+** Syntax checkers
+   Flycheck 本身不会检查 buffer，而是依赖外部的语法检查器。检查时 Flycheck 自动从 flycheck-checkers 中选择最好的语法检查器：
+
+   User Option: flycheck-checkers
+
+   用于语法检查的所有语法检查器的列表：
+
+   A syntax checker in this list is a registered syntax checker.
+
+   Flycheck may apply further syntax checkers to the current buffer, if the selected syntax checker chains to other syntax checkers. For instance, the emacs-lisp syntax checker, which checks Emacs Lisp with Emacs’ byte compiler, chains to the emacs-lisp-checkdoc syntax checker, which checks Emacs Lisp for violations of documentation conventions, (elisp)Documentation Tips. In Emacs Lisp buffers, Flycheck will first use emacs-lisp, and then emacs-lisp-checkdoc.
+
+   如果选中的语法检查器关联其他检查器的话，Flycheck 可能会做进一步检查。例如，emacs-lisp 语法检查器使用 Emacs 的字节编译器检查 Emacs lisp，但它关联了检查 Emacs Lisp 是否违反文档约定 emacs-lisp-checkdoc 语法检查器。Emacs Lisp buffer 中，Flycheck 先使用 emacs-lisp，然后使用 emacs-lisp-checkdoc。
+
+   Flycheck ignores chained checkers which are not contained in flycheck-checkers.
+
+   Flycheck 忽略没有包含在 flycheck-chekcers 中的关联检查器。
+
+   Like everything else in GNU Emacs, syntax checkers have online documentation as well. If you are interested what major modes a particular syntax checker in flycheck-checkers supports, or what tool it uses, type C-c ! ?:
+
+   像 GNU Emacs 所有其他东西一样，语法检查器也有在线文档，如果有兴趣了解 flycheck-checkers 中的特定语法检查器支持哪种主模式，或者它使用什么工具，键入 C-c！ ？：
+   + C-c ! ?
+   + M-x flycheck-describe-checker
+
+     Prompt for a syntax checker and show its documentation.
+
+     输入语法检查器，显示它的文档。
+
+     The documentation includes the name of the program or service used by the syntax checker, a list of major modes in which the checker will be used, and a list of its options.
+
+     文档包括语法检查器使用的程序或服务的名字，检查器适用的主模式列表以及它的选项。
+
+   Instead of letting Flycheck select a syntax checker automatically you can also explicitly tell Flycheck which checker to use for the current buffer, by manually selecting a specific syntax checker:
+
+   除了让 Flycheck 自动选择语法检查器，还可以为当前 buffer 手动选择 Flycheck 使用的检查器：
+   + C-c ! s
+   + M-x flycheck-select-checker
+
+     Prompt for a syntax checker and select this syntax checker for the current buffer.
+
+     输入检查器名字，为当前 buffer 选择该检查器。
+
+   + C-u C-c ! s
+   + C-u M-x flycheck-select-checker Remove any manual
+
+     syntax checker selection for the current buffer, and let Flycheck automatically select a syntax checker from flycheck-checkers again.
+
+     当前 buffer 语法检查器选项，再次让 Flycheck 从 flycheck-checkers 中自动选择语法检查器。
+
+   You can also select a syntax checker via the variable flycheck-checker. In fact, flycheck-select-checker just sets this variable accordingly:
+
+   也可以通过变量 flycheck-checker 选择语法选择器，事实上，flycheck-select-checker 只是设置了这个变量：
+
+   + Variable: flycheck-checker
+
+     A syntax checker to use for the current buffer.
+
+     用于当前 buffer 的语法检查器。
+
+     If nil (the default), Flycheck will automatically select the best checker from flycheck-checkers.
+
+     如果为 nil（默认值），Flycheck 将会自动从 flycheck-checkers 中选择最好的检查器。
+
+     If set to a syntax checker, Flycheck will use this syntax checker for the current buffer, and never automatically select any other. Flycheck still runs chained checkers, though.
+
+     如果设置为一个语法检查器，Flycheck 会将该检查器用于当前 buffer，不再自动选择其他的。Flycheck 仍会运行关联的检查器。
+
+     If the syntax checker selected by this variable does not work in the current buffer, Flycheck signals an error.
+
+     如果该变量选中的检查器不能再 buffer 中工作，Flych 将会给出错误信号。
+
+     You can set this variable locally. For instance, if your Python project mandates Flake8 as a syntax checker, you can tell Flycheck to only use the corresponding checker python-flake8 in Python files of your project by setting flycheck-checker as a directory-local variable in the top-level directory of your project with M-x add-dir-local-variable RET python-mode RET flycheck-checker RET python-flake8. See (emacs)Directory Variables, for more information about directory variables.
+
+     可以将该变量设置为局部值。例如，如果 Python 项目将 Flake8 设置为语法检查器，Flycheck 对项目中的所有 python 文件只使用对应的检查器 python-flake8 检查。要这样做，需要在项目顶层目录中通过
+     #+BEGIN_EXAMPLE
+M-x add-dir-local-variable RET python-mode RET flycheck-checker RET python-flake8
+     #+END_EXAMPLE
+     将 flycheck-checker 设置为局部目录变量。
+
+   Occasionally you may want to disable specific syntax checkers completely, so that they can never be used at all, neither via automatic nor via manual selection:
+
+   偶尔可能想要完全禁用特定语法检查器，这样它们就会永远不会被使用，不管通过自动还是手动选择：
+
+   + C-c ! x
+   + M-x flycheck-disable-checker
+
+     Prompt for a syntax checker to disable in the current buffer.
+
+     提示要在当前 buffer 中关闭的语法选择器。
+
+   + C-u C-c ! x
+   + C-u M-x flycheck-disable-checker
+
+     Prompt for a syntax checker to re-enable in the current buffer.
+
+     提示要在当前 buffer 中重新启用的语法选择器。
+
+   This is particularly useful if you want to disable syntax checkers that are chained after others. For instance, if you do not care for documentation conventions of Emacs Lisp you may not need for the emacs-lisp-checkdoc checker, so you can disable it for the current buffer with M-x flycheck-disable-checker RET emacs-lisp-checkdoc.
+
+   这对于禁用被关联的语法检查器很有用。例如，如果不关心 Emacs Lisp 的文档约定，可能就不需要 emacs-lisp-checkdoc 检查器，所以可以使用 M-x flycheck-disable-checker RET emacs-lisp-checkdoc 禁用它。
+
+   flycheck-disable-checker actually sets the buffer-local value of the flycheck-disabled-checkers option:
+
+   flycheck-disable-checker 实际上是设置了 buff-local 值 flycheck-disabled-checkers 选项的 buffer-local 值：
+
+   + User Option: flycheck-disabled-checkers
+
+     A list of disabled syntax checkers. Flycheck will never use disabled syntax checkers to check a buffer.
+
+     禁用的语法检查器列表。Flycheck 将不会使用禁用的语法检查器检查 buffer。
+
+     You can customise this variable with M-x customize-variable RET flycheck-disabled-checkers or set its default value in your init file to permanently disable specific checkers. For instance, to permanently disable Clang for all C/C++ buffers:
+
+     可以通过 M-x customize-variable RET flycheck-disabled-checkers 定制该变量，或者在 init 文件中将其值设置为永远禁用的指定检查器。例如，针对 C/C++ buffers 永远禁用 Clang。
+     #+BEGIN_SRC elisp
+(setq-default flycheck-disabled-checkers '(c/c++-clang))
+     #+END_SRC
+
+     You can also disable checkers via local variables. For instance, to disable emacs-lisp-checkdoc for your entire project, add it to flycheck-disabled-checkers in the .dir-locals.el file of your project:
+
+     也可以通过局部变量禁用检查器。例如针对整个工程禁用 emacs-lisp-checkdoc，在工程的.dir-locals.el 文件中，将它添加到 flycheck-disable-checkers 变量中。
+     #+BEGIN_SRC elisp
+((emacs-lisp-mode (flycheck-disabled-checkers emacs-lisp-checkdoc)))
+     #+END_SRC
+
+     See (emacs)Directory Variables, for more information about directory variables.
+
+   You can change the completion system used by the commands of this section with flycheck-completion-system.
+
+   可以通过 flycheck-completion-system 改变本节所有命令使用的补全系统。
+
+** Reporting results
+   When a syntax check in the current buffer has finished, Flycheck reports the results of the syntax checkers used by the check in the current buffer:
+
+   + It highlights errors and warnings reported by a syntax checking in the buffer according to flycheck-highlighting-mode,
+
+   + and indicates these locations in the fringe according to flycheck-indication-mode.
+
+   User Option: flycheck-highlighting-mode
+
+   How Flycheck highlights errors and warnings in the buffer:
+
+   + lines
+
+     Highlight the whole line, ignoring any column information.
+
+   + columns
+
+     Highlight the column of the error, if the error has a column, otherwise behave as lines.
+
+   + symbols
+
+     Highlight the symbol at the error column, if any, otherwise behave like columns. This is default
+
+   + sexps
+
+     Highlight the expression at the error column, if any, otherwise behave like columns. Warning: sexps can be very slow in some major modes, notably the built-in python-mode.
+
+   + nil
+
+     Do not highlight errors at all.
+
+   Flycheck uses the flycheck-error, flycheck-warning and flycheck-info faces to highlight errors, warnings and info messages respectively.
+
+   User Option: flycheck-indication-mode
+
+   How Flycheck indicates errors and warnings:
+
+   + left-fringe
+   + right-fringe
+
+     Indicate errors in the left or right fringe respectively. See (emacs)Fringes, for more information about fringes.
+
+     Flycheck uses the flycheck-fringe-error, flycheck-fringe-warning, and flycheck-fringe-info faces for the indicators for the corresponding error levels.
+   + nil
+
+     Do not indicate errors and warnings.
+
+   To avoid flooding a buffer with excessive reports, Flycheck discards any reports and disables the corresponding syntax checker subsequently, if the total number of reported errors of any level exceeds the value of flycheck-checker-error-threshold.
+
+   You can explicitly clear with the flycheck-clear command.
+** Navigating errors
+   By default, Flycheck integrates into standard error navigation commands of Emacs: M-g n (next-error) and M-g p (previous-error) will navigate between Flycheck warnings and errors in the current buffer. See (emacs)Compilation Mode, for more information about these commands. You can disable this integration by setting flycheck-standard-error-navigation to nil, and re-enabling flycheck-mode afterwards.
+
+   Note: With standard error navigation visible compilation buffers (e.g. from M-x compile, M-x grep, M-x occur, etc.) take precedence over Flycheck errors.
+
+   Flycheck provides an independent set of navigation commands which will always navigate Flycheck errors in the current buffer, regardless of visible compilation buffers and flycheck-standard-error-navigation:
+
+   + C-c ! n
+   + M-x flycheck-next-error
+
+     Jump to the next error.
+
+     With prefix argument, jump forwards by as many errors as specified by the prefix argument, e.g. M-3 C-c ! n will move to the 3rd error from the current point. With negative prefix argument, move to previous errors instead. Signal an error, if there are no more Flycheck errors.
+   + C-c ! p
+   + M-x flycheck-previous-error
+
+     Jump to the previous Flycheck error.
+
+     With prefix argument, jump backwards by as many errors as specified by the prefix argument, e.g. M-3 C-c ! p will move to the 3rd error before the current point. With negative prefix argument, move to next errors instead. Signal an error, if there are no more Flycheck errors.
+
+     + M-x flycheck-first-error
+
+       Jump to the first Flycheck error.
+
+       With prefix argument, jump forwards to by as many errors as specified by the prefix argument, e.g. M-3 M-x flycheck-first-error moves to the 3rd error from the beginning of the buffer. With negative prefix argument, move to the last error instead.
+
+   By default, these commands consider all errors in the current buffer. With flycheck-navigation-minimum-level you can restrict them to errors above certain levels:
+
+   User Option: flycheck-navigation-minimum-level
+
+   The minimum levels of errors to consider for navigation.
+
+   If set to an error level, only navigate to errors whose level is as least as severe as this one. If nil, navigate to all errors.
+
+
+** Displaying errors
+   When the point moves to an error location Flycheck automatically displays the error at point after a short delay:
+   User Option: flycheck-display-errors-delay
+
+   The number of seconds to wait before displaying the error at point. Floating point numbers can express fractions of seconds.
+
+   You can also display errors at point explicitly with C-c ! h:
+   + C-c ! h
+   + M-x flycheck-display-error-at-point
+
+     Show the error(s) at point.
+
+   By default Flycheck shows the error message and the error ID in the echo area, but you can customise how Flycheck displays errors with flycheck-display-errors-function:
+
+   + User Option: flycheck-display-errors-function
+
+     A function to display errors. The function is called with a list of Flycheck error objects to display. See Errors, for more information about these objects.
+
+   Flycheck provides some built-in display functions:
+
+   + Function: flycheck-display-error-messages
+
+     Show error messages and IDs in the echo area.
+
+   + Function: flycheck-display-error-messages-unless-error-list
+
+     Like flycheck-display-error-messages, but does not show anything if the error list is visible. See Listing errors, for more information about the error list.
+
+   Alternatively the flycheck-pos-tip extension provides an display function which shows error messages in a graphical popup.
+
+   In addition to this display mechanism, Flycheck adds a tooltip to each error which appears when you hover the error location with the mouse pointer. You can force Emacs to show the contents of the tooltip in the echo area with C-h . (display-local-help).
+
+   The contents of this tooltip are created with flycheck-help-echo-function:
+
+   + User Option: flycheck-help-echo-function
+
+     A function to compute the contents of the error tooltips.
+
+     By default Flycheck adds the error message and the error ID of all errors at point to the tooltip contents.
+
+** Killing errors
+   You can also put error messages into the kill ring:
+
+   + C-c ! C-w
+   + M-x flycheck-copy-errors-as-kill
+
+     Copy all Flycheck error messages at point into the kill ring.
+
+     Each error message is killed separately, so C-y (yank) only yanks a single error message. You can use M-y (yank-pop) to cycle between the killed messages after yanking the first one.
+   + C-u C-c ! C-w
+   + C-u M-x flycheck-copy-errors-as-kill
+
+     Copy all Flycheck error messages at point, including their IDs.
+
+   + M-0 C-c ! C-w
+   + M-0 M-x flycheck-copy-errors-as-kill
+
+     Copy the IDs of the errors at point.
+
+** Listing errors
+** Mode line display
+** Configuring checkers
+* Syntax checker definitions
+
+* Flycheck hooks
+
+* Flycheck API:
+
+* Supported languages

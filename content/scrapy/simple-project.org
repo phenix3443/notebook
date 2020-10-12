@@ -1,0 +1,46 @@
+# -*- coding:utf-8-*-
+#+TITLE: 简单的 scrapy 爬虫工程项目
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  本文描述如何创建 scrapy 项目，还是抓取以 http://quotes.toscrape.com 为例。
+
+* 创建项目
+
+  #+BEGIN_SRC sh
+scrapy startproject tutorial
+  #+END_SRC
+
+  上面的命令建立了一个名为 tutorial 的爬虫项目：
+  #+BEGIN_EXPORT html
+<script src="https://gist.github.com/phenix3443/768810099757450880523873073750c8.js"></script>
+  #+END_EXPORT
+
+* 创建爬虫
+
+  #+BEGIN_SRC sh
+scrapy genspider quotes quotes.toscrape.com
+  #+END_SRC
+  可以看到新生成 =tutorial/spiders/quotes.py= 文件，此处的 parse 方法如同 [[file:simple-spider.html][simple-spider ]]。
+
+* 运行爬虫
+  #+BEGIN_SRC sh
+scrapy crawl -o quotes.jl quotes
+  #+END_SRC
+
+  这里使用了 =quotes.jl= ，而不是前文的 =quote.json= ，二者差别：
+  + quotes.json 数据都被放在 json 数组中，经过多次追加之后，整个文件就不是一个规范的 json 文件。
+  + quotes.j 每条数据一行记录，相比前者，更方便后续解析。
+
+  注意：动词运行该命令，输出是追加到文件中，它并不会清空原先输出文件中的内容。
+
+* 修改设置
+  通过调整项目配置（ ~tutorial/tutorial/settings.py~ ）， 可以解决结果文件中的编码问题。设置相关参考 [[https://docs.scrapy.org/en/latest/topics/settings.html][settings]]。
+
+  #+BEGIN_SRC python
+# export settings
+FEED_EXPORT_ENCODING = "utf-8"
+  #+END_SRC
+
+* 下一页

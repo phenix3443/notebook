@@ -1,0 +1,114 @@
+# -*- coding:utf-8; -*-
+#+title: logrus
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介
+  logrus 是一个日志记录工具，核心思想是日志的记录应该是结构化的，而只是记录一个字符串。
+
+* 优点
+  + 线程安全
+
+	通过 sync.Mutex 的方式每次对 Logger 进行加锁，获得锁后写入单条日志，然后释放锁。
+
+  + 支持不同的日志等级。
+
+  + 支持不同的目的端。
+	通过 hook 实现。
+
+* 缺点
+  + 不支持配置文件
+
+	可以使用替代的解决方案 logrus_mate，但是该工具只支持 json 形式的文件。
+
+  + 不支持对日志文件进行 rotate
+
+	logrus 在 README 中明确说明如果需要对日志进行 rotate 操作，应由系统中的 logrotate(8) 命令进行，logrus 本身并不支持该操作。
+
+  + 不支持文件名和行号。[fn:1]
+
+	但是可以利用 runtime.Caller 进一步封装，runtime.Caller 可以得到调用者的 pc, 文件名, 文件行数, runtime.FuncForPC(pc).Name() 可以得到 pc 所在的函数名。
+	#+BEGIN_SRC go
+
+	#+END_SRC
+
+* 示例
+** 标准 logger
+   #+BEGIN_SRC go
+func testLogrus() {
+	logrus.SetOutput(os.Stdout)
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	// logrus.SetFormatter(&logrus.TextFormatter{})
+	logrus.SetLevel(logrus.InfoLevel)
+	logrus.Debug("debug log")
+	logrus.Info("info log")
+	logrus.Info(map[string]int{"age": 12})
+}
+   #+END_SRC
+** 自定义 logger
+   #+BEGIN_SRC go
+func testLogger() {
+	logger := &logrus.Logger{
+		Out:       os.Stdout,
+		Formatter: new(logrus.JSONFormatter),
+		Level:     logrus.DebugLevel,
+	}
+	logger.Debug("debug log")
+	logger.Info("info log")
+	logger.Info(map[string]int{"age": 12})
+
+}
+   #+END_SRC
+** entry
+   #+BEGIN_SRC go
+func testEntry() {
+	logger := &logrus.Logger{
+		Out:       os.Stdout,
+		Formatter: new(logrus.JSONFormatter),
+		Level:     logrus.DebugLevel,
+	}
+
+	e := logrus.NewEntry(logger)
+	e.WithFields(logrus.Fields{
+		"name": "lsl",
+		"age":  30,
+	})
+
+	e.Debug("debug log")
+	e.Info("info log")
+	e.Warn(e.Level)
+}
+   #+END_SRC
+
+** hook
+   #+BEGIN_SRC go
+func testHook() {
+	logger := logrus.New()
+	hook, err := logrus_mail.NewMailAuthHook("APPLICATION_NAME", "HOST", PORT, "FROM", "TO", "USERNAME", "PASSWORD")
+
+	if err != nil {
+		logger.Error("init hook error")
+	}
+	logger.Hooks.Add(hook)
+
+	e := logger.WithFields(logrus.Fields{
+		"content": "test logrus hook",
+	})
+	//设置时间戳和 message
+	e.Error("这是一个 hook 发来的邮件")
+
+	//使用 Fire 发送,包含时间戳，message
+	hook.Fire(e)
+
+}
+   #+END_SRC
+
+* 注意事项
+
+
+
+
+* Footnotes
+
+[fn:1] [[https://github.com/sirupsen/logrus/issues/63][Log filename and line number]]
+[fn:2] [[https://www.doraemonext.com/archives/783.html][log4go 和 logrus 的对比与分析]]

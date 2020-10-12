@@ -1,0 +1,120 @@
+# -*- coding:utf-8 -*-
+#+TITLE: lua 源码分析
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概览
+  Lua 作为一门动态语言，提供了一个虚拟机。Lua 代码最终都是是以字节码的形式由虚拟机解释执行的。把外部组织好的代码置入内存，让虚拟机解析运行，需要有一个源代码解释器，或是预编译字节码的加载器。
+
+  下面，我们按这个划分来分析源码文件的结构。
+** 源文件划分
+   从官网下载到 Lua5.3 的源代码后，展开压缩包，会发现源代码文件全部放在 src 子目录下，模块结构如下：
+*** 实用功能：
+    + ldebug.c - 调试接口。用于访问调试钩子的函数 ~(lua_sethook, lua_gethook, lua_gethookcount)~ , 访问运行时堆栈信息 ~(lua_getstack / lua_getlocal / lua_setlocal)~ , 检查字节码 (luaG_checkopenop / luaG_checkcode), 和发现错误 ~(luaG_typeerror / luaG_concaterror / luaG_aritherror / luaG_ordererror / luaG_errormsg / luaG_runerror)~
+    + lzio.c - 通用缓冲输入流接口。
+    + lmem.c - 内存管理接口，实现用于包裹内存分配函数的 ~luaM_realloc / luaM_growaux_~ 。
+    + lgc.c - 增量垃圾收集器（内存管理）。
+
+*** 基本数据类型。
+    + lstate.c - 全局状态机，用于打开和关闭 Lua states ~(lua_newstate/lua_close)~  和线程 ~(luaE_nEwthread / luaE_freethread)~ 的函数。
+    + lobject.c - 不同的数据类型最终被统一定义为 LuaObject，这里定义了对象相关的操作，包括数据类型和字符串之间的转换, raw equality test ( ~luaO_rawequalObj~ ), and log base 2 (luaO_log2)
+    + lstring.c - 字符串表（保存由 Lua 处理的所有字符串）。
+    + lfunc.c - 操作原型和闭包的辅助函数。
+    + ltable.c - Lua tables (hash)
+*** 代码解析和生成：
+	光有核心代码和一个虚拟机还无法让 Lua 程序运行起来。因为必须从外部输入将运行的 Lua 程序。Lua 的程序的人读形式是一种程序文本，需要经过解析得到内部的数据结构（常量和 opcode 的集合） 。这个过程是通过 parser:lparser.c（luaY为前缀的 API）及词法分析 llex.c（luaX 为前缀的 API） 。
+
+	解析完文本代码，还需要最终生成虚拟机理解的数据，这个步骤在 lcode.c 中实现，其 API 以 luaK 为前缀。
+	为了满足某些需求，加快代码翻译的流程。还可以采用预编译的过程。把运行时编译的结果，生成为字节码。这个过程以及逆过程由 ldump.c 和 lundump.c 实现。其 API 以 luaU 为前缀。
+    + lcode.c - 由 lparser.c 使用的 Lua 代码生成器。
+    + llex.c - 由 lparser.c 使用的此法分析器。
+    + lparser.c - Lua 解析器。
+    + lundump.c - 还原预编译的 Lua 代码块（chunks）。实现了用来加载预编译代码块的函数 ~luaU_undump~,也实现了分析函数头的 ~luaU_header~ (由 ~luaU_undump~ 内部使用)。
+    + ldump.c - 序列化预编译的 Lua 块。实现了用于将函数对象转储为预编译代码串的 ~luaU_dump~ 。
+*** 执行 Lua 字节码：
+	Lua 核心部分仅包括 Lua 虚拟机的运转。Lua 虚拟机的行为是由一组组 opcode 控制的。这些 opcode 定义在 lopcode.h 及 lopcode.c 中。而虚拟机对 opcode 的解析和运作在 lvm.c 中，其 API 以 luaV 为前缀。
+
+	Lua 虚拟机的外在数据形式是一个 ~lua_state~ 结构体，取名 State 大概意为 Lua 虚拟机的当前状态。全局 State 引用了整个虚拟机的所有数据。这个全局 State 的相关代码放在 lstate.c 中，API 使用 luaE 为前缀。
+
+	函数的运行流程：函数调用及返回则放在 ldo.c 中，相关 API 以 luaD为前缀。
+
+    + lopcodes.c - Lua 虚拟机的操作码。定了所有操作码的名字和信息（通过表 ~luaP_opnames and luaP_opmodes~ )。
+    + lvm.c - Lua 虚拟机，用来执行 Lua 字节码 ( ~luaV_execute~ ). 也暴露了一些 lapi.c 使用的函数（比如 ~luaV_concat~ ）。
+    + ldo.c - Lua 函数调用及栈管理。处理函数调用 （ ~luaD_call / luaD_pcall~ )，堆栈增长，协程处理。。。。
+    + ltm.c - 标记方法（tag methods）。实现了访问对象的元方法。
+**** 标准库：
+	 作为嵌入式语言，其实完全可以不提供任何库及函数。全部由宿主系统注入到 State 中即可。也的确有许多系统是这么用的。但 Lua 的官方版本还是提供了少量必要的库。尤其是一些基础函数如 pairs、error、sermetatable、type 等等，完成了语言的一些基本特性，几乎很难不使用。
+	 而 coroutine、string、table、math 等等库，也很常用。Lua 提供了一套简洁的方案，允许你自由加载你需要的部分，以控制最终执行文件的体积和内存的占用量。主动加载这些内建库进入  ~lua_State~ ，是由在 lualib.h 中的 API 实现的。
+
+	 在 Lua5.0 之前，Lua 并没有一个统一的模块管理机制。这是由早期 Lua 仅仅定位在嵌入式语言决定的。这些年，由更多的人倾向于把 Lua 作为一门独立编程语言来使用，那么统一的模块化管理就变得非常有必要。这样才能让丰富的第三方库可以协同工作。即使是当成嵌入式语言使用，随着代码编写规模的扩大，也需要合理的模块划分。
+
+	 Lua 5.1 引入了一个官方推荐的模块管理机制。使用 require/module 来管理 Lua 模块，并允许从 C 语言编写的动态库中加载扩展模块。这个机制被作者认为有点过度设计了。在 Lua5.2 中又有所简化。我们可以在 loadlib.c 中找到实现。内建库的初始化 API 则在 linit.c 中可以找到。
+
+	 其它基础库可以在那些以 lib.c 为后缀的源文件中，分别找到它们的实现。
+	 + lbaselib.c - (base functions)
+	 + lstrlib.c - string
+	 + ltablib.c - table
+	 + lmathlib.c - math
+	 + loslib.c - os
+	 + liolib.c - io
+	 + loadlib.c - package
+	 + ldblib.c - debug
+	 + lbitlib.c 位操作库
+	 + lcorolib.c 协程库
+	 + linit.c 内嵌库的初始化
+	 + loadlib.c 动态扩展库管理
+**** C API：
+	 + lapi.c - Lua API. 实现了大部分的 Lua C API ( ~lua_*~ functions)。
+	 + lauxlib.c - 定义了辅助库提供的函数。它的所有定义都以 ~luaL_~ 开头，辅助库一个使用 lua.h 中 API 编写出的一个较高的抽象层。Lua 所有标准库编写都用到了辅助库。注意，辅助库并没有直接访问 Lua 内部，它都是用官方的基础 API 来完成所有工作的。
+	 + linit.c - 实现了加载从 C 加载上述模块的 ~luaL_openlibs~ 。
+	 + lctype.c C 标准库中 ctype 相关实现
+**** lua 和 luac 程序
+	 + lua.c - Lua 解释器。
+	 + print.c - 定义了打印函数内字节码的"PrintFunction?"函数，（由 luac.c 的"-l"选项调用）。
+	 + luac.c - Lua 编译器（保存字节码到文件；也可以列出字节码）。
+
+**** src/Makefile
+	 In src/Makefile (5.1.1), the mingw target 不寻常之处在于他只编译 lua（没有 luac），也可以在添加一个 mingw-cygwin target。结果查看 See mingw notes in [[http://lua-users.org/wiki/BuildingLua][BuildingLua]] 中的 mingw notes。
+
+	 In src/luaconf.h (5.1.1), ~LUA_PATH_DEFAULT~ 是指 ~LUA_LDIR~ 和 ~LUA_CDIR~ , 但 ~LUA_CPATH_DEFAULT~ 只是 ~LUA_CDIR~ 。RiciLake 暗示这可能是一个安全方面的决定，因为于 Lua 模块相比，C 模块需要更多信任。
+**** /Makfile
+	 首先浏览一下 doc/readme.html，了解编译和安装的信息。
+	 #+BEGIN_SRC sh
+      wget -P ~/Downloads/ http://www.lua.org/ftp/lua-5.3.1.tar.gz
+      tar zxf ~/Downloads/lua-5.3.1.gz
+	  cd lua-5.3.1
+	  make linux install
+	 #+END_SRC
+
+	 因为想要查看 lua 的源码，所以编译的可执行文件和库文件要添加调试所需要的信息。
+	 #+BEGIN_SRC sh
+      make CFLAGS+=-g linux
+      make local
+	 #+END_SRC
+	 #+BEGIN_SRC sh :exports results
+      tree -d ./lua-5.3.1/
+	 #+END_SRC
+	 所有生成的 bin、lib、include 文件都放在 include 文件中。
+
+*** 阅读源代码的次序
+	Lua 的源代码有着良好的设计，优美易读。其整体篇幅不大，仅两万行 C 代码左右。但一开始入手阅读还是有些许难度的。
+
+	从易到难，理清作者编写代码的脉络非常重要。LuaJIT 的作者 Mike Pall 在回答“哪一个开源代码项目设计优美，值得阅读不容错过”这个问题时，推荐了一个阅读次序:
+	+ 首先、阅读外围的库是如何实现功能扩展的，这样可以熟悉 Lua 公开 API。不必陷入功能细节。
+	+ 然后、阅读 API 的具体实现。Lua 对外暴露的 API 可以说是一个对内部模块的一层封装，这个层次尚未触及核心，但可以对核心代码有个初步的了解。
+	+ 之后、可以开始了解 LuaVM 的实现。
+	+ 接下来就是分别理解函数调用、返回，string、table、metatable 等如何实现。
+	+ debug 模块是一个额外的设施，但可以帮助你理解 Lua 内部细节。
+	+ 最后是 parser 等等编译相关的部分。
+	+ 垃圾收集将是最难的部分，可能会花掉最多的时间去理解细节。
+** 多返回值
+** unpack
+** 函数 first class value
+** closure
+* Lua parser 实现
+* 垃圾收集(garbage-collect)
+* 扩展阅读
+  + [[https://github.com/davidm/lua-annotate][lua annotate]]
+  + [[http://stevedonovan.github.com/lua-5.1.4/][lua 5.1.4 annotate]]
+  + 在 Lua Wiki 上有一篇文章介绍了 Lua 源代码的结构：[[http://lua-users.org/wiki/LuaSource]]

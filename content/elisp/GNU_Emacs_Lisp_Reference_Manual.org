@@ -1,0 +1,44 @@
+# -*- coding:utf-8 -*-
+#+title:GNU Emacs Lisp Reference Manual 读书笔记
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+* Introduction
+  + elisp 中处理的是 elisp object。
+  + lisp reader 是指将字面量转为 object 的程序，lisp writer 表示将 object 转为字面量的程序。
+  + As far as the Lisp reader is concerned, ‘()’ and ‘nil’ are identical: they stand for the same object, the symbol nil。
+  + nil and t are special symbols that always evaluate to themselves。
+  + A Lisp expression that you can evaluate is called a form. Evaluating a form always produces a result, which is a Lisp object.
+  +
+* Lisp Data Types
+  + Every object belongs to at least one type. Objects of the same type have similar structures and may usually be used in the same contexts. Types can overlap, and objects can belong to two or more types. Consequently, we can ask whether an object belongs to a particular type, but not for the type of an object.
+  + Each object belongs to one and only one primitive type. These types include  *integer, float, cons, symbol, string, vector, hash-table, subr, and byte-code function, plus several special types* , such as buffer, that are related to editing
+  + A Lisp variable can have any type of value, and it remembers whatever value you store in it, type and all.
+  + In Lisp, an expression is primarily a Lisp object and only secondarily the text that is the object’s read syntax.
+  + The ‘#@count’ construct, which skips the next count characters, is useful for program-generated comments containing binary data.
+  + The usual read syntax for alphanumeric characters is a question mark followed by the character; thus, ‘?A’ for the character A,
+  + A symbol in GNU Emacs Lisp is an object with a name. The symbol name serves as the printed representation of the symbol.a symbol’s name is unique—no two symbols have the same name.
+  + Once an array is created, its length is fixed.
+  +
+
+* Numbers
+* Strings and Characters
+* Lists
+* Sequences Arrays Vectors
+* Hash Tables
+* Symbols
+* Evaluation
+* Control Structures
+* Variables
+* Functions
+* Macros
+* Customization
+* Loading
+* Byte Compilation
+* Debugging
+* Read and Print
+* Minibuffers
+* Command Loop
+* Keymaps
+* Modes
+* Documentation

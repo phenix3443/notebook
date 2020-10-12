@@ -1,0 +1,133 @@
+# -*- coding:utf-8-*-
+#+TITLE: 第一个Django项目-mysite
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 目标
+  创建一个返回欢迎信息的网页。
+
+* 创建项目
+
+  #+BEGIN_SRC sh
+django-admin startproject mysite
+  #+END_SRC
+  会在当前目录下创建一个 =mysite= 目录，目录结构：
+
+  #+BEGIN_EXAMPLE
+   mysite/
+   ├── manage.py
+   └── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+  #+END_EXAMPLE
+
+* 启动项目
+
+  #+BEGIN_SRC sh
+python3 manage.py runserver
+  #+END_SRC
+
+  #+CAPTION: 第一次 runserver 日志
+  #+NAME:   fig:runserver-1
+  [[file:../img/django/runserver-1.png]]
+
+  现在，服务器正在运行，浏览器访问 https://127.0.0.1:8000/。 你将会看到一个 “祝贺” 页面，随着一只火箭发射，服务器已经运行了。
+
+  #+CAPTION: 第一次 runserve 浏览器
+  #+NAME:   fig:runserver-2
+  [[file:../img/django/web-1.png]]
+
+** 更换端口
+   默认情况下，runserver 命令会将服务器设置为监听本机内部 IP 的 8000 端口。
+
+   如果你想更换服务器的监听端口，请使用命令行参数。举个例子，下面的命令会使服务器监听 8080 端口：
+   #+BEGIN_SRC sh
+python3 manage.py runserver 8080
+   #+END_SRC
+
+   如果你想要修改服务器监听的 IP，在端口之前输入新的。比如，为了监听所有服务器的公开 IP（这你运行 Vagrant 或想要向网络上的其它电脑展示你的成果时很有用），使用：
+   #+BEGIN_SRC sh
+python3 manage.py runserver 0:8000
+   #+END_SRC
+
+** 重新加载
+   用于开发的服务器在需要的情况下会对每一次的访问请求重新载入一遍 Python 代码。所以你不需要为了让修改的代码生效而频繁的重新启动服务器。然而，一些动作，比如添加新文件，将不会触发自动重新加载，这时你得自己手动重启服务器。
+
+* 添加应用
+
+  #+BEGIN_SRC sh
+python3 manage.py startapp hello
+  #+END_SRC
+
+  新的目录结构：
+  #+BEGIN_EXAMPLE
+   mysite/
+   ├── db.sqlite3
+   ├── hello
+   │   ├── admin.py
+   │   ├── apps.py
+   │   ├── __init__.py
+   │   ├── migrations
+   │   │   └── __init__.py
+   │   ├── models.py
+   │   ├── tests.py
+   │   └── views.py
+   ├── manage.py
+   └── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+
+  #+END_EXAMPLE
+
+  设置返回内容。 hello/views.py
+
+  需要 url 指向该视图。hello/urls.py
+
+  hello 目录结构：
+  #+BEGIN_EXAMPLE
+   hello
+   ├── admin.py
+   ├── apps.py
+   ├── __init__.py
+   ├── migrations
+   │   └── __init__.py
+   ├── models.py
+   ├── tests.py
+   ├── urls.py
+   ├── views.py
+  #+END_EXAMPLE
+
+  在项目的根 URLconf 文件中导入创建的 hello.urls 模块。mysite/mysite/urls.py
+
+
+  函数 include() 允许引用其它 URLconfs。每当 Django 遇到  =:func：~django.urls.include= 时，它会截断与此项匹配的 URL 的部分，并将剩余的字符串发送到 URLconf 以供进一步处理。
+* 启动
+  #+BEGIN_SRC python
+python3 manage.py runserver
+  #+END_SRC
+
+  #+CAPTION: 访问 hello 页面后台日志
+  #+NAME:   fig:runserver-3
+  [[file:../img/django/runserver-hello.png]]
+
+  用浏览器访问 http://localhost:8000/hello ，看到浏览器返回 index 函数中内容。
+
+
+  #+CAPTION: 返回 hello 信息
+  #+NAME:   fig:runserver-4
+  [[file:../img/django/hello.png]]
+
+
+* 附录
+** path[fn:2]
+** include[fn:1]
+
+* Footnotes
+
+[fn:1] [[https://docs.djangoproject.com/zh-hans/2.0/ref/urls/#django.urls.include][include函数]]
+
+[fn:2] [[https://docs.djangoproject.com/zh-hans/2.0/ref/urls/#django.urls.path][path函数]]

@@ -1,0 +1,9 @@
+# -*- coding:utf-8; -*-
+#+title: sublime
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+
+* markdown
+** MarkdownEditing
+** OmniMarkupPreviewer

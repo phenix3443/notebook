@@ -1,0 +1,58 @@
+# -*- coding:utf-8-*-
+#+TITLE: plantuml
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[http://plantuml.com/][plantuml]] 是一个开源软件项目，支持快速绘制：时序图、用例图、类图、活动图等。
+
+  [[https://usermanual.wiki/Pdf/PlantUMLLanguageReferenceGuideZH.1851971531/help][这里]] 有中文 manual。
+
+* 在线使用
+  尝试 PlantUML 最简单快捷的方法就是使用在线服务。例如, 访问 [[http://www.plantuml.com/plantuml][在线 server]] 。
+
+* 管理器安装
+  直接安装：
+  #+BEGIN_SRC
+sudo apt install plantuml
+  #+END_SRC
+
+* 手动最新安装
+
+  #+BEGIN_SRC sh
+sudo apt install -y graphviz default-jre
+  #+END_SRC
+
+  然后下载[[http://sourceforge.net/projects/plantuml/files/plantuml.jar/download][plantuml.jar]] 文件，保存到本地指定目录，添加执行权限：
+  #+BEGIN_SRC sh
+chmod +x plantuml.jar
+  #+END_SRC
+
+  双击 plantuml.jar 文件, 启动 plantUML 界面。可以点击 "Change Directory" 按钮来重新指定工作目录。保持界面处于打开状态, 不要关闭。
+
+  这时候, 就可以尝试绘制您的第一个本地 UML 图了。在工作目录中建立一个 sequenceDiagram.txt, 内容如下:
+ #
+  #+BEGIN_SRC plantuml :file tryout.png
+@startuml
+Alice -> Bob: test
+@enduml
+  #+END_SRC
+
+  PlantUML 会扫描和检测工作目录中的文件修改, 并且自动生成 UML 图像文件, 例如 sequenceDiagram.png。
+
+  当然 PlantUML 也可以通过命令行的方式来执行：
+
+  #+BEGIN_SRC
+java -jar plantuml.jar sequenceDiagram.txt
+  #+END_SRC
+
+* 与 Emacs 集成
+
+** org-mode
+   plantuml-mode 提供了代码补全，高亮，预览等作用，可以用来编辑 plantuml 代码。
+
+** org-babel[fn:1]
+   [[http://zhangweize.wordpress.com/2010/08/25/creating-uml-images-by-using-plantuml-and-org-babel-in-emacs][Zhang Weize]]为 plantuml mode 添加了 org-babel，使得可以直接从 org 代码导出图片。奇怪的是，使用该功能后，代码块必须携带 file header。
+
+* Footnotes
+
+[fn:1] [[https://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html][integrate plantuml support]]

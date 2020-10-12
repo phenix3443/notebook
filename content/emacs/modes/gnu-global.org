@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: GNU Global 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  主要讲述 gtags 命令的使用。其他详见 [[file:gnu-global-manual.org][gnu global 用户手册]] 。
+
+* 安装
+  先安装插件：
+** Universal Ctags
+   由于 Darren Hiebert 的 Exuberant-ctags 项目停滞不前， 有人创建 universal-ctags 继续开发。
+
+   #+BEGIN_SRC sh
+git clone git@github.com:universal-ctags/ctags.git
+cd ctags
+./autogen.sh
+./configure
+make && sudo make install
+   #+END_SRC
+
+** pygments
+   #+BEGIN_SRC sh
+sudo pip install pygments
+   #+END_SRC
+
+** 安装 global
+   当前版本：
+   #+BEGIN_SRC sh :results scalar :exports results
+global --version
+   #+END_SRC
+   安装：
+   #+BEGIN_SRC sh
+./configure --with-universal-ctags=/usr/local/bin/ctags
+make && sudo make install
+   #+END_SRC
+
+* 配置
+** 解析器插件
+   =plugin-factory/= 目录下面保存了可以使用的插件。现在默认安装了三种插件：
+   + Nop parser('user-custom.c')
+
+     A skeleton parser. 啥都没有实现。
+
+   + Universal Ctags('exuberant-ctags.c')
+
+     使用[[https://ctags.io/][Universal Ctags]] 作为解析器。
+
+   + [[http://pygments.org/][Pygments]] + Universal Ctags ('pygments-parser.c')
+
+     Pygments 支持各种编程语言的语法高亮。 该插件使用 Pygments 和 Exuberant Ctags 作为解析器来处理定义和引用。
+
+* 使用
+** 生成 tags
+   + =--gtagslabel=pygments= 执行解析方式。
+   + =--explain= 显示 gtags 使用的解析库。
+
+   #+BEGIN_SRC sh
+gtags --explain --gtagslabel=pygments
+...
+File './lib/xmalloc.c' is handled as follows:
+        suffix:   |.c|
+        language: |C|
+        parser:   |parser|
+        library:  |/usr/local/lib/gtags/pygments-parser.la|
+
+                ----------------------------------
+     #+END_SRC

@@ -1,0 +1,107 @@
+# -*- coding:utf-8-*-
+#+TITLE: version
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+pe
+* 概述
+  [[https://github.com/Kong/version.lua][version]] 是 Lua 的版本比较库。在版本号（version），版本范围（range）和版本集合（set）之间进行简单比较。包括基本的 [[https://semver.org/lang/zh-CN/][SemVer]] 支持。
+
+* 安装
+  #+BEGIN_SRC sh
+luarocks install version
+  #+END_SRC
+
+* api
+  参见工程下的 doc 目录。
+** new(v)
+   创建 version 对象，版本号中缺失的字段用 0 替代。
+   #+BEGIN_SRC lua
+local v = version.new("0.1")
+-- is identical to
+local v = version("0.1")
+
+print(v)     --> "0.1"
+print(v[1])  --> 0
+print(v[2])  --> 1
+   #+END_SRC
+
+   支持 LT, EQ, GT 操作:
+
+   #+BEGIN_SRC lua
+local v = version("3.1.0")
+-- missing elements default to zero, and hence are equal
+assert( v == version("3.1"))
+assert( v > version("3.0"))
+
+   #+END_SRC
+** ver:semver (v)
+   基于语义版本控制规范（semver）提供版本匹配。 该实现不支持预发布或 build meta，仅比较主要（major），次要（minor）和补丁级别（patch）。
+   #+BEGIN_SRC lua
+local consumer = "1.2"     -- consumer requested version
+local provider = "1.5.2"   -- provider served version
+local compatible = version(consumer):semver(provider)
+   #+END_SRC
+
+** range (v1, v2)
+   创建一个代表版本号范围的 range 对象。
+   #+BEGIN_SRC lua
+local r = version.range("0.1"," 2.4")
+print(v.from)     --> "0.1"
+print(v.to[1])    --> 2
+print(v.to[2])    --> 4
+   #+END_SRC
+** range:matches (v)
+   判断版本号是否在范围内。
+
+   #+BEGIN_SRC lua
+-- create a version range, and check whether a version is within that range
+local r = version.range("2.75", "3.50.3")
+assert(r:matches(v))
+   #+END_SRC
+
+** set (v1, v2)
+   创建版本号集合对象。该集合包含可用和禁用的版本号。可以链式的添加版本号或版本范围到集合中。
+   #+BEGIN_SRC lua
+-- create a set of multiple ranges, adding elements in a chained fashion
+local compatible = version.set("1.1","1.2"):allowed("2.1", "2.5"):disallowed("2.3")
+
+assert(compatible:matches("1.1.3"))
+assert(compatible:matches("1.1.3"))
+assert(compatible:matches("2.4"))
+assert(not compatible:matches("2.0"))
+assert(not compatible:matches("2.3"))
+
+-- print a formatted set
+print(compatible) --> "1.1 to 1.2 and 2.1 to 2.5, but not 2.3"
+
+-- create an upwards compatibility check, allowing all versions 1.x
+local c = version.set("1.0","2.0"):disallowed("2.0")
+assert(c:matches("1.4"))
+assert(not c:matches("2.0"))
+   #+END_SRC
+
+** set:allowed (v1, v2)
+   添加可用的版本号，或版本范围到集合中。
+
+** set:disallowed (v1, v2)
+   添加禁用的版本号，或版本范围到集合中。
+
+** set:matches (v1)
+   根据可用和禁用的版本集匹配版本。 注意：disallowed 具有更高的优先级，因此与同时存在与可用和禁用集合中的版本将返回 false。
+
+** strict
+   类似的模块，但具有更严格的解析规则。version.strict 与版本模块本身相同，但它需要精确的版本字符串，而常规解析器只需从字符串中获取第一个数字和点的序列。
+
+   #+BEGIN_SRC lua
+local version = require("version")
+-- default parsing
+print(version("5.2"))                    -- "5.2"
+print(version("Lua 5.2 for me"))         -- "5.2"
+print(version("5..2"))                   -- nil, "Not a valid version element: '5..2'"
+
+-- strict parsing
+print(version.strict("5.2"))             -- "5.2"
+print(version.strict("Lua 5.2 for me"))  -- nil, "Not a valid version element: 'Lua 5.2 for me'"
+print(version.strict("5..2"))            -- nil, "Not a valid version element: '5..2'"
+
+   #+END_SRC

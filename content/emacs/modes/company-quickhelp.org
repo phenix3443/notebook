@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: company-quickhelp
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/expez/company-quickhelp][company-quickhelp]] 是在补全候选框闲置时弹出有关候选项的文档窗口。
+
+* 配置
+
+* 使用

@@ -1,0 +1,46 @@
+# -*- coding:utf-8-*-
+#+TITLE: vs-code常用插件
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 通用
+  + File Navigator 快速查找文件
+  + Beautiful 格式化代码的工具
+  + Dash Dash 是 MacOS 的 API 文档浏览器和代码段管理器
+  + Path Intellisense 自动路径补全、默认不带这个功能
+  + Vscode-icons 让 vscode 资源目录加上图标、必备
+  + Project Manager 多个项目之间快速切换的工具
+  + [[https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode][Prettier]] 格式化工具
+  + [[https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode][Visual Studio IntelliCode]] 使用 AI 智能技术，基于 github 上千开源项目，根据上下文提供补全。
+
+* Git
+  + [[https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens][GitLens]] 很多功能，丰富的扩展了 vs-code 本身的 git 支持。
+  + [[https://marketplace.visualstudio.com/items?itemName=henriqueBruno.github-repository-manager][github-repository-manager]] 管理 github 仓库。
+
+* HTML
+  + [[https://marketplace.visualstudio.com/items?itemName=abusaidm.html-snippets][HTML Snippets]] 超级好用且初级的 H5 代码片段以及提示.
+  + [[https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css][HTML CSS Support]] 在 HTML 标签上写 class 智能提示当前项目所支持的样式。
+  + Auto Rename Tag 修改 html 标签，自动帮你完成尾部闭合标签的同步修改，和 webstorm 一样。
+  + Auto Close Tag 自动闭合 HTML 标签
+  + Open in browser 打开默认浏览器
+  + [[https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer][Live-Server]] 浏览器页面中实时调试页面
+
+* CSS,SCSS and Less
+
+* JS
+  + Ejs Snippets ejs 代码提示
+  + [[https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint][ESLint]] 检查 javascript 语法错误与提示
+  + Npm intellisense require 时的包提示工具
+
+* Lua
+  + [[https://marketplace.visualstudio.com/items?itemName=sumneko.lua][Lua]]
+
+* Markdown
+  + Auto-Open Markdown Preview markdown 文件自动开启预览
+
+* protobuf
+  + [[https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3][vscode-proto3]]
+
+* python
+  + [[https://marketplace.visualstudio.com/items?itemName=ms-python.python][Python]] 要注意设置好解释器后重启。
+  + [[https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance][pylance]] 用于替代 mspyls 的 lsp server。

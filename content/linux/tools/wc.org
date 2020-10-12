@@ -1,0 +1,16 @@
+# -*- coding:utf-8-*-
+#+TITLE: wc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  打印每个文件的换行符，单词和字节计数。
+
+  比较有用的参数：
+  #+BEGIN_EXAMPLE
+-c 打印字节数
+-m 打印字符数
+-l 打印行数
+-L 打印最大行长度
+-w 打印单词数
+  #+END_EXAMPLE

@@ -1,0 +1,30 @@
+# -*- coding:utf-8; -*-
+#+title: 《Debug with gdb》笔记
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+#+startup:overview
+
+* getting in and out of gdb
+
+* gbd commands
+
+** command syntax
+   + 空行在大部分情况下表示重复执行命令。
+   + 对于list和x命令，使用RET重复会创新新的参数，而不是重复输入。
+   + RET也可以用来分割多行输出，就和more一样。
+   + #之后的文本表示注释，什么都不做，多用在command file中。
+   + Ctrl-o用来重复执行复杂的命令序列。该命令接受当前行，如RET，然后从历史记录中提取相对于当前行的下一行以进行编辑。（没有搞明白）
+
+** completion
+   + 有时候补全的字符串中有gdb认为不是单词的部分，比如（，这时候可以使用单引号将补全的字符串括起来，这在设置C++函数名字的时候很有用，比如：
+	 #+BEGIN_EXAMPLE
+(gdb) b 'bubble( M-?
+bubble(double,double)    bubble(int,int)
+	 #+END_EXAMPLE
+   + gdb不仅可以补全命令，还可以补全变量，结构体等。
+
+** help
+   + info用来描述程序运行状态。可以查看程序函数参数，寄存器，或者断点点戏。
+   + show用来描述gdb运行状态。
+
+* Running Programs Under GDB

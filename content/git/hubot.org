@@ -1,0 +1,35 @@
+#+title:hubot practices
+#+startup: overview
+
+* install[fn:1]
+require
+#+BEGIN_SRC sh
+sudo apt-get install redis-server
+sudo npm install -g coffee-script
+#+END_SRC
+#+BEGIN_SRC sh
+sudo npm install -g yo generator-hubot
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+cd ~/github/
+mkdir myhubot
+cd myhubot
+yo hubot
+#+END_SRC
+
+遇到问题：https://github.com/npm/npm/issues/5869
+
+#+BEGIN_SRC sh
+sudo npm cache clean
+# 再次执行
+yo hubot
+#+END_SRC
+运行：
+#+BEGIN_SRC sh
+bin/hubot
+#+END_SRC
+* Footnotes
+
+[fn:1] [[https://hubot.github.com/docs/][hubot doc]]

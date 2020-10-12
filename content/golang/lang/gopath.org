@@ -1,0 +1,24 @@
+# -*- coding:utf-8-*-
+#+TITLE: GOPATH
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  Go 路径用于解析 import 语句。它实现和文档位于 go/build 包。
+
+  GOPATH 环境变量列出了查找 Go 代码的位置。在 Unix 上，该值是以冒号分隔的字符串。在 Windows 上，该值是以分号分隔的字符串。在 Plan 9 中，值是一个列表。
+
+  如果未设置环境变量，GOPATH 默认为用户主目录中名为“go”的子目录（在 Unix 上为 =$HOME/go= ，在 Windows 上为 =％USERPROFILE％\go= ），除非该目录包含 Go 分发。运行 =go env GOPATH= 查看当前的 GOPATH。
+
+  GOPATH 中列出的每个目录都必须具有规定的结构：
+  + src 目录包含源代码。 src 下面的路径确定导入路径或可执行文件名。
+  + pkg 目录包含已安装的包对象。在 Go 树一样，每个目标操作系统和体系结构对都有自己的子目录 pkg（pkg/GOOS_GOARCH）。
+  + bin 目录保存已编译的命令。每个命令都以其源目录命名，但仅以最终元素命名，如果设置了 GOBIN 环境变量，则命令将安装到它命名的目录而不是 DIR/bin。 GOBIN 必须是绝对路径。
+
+    如果 DIR 是 GOPATH 中列出的目录，则可
+    + 以将包含 DIR/src/foo/bar 源的包通过“foo/bar”导入。
+    + go build 产生的编译结果位于 =DIR/bin/bar= 。
+    + 编译形式安装到 =DIR/pkg/GOOS_GOARCH/foo/bar.a= 。
+
+* 设置
+  参见https://github.com/golang/go/wiki/SettingGOPATH

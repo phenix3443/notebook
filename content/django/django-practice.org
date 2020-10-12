@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: Django
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+
+* 基本概念
+** 项目（project）
+   项目则是一个网站使用的配置和应用的集合。项目可以包含很多个应用。应用可以被很多个项目使用。
+
+
+** 应用（app）
+   应用是一个专门做某件事的网络应用程序——比如博客系统，或者公共记录的数据库，或者简单的投票程序。
+
+** 视图（view）
+
+* 组织形式
+  #+BEGIN_EXAMPLE
+   mysite/
+   ├── db.sqlite3
+   ├── hello-app
+   │   ├── admin.py
+   │   ├── apps.py
+   │   ├── __init__.py
+   │   ├── migrations
+   │   │   └── __init__.py
+   │   ├── models.py
+   │   ├── tests.py
+   │   └── views.py
+   ├── manage.py
+   └── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+  #+END_EXAMPLE
+  各目录的作用：
+
+  + 最外层的 =mysite= 根目录只是你项目的容器， Django 不关心它的名字，你可以将它重命名为任何你喜欢的名字。
+  + manage.py: 一个让你用各种方式管理 Django 项目的命令行工具。你可以阅读 [[https://docs.djangoproject.com/zh-hans/2.0/ref/django-admin/][django-admin and manage.py]] 获取所有 manage.py 的细节。
+  + 里面一层的 =mysite= 目录包含你的项目，它是一个纯 Python 包。它的名字就是当你引用它内部任何东西时需要用到的 Python 包名。 (比如 mysite.urls).
+    + mysite/__init__.py：一个空文件，告诉 Python 这个目录应该被认为是一个 Python 包。如果你是 Python 初学者，阅读官方文档中的 更多关于包的知识。
+    + mysite/settings.py：Django 项目的配置文件。如果你想知道这个文件是如何工作的，请查看 [[https://docs.djangoproject.com/zh-hans/2.0/topics/settings/][Django settings]] 了解细节。
+    + mysite/urls.py：Django 项目的 URL 声明，就像你网站的 “目录”。阅读 [[https://docs.djangoproject.com/zh-hans/2.0/topics/http/urls/][URL 调度器]] 文档来获取更多关于 URL 的内容。
+    + mysite/wsgi.py：作为你的项目的运行在 WSGI 兼容的 Web 服务器上的入口。阅读 [[https://docs.djangoproject.com/zh-hans/2.0/howto/deployment/wsgi/][如何使用 WSGI 进行部署]]了解更多细节。
+
+* 安装[fn:1]
+  安装：
+  #+BEGIN_SRC sh
+sudo pip3 install django
+  #+END_SRC
+  查看版本：
+  #+BEGIN_SRC sh
+python3 -m django --version
+  #+END_SRC
+
+
+* 工具
+
+** django-admin.py
+
+** manager.py
+
+* Footnotes
+
+[fn:1] [[https://docs.djangoproject.com/zh-hans/2.0/intro/install/][快速安装指南]]

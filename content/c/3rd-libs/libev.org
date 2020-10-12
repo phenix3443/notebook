@@ -1,0 +1,43 @@
+# -*- coding:utf-8-*-
+#+TITLE: libev
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[http://software.schmorp.de/pkg/libev.html][libev]] 是一个功能齐全且高性能的事件循环，在 libevent 之后被松散地建模，但没有它的限制和 bug。
+
+  Blurb 功能包括 child/pid 观察者，基于 wallclock（绝对）时间的定期计时器（除了使用相对超时的计时器），以及 epoll/kqueue/event ports/inotify/eventfd/signalfd 支持，快速计时器管理，时间跳转检测和纠正，以及易用性。
+
+  它可以使用其仿真 API 作为 libevent 的替代品，或直接嵌入到您的程序中，而无需复杂的配置支持。还提供功能齐全且记录完备的 perl 界面。
+
+  libev 的特有的一些功能：
+  + 广泛而详细，可读的文档。
+  + 完全支持 fork，可以通过各种方式检测 fork，并自动重新支持不支持 fork 的内核机制。
+  + 高度优化的 select，poll，epoll，kqueue 和 event ports 后端。
+  + 文件系统对象（路径）观察（通过可选的 linux inotify 支持）。
+  + 基于 wallclock 的时间（使用绝对时间，类似 cron）。
+  + 相对定时器/超时（处理时间跳跃）。
+  + 多个事件循环之间的快速线程内通信（可选的快速 linux eventfd 后端）。
+  + 非常容易嵌入（完全记录，没有依赖，支持 autoconf）。
+  + 非常小的代码库，没有臃肿的库，简单的代码。
+  + 通过插入事件循环，集成其他事件循环，集成其他事件循环用户，可以完全扩展。
+  + 内存使用非常少（观察者小，事件循环数据小）。
+  + 可选的 允许方法和函数回调 C++ 接口，无需额外的内存或运行时开销。
+  + 具有类似特性的可选 Perl 接口（能够在 libev 上运行 Glib / Gtk2）。
+  + 支持第三方提供的其他语言（多个 C++ 接口，D，Ruby，Python）。
+
+  使用 libev 的程序示例：EV perl 模块，node.js，auditd，rxvt-unicode，gvpe（GNU 虚拟专用以太网），Deliantra MMORPG 服务器，Rubinius（下一代 Ruby VM），Ebb Web 服务器， Rev 事件工具包。
+
+
+
+* 配置
+
+** event
+
+** event watcher
+
+** event loop
+
+* 使用
+
+  [[http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod][手册]]

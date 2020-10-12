@@ -1,0 +1,28 @@
+# -*- coding:utf-8-*-
+#+TITLE: visual studio code
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://code.visualstudio.com/docs][Visual Studio Code]] 是一个轻量级但功能强大的源代码编辑器，可用于 Windows，macOS 和 Linux 的桌面环境。它内置支持 JavaScript，TypeScript 和 Node.js ，并具有丰富的插件生态系统支持其他语言（例如 C ++，C＃，Java，Python，PHP，Go）和运行时（例如.NET 和 Unity）。
+
+* 安装
+
+* 使用指南
+
+** 版本控制（Version Control）
+   Visual Studio Code 集成源代码控制，并且包括内置的 Git 支持。通过 VS Code Marketplace 上的扩展，可以使用许多其他源代码控制提供程序。
+
+* 语言
+** JSON
+   + 带有注释的 JSON
+
+     除了遵循 JSON 规范的默认 JSON 模式外，VS Code 还具有带注释的 JSON（jsonc）模式。此模式用于 VS Code 配置文件，例如 settings.json，tasks.json 或 launch.json。在带注释的 JSON 模式下，可以使用 JavaScript 中使用的单行（ =//= ）以及块注释（ =/**/= ）。当前的编辑器模式在编辑器的状态栏中显示。单击模式指示器以更改模式并配置文件名和扩展名与模式的关联方式。
+
+** HTML
+   + 强大的 Emmet 支持。
+
+** Go
+   + 通过在设置中将 =go.autocompleteUnimportedPackages= 设置为 =true= ，还可以获取有关可以导入的软件包的建议。选择建议之一，所选 pakage 将会添加到文件的 =import= 中。
+   + 可以 vs-code 相关的功能生成 Go 测试代码。
+   + 使用 dlv 调试代码。

@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-01-09 三 19:47 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>albert 实践</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="liushangliang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">albert 实践</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org1f48ee0">1. 概述</a></li>
+<li><a href="#orgf99ca8c">2. 安装</a></li>
+<li><a href="#orgaa9b93d">3. 配置</a>
+<ul>
+<li><a href="#orgf77d501">3.1. General</a>
+<ul>
+<li><a href="#org074e13d">3.1.1. 快捷键</a></li>
+</ul>
+</li>
+<li><a href="#org38d7525">3.2. 扩展</a>
+<ul>
+<li><a href="#org5f94a57">3.2.1. Application</a></li>
+<li><a href="#org98902db">3.2.2. Calculator</a></li>
+<li><a href="#orge67d27c">3.2.3. Chrome bookmarks</a></li>
+<li><a href="#org3c8fb40">3.2.4. Files</a></li>
+<li><a href="#orgefd7bb5">3.2.5. Python</a></li>
+<li><a href="#orgfe50410">3.2.6. Secure Shell</a></li>
+<li><a href="#org5bc4846">3.2.7. System</a></li>
+<li><a href="#orgf839a50">3.2.8. Terminal</a></li>
+<li><a href="#orge1d2838">3.2.9. WebSearch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgb497f0b">4. 使用</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1f48ee0" class="outline-2">
+<h2 id="org1f48ee0"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://github.com/albertlauncher/albert">Albert</a> 是一种统一、高效的机器访问方式。 从技术上讲，它是一个用 C/Qt 编写的键盘启动器。 基于插件的架构使其非常灵活和强大。 插件可用于创建模块化前端或本地扩展。 扩展也可以使用嵌入式 Python 模块或通过任何语言的 CGI 方法来实现。 自带的前端重点是可定制性。
+</p>
+
+<p>
+Mac 上同类的工具是 alfred。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf99ca8c" class="outline-2">
+<h2 id="orgf99ca8c"><span class="section-number-2">2</span> 安装<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+当前版本：albert 0.16.1
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-sh">curl https://build.opensuse.org/projects/home:manuelschneid3r/public_key | sudo apt-key add -
+apt update
+apt install albert
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa9b93d" class="outline-2">
+<h2 id="orgaa9b93d"><span class="section-number-2">3</span> 配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+首次安装时会弹出配置界面，此时需要在 General 页设置快捷键。常见的配置项如下：
+</p>
+</div>
+
+<div id="outline-container-orgf77d501" class="outline-3">
+<h3 id="orgf77d501"><span class="section-number-3">3.1</span> General</h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-org074e13d" class="outline-4">
+<h4 id="org074e13d"><span class="section-number-4">3.1.1</span> 快捷键</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<ul class="org-ul">
+<li>首先配置 <code>Alt+Shift+?</code> 作为 alter 的快捷键。</li>
+<li>Incremental sort 使用增量排序，常用的选项会排在前面.</li>
+<li>Autostart on login 登录后自启动。</li>
+<li>Amount of results 增加候选项数目。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org38d7525" class="outline-3">
+<h3 id="org38d7525"><span class="section-number-3">3.2</span> 扩展</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-org5f94a57" class="outline-4">
+<h4 id="org5f94a57"><span class="section-number-4">3.2.1</span> Application</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+安装的应用程序。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org98902db" class="outline-4">
+<h4 id="org98902db"><span class="section-number-4">3.2.2</span> Calculator</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+计算器。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge67d27c" class="outline-4">
+<h4 id="orge67d27c"><span class="section-number-4">3.2.3</span> Chrome bookmarks</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+直接打开 chrome 中的书签。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3c8fb40" class="outline-4">
+<h4 id="org3c8fb40"><span class="section-number-4">3.2.4</span> Files</h4>
+<div class="outline-text-4" id="text-3-2-4">
+<p>
+本地文件，可以自己添加要搜索的文件路径。可以简单 <code>locate</code> 命令。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgefd7bb5" class="outline-4">
+<h4 id="orgefd7bb5"><span class="section-number-4">3.2.5</span> Python</h4>
+<div class="outline-text-4" id="text-3-2-5">
+<p>
+Python 扩展。格式：输入前缀+空格+查询
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="orga8427ec"></a>Base Converter<br />
+<div class="outline-text-5" id="text-3-2-5-1">
+<p>
+进制转换。前缀： <code>base</code>
+</p>
+</div>
+</li>
+
+<li><a id="org3f9ea01"></a>Currency converter<br />
+<div class="outline-text-5" id="text-3-2-5-2">
+<p>
+钱币转换
+</p>
+</div>
+</li>
+
+<li><a id="org57d73a4"></a>DateTime<br />
+<div class="outline-text-5" id="text-3-2-5-3">
+<p>
+将 date，time，datetime 等转换为时间戳。
+</p>
+</div>
+</li>
+
+<li><a id="orga5ea79e"></a>Google Translate<br />
+<div class="outline-text-5" id="text-3-2-5-4">
+<p>
+google 翻译，前缀 <code>tr</code>
+</p>
+</div>
+</li>
+
+<li><a id="org968e4d6"></a>IP Address<br />
+<div class="outline-text-5" id="text-3-2-5-5">
+<p>
+显示外部 IP 和内部 IP。前缀 <code>ip</code> ，注意输入后要加空格。
+</p>
+</div>
+</li>
+
+<li><a id="org81c6f7e"></a>zeal<br />
+<div class="outline-text-5" id="text-3-2-5-6">
+<p>
+在 zeal 中查询。
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgfe50410" class="outline-4">
+<h4 id="orgfe50410"><span class="section-number-4">3.2.6</span> Secure Shell</h4>
+<div class="outline-text-4" id="text-3-2-6">
+<p>
+该扩展会扫描 <code>/etc/ssh/config</code> 和 <code>~/.ssh/config</code> 配置，然后可以直接登录配置中的主机。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5bc4846" class="outline-4">
+<h4 id="org5bc4846"><span class="section-number-4">3.2.7</span> System</h4>
+<div class="outline-text-4" id="text-3-2-7">
+<p>
+执行锁屏，挂起，关机等系统操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf839a50" class="outline-4">
+<h4 id="orgf839a50"><span class="section-number-4">3.2.8</span> Terminal</h4>
+<div class="outline-text-4" id="text-3-2-8">
+<p>
+直接在终端中执行命令行操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1d2838" class="outline-4">
+<h4 id="orge1d2838"><span class="section-number-4">3.2.9</span> WebSearch</h4>
+<div class="outline-text-4" id="text-3-2-9">
+<p>
+使用常见搜索引擎搜索。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb497f0b" class="outline-2">
+<h2 id="orgb497f0b"><span class="section-number-2">4</span> 使用<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+当 albert 运行时，可以通过托盘图标配置或退出应用程序。
+</p>
+
+<p>
+常用操作是在输入框中键入查询，然后与排序后的结果进行交互。
+</p>
+
+<p>
+通过按热键，显示启动器，等待查询。如果再次按 Esc 或热键，或者窗口失去焦点，则窗口会隐藏。在输入框中输入的查询被委托给一组插件，这些插件又返回以某种方式与查询相关的项目。
+</p>
+
+<p>
+键入查询时，Albert 会立即在输入框下方的垂直列表中显示结果。可以像常规列表视图一样浏览这些结果。使用键 <code>⬆</code> 和 <code>⬇</code> 选择可以移动单个项目， <code>PgUp</code> 和 <code>PgDn</code> 按可见项目的数量移动选择， <code>Ctrl+Home</code> 和 <code>Ctrl+End</code> 分别将选择移动到第一个和最后一个项目。如果找到了要查找的项目，则可以通过使用 <code>⏎，=Enter</code> 或鼠标单击激活项目来运行其关联操作。
+</p>
+
+<p>
+如果查询没有产生任何结果，则会提供几个后备项。后备项是可以处理每个查询的项，例如在浏览器或本地词典应用程序中打开外部搜索引擎（如 google）的项目。
+</p>
+
+<p>
+项目可以有多个替代操作。通过按住 <code>Alt</code> ，将显示包含替代操作的列表。只要此列表可见，箭头向上和向下键就会移动此列表中的光标。释放 <code>Alt</code> 以返回结果项，此时操作列表消失。
+</p>
+
+<p>
+按住 <code>Meta</code> 可用作默认回退操作的快捷方式。在激活项目时按住 <code>Meta</code> 会使用输入的查询运行第一个后备项目。
+</p>
+
+<p>
+激活项目时，Albert 会存储输入查询。此查询历史记录条目是唯一的，并按时间顺序排序。如果输入行包含文本，则此文本用作基于子字符串的历史记录搜索的搜索项。请注意，空字符串匹配所有历史记录条目。您可以使用 <code>Ctrl+⬆</code> 和 <code>Ctrl+⬇</code> 导航历史搜索结果。为方便起见，当选择结果中的第一项时， <code>⬆</code> 的行为类似于 <code>Ctrl+⬆</code> 。
+</p>
+
+<p>
+在输入框中，一个小齿轮正在旋转。如果您左键单击此齿轮，将出现设置对话框。或者，只需按 <code>Ctrl+.</code> 或 <code>Alt+.</code> 即可打开设置对话框。右键单击打开上下文菜单，提供一些操作，包括 “退出” 操作。单击此项将退出该应用程序。或者可以通过按 <code>Alt+F4</code> 退出应用程序。
+</p>
+
+<p>
+作为参考，下表列出了可用于控制 Albert 的所有键：
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://software.opensuse.org/download.html?project=home:manuelschneid3r&amp;package=albert">https://software.opensuse.org/download.html?project=home:manuelschneid3r&amp;package=albert</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://albertlauncher.github.io/docs/using/">https://albertlauncher.github.io/docs/using/</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: liushangliang</p>
+<p class="date">Created: 2019-01-09 三 19:47</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

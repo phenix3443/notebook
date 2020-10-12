@@ -1,0 +1,39 @@
+# -*- coding:utf-8-*-
+#+TITLE: 离线文档工具
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  程序员开发过程中经常需要查询各种文档，不同语言，不同代码库或者工具需要登录不同的网站，比较繁琐，如果能有一个工具集中查询会比较好。下面介绍几款这样的工具：
+
+* dash
+  Dash 是一个 API 文档浏览器（API Documentation Browser），以及代码片段管理工具（Code Snippet Manager）。但是该软件只支持 MacOS。
+
+
+* zeal
+  是一个跨平台工具，没有代码片段功能。
+
+* devdocs
+  [[https://devdocs.io/][devdocs]] 搜索功能不如 zeal。
+
+* Velocity
+
+  Windows 平台工具
+
+* LovelyDocs
+  Android 平台工具。
+
+* Emacs 扩展
+** dash-at-point
+   要求安装 dash。
+
+** helm-dash
+   参见 [[file:modes/helm-dash.org][helm-dash 实践]]
+
+** zeal-at-point
+   参见[[file:modes/zeal-at-point.org][zeal-at-point]] 实践
+
+** 总结
+   使用过程中发现，zeal 下载文档更方便，可以选中多个 docsets 同时下载。zeal-at-point 打开 zeal 速度也要比 helm-dash 在浏览器文档要快，推荐使用 zeal-at-point。
+
+   但如果想使用 eww 展示 api，则需要 helm-dash。

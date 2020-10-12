@@ -1,0 +1,112 @@
+# -*- coding:utf-8 -*-
+#+title:Docker Practices
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+* 什么是 docker（what）
+  Docker[fn:1]是一个软件，它简化软件的安装，运行，发布和删除。
+
+* 为什么需要 docker
+  + 隔离软件运行环境
+
+* 它是如何做到的
+  docker 使用 Unix 已有的容器技术，基于最佳实践，提供一种软件构建方案。
+
+  docker 并不提供容器技术，但它使容器技术更易于使用。
+
+  与虚拟机不同，docker 不需要虚拟化硬件。
+
+* 运行架构
+** dokcer daemon
+   守护进程，管理 images，运行的 container。
+
+** dokcer client
+   客户端接口。
+
+** 远程服务
+   containers
+
+* 核心概念
+** 镜像（image）
+   镜像是容器中运行程序所有文件的快照。它用于容器分发。
+
+*** dockfile
+
+** 容器（container）
+
+* 容器（containers）
+* 服务（services）
+  服务只运行一个镜像，但它定义了镜像运行的方式：应该使用哪些端口，对应服务能力应该运行多少个容器副本等等。
+
+* stack
+  stack 是一组相互关联的服务，它们共享依赖关系，并且可以协调和缩放在一起。
+
+* 安装[fn:2]
+  + 安装包以允许通过 HTTPS 使用代码库：
+    #+BEGIN_SRC
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+    #+END_SRC
+
+  + 安装 Docker 的官方 GPG 密钥：
+    #+BEGIN_SRC sh
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #+END_SRC
+
+    验证秘钥：
+    #+BEGIN_SRC sh
+sudo apt-key fingerprint 0EBFCD88
+    #+END_SRC
+  + 设定 stable 仓库。
+    #+BEGIN_SRC sh
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #+END_SRC
+
+    上面的 =lsb_release -cs= 子命令返回您的 Ubuntu 发行版的名称，例如 xenial。 有时，在像 Linux Mint 这样的发行版中，您可能需要将 =$(lsb_release -cs)= 更改为您的父 Ubuntu 发行版。 例如，如果您使用的是 Linux Mint Rafaela，则可以使用 trusty。
+
+    对于 mint，可以如下获取对应 ubuntu 的 codename：
+    #+BEGIN_SRC sh
+grep DISTRIB_CODENAME /etc/upstream-release/lsb-release | grep -o --colour=never "[a-z-]*$"
+    #+END_SRC
+  + 安装 docker-ce
+    #+BEGIN_SRC sh
+sudo apt update
+sudo apt install docker-ce
+    #+END_SRC
+  + 确认安装
+    #+BEGIN_SRC sh
+sudo docker run hello-world
+    #+END_SRC
+
+    #+BEGIN_SRC sh :exports both
+docker -v
+    #+END_SRC
+
+  Docker 守护程序绑定到 Unix 套接字而不是 TCP 端口。 默认情况下，Unix 套接字由用户 root 拥有，而其他用户只能使用 sudo 访问它。Docker 守护程序始终以 root 用户身份运行。
+
+  如果您不想在 docker 命令前加上 sudo，请创建一个名为 docker 的 Unix 组并向其添加用户。 当 Docker 守护程序启动时，它会创建一个可由 docker 组成员访问的 Unix 套接字。
+
+  #+BEGIN_SRC sh
+sudo groupadd docker
+sudo usermod -aG docker $USER
+  #+END_SRC
+
+  重新登录以后生效，然后确认：
+  #+BEGIN_SRC sh
+docker run hello-world
+  #+END_SRC
+
+* Docker Hub Mirror
+** daocloud 加速器[fn:3]
+   使用 Docker 的时候，需要经常从官方获取镜像，但是由于显而易见的网络原因，拉取镜像的过程非常耗时，严重影响使用 Docker 的体验。因此 DaoCloud 推出了加速器工具解决这个难题，通过智能路由和缓存机制，极大提升了国内网络访问 Docker Hub 的速度，目前已经拥有了广泛的用户群体，并得到了 Docker 官方的大力推荐。如果您是在国内的网络环境使用 Docker，那么 Docker 加速器一定能帮助到您。
+
+   #+BEGIN_SRC sh
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sudo sh -s http://4ca8d72b.m.daocloud.io
+   #+END_SRC
+
+* Footnotes
+
+[fn:3] https://www.daocloud.io/mirror#accelerator-doc
+
+[fn:1] [[https://www.docker.com/][Docker 官网]]
+
+[fn:2] [[https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository][install docker from resposity]]

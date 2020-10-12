@@ -1,0 +1,48 @@
+# -*- coding:utf-8-*-
+#+TITLE: iostat
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述
+  iostat 命令用于观察 I/O 设备负载，以便定位问题和进一步优化。
+
+* 使用
+  使用 =-x= 参数打印详细信息：
+  #+BEGIN_SRC sh
+iostat -x
+  #+END_SRC
+
+  还可以持续打印日志，比如，每个 2 秒，总共打印 3 次。
+  #+BEGIN_SRC sh
+iostat 2 3
+  #+END_SRC
+
+* 实践
+  #+BEGIN_EXAMPLE
+Linux 4.4.0-117-generic (iZwz93bc56k6c6veekzhypZ)   04/21/19    _x86_64_    (2 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.11    0.00    0.09    0.00    0.00   99.79
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.13    0.01    0.18     0.09     3.02    33.83     0.00    6.74    2.38    6.87   0.28   0.01
+  #+END_EXAMPLE
+
+  第一行末尾表明 CPU 是双核的（2 CPU）。
+
+  第二行是 CPU 相关统计信息。
+
+  + cpu信息
+
+  + IO信息
+
+    主要关注以下几个参数：
+
+    + aqu-sz
+
+      发给设备的请求的平均队列长度。显而易见，该值越小越好。
+
+    + %util
+
+      向设备发出 I/O 请求所经过的时间百分比（设备的带宽利用率）。对于按顺序提供请求的设备，此值接近 100％时，会发生设备饱和。 但对于并行处理请求的设备，例如 RAID 阵列和现代 SSD，此数字并不反映其性能限制。

@@ -1,0 +1,69 @@
+# -*- coding:utf-8; -*-
+#+title:WAMP使用记录
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 更改虚拟目录
+WAMP 安装好之后，网站默认目录是安装目录下的 www 文件夹，可能需要改成其他更适合我们的文件夹：
++ wamp\script\config.inc.php
+
+  L61:change
+#+BEGIN_SRC text :export code :tangle no
+  $wwwDir =$c_installDir.’/www’;
+#+END_SRC
+  to
+#+BEGIN_SRC text :export code :tangle no
+	 $wwwDir = my_path ;
+#+END_SRC
++ wamp\bin\apache\apache2.2.11\conf\httpd.conf
+
+  L230:change
+#+BEGIN_SRC text :export code :tangle no
+	 DocumentRoot “C:/wamp/www/”
+#+END_SRC
+  to
+#+BEGIN_SRC text :export code :tangle no
+	 DocumentRoot my_path
+#+END_SRC
+
+   L252:change
+#+BEGIN_SRC text :export code :tangle no
+	 <Directory “C:/wamp/www/“>
+#+END_SRC
+   to
+#+BEGIN_SRC text :export code :tangle no
+	 <Directory my_path>
+#+END_SRC
+
+* 开启多站点功能
+wamp\bin\apache\apache2.4.9\conf\httpd.conf
+L513:去掉注释
+#+BEGIN_SRC text :export code :tangle no
+	 Include conf/extra/httpd-vhosts.conf
+#+END_SRC
+C:\wamp\bin\apache\apache2.4.9\conf\extra\httpd-vhosts.conf
+#+BEGIN_SRC text :export code :tangle no
+  <VirtualHost *:80>
+      ServerAdmin panghuli_root@main.localhost.com
+      DocumentRoot "D:/my_files/projects/panghuli_site/public_html/main"
+      ServerName main.localhost.com
+      ErrorLog "logs/main.localhost.com-error.log"
+      CustomLog "logs/main.localhost.com.log" common
+  </VirtualHost>
+
+  <VirtualHost *:80>
+      ServerAdmin panghuli_blog@blog.localhost.com
+      DocumentRoot "D:/my_files/projects/panghuli_site/public_html/blog"
+      ServerName blog.localhost.com
+      ErrorLog "logs/blog.localhost.com-error.log"
+      CustomLog "logs/blog.localhost.com.log" common
+  </VirtualHost>
+#+END_SRC
+c:\windows\system32\drivers\etc\host
+添加以下内容
+#+BEGIN_SRC text :export code :tangle no
+  127.0.0.1       blog.localhost.com
+  127.0.0.1       main.localhost.com
+#+END_SRC
+
+*

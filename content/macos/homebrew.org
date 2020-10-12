@@ -1,0 +1,84 @@
+# -*- coding:utf-8-*-
+#+TITLE: homebrew
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://brew.sh/index_zh-cn][Homebrew]] 是 macOS 的软件包管理器。
+
+  brew 主要用来下载一些不带界面的命令行工具和第三方库来进行二次开发。它下载源码然后解压、编译、安装，同时会包含相关依存库。并自动配置好各种环境变量，而且易于卸载。
+
+  brew cask 主要用来下载一些带界面的应用软件（.dmg），下载后放在统一的目录中（/opt/homebrew-cask/Caskroom），省掉了自己去下载、解压、拖拽（安装）等步骤，在 mac 中直接运行使用，卸载相当容易与干净。对一般用户来说会比较方便，包含很多在 AppStore 里没有的常用软件。
+
+  参见 https://www.zhihu.com/question/22624898
+
+* 安装
+  #+BEGIN_SRC sh
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  #+END_SRC
+
+* 常用命令
+  以安装 wget 为例：
+  #+BEGIN_SRC sh
+brew search wget
+brew info wget
+brew install wget
+brew reinstall wget
+brew uninstall wget
+  #+END_SRC
+
+  查看 wget 的 homepage：
+  #+BEGIN_SRC sh
+brew home wget
+  #+END_SRC
+
+  查看 brew 安装的包：
+  #+BEGIN_SRC sh
+brew list
+  #+END_SRC
+
+  查看过期的包：
+  #+BEGIN_SRC sh
+brew outdated
+  #+END_SRC
+
+  删除无用的旧包：
+  #+BEGIN_SRC sh
+brew cleanup
+  #+END_SRC
+
+  更新所有软件包：
+  #+BEGIN_SRC sh
+brew update
+brew upgrade
+  #+END_SRC
+
+* 问题
+
+** brew 更新镜像
+   1. 执行下面这句命令，更换为中科院的镜像：
+
+   #+BEGIN_SRC sh
+mv /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core.bak && \
+git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+   #+END_SRC
+
+   2. 把 homebrew-core 的镜像地址也设为中科院的国内镜像
+   #+BEGIN_SRC sh
+cd "$(brew --repo)" && \
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git && \
+cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core" && \
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git && \
+cd "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask && \
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+   #+END_SRC
+   3. 更新
+      #+BEGIN_SRC sh
+brew update
+      #+END_SRC
+
+** 安装 java
+   #+BEGIN_SRC
+brew cast install java
+   #+END_SRC

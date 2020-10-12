@@ -1,0 +1,6 @@
+# -*- coding:utf-8-*-
+#+TITLE: ifconfig
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+* 常用参数

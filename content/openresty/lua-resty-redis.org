@@ -1,0 +1,26 @@
+# -*- coding:utf-8-*-
+#+TITLE:lua-resty-redis
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/openresty/lua-resty-redis][lua-resty-redis]] 是基于 cosocket AP 的 ngx_lua 的 Lua redis 客户端驱动程序。这个 Lua 库利用了 ngx_lua 的 cosocket API，可以确保 100％的非阻塞行为。
+
+* 方法
+  所有 Redis 命令都有自己的小写的同名方法。
+
+  所有这些命令方法成功返回单个结果（res），否则返回 nil。如果出现错误或失败，它还将返回第二个值（err），该值是描述错误的字符串。
+
+  Redis “status reply” 返回字符串类型，但是没有“+” 前缀。
+
+  Redis “integer reply” 返回 Lua 数字类型。
+
+  Redis “error reply” 返回值 false 和描述错误的字符串。
+
+  non-nil Redis“bulk reply” 返回 Lua 字符串。nil 批量回复会产生 ngx.null 返回值。
+
+  non-nil Redis“multi-bulk reply” 会犯 包含所有对应值的 Lua 表（如果有的话）。 如果任何组成值是有效的 redis 错误值，那么它将是一个双元素表 {false，err}。
+
+  nil “multi-bulk replay” 返回 ngx.null。
+
+  有关各种 Redis 回复类型的详细信息，请参阅 http://redis.io/topics/protocol。

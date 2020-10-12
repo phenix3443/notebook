@@ -1,0 +1,6 @@
+# -*- coding:utf-8 -*-
+#+title: redis设计与实现
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介

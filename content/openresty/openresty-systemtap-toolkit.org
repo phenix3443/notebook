@@ -1,0 +1,218 @@
+# -*- coding:utf-8-*-
+#+TITLE: openresty-systemtap-toolkit
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述
+  [[https://github.com/openresty/openresty-systemtap-toolkit][openresty-systemtap-toolkit]] 是基于 SystemTap 的 OpenResty（包括 NGINX，LuaJIT，ngx_lua 等）实时分析和诊断工具。本文主要来自[[https://github.com/openresty/openresty-systemtap-toolkit/blob/master/README-CN.markdown][中文 manual]] 和一些日常实践。
+
+  此外，强烈建议阅读章亦春所写 [[https://openresty.org/posts/dynamic-tracing/][《动态追踪技术漫谈》]] ，扩展相关知识点。
+
+* 安装
+** 内核调试符号和内核头文件
+
+   需要安装内核调试符号和内核头文件。通常，您只需要分别从 Linux 发行版中获取 kernel-devel 和 kernel-debuginfo 包（与当前的内核包匹配）。
+
+   [[http://debuginfo.centos.org/][下载]] 当前内核版本对应的开发包和调试包，然后安装：
+   #+BEGIN_SRC sh
+rpm -ivh kernel-devel-$(uname -r).rpm #这个是从哪里下载的？
+rpm -ivh kernel-debuginfo-common-x86_64-$(uname -r).rpm
+rpm -ivh kernel-debuginfo-$(uname -r).rpm
+   #+END_SRC
+
+   如果 Linux 内核版本低于 3.5，那么可能需要给内核打上这个补丁（如果之前没有打的话）： [[http://sourceware.org/systemtap/wiki/utrace][utrace]] ，这样才能让 systemtap 安装得到用户空间追踪的支持。但是如果使用的是 RedHat 系列的 Linux 发行版本（比如 RHEL, CentOS 和 Fedora），那么旧的内核也应该已经安装了 utrace 这个补丁。
+
+   3.5+ 主流 Linux 内核支持用户空间跟踪的 uprobes API。
+
+** systemtap
+   Linux 系统需要 systemtap 2.1 + 和 perl 5.6.1+。要从源代码构建最新的 systemtap，请参阅此文档：http：//openresty.org/#BuildSystemtap。
+
+   #+BEGIN_SRC sh
+yum intall systemtap
+stap --version
+   #+END_SRC
+
+   stap-prep 命令可以帮你安装需要的依赖，主要是 kernel-devel 和 kernel-debuginfo，版本要匹配。
+
+   运行基于 systemtap 的工具集需要特别的用户权限。为了避免用 root 用户运行这些工具集，你可以把自己的用户名（非 root 用户），加入到 stapusr 和 staprun 用户组中。 但是如果你自己的账户名和 正在运行 NGINX 进程的账户名不同，那么你还是需要运行 "sudo" 或者其他同样效果的命令，让这些工具集带有 root 访问权限的运行起来。
+
+   测试 systemtap 安装成功否：
+   #+BEGIN_SRC sh
+stap -v -e 'probe vfs.read {printf("read performed\n"); exit()}'
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+   Pass 1: parsed user script and 119 library script(s) using 214120virt/41576res/3224shr/39032data kb, in 370usr/50sys/579real ms.
+   Pass 2: analyzed script: 1 probe(s), 1 function(s), 4 embed(s), 0 global(s) using 310820virt/139252res/4248shr/135732data kb, in 1350usr/370sys/2962real ms.
+   Pass 3: translated to C into "/tmp/stapypKNOW/stap_1b07fe71dc2219eeaad228cb70ad26cc_1625_src.c" using 310820virt/139612res/4608shr/135732data kb, in 10usr/60sys/75real ms.
+   Pass 4: compiled C into "stap_1b07fe71dc2219eeaad228cb70ad26cc_1625.ko" in 6570usr/1000sys/10339real ms.
+   Pass 5: starting run.
+   read performed
+   Pass 5: run completed in 0usr/10sys/436real ms.
+   #+END_EXAMPLE
+
+** nginx
+   此外，如果您没有从源代码编译 Nginx，则应确保 Nginx（和其他依赖项）已启用（或单独安装）的（DWARF）debuginfo。推荐直接使用 openresty 源码进行编译。
+
+* openresty-systemtap-toolkit
+** sample-bt
+   这个脚本可以对你指定的任意用户进程（没错，不仅仅是 NGINX！）进行调用栈的采样。调用栈可以是用户空间，可以是内核空间，或者是两者兼得。 它的输出是汇总后的调用栈（按照总数）。
+
+   #+BEGIN_SRC sh
+sample-bt -p PID -t 5 -u > a.bt
+   #+END_SRC
+
+   -t 代表监测 10s，-u 表示监测用户态，-k 表示监测内核态，结束后结果重定向到 a.bt 中，然后需要用工具来讲结果转换成火焰图。
+
+** ngx-sample-lua-bt
+   和 sample-bt 这个脚本类似, 不过采样的是 Lua 语言级别的调用栈。
+
+   警告 这个工具只能和解释后的 Lua 代码工作，并且有很多的限制。 对于 LuaJIT 2.1，推荐使用 stampxx 项目的 lj-lua-stacks 工具来采样解释后（或编译后）的 Lua 代码。
+
+   当你在 NGINX 里面使用标准的 Lua 5.1 解释器时，需要指定 --lua51 选项；如果用的是 LuaJIT 2.0 就指定 --luajit20。
+
+   这个脚本生成的 Lua 调用栈，在 Lua 函数定义的地方会使用 Lua 代码源文件名和所在行数。 所以为了获得更有意义的调用信息，你可以调用 fix-lua-bt 脚本去处理 ngx-sample-lua-bt 的输出。
+
+   这里有一个例子，NGINX 使用的是标准 Lua 5.1 解释器：
+   #+BEGIN_EXAMPLE
+# sample at 1K Hz for 5 seconds, assuming the Nginx worker
+#   or master process pid is 9766.
+$ ./ngx-sample-lua-bt -p 9766 --lua51 -t 5 > tmp.bt
+WARNING: Tracing 9766 (/opt/nginx/sbin/nginx) for standard Lua 5.1...
+WARNING: Time's up. Quitting now...(it may take a while)
+
+$ ./fix-lua-bt tmp.bt > a.bt
+   #+END_EXAMPLE
+
+   如果使用的是 LuaJIT 2.0:
+   #+BEGIN_EXAMPLE
+# sample at 1K Hz for 5 seconds, assuming the Nginx worker
+#   or master process pid is 9768.
+$ ./ngx-sample-lua-bt -p 9768 --luajit20 -t 5 > tmp.bt
+WARNING: Tracing 9766 (/opt/nginx/sbin/nginx) for LuaJIT 2.0...
+WARNING: Time's up. Quitting now...(it may take a while)
+
+$ ./fix-lua-bt tmp.bt > a.bt
+   #+END_EXAMPLE
+
+** ngx-lua-bt
+   这个工具可以把 NGINX worker 进程中 Lua 的当前调用栈 dump 出来。
+
+   这个工具在定位 Lua 热循环引起的 NGINX worker 持续 100% CPU 占用问题的时候非常有效。
+
+   如果用的是 LuaJIT 2.0, 请指定 --luajit20 选项, 像这样:
+   #+BEGIN_EXAMPLE
+$ ./ngx-lua-bt -p 7599 --luajit20
+WARNING: Tracing 7599 (/opt/nginx/sbin/nginx) for LuaJIT 2.0...
+C:lj_cf_string_find
+content_by_lua:2
+content_by_lua:1
+   #+END_EXAMPLE
+
+   如果用的是标准 Lua 5.1 解释器, 请指定 --lua51 选项:
+   #+BEGIN_EXAMPLE
+$ ./ngx-lua-bt -p 13611 --lua51
+WARNING: Tracing 13611 (/opt/nginx/sbin/nginx) for standard Lua 5.1...
+C:str_find
+content_by_lua:2
+[tail]
+content_by_lua:1
+   #+END_EXAMPLE
+
+* stampxx
+  [[https://github.com/openresty/stapxx#lj-lua-stacks][stampxx]] 是一门宏标记语言，用来扩展 systemtap。
+
+** lj-lua-stacks
+   此工具在 LuaJIT 2.1 VM 中对 Lua 调用栈进行采样，这些 luajit 可以运行于指定 luajit 进程或 nginx 工作进程（使用 ngx_lua 模块）上 。根据 CPU 时间使用情况使用 Linux 内核的计时器挂钩 API 进行相对均匀的采样。
+
+   它在采样过程中聚合了理想的 Lua 调用栈，因此最终的输出数据不会很大。
+
+   只要目标 C 程序将主 Lua VM 状态（lua_State）指针保存在名为 globalL 的全局 C 变量中，就像在标准 luajit 命令行实用程序中一样，此工具也可以分析其他带有 LuaJIT 嵌入式的自定义 C 进程。。
+
+   #+BEGIN_SRC sh
+lj-lua-stacks.sxx --arg time=5 --skip-badvars -x 8910 > tmp.bt
+   #+END_SRC
+
+  下面是一些示例：
+  #+BEGIN_EXAMPLE
+# making the ./stap++ tool visible in PATH:
+$ export PATH=$PWD:$PATH
+
+# assuming the nginx worker process pid is 6949:
+$ ./samples/lj-lua-stacks.sxx --skip-badvars -x 6949 > a.bt
+Start tracing 6949 (/opt/nginx/sbin/nginx)
+Hit Ctrl-C to end.
+^C
+  #+END_EXAMPLE
+
+  默认情况下，该工具将保持采样，直到您按 Ctrl-C。您还可以指定 =--arg time = N= 选项，让工具在 N 秒后自动退出。例如，
+  #+BEGIN_EXAMPLE
+$ ./samples/lj-lua-stacks.sxx --arg time=5 --skip-badvars -x 6949 > a.bt
+Start tracing 6949 (/opt/nginx/sbin/nginx)
+Please wait for 5 seconds
+  #+END_EXAMPLE
+  输出内容可以使用 FlameGraph 工具可视化。
+
+* FlameGraph
+
+  [[https://github.com/brendangregg/FlameGraph][FlameGraph]] 中包含多个火焰图生成工具，其中，stackcollapse-stap.pl 才是为 SystemTap 抓取的栈信息的生成工具。
+
+  #+BEGIN_SRC sh
+FlameGraph/stackcollapse-stap.pl a.bt > a.cbt;
+FlameGraph/flamegraph.pl a.cbt > a.svg
+  #+END_SRC
+
+* 问题
+
+** 问题一
+   #+BEGIN_EXAMPLE
+   # ./samples/lj-lua-stacks.sxx --arg time=5 --skip-badvars -x 8910 > tmp.bt
+
+   ./samples/lj-lua-stacks.sxx: line 3: cannot find @use library nginx.lua
+   #+END_EXAMPLE
+
+   #+BEGIN_QUOTE
+   原因：Getting this error usually means you've manually moved stap++ out of its original stapxx source tree. Better set your PATH environment properly without moving stap++ out of its tree.
+   #+END_QUOTE
+
+   解决办法：将 stap++所在目录添加到 PATH 环境变量。
+
+** 问题二
+   #+BEGIN_QUOTE
+   ./samples/lj-lua-stacks.sxx --arg time=5 --skip-badvars -x 7610 > tmp.bt
+   Found exact match for libluajit: /usr/local/luajit/lib/libluajit-5.1.so.2.0.2
+   WARNING: cannot find module /usr/local/nginx-1.10.2/sbin/nginx debuginfo: No DWARF information found [man warning::debuginfo]
+   WARNING: cannot find module /usr/local/luajit/lib/libluajit-5.1.so.2.0.2 debuginfo: No DWARF information found [man warning::debuginfo]
+   semantic error: while processing function luajit_G
+
+   semantic error: type definition 'lua_State' not found in '/usr/local/luajit/lib/libluajit-5.1.so.2.0.2': operator '@cast' at stapxx-FbE4EFNi/luajit.stp:162:12
+   source:     return @cast(L, "lua_State", "/usr/local/luajit/lib/libluajit-5.1.so.2.0.2")->glref->ptr32
+   ^
+
+   Pass 2: analysis failed.  [man error::pass2]
+   Number of similar warning messages suppressed: 634.
+   Rerun with -v to see them.
+   #+END_QUOTE
+
+** 问题三
+   #+BEGIN_EXAMPLE
+   ngx-sample-lua-bt -p 8729 -t 10 --lua51 >/tmp/a.bt
+   WARNING: cannot find module /usr/local/lib/liblua.so debuginfo: No DWARF information found [man warning::debuginfo]
+   WARNING: Bad $context variable being substituted with literal 0: identifier '$L' at <input>:18:30
+   source:         lua_states[my_pid] = $L
+                                      ^
+   semantic error: while processing function ci_func
+
+   semantic error: type definition 'CallInfo' not found in '/usr/local/lib/liblua.so': operator '@cast' at :48:20
+        source:     return clvalue(@cast(ci, "CallInfo", "/usr/local/lib/liblua.so")->func)
+                                   ^
+
+   Pass 2: analysis failed.  [man error::pass2]
+
+   #+END_EXAMPLE
+
+   缺少 lua debug 信息，但是如何安装还不了解。
+
+* Footnotes
+[1] https://groups.google.com/forum/#!msg/openresty/2LxTiBoJJkk/IE9TPcZfWX4J

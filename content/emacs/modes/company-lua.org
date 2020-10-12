@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: company-lua
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/ptrv/company-lua][company-lua]] 是 Lua 的 company-mode 的后端实现。 使用 ZeroBrane Studio（参见[[file:zerobrane-studio.org][ZeroBrane Studio 实践]]） 的 api 文件作为补全候选者的来源。现在只支持 Lua 5.1,5.2,5.3 和 LÖVE。
+
+* 安装
+
+* 配置
+
+* 使用

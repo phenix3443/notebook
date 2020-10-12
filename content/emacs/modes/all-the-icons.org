@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: all-the-icon
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/domtronn/all-the-icons.el][all-the-icon]] 是一个实用程序包，用于收集各种图标字体并在 Emacs 中对其进行属性化。
+
+* 配置
+  为了使图标正常工作，安装此软件包中包括的资源字体非常重要，这些字体位于 =fonts= 目录中。还可以通过调用以下函数在基于（猜测的） OS 中安装此软件包的最新字体；
+
+  #+BEGIN_SRC elisp
+M-x all-the-icons-install-fonts
+  #+END_SRC
+
+  请记住，这还将在 MacOS 和 Linux 上运行 =fc-cache -f -v= ，这可能需要一些时间才能完成。对于 Windows，此功能将提示提供下载目录，以供手动安装。
+
+* 使用
+  参考 [[https://github.com/domtronn/all-the-icons.el/wiki][wiki]] 使用示例

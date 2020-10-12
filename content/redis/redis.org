@@ -1,0 +1,29 @@
+# -*- coding:utf-8 -*-
+#+title:Redis
+#+author: 刘尚亮
+#+email:phenix3443@gmail.com
+
+* 概述
+  redis
+
+* 安装
+
+** apt
+   #+BEGIN_SRC sh
+apt install redis-server redis-tools
+   #+END_SRC
+
+   设置监听的 IP、端口、密码等:
+   #+BEGIN_SRC sh
+vim /etc/redis/redis.conf
+   #+END_SRC
+   重新启动服务：
+   #+BEGIN_SRC sh
+sudo systemctl restart redis-server
+   #+END_SRC
+
+** yum
+
+** brew
+
+* 使用

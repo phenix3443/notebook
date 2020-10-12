@@ -1,0 +1,101 @@
+# -*- coding:utf-8; -*-
+#+title: zap
+#+author: 刘尚亮
+#+email: phenix3443@gmail.coma
+
+* 概览
+  [[https://github.com/uber-go/zap][zap]] 是一个快速、结构化、支持日志分级的日志工具。与其他日志组件相比，最大特点是速度很快。
+
+* 性能
+  对于在热点请求上打印日志的应用程序，基于反射的序列化和字符串格式化的成本过高，它们占用大量 CPU 并进行许多小的分配。换句话说，使用 =encoding/json= 和 =fmt.Fprintf= 记录大量的 =interface{}= ，会使应用程序运行缓慢。
+
+  Zap 采用了不同的方法。它包括一个无反射，零分配的 JSON 编码器，并且基础记录器尽力避免序列化开销和分配。通过在此基础上构建的 SugaredLogger，用户可以通过 zap 选择何时需要关注每个分配，何时需要更熟悉的，松散类型的 API。
+
+  通过其自己的基准测试套件衡量，zap 不仅比同类结构化日志记录包具有更高的性能，甚至比标准库还快。
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u go.uber.org/zap
+  #+END_SRC
+
+* 简单使用
+  zap 中构建记录器的最简单方法是使用自带的预设：NewExample，NewProduction 和 NewDevelopment。这些预设通过一个函数调用来构建记录器：
+  #+BEGIN_SRC go
+logger, err := zap.NewProduction()
+if err != nil {
+  log.Fatalf("can't initialize zap logger: %v", err)
+}
+defer logger.Sync()
+  #+END_SRC
+  默认情况下，记录器是无缓冲的。但是，由于 zap 的底层 API 允许缓冲，因此在退出进程之前调用 Sync 是一个好习惯。
+
+  三种预设的区别在于：
+  + NewExample 构建了一个记录器，该记录器旨在用于 zap 的测试示例中。它将 DebugLevel 及以上的日志写成 JSON 标准输出，但省略了时间戳和调用函数，以使示例输出简短明了。
+  + NewDevelopment 构建一个开发记录器，该记录器以人性化的格式将 DebugLevel 及以上的日志写入标准错误。
+  + NewProduction 构建了一个生产用的记录器，该记录器将 InfoLevel 及以上的日志作为 JSON 写入标准错误中。这是 NewProductionConfig().Build(... Option)的快捷方式。
+
+* SugaredLogger VS Logger
+  在性能不是很关键的情况下，请使用 *SugaredLogger* 。它比其他结构化日志记录包快 4-10 倍，并且支持结构化和 printf 样式的 API。
+  #+BEGIN_SRC go
+sugar := zap.NewExample().Sugar()
+defer sugar.Sync()
+sugar.Infow("failed to fetch URL",
+  "url", "http://example.com",
+  "attempt", 3,
+  "backoff", time.Second,
+)
+sugar.Infof("failed to fetch URL: %s", "http://example.com")
+  #+END_SRC
+
+  sugaredLoger 对于每个日志级别，它公开了三种方法：
+  + 用于松散类型的结构化日志记录，例如 Infow(结构化上下文中的“info with”）
+  + 用于 println 样式格式化，例如 Info
+  + 用于 printf 样式格式化，例如 Infof
+
+  当性能和类型安全至关重要时，请使用 *Logger* 。它比 *SugaredLogger* 更快，并且分配的资源少得多，但仅支持结构化日志记录。
+  #+BEGIN_SRC go
+logger := zap.NewExample()
+defer logger.Sync()
+logger.Info("failed to fetch URL",
+  zap.String("url", "http://example.com"),
+  zap.Int("attempt", 3),
+  zap.Duration("backoff", time.Second),
+)
+  #+END_SRC
+
+  记录器可以在 Logger 和 SugaredLogger 之间简单而快捷的进行转换：
+  #+BEGIN_SRC go
+logger := zap.NewExample()
+defer logger.Sync()
+sugar := logger.Sugar()
+plain := sugar.Desugar()
+  #+END_SRC
+  也就是说，定义一个全局的记录器，在性能和记录方便性的情况下，在 Logger 和 sugaredLogger 之间进行切换。
+
+* 配置
+  zap 提供的预设适用于小型项目，但是大型项目和组织自然需要更多的自定义设置。对于大多数用户而言，zap 的 Config 结构在灵活性和便利性之间取得了适当的平衡。
+
+  示例代码： [[https://github.com/phenix3443/test/blob/master/golang/zap/base_config.go#L44][basicConfig.go]]
+
+  更特殊的配置(输出的日志文件自动拆分，将日志发送到消息队列等) 需要直接使用 =go.uber.org/zap/zapcore= 。请参阅 =AdvancedConfiguration= 部分示例代码。
+
+  但是我觉得日志工具应该简单点，只是完成将日志落地到本地文件，然后由其他程序对日志中文件做进一步处理。
+
+
+* 动态调整日志级别
+  AtomicLevel 可原子性的更改的动态日志记录级别。它使您可以在运行时安全地更改记录器树（根记录器和通过添加上下文创建的任何子级）的日志级别。
+
+  AtomicLevel.ServeHTTP 本身是一个 http.Handler，它提供 JSON 端点来更改其级别。通过该函数，可以在程序运行期间修改日志级别，而不用重启程序。
+
+  只有使用 NewAtomicLevel 构造函数创建 AtomicLevels 才能分配其内部原子指针。
+
+  示例代码：[[https://github.com/phenix3443/test/blob/master/golang/zap/atomlevel.go][atomLevel.go]]
+
+* logger 继承（logger hierarchy）
+  使用 SurgaredLogger 和 Logger 的 with 方法可以派生出一个子 logger，以进一步细化 logger。
+
+
+* 扩展 Zap
+  zap 包本身是 =go.uber.org/zap/zapcore= 中接口的相对简单的封装。扩展 zap 以支持新的编码(例如 BSON)，新的日志接收器(例如 Kafka)或其他奇特的东西(也许是异常聚合服务，例如 =Sentry= 或 =Rollbar= )通常需要实现 =zapcore.Encoder= ， =zapcore.WriteSyncer= 或 =zapcore.Core=  接口。有关详细信息，请参见 =zapcore= 文档。
+
+  同样，包作者可以使用 zapcore 包中的高性能 Encoder 和 Core 实现来构建自己的 logger。

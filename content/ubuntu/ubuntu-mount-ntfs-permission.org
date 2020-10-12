@@ -1,0 +1,11 @@
+# -*- coding:utf-8; -*-
+#+title:ubuntu挂载 ntfs 系统
+#+author: 刘尚亮
+#+email: phenix3443+github@gmail.com
+
+今天发现系统启动之后自动加载的 ntfs 系统中的可执行文件不能执行，ls 之后看奥所有文件的权限都是 400，owner 也都是 root，这说明系统在自动挂载文件系统的时候为上面的文件指定了默认的所有者和文件权限。经过 google 之后，总结要解决的问题实际上有两个：
+
+1. ntfs 系统中现有文件、目录的默认属性。
+2. 使用 chmod、chown 等命令更改文件的属性。
+
+第一个问题需要在 [[https://help.ubuntu.com/community/Fstab][Fstab]] 中进行设置，第二个问题据说通过 [[https://wiki.archlinux.org/index.php/Ntfs#Linux_compatible_permissions][NTFS-3G]] 可以解决问题，但经过我实践，发现并没有效果，所以最后的结果只能在 fstab 中将 fmask 设置为 023 来达到想要的效果，但是每个文件都具有可执行权限，这样显然是不合适的，这个问题只能等到以后再解决了。

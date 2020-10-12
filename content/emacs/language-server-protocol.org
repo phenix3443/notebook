@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: Language Server Protocol
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  lsp-client 和语言智能提供程序（lsp-server）之间使用 [[https://langserver.org/][语言服务器协议（Language Server Protocol）]] 提供自动完成，转到定义，查找所有引用等功能。
+
+* lsp server
+
+* lsp client
+** lsp-mode
+   参见[[file:lsp-mode.org][lsp-mode]]
+
+* lsp ui
+  参见[[file:lsp-ui.org][lsp-ui]]
+
+* company-lsp
+  参见[[file:company-lsp.org][company-lsp]]

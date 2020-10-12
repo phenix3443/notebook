@@ -1,0 +1,17 @@
+# -*- coding:utf-8-*-
+#+TITLE: persp-projectile
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/nex3/perspective-el][Perspective]]是一种 minor mode，可以管理不同的工作区。 如果需要同时打开许多项目，透视图可以帮助将每个项目相关的缓冲区和窗口设置与其他项目分开，类似于 MacOS 上的多个空间，这样可以专注于当前活动项目的文件。
+
+* 安装
+  使用 elpa 安装。或者，Debian 9 或更高版本或 Ubuntu 16.04 或更高版本的用户可以 =apt-get install elpa-persp-projectile= 。
+
+* 配置
+
+* 使用
+  当调用 ido-switch-buffer 时，只有当前项目相关文件显示在迷你缓冲区中，而模式行中的指示符告诉我我在哪个项目中。
+
+  使用截图详见 [[https://github.com/bbatsov/persp-projectile][persp-projectile]]

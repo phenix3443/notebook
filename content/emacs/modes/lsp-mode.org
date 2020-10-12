@@ -1,0 +1,119 @@
+# -*- coding:utf-8-*-
+#+TITLE: lsp-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] 是实现 lsp 的客户端，旨在通过集成 Emacs 最流行的软件包（如 company，flycheck 和 projectile）来提供类似 IDE 的体验。
+
+  emacs-cquery，lsp-rust，lsp-haskell 等可以看做是 lsp-mode 的适配器，用来适配对应的 lsp-server。
+
+  lsp-mode 主要功能：
+  + 非阻塞异步调用。
+  + 实时代码诊断，通过内置的 flymake（Emacs>26）或 [[file:flycheck-mode.org][flycheck]]/[[file:lsp-ui.org][lsp-ui]] 。
+  + 代码补全（Code completion），使用 [[file:company-lsp.org][company-lsp]] 或内置的 complete-at-point。
+  + 悬停展示（Hovers）：在代码附近展示相关信息，如函数原型提示等。使用 [[file:lsp-ui.org][lsp-ui]]。
+  + 代码操作（Code actions）：（参见 [[https://github.com/vshaxe/vshaxe/wiki/Code-Actions][code action]]）使用 lsp-execute-code-action 或  [[file:lsp-ui.org][lsp-ui]]。
+  + 代码大纲（Code outline）：显示代码文件中定义的函数或变量。通过内置的 [[file:imenu.org][imenu]] 或 helm-imenu。
+  + 代码导航（Code navigation），使用内置外部 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref.html][xref]]。
+  + 代码感知（Code Lens）(参考/实现)：提供正在使用的源代码的元信息，例如单元测试、更改历史等。使用内置  [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref.html][xref]]。关于 codelens 参考 [[https://www.codeproject.com/Articles/794766/What-is-CodeLens][what is CodeLens?]]  [[https://docs.microsoft.com/en-us/visualstudio/ide/find-code-changes-and-other-history-with-codelens?view=vs-2019][Find code changes and other history with CodeLens]]
+  + 代码高亮（Highlights）
+  + 代码格式化（Code Format）
+  + 调试器，使用 [[file:dap-mode.org][dap-mode]]
+  + 集成 Ivy
+  + 集成 Treemacs
+  + 语义高亮（Semantic highlighting）（目前由 JDT LS 和未发布的 clangd 版本实现，请参见[[https://github.com/microsoft/vscode-languageserver-node/pull/367][Semantic highlighting spec]]）
+
+  lsp-mode 在 =lsp-clients.el= 中预定义了几个 lsp-server（typescript,go,vue），这些 lsp-server 不需要额外的依赖。
+
+* 配置
+
+** emacs
+   最简 lsp-mode 除了内置 flymake 和 completion-at-point 外无需外部软件包，也可以安装以下扩展以获得更好的体验：
+   + 安装 lsp-ui 以集成 flycheck 和更高级别的 UI 模块。
+   + 安装 company-lsp 以使用 company-mode。
+   + 安装 lsp-treemacs 以获得项目范围的错误概述。
+   + 安装 helm-lsp 为 xref-apropos 提供类型完成功能。
+   + 如果调试器支持您的语言，请安装 dap-mode。
+
+   #+BEGIN_SRC elisp
+(require 'lsp-mode)
+(add-hook 'XXX-mode-hook #'lsp)
+   #+END_SRC
+   其中 XXX 可能是主要模式，例如 python，java，c ++。另外，如果要最小化配置，可以使用 prog-mode-hook。如果这样做，lsp 将尝试为每种编程模式启动，并在没有为当前模式注册任何客户端或不存在相应服务器的情况下回显一条消息。此外，lsp-mode 将自动检测并配置 lsp-ui 和 company-lsp。要关闭该行为，可以将 lsp-auto-configure 设置为 nil。
+
+   若要将 LSP 服务器启动（和 DidOpen 通知）推迟到缓冲区可见之前，可以使用 lsp-deferred 而不是 lsp：
+   #+BEGIN_SRC elisp
+(add-hook 'XXX-mode-hook #'lsp-deferred)
+   #+END_SRC
+
+** Spacemacs
+   spacemacs 开发分支中包含 lsp-mode 。将 lsp 添加到 dotspacemacs-configuration-layers 并配置用于 lsp 后端支持的语言。
+
+** use-package
+   如果您使用 use-package，请用以下内容替换（要求'lsp-mode）。
+   #+BEGIN_SRC elisp
+(use-package lsp-mode
+  :hook (XXX-mode . lsp)
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; optionally if you want to use debugger
+(use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+   #+END_SRC
+
+
+   若要将 LSP 服务器启动（和 DidOpen 通知）推迟到 buffer 可见之前，可以使用 lsp-deferred 而不是 lsp：
+   #+BEGIN_SRC elisp
+(use-package lsp-mode
+  :hook (XXX-mode . lsp-deferred)
+  :commands (lsp lsp-deferred))
+   #+END_SRC
+
+
+** Docker
+  请参阅 [[https://github.com/emacs-lsp/lsp-docker/][lsp-docker]] 自述文件，该文件提供了如何在 docker 容器中运行 lsp-mode 的指南。
+
+* 工作原理
+  lsp-mode 有预定义的服务器配置列表（通过 lsp-clients.el 加载），该列表包含 major-mode 到服务器的关联配置，或通过激活使用功能。除了 lsp-clients.el 中的默认服务器配置外，有些语言服务器需要单独的程序包（参见 [[https://github.com/emacs-lsp/lsp-mode/blob/master/README.org#supported-languages][支持语言种类]] ）。当从特定项目中打开文件时，lsp-mode 并调用 lsp 命令，lsp-mode 将查找注册过的、能够处理当前文件的服务器。如果有这样的客户端，lsp-mode 将查找项目根目录。如果是第一次从项目中打开文件，系统将提示定义当前项目的根目录。一旦选择了项目根目录，它将保存在 lsp-session 文件中，并且在下次启动 Emacs 时将被加载，因此从该项目打开文件时不再要求提供项目根目录。以后，如果要更改项目根目录，可以使用 lsp-workspace-folder-remove 删除项目，然后调用 lsp-workspace-folder-add 添加根目录。如果要文件中需要强制启动特定语言服务器，则可以使用 =C-u M-x lsp= ，它将提示您选择要启动的语言服务器。
+
+* 新增语言支持
+   以下是注册新语言服务器所需的最小配置。注册时支持的其他设置请参阅 =lsp-clients.el= 的文档。 必须更新 lsp-language-id-configuration 以包含相应的 language mode->language id 映射关系，例如 =(python-mode . "python")= ：
+
+   #+BEGIN_SRC elisp
+(defvar lsp-language-id-configuration
+  '(...
+   (python-mode . "python")
+   ...))
+;; if you are adding the support for your language server in separate repo use
+;; (add-to-list 'lsp-language-id-configuration '(python-mode . "python"))
+
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection "pyls")
+                  :major-modes '(python-mode)
+                  :server-id 'pyls))
+   #+END_SRC
+
+   如果语言服务器支持环境变量来控制其他行为，则可以使用：environment-fn 函数进行注册，就像 Bash 语言客户端所做的那样：
+   #+BEGIN_SRC elisp
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection '("bash-language-server" "start"))
+                  :major-modes '(sh-mode)
+                  :priority -1
+                  :environment-fn (lambda ()
+                                    (("EXPLAINSHELL_ENDPOINT" . lsp-bash-explainshell-endpoint)
+                                     ("HIGHLIGHT_PARSING_ERRORS" . lsp-bash-highlight-parsing-errors)))
+                  :server-id 'bash-ls))
+   #+END_SRC
+
+   lsp-bash-explainshell-endpoint 和 lsp-bash-highlight-parsing-errors 是语言客户端 defcustom，它们以类型安全的方式公开受支持的服务器环境设置。如果您更改了这些变量中的任何一个，请使用 lsp-restart-workspace 重新启动语言服务器以应用更改。
+
+* FAQ
+
+** 我已经为语言 FOO 注册了多个语言服务器。打开项目时将使用哪一个？
+   具有最高优先级的获胜。 lsp-clients.el 预定义服务器的优先级为-1，低于外部程序包（如果未指定，则优先级为 0）。如果服务器是使用 =add-on?= 标记 注册的，并且将标志设置为 t，它将与为当前模式注册的其他服务器并行启动。

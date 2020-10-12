@@ -1,0 +1,40 @@
+# -*- coding:utf-8-*-
+#+TITLE: collections
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://godoc.org/github.com/golang-collections/collections][collection]] 是一些通用的数据结构，包括：
+  + 队列（Queue）
+  + 集合（Set）
+  + 跳表（Skip list）
+
+    跳表是一种在链接列表的层次结构中存储节点的数据结构。通过使用随机数量的前向链接来跳过列表的某些部分，它的性能类似于二进制搜索树。
+
+  + 伸展树树（Splay Tree）
+
+    [[https://zh.wikipedia.org/wiki/%25E4%25BC%25B8%25E5%25B1%2595%25E6%25A0%2591][伸展树]] 是二叉搜索树的一种，其中对树的每次访问都会导致树的重新排列，从而使当前节点位于最前面。
+
+  + 栈（Stack）
+
+  + 字典树（Trie）
+    [[https://zh.wikipedia.org/zh-hans/Trie][字典树]] 又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。trie 树常用于搜索提示。如当输入一个网址，可以自动搜索出可能的选择。当没有完全匹配的搜索结果，可以返回前缀最相似的可能。
+
+  + 三叉搜索树（Ternary Search Tree）
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u  github.com/golang-collections/collections
+  #+END_SRC
+
+* 使用
+
+** 集合 (set)
+   参见 [[https://github.com/phenix3443/test/blob/master/golang/collections/set/main.go][示例代码]]
+   + =func (this *Set) ProperSubsetOf(set *Set) bool=
+
+     判断 set 是否 this 的真子集
+
+   + =func (this *Set) SubsetOf(set *Set) bool=
+
+     判断 set 是否 this 的子集

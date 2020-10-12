@@ -1,0 +1,22 @@
+# -*- coding:utf-8-*-
+#+TITLE:markdown-toc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/ardumont/markdown-toc][markdown-toc]] 为格式良好的 markdown 文件生成目录。
+
+* 配置
+
+* 使用
+  + M-x markdown-toc-generate-toc
+
+    在光标处生成 TOC。
+
+  + M-x markdown-toc-refresh-toc
+
+    更新当期的 TOC。
+
+  + M-x markdown-toc-delete-toc
+
+    删除当前的 TOC

@@ -1,0 +1,64 @@
+# -*- coding:utf-8-*-
+#+TITLE: find
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+
+* 使用
+  #+BEGIN_EXAMPLE
+find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]
+  #+END_EXAMPLE
+
+** expression
+   表达式由 options（影响整体操作而不是特定文件的处理，并始终返回 true），tests（返回 true 或 false 值）和 actions（具有副作用并返回 true 或 false 值）组成，它们由运算符分隔。默认使用“-and”操作符。
+
+*** options
+    所有选项始终返回 true。 除 =-daystart，-follow 和 -regextype= 外，这些选项会影响所有测试，包括在该选项之前指定的测试。 这是因为在解析命令行时会处理选项，而在检查文件之前测试不会执行任何操作。 =-daystart，-follow 和 -regextype= 选项在这方面是不同的，并且仅对稍后在命令行中出现的测试有影响。 因此，为清楚起见，最好将它们放在表达式的开头。 如果不这样做，将发出警告。
+
+    + maxdepth levels
+
+      最大搜索层级， =-maxdepth 0= 表示仅将测试和操作应用于命令行参数。
+
+    + mindepth levels
+
+      不要在低于级别（非负整数）的级别应用任何测试或操作。 =-mindepth 1= 表示处理除命令行参数之外的所有文件。
+
+    + regextype type
+
+      更改 =-regex= 和 =-iregex= 测试所理解的正则表达式语法，这些语法稍后会出现在命令行中。 当前实现的类型是 emacs（这是默认值），posix-awk，posix-basic，posix-egrep 和 posix-extended。
+
+*** tests
+    可以对目录中的文件与命令行上的文件进行对比。（前面有 =-= ）
+    + amin,cmin,mmin
+    + atime,ctime,mtime
+    + empty n
+    + executable
+    + name and iname
+    + regex and iregex
+    + path pattern
+    + size n
+    + type
+
+*** actions
+    + delete
+      #+BEGIN_SRC sh
+find . -type f -not -name "split.sh" -delete
+      #+END_SRC
+    + exec command;
+
+      执行命令； 如果返回 0 状态，则返回 true。find 的所有后续参数都被视为 command 的参数，直到遇到由 ';' 组成的参数为止。 字符串 “{}” 将被当前文件名替换，该文件名将在命令的参数中出现，而不仅仅是在单独的参数中，就像在某些版本的 find 中一样。 这两种结构都可能需要进行转义（使用 '\'）或引用以保护它们不被 shell 扩展。 为每个匹配的文件运行一次指定的命令。 该命令在起始目录中执行。
+
+      #+BEGIN_SRC sh
+find . -name "*.log*" -mtime +7  -exec rm -rf {} \;
+      #+END_SRC
+    + exec command {} +
+
+      exec 操作的此变体在所选文件上运行指定的命令，但命令行是通过在末尾附加每个选定的文件名来构建的； 命令的调用总数将远远少于匹配文件的数量。 命令行的构建方式与 xargs 构建命令行的方式大致相同。 命令中只允许一个 “{}” 实例。 该命令在起始目录中执行。
+
+    + ls
+
+*** 操作符
+    + =( expr )=
+    + =!expr=
+    + =-a=
+    + =-o=

@@ -1,0 +1,84 @@
+# -*- coding:utf-8-*-
+#+TITLE: Org-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* Introduction
+* Document Structure
+* Tables
+* Hyperlinks
+* todo Items
+* Tags
+* Properties
+* Dates and Times
+* Capture - Refile - Archive
+* Agenda Views
+* Markup
+* Exporting
+* Publishing
+** html
+   org 在将 org 文件转成 html 文件的时候会可以自动生成 sitemap，但很多时候我们希望 index.html 就是 sitemap。每次更新网站内容的时候可以自动更新 sitemap，也就是 index.html 页面的索引。所以这里 sitemap 生成配置有个小技巧：
+   #+BEGIN_SRC lisp
+:auto-sitemap t
+:sitemap-filename "index.html"
+   #+END_SRC
+   pushlish 文章的时候选择 org-publish-current-project。
+* Working With Source Code
+  Org-mode 提供了许多用于处理源代码的功能，包括在其主模式下编辑代码块，代码块求值，导出代码块，以及以多种格式导出代码块及其结果。
+** Structure of Code Blocks
+   代码块的结构如下：
+   #+BEGIN_EXAMPLE
+#+NAME: <name>
+#+BEGIN_SRC <language> <switches> <header arguments>
+  <body>
+#+END_SRC
+   #+END_EXAMPLE
+
+   其中 <name> 是用于命名代码块的字符串，<language> 指定代码块的语言（例如 emacs-lisp，shell，R，python 等等），<switches> 可用于控制导出代码块，<header arguments> 可用于控制代码块行为的许多方面，<body> 包含实际的源代码。
+
+** Editing source code
+   使用 =C-c '= 编辑当前代码块。这将打开一个语言主模式编辑缓冲区，其中包含代码块的主体。保存此缓冲区会将新内容写回 Org 缓冲区。再次使用 =C-c '= 退出编辑缓冲区。
+
+** Evaluating code blocks
+   使用 =C-c C-c= 求值当前代码块并将其结果插入组织模式缓冲区。默认情况下，仅对 emacs-lisp 代码块启用求值，但是支持对多种语言的块求值。有关支持的语言的完整列表，请参阅手册。 以下显示了代码块及其结果。
+   #+BEGIN_SRC emacs-lisp
+  (+ 1 2 3 4)
+   #+END_SRC
+
+   #+RESULTS:
+   : 10
+
+** Extracting source code
+   使用 =C-c C-v t= 将当前 buffer 中的代码块保存为纯源代码文件。这被称为 “tangling”--采用文学编程社区的术语。在 “tangling” 代码块期间，使用 org-babel-expand-src-block 扩展代码主体，这可以扩展变量和 “noweb” 样式引用。代码块为了 tangle，必须具有 =:tangle= header 参数，有关详细信息，请参阅手册。
+
+** Library of Babel
+   使用 =C-c C-v l= 将 org-mode 文件中的代码块加载到 “Babel 库” 中，然后可以从任何 org-mode buffer 中求值这些块。一组通用的代码块可以通过 Worg 上的 Org-mode 社区驱动文档访问。
+
+** Header Arguments
+   通过 header 参数控制代码块的求值和导出的许多方面。这些可以在全局，文件级别，outline 子树级别和单个代码块级别指定。以下描述了一些标头参数。
+
+*** =:VAR=
+    =:var= 参数用于将参数传递给代码块。传递给参数的值可以是文字值，来自 org-mode 表和文字示例块的值，也可以是其他命名代码块的结果。
+
+*** =:results=
+    =:results= 参数控制代码块结果的集合，类型和处理。output 或 value（默认值）指定如何从代码块的求值中收集结果，vector，scalar，file，raw，html，latex 和 code 的值指定代码块结果的类型，类型指示如何将它们合并到 org-mode 的 buffer 中。silent，replace，prepend 和 append 的值指定代码块结果的处理，特别否应该以及如何将结果插入到 Org-mode 的 buffer 中。
+
+*** =:session=
+    session 将导致在 Emacs 中的持久交互式下级进程中求值代码块。这允许在代码块求值之间保持状态，并且用于手动检查求值结果。
+
+*** =:exports=
+    可以在导出时保留代码和结果的任何组合，这可以通过将 =:exports= 参数设置为 code、results、none 或 both 来指定。
+
+*** =:tangle=
+    =:tangle yes= 将导致代码块的内容保存到以 org-mode buffer 的文件名命名的文件中。可以使用以下命令指定文件名 =:tangle filename= 。
+
+*** =:cache=
+    =:cache yes= 将代码块的散列值与结果相关联，确保代码块仅在其输入发生更改时重新运行。
+
+*** =:noweb=
+    =:noweb yes= 将求值和 tangle 过程 中扩展 “noweb” 样式引用。
+
+*** =:file=
+    将结果输出到文件（例如图形，图表和图形）的代码块可以接受 =:file filename= 参数，在这种情况下，结果将保存到命名文件，并且文件的链接将插入到 org-mode 的缓冲区。
+
+* Miscellaneous

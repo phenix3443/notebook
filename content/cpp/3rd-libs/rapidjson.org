@@ -1,0 +1,13 @@
+# -*- coding:utf-8-*-
+#+TITLE: rapidjson
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/Tencent/rapidjson][rapidjson]]
+
+  知乎上关于 rapidjson 的一些 [[https://www.zhihu.com/question/23654513][讨论]] 。
+
+* 安装
+
+* 使用

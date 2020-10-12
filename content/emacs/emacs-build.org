@@ -1,0 +1,163 @@
+# -*- coding:utf-8-*-
+#+TITLE: emacs
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 简介
+
+
+* 安装
+** apt
+   #+BEGIN_SRC sh
+apt install emacs
+   #+END_SRC
+** yum
+   #+BEGIN_SRC sh
+yum install emacs
+   #+END_SRC
+** brew
+   #+BEGIN_SRC sh
+brew install emacs
+   #+END_SRC
+
+* 编译
+  当前 Emacs 版本 src_elisp[:exports results]{emacs-version}
+
+** 目录说明
+   + INSTALL
+
+     文件介绍如何在不同的操作系统上安装 Emacs。
+
+   + etc/NEWS
+
+     有关新功能和最近版本的 Emacs 中其他用户可见更改的信息。
+
+   + etc/PROBLEMS
+
+     包含有关构建，安装和运行 Emacs 时出现的许多常见问题的信息。
+
+   + configure
+
+     是一个 shell 脚本，可以使 Emacs 适应处理器和操作系统。 它创建了文件 Makefile（make 程序的脚本），自动化构建和安装 Emacs 的过程。
+
+   + configure.in
+
+     是 autoconf 程序用来构造 configure 脚本的输入。
+
+   + Makefile.in
+
+     是 configure 用来创建 Makefile 的模板。
+
+   + make-dist
+
+     是一个 shell 脚本，用于从当前 Emacs 树构建分发 tar 文件，仅包含适合分发的文件。 如果对 Emacs 进行了大量更改，此脚本有助于将版本分发给其他人。
+
+   + src/
+     保存 Emacs 的 C 代码（Emacs Lisp 解释器及其原语，重新显示代码和一些基本的编辑功能）。
+
+   + lisp/
+
+     保存 Emacs 的 Emacs Lisp 代码（几乎大部分内容）。
+
+   + leim/
+
+     包含 Emacs 输入方法库，lisp 代码和辅助数据文件， 辅助数据文件用于输入不能由键盘产生的国际字符。
+
+   + lib-src/
+
+     保存一些供 Emacs 使用或与 Emacs 一起使用的实用程序的源代码，如 movemail 和 etags。
+
+   + etc/
+
+     包含 Emacs 使用的各种与架构无关的数据文件，如教程文本和工具栏图像。 “lisp”，“leim”，“info” 和 “doc” 子目录的内容也与架构无关。
+
+   + info/
+
+     包含了 Emacs 的 info 文档树。
+
+   + doc/emacs/
+
+     包含了 Emacs 手册的源码。如果修改了手册源码，需要使用 makeinfo 程序来更新手册。makeinfo 是 GNU Texinfo 包的一部分，需要合适的最近版本的 Texinfo。
+
+   + doc/lispref/
+
+     包含 Emacs Lisp reference manual 的源码。
+
+   + doc/lispintro/
+
+     包含 Introduction to Programming in Emacs Lisp manual 的源码。
+
+   + msdos/
+
+     包含在 MSDOS 下编译 Emacs 所需要的配置文件。
+
+   + nextstep/
+
+     保存指令和一些其他文件，用于 GNUstep 和 Mac OS X Cocoa 上编译 Emacs 的 Nextstep 端口。
+
+   + nt/
+
+     包含 Windows 9X/ME/NT/2000/XP 编译和运行 Emacs 的各种命令文件和文档。
+
+   + test/Emacs
+
+     功能的各个方面进行测试。包含用于 Emacs 函数各个方面的测试。
+
+** 安装依赖
+
+*** 图像支持库
+
+    Emacs 需要库来显示图像，除了内置支持的 PBM 和 XBM 图像。
+
+    在某些系统上，尤其是在 GNU/Linux 上，这些库可能已经存在或作为其他软件包提供。需要单独的“ dev”或“ devel”包，用于编译而不是运行，还需要相应的运行时包；通常，开发包将包含头文件和库存档。否则，需要下载源码并构建库。虽然它们对于运行 Emacs 不都是必不可少，但其中一些非常重要，如果具有 X11 支持的系统中不存在，“configer”脚本会报告错误。除非明确要求'configure'省略它们。
+
+    这是其中一些库的列表，以及它们的 URL 可以找到（万一您的发行版没有提供）。默认情况下，如果需要，则标有 X 的库是使用 X11 必需的。
+
+    #+begin_example
+    libXaw3d          https://directory.fsf.org/project/xaw3d/
+  X libxpm for XPM:   http://www.x.org/releases/current/src/lib/
+  X libpng for PNG:   http://www.libpng.org/
+    libz (for PNG):   http://www.zlib.net/
+  X libjpeg for JPEG: http://www.ijg.org/
+  X libtiff for TIFF: http://www.remotesensing.org/libtiff/
+  X libgif for GIF:   http://sourceforge.net/projects/giflib/
+    librsvg2 for SVG: http://wiki.gnome.org/action/show/Projects/LibRsvg
+    #+end_example
+
+    如果您供适当的 =--without-LIB= 选项，则 “configure” 将忽略 Emacs 中的相应库，即使这样做会导致不太愉快的用户界面。否则，如果“配置”在您的计算机上找到它们，Emacs 将使用这些库进行构建。如果标有 “X” 的库 h 在使用 X11 的系统上找不到，Emacs 打印错误并退出 configer 执行。
+
+*** email
+    要通过 IMAP 或 POP 等网络协议阅读电子邮件，可以使用选项 =--with-mailutils= 配置 Emacs，以便始终使用 GNU Mailutils 的“ movemail”程序检索邮件；这是如果安装了 GNU Mailutils，则为默认值。否则，Emacs 构建该程序将构建并安装辅助“ movemail”程序，一个有限和不安全的替代品；发生这种情况时，有几个配置，比如 =--without-pop= 之类的选项，可提供细粒度的信息控制 Emacs 的“ movemail”构建。
+
+    Emacs 默认配置邮件阅读器 RMAIL 可以从 POP3 服务器读取邮件。不支持早于 POP3 版本的 POP 协议。虽然通常启用了 POP3 支持，但 Emacs 是否实际使用 POP3 由个人用户控制；请参阅 Emacs 手册的 Rmail 章节。除非启用 =--with-mailutils= ，实际上，最好配置为不支持 POP3，以便用户不太可能无意间通过不安全的方式阅读电子邮件。在本地 MS-Windows 上， =--with-pop= 是默认设置；在其他平台， =--without-pop= 是默认设置。
+
+
+*** GNU/Linux 开发包
+
+    默认情况下，许多 GNU/Linux 系统都不附带开发包。它们包含运行 Emacs 所需的文件，但不包括那些需要编译它的开发包。 例如，编译支持 X 的 Emacs
+和图形库，可能需要安装 X 开发软件包以及 jpeg，png 等软件包的开发版本。
+
+    您所需的软件包名称会根据使用的 GNU/Linux 发行版以及想要配置 Emacs 的选项各有不同。 在基于 Debian 的系统上，可以使用命令安装所有构建 Emacs 版本所需的软件包。
+    #+BEGIN_SRC sh
+apt build-dep emacs
+    #+END_SRC
+
+    在基于 Red Hat 的系统上，相应的命令是
+
+    #+BEGIN_SRC sh
+dnf builddep emacs
+    #+END_SRC
+
+    在较旧的系统上，请使用
+    #+BEGIN_SRC sh
+sudo yum-builddep emacs
+sudo yum install -y gtk3-devel gnutls-devel libXpm-devel libpng-devel libtiff-devel libjpeg-devel ncurses-devel gpm-devel
+    #+END_SRC
+
+
+*** 编译
+
+    #+BEGIN_SRC
+./configure --with-mailutils && make && sudo make install
+    #+END_SRC
+    更多问题参考源码中 INSTALL 文件。

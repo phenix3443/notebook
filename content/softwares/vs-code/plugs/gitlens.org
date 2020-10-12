@@ -1,0 +1,24 @@
+# -*- coding:utf-8-*-
+#+TITLE: GitLens
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens][GitLens]] 增强了 Visual Studio Code 中内置的 Git 功能。快速查看更改行或代码块的对象，原因和时间。回顾历史，以进一步了解代码的演变方式和原因。毫不费力地探索代码库的历史和演进。
+
+  GitLens 功能强大且功能丰富，还可以高度自定义以满足需求。是否发现了代码透镜的干扰或当前的行怪注释使人分心—没问题，请通过交互式 GitLens 设置编辑器快速将其关闭或更改其行为。有关高级自定义，请参考 GitLens 文档并编辑用户设置。
+
+  以下只是 GitLens 提供的一些功能：
+  + 该行末尾显示当前行 blame 注释，可通过悬停获取详细的 blame 信息。
+  + 在文件顶部和/或代码块上的作者身份 code lens，显示最新提交和作者数量
+  + 状态栏 blame 注释，显示当前行的作者和日期
+  + 许多丰富的侧边栏视图：
+    + repository 视图，显示、导航和浏览 Git 存储库
+    + 文件历史记录视图，显示、导航和浏览当前文件的修订历史记录
+    + 行历史记录视图，显示、导航和浏览当前文件中选定行的修订历史记录
+    + 搜索提交视图，可按消息，作者，文件，ID 等搜索和浏览提交历史
+    + 比较视图，以可视化分支，标签，提交等之间的比较
+
+
+  等等。。。

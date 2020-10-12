@@ -1,0 +1,52 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua code formatter
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/martin-eden/lua_code_formatter][lua_code_formatter]] 是一个 lua 代码格式化工具。
+
+  调整代码行以适合给定的边距。
+
+  格式化后，含有无效 Lua 语法的文件可能会丢失内容！在运行重新格式化之前验证文件的正确性： =luac -p <lua_file>= 。
+
+* 安装
+  #+BEGIN_SRC sh
+luarocks install lcf
+  #+END_SRC
+
+  安装脚本将部署三个命令行脚本：
+  #+BEGIN_EXAMPLE
+lua.reformat
+lua.get_ast
+lua.get_formatter_ast
+  #+END_EXAMPLE
+
+* 使用
+
+  #+BEGIN_SRC sh
+lua.reformat [options] [lua_file]> [out_file]
+  #+END_SRC
+  不带参数调用将显示可用的命令行参数。
+
+  例如：
+   #+BEGIN_SRC sh
+lua.reformat --indent='    ' test.lua
+   #+END_SRC
+
+** options
+   #+BEGIN_EXAMPLE
+  --indent=<str>          Use given string as indent chunk.
+
+  --right-margin=<int>    Right margin, including indent part.
+  --max-text-width=<int>  Maximum text length, excluding indent part.
+
+  --keep-comments         Keep comments.
+  --~keep-comments        Remove comments.
+
+  --keep-unparsed-tail    Keep unparsed file end.
+  --~keep-unparsed-tail   Remove unparsed file end.
+   #+END_EXAMPLE
+
+** out_file
+   如果使用 out_file 参数，必须与 lua_file 不同。

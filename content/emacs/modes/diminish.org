@@ -1,0 +1,23 @@
+# -*- coding:utf-8-*-
+#+TITLE: diminish
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  当 diminish 一个 mode 时，希望继续使用它，但不在 mode line 进行提示。
+
+  该软件包实现了隐藏或使用简写替代 minor mode 在 mode line 的显示。
+
+* 安装
+
+* 配置
+
+* 使用
+  #+BEGIN_SRC elisp
+(require 'diminish)
+;; Hide jiggle-mode lighter from mode line
+(diminish 'jiggle-mode)
+;; Replace abbrev-mode lighter with "Abv"
+(diminish 'abbrev-mode "Abv")
+  #+END_SRC

@@ -1,0 +1,210 @@
+# -*- coding:utf-8; -*-
+#+title: logging
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 概述
+  该模块中包括的主要类对象：
+  + Logger
+
+    应用程序代码直接使用的接口。
+
+  + Handler
+
+    处理程序是确定记录器中每条消息发生情况的引擎。它描述了特定的日志记录行为，例如将消息写入屏幕，文件或网络套接字。
+
+  + Filter
+
+    过滤器用于提供对从记录器到处理程序的日志记录传递的额外控制。
+
+    默认情况下，将处理满足日志级别要求的任何日志消息。 但是，通过安装筛选器，可以在日志记录过程中添加其他条件。例如，可以安装仅允许发出来自特定源的 ERROR 消息的过滤器。
+
+    过滤器还可用于在发出之前修改日志记录。 例如，如果满足一组特定条件，可以编写一个过滤器，将 ERROR 日志记录降级为 WARNING 记录。
+
+    过滤器可以安装在记录器或处理器上; 可以在链中使用多个过滤器来执行多个过滤操作。
+
+  + Formatter
+
+    最终，日志记录需要呈现为文本。 格式化程序描述该文本的确切格式。 格式化程序通常由包含 LogRecord 属性的 Python 格式化字符串组成; 但是，也可以编写自定义格式化程序来实现特定的格式化行为。
+
+  + LogRecord
+
+    Logger 记录日志时产生的日志对象。
+
+* Logger
+
+  请注意，Logger 永远不会直接实例化，而是始终通过模块级函数 =logging.getLogger(name)= 实例化。对具有相同名称的 =getLogger()= 的多次调用将始终返回对同一 Logger 对象的引用。
+
+  name 可能是一个以句点分隔的层次值，如 foo.bar.baz（它也可能只是普通的 foo）。 在分层列表中较低的 logger 是列表中较高的 logger 的后继。例如，给定一个名为 foo 的 logger，名称为 foo.bar，foo.bar.baz 和 foo.bam 的 logger 都是 foo 的后代。 记录器名称层次结构类似于 Python 包层次结构，在每个模块上使用推荐的 =logging.getLogger(__ name__)= 组织 logger 也会达到同样的效果，因为在模块中， =__name__= 是 Python 包命名空间中的模块名称。
+
+** propagate
+   如果此属性的计算结果为 true，则除了附加到此 logger 的任何处理程序之外，记录到此 logger 的事件将传递给更高级别（祖先）logger 的处理程序。 消息直接传递给祖先记录器的处理程序 - 不考虑祖先 logger 的级别和过滤器。
+
+   该属性默认为 true。
+
+   注意如果将处理程序附加到记录器及其一个或多个祖先，它可能会产生多次相同的记录。 通常，不需要将处理程序附加到多个记录器，如果只是将其附加到记录器层次结构中最高的相应记录器，那么它将看到所有后代记录器记录的所有事件，前提是它们的 propagate 设置为 True。 一种常见的情况是仅将处理程序附加到根记录程序，并让传播处理其余部分。
+
+   通常不应该将一个 handler 附加到多个 logger，而是应该设置合理的继承层级，传递日志。
+
+** setLevel(level)
+
+** addFilter(filter)
+
+** addHandler(hdlr)
+
+** debug(msg, *args, **kwargs)
+   kwargs 中有三个关键字参数被检查：exc_info，stack_info 和 extra。
+
+   如果 exc_info 未计算为 false，则会将异常信息添加到日志记录消息中。如果提供了异常元组（以 sys.exc_info()返回的格式）或异常实例，则使用它; 否则，调用 sys.exc_info()以获取异常信息。
+
+   第二个可选关键字参数是 stack_info，默认为 False。如果为 true，则将堆栈信息添加到日志消息中，包括实际的日志记录调用。请注意，这与通过指定 exc_info 显示的堆栈信息不同：前者是从堆栈底部到当前线程中的日志记录调用的堆栈帧，而后者是有关已展开的堆栈帧的信息，跟踪异常，同时搜索异常处理程序。
+
+   可以独立于 exc_info 指定 stack_info，例如只是展示你如何到达代码中的某个点，即使没有引发异常。堆栈帧按标题行打印，标题行表示：
+
+   #+BEGIN_EXAMPLE
+   Stack (most recent call last):
+   #+END_EXAMPLE
+   这模仿了在显示异常帧时使用的 Traceback（最近的最后一次调用）。
+
+   第三个关键字参数是 extra，可用于传递字典，该字典用于填充为具有用户定义属性的日志记录事件创建的 LogRecord 的__dict__。然后可以根据需要使用这些自定义属性。例如，它们可以合并到记录的消息中。例如：
+   #+BEGIN_SRC python
+FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+logging.basicConfig(format=FORMAT)
+d = {'clientip': '192.168.0.1', 'user': 'fbloggs'}
+logger = logging.getLogger('tcpserver')
+logger.warning('Protocol problem: %s', 'connection reset', extra=d)
+   #+END_SRC
+   将会打印：
+   #+BEGIN_EXAMPLE
+   2006-02-08 22:20:02,165 192.168.0.1 fbloggs  Protocol problem: connection reset
+   #+END_EXAMPLE
+
+   extra 中的键不应与日志系统使用的键冲突。 （有关日志记录系统使用哪些密钥的详细信息，请参阅 Formatter 文档。）
+
+   如果您选择在记录的消息中使用这些属性，则需要谨慎操作。例如，在上面的示例中，Formatter 已经设置了格式字符串，该字符串在 LogRecord 的属性字典中需要'clientip'和'user'。如果缺少这些，则不会记录该消息，因为将发生字符串格式化异常。所以在这种情况下，总是需要使用这些键传递额外的字典。
+
+   虽然这可能很烦人，但此功能旨在用于特殊情况，例如多线程服务器，其中相同的代码在许多上下文中执行，并且出现的有趣条件取决于此上下文（例如上例中的远程客户端 IP 地址和经过身份验证用户名）。在这种情况下，专门的 Formatters 可能会与特定的 Handler 一起使用。
+
+* Handler
+  Handler 永远不会直接实例化;此类充当更有用的子类的基础。实例使用子类进行初始化。
+
+** setLevel(level)
+
+** setFormatter(fmt)
+
+** addFilter(filter)
+
+* Formatter
+  使用
+  #+BEGIN_SRC python
+logging.Formatter(fmt=None, datefmt=None, style='%')
+  #+END_SRC
+  style 参数可以是'％'，'{'或'$'之一，并确定格式字符串将如何与其数据合并：使用 =％-formatting= ， =str.format()= 或 =string.Template= 之一。
+
+* Filter
+  待添加
+
+* LogRecord
+  每次记录某些内容时，Logger 会自动创建 LogRecord 实例，并且可以通过 makeLogRecord（）手动创建（例如，通过线路接收的 pickle 事件）。
+
+  Formatter 使用 LogRecord 的属性来格式化。
+
+  常用的属性有 filename,levelname,lineno,message,name 等。
+
+* 配置
+  实际使用中，可以在代码中声明和定义各模块各自的 logger，handler，formatter，也可以 logging.config 提供的 api 接口直接设置 logging 模块。后者代码更加整洁。
+** logging.config.dictConfig
+
+   传递给 dictConfig(config)的参数 config 是一个字典，必须包含以下 key：
+   + version
+
+     必选，代表版本的整数值，目前唯一有效值是 1.
+
+   所有其他键都是可选的，但如果存在，则将按如下所述进行解释。在下面字典类型配置中，将检查 key 为 “()” 的特殊键以查看是否需要自定义实例化。 如果是这样，下面用户定义对象中描述的机制用于创建实例; 否则，上下文用于确定要实例化的内容。
+
+   + formatters
+
+     相应的值将是一个 dict，其中每个键是 Formatter  ID，每个值都是一个描述如何配置相应的 Formatter 实例的字典。值必须有 =formatter= 和 =datefmt= 键，用来构造 Formatter 实例。
+
+     但是奇怪，为什么 style 参数在 logging.config.dictConfig 中不起作用？
+
+   + filters
+
+     相应的值将是一个 dict，其中每个键都是一个过滤器 ID，每个值都是一个描述如何配置相应 Filter 实例的 dict。值必须有 name 键（默认为空字符串），这用于构造 logging.Filter 实例。
+
+   + handlers
+
+     相应的值将是一个 dict，其中每个键是一个处理程序 ID，每个值都是一个描述如何配置相应的 Handler 实例的 dict。值可以配置以下键：
+     + class (mandatory).此处理程序类的完全限定名称
+     + level (optional). 此处理程序的级别.
+     + formatter (optional). 此处理程序格式化程序 ID.
+     + filters (optional). 此处理程序的过滤器 ID 列表.
+
+   + loggers
+
+     相应的值将是一个 dict，其中每个键都是一个记录器名称，每个值都是一个描述如何配置相应 Logger 实例的 dict。值包含以下 key：
+     + level (optional). 此记录器的等级。
+     + propagate (optional). 此记录器的传播设置。
+     + filters (optional). 此记录器过滤器 ID 列表。
+     + handlers (optional). 此记录器处理程序 ID 列表。
+
+   + root
+
+     这将是 root 记录器的配置。配置的处理将与任何 logger 一样，但 propagate 设置将不适用。
+
+   + incremental
+
+     是否将配置解释为现有配置的增量。此值默认为 False，这意味着使用指定的配置替换现有配置。
+
+   + disable_existing_loggers
+
+** logging.config.fileConfig
+
+** logging.config.listen
+
+** 增量配置
+   很难为增量配置提供完全的灵活性。例如，因为过滤器和格式化程序之类的对象是匿名的，所以一旦设置了配置，在扩充配置时就不可能引用这样的匿名对象。
+
+   此外，一旦配置完成，就没有令人信服的案例在运行时任意改变记录器，处理程序，过滤器，格式化程序的对象图; 只需设置级别（记录器还可以设置传播标志）就可以控制记录器和处理程序的详细程度。在多线程环境中以安全的方式任意改变对象图是有问题的; 虽然并非不可能，但实际上增加的复杂性并不值得。
+
+   因此，当配置字典中的 incremental 键存在且为 True 时，系统将完全忽略任何格式化器和过滤器条目，并仅处理处理程序条目中的级别设置，以及记录器和根条目中的级别和传播设置。
+
+   使用配置字典中的值可以将配置作为 pickled dicts 通过线路发送到套接字侦听器。因此，长时间运行的应用程序的日志记录详细程度可以随着时间的推移而改变，而无需停止和重新启动应用程序。
+
+* 线程安全
+  日志记录模块是线程安全的。它通过使用线程锁实现了这一点; 有一个锁可以序列化对模块共享数据的访问，每个处理程序还会创建一个锁，以序列化对其底层 I/O 的访问。
+
+  如果使 signal 模块实现异步信号处理程序，则可能无法在此类处理程序中使用 logging。 这是因为线程模块中的锁实现并不总是可重入的，因此不能从这样的信号处理程序中调用。
+
+* 进程安全
+  但是多个进程往同一个文件写日志不是安全的。官方的说法是这样的：
+  #+BEGIN_QUOTE
+  Because there is no standard way to serialize access to a single file across multiple processes in Python. If you need to log to a single file from multiple processes, one way of doing this is to have all the processes log to a SocketHandler, and have a separate process which implements a socket server which reads from the socket and logs to file. (If you prefer, you can dedicate one thread in one of the existing processes to perform this function.)
+  #+END_QUOTE
+
+  为了解决这个问题，可以使用 ConcurrentLogHandler，ConcurrentLogHandler 可以在多进程环境下安全的将日志写入到同一个文件，并且可以在日志文件达到特定大小时，分割日志文件。在默认的 logging 模块中，有个 TimedRotatingFileHandler 类，可以按时间分割日志文件，可惜 ConcurrentLogHandler 不支持这种按时间分割日志文件的方式。
+
+* 实践
+  可以单独定义类对象：
+  #+BEGIN_SRC python
+import logging
+
+logger = logging.getLogger(__name__)
+
+fmt = logging.Formatter(
+        '{asctime} {levelname} {module}:{lineno} {message}', style='{')
+
+handler = logging.StreamHandler()
+handler.setFormatter(fmt)
+
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+logger.debug("debug message")
+  #+END_SRC
+
+  更好的使用 logging.config[fn:1]
+
+* Footnotes
+
+[fn:1] [[https://docs.python.org/3/howto/logging.html#][logging-howto]]

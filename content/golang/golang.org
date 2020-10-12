@@ -1,0 +1,757 @@
+# -*- coding:utf-8-*-
+#+TITLE: golang 语法
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 程序结构
+*** 包
+    + package
+      + 库（.a）
+      + 可运行程序必须是 package main
+    + import
+      + 大写字母开头的标识符可以对外可见
+      + 可以使用别名避免冲突
+*** 函数
+**** 参数
+***** 变长参数
+**** 返回值
+***** 多个返回值与空白符号
+
+***** 命名返回值
+      尽量使用命名返回值：会使代码更清晰、更简短，同时更加容易读懂。
+
+      即使函数使用了命名返回值，你依旧可以无视它而返回明确的值。
+
+      #+BEGIN_SRC go
+    func main() {
+        fmt.Println(foo()) //1
+    }
+
+    func foo() (x int) {
+        var a = 1
+        x = 2
+        return a
+    }
+      #+END_SRC
+
+***** defer
+
+      在 return 之前执行
+
+      #+BEGIN_SRC go
+       func main() {
+           fmt.Println("in main top")
+           defer foo()
+           fmt.Println("in main bottom")
+       }
+
+       func foo() {
+           fmt.Println("in def function")
+       }
+
+      #+END_SRC
+
+      结果是：
+
+      #+BEGIN_EXAMPLE
+               in main top
+               in main bottom
+               in def function
+      #+END_EXAMPLE
+
+      多个 defer 后进先执行
+
+
+      #+BEGIN_SRC go
+       package main
+
+       import (
+           "fmt"
+       )
+
+       func main() {
+           fmt.Println("in main top")
+           defer foo()
+           defer bar()
+           fmt.Println("in main bottom")
+       }
+
+       func foo() {
+           fmt.Println("foo")
+       }
+
+       func bar() {
+           fmt.Println("bar")
+       }
+
+      #+END_SRC
+
+      执行结果：
+
+      #+BEGIN_EXAMPLE
+               in main top
+               in main bottom
+               bar
+               foo
+      #+END_EXAMPLE
+
+***** def 与命名返回值的坑
+
+      #+BEGIN_SRC go
+       package main
+
+       import (
+           "fmt"
+       )
+
+       func main() {
+           fmt.Println(f1()) // 0
+           fmt.Println(f2()) // 1
+           fmt.Println(f3()) // 2
+       }
+
+       // 非命名返回值
+       func f1() int {
+           var a int
+           defer func() {
+               a++
+           }()
+           return a
+       }
+
+       // 命名返回值，修改命名参数
+       func f2() (r int) {
+           defer func() {
+               r++
+           }()
+           return
+       }
+
+       //
+       func f3() (r int) {
+           defer func() {
+               r++
+           }()
+           return 1
+       }
+      #+END_SRC
+
+      defer 是在 return 之前执行的。这个在 官方文档中是明确说明了的。要使用 defer 时不踩坑，最重要的一点就是要明白，*return xxx 这一条语句并不是一条原子指令!*
+
+
+      其实使用 defer 时，用一个简单的转换规则改写一下，就不会迷糊了。改写规则是将 return 语句拆成两句写，return xxx 会被改写成:
+
+      #+BEGIN_EXAMPLE
+               返回值 = xxx
+               调用 defer 函数
+               空的 return
+      #+END_EXAMPLE
+**** 普通函数
+
+     声明：
+
+     func(arg type) ret type
+
+**** 匿名函数
+
+     闭包函数
+
+**** 方法函数
+     方法是作用在接收者（receiver）上的一个函数，接收者是某种类型的变量。
+***** 声明
+      func (recv receiver_type) methodName(parameter_list) (return_value_list) { ... }
+
+      #+BEGIN_SRC go
+  type Person struct {
+      name string
+  }
+
+  func (p *Person) SayHi() {
+      fmt.Printf("%v say: hi", p.name)
+  }
+
+  func (p *Person) ChangeName(newName string) {
+      p.name = newName
+  }
+  func main() {
+      p := &Person{"jon"}
+      p.SayHi() // jon say: hi
+      fmt.Println()
+      p.ChangeName("onj") // onj say: hi
+      p.SayHi()
+  }
+      #+END_SRC
+
+      类型的代码和绑定在它上面的方法的代码可以存在在不同的源文件，但必须在同一个包。有一个间接的方式给内置类型添加方法：可以先定义该类型的别名类型，然后再为别名类型定义方法。
+
+      别名类型不能有它原始类型上已经定义过的方法。
+
+      指针方法和值方法都可以在指针或非指针上被调用。
+
+      #+BEGIN_SRC go
+  type Person struct {
+      name string
+  }
+
+  func (p *Person) SayHi() {
+      fmt.Printf("%v say: hi", p.name)
+  }
+
+  func (p *Person) ChangeName(newName string) {
+      p.name = newName
+  }
+  func main() {
+      p2 := Person{"yoo"}
+      p2.SayHi() // yoo say: hi
+  }
+      #+END_SRC
+**** 协程函数
+
+     协程是根据一个或多个线程的可用性，映射（多路复用，执行于）在他们之上的；协程调度器在 Go 运行时很好的完成了这个工作。
+
+     执行协程的函数没有返回值。
+
+     协程的栈是动态调整的。
+
+     经验法则，对于 n 个核心的情况设置 GOMAXPROCS 为 n-1 以获得最佳性能，也同样需要遵守这条规则：协程的数量 > 1 + GOMAXPROCS > 1。所以如果在某一时间只有一个协程在执行，不要设置 GOMAXPROCS！
+**** 内建函数
+***** append，copy
+***** new, make
+      看起来二者没有什么区别，都在堆上分配内存，但是它们的行为不同，适用于不同的类型。
+      + new(T) 为每个新的类型 T 分配一片内存，初始化为 0 并且返回类型为 * T 的 *内存地址* ：这种方法 返回一个指向类型为 T，值为 0 的地址的指针，它适用于值类型如数组和结构体；它相当于 &T{}。
+      + make(T) 返回一个类型为 T 的 *初始值* ，它只适用于 3 种内建的引用类型：切片、map 和 channel。
+      #+BEGIN_SRC go
+func main() {
+  p := new([]int)
+  s := make([]int, 0)
+  fmt.Println(reflect.TypeOf(p), p, *p, len(*p), cap(*p)) // *[]int &[] [] 0 0
+  fmt.Println(reflect.TypeOf(s), &s, s, len(s), cap(s))   // []int &[] [] 0 0
+  var a [5]int
+  *p = a[:3]
+  fmt.Println(reflect.TypeOf(p), *p, len(*p), cap(*p)) // *[]int [0 0 0 0 0] 3 5
+}
+      #+END_SRC
+***** print，println
+***** close
+***** len，cap
+***** itoa
+***** panic，recover
+***** range
+*** 语句
+    + 语句不使用；结尾
+    + 变量声明语句有多行声明和并行声明
+    + 赋值与初始化，局部变量的简短声明语法。
+
+*** 变量
+**** 值类型
+
+**** 引用类型
+
+     uintptr，slices，maps，channel
+
+**** 作用域
+     + global
+       + package 导出
+     + local
+     + block
+
+*** 示例
+    #+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+)
+
+const c = "C"
+
+var v int = 5
+
+type T struct{} //以上三种全局变量声明都有并行赋值形式
+
+func init() { // initialization of package
+}
+
+func main() {
+    var a int
+
+    Func1()
+    // ...
+    fmt.Println(a)
+}
+
+func (t T) Method1() {
+    //...
+}
+
+func Func1() { // exported function Func1
+    //...
+}
+    #+END_SRC
+
+* 类型系统
+** 基本类型
+*** 布尔(bool)
+    bool，true，false，nil
+*** 数字（numeric）
+    + int，uint，int8，uint8，int16，uint16，int32，uint32，int64，uint64，
+
+    + float32，float64
+
+    + complex，complex64，complex128，image，real
+*** 字符（character）
+    byte，rune
+*** 字符串（string）
+    字符串是 UTF-8 字符的一个序列（当字符为 ASCII 码时则占用 1 个字节，其它字符根据需要占用 2-4 个字节）。
+
+    len()计算字符串所占字节长度。
+    #+BEGIN_SRC go
+ package main
+
+ import (
+     "fmt"
+     "unicode/utf8"
+ )
+
+ func main() {
+     str := "go 世界"
+     fmt.Println(len(str))         // 9
+     fmt.Println(len([]rune(str))) //5
+     bin := []byte("go 世界")
+     fmt.Println(str == string(bin)) // true
+     r, s := utf8.DecodeLastRune(bin)
+     fmt.Println(string(r), s)                // 界 3
+     fmt.Println(utf8.RuneCount(bin))         // 5
+     fmt.Println(utf8.RuneCountInString(str)) // 5
+     for _, c := range "go 世界" {
+         fmt.Println(string(c))
+     }
+ }
+    #+END_SRC
+    字符串比较操作都是用内存字节进行比较。
+
+    非解释字符串：该类字符串使用反引号括起来，支持换行。
+
+    高效字符串拼接方法:bytes.Buffer
+
+*** 通道（channel）
+**** 声明
+     var identifier chan datatype
+
+**** 阻塞与带缓冲
+     #+BEGIN_SRC go
+func sendData(ch chan string) {
+    for i, v := range []string{"hello", "world", "happy", "every", "day"} {
+        fmt.Println(i)
+        ch <- v
+    }
+}
+
+func getData(ch chan string) {
+    fmt.Println(<-ch)
+}
+func main() {
+    ch := make(chan string)
+    // ch := make(chan string, 10)
+    go getData(ch)
+    go sendData(ch)
+    time.Sleep(1e9 * 1)
+}
+     #+END_SRC
+     结果：
+     #+BEGIN_EXAMPLE
+         0 begin
+         0 end
+         1 begin
+         hello
+     #+END_EXAMPLE
+     信号量模式通知协程结束。
+
+**** 习惯用法：
+
+***** 通道工厂模式
+      不将通道作为参数传递给协程，而用函数来生成一个通道并返回（工厂角色）；函数内有个匿名函数被协程调用。
+
+      #+BEGIN_SRC go
+func main() {
+    stream := pump()
+    go suck(stream)
+    time.Sleep(1e9)
+}
+
+func pump() chan int {
+    ch := make(chan int)
+    go func() {
+        for i := 0; ; i++ {
+            ch <- i
+        }
+    }()
+    return ch
+}
+
+func suck(ch chan int) {
+    for {
+        fmt.Println(<-ch)
+    }
+}
+      #+END_SRC
+
+***** 通道迭代模式
+      返回只读通道迭代 container。
+
+      #+BEGIN_SRC go
+func (c *container) Iter () <- chan items {
+    ch := make(chan item)
+    go func () {
+        for i:= 0; i < c.Len(); i++{    // or use a for-range loop
+            ch <- c.items[i]
+        }
+    } ()
+    return ch
+}
+
+for x := range container.Iter() { ... }
+
+      #+END_SRC
+
+***** 通道方向，只读，只写
+      #+BEGIN_SRC go
+var send_only chan<- int        // channel can only send data
+var recv_only <-chan int
+      #+END_SRC
+      #+BEGIN_SRC go
+sendChan := make(chan int)
+reciveChan := make(chan string)
+go processChannel(sendChan, receiveChan)
+
+func processChannel(in <-chan int, out chan<- string) {
+    for inValue := range in {
+        result := ... /// processing inValue
+    out <- result
+    }
+}
+      #+END_SRC
+
+***** for-range 自动检测通道是否关闭。
+
+** 复合类型
+*** 数组
+**** 声明：
+     [len]type
+
+**** 值类型
+     数组是值类型，长度是数组类型的一部分。
+
+     #+BEGIN_SRC go
+func main() {
+    fmt.Println(reflect.TypeOf(arr1), arr1) // [5]int [0 0 0 0 0]
+    var arr2 = new([5]int)
+    fmt.Println(reflect.TypeOf(arr2), arr2) // *[5]int &[0 0 0 0 0]
+    var arr3 = *arr2
+    arr3[2] = 100
+    fmt.Println(arr2, arr3) // &[0 0 0 0 0] [0 0 100 0 0]
+}
+     #+END_SRC
+
+*** 切片（slice）
+    切片（slice）是对数组一个连续片段的 *引用* （该数组我们称之为相关数组，通常是匿名的），只有在没有任何切片指向的时候，底层的数组内存才会被释放，这种特性有时会导致程序占用多余的内存。
+**** 声明
+     + []type
+     + make([]T, len, cap)
+
+     #+BEGIN_SRC go
+func main() {
+    var a = [5]int{1, 2, 3, 4}
+    s := a[:3]
+    for _, v := range s {
+        v *= 2
+    }
+    fmt.Println(a) // [1 2 3 4 0]
+
+    for i, _ := range s {
+        s[i] = 2
+    }
+    fmt.Println(a) // [2 2 2 4 0]
+}
+     #+END_SRC
+**** 扩展
+     0 <= len(s) <= cap(s)，扩展 cap 只能通过复制。
+
+     切片移动：slice = slice[1:]
+
+     使用 append 对切片进行增删改查操作。
+
+*** 映射（map）：
+**** 声明
+     map[keytype]valuetype
+
+     + Key 类型只要能支持==和!=操作符，所以不能是 slice，map，function。[fn:2]
+
+     + 不要使用 new，永远使用 make 来构造 map。
+
+     #+BEGIN_SRC go
+func main() {
+    m := new(map[string]string)
+    (*m)["hello"] = "world" // panic: assignment to entry in nil map
+    fmt.Println(m)
+}
+     #+END_SRC
+*** 结构体（struct）
+**** 声明
+     struct {field type}
+**** 导出字段与可见性原则
+
+     #+BEGIN_SRC go
+//struct_pack.go
+package struct_pack
+
+type Person struct {
+    Name string
+    age  int
+}
+// main.go
+func main() {
+    var p = struct_pack.Person{}
+    p.Name = "jon"
+    //p.age = 20 //./hello.go:38: p.age undefined (cannot refer to unexported field or method age)
+    fmt.Println(p)
+}
+
+     #+END_SRC
+**** 字段标签
+**** 匿名字段
+***** 模拟组合
+
+      #+BEGIN_SRC go
+func main() {
+    type Base struct {
+        in1 int
+    }
+
+    type Derive struct {
+        Base
+        int
+        in2 int
+    }
+    var p = Derive{}
+    p.in1 = 1
+    p.in2 = 2
+    p.int = 3
+    fmt.Println(p) // {{1} 3 2}
+}
+      #+END_SRC
+      在一个结构体中对于每一种数据类型 *只能有一个匿名字段* 。匿名类型的可见方法也同样被内嵌
+***** 命名冲突
+
+      外层覆盖内层:
+
+      #+BEGIN_SRC go
+func main() {
+    type Base struct {
+        a int
+    }
+
+    type Derive struct {
+        Base
+        a int
+        b int
+    }
+    var p = Derive{}
+    p.a = 1
+    p.b = 2
+    fmt.Println(p) // {{0} 1 2}
+}
+
+      #+END_SRC
+
+      处于同一层级的报错:
+
+      #+BEGIN_SRC go
+
+      #+END_SRC
+*** 接口（interface）
+**** 声明
+     {} interface
+**** 类型断言
+     类型判断：type-switch
+
+     #+BEGIN_SRC go
+func main() {
+    r := &Rectangle{5, 3}
+    q := &Square{5}
+
+    shapes := []Shaper{r, q}
+    for _, s := range shapes {
+        switch t := s.(type) {
+        case *Square:
+            fmt.Printf("Type Square %T with value %v\n", t, t)
+        case *Rectangle:
+            fmt.Printf("Type Rectangle %T with value %v\n", t, t)
+        case nil:
+            fmt.Printf("nil value: nothing to check?\n")
+        default:
+            fmt.Printf("Unexpected type %T\n", t)
+        }
+    }
+}
+     #+END_SRC
+**** 调用规则
+     Go 语言规范定义了接口方法集的调用规则：
+     + 类型 *T 的可调用方法集包含接受者为 *T 或 T 的所有方法集
+     + 类型 T 的可调用方法集包含接受者为 T 的所有方法
+     + 类型 T 的可调用方法集不包含接受者为 *T 的方法
+
+     所以定义接口方法的时候接受者最好为（*T）。
+**** 空接口
+
+     定义个混合类型数组
+     #+BEGIN_SRC go
+type Element interface{}
+
+type Vector struct {
+    a []Element
+}
+
+func (v *Vector) At(i int) Element {
+    return v.a[i]
+}
+func main() {
+    v := Vector{[]Element{1, 0.2, "hello"}}
+    fmt.Println(v.At(2))
+}
+     #+END_SRC
+     不能直接赋值
+     #+BEGIN_SRC go
+func main() {
+    s := []int{1, 2, 3, 4}
+    i := make([]interface{}, len(s))
+    // i = s //cannot use s (type []int) as type []interface {} in assignment
+    for k, v := range s {
+        i[k] = v
+    }
+    fmt.Println(i) // [1 2 3 4]
+}
+     #+END_SRC
+**** 接口继承
+     当一个类型内嵌另一个类型（实现了一个或多个接口）的指针时，这个类型就可以使用（另一个类型）所有的接口方法。
+
+** 默认值
+** 类型转换
+   强制类型转换。
+
+* 运算符
+* 分支控制
+** 判断
+*** if-else
+    #+BEGIN_SRC go
+if initialization;condition1 {
+    // do something
+} else if condition2 {
+    // do something else
+}else {
+    // catch-all or default
+}
+    #+END_SRC
+    用于测试多返回值的错误。
+*** switch-case
+    #+BEGIN_SRC go
+switch v {
+case val1:
+
+case val2, var3:
+
+case val4:
+    fallthrough
+
+default:
+
+}
+    #+END_SRC
+
+    #+BEGIN_SRC go
+switch initialization {
+    case condition1:
+        ...
+    case condition2:
+        ...
+    default:
+        ...
+}
+    #+END_SRC
+** 循环
+*** for
+    #+BEGIN_SRC go
+for initialization;condition;post {
+}
+    #+END_SRC
+
+    init and post are optional.
+
+    #+BEGIN_SRC go
+for pos,data range slice/map {
+}
+    #+END_SRC
+
+    range 是使用值拷贝的形式进行遍历。
+
+    #+BEGIN_SRC go
+type Foo struct {
+    bar string
+}
+func main() {
+    list := []Foo{
+        {"A"},
+        {"B"},
+        {"C"},
+    }
+    list2 := make([]*Foo, len(list))
+    for i, value := range list {
+        list2[i] = &value
+    }
+    fmt.Println(list[0], list[1], list[2])
+    fmt.Println(list2[0], list2[1], list2[2])
+}
+    #+END_SRC
+
+    正确的写法应该用 index 来访问 for…range 中真实的元素，并获取其指针地址：
+
+    #+BEGIN_SRC go
+for i, _ := range list {
+    list2[i] = &list[i]
+}
+    #+END_SRC
+
+** 跳转
+*** break
+*** continue
+*** goto
+*** return
+*** go
+*** select
+    select 与无限循环配合使用。
+    #+BEGIN_SRC go
+func backend() {
+    for {
+        select {
+        case cmd := <-ch1:
+            // Handle ...
+        case cmd := <-ch2:
+            ...
+        case cmd := <-chStop:
+            // stop server
+        }
+    }
+}
+    #+END_SRC
+* 编程范式
+*** OOP
+    + 封装
+      + package
+      + struct
+    + 继承
+      + 类型内嵌
+    + 多态
+      + interface
+
+* Footnotes
+[fn:2] [[http://lanlingzi.cn/post/technical/2016/0904_go_map/][go map key 类型分析]]

@@ -1,0 +1,26 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua-cjson
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+
+  #+BEGIN_SRC sh
+luarocks install lua-cjson
+  #+END_SRC
+
+* 使用
+  Json 有两种常用的数据类型：object 和 array
+
+  cjson 对于空的 table，会默认处理为 object，对于 Lua 本身，是无法区分空数组和空字典的，但是对于强类型语言(C/C++, Java 等)，这时候就会出现问题，必须作容错处理.
+
+  方案一：使用 metatable 将 table 标记为 array
+  #+BEGIN_SRC lua
+setmetatable(tab, cjson.empty_array_mt)
+  #+END_SRC
+
+  推荐使用这种方案。
+
+  方案二 使用 encode_empty_table_as_object 方法
+  #+BEGIN_SRC lua
+cjson.encode_empty_table_as_object(false)
+  #+END_SRC

@@ -1,0 +1,298 @@
+# -*- coding:utf-8; -*-
+#+TITLE:MySQL sysbench 基准测试
+#+author:刘尚亮
+
+* 基准测试
+参考《高性能 MySQL》第二章。
+
+* Sysbench
+sysbench 是开源的跨平台多线程基准测试工具，主要用于测试各种不同系统参数下的 CPU/内存/线程/IO/数据库等方面的性能，数据库目前支持 MySQL/Oracle/PostgreSQL。具体的参数设置，应根据实际环境来进行必要调整。
+
+与之前版本相比，sysbench 最新的 0.5 版本，可以使用脚本来决定测试语句，比之前在代码里写死测试更加方便用户修改和使用，不需要去修改源程序，只需要修改相应的 lua 脚本，即可定制不同的测试用例，在数据库负载测试中，这样可以对 SQL 语句进行更有针对性的测试。
+#+HTML:<!--more-->
+** 下载安装
+Linux 自带版本大多为 0.4.12，最新版本可以从 [[https://launchpad.net/sysbench][Launchpad]] 下载安装步骤如下：
+
+#+NAME: install_sysbench
+#+BEGIN_SRC bash :export code
+  ./autogen.sh
+  ./configure
+  make && sudo make install
+#+END_SRC
+
+sysbench 依赖 mysql-dev 包的支持，如果 mysql 没有安装在默认位置，执行./configure 时需要配置--with-mysql-includes 和 --with-mysql-lib。具体参看源码包中 README 文档。
+
+安装完成后可以查看版本信息。
+#+NAME: sysbench-version
+#+BEGIN_SRC bash :export code :tangle no
+  sysbench --version
+#+END_SRC
+
+** 使用说明
+简要说明 sysbench 的使用方法，侧重对数据库的测试。具体用法参考 sysbench –help。
+
+*** 命令格式：
+
+  Sysbench [general-options]... --test=<test-name> [test-options]... command
+
+**** 通用选项（general-options）：
+
+  --num-threads=N	 指定要使用的线程
+
+  --report-interval=N	每隔 N 秒打印统计信息
+
+  --rand-XXX		随机分布相关配置
+
+**** 内建测试项目（test-option）：
+  + fileio – File I/O test
+  + cpu – CPU performance test
+  + memory – Memory functions speed test
+  + threads – Threads subsystem performance test
+  + mutex – Mutex performance test
+
+  oltp，从 0.5 开始不再设置单独的选项，可以直接通过 Lua 脚本文件进行测试，兼容之前 oltp 的所有选项。
+
+  以上所有的项目都可以通过 sysbench-0.5\sysbench\tests\ 下的测试脚本进行测试。
+
+*** 测试项目选项（test-option）
+各种内建测试项目的选项可以通过命令 sysbench –test=<test-name> help 查看。
+
+*** 命令（command）：
+sysbench 做压力测试的时候分 3 个阶段：prepare(准备测试数据); run(运行压力测试); cleanup(清理测试数据)。
+
+** 内建测试说明
+
+*** CPU
+sysbench 采用寻找最大素数的方式来测试 CPU 的性能。
+#+NAME: cpu-test
+#+BEGIN_SRC bash :export code
+  sysbench --test=cpu  --cpu-max-prime=1000 run
+#+END_SRC
+
+*** Fileio
+Sysbench 的 I/O 测试和 InnoDB 的 I/O 模式非常类似。
+#+NAME: fileio-test
+#+BEGIN_SRC bash :export code
+  sysbench --test=fileio –file_num=40 –-file-total-size=80G --file-test-mode=rndrw prepare
+  sysbench --test=fileio –file_num=40 –-file-total-size=80G --file-test-mode=rndrw run
+  sysbench --test=fileio –file_num=40 –-file-total-size=80G --file-test-mode=rndrw cleanup
+#+END_SRC
+
+*** Memory
+待完善
+
+*** Threads
+待完善
+
+*** Mutex
+待完善
+
+*** OLTP
+Sysbench 0.5 中的 oltp.lua 提供了一个比之前版本中的 oltp 模式更为真实的场景来进行数据库的基准测试。和之前 oltp 模式中的单个表场景相比，0.5 通过 Lua 脚本可以对多个表进行工作测试。oltp.lua 可以理解原先 oltp 模式中的大多数选项。
+
+所有的测试脚本位于/sysbench-0.5/sysbench/test/下，db 目录下是数据库测试项目，其中 common.lua 并非测试文件，是用于 prepare 和 cleanup。	oltp.lua 文件用于测试事务性能，其中 thread_init 函数来初始化每个线程的参数，初始化工作调用了 common.lua 中的 set_vars()函数，来初始化 oltp 的相关参数。
+
+**** 阶段 1： 连接数据库服务器
+每次执行基准测试，不管是 prepare 还是 run，如果不是使用默认值的话，都应该指定如何连接数据库。默认值如下：
+
+#+CAPTION: sysbench connect to db
+#+ATTR_HTML: :border 2 :rules all :frame all
+|------------------+------------------------------------------+---------------|
+|                  | <40>                                     |               |
+|------------------+------------------------------------------+---------------|
+| Option           | Description                              | Default value |
+|------------------+------------------------------------------+---------------|
+| --mysql-port     | MySQL server port (in case TCP/IP connection should be used) | 3306          |
+|------------------+------------------------------------------+---------------|
+| --mysql-socket   | Unix socket file to communicate with the MySQL server |               |
+|------------------+------------------------------------------+---------------|
+| --mysql-user     | MySQL user                               | user          |
+|------------------+------------------------------------------+---------------|
+| --mysql-password | MySQL password                           |               |
+|------------------+------------------------------------------+---------------|
+| --mysql-db       | MySQL database #+srcname:                | sbtest        |
+|------------------+------------------------------------------+---------------|
+| --mysql-ssl      | Use SSL connections.                     | no            |
+|------------------+------------------------------------------+---------------|
+
+默认的数据库 sbtest，sysbench 不会自动创建该数据库。所以如果你要用过的话要首先。
+
+**** 阶段 2：Prepare
+如果使用默认值，首先要创建测试所用的表。创建方式有两种: oltp.lua (串行) 和 parallel_prepare.lua (并行)。
+#+CAPTION: prepare
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                      | <20>                 |         |                |
+|----------------------+----------------------+---------+----------------|
+| Script               | Description          | Command | Extra Options  |
+|----------------------+----------------------+---------+----------------|
+| oltp.lua             | Prepares the database with multiple tables | prepare |                |
+|----------------------+----------------------+---------+----------------|
+| parallel_prepare.lua | Prepares the database with multiple tables in parallel. Note that the number of threads should be a multiplier of the number of tables | run     | –num-threads=8 |
+|----------------------+----------------------+---------+----------------|
+
+针对 database driver 还需要指明以下参数：
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                  | <20>                 |               |
+| Option           | Description          | Default value |
+| --db-driver      | Type of the server. Possible values: mysql | mysql         |
+|------------------+----------------------+---------------|
+| –myisam-max-rows | MAX_ROWS option for MyISAM tables (required for big tables) | 1000000       |
+
+创建表：
+
+oltp.lua 中提供的 --oltp-tables-count  指明了表的数量。默认的表名是 sbtest。如果制定了 oltp-tables-count，则在表名后加数字，例如 sbtest1, sbtest2, .. sbtest[oltp-tables-count]，注意，此种情况下不会创建 sbtest 表。
+
+通过选项 --oltp-secondary 可以在每个表上使用第二索引来替代主键。也就是说通过 KEY xid (ID) 而不是 PRIMARY KEY (ID) 来创建表。这个选项将会使 InnoDB 为每个表创建内部 6-byte 的索引。同样可以使用选项 --oltp-auto-in 将 id 字段设为递增。
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                   | <20>                 |               |
+| Option            | Description          | Default value |
+|-------------------+----------------------+---------------|
+| --oltp-table-size | Number of rows in the test table | 10000         |
+|-------------------+----------------------+---------------|
+| --oltp-secondary  | Creates a secondary index on 'id' instead of a primary |               |
+|-------------------+----------------------+---------------|
+| --oltp-auto-inc   | Sets the id field as auto-incremental. Possible values: on, off | on            |
+|-------------------+----------------------+---------------|
+
+创建表 SQL 语句示例如下：
+#+BEGIN_SRC sql :export code :tangle no
+  CREATE TABLE `sbtest101` (
+       `id` int(10) unsigned NOT NULL auto_increment,
+       `k` int(10) unsigned NOT NULL default '0',
+       `c` char(120) NOT NULL default '',
+       `pad` char(60) NOT NULL default '',
+       PRIMARY KEY  (`id`),
+       KEY `k` (`k`));
+#+END_SRC
+
+Parallel.lua（并行） 创建：
+#+BEGIN_SRC bash :export code :tangle no
+  ./sysbench --test=tests/db/parallel_prepare.lua --mysql-user=USER --mysql-password=SECRET --oltp-tables-count=64 --num-threads=8 run
+#+END_SRC
+注意：oltp-tables-count 应该是 num-threads 的整数倍。
+
+oltp.lua（串行）创建：
+#+BEGIN_SRC bash
+  ./sysbench --test=tests/db/oltp.lua --mysql-user=USER --mysql-password=SECRET --mysql-table-engine=myisam --oltp-table-size=1000000 --oltp-tables-count=64 --mysql-socket=/tmp/mysql.sock prepare
+#+END_SRC
+
+**** 阶段 3：Run
+
+准备好测试环境之后就可以使用 oltp.lua 执行一系列的测试了，测试使用的线程数量通过选项 –num-threads 来指定。每个线程通过随机产生小于或者等于 oltp-tables-count 的数字来选择一个表。
+
+随机取样分布通过选项 --oltp-dist-type 来进行设置，该选项默认值是 special。Special 分布还和另外两个参数有关：--oltp-dist-pct，用来指定要特殊对待的记录的百分比，--oltp-dist-res 指定这些记录的概率。例如，对 1000 行记录进行 1000 次查询，--oltp-dist-pct=1 and --oltp-dist-res=50 结果，开始 10 条记录(1% of 1000)，每条记录选中五十次，总共 500 次，剩余的查询将会从 990 条记录中均匀采样。
+
+选中表之后，就会执行相应的测试。他们将会打包为一个事务（transaction）传递给数据库服务器（除非使用 myisam 引擎，这样先会锁住表）。也可以单线程运行 oltp 的子集，例如 oltp_simple.lua, select.lua, insert.lua, delete.lua, update_index.lua, update_non_index.lua
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                     | <40>                                     |               |
+|---------------------+------------------------------------------+---------------|
+| Option              | Description                              | Default value |
+|---------------------+------------------------------------------+---------------|
+| –num-threads        | Number of threads to run in parallel     |             1 |
+|---------------------+------------------------------------------+---------------|
+| --oltp-tables-count | Number of tables in the test database    |             1 |
+|---------------------+------------------------------------------+---------------|
+| --oltp-read-only    | Performs only SELECT tests. Possible Values: on, off |           off |
+|---------------------+------------------------------------------+---------------|
+| --oltp-dist-type    | Distribution of random numbers. Possible values: uniform (uniform distribution), gauss (gaussian distribution) and special. With special distribution a specified percent of numbers is generated in a specified percent of cases (see options below). |       special |
+|---------------------+------------------------------------------+---------------|
+| --oltp-dist-pct     | Percentage of values to be treated as 'special' (for special distribution) |             1 |
+|---------------------+------------------------------------------+---------------|
+| --oltp-dist-res     | Percentage of cases when 'special' values are generated (for special distribution) |            75 |
+|---------------------+------------------------------------------+---------------|
+
+***** SELECT tests
+Select 还可以分为点选择测试（Point Select tests）和范围测试（Ranges tests）。
+
+****** 点测试
+选项 oltp-point-selects 单次事务中点选择测试的查询次数。
+每次测试，通过制定的分布来随机产生一个小于或者等于表大小(oltp-table-size)的数字，然后执行下面的查询语句。
+SELECT c FROM sbtestXXX WHERE id=N
+
+****** 范围测试
+通过变量 oltp-range-size 可以制定要查询的范围（不大于表大小）
+
+****** 简单范围测试
+选项 oltp-simple-ranges 单次事务中范围选择测试的查询次数。
+每次通过指定的分布来产生一个不大于 oltp-talbe-size 的整数 N，然后通过选项设置 oltp-range-size 设置整数 M，然后执行如下查询:
+SELECT c FROM sbtest WHERE id BETWEEN N AND M
+
+***** 范围求和（Sum in ranges）
+选项 oltp_sum_ranges 单次事务中范围选择测试的查询次数。查询语句：
+SELECT SUM(K) FROM sbtest WHERE id BETWEEN N and M
+
+***** 范围排序（Order in ranges）
+选项 oltp_order_ranges 单次事务中范围选择测试的查询次数。查询语句：
+SELECT c FROM sbtest WHERE id between N and M ORDER BY c
+
+***** 范围去重（Distincts in ranges）
+选项 oltp-distinct-ranges 单次事务中范围选择测试的查询次数。查询语句：
+
+SELECT DISTINCT c FROM sbtest WHERE id BETWEEN N and M ORDER BY c
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                        | <20>                 |               |
+|------------------------+----------------------+---------------|
+| Option                 | Description          | Default value |
+|------------------------+----------------------+---------------|
+| --oltp-range-size      | Range size for range queries |           100 |
+|------------------------+----------------------+---------------|
+| --oltp-simple-ranges   | Number of simple range queries in a single transaction |             1 |
+|------------------------+----------------------+---------------|
+| --oltp-sum-ranges      | Number of SUM range queries in a single transaction |             1 |
+|------------------------+----------------------+---------------|
+| --oltp-order-ranges    | Number of ORDER range queries in a single transaction |             1 |
+|------------------------+----------------------+---------------|
+| --oltp-distinct-ranges | Number of DISTINCT range queries in a single transaction |             1 |
+|------------------------+----------------------+---------------|
+
+***** UPDATE tests
+只要没有指定 oltp-read-only=on 就能进行更新测试。
+#+ATTR_HTML: :border 2 :rules all :frame all
+|                          | <20>                 |       |
+| Option                   | Description Default  | value |
+|--------------------------+----------------------+-------|
+| --oltp-index-updates     | Number of index UPDATE queries in a single transactionNumber of index UPDATE queries in a single transaction |     1 |
+|--------------------------+----------------------+-------|
+| --oltp-non-index-updates | Number of non-index UPDATE queries in a single transaction |     1 |
+
+1. index_update.lua
+
+   选项 oltp_index_updates 单次事务中范围选择测试的查询次数。查询语句：
+
+   UPDATE sbtest SET k=k+1 WHERE id=N
+
+2. non_index_update.lua
+
+   选项 oltp-non-index-updates 单次事务中范围选择测试的查询次数。C 为随机产生的字符串，查询语句：
+
+   UPDATE sbtest SET c=C WHERE id=N
+
+***** DELETE test
+只要没有指定 oltp-read-only=on 就能进行更新测试。通过执行分布产生一个不大于 oltp-table-siez 的数字 N，执行语句：
+
+DELETE FROM sbtest WHERE id=N
+
+***** INSERT test
+只要没有指定 oltp-read-only=on 就能进行更新测试。通过执行分布产生一个不大于 oltp-table-siez 的数字 N，执行语句：
+
+INSERT INTO sbtest (id, k, c, pad) VALUES N, K, C, PAD
+***** 使用举例：
+使用 5 个线程在 25 个 table 上进行默认测试：
+#+BEGIN_SRC bash :export code :tangle no
+  ./sysbench --mysql-user=USER --mysql-password=SECRET --test=tests/db/oltp.lua --oltp-tables-count=25 --num-threads=5 run
+#+END_SRC
+
+使用 10 个线程在 100 个 table 上进行 select 测试，10 个点测试和值为 1000 的范围测试：
+#+BEGIN_SRC bash :export code :tangle no
+  ./sysbench --mysql-user=USER --mysql-password=SECRET --test=tests/db/select.lua --oltp-tables-count=100 --num-threads=10
+  --oltp-point-selects=100 --oltp-range-size=1000 run
+#+END_SRC
+
+**** 阶段 4：清理（cleanup）
+可以通过清理操作来返回到准备的阶段。必须提供链接数据库服务器的选项和创建的表的数量。
+#+BEGIN_SRC bash :export code :tangle no
+  ./sysbench --test=tests/db/oltp.lua --mysql-user=USER --mysql-password=SECRET --oltp-tables-count=64 cleanup
+#+END_SRC
+
+**** 可用选项列表：
+参见附录 B。

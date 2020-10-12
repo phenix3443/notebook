@@ -1,0 +1,43 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 spiders
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  spider 是定义如何抓取特定网站（或一组网站）信息的类。
+
+* 属性或函数
+
+** name
+   爬虫的名字。在项目中唯一。
+
+** start_urls
+   开始爬网的 URL 列表。
+
+** custom_settings
+   爬虫的设置，可以覆盖 project 相关的设置选项。
+
+** crawler
+   初始化类后，此属性由 =from_crawler()= 类方法设置，并链接到此 spider 实例绑定到的 Crawler 对象。
+
+   出于访问需要，Crawler 封装了项目中的许多组件（例如扩展，中间件，信号管理器等）。请参阅 Crawler API 以了解有关它们的更多信息。
+
+   可以通过该属性，访问项目的设置。
+
+** settings
+   运行此蜘蛛的配置。这是一个“setting”实例，有关此主题的详细介绍，请参阅“设置”主题。
+
+** logger
+   使用 spider 命名的 logger。
+
+** from_crawler(crawler, *args, **kwargs)
+   这是 Scrapy 用于创建蜘蛛的类方法。
+
+   可能不需要直接覆盖它，因为默认实现作为 =__init__()= 方法的代理，使用给定参数 args 和命名参数 kwargs 调用它。
+
+   尽管如此，此方法在新实例中设置 crawler 和 settings 属性，以便稍后可以在 spider 代码中访问它们。
+
+** parse(response)
+   其 requess 未指定回调时处理下载的响应，这是 Scrapy 使用的默认回调函数。
+
+* 实践

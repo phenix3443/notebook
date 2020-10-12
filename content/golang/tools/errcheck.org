@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: errcheck
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/kisielk/errcheck][errcheck]] 是一个用于检查 go 程序中未经处理的错误的程序。
+
+* 安装
+  #+BEGIN_SRC sh
+go get -u github.com/kisielk/errcheck
+  #+END_SRC
+
+  errcheck 需要 Go 1.9 或更高版本，并且取决于 golang.org/x/tools 存储库中的包 go / packages。

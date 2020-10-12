@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: deepcopy
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/antlabs/deepcopy][deepcopy]] 用于 golang 中两个类型的深度拷贝。

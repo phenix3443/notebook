@@ -1,0 +1,41 @@
+#+BLOG:panghuli
+#+POSTID:
+#+DATE:Fri Aug 15 11:26:32 2014
+#+OPTIONS:
+#+CATEGORY:专业知识
+#+TAGS:Emacs
+#+DESCRIPTION:主要介绍 Emacs 的启动流程
+#+TITLE:Emacs 启动过程介绍
+
+39.1.1 综述：启动时的操作序列
+
+Emacs 启动之后做了如下操作：
+
+1. 在 load-path 列表中的目录下运行 subdirs.el 文件，将其子目录都添加到 load-path 中。
+2. Emacs 加载可能存在的 leim-list.el 库。该可选的库是为了注册输入法；Emacs 在 load-path 中查找的时候跳过包含标准 Emacs 库的目录（E为这些库不应该包含该库）。
+3. 将变量 befor-init-time 置为 current-time. 同样将 Emacs Lisp 程序中指示 Emacs 已经初始化的完成的变量 after-init-time 置为 nil。
+4. 如果设置了诸如 LANG 的环境变量，开始设置语言环境和终端编码系统。
+5. 对命令行参数做一些基本分析。
+6. 如果没有运行在 batch mode，初始化 init-window-system 指定的窗口系统，不同窗口系统的初始化函数由 window-system-initialization-alist 指定。init-window-system 默认值为 windowsystem，对应的初始化函数定义在 term/windowsystem-win.el。该文件在建成的时候已经编译到 Emacs 可执行文件中。
+7. 运行 befor-init-hook.
+8. 如果没有指定‘--batch’或者’--‘daemon' 参数，创建一个图形化的 Frame。
+9. 初始化首个窗口的 face，有需要的话还创建菜单栏和工具栏。如果支持图形 frame，即使当前窗口不是图形化的，现在也会建立工具栏，因为一会图形 Frame 还是会建立。
+10. 使用 custom-reevaluate-setting 来重新初始化 custom-delayed-init-variables 中的成员。有很多预加载的用户选项是依赖于运行环境，而不是编译环境、上下文。
+11. 如果没有指定 -Q 或者 --no-site-file，载入可能存在的库 site-start。
+12. 如果没有指定-q 、-Q 或者 batch 指定的话，载入你的初始化文件（init file），如果指定了 -u，Emacs 就会去指定的用户 home 文件夹去查找。
+13. 如果 inhibit-default-init 为 nil，或者未指定选项 -q、-Q 或者 --batch的话，载入可能存在的 default 库。
+14. 如果 abbrev-file-name 指定的文件存在并且可读，从它读入 abbrevs。指定了 --batch 参数不会执行这一操作。
+15. 如果 package-enable-at-startup 非 nil，Emacs 调用函数 package-initalize 来激活已经安装的可选的包。
+16. 将之前置为 nil 的 after-init-time 置为 current-time。置为当前时间表示初始化分析已经完成，连同 befor-init-time 可以计算总共花了多长时间。
+17. 运行钩子 after-init-hook.
+18. 如果 *scratch* buffer 存在， 并且仍然是 Fundamental mode（默认如此）,通过变量 initial-major-mode 初始化它的主模式。
+19. 如果在文本终端中启动，没有指定 --batch mode 或者 term-file-prefix 不为 nil，载入 term-file-prefix 指定的终端相关的库。
+20. 如果没有设置 inhibit-startup-echo-area-message 的话就显示初始化的回显区信息。
+21. 处理之前没有处理的命令行参数。
+22. 如果指定 --batch 选项的话现在就该退出。
+23. 如果 initial-buffer-choice 是一个字符串，访问文件名为该字符串的文件。如果 *scratch* 存在并且为空，将 initial-scratch-message 插入到 buffer 中。
+24. 运行 emacs-startup-hook 和 term-setup-hook。
+25. 调用 frame-notice-user-setting,通过 init 文件中指定的选项修改当前选中的 frame 的参数。
+26. 运行 window-setup-hook。
+27. 显示启动画面，启动画面是一个特殊的缓冲区，包含了版权和基本的 Emacs 使用信息。除非设置了 inhibit-startup-screen 或者 initial-buffer-choice 非 nil，或者 命令上使用 --no-splash 或 -Q 参数。
+28. 如果通过 x session manager 启动，会调用 emacs-session-restore 来传递之前会话的id作为参数传递给它。

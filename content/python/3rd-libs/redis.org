@@ -1,0 +1,136 @@
+# -*- coding:utf-8-*-
+#+TITLE: redis
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  [[https://pypi.org/project/redis/][redis]] 是 python 的 redis client 库，简单易用。
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install --uesr redis
+  #+END_SRC
+* Connection Pools
+  在后台，redis-py 使用连接池来管理与 Redis 服务器的连接。默认情况下，创建的每个 Redis 实例将依次创建自己的连接池。通过将已创建的连接池实例传递给 Redis 类的 connection_pool 参数，可以覆盖此行为并使用现有的连接池。可以选择执行此操作以实现客户端分片或对连接的管理方式进行细粒度控制。
+  #+begin_example
+>>> pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+>>> r = redis.Redis(connection_pool=pool)
+  #+end_example
+
+* Thread Safety
+  Redis 客户端实例可以在线程之间安全地共享。在内部，仅在命令执行期间从连接池中检索连接实例，然后在连接实例直接返回到连接池中。命令执行从不修改客户端实例上的状态。
+
+  在线程之间传递 PubSub 或 Pipeline 对象是不安全的。
+
+* Pipelines
+  管道是 Redis 基类的子类，它提供对在单个请求中缓冲到服务器的多个命令的支持。通过减少客户端和服务器之间来回 TCP 数据包的数量，可以将它们用于显着提高命令组的性能。管道使用起来非常简单：
+  #+begin_example
+>>> r = redis.Redis(...)
+>>> r.set('bing', 'baz')
+>>> # Use the pipeline() method to create a pipeline instance
+>>> pipe = r.pipeline()
+>>> # The following SET commands are buffered
+>>> pipe.set('foo', 'bar')
+>>> pipe.get('bing')
+>>> # the EXECUTE call sends all buffered commands to the server, returning
+>>> # a list of responses, one for each command.
+>>> pipe.execute()
+[True, 'baz']
+  #+end_example
+
+  此外，管道还可以确保缓冲的命令以原子方式成组执行。默认情况下会发生这种情况。如果要禁用管道的原子性质，但仍要缓冲命令，则可以关闭事务。
+  #+begin_example
+>>> pipe = r.pipeline(transaction=False)
+  #+end_example
+  还可以使用 watch，
+  #+begin_example
+>>> with r.pipeline() as pipe:
+...     while True:
+...         try:
+...             # put a WATCH on the key that holds our sequence value
+...             pipe.watch('OUR-SEQUENCE-KEY')
+...             # after WATCHing, the pipeline is put into immediate execution
+...             # mode until we tell it to start buffering commands again.
+...             # this allows us to get the current value of our sequence
+...             current_value = pipe.get('OUR-SEQUENCE-KEY')
+...             next_value = int(current_value) + 1
+...             # now we can put the pipeline back into buffered mode with MULTI
+...             pipe.multi()
+...             pipe.set('OUR-SEQUENCE-KEY', next_value)
+...             # and finally, execute the pipeline (the set command)
+...             pipe.execute()
+...             # if a WatchError wasn't raised during execution, everything
+...             # we just did happened atomically.
+...             break
+...        except WatchError:
+...             # another client must have changed 'OUR-SEQUENCE-KEY' between
+...             # the time we started WATCHing it and the pipeline's execution.
+...             # our best bet is to just retry.
+...             continue
+  #+end_example
+
+  存在一种名为“transaction”的便捷方法，用于处理所有处理和重试 watch 错误的样板。它需要一个可调用对象，该可调用对象应预期将监视单个参数，管道对象和任意数量的键。我们上面的客户端 INCR 命令可以这样写，更容易阅读：
+  #+begin_example
+>>> def client_side_incr(pipe):
+...     current_value = pipe.get('OUR-SEQUENCE-KEY')
+...     next_value = int(current_value) + 1
+...     pipe.multi()
+...     pipe.set('OUR-SEQUENCE-KEY', next_value)
+>>>
+>>> r.transaction(client_side_incr, 'OUR-SEQUENCE-KEY')
+[True]
+  #+end_example
+
+* Publish/Subscribe
+  redis-py 包含一个 PubSub 对象，该对象订阅频道并侦听新消息。创建 PubSub 对象很容易。
+  #+begin_example
+>>> r = redis.Redis(...)
+>>> p = r.pubsub()
+  #+end_example
+  创建 PubSub 实例后，即可订阅通道和模式。
+  #+begin_example
+>>> p.subscribe('my-first-channel', 'my-second-channel', ...)
+>>> p.psubscribe('my-*', ...)
+  #+end_example
+  现在，PubSub 实例已订阅了这些通道/模式。订阅确认可以通过从 PubSub 实例读取消息来查看。
+  #+begin_example
+>>> p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-second-channel', 'data': 1L}
+>>> p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-first-channel', 'data': 2L}
+>>> p.get_message()
+{'pattern': None, 'type': 'psubscribe', 'channel': 'my-*', 'data': 3L}
+  #+end_example
+
+  redis-py 还允许注册回调函数来处理已发布的消息。消息处理程序采用单个参数，即 message，就像上面的示例一样，它是一个字典。要使用消息处理程序订阅频道或模式，请将频道或模式名称作为关键字参数传递，其值是回调函数。
+
+  当使用消息处理程序在通道或模式上读取消息时，将创建消息字典并将其传递给消息处理程序。在这种情况下，由于已处理消息，因此 get_message（）返回 None 值。
+
+  #+begin_example
+>>> def my_handler(message):
+...     print 'MY HANDLER: ', message['data']
+>>> p.subscribe(**{'my-channel': my_handler})
+# read the subscribe confirmation message
+>>> p.get_message()
+{'pattern': None, 'type': 'subscribe', 'channel': 'my-channel', 'data': 1L}
+  #+end_example
+
+  listen（）是一个生成器，它将阻塞直到消息可用为止。如果您的应用程序除了接收和处理从 Redis 接收到的消息并对其执行其他操作外，就不需要执行其他任何操作，那么 listen（）是启动运行的一种简便方法。
+  #+begin_example
+>>> for message in p.listen():
+...     # do something with the message
+  #+end_example
+
+  第三个选项在单独的线程中运行事件循环。 pubsub.run_in_thread()创建一个新线程并启动事件循环。线程对象返回给 run_in_thread()的调用者。调用者可以使用 thread.stop()方法关闭事件循环和线程。在幕后，这只是对 get_message()的包装，该包装在单独的线程中运行，从本质上创建了一个微小的非阻塞事件循环。 run_in_thread()采用可选的 sleep_time 参数。如果指定，事件循环将在循环的每次迭代中调用 time.sleep()及其值。
+
+  注意：由于我们是在单独的线程中运行，因此无法处理注册消息处理程序无法自动处理的消息。因此，如果您订阅了未附加消息处理程序的模式或通道，则 redis-py 会阻止您调用 run_in_thread()。
+  #+begin_example
+>>> p.subscribe(**{'my-channel': my_handler})
+>>> thread = p.run_in_thread(sleep_time=0.001)
+# the event loop is now running in the background processing messages
+# when it's time to shut it down...
+>>> thread.stop()
+  #+end_example
+
+  PubSub 对象会记住它们订阅的通道和模式。如果发生连接断开（例如网络错误或超时），则重新连接时，PubSub 对象将重新订阅所有先前的通道和模式。无法传递客户端断开连接时发布的消息。完成 PubSub 对象后，请调用其.close（）方法以关闭连接。
+
+* Lua Scripting

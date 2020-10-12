@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: shutter
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 使用
+
+* 注意
+
+** 编辑按钮灰色
+   ubuntu 18.04 和 linux mint 19 可能会遇到编辑按钮变灰色，不能编辑图片的问题。
+
+   按序安装[[https://launchpad.net/ubuntu/%2Barchive/primary/%2Bfiles/libgoocanvas-common_1.0.0-1_all.deb][libgoocanvas-common]] ，[[https://launchpadlibrarian.net/226687722/libgoocanvas3_1.0.0-1_amd64.deb][libgoocanvas]]， [[https://launchpadlibrarian.net/330848267/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb][libgoo-canvas-perl]] 以后重启 shutter。

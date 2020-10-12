@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: errors
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/errors/][errors]] 包错误实现了处理错误的功能。
+
+  函数 New 创建仅包含文本消息的错误。
+
+  Unwrap，Is 和 As 函数可处理可能会包装其他错误的错误。如果错误的类型具有方法 Unwrap，则该错误将包装另一个错误。

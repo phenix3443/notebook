@@ -1,0 +1,42 @@
+# -*- coding:utf-8-*-
+#+TITLE: clang-format
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://clang.llvm.org/docs/ClangFormat.html][ClangFormat]] 描述了一组构建在 LibFormat 之上的工具，可用于格式化 C/C++/Java/JavaScript/Objective-C/Protobuf/C＃代码。它既是独立工具，也可与编辑器集成。
+
+* 安装
+** apt
+  #+BEGIN_SRC sh
+sudo apt install clang-format
+  #+END_SRC
+** brew
+   #+BEGIN_SRC sh
+brew install clang-format
+   #+END_SRC
+** yum
+   #+BEGIN_SRC sh
+
+   #+END_SRC
+
+* 使用
+  #+BEGIN_SRC sh :exports both :results output scalar
+  clang-format --help
+  #+END_SRC
+  常用命令行选项：
+  + ~-style=<string>~ 编码格式，目前支持 LLVM, Google, Chromium, Mozilla, WebKit。使用 ~-style=<file>~ 从当前源文件的所有父目录中查找 =.clang-format= 文件，并加载代码风格配置。使用 ~-style="{key：value，...}"~ 来设置特定参数，例如： ~-style="{BasedOnStyle: llvm, IndentWidth: 8}"~
+  + ~-fallback-style=<string>~ 在使用 ~-style=file~ 调用 clang-format 但是找不到对应使用的 ~.clang-format~ 文件的情况下，该选项指定回退的预定义样式名字。
+  + ~-i~ 原地替换 file。
+  + ~-dump-config~ 将配置导出到标准输出。可以配合 =-style= 导出默认配置选项。例如：
+    #+BEGIN_SRC sh
+clang-foramt -style=llvm --dump-config >_clang-format
+    #+END_SRC
+
+  当所需的代码格式样式与可用选项不同时，可以使用 ~-style="{key：value，...}"~  选项，将样式配置放在项目中的 =.clang_format= 或 =_clang-format= 中来自定义样式。使用 ~clang-fromat -style=file~ 格式化：
+
+  #+BEGIN_SRC sh
+clang-format -i -style=google test.cc
+  #+END_SRC
+
+  所有样式选项参见 [[https://clang.llvm.org/docs/ClangFormatStyleOptions.html][Clang-format Style Options]] .

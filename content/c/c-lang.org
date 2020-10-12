@@ -1,0 +1,155 @@
+# -*- coding:utf-8-*-
+#+TITLE: c 语言特性
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 程序结构
+** 注释
+** token
+*** 字面量
+**** 整数常量
+     前缀后缀，进制表示
+**** 浮点常量
+**** 字符常量
+     字符编码，转义字符
+**** 字符串常量
+     单双引号区别
+
+*** 标识符
+    标识符是用来标识变量、函数或其他 *用户自定义* 项目的名称。如常量名、变量名、函数名。
+
+**** 常量变量
+     #+BEGIN_SRC c
+const volatile
+     #+END_SRC
+
+**** 作用域
+
+***** 块作用域
+
+***** 全局作用域
+      #+BEGIN_SRC c
+extern
+      #+END_SRC
+
+**** 生存期
+     #+BEGIN_SRC c
+static
+     #+END_SRC
+
+*** 关键字
+    语言保留，不能做标识符。
+
+*** 运算符
+**** 算数运算符
+     #+BEGIN_SRC c
++ - * / % ++ --
+     #+END_SRC
+
+**** 位运算符
+     #+BEGIN_SRC c
+& | ^  ~ << >>
+     #+END_SRC
+
+**** 关系运算符
+     #+BEGIN_SRC c
+== != > >= < <=
+     #+END_SRC
+
+**** 逻辑运算符
+     #+BEGIN_SRC c
+&&  || !
+     #+END_SRC
+
+**** 赋值运算符
+     #+BEGIN_SRC c
+= += -= *= /= %= <<= >>= &= ^= |=
+     #+END_SRC
+
+**** 其他
+     #+BEGIN_SRC c
+?:
+     #+END_SRC
+
+** 表达式
+   表达式可以求值。
+
+** 语句
+   语句是程序执行的最小逻辑单位。
+*** 声明与定义
+*** 赋值
+*** 分支控制
+**** 分支
+     #+BEGIN_SRC c
+if-else switch-case-default
+     #+END_SRC
+
+**** 循环
+     #+BEGIN_SRC c
+for while do-while
+     #+END_SRC
+
+**** 跳转
+     #+BEGIN_SRC c
+break continue goto return
+     #+END_SRC
+
+** 函数
+*** 可变参数
+*** 内联
+    #+BEGIN_SRC c
+inline
+    #+END_SRC
+
+** 模块
+   头文件
+
+* 类型系统
+** 整型
+   + char int  bool
+
+** 浮点型
+   + double float
+
+** 指针
+   + NULL
+
+** 复合类型
+   + struct union enum typedef
+
+** 复数
+   + _complex
+
+** 存储类型
+   + long
+   + short signed unsigned
+   + register
+   + const
+
+** 作用域
+   + static extern
+   +
+** 类型转换
+
+
+* 数据结构
+** 顺序
+   数组
+   #+BEGIN_SRC c
+    []
+   #+END_SRC
+** 关联
+
+** 迭代
+
+* 错误处理
+* 高级特性
+* 其他
+** 内建宏
+    #+BEGIN_SRC c
+   __DATE__	当前日期，一个以 "MMM DD YYYY" 格式表示的字符常量。
+   __TIME__	当前时间，一个以 "HH:MM:SS" 格式表示的字符常量。
+   __FILE__	这会包含当前文件名，一个字符串常量。
+   __LINE__	这会包含当前行号，一个十进制常量。
+   __STDC__	当编译器以 ANSI 标准编译时，则定义为 1。
+    #+END_SRC

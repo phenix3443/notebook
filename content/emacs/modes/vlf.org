@@ -1,0 +1,125 @@
+# -*- coding:utf-8-*-
+#+TITLE: vlf
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://github.com/m00natic/vlfi][vlf]] 是 Emacs 用查看大型文件的 minor mode，允许将大文件分批进行查看、编辑、搜索和比较，用内存换取处理器时间。分批大小可以即时调整，并限制了对文件进行操作的内存。这样，可以即时访问多个大文件(如 Tb 大小)，而不会发生交换和性能下降。
+
+  这是 [[https://elpa.gnu.org/packages/vlf.html][GNU ELPA vlf 包]] 的开发版本。以下是它提供的简单介绍：
+  + 自动调整分批大小以获得最佳性能和响应速度。
+  + 正则表达式搜索和替换整个文件
+  + 像索引一样的 [[http://www.emacswiki.org/emacs/OccurMode][Occur]]
+  + 分批 [[http://www.emacswiki.org/emacs/EdiffMode][Ediff]] 比较
+  + 分批自动滚动
+  + 块编辑（如果大小没有改变，则立即保存，否则以当前批分批大小决定内存进行保存）
+  + 可跳转到开始、结束或任意文件块选项。
+  + 正确处理多字节编码。
+  + 与 hexl-mode 平滑集成，只需打开它，十六进制编辑就可以分批进行。
+  + 与 TRAMP 集成，所以方便快捷的访问网络文件。
+  + 如果文件的大小发生了变化，新添加的内容会被感知到。
+  + 因为是 minor mode，所以 font locking、major mode 和其他 minormode 的功能也都有。
+  + 可作为自动打开大型文件的选项。
+
+  支持 GNU Emacs 23 和 24。
+
+** Unicode
+   充分使用 Emacs 的 Unicode 支持，所以看到的不是裸露的字节，而是像正常打开文件一样解码的字符。这适用于编辑、搜索、索引和比较。
+
+** 32 位 GNU Emacs
+   vlf 使用的是常规的 Emacs 整数，所以如果使用不支持 bignum 的 32 位 Emacs ，vlf 将无法处理超过 512MB 的文件（最大整数值）。
+
+* 使用
+  #+begin_example
+M-x vlf PATH-TO-FILE
+  #+end_example
+  使用 vlf 打开大文件。
+  #+BEGIN_SRC elisp
+(required 'vlf-setup)
+  #+END_SRC
+
+  可以通过自定义 =vlf-application= 选项来控制 =vlf-mode= 何时被调用或提供。默认情况下，它将在打开大文件时调用 vlf。也有禁用（但仍然可以显式调用 vlf 命令），大文件不经询问直接使用，或者在所有文件上调用的选项。
+
+  下面是 vlf-mode 在大文件时自动启动的例子。
+  #+BEGIN_SRC elisp
+(custom-set-variables
+ '(vlf-application 'dont-ask))
+  #+END_SRC
+
+** 特定模式下禁用
+   指定禁止自动使用 vlf 的 major mode，请将其添加到 =vlf-forbidden-modes-list= 中。
+
+** 特定功能下禁用
+   指定禁用自动使用 vlf 的 function，例如在 file.el 中定义的函数 func。
+
+   #+BEGIN_SRC elisp
+(vlf-disable-for-function func "file")
+   #+END_SRC
+
+** 键映射
+   所有的 vlf 操作默认都是以 =C-c C-v= 前缀进行分组。以下方法可以进行修改？（ =C-x v= ）：
+   #+BEGIN_SRC elisp
+(eval-after-load "vlf"
+  '((define-key vlf-prefix-map "\C-xv" vlf-mode-map))
+   #+END_SRC
+
+** 整体位置指示
+   model line 的 vlf 部分显示当前访问的是文件的个部分、总共多少分组（使用当前的分批大小）以及文件大小。
+
+** 分批规模控制
+   默认情况下，vlf 会统计文件中的执行操作情况，并逐步调整分批大小，以获得更好的用户体验。涉及多个批次的操作，会进行更冒险的调整。总的来说，跳转、搜索、索引越多，性能应该越好。
+
+   =vlf-tune-max= 选项指定调整时候一个批次最终可以设定的最大字节数。
+
+   禁用 profiling 和调优。
+
+   #+BEGIN_SRC elisp
+(custom-set-variables
+   '(vlf-tune-enabled nil))
+   #+END_SRC
+
+   或者将 =vlf-tune-enabled= 设置为 ='stats= to profile 但不改变批量大小。
+
+   使用 =M-x vlf-set-batch-size= 来改变分批大小，并立即更新文件块。提供的默认大小是目前为止根据调优统计提供的最佳大小。
+
+   =C-c C-v += 和 =C-c C-v -= 控制当前的分批大小，系数为 2。
+
+** 移动
+   滚动自动触发移动到相对于当前块的上一个块的结尾或下一个块的开始。
+
+   =C-c C-C-v n= 和 =C-c-C-v p= 逐批移动。如果前缀参数为正数，它们会移动前缀数量的批次。如果是负数---附加批的前缀数。
+
+   =C-c C-v SPC= 显示从当前点开始的分批。
+
+   =C-c C-v [= 和 =C-c C-v ]= 分别跳转到文件的开始和结束。
+
+   =C-c C-c C-v= 跳转到特定的批号。
+
+** 跟踪 point
+   可以用 =C-c C-c-c-v f= 在当前缓冲区中的点周围连续地将数据块重新集中。
+
+** 搜索和/或替换整个文件
+   =C-c C-v s= 和 =C-c C-v r= 分别在整个文件中进行前向和后向搜索，逐批搜索。 =C-c C- C-v %= 做搜索和查询替换保存，并立刻保存变化。
+
+** 全文件查找
+   =C-c C-v o= 为给定的正则表达式在整个文件上建立索引，就像 =M-x occur= 一样。注意，即使你用 C-g 过早地停止它，它仍然会显示到目前为止所发现的内容。
+
+   结果缓冲区使用了 =vlf-occur-mode= ，它允许在跳转时打开新的 VLF 缓冲区来匹配（在点击 RET 或 o 之前使用 C-u），这样就可以同时对同一个文件进行多个视图。同时，结果可以被序列化到文件中，以备日后重用。
+
+** 跳转到行
+   =C-c C-v l= 跳转到文件中给定的行。如果参数为负数，行数从文件的末尾开始计算。
+
+** 编辑和保存
+   如果编辑不改变大块的大小，只保存这个大块。 =vlf-save-in-place= 自定义选项控制在这种情况下是否使用临时文件。
+
+** 按批次 Ediff
+   使用 =M-x vlf-ediff-f-files= 和 =M-x vlf-ediff-buffers= 来逐批比较文件/缓冲区（如果是文件，则询问分批大小，如果是缓冲区，则从第一个缓冲区中提取）。在当前数据块中的最后一个差异之后移动，会搜索下面的差异。反之，如果是在第一个缓存区之前寻找差异，搜索之前的差异。
+
+* 扩展
+
+** 移动钩子
+   每当更新 chunk 时都会运行几个钩子： =vlf-before-chunk-update-hook= 和 =vlf-after-chunk-update-hook= 。
+
+** 批量移动钩子
+   有些操作可能会触发多个块移动。有几个钩子可以在这种情况下运行： =vlf-before-batch-functions= 和 =vlf-after-batch-functions= 。它们接收一个参数，指定运行的操作类型。可能的值是：write、ediff、 occur、search 和 goto-line。

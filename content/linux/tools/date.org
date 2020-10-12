@@ -1,0 +1,77 @@
+# -*- coding:utf-8-*-
+#+TITLE: date
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  用来打印和设置当前系统时间。
+
+* 使用
+  #+BEGIN_EXAMPLE
+date [OPTION]... [+FORMAT]
+  #+END_EXAMPLE
+  常用的 OPTION 参数：
+  + ~-d, --date=STRING~
+    显示日期字符串描述时间。
+  + ~-s, --set=STRING~
+    设置系统时间为日期字符串描述的时间。
+
+* 日期字符串
+  日期字符串是人类可读日期字符串，例如 “Sun，2004 年 2 月 29 日 16:21:42 -0800” 或 “2004-02-29 16:21:42” 甚至 “next Thursday”。日期字符串格式比这里容易记录的更复杂，但在 info 文档中有详细描述。
+
+** 当前时间
+   #+BEGIN_SRC sh :exports both
+date
+   #+END_SRC
+
+** 当天起始时间
+   空字符串表示当天的起始时间。
+   #+BEGIN_SRC sh :exports both
+date -d ""
+    #+END_SRC
+
+** 显示指定日期
+   日期字符串可以包含日历日期，时间，时区，星期几，
+   #+BEGIN_SRC sh :exports both
+date -d "2019-01-01 00:00:00"
+   #+END_SRC
+
+** 相对时间
+   #+BEGIN_SRC sh :exports both
+date -d "-1 day"
+   #+END_SRC
+
+   #+BEGIN_SRC sh :exports both
+date -d "+2 hour"
+   #+END_SRC
+
+   #+BEGIN_SRC sh :exports both
+date -d "next sunday"
+   #+END_SRC
+
+   #+BEGIN_SRC sh :exports both
+date -d "last sunday"
+   #+END_SRC
+
+** 时间戳转为字符串
+   #+BEGIN_SRC sh :exports both
+date -d "@1553693532"
+   #+END_SRC
+
+* 时间格式示例
+  常用的 FORMAT:
+  + %F full date; same as %Y-%m-%d
+  + %R 24-hour hour and minute; same as %H:%M
+  + %s seconds since 1970-01-01 00:00:00 UTC，用来打印时间戳
+  + %x locale's date representation (e.g., 12/31/99)
+  + %X locale's time representation (e.g., 23:13:48)
+
+** 指定格式
+   #+BEGIN_SRC sh :exports both
+date +"%F %R:%S"
+   #+END_SRC
+
+** 显示为时间戳
+   #+BEGIN_SRC sh :exports both
+date +"%s"
+   #+END_SRC

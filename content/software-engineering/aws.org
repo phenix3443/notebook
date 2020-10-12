@@ -1,0 +1,19 @@
+# -*- coding:utf-8-*-
+#+TITLE: aws 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* sshfs
+  #+BEGIN_SRC sh
+sshfs <user>@<公有 DNS>: /data/aws -o IdentityFile=<aws-key.pem 绝对路径>
+  #+END_SRC
+
+  注意：
+  + 公有 DNS 后面的冒号（：）不能省略，否在会报错：
+    #+BEGIN_QUOTE
+missing host
+see `sshfs -h' for usage
+    #+END_QUOTE
+  + =aws-key.pem= 要使用绝对路径，否则会报错：
+    #+BEGIN_QUOTE
+read: Connection reset by peer
+    #+END_QUOTE

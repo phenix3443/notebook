@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: monkey
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  关于 monkey patch，就是在程序运行的过程中动态的修改一些模块、类、方法，而不是在静态代码中去修改相应的实现，参考https://zhuanlan.zhihu.com/p/37679547
+
+  这篇文章记录了 monkey 的实现原理：https://bou.ke/blog/monkey-patching-in-go/

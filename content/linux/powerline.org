@@ -1,0 +1,137 @@
+# -*- coding:utf-8-*-
+#+TITLE: powerline
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/powerline/powerline][Powerline]] 是 vim 的状态行插件，也可为其他几个应用程序提供状态和提示，包括 zsh，bash，fish，tmux，IPython，Awesome，i3 和 Qtile。
+
+  特征：
+
+  + 可扩展且功能丰富。Powerline 完全用 Python 重写，以尽可能避免 vimscript。这样可以提供更好的可扩展性，更精简和更好的配置文件，以及一个结构化的，面向对象的代码库，除了 Python 解释器之外没有强制的第三方依赖。
+  + 稳定且可测试的代码库。使用 Python 允许对所有项目代码进行单元测试。该代码经过测试，可在 Python 2.6 + 和 Python 3 中使用。
+  + 支持许多应用程序中的提示和状态行。该项目最初是专门为 vim 状态行创建的，已经发展为在 tmux 和几个 WM 中提供状态行，并为像 bash/zsh 一样的 shell 和其他应用程序进行提示。为 Powerline 尚不支持的任何其他应用程序编写渲染器很简单。
+  + 用 JSON 编写配置和配色方案。JSON 是一种标准化，简单易用的文件格式，可以在所有 Powerline 支持的应用程序中轻松进行用户配置。
+  + 快速轻巧，使用守护程序提供更好的性能。提供丰富的功能集同时，更关注更好的性能和尽可能少的代码。新守护程序还确保仅为提示和状态行启动一个 Python 实例，从而提供出色的性能。
+
+  本地编译的 C 版本要比 python 版本快。
+
+* 安装[fn:1]
+
+** 依赖
+
+** apt 安装
+   #+BEGIN_SRC sh
+apt install -y powerline fonts-powerline python3-pygit2
+   #+END_SRC
+
+** pip 安装
+   使用 pip 安装是首选方法，应为这样可以安装到最新版本。
+
+   #+BEGIN_SRC sh
+pip3 install pygit2
+pip3 install powerline-status
+   #+END_SRC
+
+   但是安装的时候发现 pygit2 与 ubuntu 18.04 自带的 libgit2-dev (0.26.0) 不兼容。
+
+** 字体安装
+   Powerline 使用几个特殊字型来获得箭头效果和一些为开发人员定义的符号。这需要在系统中安装符号字体或修补字体。使用的应用程序（例如终端仿真器）也必须配置为使用修补字体（甚至在某些自定义字型是程序自行保留使用的情况下也要支持）或支持字体配置以使 powerline 与之特定的字形正常工作。
+
+   如果使用的终端仿真器支持，则可以启用 24 位颜色支持。
+
+   基本上有两种显示 powerline 字形的方法：使用 PowerlineSymbols.otf 字体作为现有字体之一的备用字体或安装修补字体。
+
+*** 修补字体
+    此方法是后备方法，适用于每个终端。
+
+    从 [[https://github.com/powerline/fonts][powerline-fonts]] 下载字体。如果在 [[https://github.com/powerline/fonts][powerline-fonts]] repo 中找不到首选字体，则需要修补首选字体。
+
+    下载此字体后，请参阅特定于平台的说明。
+
+* 配置
+  Powerline 有一个主配置文件，主题和配色有单独的配置文件。所有配置文件都是用 JSON 编写的，但 segment 的定义是用 python 编写的。
+
+  Powerline 在以下位置提供默认配置：
+  + 主配置文件： ={powerline}/config.json=
+  + 配色： ={powerline}/colorschemes/name.json, {powerline}/colorschemes/extension/__main__.json, {powerline}/colorschemes/extension/name.json=
+  + 主题： ={powerline}/themes/top_theme.json, {powerline}/themes/extension/__main__.json, {powerline}/themes/extension/default.json=
+
+  这里 ={powerline}= 是以下之一：
+  + 位于主程序包中的默认配置目录： =powerline_root/powerline/config_files= 。可能在某些包中不存在（例如，通过 Gentoo ebuilds 安装时）。
+  + 如果变量 =$XDG_CONFIG_DIRS= 设置为非空，则任何 ={directory}/powerline= ，其中 {directory} 是以冒号分隔的 =$XDG_CONFIG_DIRS= 列表中列出的目录。目录以相反的顺序检查。
+  + 位于 =$XDG_CONFIG_HOME/powerline= 中的用户配置目录。这通常对应于所有平台上的 =～/.config/powerline= 。
+
+  注意：
+
+  + 将合并具有相同名称但位于不同目录中的现有多个配置文件。合并按照上面可能的 {powerline} 含义列表中给出的顺序进行。
+  + 合并配置时，只合并字典并以递归方式合并：来自下一个文件的 key 覆盖 了前一个文件中的 key，除非相应的值都是字典，在这种情况下这些字典被合并，key 被赋予合并的结果。
+  + 一些配置文件（即主题和颜色方案）具有两个级别的合并：首先发生上述合并，第二主题或颜色方案特定的合并发生。
+
+** 快速配置指南
+   该指南将帮助您完成 Powerline 的初始配置。
+
+   查看 ={powerline_root}/powerline/config_files= 中的配置。如果要修改某个文件，可以创建 =~/.config/powerline= 目录并在其中进行修改：所有配置文件相互合并。
+
+   每个扩展（vim，tmux 等）都有自己的主题，它们位于 ={config directory}/themes/extension/default.json= 中。修改它的最佳方法是将此主题作为一个整体复制，删除具有相应值的 segment_data 键（如果存在）（除非需要修改它，在这种情况下只需保留修改）并在 segment 列表中进行必要的修改（列表不需要合并：这就是需要副本的原因）。
+
+   如果要移动，删除或自定义副本中提供的任何 segment，可以通过更新要自定义的主题中的 segment 字典来实现。segment 字典看起来像这样：
+   #+BEGIN_SRC json
+{
+    "name": "segment_name"
+    ...
+}
+   #+END_SRC
+
+   可以移动 segment 字典以更改 segment 位置，或删除整个字典以从提示或状态行中删除 segment。
+
+   注意：
+   + 所有配置文件的内容都必须是有效的 JSON！强烈建议在更改后通过 jsonlint 运行配置文件。
+   + 如果修改似乎不起作用，请运行 =powerline-lint= 脚本。此脚本应显示错误的位置。
+
+   某些 segment 需要用户配置才能正常工作。以下是可能希望立即自定义的几个 segment：
+
+   + E-mail alert segment
+
+     必须为 E-mail alert segment 设置用户名和密码（可能还有服务器/端口）。如果使用的是 GMail，建议您为此目的生成特定于应用程序的密码。
+
+     打开主题文件，向下滚动到 email_imap_alert 段并设置您的用户名和密码。服务器默认为 GMail 的 IMAP 服务器，但可以通过添加服务器和端口参数来设置服务器/端口。
+
+   + Weather segment
+
+     Weather segment 将尝试使用 GeoIP 查找来定位，因此除非使用 VPN，否则可能不必更改位置查询。
+
+     如果要更改位置查询或温度单位，则必须更新 segment 参数。打开主题文件，向下滚动到天气段并将其更新为包含单位/位置查询参数：
+
+     #+BEGIN_SRC json
+{
+    "name": "weather",
+    "priority": 50,
+    "args": {
+        "unit": "F",
+        "location_query": "oslo, norway"
+    }
+},
+     #+END_SRC
+
+
+   其他详见 [[https://powerline.readthedocs.io/en/latest/configuration/reference.html#][Configuration reference]]
+
+   注意：如果想修改之后立马生效，需要执行  =powerline-daemon --replace= 。
+
+* 使用
+** bash
+   在 =.bashrc= 中添加以下内容：
+   #+BEGIN_SRC sh
+source /usr/share{powerline}bindings/bash/powerline.sh
+if [ -f `which powerline-daemon` ]; then
+  powerline-daemon -q
+  POWERLINE_BASH_CONTINUATION=1
+  POWERLINE_BASH_SELECT=1
+  . /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+fi
+   #+END_SRC
+
+* Footnotes
+
+[fn:1] https://powerline.readthedocs.io/en/latest/

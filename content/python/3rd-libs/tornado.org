@@ -1,0 +1,8 @@
+# -*- coding:utf-8-*-
+#+TITLE: Tornado
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+
+* 概述
+  [[https://tornado-zh.readthedocs.io/zh/latest/#][Tornado]] 是一个支持异步的 Web 框架，通过使用非阻塞 I/O 流，它可以支撑成千上万的开放连接，效率非常高。

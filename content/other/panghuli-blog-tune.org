@@ -1,0 +1,40 @@
+# -*- coding:utf-8; -*-
+#+BLOG: panghuli_blog
+#+POSTID: 13
+#+DATE: [2014-10-21 周二 15:44]
+#+CATEGORY:专业知识
+#+TAGS:wordpress
+#+DESCRIPTION:blog.panghuli.org 主题调整
+#+TITLE:【WordPress】Blog Tune
+
+本文主要记录对 Blog 进行的各种设置和微调。
+* 主题（Theme）
+1. 使用 GroundWork theme。
+2. 调整行间距和段落间距。
+   后台->外观->主题->编辑，在相应的 css 文件末尾添加如下代码：
+
+   #+NAME: style.css
+   #+BEGIN_SRC css :export code :tangle no
+/*style.css, add by panghuli*/
+#content p {
+	font-size: large;
+	margin: 0.5% 0 0.5% 0;
+	line-height: 180%;
+}
+#content h2 {
+	margin: 1% 0 1% 0;
+}
+#content li {
+	margin: 0.5%;
+}
+
+#sidebar li {
+	margin: 1% 0 1% 0;
+}
+   #+END_SRC
+* 插件（plugin）
++ [[https://wordpress.org/plugins/crayon-syntax-highlighter/][Crayon Syntax Highlighter]]
++ [[https://wordpress.org/plugins/social-media-widget/][Social Media Widget]]
++ [[https://wordpress.org/plugins/syntaxhighlighter/][SyntaxHighlighter Evolved]]
++ [[https://wordpress.org/plugins/wordpress-23-related-posts-plugin/][WordPress Related Posts]]
++ [[https://wordpress.org/plugins/wp-pagenavi/][WP-PageNavi 分页导航]]

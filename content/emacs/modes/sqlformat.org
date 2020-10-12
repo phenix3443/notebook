@@ -1,0 +1,50 @@
+# -*- coding:utf-8-*-
+#+TITLE: sqlformat
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/purcell/sqlformat][sqlformat]] 可使用 [[https://sqlformat.org/][sqlformat]] 和 [[file:~/github/notebook/org/linux/pgformatter.org][pg_format]] 等外部程序轻松重新格式化 SQL。
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install sqlparse
+  #+END_SRC
+
+* 配置
+
+
+* 使用
+  sql 代码:
+  #+BEGIN_SRC sql
+create TABLE `tb11` (
+`id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) DEFAULT NULL,
+UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+  #+END_SRC
+  格式化需求：
+  + 所有关键字大写
+  + 每列一行
+  + 每列左起有 4 个空格。
+
+  sqlformat 格式化 =sqlformat -k upper test.sql= ：
+  #+BEGIN_SRC sql
+CREATE TABLE `tb11` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(20) DEFAULT NULL,
+UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  #+END_SRC
+
+  只处理了关键字大写。
+
+  pg_format 格式化 =pg_format test.sql= ：
+  #+BEGIN_SRC sql
+CREATE TABLE `tb11` (
+    `id` int (11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(20) DEFAULT NULL,
+    UNIQUE KEY `id` (`id`)) ENGINE = InnoDB AUTO_INCREMENT = 3 DEFAULT CHARSET = utf8;
+  #+END_SRC
+
+  而且，sqlformat 这个 minor mode 不能给 sqlformat-command 添加参数，这样看来 pg_format 更满足需求。

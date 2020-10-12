@@ -1,0 +1,458 @@
+# -*- coding:utf-8-*-
+#+TITLE: Appendix A Quick Reference
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* Appendix A Quick Reference
+  本附录总结了GNU理解的指令，文本操作函数和特殊变量。 有关其他摘要，请参阅 [[https://www.gnu.org/software/make/manual/html_node/Special-Targets.html#Special-Targets][特殊目标]]，[[https://www.gnu.org/software/make/manual/html_node/Catalogue-of-Rules.html#Catalogue-of-Rules][内置规则目录]] 和 [[https://www.gnu.org/software/make/manual/html_node/Options-Summary.html#Options-Summary][选项摘要]]。
+
+  以下是GNU make识别的指令的摘要：
+  #+BEGIN_SRC make
+define variable
+define variable =
+define variable :=
+define variable ::=
+define variable +=
+define variable ?=
+endef
+  #+END_SRC
+
+  定义多行变量。 See [[https://www.gnu.org/software/make/manual/html_node/Multi_002dLine.html#Multi_002dLine][Multi-Line]].
+
+  #+BEGIN_SRC make
+undefine variable
+  #+END_SRC
+  Undefining variables. See [[https://www.gnu.org/software/make/manual/html_node/Undefine-Directive.html#Undefine-Directive][Undefine Directive]].
+
+  #+BEGIN_SRC make
+ifdef variable
+ifndef variable
+ifeq (a,b)
+ifeq "a" "b"
+ifeq 'a' 'b'
+ifneq (a,b)
+ifneq "a" "b"
+ifneq 'a' 'b'
+else
+endif
+  #+END_SRC
+  makefile的条件求值部分。See [[https://www.gnu.org/software/make/manual/html_node/Conditionals.html#Conditionals][Conditionals]].
+
+  #+BEGIN_SRC make
+include file
+-include file
+sinclude file
+  #+END_SRC
+
+  包含其他makefile。See [[https://www.gnu.org/software/make/manual/html_node/Include.html#Include][Including Other Makefiles]].
+
+  #+BEGIN_SRC
+override variable-assignment
+  #+END_SRC
+
+  定义一个变量，覆盖任何先前的定义，甚至是命令行中的定义。See [[https://www.gnu.org/software/make/manual/html_node/Override-Directive.html#Override-Directive][The override Directive]].
+
+  #+BEGIN_SRC make
+export
+  #+END_SRC
+
+  告诉make默认情况下将所有变量导出到子进程。See [[https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion][Communicating Variables to a Sub-make]].
+
+  #+BEGIN_SRC make
+export variable
+export variable-assignment
+unexport variable
+  #+END_SRC
+
+  告诉是否要将特定变量导出到子进程。See [[https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion][Communicating Variables to a Sub-make]].
+
+  #+BEGIN_SRC make
+private variable-assignment
+  #+END_SRC
+
+  不允许先决条件继承此变量赋值。ee [[https://www.gnu.org/software/make/manual/html_node/Suppressing-Inheritance.html#Suppressing-Inheritance][Suppressing Inheritance]].
+
+  #+BEGIN_SRC make
+vpath pattern path
+  #+END_SRC
+
+  为与'％'模式匹配的文件指定搜索路径。See [[https://www.gnu.org/software/make/manual/html_node/Selective-Search.html#Selective-Search][The vpath Directive]].
+
+  #+BEGIN_SRC make
+vpath pattern
+  #+END_SRC
+
+  删除先前为pattern指定的所有搜索路径。
+
+  #+BEGIN_SRC make
+vpath
+  #+END_SRC
+
+  删除先前在任何vpath指令中指定的所有搜索路径。
+
+  下面是内置函数的汇总 (see [[https://www.gnu.org/software/make/manual/html_node/Functions.html#Functions][Functions]]):
+
+  #+BEGIN_SRC make
+$(subst from,to,text)
+  #+END_SRC
+
+  将 text中的 from 替换为 to。See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(patsubst pattern,replacement,text)
+  #+END_SRC
+
+  使用replacement 替换text中匹配pattern的 *word* 。See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(strip string)
+  #+END_SRC
+
+  从string 中移除空白符。See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(findstring find,text)
+  #+END_SRC
+
+  在text中查找find。See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(filter pattern…,text)
+  #+END_SRC
+
+  在text 中查找匹配其中一个 pattern 的word. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+  #+BEGIN_SRC make
+$(filter-out pattern…,text)
+  #+END_SRC
+
+  Select words in text that do not match any of the pattern words. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(sort list)
+  #+END_SRC
+
+  Sort the words in list lexicographically, removing duplicates. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+
+  #+BEGIN_SRC make
+$(word n,text)
+  #+END_SRC
+  Extract the nth word (one-origin) of text. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+  #+BEGIN_SRC make
+$(words text)
+  #+END_SRC
+  Count the number of words in text. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(wordlist s,e,text)
+  #+END_SRC
+
+  Returns the list of words in text from s to e. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+See Functions for String Substitution and Analysis.
+  #+BEGIN_SRC make
+$(firstword names…)
+  #+END_SRC
+
+  Extract the first word of names. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(lastword names…)
+  #+END_SRC
+
+  Extract the last word of names. See [[https://www.gnu.org/software/make/manual/html_node/Text-Functions.html#Text-Functions][Functions for String Substitution and Analysis]].
+
+  #+BEGIN_SRC make
+$(dir names…)
+  #+END_SRC
+
+  Extract the directory part of each file name. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+  #+BEGIN_SRC make
+$(notdir names…)
+  #+END_SRC
+  Extract the non-directory part of each file name. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(suffix names…)
+  #+END_SRC
+  Extract the suffix (the last ‘.’ and following characters) of each file name. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(basename names…)
+  #+END_SRC
+
+  Extract the base name (name without suffix) of each file name. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(addsuffix suffix,names…)
+  #+END_SRC
+
+  Append suffix to each word in names. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(addprefix prefix,names…)
+  #+END_SRC
+
+  Prepend prefix to each word in names. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(join list1,list2)
+  #+END_SRC
+
+  Join two parallel lists of words. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(wildcard pattern…)
+  #+END_SRC
+
+  Find file names matching a shell file name pattern (not a ‘%’ pattern). See [[https://www.gnu.org/software/make/manual/html_node/Wildcard-Function.html#Wildcard-Function][The Function wildcard]].
+
+  #+BEGIN_SRC make
+$(realpath names…)
+  #+END_SRC
+
+  For each file name in names, expand to an absolute name that does not contain any ., .., nor symlinks. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(abspath names…)
+  #+END_SRC
+
+  For each file name in names, expand to an absolute name that does not contain any . or .. components, but preserves symlinks. See [[https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html#File-Name-Functions][Functions for File Names]].
+
+  #+BEGIN_SRC make
+$(error text…)
+  #+END_SRC
+  When this function is evaluated, make generates a fatal error with the message text. See [[https://www.gnu.org/software/make/manual/html_node/Make-Control-Functions.html#Make-Control-Functions][Functions That Control Make]].
+
+  #+BEGIN_SRC make
+$(warning text…)
+  #+END_SRC
+
+  When this function is evaluated, make generates a warning with the message text. See [[https://www.gnu.org/software/make/manual/html_node/Make-Control-Functions.html#Make-Control-Functions][Functions That Control Make]].
+
+  #+BEGIN_SRC make
+$(shell command)
+  #+END_SRC
+  Execute a shell command and return its output. See [[https://www.gnu.org/software/make/manual/html_node/Shell-Function.html#Shell-Function][The shell Function]].
+
+  #+BEGIN_SRC make
+$(origin variable)
+  #+END_SRC
+  Return a string describing how the make variable variable was defined. See [[https://www.gnu.org/software/make/manual/html_node/Origin-Function.html#Origin-Function][The origin Function]].
+
+  #+BEGIN_SRC make
+$(flavor variable)
+  #+END_SRC
+  Return a string describing the flavor of the make variable variable. See [[https://www.gnu.org/software/make/manual/html_node/Flavor-Function.html#Flavor-Function][The flavor Function]].
+
+  #+BEGIN_SRC make
+$(foreach var,words,text)
+  #+END_SRC
+  Evaluate text with var bound to each word in words, and concatenate the results. See [[https://www.gnu.org/software/make/manual/html_node/Foreach-Function.html#Foreach-Function][The foreach Function]].
+
+  #+BEGIN_SRC make
+$(if condition,then-part[,else-part])
+  #+END_SRC
+
+  Evaluate the condition condition; if it’s non-empty substitute the expansion of the then-part otherwise substitute the expansion of the else-part. See [[https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions][Functions for Conditionals]].
+
+  #+BEGIN_SRC make
+$(or condition1[,condition2[,condition3…]])
+  #+END_SRC
+  Evaluate each condition conditionN one at a time; substitute the first non-empty expansion. If all expansions are empty, substitute the empty string. See [[https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions][Functions for Conditionals]].
+
+  #+BEGIN_SRC make
+$(and condition1[,condition2[,condition3…]])
+  #+END_SRC
+  Evaluate each condition conditionN one at a time; if any expansion results in the empty string substitute the empty string. If all expansions result in a non-empty string, substitute the expansion of the last condition. See [[https://www.gnu.org/software/make/manual/html_node/Conditional-Functions.html#Conditional-Functions][Functions for Conditionals]].
+
+  #+BEGIN_SRC make
+$(call var,param,…)
+  #+END_SRC
+
+  Evaluate the variable var replacing any references to $(1), $(2) with the first, second, etc. param values. See [[https://www.gnu.org/software/make/manual/html_node/Call-Function.html#Call-Function][The call Function]].
+
+  #+BEGIN_SRC make
+$(eval text)
+  #+END_SRC
+
+  Evaluate text then read the results as makefile commands. Expands to the empty string. See [[https://www.gnu.org/software/make/manual/html_node/Eval-Function.html#Eval-Function][The eval Function]].
+
+  #+BEGIN_SRC make
+$(file op filename,text)
+  #+END_SRC
+
+  Expand the arguments, then open the file filename using mode op and write text to that file. See [[https://www.gnu.org/software/make/manual/html_node/File-Function.html#File-Function][The file Function]].
+
+  #+BEGIN_SRC make
+$(value var)
+  #+END_SRC
+
+  Evaluates to the contents of the variable var, with no expansion performed on it. See [[https://www.gnu.org/software/make/manual/html_node/Value-Function.html#Value-Function][The value Function]].
+
+
+  以下是自动变量汇总. See [[https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables][Automatic Variables]], for full information.
+
+  #+BEGIN_SRC make
+$@
+  #+END_SRC
+
+  The file name of the target.
+  #+BEGIN_SRC make
+$%
+  #+END_SRC
+
+  The target member name, when the target is an archive member.
+  #+BEGIN_SRC make
+$<
+  #+END_SRC
+
+  The name of the first prerequisite.
+  #+BEGIN_SRC make
+$?
+  #+END_SRC
+
+  The names of all the prerequisites that are newer than the target, with spaces between them. For prerequisites which are archive members, only the named member is used (see Archives).
+  #+BEGIN_SRC make
+$^
+$+
+  #+END_SRC
+  The names of all the prerequisites, with spaces between them. For prerequisites which are archive members, only the named member is used (see Archives). The value of $^ omits duplicate prerequisites, while $+ retains them and preserves their order.
+
+  #+BEGIN_SRC make
+$*
+  #+END_SRC
+  The stem with which an implicit rule matches (see How Patterns Match).
+
+  #+BEGIN_SRC make
+$(@D)
+$(@F)
+  #+END_SRC
+  The directory part and the file-within-directory part of $@.
+  #+BEGIN_SRC make
+$(*D)
+$(*F)
+  #+END_SRC
+
+  The directory part and the file-within-directory part of $*.
+
+  #+BEGIN_SRC make
+$(%D)
+$(%F)
+  #+END_SRC
+
+  The directory part and the file-within-directory part of $%.
+
+  #+BEGIN_SRC make
+$(<D)
+$(<F)
+  #+END_SRC
+  The directory part and the file-within-directory part of $<.
+
+  #+BEGIN_SRC make
+$(^D)
+$(^F)
+  #+END_SRC
+
+  The directory part and the file-within-directory part of $^.
+  #+BEGIN_SRC make
+$(+D)
+$(+F)
+  #+END_SRC
+
+  The directory part and the file-within-directory part of $+.
+
+  #+BEGIN_SRC make
+$(?D)
+$(?F)
+  #+END_SRC
+  The directory part and the file-within-directory part of $?.
+
+
+  以下变量由GNU make特别使用：
+  #+BEGIN_SRC make
+MAKEFILES
+  #+END_SRC
+  每次调用make时都会读取的Makefile。
+
+  See [[https://www.gnu.org/software/make/manual/html_node/MAKEFILES-Variable.html#MAKEFILES-Variable][The Variable MAKEFILES]].
+
+  #+BEGIN_SRC make
+VPATH
+  #+END_SRC
+
+  当前目录中找不到的文件的目录搜索路径。
+
+  See [[https://www.gnu.org/software/make/manual/html_node/General-Search.html#General-Search][VPATH Search Path for All Prerequisites]].
+
+  #+BEGIN_SRC make
+SHELL
+  #+END_SRC
+
+  系统默认命令解释程序的名称，通常为 =/bin/sh= 。可以在makefile中设置 =SHELL= 以更改用于运行的shell。 See [[https://www.gnu.org/software/make/manual/html_node/Execution.html#Execution][Recipe Execution]].  SHELL变量在从环境导入和导出时特别处理. See [[https://www.gnu.org/software/make/manual/html_node/Choosing-the-Shell.html#Choosing-the-Shell][Choosing the Shell]].
+
+  #+BEGIN_SRC make
+MAKESHELL
+  #+END_SRC
+
+  仅在MS-DOS上，由make使用的命令解释程序的名称。该值优先于SHELL的值。 See [[https://www.gnu.org/software/make/manual/html_node/Execution.html#Execution][MAKESHELL variable]].
+
+  #+BEGIN_SRC make
+MAKE
+  #+END_SRC
+  调用make的名称。 在食谱中使用此变量具有特殊含义。 See [[https://www.gnu.org/software/make/manual/html_node/MAKE-Variable.html#MAKE-Variable][How the MAKE Variable Works]].
+
+  #+BEGIN_SRC make
+MAKE_VERSION
+  #+END_SRC
+
+  内置变量'MAKE_VERSION'扩展为 GNU make程序的版本号。
+
+
+  #+BEGIN_SRC make
+MAKE_HOST
+  #+END_SRC
+  内置变量'MAKE_HOST'扩展为一个字符串，表示构建运行GNU make的主机。
+
+  #+BEGIN_SRC make
+MAKELEVEL
+  #+END_SRC
+  递归执行的级别。See [[https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#Variables_002fRecursion][Variables/Recursion]].
+
+  #+BEGIN_SRC make
+MAKEFLAGS
+  #+END_SRC
+  给make的标志。可以在环境变量或makefile中通过设置它以设置标志。
+
+  See [[https://www.gnu.org/software/make/manual/html_node/Options_002fRecursion.html#Options_002fRecursion][Communicating Options to a Sub-make]].
+
+  永远不适合在recipe行中直接使用MAKEFLAGS：它的内容可能无法在shell中正确引用。始终允许递归make从其父级通过环境获取这些值。
+
+
+  #+BEGIN_SRC make
+GNUMAKEFLAGS
+  #+END_SRC
+  make解析的其他标志。可以在环境变量或makefile中设置它以设置make命令行标志。 GNU make从不设置此变量本身。仅当您要在符合POSIX的makefile中设置特定于GNU make的标志时，才需要此变量。这个变量将由GNU make看到，并被其他make实现忽略。如果只使用GNU make，则不需要它；只需直接使用MAKEFLAGS。See [[https://www.gnu.org/software/make/manual/html_node/Options_002fRecursion.html#Options_002fRecursion][Communicating Options to a Sub-make]].
+
+  #+BEGIN_SRC make
+MAKECMDGOALS
+  #+END_SRC
+  在命令行上给出的目标。设置此变量对make的操作没有影响。
+
+  See [[https://www.gnu.org/software/make/manual/html_node/Goals.html#Goals][Arguments to Specify the Goals]].
+
+  #+BEGIN_SRC make
+CURDIR
+  #+END_SRC
+  设置为当前工作目录的绝对路径名（处理完所有 =-C= 选项后，如果有）。设置此变量对make的操作没有影响。See [[https://www.gnu.org/software/make/manual/html_node/Recursion.html#Recursion][Recursive Use of make]].
+
+  #+BEGIN_SRC make
+SUFFIXES
+  #+END_SRC
+  make读取任何makefile之前的默认后缀列表。
+
+  #+BEGIN_SRC make
+.LIBPATTERNS
+  #+END_SRC
+  定义库的命名以及搜索顺序。
+
+  See [[https://www.gnu.org/software/make/manual/html_node/Libraries_002fSearch.html#Libraries_002fSearch][Directory Search for Link Libraries]].

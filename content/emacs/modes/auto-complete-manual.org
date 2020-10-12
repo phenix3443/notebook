@@ -1,0 +1,1430 @@
+# -*- coding:utf-8-*-
+#+TITLE: auto-complete
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+建议使用 company-mode， auto-complete 已经停止开发了。
+
+* 1 Introduction
+  [[https://github.com/auto-complete/auto-complete][Auto-Complete]] (a.k.a auto-complete.el, auto-complete-mode) is an extension that automates and advances the completion-system of GNU Emacs. It is superior to the old system. Features include:
+
+  Autocomplete(也叫 auto-complete.el，auto-complete-mode)是一个扩展，进一步完善和提高了 GNU Emacs 补全系统。它优于旧系统。功能包括：
+
+  + Visual interface
+
+	可视化界面。
+
+  + Reduce overhead of completion by using a statistical method
+
+	通过统计方法减少补全的开销。
+
+  + Extensibility
+
+	可扩展性。
+
+  This user manual covers from how to install and use to how to extend. Please contact me if you have any questions.
+
+  本手册内容包括如何安装，如何扩展。如果有任何问题请联系我。
+
+  Auto Complete Mode is licensed under the terms of GPLv3. And this document is licensed under the term of GFDL.
+
+  Auto Complete Mode 使用 GPLv3 协议授权。本文档给予 GFDL 许可。
+
+* 2 Downloads
+
+  You can download the latest auto-complete from the official site.
+
+* 3 Installation
+
+** 3.1 Requirements
+
+   + 800MHz or higher CPU
+   + 256MB or higher RAM
+   + GNU Emacs 22 or later
+
+** 3.2 Automatic Installation
+
+   It is easy to install by using an installation script called etc/install.el that is located in the package directory.
+
+   Type M-x load-file RET in a running or newly-launched Emacs. Note that if you want to upgrade auto-complete-mode, you have to install in a newly launched Emacs with the -q option. Then input a file name to load which is a path string with adding /etc/install.el to the package directory. For example, if the package directory is ~/tmp/auto-complete-1.2, the file name will be ~/tmp/auto-complete-1.2/etc/install.el.
+
+   Then input a directory where Auto Complete will be installed. You need to add a directory to load-path later if load-path doesn't include the directory. The directory is to be ~/.emacs.d by default.
+
+   Finally type RET to start installation. After installation, you may see the following buffer and follow instructions to edit .emacs.
+
+   You can also install from terminal like:
+
+   #+BEGIN_SRC sh
+$ make install
+$ # or with directory specified
+$ make install DIR=$HOME/.emacs.d/
+   #+END_SRC
+
+   If you don't have GNU Make, run emacs like:
+
+   #+BEGIN_SRC sh
+$ emacs -batch -l etc/install.el
+   #+END_SRC
+
+   Example message after installation (*Installation Result* Buffer)
+
+   Successfully installed!
+
+   Add the following code to your .emacs:
+
+   #+BEGIN_SRC elisp
+(add-to-list 'load-path "~/.emacs.d")    ; This may not be appeared if you have already added.
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+   #+END_SRC
+
+** 3.3 Manual Installation
+
+   It is also possible to install manually if you follow a directory configuration. First, byte-compile all .el files in the package directory. You may use Makefile in UNIX OS.
+   #+BEGIN_SRC sh
+$ make byte-compile
+   #+END_SRC
+
+   If you can't use Makefile, open the directory from Emacs by C-x d and type * . el RET B RET to do byte-compile.
+
+   Then copy all .el files and .elc files to a directory which is added to load-path. You may do such the following command if the directory is ~/.emacs.d
+   #+BEGIN_SRC sh
+$ cp *.el *.elc ~/.emacs.d
+   #+END_SRC
+
+   And then install dictionary files. They are optional to run Auto Complete Mode, but you should install if you don't have any reason. Dictionary files are located in called dict directory, it is needed that they are installed to a directory which is auto-complete.el has been installed. If you installed auto-complete.el to a directory called ~/.emacs.d, you also have to install dictionary files to ~/.emacs.d. Please be careful not to overwrite existed files. It may be a rare case, but the installation script above avoids overwrite by renaming dict directory to ac-dict directory.
+   #+BEGIN_SRC sh
+$ cp -r dict ~/.emacs.d
+   #+END_SRC
+
+   Finally add the following code to .emacs:
+   #+BEGIN_SRC elisp
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
+(require 'auto-complete-config)
+(ac-config-default)
+   #+END_SRC
+
+   If you haven't added the directory to load-path, you need to add the following code too.
+
+   如果没有将目录添加到 load-path，还需要添加下面的代码。
+
+   #+BEGIN_SRC elisp
+(add-to-list 'load-path "~/.emacs.d")
+   #+END_SRC
+
+** 3.4 After-Installation Check
+
+   Type some characters in *scratch* buffer in a restarted or newly-launched Emacs. Installation has been successful if you see a completion menu. If you have an error or no completion is started, it could be a failure. Please contact me in such case with confirmation following:
+
+   + Using correct load-path?
+
+	 A directory which auto-complete.el is installed to is in load-path.
+
+   + Characters AC in mode-line?
+
+	 If you don't see characters AC in mode-line (a gray line of bottom of buffer), auto-complete-mode is not enabled. Type M-x auto-complete-mode to enable and try again.
+
+   + Error occurred
+
+	 If you have *Backtrace* with errors or errors in minibuffer (bottom of frame), please contact me with the errors.
+
+* 4 Basic Usage
+
+  First, in a meaning, auto-complete-mode has no "usage". Because auto-complete-mode is designed to fade into the Emacs editing system. Users will receive a highly-developed completion system automatically without any difficulty. Ultimately, a goal of auto-complete-mode is to provide a system that does what users want without any command, but it is impossible to accomplish 100% accuracy actually. So there is "usage" to cover those points.
+
+  首先，在某种意义上来说，auto-complete-mode 没有“使用”。因为 auto-complete-mode 旨在淡入 Emacs 编辑系统。用户将会毫无困难的得到高度开发的自动不全系统。auto-complete-mode 的最终目的是提供一个用户不需要任何命令就能得到所想的系统，但实际上达到 100%的准确率是不可能的。所以有一些使用来覆盖这一点。
+
+** 4.1 Input Characters
+
+   Inputting characters is basic. Completions will never be shown without any character. So when completion will be started, what character causes completion to be started? It is a good question but it is difficult to answer here. In simple words, completion will be started when a character is inserted. See ac-trigger-commands for more details.
+
+   最基本的是输入字符。没有字符就不会产生补全。那么补全何时发生，什么字符引发补全？这是一个好问题，但是现在很难回答。简而言之，当输入字符的时候发生补全。参见 ac-trigger-command 了解更多信息。
+
+   #+CAPTION:Inputting Characters
+   http://auto-complete.org/doc/ac.png
+
+** 4.2 Completion by TAB
+
+   After completion is started, completion by TAB will be enabled temporarily. Completion by TAB is the most important and most frequent used command. TAB has several meanings.
+
+   补全开始后，将会临时开始 TAB 补全。通过 TAB 进行补全是最重要也是最常用的命令。TAB 有几个意思：
+
+   + Case that only one candidate remains
+
+	 只有一个候选的情况：
+
+	 If only one candidate remains, the candidate will be used to complete.
+
+	 如果真有一个候选，该候选将会用于补全。
+
+   + Case that there is a common part among candidates
+
+	 如果所有候选者有共同部分的情况。
+
+	 For example, if all candidates start with "set", it means they have a common part "set". So TAB completes "set" at first.
+
+	 例如，如果所有的候选都以“set”开始，就是说他们有一个共同的“set”部分，所以 TAB 命令首选补全“set”部分。
+
+   + Otherwise
+
+	 其他情况。
+
+	 Otherwise, select candidates in cycle by typing TAB.
+
+	 其余情况使用 TAB 在候选者中进行循环。
+
+   It may be a little different according to settings, but basically completion by TAB works as we wrote above. A reason why TAB has several meanings is that we want users to do anything with TAB.
+
+   根据设置可能会有不同，但使用 TAB 进行补全基本上如何上面所说。为何 TAB 会有几个含义的原因就是我们希望用户只用 TAB 就能做任何事情。
+
+** 4.3 Completion by RET
+
+   Like completion by TAB but some points are different:
+
+   类似使用 TAB 补全但是有些不同：
+
+   + Complete a selected candidate immediately
+
+	 立即使用选中的候选进行补全。
+
+   + Execute an action if a selected candidate has the action
+
+	 如果选中的候选项有动作立刻执行。
+
+   It is necessary to type TAB a few times for completion by TAB. Completion by RET instead complete a selected candidate immediately, so when you see a candidate you want, just type RET. If the candidate has an action, the action will be executed. Take a example of builtin abbrev completion. In completion by TAB, an abbrev which expands "www" to "World Wide Web" will be completed to "www", but in completion by RET, the abbrev will be expanded to "World Wide Web" as completion.
+
+   使用 TAB 补全有必要多次按下 TAB 键。但是 RET 使用选中的候选者立即进行补全。所以如果看到想要的候选者就可以直接按下回车键。如果候选者有一个行为，该行为将会执行。以自带的 abbrev 补全为例，缩写 www 会扩展为“world wide web”，如果使用 TAB 进行补全，www 将会补全为 www，但是使用 RET 补全，www 会补全为“world wide web”。
+
+** 4.4 Candidate Selection
+
+   Following the auto-complete-mode philosophy, it is not recommended to manually select candidates. That means it has been failed to guess the completion, and also it requires users to do candidate selection which is a high cost operation. We think there are so many cases that requires to do candidate selection, because completion by TAB will help candidate selection somehow and in recent versions, a statistical method contributes to make a candidate suggestion more accurate. However, actually, this is such cases. So we also think it is not bad idea to remember how to select candidates.
+
+   按照 auto-complete-mode 的哲学，不推荐手动选择候选项。那就意味着猜测补全失败，而且要求用户选择也是高成本操作。我们认为有很多情况下需要用户做选择，因为通过 TAB 某种程度上会有助于选择，在最近的版本中，一个统计方法有助于使选择更精确。然而实际上我们说的就是这种情况。所以我们也不认为记住如何选择候选项是个好主意。
+
+   Selecting candidates is not a complex operation. You can select candidates forward or backward by cursor key or M-p and M-n. According to settings, a behavior of completion by TAB will be changed as a behavior of completion by RET. See ac-dwim for more details.
+
+   选择候选项并不是个复杂操作。可以通过光标键或 M-n 和 M-n 向前向后选择。根据设置，TAB 进行补全的行为可以设置成 RET 补全的行为一样。参见 ac-dwin 了解更过细节。
+
+   There are other ways to select candidates. M-1 to select candidate 1, M-2 to select candidate 2, and so on.
+
+   还有其他方法选择候选项。M-1 选择候选项 1，M-2 选择候选项 2，以此类推。
+
+** 4.5 Help
+
+  auto-complete-mode has two types of help functionalities called Quick Help and Buffer Help. They are different in a point of displaying. Quick help will appear at the side of completion menu, so you can easily see that, but there is a problem if there is no space to display the help. Quick help will be shown automatically. To use quick help, you need to set ac-use-quick-help to t. Delay time to show quick help is given by ac-quick-help-delay.
+
+  auto-complete-mode 有两种类型的帮助功能，Quick help 和 Buffer help。它们显示不同。Quick help 将显示在补全菜单旁，可以很容易的看到，但问题是可能没有足够的空间来显示帮助信息。Quick help 会自动显示。为了使用 Quick help 需要将 ac-use-quick-help 设置为 t。显示 quick help 的延时时间有 ac-quick-help-delay 控制。
+
+  On the other side, buffer help will not be shown without any instructions from users. Buffer help literally displays help in a buffer in another window. It costs more to see than quick help, but it has more readability. To show buffer help, press C-? or f1. By pressing C-M-v or C-M-S-v after showing buffer help, you can scroll forward or backward through the help buffer. Other commands will be fallbacked and buffer help will be closed.
+
+  另一方面，如果用户没有任何指示，buffer help 不会显示。buffer help 会在另外一个窗口的 buffer 显示。相比 quick help 它花销更大，但是更可读。为了显示 buffer help，按 C-?或 f1。显示 buffer help 之后，使用 C-M-v 或 C-S-v 向前或向后滚动。其他的命令将会返回，buffer help 将会关闭。
+
+** 4.6 Summary
+
+   Completion will be started by inserting characters. After completion is started, operations in the following table will be enabled temporarily. After completion is finished, these operations will be disabled.
+
+   插入字符时将会触发补全。补全开始后，下面表中的操作就临时可用。补全结束后，这些操作也就禁用了。
+
+   | Key       | Command     | Description               |
+   | TAB, C-i  | ac-expand   | Completion by TAB         |
+   | RET, C-m  | ac-complete | Completion by RET         |
+   | down, M-n | ac-next     | Select next candidate     |
+   | up, M-p   | ac-previous | Select previous candidate |
+   | C-?, f1   | ac-help     | Show buffer help          |
+
+   To stop completion, simply use C-g.
+
+   使用 C-g 停止补全。
+
+* 5 Advanced Usage
+
+** 5.1 auto-complete command
+
+   Basically there is an assumption that auto-complete-mode will be started automatically, but there is also exception. For example, that is a case that an user wants to complete without inserting any character or a case not to start auto-complete-mode automatically by settings. A command called auto-complete is useful in such cases, which is used with key binding in general. The following code changes a default completion command to more advanced feature that auto-complete-mode provides.
+
+   一般假设 auto-complete-mode 会自动开始，但也有例外。例如，用户希望补全不要插入任何字符或者通过设置禁止自动启动 auto-complete-mode。这种情况下 auto-complete 命令就很有用，通常绑定到按键上。下面的代码将默认的补全命令更改为 auto-complete-mode 提供的更高级的功能。
+
+   #+BEGIN_SRC elisp
+(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+   #+END_SRC
+
+   So, as of auto-complete command, it is a little different from an original automatic completion.
+
+   正如 auto-complete-mode，这和原先的自动补全命令有点不同。
+
+   + Case that only one candidate remains
+
+	 只有剩余一个补全的情况。
+
+	 Complete immediately without showing completion menu.
+
+	 不显示补全菜单立即补全。
+
+   + Case that no candidates remains
+
+	 没有候选项剩余。
+
+	 Attempt to complete with fuzzy matching. See Completion by Fuzzy Matching for more details.
+
+	 尝试使用模糊匹配进行补全。
+
+   + Otherwise
+
+	 其他。
+
+	 Otherwise start completion with/without expanding a whole common part and showing completion menu. See also ac-show-menu-immediately-on-auto-complete and ac-expand-on-auto-complete.
+
+	 否则扩展公共部分，显示补全菜单。
+
+** 5.2 Completion by Fuzzy Matching
+
+	In a case that there are no candidates by auto-complete command or the case where ac-fuzzy-complete command is executed, auto-complete-mode attempts to complete with fuzzy matching instead of the usual exact matching. Parameters of fuzzy matching have already been optimized for use, so users don't need to change them. However if you want to know the internals, see fuzzy.el. Using completion by fuzzy matching, typos will be fixed as a series of completion. For instance, input "messaeg" in a buffer, and then do M-x auto-complete or M-x ac-fuzzy-complete. The cursor color will be changed to red if completion has been successful, and then you can continue to complete, regarding "messaeg" as "message". It is not a bad idea to bind auto-complete command to some key to handle such cases.
+
+	如果 auto-complete 命令没有候选项的，或者执行了 ac-fuzzy-complete 命令，auto-complete-mode 会尝试使用模糊匹配而不是正常的准确匹配进行补全。为了使用，模糊匹配的参数已经优化过，所以用户不需要改变它们。但是如果想知道内部，查看 fuzzy.el。使用模糊匹配进行补全，输入将会根据补全进行修正。例如，在 buffer 中输入“messaeg”，然后执行 M-x auto-complete 或 M-x ac-fuzzy-complete。如果补全成功，光标的颜色将会变为红色，然后可以把“messaeg”当做“message”继续补全。将 auto-complete 命令绑定到按键来处理这样的情况不是个坏主意。
+
+	#+CAPTION:Fuzzy matching
+	http://auto-complete.org/doc/ac-fuzzy.png
+
+** 5.3 Filtering Completion Candidates
+
+   You can start filtering by C-s. The cursor color will change to blue. Then input characters to filter. It is possible to do completion by TAB or select candidates, which changes the cursor color to original so that telling filtering completion candidates has done. The filtering string will be restored when C-s again. To delete the filter string, press DEL or C-h. Other general operations is not allowed there.
+
+   可以通过 C-s 开始过滤。光标颜色将会变为蓝色。然后输入字符来进行过滤。可以通过 TAB 完成补全或者选择候选项，这将光标颜色变为原来的颜色，同时也说明过滤候选项已经完成。再次使用 c-s 时过滤的字符串将会被保存起来。使用 DEL 或 C-h 删除过滤字符串。这里其他的操作是不允许的。
+   #+CAPTION:Filtering
+   http://auto-complete.org/doc/ac-isearch.png
+
+** 5.4 Trigger Key
+
+   It is difficult what key auto-complete command is bound to. It should be bound to a key which is easy to press as much as possible because completion operation is often happened. However, it is a major problem that there is no empty key to press easily. auto-complete-mode provides a feature called Trigger Key that handles such the problem. Using trigger key, you can use an arbitrary key temporarily if necessary. The following code uses TAB as trigger key.
+
+   很难决定将 auto-complete 命令绑定在哪个按键上。应该将其尽可能的绑定在容易按到的键上，因为经常发生补全操作。然而，主要的问题是没有空余的按键。auto-complete-mode 提供了一个叫做触发键的功能来解决这个问题。使用触发键，如果必要的话可以临时使用任何按键。下面的代码使用 TAB 作为触发键。
+
+   #+BEGIN_SRC elisp
+(ac-set-trigger-key "TAB")
+   #+END_SRC
+
+   Trigger key will be enabled after inserting characters. Otherwise it is dealt as an usual command (TAB will be indent). Generally, trigger key is used with ac-auto-start being nil.
+
+   插入字符之后触发键就会启用。否则还是按照普通的命令处理了（TAB 将会缩进）。一般来说使用触发键的时候 ac-auto-start 设置为 nil。
+
+   #+BEGIN_SRC elisp
+(setq ac-auto-start nil)
+   #+END_SRC
+
+   As of ac-auto-start, see Not to complete automatically or ac-auto-start for more details.
+
+** 5.5 Candidate Suggestion
+
+   auto-complete-mode analyzes completion operations one by one and reduces overheads of completion as much as possible. For example, having a candidate "foobar" been completed few times, auto-complete-mode arranges it to top of the candidates next time and make a situation that allows users to complete the word with one time TAB or few times TAB. It is called comphist internally, and you can use it by setting ac-use-comphist to t. It is enabled by default. Collection operations data will be stored in user-emacs-directory or ~/.emacs.d/ with a name ac-comphist.dat.
+
+   auto-complete-mode 会一个一个分析补全结果，尽力减少补全的过度开销。例如，使用“foobar”补全几次之后，auto-complete-mode 就会把它放在补全列表的前面，这样用户就能通过一次 TAB 或几次 TAB 来进行补全。这就是内部 comphist，可以通过将 ac-use-comphist 来使用它。默认是启用的。搜集的操作数据将会放在 use-emacs-directory 或者~/.emacs.d/下的 ac-comphist.dat 文件中。
+
+   auto-complete-mode collects two types of data to accomplish accurate candidate suggestion.
+
+   auto-complete-mode 搜集两种类型的数据来完成精确补全的建议。
+
+   + Count of completion
+
+	 补全的次数。
+
+   + Position of completion
+
+	 补全的位置。
+
+   Simply saying, it collects not only a completion count but also a position of completion. A completion candidate will be scored with the count and the point. If you complete find-file with a word f few times, in next time find-file will be arranged to top of candidates. However it is too simple. Actually find-file with find- will not have the same score, because a distance between f and find- will reduce a weight of scoring. It means that if you often complete find-library after find-, find-library will get high score than find-file at that position. So auto-complete-mode can guess find-file will be top after f and find-library will be top after find- as it seems to learn from users' operations.
+
+   简单来说，不仅搜集补全数量，还搜集补全位置。补全候选项将会使用数量和位置来打分。如果使用 f 补全 find-file 多次，下次，find-file 将会安排在补全列表的前面。但是，这太简单了。实际上包含 find-的 find-file 将会有不同的得分，因为 f 和 find-之间的差别将会减少得分的比重。也就是说如果经常在 find-后使用 find-library 补全，find-library 在该位置将会比 find-file 有更好的得分。所以 auto-complete-mode 从用户的操作中学到了 f 之后应该是要输入 find-file，find-之后应该是要输入 find-library。
+
+** 5.6 Completion by Dictionary
+
+   Dictionary is a simple list of string. There is three types of dictionary: user defined dictionary, major mode dictionary, and extension dictionary. You need to add ac-source-dictionary to ac-sources (default). See Source for more details.
+
+   字典是字符串的简单列表。有三种类型的字典：用户自定义字典，主模式字典和扩展字典。需要将 ac-source-dictory 添加到 ac-sources（默认）。参看 Source 了解更多消息。
+
+*** 5.6.1 User Defined Dictionary
+
+	User defined dictionary is composed of a list of string specified ac-user-dictionary and dictionary files specified by ac-user-dictionary-files. Dictionary file is a word list separated with newline. User defined dictionary is shared with all buffers. Here is example adding your mail address to dictionary.
+
+	用户自定义字典由 ac-user-dictonary 和 ac-user-dictionary-files 指定的字典文件中的字符串列表组成。字典文件是一个由换行符分割的单词列表。所有 buffer 共享用户字典文件。下面将将邮箱地址添加到字典的例子。
+
+	#+BEGIN_SRC elisp
+(add-to-list 'ac-user-dictionary "foobar@example.com")
+	#+END_SRC
+
+	Setting will be applied immediately. Try to input "foo" in a buffer. You may see foobar@example.com as a completion candidate. This setting will be cleared if Emacs will quit. You need to write the following code to keep setting in next Emacs launching.
+
+	设置会立即启用，在 buffer 中尝试使用输入“foo”，可以看到 foobar@example.com 在补全列表中。Emacs 退出时将会清楚该设置。要想下次 Emacs 启动还使用设置需要以下代码。
+
+	#+BEGIN_SRC elisp
+(setq ac-user-dictionary '("foobar@example.com" "hogehoge@example.com"))
+	#+END_SRC
+
+	There is more easy way to add word to dictionary. Files specified by ac-user-dictionary-files will be treated as dictionary files. By default, ~/.dict will be a dictionary file, so edit ~/.dict like:
+
+	更简单的方法是将单词添加到字典。ac-user-dictionay-files 指定的文件作为字典文件。默认，~/.dict 将会是字典文件，所以可以如下编辑~/.dict：
+
+	#+BEGIN_EXAMPLE
+foobar@example.com
+hogehoge@example.com
+	#+END_EXAMPLE
+
+	As we said, words are separated with newline. They are not applied immediately, because auto-complete-mode uses cache not to load every time from a dictionary file. It may be high cost. To clear cache, do M-x ac-clear-dictionary-cache. After that, dictionary files will be load absolutely.
+
+	正如前面所说，单词使用换行分割。它们不会立即启用，因为 auto-complete-mode 使用缓存而不是每次都加载字典文件。你可能代价较高。使用 M-x ac-clear-dictionary-cache 清除缓存。之后，字典文件就会被加载。
+
+	No need to say perhaps, you can use other files as dictionary file by adding to ac-user-dictionary-files.
+
+	没必要说可能，可用通过向 ac-use-dictionary-files 添加文件来使用其他字典文件。
+
+*** 5.6.2 Major Mode Dictionary and Extension Dictionary
+
+   You can use other dictionaries for every major-modes and extensions. A dictionary will loaded from a directory specified with ac-dictionary-directories. ac-dictionary-directories may be the following setting if you followed Installation instructions.
+
+   可以为各主模式和扩展使用不同的字典。从 ac-dictionary-directories 指定的目录中加载字典文件。。如果使用安装指南，ac-dictionary-directories 可能是如下设置。
+
+   #+BEGIN_SRC elisp
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+   #+END_SRC
+
+   A dictionary named c++-mode for specific major-mode and a dictionary named txt for specific extension will be stored in the directory. For instance, you complete in a buffer named a.cpp with dictionary completion, following the setting above, ~/.emacs.d/ac-dict/c++-mode and ~/.emacs.d/ac-dict/cpp will be loaded as dictionary file. You can edit the dictionary files and make a new one. In addition, you can add a new dictionary file to a directory that has same configuration.
+
+   该目录中包含一个用于主指定主模式的 c++-mode 字典和用于扩展的 txt 字典。例如，根据上面的设置，如果在名为 a.cpp 的 buffer 中使用字典补全，~/.emacs.d/ac-dict/c++-mode 和~/.emacs.d/ac-dict/cpp 文件将会作为字典文件加载。可以编辑字典文件来生成新字典。另外，可以将字典文件添加到有相同配置的目录中。
+
+   As same as user defined dictionary, after editing and adding dictionary, you should do M-x ac-clear-dictionary-cache to apply changes.
+
+   正如用户自定义字典，编辑和添加字典后，应该使用 M-x ac-clear-dirctory-cache 来应用改变。
+
+* 6 Source
+
+  Source is a concept that ensures the extensibility of auto-complete-mode. Simply saying, source is a description of:
+
+  source 是一个用来确保 auto-complete-mode 的概念，简单来说可以描述为：
+
+  + How to generate completion candidates
+
+	如何生成候选候选项。
+
+  + How to complete
+
+	如何补全。
+
+  + How to show
+
+	如何显示。
+
+  Anybody who knows a little Emacs Lisp can define a source easily. See Extend for how to define a source. Here we will explain how to use built-in sources.
+
+  任何了解一点 Emacs Lisp 的人都可以容易的定义一个 source。参见 Extend 了解如何定义一个 source。这里解释如何使用内置的 sources。
+
+  Usually a source name starts with ac-source-. So you can list sources with apropos (M-x apropos RET ^ac-source-). You may see ac-source-filename and ac-source-dictionary which are entities of sources.
+
+  通常 source 名字以 ac-source-开始。所以开始用 apropos 来列出所有源（M-x apropos RET ^ac-source-）。可以看到 source 中的条目 ac-source-filename 和 ac-source-dictionary。
+
+** 6.1 Using Source
+
+   If you wrote (ac-config-default) in your .emacs, it is rare to change a source setting because it is already optimized to use. Here is a short explanation about source however. Sources will be used by setting ac-sources to a list of sources. You can see the setting by evaluating ac-sources in *scratch* buffer:
+
+   如果将(ac-config-default)写在.emacs 中，将很少改变 source 设定，因为已经为了使用优化过了。然而这里有一个关于 source 的简短解释。source 将会被使用，通过将 ac-sources 设定为 sources 的列表。可以通过在 *scratch* buffer 中计算 ac-sources 来看到设置。
+
+   #+BEGIN_SRC elisp
+;; Formatted
+(ac-source-filename
+ ac-source-functions
+ ac-source-yasnippet
+ ac-source-variables
+ ac-source-symbols
+ ac-source-features
+ ac-source-abbrev
+ ac-source-words-in-same-mode-buffers
+ ac-source-dictionary)
+   #+END_SRC
+
+   As you see, ac-sources in *scratch* buffer has six sources. We explain each source for detail, you can guess meanings of sources. It is worth to remember that ac-sources is a buffer local variable, which means each ac-sources for buffers will be different.
+
+   正如所见，*scratch* buffer 中的 ac-sources 有六个 source。我们将详细解释每个 source，可以猜测 source 的含义。值得记住的是 ac-sources 是一个 buffer local 变量，也就是说每个 buffer 的 ac-sources 是不同的。
+
+   Here is an example. Imagine you are at the *scratch* buffer. As we said, this buffer has many sources. Some people think there are too many. So try to change ac-sources to reduce functionality. It is easy to change. Just evaluate the following code in the *scratch* buffer or with M-::
+
+   这里是一个例子，想象你在 *scratch* buffer。正如所说，该 buffer 有很多 srouce。有些人认为太多了。所以尝试修改 ac-sources 来减少功能。很容易改变。只需要在 *scratch* buffer 中计算下面的表达式即可：
+
+   #+BEGIN_SRC elisp
+(setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
+   #+END_SRC
+
+   This example changes ac-source setting and enable only symbol completion and word completion among same major modes. Then, how can we enable this setting in next Emacs launching? We can change settings by adding a hook which is called when *scratch* buffer is created.
+
+   这个例子改变了 ac-source 设置，只在相同的主模式中启用了符号补全和单词补全。那么，如何在以后启动的 Emacs 中也保持这样的设置呢？它会在创建*scratch* buffer 的时候添加沟子荠函数来改变设置。
+
+   #+BEGIN_SRC elisp
+(defun my-ac-emacs-lisp-mode ()
+  (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers)))
+
+(add-hook 'emacs-lisp-mode-hook 'my-ac-emacs-lisp-mode)
+   #+END_SRC
+
+   If the code (ac-config-default) is written in .emacs, the code above may not work correctly. This is because (ac-config-default) will overwrite the setting. In such case, you can redefine a function which is used in (ac-config-default). The function name is ac-emacs-lisp-mode-setup in emacs-lisp-mode. See auto-complete-config.el for more details.
+
+   如果代码(ac-config-default)写入到.emacs 当中，上面的代码就不能正确运行。这种情况下，应该重新定义(ac-config-default)中使用的函数。emacs-lisp-mode 中该函数名字是 ac-emacs-lisp-mode-setup。参见 auto-complete-config.el 了解更多详细信息。
+
+   #+BEGIN_SRC elisp
+(defun ac-emacs-lisp-mode-setup ()
+  (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers)))
+   #+END_SRC
+
+   So, now you know how to change sources in a specific major mode. Summary is:
+
+   现在，知道了如何在指定的主模式中改变 source。总的来说：
+
+   1. Define a function changing ac-sources
+
+	  定义修改 ac-sources 的函数。
+
+   2. Register the function to proper mode hooks (c++-mode-hook, ruby-mode-hook, and python-mode-hook, etc)
+
+   将函数注册合适的模式钩子上（c++-mode-hook，ruby-mode-hook 和 python-mode-hook 等等）。
+
+	By the way, how can we change a setting for all buffers? We use setq-default to change ac-sources instead of setq in such case. Then the default value of ac-sources will be changed to the value you specified.
+
+	那么，如何改变所有 buffer 中的设置呢？这种情况下使用 setq-default 而不是 setq 来修改。然后 ac-sources 的默认值将会改变为指定的值。
+
+	#+BEGIN_SRC elisp
+(setq-default ac-sources '(ac-source-words-in-all-buffer))
+	#+END_SRC
+
+	There are other ways to do that. (ac-config-default) changes the default value of ac-sources by registering a hook for auto-complete-mode. The registered function is ac-common-setup that adds ac-source-filename to the first of ac-sources by default. So all auto-complete-mode enabled buffer will have ac-source-filename at the first of ac-sources. A reason why adding to the first is relating to Omni Completion. Anyway you don't care about it here. So if you want to change ac-sources of all buffer, you can redefine ac-common-setup function to do that.
+
+	还有其他方法可以做到。（ac-config-default）为 auto-complete-mode 注册了一个钩子，从而改变了 ac-sources 的默认值。注册的函数就是 ac-common-setup，该函数默认将 ac-source-filename 添加为 ac-sources o 第一个元素。这样所有的启用 auto-complete-mode 的 buffer 都会将 ac-source-filename 放在 ac-sources 的第一个。为什么将其放在第一位是和 Omni 补全有关系的。不管怎么说现在没必要关系这个。所以如果想修改所有 buffer 的 ac-sources，可以重新定义 ac-common-setup 函数。
+
+	#+BEGIN_SRC elisp
+;; Add ac-source-dictionary to ac-sources of all buffer
+(defun ac-common-setup ()
+  (setq ac-sources (append ac-sources '(ac-source-dictionary))))
+	#+END_SRC
+
+** 6.2 Builtin Sources
+
+   Here are defined sources in auto-complete.el and auto-complete-config.el.
+
+   下面是 auto-complete.el 和 auto-complete-config.el 中定义的 source。
+
+*** 6.2.1 ac-source-abbrev
+
+	A source for Emacs abbreviation function. See info emacs Abbrevs about abbreviation function.
+
+	Emacs 缩写函数使用的 source，查看 emacs Abbrevs 了解。
+
+*** 6.2.2 ac-source-css-property
+
+	A source for CSS property.
+
+	CSS 属性的 source。
+
+*** 6.2.3 ac-source-dictionary
+
+	A source for dictionary. See Completion by Dictionary about dictionary.
+
+	字典 source。
+
+*** 6.2.4 ac-source-eclim
+
+	A source for Emacs-eclim.
+
+*** 6.2.5 ac-source-features
+
+	A source for completing features which are available with (require '.
+
+	补全功能的 source，可用于(require ')。
+
+*** 6.2.6 ac-source-filename
+
+	A source for completing file name. Completion will be started after inserting /.
+
+	用于补全文件名的 source，在插入/之后开始补全。
+
+*** 6.2.7 ac-source-files-in-current-dir
+
+	A source for completing files in a current directory. It may be useful with eshell.
+
+	补全当前目录中的文件。可能用于 eshell。
+
+*** 6.2.8 ac-source-functions
+
+	A source for completing Emacs Lisp functions. It is available only after (.
+	补全 Emacs Lisp 函数。只在（之后可用。
+
+*** 6.2.9 ac-source-ghc-mod
+
+	A source for ghc-mod.
+
+*** 6.2.10 ac-source-gtags
+
+	A source for completing tags of Global.
+
+	补全 global 的 tags。
+
+*** 6.2.11 ac-source-imenu
+
+	A source for completing imenu nodes. See info emacs imenu for details.
+
+
+*** 6.2.12 ac-source-semantic
+
+	A source for Semantic. It can be used for completing member name for C/C++.
+
+*** 6.2.13 ac-source-slime
+
+	A source for SLIME.
+
+*** 6.2.14 ac-source-semantic-raw
+
+	Unlike ac-source-semantic, this source is for completing symbols in a raw namespace.
+
+*** 6.2.15 ac-source-symbols
+
+	A source for completing Emacs Lisp symbols.
+
+*** 6.2.16 ac-source-variables
+
+	A source for completing Emacs Lisp symbols.
+
+*** 6.2.17 ac-source-words-in-all-buffer
+
+	A source for completing words in all buffer. Unlikely ac-source-words-in-same-mode-buffers, it doesn't regard major-mode.
+
+*** 6.2.18 ac-source-words-in-buffer
+
+	A source for completing words in a current buffer.
+
+*** 6.2.19 ac-source-words-in-same-mode-buffers
+
+	A source for completing words which are collected over buffers whom major-mode is same to of a current buffer. For example, words will shared among a.cpp and b.cpp, but not shared among a.pl and b.cpp because they are different major-mode buffers. Usually this source is more useful than ac-source-words-in-all-buffer.
+
+*** 6.2.20 ac-source-yasnippet
+
+	A source for Yasnippet to complete and expand snippets.
+
+* 7 Tips
+
+** 7.1 Not to complete automatically
+
+   If you are being annoyed with displaying completion menu, you can disable automatic starting completion by setting ac-auto-start to nil.
+
+   如果觉得显示的补全菜单很烦人，可以将 ac-auto-start 设置为 nil 关闭补全菜单。
+
+   #+BEGIN_SRC elisp
+(setq ac-auto-start nil)
+   #+END_SRC
+
+   You need to bind some key to auto-complete command (because you need to complete anyway). For example, bind to ac-mode-map, which is a key map for auto-complete-mode enabled buffer:
+
+   需要将 auto-complete 命令绑定到某个按键（因为无路如何都需要补全）。例如，绑定到 ac-mode-mamp。
+
+   #+BEGIN_SRC elisp
+(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+   #+END_SRC
+
+   Or bind to global key map.
+
+   或者绑定到全局键映射。
+
+   #+BEGIN_SRC elisp
+(global-set-key "\M-/" 'auto-complete)
+   #+END_SRC
+
+   In addition, if you allow to start completion automatically but also want to be silent as much as possible, you can do it by setting ac-auto-start to an prefix length integer. For example, if you want to start completion automatically when you has inserted 4 or more characters, just set ac-auto-start to 4:
+
+   此外，如果允许自动补全，但是希望它能够尽可能的安静，那就需要将 ac-auto-start 设置为前缀的合适长度。例如，如果想要插入 4 个或更多字符以后才开始补全，只需要将 ac-auto-start 设置为 4：
+
+   (setq ac-auto-start 4)
+
+   Setting ac-auto-start to large number will result in good for performance. Lesser ac-auto-start, more high cost to produce completion candidates, because there will be so many candidates necessarily. If you feel auto-complete-mode is stalling, change ac-auto-start to a larger number or nil.
+
+   将 ac-auto-start 设置为比较大的数字将会有更好的性能。比较小的 ac-auto-start 产生补全候选项的时候有更多的消耗，因为将会有很多的必要候选项。如果 auto-complete-mode 变慢了，将 ac-auto-start 修改为大点的数字或 nil。
+
+   See ac-auto-start for more details.
+
+   And consider to use Trigger Key.
+
+   考虑使用 Trigger Key。
+
+** 7.2 Not to show completion menu automatically
+
+   There is another approach to solve the annoying problem is that not to show completion menu automatically. Not to show completion menu automatically, set ac-auto-show-menu to nil.
+
+   解决这个烦人问题的另一个方法是不自动显示补全菜单。将 ac-auto-show-menu 设置为 nil 可以不自动显示补全菜单。
+
+   #+BEGIN_SRC elisp
+(setq ac-auto-show-menu nil)
+   #+END_SRC
+
+   When you select or filter candidates, completion menu will be shown.
+
+   当选择或过滤候选项的时候，补全菜单将会显示。
+
+   In other way, you can delay showing completion menu by setting ac-auto-show-menu to seconds in real number.
+
+   另一种方式是延迟显示补全菜单，这需要将 ac-auto-show-menu 设置为延迟的秒数。
+
+   #+BEGIN_SRC elisp
+;; Show 0.8 second later
+(setq ac-auto-show-menu 0.8)
+   #+END_SRC
+
+   This interface has both good points of completely automatic completion and completely non-automatic completion. This may be default in the future.
+
+   该接口兼具自动补全和非自动补全的优点。将来可能会设为默认。
+
+** 7.3 Stop completion
+
+   You can stop completion by pressing C-g. However you won't press C-g while defining a macro. In such case, it is a good idea to bind some key to ac-completing-map.
+
+   可以使用 C-g 停止自动补全。但是定义宏的时候可能不希望使用 C-g。这种情况下，绑定一些健到 ac-completing-map 是个好主意。
+
+   #+BEGIN_SRC elisp
+(define-key ac-completing-map "\M-/" 'ac-stop)
+   #+END_SRC
+
+   Now you can stop completion by pressing M-/.
+
+   现在可以使用 M-/停止补全了。
+** 7.4 Finish completion by TAB
+
+   As we described above, there is many behaviors in TAB. You need to use TAB and RET properly, but there is a simple interface that bind RET to original and TAB to finish completion:
+
+   正如前面所讲，TAB 有很多行为。可能需要正确使用 TAB 和 RET，但是有一个简单的借口可以将 RET 绑定为原本的设置，而使用 TAB 来完成补全。
+
+   #+BEGIN_SRC elisp
+(define-key ac-completing-map "\t" 'ac-complete)
+(define-key ac-completing-map "\r" nil)
+   #+END_SRC
+
+** 7.5 Select candidates with C-n/C-p only when completion menu is displayed
+
+   By evaluating the following code, you can select candidates with C-n/C-p, but it might be annoying sometimes.
+
+   通过计算下面的代码，可以使用 C-n/C-p 选择候选项，但是有时候可能有些烦人。
+
+   #+BEGIN_SRC elisp
+;; Bad config
+(define-key ac-completing-map "\C-n" 'ac-next)
+(define-key ac-completing-map "\C-p" 'ac-previous)
+   #+END_SRC
+
+   In this case, it is better that selecting candidates is enabled only when completion menu is displayed so that the key input will not be taken as much as possible. ac-menu-map is a keymap for completion on completion menu which is enabled when ac-use-menu-map is t.
+
+   这种情况下，更好的选择是只有在显示补全菜单的时候启用选择候选项，这样就可以尽可能少的减少按键。ac-menu-map 是补全菜单上的键映射，但此时需要将 ac-use-menu-map 设置为 t。
+
+   #+BEGIN_SRC elisp
+(setq ac-use-menu-map t)
+;; Default settings
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
+   #+END_SRC
+
+   See ac-use-menu-map and ac-menu-map for more details.
+
+** 7.6 Not to use quick help
+
+   A tooltip help that is shown when completing is called quick help. You can disable it if you don't want to use it:
+
+   补全时显示工具提示叫做快速帮助，如果不想使用可以禁用。
+
+   #+BEGIN_SRC elisp
+(setq ac-use-quick-help nil)
+   #+END_SRC
+
+** 7.7 Change a height of completion menu
+
+   Set ac-menu-height to number of lines.
+
+   #+BEGIN_SRC elisp
+;; 20 lines
+(setq ac-menu-height 20)
+   #+END_SRC
+
+** 7.8 Enable auto-complete-mode automatically for specific modes
+
+   auto-complete-mode won't be enabled automatically for modes that are not in ac-modes. So you need to set if necessary:
+
+   不会为不在 ac-modes 中的 modes 自动启用 auto-complete-mode。因此必要的话需要如下设置：
+
+   #+BEGIN_SRC elisp
+   (add-to-list 'ac-modes 'brandnew-mode)
+   #+END_SRC
+
+** 7.9 Ignore case
+
+   There is three ways to distinguish upper case and lower case.
+
+   有三种方法来区分大小写。
+
+   #+BEGIN_SRC elisp
+;; Just ignore case
+(setq ac-ignore-case t)
+;; Ignore case if completion target string doesn't include upper characters
+(setq ac-ignore-case 'smart)
+;; Distinguish case
+(setq ac-ignore-case nil)
+   #+END_SRC
+
+   Default is smart.
+
+** 7.10 Stop completion automatically after inserting specific words
+
+   	Set ac-stop-words to words that stops completion automatically. In ruby, some people want to stop completion automatically after inserting "end":
+
+	将 ac-stop-words 设置为停止不全的单词。在 ruby 中，一些人希望能够在插入“end”后自动停止补全。
+
+	#+BEGIN_SRC elisp
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (make-local-variable 'ac-stop-words)
+            (add-to-list 'ac-stop-words "end")))
+	#+END_SRC
+
+	Note that ac-stop-words is not a buffer local variable, so you need to make it buffer local with make-local-variable if it is buffer specific setting.
+
+	注意，ac-stop-words 不是一个 buffer local 变量，所以如果是特定 buffer 蛇形，需要使用 make-local-variable 将其变为 buffer local。
+
+** 7.11 Change colors
+
+   Colors settings are following:
+
+   | Face               | Description                           |
+   | ac-completion-face | Foreground color of inline completion |
+   | ac-candidate-face  | Color of completion menu              |
+   | ac-selection-face  | Selection color of completion menu    |
+
+   To change face background color, use set-face-background. To change face foreground color, use set-face-foreground. To set underline, use set-face-underline.
+
+   #+BEGIN_SRC elisp
+;; Examples
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline 'ac-candidate-face "darkgray")
+(set-face-background 'ac-selection-face "steelblue")
+   #+END_SRC
+
+** 7.12 Change default sources
+
+   Read Source first if you don't familiar with sources. To change default of sources, use setq-default:
+
+   如果对 source 不了解的话先阅读 Source。使用 setq-default 改变 source 的默认值：
+
+   #+BEGIN_SRC elisp
+(setq-default ac-sources '(ac-source-words-in-all-buffer))
+   #+END_SRC
+
+** 7.13 Change sources for specific major modes
+
+   	For example, you may want to use specific sources for C++ buffers. To do that, register a hook by add-hook and change ac-sources properly:
+
+	如果想为 C++ buffer 使用指定的 source，使用 add-hook 注册钩子来正确改变 ac-sources：
+
+	#+BEGIN_SRC elisp
+(add-hook 'c++-mode (lambda () (add-to-list 'ac-sources 'ac-source-semantic)))
+	#+END_SRC
+
+** 7.14 Completion with specific source
+
+   You can start completion with specific source. For example, if you want to complete file name, do M-x ac-complete-filename at point. Or if you want to complete C/C++ member name, do M-x ac-complete-semantic at point. Usually, you may bind them to some key like:
+
+   可以使用指定的 source 补全。例如，如果想补全文件名，可以在 point 处使用 M-x ac-complete-filename。如果想补全 C/C++成员名，在 point 处使用 M-x ac-complete-semantic。通常应该将它们绑定在一下按键上，比如：
+
+   #+BEGIN_SRC elisp
+;; Complete member name by C-c . for C++ mode.
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c .") 'ac-complete-semantic)))
+;; Complete file name by C-c /
+(global-set-key (kbd "C-c /") 'ac-complete-filename)
+   #+END_SRC
+
+   Generally, such commands will be automatically available when sources are defined. Assume that a source named ac-source-foobar is being defined for example, a command called ac-complete-foobar will be also defined automatically. See also Builtin Sources for available commands.
+
+   通常，当定义好 source 之后这样的命令是自动可用的。假设已经定义好一个名为 ac-source-foobar 的 source，名字 ac-complete-foobar 的命令也是自动定义的。查看 Builtin Sources 了解可用的命令。
+
+   If you want to use multiple sources for a command, you need to define a command for it like:
+
+   如果想在一个命令中使用多个 source，需要类似如下的命令：
+   #+BEGIN_SRC elisp
+(defun semantic-and-gtags-complete ()
+  (interactive)
+  (auto-complete '(ac-source-semantic ac-source-gtags)))
+   #+END_SRC
+
+   auto-complete function can take an alternative of ac-sources.
+
+** 7.15 Show help persistently
+
+   Use ac-persist-help instead of ac-help, which is bound to M-<f1> and C-M-?.
+
+** 7.16 Show a lastly completed candidate help
+
+   ac-last-help command shows a lastly completed candidate help in a ac-help (buffer help) form. If you give an argument by C-u or just call ac-last-persist-help, its help buffer will not disappear automatically.
+
+   ac-last-help 在 ac-help（buffer-help）表中显示上次补全候选项的帮助。如果使用 C-u 参数或调用 ac-last-persist-help，它的帮助 buffer 不会自动消失。
+
+   ac-last-quick-help command show a lastly completed candidate help in a ac-quick-help (quick help) form. It is useful if you want to see a function documentation, for example.
+
+   ac-last-quick-help 命令显示在 ac-quick-help 中显示上一个补全候选项帮助。这有助于看到函数文档。
+
+   You may bind keys to these command like:
+
+   将这些命令绑定到按键，比如:
+
+   #+BEGIN_SRC elisp
+(define-key ac-mode-map (kbd "C-c h") 'ac-last-quick-help)
+(define-key ac-mode-map (kbd "C-c H") 'ac-last-help)
+   #+END_SRC
+
+** 7.17 Show help beautifully
+
+   If pos-tip.el is installed, auto-complete-mode uses its native rendering engine for displaying quick help instead of legacy one.
+
+   如果安装 pos-tip.el，auto-complete-mode 使用它的渲染引擎来显示快速帮助。
+
+* 8 Third-party Extensions
+
+** 8.1 SLIME
+
+   See ac-slime page.
+
+** 8.2 Scala
+
+   See ENSIME page.
+
+* 9 Configuration
+
+  Any configuration item will be set in .emacs or with M-x customize-group RET auto-complete RET.
+
+  任何配置项都可以在.emacs 中或通过 M-x customize-group RET auto-complete RET 设置。
+
+** 9.1 ac-delay
+
+   Delay time to start completion in real number seconds. It is a trade-off of responsiveness and performance.
+
+   延迟补全的秒数。这是响应能力和性能的权衡。
+
+** 9.2 ac-auto-show-menu
+
+   Show completion menu automatically if t specified. t means always automatically showing completion menu. nil means never showing completion menu. Real number means delay time in seconds.
+
+   如果设置为 t 自动显示补全菜单。t 表示着总是显示补全菜单。nil 表示绝不显示补全菜单。实数表示延迟显示的秒数。
+
+** 9.3 ac-show-menu-immediately-on-auto-complete
+
+   Whether or not to show completion menu immediately on auto-complete command. If inline completion has already been showed, this configuration will be ignored.
+
+   是否在补全命令上立即显示补全菜单，如果行内补全已经显示，忽略该配置。
+
+** 9.4 ac-expand-on-auto-complete
+
+   Whether or not to expand a common part of whole candidates.
+
+   是否扩展所有候选项的公共部分。
+
+** 9.5 ac-disable-faces
+
+   Specify a list of face symbols for disabling auto completion. Auto completion will not be started if a face text property at a point is included in the list.
+
+** 9.6 ac-stop-flymake-on-completing
+
+   Whether or not to stop Flymake on completion.
+
+** 9.7 ac-use-fuzzy
+
+   Whether or not to use fuzzy matching.
+
+   是否使用模糊补全。
+
+** 9.8 ac-fuzzy-cursor-color
+
+   Change cursor color to specified color when Completion by Fuzzy Matching is started. nil means never changed. Available colors can be seen with M-x list-colors-display.
+
+** 9.9 ac-use-comphist
+
+   Whether or not to use Candidate Suggestion. nil means never using it and get performance better maybe.
+
+   是否使用补全建议。
+
+** 9.10 ac-comphist-threshold
+
+   Specify a percentage of limiting lower scored candidates. 100% for whole scores.
+
+   指定显示低分数候选项的百分比。
+
+** 9.11 ac-comphist-file
+
+   Specify a file stores data of Candidate Suggestion.
+
+   指定用来保存候选项建议的文件。
+
+** 9.12 ac-use-quick-help
+
+   Whether or not to use quick help.
+
+   是否使用快速帮助。
+
+** 9.13 ac-quick-help-delay
+
+   Delay time to show quick help in real number seconds.
+
+   显示快速帮助的延迟时间。
+
+** 9.14 ac-menu-height
+
+   Specify an integer of lines of completion menu.
+
+   指定补全菜单的行数。
+
+** 9.15 ac-quick-help-height
+
+   Specify an integer of lines of quick help.
+
+   指定快速帮助的行数。
+
+** 9.16 ac-quick-help-prefer-pos-tip
+
+   Whether or not auto-complete prefers native tooltip with pos-tip than overlap popup for displaying quick help. If non-nil, you also need to install pos-tip.el so that displaying tooltip can work well.
+
+   auto-complete 显示快速帮助时更偏向于使用 pos-tip 带的原生工具而不是 popup。如果非 nil，需要安装 pos-tip.el，这样显示工具条才能正常工作。
+
+** 9.17 ac-candidate-limit
+
+   Limit a number of candidates. Specifying an integer, the value will be a limit of candidates. nil means no limit.
+
+   限制候选项数量。
+
+** 9.18 ac-modes
+
+   Specify major modes as a list of symbols that will be enabled automatically if global-auto-complete-mode is enabled.
+
+   如果 global-auto-complete-mode 启动，该值指定可以自动启用的主模式列表。
+
+** 9.19 ac-compatible-packages-regexp
+
+   Specify a regexp that identifies starting completion or not for that package.
+
+   指定是否为该包启动补全的正则表达式。
+
+** 9.20 ac-non-trigger-commands
+
+   Specify commands as a list of symbols that does NOT starts completion automatically.
+
+** 9.21 ac-trigger-commands
+
+   Specify commands as a list of symbols that starts completion automatically. self-insert-command is one of default.
+
+   将命令作为符号的列表，用来表示可以自动补全的命令。默认 self-insert-command 是其中之一。
+
+** 9.22 ac-trigger-commands-on-completing
+
+   Same as ac-trigger-commands expect this will be used on completing.
+
+** 9.23 ac-trigger-key
+
+   Specify a Trigger Key.
+
+** 9.24 ac-auto-start
+
+   Specify how completion will be started. t means always starting completion automatically. nil means never started automatically. An integer means completion will not be started until the value is more than a length of the completion target string.
+
+** 9.25 ac-stop-words
+
+   Specify a list of strings that stops completion.
+
+** 9.26 ac-use-dictionary-as-stop-words
+
+   Specify whether auto-complete uses dictionaries as stop words.
+
+** 9.27 ac-ignore-case
+
+   Specify how distinguish case. t means always ignoring case. nil means never ignoring case. smart in symbol means ignoring case only when the completion target string doesn't include upper characters.
+
+** 9.28 ac-dwim
+
+   "Do What I Mean" function. t means:
+   + After selecting candidates, TAB will behave as RET
+   + TAB will behave as RET only on candidate remains
+
+** 9.29 ac-use-menu-map
+   Specify a special keymap (ac-menu-map) should be enabled when completion menu is displayed. ac-menu-map will be enabled when it is t and satisfy one of the following conditions:
+
+   ac-auto-start and ac-auto-show-menu are not nil, and completion menu is displayed after starting completion
+Completion menu is displayed by auto-complete command
+Completion menu is displayed by ac-isearch command
+** 9.30 ac-use-overriding-local-map
+
+   Use only when operations is not affected. Internally it uses overriding-local-map, which is too powerful to use with keeping orthogonality. So don't use as much as possible.
+
+** 9.31 ac-completion-face
+
+   Face of inline completion.
+
+** 9.32 ac-candidate-face
+
+   Face of completion menu background.
+
+** 9.33 ac-selection-face
+
+   Face of completion menu selection.
+
+** 9.34 global-auto-complete-mode
+
+   Whether or not to use auto-complete-mode globally. It is t in general.
+
+** 9.35 ac-user-dictionary
+
+   Specify a dictionary as a list of string for Completion by Dictionary.
+
+** 9.36 ac-user-dictionary-files
+
+   Specify a dictionary files as a list of string for Completion by Dictionary.
+
+** 9.37 ac-dictionary-directories
+
+   Specify a dictionary directories as a list of string for Completion by Dictionary.
+
+** 9.38 ac-sources
+
+   Specify sources as a list of Source. This is a buffer local variable.
+
+** 9.39 ac-completing-map
+
+   Keymap for completion.
+
+** 9.40 ac-menu-map
+
+   Keymap for completion on completion menu. See also ac-use-menu-map.
+
+** 9.41 ac-mode-map
+
+   Keymap for auto-complete-mode enabled buffers.
+
+* 10 Extend
+
+  A meaning to extend auto-complete-mode is just defining a Source. This section describe how to define a source.
+
+** 10.1 Prototype
+
+   Source basically takes a form of the following:
+
+   #+BEGIN_SRC elisp
+(defvar ac-source-mysource1
+  '((prop . value)
+    ...))
+   #+END_SRC
+
+   As you see, source is just an associate list. You can define a source by combining pairs of defined property and its value.
+
+** 10.2 Example
+
+   The most important property for source is candidates property. This property describes how to generate completion candidates by giving a function, an expression, or a variable. A result of evaluation should be a list of strings. Here is an example to generate candidates "Foo", "Bar", and "Baz":
+
+   #+BEGIN_SRC elisp
+(defvar ac-source-mysource1
+  '((candidates . (list "Foo" "Bar" "Baz"))))
+   #+END_SRC
+
+   Then add this source to ac-sources and use:
+
+   #+BEGIN_SRC elisp
+(setq ac-sources '(ac-source-mysource1))
+   #+END_SRC
+
+   It is successful if you have "Bar" and "Baz" by inserting "B". The example above has an expression (list ...) in candidates property. The expression specified there will not be byte-compiled, so you should not use an expression unless it is too simple, because it has a bad affection on performance. You should use a function instead maybe:
+
+   #+BEGIN_SRC elisp
+(defun mysource1-candidates ()
+  '("Foo" "Bar" "Baz"))
+
+(defvar ac-source-mysource1
+  '((candidates . mysource1-candidates)))
+   #+END_SRC
+
+   The function specified in candidates property will be called without any arguments on every time candidates updated. There is another way: a variable.
+
+** 10.3 Initialization
+
+   You may want to initialize a source at first time to complete. Use init property in these cases. As same as candidates property, specify a function without any parameters or an expression. Here is an example:
+
+   #+BEGIN_SRC elisp
+(defvar mysource2-cache nil)
+
+(defun mysource2-init ()
+  (setq mysource2-cache '("Huge" "Processing" "Is" "Done" "Here")))
+
+(defvar ac-source-mysource2
+  '((init . mysource2-init)
+    (candidates . mysource2-cache)))
+   #+END_SRC
+
+   In this example, mysource2-init function does huge processing, and stores the result into mysource2-cache variable. Then specifying the variable in candidates property, this source prevents huge processing on every time update completions. There are possible usage:
+
+   + Do require
+   + Open buffers first of all
+
+** 10.4 Cache
+
+   Caching strategy is important for auto-complete-mode. There are two major ways: init property and cache property that is described in this section. Specifying cache property in source definition, a result of evaluation of candidates property will be cached and reused the result as the result of evaluation of candidates property next time.
+
+   Rewrite the example in previous section by using cache property.
+
+   #+BEGIN_SRC elisp
+(defun mysource2-candidates ()
+  '("Huge" "Processing" "Is" "Done" "Here"))
+
+(defvar ac-source-mysource2
+  '((candidates . mysource2-candidates)
+    (cache)))
+   #+END_SRC
+
+   There is no performance problem because this source has cache property even if candidates property will do huge processing.
+
+*** 10.4.1 Cache Expiration
+
+	It is possible to keep among more wider scope than init property and cache property. It may be useful for remembering all function names which is rarely changed. In these cases, how can we clear cache property not at the expense of performance? This is true time use that functionality.
+
+	Use ac-clear-variable-after-save to clear cache every time a buffer saved. Here is an example:
+	#+BEGIN_SRC elisp
+(defvar mysource3-cache nil)
+
+(ac-clear-variable-after-save 'mysource3-cache)
+
+(defun mysource3-candidates ()
+  (or mysource3-cache
+      (setq mysource3-cache (list (format "Time %s" (current-time-string))))))
+
+(defvar ac-source-mysource3
+  '((candidates . mysource3-candidates)))
+	#+END_SRC
+
+	Add this source to ac-sources and complete with "Time". You may see a time when completion has been started. After that, you also see the same time, because mysource3-candidates returns the cache as much as possible. Then, save the buffer once and complete with "Time" again. In this time, you may find a new time. An essence of this source is to use ac-clear-variable-after-save to manage a variable for cache.
+
+	It is also possible to clear cache periodically. Use ac-clear-variable-every-minute to do that. A way to use is same to ac-clear-variable-after-save except its cache will be cleared every minutes. A builtin source ac-source-functions uses this functionality.
+
+** 10.5 Action
+
+Completion by RET will evaluate a function or an expression specified in action property. A builtin sources ac-source-abbrev and ac-source-yasnippet use this property.
+
+** 10.6 Omni Completion
+
+   Omni Completion is a type of completion which regards of a context of editing. A file name completion which completes with slashed detected and a member name completion in C/C++ with dots detected are omni completions. To make a source support for omni completion, use prefix property. A result of evaluation of prefix property must be a beginning point of completion target string. Retuning nil means the source is disabled within the context.
+
+   Consider a source that completes mail addresses only after "To:". First of all, define a mail address completion source as same as above.
+
+   #+BEGIN_SRC elisp
+(defvar ac-source-to-mailaddr
+  '((candidates . (list "foo1@example.com"
+                        "foo2@example.com"
+                        "foo3@example.com"))))
+
+(setq ac-sources '(ac-source-to-mailaddr))
+   #+END_SRC
+
+   Then enable completions only after "To:" by using prefix property. prefix property must be one of:
+   + Regexp
+   + Function
+   + Expression
+
+   Specifying a regexp, auto-complete-mode thinks of a point of start of group 1 or group 0 as a beginning point of completion target string by doing re-search-backward1 with the regexp. If you want to do more complicated, use a function or an expression instead. The beginning point that is evaluated here will be stored into ac-point. In above example, regexp is enough.
+   #+BEGIN_EXAMPLE
+   ^To: \(.*\)
+   #+END_EXAMPLE
+
+   A reason why capturing group 1 is skipping "To:". By adding this into the source definition, the source looks like:
+
+   #+BEGIN_SRC elisp
+(defvar ac-source-to-mailaddr
+  '((candidates . (list "foo1@example.com"
+                        "foo2@example.com"
+                        "foo3@example.com"))
+    (prefix . "^To: \\(.*\\)")))
+   #+END_SRC
+
+   Add this source to ac-sources and then type "To:". You will be able to complete mail addresses.
+
+** 10.7 ac-define-source
+
+   You may use an utility macro called ac-define-source which defines a source and a command.
+   #+BEGIN_SRC elisp
+(ac-define-source mysource3
+  '((candidates . (list "Foo" "Bar" "Baz"))))
+   #+END_SRC
+
+   This expression will be expanded like:
+
+   #+BEGIN_SRC elisp
+(defvar ac-source-mysource3
+  '((candidates . (list "Foo" "Bar" "Baz"))))
+
+(defun ac-complete-mysource3 ()
+  (interactive)
+  (auto-complete '(ac-source-mysource3)))
+   #+END_SRC
+
+   A source will be defined as usual and in addition a command that completes with the source will be defined. Calling auto-complete without arguments will use ac-sources as default sources and with arguments will use the arguments as default sources. Considering compatibility, it is difficult to answer which you should use defvar and ac-define-source. Builtin sources are defined with ac-define-sources, so you can use them alone by binding some key to these commands such like ac-complete-filename. See also Completion with specific source.
+
+*** 10.7.1 Source Properties
+
+**** 10.7.1.1 init
+
+	 Specify a function or an expression that is evaluated only once when completion is started.
+
+**** 10.7.1.2 candidates
+
+	 Specify a function, an expression, or a variable to calculate candidates. Candidates should be a list of string. If cache property is enabled, this property will be ignored twice or later.
+
+*** 10.7.2 prefix
+
+	Specify a regexp, a function, or an expression to find a point of completion target string for Omni Completion. This source will be ignored when nil returned. If a regexp is specified, a start point of group 1 or group 2 will be used as a value.
+
+*** 10.7.3 requires
+
+	Specify a required number of characters of completion target string. If nothing is specified, auto-complete-mode uses ac-auto-start instead.
+
+*** 10.7.4 action
+
+	Specify a function or an expression that is executed on Completion by RET.
+
+*** 10.7.5 limit
+
+	Specify a limit of candidates. It overrides ac-candidate-limit partially.
+
+*** 10.7.6 symbol
+
+	Specify a symbol of candidate meaning in one character string. The symbol will be any character, but you should follow the rule:
+    | Symbol | Meaning          |
+    | s      | Symbol           |
+    | f      | Function, Method |
+    | v      | Variable         |
+    | c      | Constant         |
+    | a      | Abbreviation     |
+    | d      | Dictionary       |
+
+*** 10.7.7 summary
+
+Specify a summary of candidate in string. It should be used for summarizing the candidate in short string.
+
+*** 10.7.8 cache
+
+	Use Cache.
+
+*** 10.7.9 require
+
+	Specify an integer or nil. This source will be ignored when the integer value is lager than a length of completion target string. nil means nothing ignored.
+
+*** 10.7.10 candidate-face
+
+	Specify a face of candidate. It overrides ac-candidate-face partially.
+
+*** 10.7.11 selection-face
+
+	Specify a face of selection. It overrides ac-selection-face partially.
+
+*** 10.7.12 depends
+
+	Specify a list of features (which are required) that the source is depending.
+
+*** 10.7.13 available
+
+	Specify a function or an expression that describe the source is available or not.
+
+*** 10.7.14 document
+
+	Specify a function or an expression that returns documentation of the candidate.
+
+** 10.8 Variables
+
+   Here is a list of often used variables.
+
+*** 10.8.1 ac-buffer
+
+	A buffer where completion started.
+
+*** 10.8.2 ac-point
+
+	A start point of completion target string.
+
+*** 10.8.3 ac-prefix
+
+	A string of completion target.
+
+*** 10.8.4 ac-limit
+
+	A limit of candidates. Its value may be one of ac-candidate-limit and limit property.
+
+*** 10.8.5 ac-candidates
+
+	A list of candidates.
+
+* 11 Trouble Shooting
+
+** 11.1 Response Latency
+
+   To keep much responsibility is very important for auto-complete-mode. However it is well known fact that a performance is a trade off of functionalities. List up options related to the performance.
+
+*** 11.1.1 ac-auto-start
+
+	For a larger number, it reduces a cost of generating completion candidates. Or you can remove the cost by setting nil and you can use when you truly need. See Not to complete automatically for more details.
+
+*** 11.1.2 ac-delay
+
+	For a larger number, it reduces a cost of starting completion.
+
+*** 11.1.3 ac-auto-show-menu
+
+	For a larger number, it reduces a displaying cost of completion menu.
+
+*** 11.1.4 ac-use-comphist
+
+	Setting ac-use-comphist to nil to disable Candidate Suggestion, it reduces a cost of suggestion.
+
+*** 11.1.5 ac-candidate-limit
+
+	For a property number, it reduces much computation of generating candidates.
+
+** 11.2 Completion menu is disrupted
+
+   There is two major cases.
+
+*** 11.2.1 Column Computation Case
+
+	auto-complete-mode tries to reduce a cost of computation of columns to show completion menu correctly by using a optimized function at the expense of accuracy. However, it probably causes a menu to be disrupted. Not to use the optimized function, evaluate the following code:
+
+	#+BEGIN_SRC elisp
+(setq popup-use-optimized-column-computation nil)
+	#+END_SRC
+
+*** 11.2.2 Font Case
+
+	There is a problem when render IPA font with Xft in Ubuntu 9.10. Use VL gothic, which renders more suitably. Or disable Xft, then it can render correctly.
+
+	We don't good answers now, but you may shot the troubles by changing font size with set-face-font. For instance, completion menu may be disrupted when displaying the menu including Japanese in NTEmacs. In such case, it is worth to try to evaluate the following code to fix it:
+	#+BEGIN_SRC elisp
+(set-face-font 'ac-candidate-face "MS Gothic 11")
+(set-face-font 'ac-selection-face "MS Gothic 11")
+	#+END_SRC
+
+* 12 Known Bugs
+
+** 12.1 Auto completion will not be started in a buffer flyspell-mode enabled
+
+   A way of delaying processes of flyspell-mode disables auto completion. You can avoid this problem by M-x ac-flyspell-workaround. You can write the following code into your ~/.emacs.
+
+   #+BEGIN_SRC elisp
+(ac-flyspell-workaround)
+   #+END_SRC
+
+** 12.2 linum-mode tries to display the line numbers even for the comletion menu
+
+   linum-mode tries to add the line numbers even for the comletion menu. To stop that annoying behavior, do M-x ac-linum-workaround or add the following code into your ~/.emacs.
+
+   #+BEGIN_SRC elisp
+(ac-linum-workaround)
+   #+END_SRC
+
+* 13 Reporting Bugs
+
+  Visit Auto-Complete Issue Tracker and create a new issue.

@@ -1,0 +1,106 @@
+# -*- mode:org;coding:utf-8; -*-
+#+TITLE: crontab
+#+AUTHOR: 刘尚亮
+#+EMAIL: phenix3443@gmail.com
+
+* 概述
+  linux 中，定时任务是由 cron daemon 程序运行的。而 crontab 用于添加、删除和显示驱动 cron damon 程序的文件。每个用户都有自己的定时任务文件，位于/var/spool/cron/crontabs（不同操作系统位置不同）。尽管可以直接编辑这些文件，但是不应该这样做。
+
+* 使用
+  #+BEGIN_SRC
+crontab [ -u user ] file
+crontab [ -u user ] [ -i ] { -e | -l | -r }
+  #+END_SRC
+  第一种方式可以从 file 安装一个全新的任务。 *该文件会替换用户已有的定时任务文件* 。
+
+  一般使用第二种方式编辑用户定时任务。
+
+* 注意
+** 绝对路径
+   定时任务到，任务中的执行文件路径写绝对路径，这样可以避免 crontab 找不到执行文件，或者使用错误版本的执行文件。
+
+** 输出重定向
+   使用 =2>&1= 将 stdout 和 stderr 都定向到文件。
+   #+BEGIN_EXAMPLE
+0 * * * * abs_path_to_exe > abs_path_to_log 2>&1 &
+   #+END_EXAMPLE
+
+** 环境变量
+
+   之前遇到过与环境变量有关的问题：写了一个脚本来处理日志记录。
+   #+BEGIN_SRC crontab
+0 * * * * /usr/local/bin/python3 abs_path_to_python_script > abs_path_to_log 2>&1 &
+   #+END_SRC
+   python3 脚本头部：
+   #+BEGIN_SRC sh
+#!python3
+   #+END_SRC
+   发现日志处理结果明显少于预期，因为脚本在多台服务器上执行，首先判断所有脚本是否正常执行：
+   #+BEGIN_SRC sh
+tail -f /var/log/cron
+   #+END_SRC
+
+   结果发现执行没有问题，进一步调试代码，分析脚本日志发现一个诡异的情况：手动执行的时候完全没有问题，但是定时任务执行的时候：
+   + 日志中有些行遇到解码错误。
+   + 处理脚本中的正则表达式匹配行出错。
+
+   所以猜测是猜测应该是脚本执行时 *环境变量* 的问题。所以测试一下：
+
+   测试脚本：
+   #+BEGIN_SRC sh
+/usr/bin/env > /tmp/env_vars.txt
+   #+END_SRC
+
+   shell 中手动执行测试脚本结果：
+   #+BEGIN_EXAMPLE
+   HOSTNAME=
+   SHELL=/bin/bash
+   TERM=xterm-256color
+   HISTSIZE=1000
+   SSH_CLIENT=
+   QTDIR=/usr/lib64/qt-3.3
+   QTINC=/usr/lib64/qt-3.3/include
+   SSH_TTY=/dev/pts/1
+   USER=root
+   PATH=/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/
+   usr/bin:/home/root1/bin
+   MAIL=/var/spool/mail/root
+   _=/usr/bin/env
+   PWD=/usr/local/sandai/dcdn/stat
+   LANG=en_US.UTF-8
+   HISTCONTROL=ignoredups
+   HOME=/home/root1
+   SHLVL=2
+   LOGNAME=root
+   CVS_RSH=ssh
+   QTLIB=/usr/lib64/qt-3.3/lib
+   SSH_CONNECTION=x.x.x.x
+   LESSOPEN=|/usr/bin/lesspipe.sh %s
+   G_BROKEN_FILENAMES=1
+   #+END_EXAMPLE
+
+   crontab 定时任务执行测试脚本结果：
+   #+BEGIN_EXAMPLE
+   SHELL=/bin/sh
+   USER=root
+   PATH=/usr/bin:/bin
+   _=/usr/bin/env
+   PWD=/root
+   HOME=/root
+   SHLVL=2
+   LOGNAME=root
+   #+END_EXAMPLE
+   crontab 会以用户的身份执行配置的命令，但是不会加载用户的环境变量，crontab 会设置几个默认的环境变量，例如 SHELL、PATH 和 HOME 等，一定要注意 PATH 可不是用户自定义的 PATH。
+
+   对于我遇到的问题来说，主要是 =LANG=en_US.UTF-8= 引起的，解决办法是读取文件的时候指定文件编码：
+
+   #+BEGIN_SRC python
+with open(data_file, 'r', encoding="utf-8") as f:
+   #+END_SRC
+
+   但是如果在.bash_profile 或者.bashrc 中自定义了环境变量，crontab 执行时并不会加载这个文件，所以 shell 中正常执行的程序，crontab 可能不会执行。 这时需要通过以下两种方式加载环境变量：
+   + 在 shell 脚本中添加 =source $HOME/.bash_profile=
+   + 直接添加到 crontab 中。
+     #+BEGIN_EXAMPLE
+     0 * * * * source ~/.bashrc && /usr/local/bin/python3 abs_path_to_python_script > abs_path_to_log 2>&1 &
+     #+END_EXAMPLE

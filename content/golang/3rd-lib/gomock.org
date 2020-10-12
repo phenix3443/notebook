@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: gomock
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/golang/mock][gomock]] 是用于 Go 编程语言的 mock 框架。它与 Go 的内置测试包很好地集成在一起，但是也可以在其他环境中使用。
+
+* 安装
+
+* 使用

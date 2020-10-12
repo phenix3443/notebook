@@ -1,0 +1,14 @@
+# -*- coding:utf-8-*-
+#+TITLE: sync
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/sync/][sync]] 包提供基本的同步原语，如互斥锁。除了 Once 和 WaitGroup 类型之外，大多数类型都是供低级库例程使用的。更高层的同步最好通过 channel 和 communication 来完成。
+
+  包含此包中定义的类型的值不应被复制。
+
+* once
+
+* waitgroup
+  WaitGroup 等待一系列 goroutine 完成。主 goroutine 调用 Add 来设置要等待的 goroutines 的数量。然后，每个 goroutine 运行并在完成后调用 Done。同时，Wait 可以用来阻塞，直到所有的 goroutines 都完成了。

@@ -1,0 +1,210 @@
+# -*- coding:utf-8-*-
+#+TITLE: slf4go
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://github.com/go-eden/slf4go][slf4go]] 受 slf4j 启发的 Golang 简单 logger facade，关注性能和可伸缩性。
+
+  在介绍该库之前，让我们逐步了解日志记录库的组成。
+  1. 提供 API：例如 =Trace Debug Info Warn Error= 等。
+  2. 收集信息：例如时间戳，堆栈跟踪和其他上下文字段等。
+  3. 格式和存储：将日志打印到标准输出或直接存储等。
+
+  对于大多数日志记录库，1和 2 非常相似，但是不同的库可能使用不同的日志记录库，如果项目依赖于多个库，则最终日志可能会非常混乱。
+
+  在 Java 语言中，大多数库都将 slf4j 用作其日志记录 facade，可以决定使用 logback 或 log4j 等作为实际的日志记录实现，并轻松进行切换。
+
+  我相信 golang 中应该有类似的“facade”，我希望这个库可以是 golang 的 slf4j。
+
+  slf4go 专注于 1 和 2，将收集所有信息以构建集成的 Log 实例，它期望其他库提供 3 的实现，有关更多详细信息，请查看 Driver 部分。
+
+  标准 Log 的结构如下：
+  #+BEGIN_SRC go
+type Log struct {
+	Time   int64  `json:"date"`   // log's time(us)
+	Logger string `json:"logger"` // log's name, default is package
+
+	Pid        int     `json:"pid"`         // the process id which generated this log
+	Gid        int     `json:"gid"`         // the goroutine id which generated this log
+	DebugStack *string `json:"debug_stack"` // the debug stack of this log. Only for Panic and Fatal
+	Stack      *Stack  `json:"stack"`       // the stack info of this log. Contains {Package, Filename, Function, Line}
+
+	Level  Level         `json:"level"`  // log's level
+	Format *string       `json:"format"` // log's format
+	Args   []interface{} `json:"args"`   // log's format args
+	Fields Fields        `json:"fields"` // additional custom fields
+}
+  #+END_SRC
+
+  需要特别说明的是，slf4go 具有很高的性能，有关更多详细信息，请查看“性能”部分。
+
+* 组成
+  slf4go 有几个组件：
+  + Log: Log record's structure, contains Time, Logger, Pid, Gid, Stack, Fields, etc.
+  + Logger: Provide api for Trace, Debug, Info, Warn, Error, Panic, Fatal etc.
+  + Driver: 用于解耦 Api 和实现的接口。
+  + Hook: 提供 hook 功能，可用于日志的同步回调。
+
+
+  参照下图更好理解：
+
+  https://github.com/go-eden/slf4go/blob/master/doc/structure.jpg
+
+
+* 安装
+
+  #+BEGIN_SRC sh
+go get github.com/go-eden/slf4go
+  #+END_SRC
+
+* 使用
+
+** 使用 Global Logger
+   默认情况下，Slf4go 提供了一个全局 Logger，在大多数情况下，您可以通过静态函数直接使用它，不需要任何其他操作。
+   #+BEGIN_SRC go
+slog.Debugf("debug time: %v", time.Now())
+slog.Warn("warn log")
+slog.Error("error log")
+slog.Panicf("panic time: %v", time.Now())
+   #+END_SRC
+   最终日志如下：
+   #+begin_example
+2019-06-16 19:35:05.167 [0] [TRACE] [main] default_example.go:12 debug time: 2019-06-16 19:35:05.167783 +0800 CST m=+0.000355435
+2019-06-16 19:35:05.168 [0] [ WARN] [main] default_example.go:15 warn log
+2019-06-16 19:35:05.168 [0] [ERROR] [main] default_example.go:17 error log
+2019-06-16 19:35:05.168 [0] [PANIC] [main] default_example.go:20 panic time: 2019-06-16 19:35:05.168064 +0800 CST m=+0.000636402
+goroutine 1 [running]:
+runtime/debug.Stack(0x10aab40, 0xc0000b4100, 0x1)
+	/usr/local/Cellar/go/1.12.6/libexec/src/runtime/debug/stack.go:24 +0x9d
+github.com/go-eden/slf4go.Panicf(0x10cfd89, 0xe, 0xc0000b40f0, 0x1, 0x1)
+	/Users/sulin/workspace/go-eden/slf4go/slf_core.go:191 +0x80
+main.main()
+	/Users/sulin/workspace/go-eden/slf4go/example/default_example.go:20 +0x213
+   #+end_example
+
+** 使用自定义 Logger
+   #+BEGIN_SRC go
+log1 := slog.GetLogger() // Logger's name will be package name, like "main" or "github.com/go-eden/slf4go" etc
+log1.Info("hello")
+log2 := slog.NewLogger("test") // Logger's name will be the specified "test"
+log2.Info("world")
+   #+END_SRC
+
+   log1 的名称将是调用方的程序包名称，例如 main 或 github.com/go-eden/slf4go 等，这取决于您在何处调用它。 log2 的名称将是指定的测试。
+
+   这些名称很重要：
+   + 它将直接填写到最终日志中。
+   + 将用于检查是否启用了日志记录。
+   + 它可用于决定是否以及在何处记录日志。
+
+** 使用 Fields
+   您可以使用 BindFields 将字段添加到指定的 Logger 中，并使用 WithFields 创建具有指定字段的新 Logger。
+   #+BEGIN_SRC go
+log1 := slog.GetLogger()
+log1.BindFields(slog.Fields{"age": 18})
+log1.Debug("hell1")
+
+log1.WithFields(slog.Fields{"fav": "basketball"}).Warn("hello2")
+
+log2 := log1.WithFields(slog.Fields{"fav": "basketball"})
+log2.Info("hello2")
+   #+END_SRC
+
+   这些 field 将附加到 Log，最后传递给 Driver，Driver 决定如何打印或存储它们。
+
+** 使用 Level
+   您可以通过 SetLevel 设置全局级别，这意味着较低级别的日志将被忽略。
+   #+BEGIN_SRC go
+slog.SetLevel(slog.WarnLevel)
+slog.Info("no log") // will be ignored
+slog.Error("error")
+   #+END_SRC
+
+   上面的代码将全局级别设置为 WARN，因此将忽略 INFO 日志，应该有其他方法来配置不同的记录器级别，具体取决于您使用的 Driver。
+
+   您可以检查是否启用了指定级别，如下所示：
+
+   #+BEGIN_SRC go
+l := slog.GetLogger()
+if l.IsDebugEnabled() {
+    l.Debug("debug....")
+}
+   #+END_SRC
+
+   实际上，Logger 将在 Debug（）函数中调用 IsDebugEnabled（）来过滤不必要的日志，但这无法避免由于准备 Debug（）参数（如字符串的 concat）而造成的性能损失。相比之下，准备数据和构建 Log 将花费数百纳秒。
+
+** 使用 Hook
+   在 slf4go 中，注册日志钩子非常容易
+   #+BEGIN_SRC go
+slog.RegisterHook(func(l *Log) {
+    println(l) // you better not log again, it could be infinite loop
+})
+slog.Debugf("are you prety? %t", true)
+   #+END_SRC
+
+   RegisterHook 接受 func（* Log）参数，并且 slf4go 将异步向其广播所有 Log。
+
+* Driver
+   Driver 是上层 slf4go 和下层日志记录实现之间的桥梁。
+   #+BEGIN_SRC go
+// Driver define the standard log print specification
+type Driver interface {
+	// Retrieve the name of current driver, like 'default', 'logrus'...
+	Name() string
+
+	// Print responsible of printing the standard Log
+	Print(l *Log)
+
+	// Retrieve log level of the specified logger,
+	// it should return the lowest Level that could be print,
+	// which can help invoker to decide whether prepare print or not.
+	GetLevel(logger string) Level
+}
+   #+END_SRC
+
+** Default StdDriver
+   默认情况下，slf4go 提供一个 StdDriver 作为后备，它将格式化 Log 并将其直接打印到 stdout 中，如果您不需要其他功能，可以直接使用它。
+
+   该 Driver 将打印日志，如下所示：
+
+   #+begin_example
+2019-06-16 19:35:05.168 [0] [ERROR] [github.com/go-eden/slf4go] default_example.go:17 error log
+   #+end_example
+   包含如下信息：
+   + 2019-06-16 19:35:05.168: Log's datetime.
+   + [0]: Log's gid, the id of goroutine, like thread-id, it could be used for tracing.
+   + [ERROR]: Log's level.
+   + [github.com/go-eden/slf4go]: the caller's logger, it's package name by default.
+   + default_example.go:17: the caller's filename and line.
+   + error log: message, if level is PANIC or FATAL, DebugStack will be print too.
+
+** slf4go-zap
+
+   https://github.com/go-eden/slf4go-zap
+
+
+* 性能
+
+  本部分的基准基于 MacBook Pro（15 英寸，2018 年）。
+
+  使用 emptyDriver 时，slf4go 的性能如下
+
+  #+begin_example
+BenchmarkLogger-12    	 3000000	       420 ns/op	     112 B/op	       2 allocs/op
+  #+end_example
+
+  这意味着如果 Driver 异步处理日志，则诸如调试信息警告错误之类的日志功能将在 500ns 内完成。
+
+  这里有一些优化点，希望它可以对某人有所帮助。
+
+** stack
+   通常，您可以通过 runtime.Caller 和 runtime.FuncForPC 获取调用方的 Frame ，slf4go 可以为 PC 缓存 Frame，这可以极大地提高性能。
+
+   在我的基准测试中，它将性能从 430ns 提高到 180ns。有关更多详细信息，您可以检查源代码。
+
+** etime
+   与 time.Now（）和 etime.CurrentMicrosecond（）相比，slf4go 使用 etime 来获取系统时间。
+
+   基准测试中，它可以将性能从 68ns 提高到 40ns。

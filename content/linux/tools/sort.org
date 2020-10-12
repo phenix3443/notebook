@@ -1,0 +1,55 @@
+# -*- coding:utf-8-*-
+#+TITLE: sort
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+   用来排序文本中的行。
+   #+BEGIN_EXAMPLE
+-c 检查输入是否排序。
+-b 忽略行前空白符。
+-g 按照通用数值排序。
+-h 按照人类可读的数字（例如，2k，1G）排序。
+-n 按照字符串数值进行排序。
+-k 选项可以通过指定列范围进行排序。
+-r 逆序。
+-s 稳定排序。
+-V 按照行中的版本号进行排序。
+--parallel 参数来加快排序速度。
+   #+END_EXAMPLE
+** =-g= 和 =-n-= 区别[fn:1]
+   #+BEGIN_EXAMPLE
+-g, --general-numeric-sort
+     compare according to general numerical value
+-n, --numeric-sort
+     compare according to string numerical value
+   #+END_EXAMPLE
+
+   #+BEGIN_SRC sh :exports both
+cat number.txt
+   #+END_SRC
+
+   general-numeric-sort，它是用标准 C 函数把数字转换成双精度浮点数进行比较，支持科学计数法，例如 1.23e5。
+   #+BEGIN_SRC sh :exports both
+sort -g number.txt
+   #+END_SRC
+
+   2,67 和 2a1 可以看作 2 后面跟着字符串，而 sort -g 的排序规则是先字符串，然后数字，所以这两个都排在 2.1 之前。再根据字符串的排序规则，ASCII 码小的排在前面，所以 "," 排在 "a" 前面。
+
+   一般情况下，不建议用 - g 选项对数字进行排序，因为浮点数的排序比较慢，而且在把数字转换成浮点数时会产生进位误差。
+
+   再来看看 numeric-sort，按数字大小排序，如果一行中有非数字字符，则按照非数字字符前面的数字大小排序。
+
+   #+BEGIN_SRC sh :exports both
+sort -n number.txt
+   #+END_SRC
+
+   sort -n 不支持科学计数法，因此 1.23e2 被作为数字 1.23 参与排序，3.5e1 作为数字 3.5 参与排序。2a1 作为数字 2 参与排序，因此排在 2.1 之前。
+
+   值得注意的是 2,67 排在最后，这里我看了半天，显然 - n 选项没有把 "," 看作是一般的字符串，而是看作了千分位的逗号，因此，2,67 实际被作为 267 参与排序，因而排在最后。
+
+
+* 示例
+
+* Footnotes
+
+[fn:1] [[https://blog.csdn.net/xicikkk/article/details/61414825][gnu sort 命令的 --general-numeric-sort 选项与 --numeric-sort 选项区别]]

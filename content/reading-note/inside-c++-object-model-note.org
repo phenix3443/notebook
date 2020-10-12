@@ -1,0 +1,156 @@
+# -*- coding:utf-8-*-
+#+TITLE: 深度探索C++对象模型笔记
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+OPTIONS: num:nil
+
+* 前言
+  有两个概念可以解释C++对象模型：
+  1. 语言中直接支持面向对象程序设计的部分。
+  2. 对于各种支持的低层实现机制。
+
+  C++ class的完整虚函数在编译时期就固定下来了。
+
+  虚函数调用并不是非要通过虚表进行实现。但是，目前所有编译器对于虚函数的实现方法都是使用各个class专属的虚表，大小固定，并且在程序执行前就构造好了。
+
+* 第一章 关于对象
+  与C语言相比，加上封装之后的布局成本并没有增加多少。
+
+  每个non-inline member function只会诞生一个函数实体，至于每个“拥有零个或一个定义”inline function则会在每个使用者（模块）身上产生一个函数实体。
+
+  C++ 在布局以及存取时间上的额外负担是由virtual引起，包括：
+  + virtual function机制，用以支持一个有效率的“执行期绑定”。
+  + virtual base class，用以实现“多次出现在继承体系中的base class，有一个单一而被共享的实体”。
+
+** 1.1 C++对象模型
+   在C++中，有两种class data member:static和nostatic。有三种class member function：static、nostatic和virutal。
+
+   简单对象模型的概念被用在“指向成员的指针”中。
+
+   表格驱动对象模型概念中的member function table称为支持virtual function的一个有效方案。
+
+   C++对象模型中，nostatic data member被配置在每一个class object之内，static data member则存放在所有class object之外。static 和nostatic function member也被放在所有的class object之外。virtual function通过两个步骤支持：
+   1. 每个class 产生一堆指向virutal function的指针，放在被称为“虚表（vtbl）”的表格中。
+   2. 每个class object 被添加一个指针，指向相关的虚表。该指针就是“虚指针（vptr）”。vptr的设定和重置都有每个class 的构造函数、析构函数和拷贝运算符自动完成。每个class所关联的type_info object（支持RTTI）也经由虚表指出，通常放在表格的第一个slot处。
+
+** 1.3 对象的差异
+   class object需要的内存包括：
+   + nonstatic data members的总和大小。
+   + 内存对齐增加的空间。
+   + 为支持virtual增加的大小。
+
+   为什么将子类的对象赋值给基类对象时候，基类的虚指针不会被覆盖？这是有编译器保证的：如果某个object含有一个或一个以上的vptrs，哪些vptrs的内容不会被base class object初始化或改变。
+
+* 第二章 构造函数语意学
+** 2.1 默认构造函数
+   只有在 *编译器需要* 的时候，才会合成默认构造函数。
+
+   在合成的默认构造函数中，只有基类对象和member class object会被初始化，其他说有的nostatic data member，都不会被初始化。
+
+** 2.2 拷贝构造函数
+   拷贝构造函数调用时机：初始化，类对象作为参数，类对象作为返回值。
+
+   默认构造函数和默认拷贝构造函数只有在 *编译器需要* 的时候才会被合成。
+
+   只有nontrivial的实体才会被合成于程序之中。决定拷贝构造是否为trivial的标准在于class是否展现处所谓的bitwise copy semantics（位逐次拷贝）。
+
+   当编译器导入一个vptr到class之后，该class 就不再展现bitwise copy sematics了。
+
+** 2.4 成员初始化列表
+   以下情况必须使用成员初始化列表：
+   + 初始化引用成员
+   + 初始化const成员
+   + 调用基类的构造函数，该构造函数带有参数。
+   + 调用类成员的构造函数，该构造函数带有参数
+
+* 第三章 data语意学
+
+  =class X{};= 编译器会安插进去一个char。
+
+** 3.2 data member布局
+   members排序只需符合“较晚出现的members在class object较高的地址。” member不一定连续排列，members的边界调整可能需要填补一些bytes。
+
+   vptr根据编译器的不同，可能放在member最后，也可能放在object最前面。
+
+** 3.3 data member的存取
+   指向data member的指针，其offset值总是被加上1，这样可以使编译系统区分出“一个指向data member的指针，用以指出class 的第一个member” 和 “一个指向data member 的指针，没有指出任何member” 两种情况。
+
+   o.m 和o->m的区别在于m是否是从虚基类继承而来的。指针的具体类型只有在运行时候才知道，但是o.m编译的时候就可以确定。
+
+* 第四章 function 语义学
+
+** 4.1 member的各种调用方式
+   编译器内部已将“member函数实体”转换为对等的“nonmember函数实体”。非静态成员函数，参数列表第一项是this指针。
+
+   不同的编译器对member名字处理（mangling）的方法不一样。
+
+   虚函数 =ptr->member()= 将被内部转化为 =(*ptr->vptr[1](ptr))= 。 其中：
+   + 1是member函数在虚表中的索引值。
+   + vptr名称也可能会被mangling，因为可能有多个vptrs。
+   + 第二个ptr表示this指针。
+
+
+   使用class 域操作明确调用虚函数会更有效率，其解析方式会和nonstatic function member 一样。
+
+   静态成员函数的主要特性就是它没有this指针。以下的次要特性统统根源于其主要特性：
+   + 不能直接存取其class中的非静态成员变量。
+   + 不能被声明为const、volatile和virtual。
+   + 不需要经过对象才能调用。
+
+
+   对静态成员函数去地址得到的其在内存中的位置。由于静态成员函数没有this指针，所以其地址的类型并不是一个“指向类成员函数”的指针，而是一个“非成员函数指针”。也就是：
+   #+BEGIN_SRC c++
+void class::function(){}
+   #+END_SRC
+   取地址：
+   #+BEGIN_SRC c++
+&class::function();
+   #+END_SRC
+   会得到一个数值，类型是 =void(*)()= ,而不是  =void (class::*)();=
+
+   由于静态成员函数没this指针，所以可以将其作为call back函数。
+
+** 4.2 虚函数的实现模型
+   虚函数的实现模型：每个class有一个虚表，内含该class中所有的虚函数的地址。每个object有一个虚指针（vptr），指向虚表。
+
+   但是如何保存指针（或引用）的类型信息的呢？
+
+   实现上，首先我们可以在每一个多态的class object身上增加两个members：
+   1. 一个字符串或数字，表示class的类型。
+   2. 一个指针，指向某表格，表格中带有程序的virtual function的执行期地址。
+
+   有两个问题：
+   1. 如何确定表格的内容？也就是虚函数的地址。
+
+         该地址是在编译期决定，此外，这一组地址是固定不变的，执行期间不能新增或替换。由于程序执行期间，表格的大小和内容都不会改变，所以其构建和存取都可以由编译器完全掌握，不需要执行期的任何接入。
+
+   2. 如何从表格中查找虚函数的地址？
+
+      通过以下两个编译期步骤：
+      + 为了找到表格，每个class object被安插上一个由编译器内部产生的指针，指向该表格。
+      + 为找到函数地址，每个虚函数都指派一个表格索引。
+
+   一个class只有一个虚表，每个虚表内包含对应类对象所有 *active virutal function* 函数实体的地址。这些 active virtual function 包括：
+   + 该class所定义的虚函数实体。它会改写可能存在基类虚函数实体。
+   + 继承自基类的函数实体。
+   + 纯虚函数实体。
+
+
+   多重继承带来的问题：“必须在执行期调整this指针”。使用thunk技术解决该问题。
+
+   多重继承之下，一个派生类内含有n个虚表，n表示基类数目。对于每个虚表，派生类对象都有对应虚指针（vptr）。虚指针在构造时候被设立初始值。
+
+   不要在虚基类中声明非静态成员变量。
+
+** 4.4 指向member function的指针
+
+** 4.5 内联函数
+   关键词inline（或者类声明中的成员函数或友元函数的定义）只是一项请求。编译器就认为它可以用一个表达式合理地将这个函数扩展开来，它就接受这个请求。 “合理的扩展”是指在某种层次上，其执行成本要比一般的函数调用及返回机制所带来的负荷低。
+
+   inline函数中，“会带来副作用的实际参数”，通常都需要引入临时对象。
+
+   inine函数中的局部变量，在加上有副作用的参数，可能会导致大量临时性对象的产生。
+
+* 第五章 构造、析构、拷贝语意学
+
+* 第六章 执行期语意学

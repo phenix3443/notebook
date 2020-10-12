@@ -1,0 +1,73 @@
+# -*- coding:utf-8-*-
+#+TITLE: go-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/dominikh/go-mode.el][go-mode]] 是 emacs 用来编辑 golang 的 major mode。
+
+  除了常规功能(如字体和缩进)外，该模式还与常见的 Emacs 功能紧密集成(例如，基于语法的导航 =begining-of-defun= )，go-mode 还具有以下额外功能来改善体验：
+  + 集成 gofmt，提供相同名称的命令，以及 =gofmt-before-save= ，可通过 hook 在保存 go buffer 之前对 buffer 中的代码进行格式化。
+    + =gofmt-command= 变量可设置使用 =goimports= 。
+    + =gofmt-args= 变量可设置以支持 =gofmt -s= 命令。
+  + 集成 godoc，提供命令 =godoc= 和 =godoc-at-point= 。
+  + 集成 Playgroud
+    + go-play-buffer 和 go-play-region 将代码发送到 Playground.
+    + go-download-play 将 Playground 条目下载到新 buffer 中.
+  + 管理 imports
+    + 跳转到文件导入， =go-goto-imports (C-c C-f i)=
+    + 添加导入，包括制表符补全， =go-import-add (C-c C-a)=
+    + 删除或注释未使用的 imports， =go-remove-unused-imports=
+    + 建议使用 goimports 或 gopls 的 organize-imports 功能来自动管理添加/删除/组织 import。
+
+  + 集成 godef
+    + =godef-describe(C-c C-d)= 描述表达式
+    + =godef-jump(C-c C-j)= 和 =godef-jump-other-window(C-x 4 C-c C-j)= 跳转到声明。
+    + 这需要通过 =go get github.com/rogpeppe/godef= 安装 godef。
+    + 建议使用 gopls 提供的功能支持。
+
+  + 对 imenu 的基本支持(函数和变量)
+  + =go-coverage= 支持显示通过 =go test= 计算的代码覆盖率。
+  + 几个用于跳转和操作函数签名的各个部分的功能。这些函数支持匿名函数。
+    + 跳转至参数列表， =go-goto-arguments (C-c C-f a)=
+    + 跳转至文档字符串，如果尚不存在，请创建该文档字符串， =go-goto-docstring(C-c C-f d)=
+    + 跳转到函数关键字， =go-goto-function(C-c C-f f)=
+    + 跳转到函数名称,  =go-goto-function-name (C-c C-f n)=
+    + 跳转到返回值， = go-goto-return-values (C-c C-f r)=
+    + 跳转到方法接收器，如果不存在方法接收器，则添加一对括号， =go-goto-method-receiver(C-c C-f m)=
+
+    所有这些函数都接受前缀参数(C-u)，从而使它们跳过匿名函数。
+
+  + =go-guess-gopath= 基于 gb 或 wgo 项目，Godeps 和 src 文件夹，为 GOPATH 猜测合适的值。命令 =go-set-project= 使用 =go-guess-gopath= 的返回值来设置 GOPATH 环境变量。
+
+    既可以手动调用 =go-set-project= ，也可以将其与 Projectile 的项目切换钩子集成，也可以使用其他任何切换项目的方式来使用。
+
+* 安装
+
+* 配置
+  参见 [[https://github.com/phenix3443/emacs.d/blob/master/lisps/golang-ide.el][golang-ide.el]]
+
+* 其他扩展
+  有一些第三方扩展可以增强 Emacs 中的 Go 体验。
+
+** Gopls
+   [[file:~/gitlab/notebook/golang/gopls.org][gopls]] 是 Go 团队提供的官方语言服务器协议(lsp)实现。它旨在替代现有的第三方工具，用于代码格式化(gofmt)，自动导入(goimport)，代码导航(godef/guru)，类型和功能描述(godoc/godef)，错误检查，自动完成(gocode)，变量和类型重命名(重命名)等。一旦 gopls 稳定后，将不再支持较旧的工具。
+
+   Gopls 是 lsp-mode 支持的后端。如果在您的 PATH 中找到 gopls，它将由 lsp-mode 自动使用。可以通过以下方式安装
+   #+BEGIN_SRC sh
+go get golang.org/x/tools/gopls@latest
+   #+END_SRC
+   要为 go 缓冲区启用 lsp 模式：
+   #+BEGIN_SRC sh
+add-hook'go-mode-hook'lsp-deferred)
+   #+END_SRC
+
+** 语法/错误检查
+   在 Go 中使用 flymake 有两种方法：
+   + goflymake，内部使用 go build 捕获常规编译也会产生的所有错误
+   + flymake-go 是一种仅使用 gofmt 的更轻量级的解决方案，因此只能捕获语法错误。但是，与 goflymake 不同，它不需要其他可执行文件。
+
+   此外，还有 flycheck，它是 flymake 的现代替代品，它内置了对 Go 的支持。除了使用 go build 或 gofmt 之外，它还支持 go vet，golint 和 errcheck。
+
+** 自动补全
+   使用 company 配合 gopls。

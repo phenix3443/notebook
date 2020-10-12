@@ -1,0 +1,15 @@
+# -*- coding:utf-8-*-
+#+TITLE: yaml-ide
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* pakcage
+
+** yaml-model
+
+** yaml-imenu
+
+** format-all
+   使用 [[https://prettier.io/][prettier]] 来格式化代码。

@@ -1,0 +1,36 @@
+# -*- coding:utf-8-*-
+#+TITLE: Fiddler
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://www.telerik.com/fiddler/add-ons][Fiddler]] 虽然可以在 Linux 运行，但是没有办法安装插件，也没有找到可以设置 Firefox 支持 https 的方法。
+
+* 安装
+
+** ubuntu
+   安装 mono
+   #+BEGIN_SRC sh
+apt install mono-complete
+   #+END_SRC
+   使用 mono 启动
+   #+BEGIN_SRC sh
+mono Fiddler.exe
+   #+END_SRC
+
+   为了后续使用方便，设置快捷方式
+   #+BEGIN_SRC sh
+alias filddler=mono <install-path>/Fiddler.exe'
+   #+END_SRC
+
+   或者使用 alacarte 添加菜单项后可以直接从菜单项目启动。
+
+** windows
+
+
+* 使用
+  使用参见 [[https://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureFiddler][文档]] ，常见操作有：
+  + 会话查看。
+  + 查看 https 请求。
+  + 请求和响应断点，以及伪造。
+  + 代理 ios 和 android 请求。

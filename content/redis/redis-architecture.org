@@ -1,0 +1,73 @@
+# -*- coding:utf-8 -*-
+#+title:redis部署架构选择
+#+author: 刘尚亮
+#+email:phenix3443@gmail.com
+
+* 概览
+
+* 单例
+
+* 单机多实例
+** 目的
+   单个 redis 实例占用资源很少，为了充分利用单机性能，可在单机上部署多个 redis 实例。
+** 操作
+   单个实例的配置文件（redis-6380.conf）做如下修改：
+
+  #+BEGIN_EXAMPLE
+pidfile /tmp/redis-server-6380.pid
+port 6380
+dir /tmp/redis-6380/
+logfile /tmp/redis-server-6380.log
+  #+END_EXAMPLE
+   然后启动服务即可：
+   #+BEGIN_SRC sh
+redis-server redis-6380.conf
+   #+END_SRC
+
+* 主从
+
+** 目的
+   单个实例存在以下问题：
+   + 单点故障风险，主从结构中主宕机之后，从上的数据还可以保留。
+   + 性能瓶颈，通过主从可以分担查询压力，进行读写分离。
+
+** 注意事项
+   如果 master 没有设置持久化，当 master 重启之后，slave 的数据有可能会被清空。所以这种情况下，应该禁止 master 自动重启。
+
+   redis4.0 之前的可写从不能不能正确处理过期的 key。（writable slaves before version 4.0 were incapable of expiring keys with a time to live set.）
+
+   从 redis 4.0 开始，从上的写操作指示本地写，不会扩散到下一层的从上。（since Redis 4.0 slave writes are only local, and are not propagated to sub-slaves attached to the instance.）
+
+* Sentinel
+
+** 目的
+   主从结构中主宕机之后，后续的请求不能继续处理，不利于故障恢复。
+** 作用
+
+
+** 注意事项
+
+   + down-after-milliseconds 表示 redis 实例失联时常
+   + parallel-syncs 表示在执行
+   + 从挂了怎么办？
+
+* cluster
+** 目的
+   单个实例不能存储所有的数据，需要一个分布式的 redis 存储。
+** 注意事项
+
+* 如何构建高可用的分布式 redis 服务？
+  两个要点：
+  + 分布式，存储大量数据，没有性能瓶颈。
+  + 高可用，故障恢复。
+
+* Client
+
+* books
+** 入门
+   + [[https://book.douban.com/subject/24522045/][redis 入门指南]]
+** 高级
+** 实践
+   + [[https://book.douban.com/subject/26612779/][redis 实战]]
+** 原理
+   + [[https://book.douban.com/subject/25900156/][redis 设计与实现]]

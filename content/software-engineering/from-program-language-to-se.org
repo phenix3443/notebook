@@ -1,0 +1,75 @@
+# -*- coding:utf-8-*-
+#+TITLE: 从程序语言到软件工程
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 编程语言
+** 帮助系统
+   如何获取语言相关（语法，库用法等）的帮助信息呢？
+
+* 周边工具
+** 编辑器
+   我认为编辑其应该有的功能：
+   + 自动匹配符号的相关操作（paredit/smartparens）
+   + 列编辑（column edit）
+   + 代码块编辑（narrow edit）
+   + 多光标编辑（multiple-cursors）
+   + 缩进提示（indent-guide）
+   + 符号高亮（symbol highlight）
+   + 代码折叠（code fold）
+
+** 集成开发（IDE）
+   集成开发环境，既可用来编码，也可以用来代码导航。
+   + 快捷键提示（）
+   + 代码模板（code snippet）
+   + 代码补全（code complete）
+   + 编码规范（code check)
+   + 函数原型提示（eldoc）
+   + 自动编译（smart-compile）
+   + 项目管理（project manage）
+   + 代码导航（code navigation）
+
+
+** 文档生成器（code documentation generators）
+   使用工具直接从代码生成文档。包括代码文档和项目文档。 [[https://en.wikipedia.org/wiki/Comparison_of_documentation_generatorshttps://en.wikipedia.org/wiki/Comparison_of_documentation_generators][文档生成工具对比]]
+
+   + doxygen 支持 C++  PHP JAVA PYTHON
+   + sphinx
+
+** 编译工具（compile）
+   + cmak
+
+** 代码测试（test）
+
+*** 单元测试
+    + docker
+    + [[https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks][单元测试工具列表]]
+
+*** 代码 mock
+
+*** 接口测试
+
+** 代码调试（debug）
+
+** 静态检查
+   lint 工具一般用来执行静态检查，检查程序语法语义上的错误。
+
+** 动态检查
+
+** 性能分析（profile）
+
+** 版本控制
+   svn git
+
+** CI/CD
+   + github
+   + gitlab
+
+   + jekin
+
+* 数据分析
+  + open-falcon
+  + ELK
+
+
+* Footnotes

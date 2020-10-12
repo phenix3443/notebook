@@ -1,0 +1,36 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 之 middleware
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* spider middleware
+
+* download middleware
+  位于 scrapy 的 engine 和 download 之间的处理模块。
+
+  Downloader Middleware 在整个架构中主要作用：
+  + 在 Scheduler 调度出队列的 Request 发送给 Doanloader 下载之前对其进行修改 。
+  + 在下载后生成的 Response 发送给 Spider 之前，对其进行修改。
+
+  Downloader Middleware 的功能卡分强大，修改 User-Agent、 处理重定向 、设置代理、失败重试、设置 Cookies 等功能都需要借助它来实现。
+
+** process_requrest(reqest, spider)
+   返回值如下：
+   + None
+   + Request
+   + Response
+   + IgnoreRequest 异常
+
+** process_response(reqest, response, spider)
+   返回值如下：
+   + Request
+   + Response
+   + IgnoreRequest 异常
+
+** process_exception(request, exception, spider)
+   返回值如下：
+   + None
+   + Request
+   + Response

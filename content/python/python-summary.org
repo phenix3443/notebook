@@ -1,0 +1,260 @@
+# -*- coding:utf-8; -*-
+# -*- coding:utf-8-*-
+#+TITLE: python summary
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 简介
+** 起源
+** 优点
+   + 上手方便，用来写程序原型特别方便。
+   + 代码库很全面。
+** 特性
+   动态类型以及多态性是 Python 语言灵活性的根源。每个对象都有两个标准的头部信息：类型标志符和引用计数器。
+** 语言文化
+** 编码规范
+*** 注释
+* 安装运行
+** 安装
+** 运行
+* 相关工具
+** 标准命令
+** 集成开发
+** 代码检查
+** 构建编译
+** 代码调试
+** 自动测试
+** 性能分析
+** 文档系统
+** 包管理系统
+*** easy_install
+*** pip
+    使用豆瓣作为软件源镜像：
+    #+BEGIN_SRC sh
+vim $HOME/.config/pip/pip.conf
+    #+END_SRC
+
+
+    #+BEGIN_EXAMPLE
+[global]
+timeout = 60
+index-url = https://pypi.doubanio.com/simple
+    #+END_EXAMPLE
+
+
+** 其他工具
+* 工程布局
+* 程序结构
+** 函数
+*** 参数
+*** 返回值
+** 标识符
+*** 常量
+    + 数字
+    + 字符串
+    + 元组
+*** 变量
+    + 列表
+    + 字典
+*** 动态绑定
+*** 作用域
+* 类型系统
+** 基本类型
+*** 布尔(bool)
+*** 数字(numeric)
+    int()
+*** 字符串(string)
+    str()
+** 复合类型
+*** 元组（tuple）
+*** 列表（list）
+*** 字典（dict）
+** 默认值
+** 类型转换
+* 运算符
+** 算数运算符
+** 逻辑运算符
+** 位运算符
+** 通信操作符
+* 表达式
+** 赋值表达式
+   多变量赋值
+* 分支控制
+** 判断
+** 循环
+** 跳转
+
+* 编程范式
+** 面向对象
+   python 本身支持类模型。
+*** 封装
+*** 继承
+    #+BEGIN_SRC python
+# -*- coding:utf-8-*-
+class Base:
+    cls_var = "cls_var"
+
+    def __init__(self, name):
+        print("construct Foo instance: " + name)
+        self.instance_var = "instance var"
+
+    @classmethod
+    def cls_method(cls):
+        return type(cls).__name__ + " class method"
+
+    @classmethod
+    def call_static_method(cls):
+        return "from class method call " + cls.static_methold()
+
+    @staticmethod
+    def static_methold():
+        return "base static method "
+
+    @staticmethod
+    def call_cls_methold():
+        return "from static method call " + Base.cls_method()
+
+    def instance_method(self):
+        return type(self).__name__ + " instance method"
+
+
+class Derive(Base):
+    @classmethod
+    def cls_method(cls):
+        return type(cls).__name__ + " class method"
+
+    @staticmethod
+    def static_methold():
+        return "child static method"
+
+
+if __name__ == "__main__":
+    b1 = Base("foo1")
+    b2 = Base("foo2")
+
+    print(b1.instance_var is b2.instance_var)  # True
+    print(b1.cls_var is b2.cls_var)  # True
+    print(b1.cls_method is b2.cls_method)  # False
+    print(b1.static_methold is b2.static_methold)  # True
+
+    print(b1.instance_method())
+
+    print(b1.cls_method())
+    print(Base.cls_method())
+
+    print(b1.static_methold())
+    print(Base.static_methold())
+
+    print(Base.call_cls_methold())
+    print(Base.call_static_method())
+
+    d = Derive("child")
+    print(d.call_static_method())
+    print(d.call_cls_methold())
+
+     #+END_SRC
+**** 类变量
+**** 实例变量
+**** 类方法
+     如果函数总需要访问类的成员，不需要访问实例成员，就将函数声明为类方法。其中第一个参数动态绑定到调用该函数的类型上。
+**** 成员方法
+     如果需要访问实例成员就声明为实例方法，其中第一个参数动态绑定到调用该函数的实例上。
+**** 静态方法
+     如果类成员和实例成员都不需要访问，就声明为静态方法。
+**** 构造函数
+     子类不会主动调用父类的构造函数，需要手动调用。注意不要直接使用父类名进行调用，而是使用 super()
+     #+BEGIN_SRC python
+class A:
+    def __init__(self):
+        print("init A")
+
+
+class B(A):
+    def __init__(self):
+        A.__init__(self)
+        print("init B")
+
+
+class C(A):
+    def __init__(self):
+        A.__init__(self)
+        print("init C")
+
+
+class D(B, C):
+    def __init__(self):
+        B.__init__(self)
+        C.__init__(self)
+        print("init D")
+
+
+d = D()
+
+     #+END_SRC
+     正确做法：
+     #+BEGIN_SRC python
+class A:
+    def __init__(self):
+        print("init A")
+
+
+class B(A):
+    def __init__(self):
+        super().__init__()
+        print("init B")
+
+
+class C(A):
+    def __init__(self):
+        super().__init__()
+        print("init C")
+
+
+class D(B, C):
+    def __init__(self):
+        super().__init__()
+        print("init D")
+
+
+d = D()
+
+     #+END_SRC
+     注意上面构造函数中的调用顺序。
+**** 析构函数
+
+*** 多态
+* 程序库
+** 操作系统
+** 测试
+*** deepdiff
+*** unittest
+    build-in
+** 密码学
+*** hashlib
+    build-in
+*** pycryto
+** 国际化
+** 配置
+
+** 日期
+** 日志
+*** logging
+    build-in
+** 数据库
+*** mysql
+**** MySQL-db
+**** mysql-connector
+*** redis
+** 序列化
+*** struct
+    build-in
+
+* 参考书籍
+** 入门
+   + [[https://book.douban.com/subject/6049132/][Python 学习手册]]
+** 高级
+** 实践
+   + [[https://book.douban.com/subject/26801374/][Python 核心编程]]
+** 原理
+   + [[https://book.douban.com/subject/3117898/][Python 源码剖析]]

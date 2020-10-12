@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: revive-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 简介
+  用来保存窗体布局和打开 buffer。
+
+* TODO 恢复之后窗体大小和原来不一致。

@@ -1,0 +1,189 @@
+# -*- coding:utf-8; -*-
+#+title: golang summary
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 简介
+** 起源
+   golang 受到很多语言的启发：
+
+   + C：语法。
+   + java：通过接口实现类继承。
+   + java、C#、python： 包管理。
+   + unix，Plan9，Limbo：通信序列进程（communicating sequential process，CSP），协程间通信。
+** 优点
+   golang 达到以下三者的平衡：
+
+   + 易于开发
+     + 静态语言的安全性和高效性
+
+       编译型，解释型，强类型，弱类型，静态，动态语言区别是什么？[fn:3]
+
+     + 动态语言的易开发性
+
+     + 包管理
+
+   + 快速编译
+     + 整个程序是一个执行文件
+     + 编译速度快
+     + 执行速度快
+
+   + 高效执行，通过以下技术利用分布式和多核加快执行速度。
+     + 协程（goroutine），通过 channel 来在协程之间交换数据。
+     + 连续栈(continuous stack)，以前是使用分段栈（segement stack）[fn:1]
+** 特性
+   + 支持
+     + 协程
+     + 垃圾收集（gc）
+     + 反射
+     + 包管理
+     + 通过接口实现多态
+     + 与其他语言进行交互
+
+   + 不支持
+     + 函数重载，操作符重载
+     + 隐式转换
+     + 类继承
+     + 动态加载代码
+     + 动态链接库
+     + 泛型
+     + 异常，通过 recover 和 panic 替代
+     + 断言
+     + 静态变量
+
+** 语言文化
+   简单（simple）
+   + 只有 25 个关键字
+   + 同一个问题只使用一两种方法来解决。
+   + 通过编码规范来对代码风格进行统一。
+
+** 编码规范
+   [[https://golang.org/ref/spec][go 语言编码规范]]
+*** 注释
+    + 使用 C 风格注释。
+    + 几乎所有全局作用域的类型、常量、变量、函数和被导出的对象都应该有一个合理的注释。如果这种注释（称为文档注释）出现在函数前面，例如函数 Abcd，则要以 "Abcd..." 作为开头。godoc 会收集这些注释生成技术文档。
+    + package 注释，位于 package 声明上一行，不能空行
+      #+BEGIN_SRC go
+ // Package superman implements methods for saving the world.
+ //
+ // Experience has shown that a small number of procedures can prove
+ // helpful when attempting to save the world.
+ package superman
+      #+END_SRC
+    + func 注释
+      #+BEGIN_SRC go
+ // enterOrbit causes Superman to fly into low Earth orbit, a position
+ // that presents several possibilities for planet salvation.
+ func enterOrbit() error {
+    ...
+ }
+      #+END_SRC
+    + inline 注释
+* 安装运行
+** ubuntu
+   If you're using Ubuntu 16.04 LTS, 18.04 LTS or 19.04, then you can use the longsleep/golang-backports PPA and install Go 1.13.
+
+   #+BEGIN_SRC sh
+sudo add-apt-repository ppa:longsleep/golang-backports
+sudo apt update
+sudo apt install golang-go
+   #+END_SRC
+
+** macos
+   #+BEGIN_SRC sh
+brew install golang
+   #+END_SRC
+
+** 配置
+*** GOPATH
+    GOPATH 用于解析 import 声明。GOPATH 中的路径下必须包含 bin、src、pkg 三个目录。默认的 gopath 路径是 =$HOME/go= ，可以在 =~/.profile= 中修改如下环境变量。
+
+    #+BEGIN_SRC sh
+export GOPATH="$HOME/gospace"
+export PATH=$PATH:$(go env GOPATH)/bin
+    #+END_SRC
+
+    GOPATH 中第一个目录要固定，这样以后安装的第三方库都会安装到这个目录下，而且应该将该目录下的 bin 加入到 PATH 中。
+
+    更多信息参见 [[https://golang.org/cmd/go/#hdr-GOPATH_environment_variable][GOPATH env]]
+
+* 工程布局
+  参见  [[https://golang.org/doc/code.html][How to Write Go Code]]
+
+* 命令行工具
+  详见 [[http://wiki.jikexueyuan.com/project/go-command-tutorial/][标准命令详解]] 以及[[https://golang.org/cmd/go/][command go]]
+
+  直接安装常用工具。
+  #+BEGIN_SRC sh
+sudo apt install golang-golang-x-tools
+  #+END_SRC
+
+** 集成开发
+   + go get 包管理
+   + goimports 在 gofmt 代码格式化基础上，增加了整理 imports 的功能。所以可以替代 gofmt。
+   + gopls go 语言的 lsp 服务端。
+
+** 代码检查
+   + go-vet 检查可疑代码。
+   + golint 检查代码风格。
+   + errcheck 检查返回但没有处理的 error。
+   + unconvert 检查不必要的类型转换。
+   + staticcheck 静态检查和 lint 工具
+   + goreporter
+
+** 构建编译
+   + go fix
+   + go env 打印 go 环境变量。
+   + go build
+   + go run
+   + go install
+   + go clean
+     + -i 选项删除 go install 安装的文件。
+     + -r 选项递归清理依赖项。
+   + gb
+
+** 代码调试
+   + gdb
+   + dlv
+
+** 自动测试
+   + go test
+   + gotests
+   + gocheck
+
+** 性能分析
+   + go tool pprof
+
+** 文档系统
+   + godoc 查找 package 和函数文档。
+
+** 包管理系统
+   + go get
+
+** 其他工具
+   + go list
+   + go tool
+     + pprof
+     + vet
+     + trace
+
+* 参考书籍
+** 入门
+   [[https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md][the way to go]]
+
+** 高级
+
+   [[https://golang.org/doc/effective_go.html#names][Effective Go]]
+
+** 实践
+
+** 原理
+
+* Footnotes
+
+[fn:1] [[https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.5.html][深入解析 go]]
+
+[fn:3] [[https://www.zhihu.com/question/19918532][弱类型、强类型、动态类型、静态类型语言的区别是什么？]]
+
+[fn:4] [[https://www.ctolib.com/topics-123640.html][在 Github 中最受欢迎的 Go 日志库集合
+]]

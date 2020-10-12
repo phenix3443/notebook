@@ -1,0 +1,11 @@
+# -*- coding:utf-8-*-
+#+TITLE: dired
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 配置
+
+* 使用
+** 批量命名

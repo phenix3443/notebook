@@ -1,0 +1,7 @@
+# -*- coding:utf-8-*-
+#+TITLE: cloc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/AlDanial/cloc][cloc]] 是一个源码统计工具。

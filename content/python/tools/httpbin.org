@@ -1,0 +1,31 @@
+# -*- coding:utf-8-*-
+#+TITLE: httpbin
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://httpbin.org/][httpbin]] 可以返回自己请求的参数，类似 echo 服务器，但是功能更加强大。不仅可以查看所有的 http 动作，还可以查看 url 跳转等。
+
+* 使用
+
+** sh
+   #+BEGIN_SRC sh
+pip3 install --user httpbin gunicorn
+gunicorn httpbin:app
+   #+END_SRC
+
+** docker
+   使用 docker 安装，
+   #+BEGIN_SRC
+docker pull kennethreitz/httpbin
+docker run -d --restart=always --name=httpbin -p 1234:80 kennethreitz/httpbin
+   #+END_SRC
+
+   然后配置 =/etc/hosts= 本地域名
+   #+begin_example
+127.0.0.1 myhttpbin.org
+   #+end_example
+
+   #+BEGIN_SRC sh
+curl -i http://myhttpbin.org:1234/get
+   #+END_SRC

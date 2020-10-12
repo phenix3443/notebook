@@ -1,0 +1,21 @@
+# -*- coding:utf-8-*-
+#+TITLE: 分布式爬虫
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 技术要点
+
+** 存储队列
+
+** 去重
+
+** 防止中断
+
+** 部署
+
+* Scrapy-redis
+
+* Gerapy
+  Gerapy 是一个 Scrapy 分布式管理模块。

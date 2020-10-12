@@ -1,0 +1,169 @@
+
+# -*- coding:utf-8-*-
+#+TITLE: ccls
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/MaskRay/ccls][ccls]] 源自 cquery，是一个 C/C++/Objective-C [[file:language-server-protocol.org][语言服务器]]。它具有以下功能：
+  + 代码补全（包括函数签名和代码片段）
+  + 定义/引用以及其他交叉引用。
+  + 交叉引用扩展： =$ccls/call $ccls/inheritance $ccls/member $ccls/vars ...=
+  + 代码格式化
+  + 代码层次结构：调用（调用者/被调用者）层次结构，继承（基础/派生）层次结构，成员层次结构
+  + 符号重命名
+  + 文档符号和工作区符号的近似搜索
+  + 悬停信息
+  + 诊断和代码操作（clang FixIts）
+  + 语义突出显示和预处理器跳过区域
+  + 语义导航： =$ccls/navigate=
+
+  它具有代码库的全局视图，并支持许多交叉引用功能，请参阅 [[https://github.com/MaskRay/ccls/wiki/FAQ][wiki/FAQ]]。 当打开第一个文件时，它会开始并行地索引整个项目（包括可能存在的子项目），而主线程可以在索引完成之前为请求提供服务。保存文件将增量更新索引。
+
+  与 cquery 相比，它利用了 C++ 17 的特性，具有较少的第三方依赖性和较小的代码库。它像 clangd 一样利用 Clang C++ API，为代码完成和诊断提供了更好的支持。Refactoring（反射？） 由 clang-include-fixer 和其他基于 Clang 的工具提供。
+
+  与 cquery 比较（截止 2018-07-15）:
+
+  |             | cquery                         | ccls                         |
+  |-------------+--------------------------------+------------------------------|
+  | third_party | more                           | fewer                        |
+  | C++         | C++14                          | C++17                        |
+  | clang API   | libclang(C)                    | clang/llvm C++               |
+  | Filesystem  | AbsolutePath + custom routines | llvm/Support                 |
+  | index       | libclang                       | clangIndex, some enhancement |
+  | pipeline    | index merge+id remapping       | simpler and more robust      |
+
+  cquery 有系统头文件检测功能（通过运行编译器驱动程序），而 ccls 使用 clangDriver。
+
+* 安装[fn:1]
+
+** apt
+   #+BEGIN_SRC sh
+apt install ccls
+   #+END_SRC
+
+** brew
+   #+BEGIN_SRC sh
+brew install ccls
+   #+END_SRC
+
+** snap
+   #+BEGIN_SRC sh
+sudo snap install ccls --classic
+   #+END_SRC
+
+** 编译
+  安装依赖环境：
+  #+BEGIN_SRC sh
+docker run -it --name ccls-build ubuntu:18.04 /bin/bash
+apt install -y git gcc cmake clang-8 libclang-8-dev llvm-8 llvm-8-dev zlib1g-dev libncurses-dev
+  #+END_SRC
+
+  编译代码：
+  #+BEGIN_SRC sh
+git clone --depth=1 --recursive git@github.com:MaskRay/ccls.git
+cd ccls
+cmake3 -H. -BRelease -DCMAKE_BUILD_TYPE=Release
+cmake3 --build Release --target install
+  #+END_SRC
+
+
+* 编辑器配置
+  我在 emacs 中使用 ccls，需要配合 [[https://github.com/MaskRay/ccls/wiki/lsp-mode#configure][emacs-ccls]] 一起使用。
+
+* 项目配置[fn:2]
+  ccls 通常索引整个项目。 为了使其正常工作，ccls 需要能够获取源文件列表及其编译命令行。 这有两种主要方式：
+  + 在项目根目录中提供 =compile_commands.json=
+  + 提供 =.ccls= 文件。 它是一个基于行的、描述编译器标志的文本文件。 递归列出的源文件（标题除外）将被编入索引。
+
+  如果两者都不存在，那么当 ccls 启动时它将不会索引任何内容：相反，它将等待 LSP 客户端打开文件并仅索引这些文件。
+
+** compile_commands.json
+
+   通常，此文件不会纳入源代码管理，而是由构建系统生成。 这意味着项目中，最好在启动 ccls 服务器之前生成它。
+
+   由于此文件是自动生成的，因此不容易自定义。 因此，可以在同一个项目中同时提供 =compile_commands.json= 和 =.ccls= ，并通过 =.ccls= 的配置增强 =compile_commands.json= 中的选项。
+
+   如果 =compile_commands.json= 不在项目根目录中，请将初始化选项 =compilationDatabaseDirectory= 设置为包含 =compile_commands.json= 的备用目录。
+
+*** cmake
+    使用 cmake 生成该文件：
+    #+BEGIN_SRC sh
+cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+ln -s Debug/compile_commands.json
+    #+END_SRC
+
+** =.ccls= File
+   =.ccls= 是项目根目录下的基于行的文本文件。 它的主要功能是指定正确索引代码所需的编译器标志： =-I -D= 等。每行包含一个要添加到编译器命令行的参数。 不对参数执行空格分割，因此不能使用 =-I foo=（例如，使用 =-Ifoo= 或 =-I\nfoo= ）。
+
+   如果需要，项目的子目录还可以包含 =.ccls= 文件，以指定特定于这些目录的编译器标志。
+
+   一行可以选择以一个或多个 =％= 指令开头，这些指令专门用于该行的参数。
+
+   可用的指令包括：
+
+*** %compile_commands.json
+    默认情况下，.ccls 编译器标志仅应用于未在 compile_commands.json 中列出的文件。如果此指令首先出现在.ccls 中，则在解析 compile_commands.json 之后，其余的.ccls 参数将附加到 compile_commands.json 中找到的文件的编译器标志。
+
+*** %c / %cpp / %objective-c / %objective-cpp
+    仅在解析 C (%c), C++ (%cpp), Objective-C (%objective-c), or Objective-C++ (%objective-c++) 时才添加此参数。
+
+*** %cu
+    只有在解析 CUDA 文件时才应添加此参数。如果要将选项添加到 CUDA 和常规 C ++文件，请编写 =％cpp％cu -DA= 。
+
+*** %h / %hpp
+    仅在索引 C header files ( =%h: *.h= ) or C++ header files =(%hpp: *.hh *.hpp)=  时才应添加此参数。注意， =*.h= 文件被认为是 C，而不是 C ++。
+
+    可以添加这些行以使每个 =*.h= 解析为 C ++：
+
+    #+begin_example
+%h -x
+%h c++-header
+    #+end_example
+    请注意，如果您的项目同时包含 C 和 C++ 文件，则可以从 C 文件中推断出 a.h 的标志，从而将其解析为 C.您可能会遇到类似未知类型名称“class”的解析错误。
+
+*** Compiler driver
+    编译器驱动程序（第一行除非使用％compile_commands.json）通常只能是 clang。 clang ++通常是不必要的，如果某些文件是 C 则不正确。
+
+    请注意，clang a.cc 和 clang ++ a.cc 是不同的，但区别仅在于链接（传递默认运行时库）并且与 ccls 执行的前端操作无关。
+
+** .ccls examples
+   Example A
+   #+begin_example
+clang
+%c -std=c11
+%cpp -std=c++2a
+%h %hpp --include=Global.h
+-Iinc
+-DMACRO
+*.h *.hh *.hpp files will be parsed with extra --include=Global.h
+   #+end_example
+
+   Example B
+   #+begin_example
+%compile_commands.json
+%c -std=c11
+%cpp -std=c++14
+%c %cpp -pthread
+%h %hpp --include=Global.h
+-Iinc
+   #+end_example
+
+   它会附加标志，因此不应使用 clang。
+
+   Example: -march=armv7a
+
+   See https://github.com/MaskRay/ccls/issues/107. 如果编译器驱动程序是 GCC 交叉编译器，则可能需要 =--target= 。 假设使用 ~arm-linux-gnueabi-gcc-march = armv7a~ ，添加 ~--target =~ ：
+
+   #+begin_example
+%compile_commands.json
+--target=armv7a-linux-gnueabi
+   #+end_example
+
+
+
+* Footnotes
+
+[fn:2] https://github.com/MaskRay/ccls/wiki/Project-Setup
+
+[fn:1] https://github.com/MaskRay/ccls/wiki

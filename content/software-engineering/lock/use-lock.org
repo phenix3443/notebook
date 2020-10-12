@@ -1,0 +1,8 @@
+# -*- coding:utf-8-*-
+#+TITLE: 锁的使用
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+  [[https://www.ibm.com/developerworks/cn/java/j-lo-lock/index.html][如何聪明的使用锁]]

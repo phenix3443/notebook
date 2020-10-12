@@ -1,0 +1,129 @@
+# -*- coding:utf-8; -*-
+#+title: luaunit
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* 概述
+  [[https://github.com/bluebird75/luaunit][LuaUnit]] 是一个流行的 Lua 单元测试框架，具有典型的 xUnit 库（比如 Python 的 unittest，Junit 等）接口。它支持多种输出格式（文本，TAP，JUnit，...）来直接使用或与持续集成平台（Jenkins，Maven，...）一起使用。
+
+  LuaUnit 提供了丰富的断言机制，并且在输出结果上也做的不错，比如，对比 table 的时候可以输出不一致的项。
+
+* 安装
+  建议使用 luarocks 安装：
+  #+BEGIN_SRC sh
+luarocks install luaunit
+  #+END_SRC
+
+* 使用
+  更详细的手册内容参见[[https://luaunit.readthedocs.io/en/luaunit_v3_2_1/#][read-the-docs]]。
+
+  LuaUnit 扫描所有以 =test= 或 =Test= 开头的变量。如果它们是函数，或者它们是包含以 =test= 或 =Test= 开始的函数的表，则它们作为测试套件的一部分运行（这点和 Python unittest 类似）。
+
+  由于每个函数对应的测试用例一般都大于 1 个，所以推荐使用 table 组织一个函数的所有测试用例。
+
+  注意这些变量要放在全局空间（_G），不能是 local 函数。
+
+  当在表中定义测试时，您可以选择定义两个特殊函数 =setUp= 和 =tearDown= ， 它们将分别在每次测试之前和之后执行。这些函数可用于为正在执行的测试创建特定资源并清理测试环境。
+
+* 命令行
+  命令行选项提供了一个灵活的界面，可以按名称或模式选择测试，控制输出格式，设置详细程度等。
+
+  #+BEGIN_SRC sh
+lua <your_test_suite.lua> [options] [testname1] [testname2]
+  #+END_SRC
+
+  testname 可以是 testcase，testsuit 或者 testsuit 中具体方法。
+
+** options
+   常用选项：
+   + =-h= 显示帮助信息。
+   + =-o= 指定输出格式，可以是 text（默认），nil，TAP，junit。
+   + =-v= 显示详细的输出信息。
+   + =-p= 参数匹配 testsuit 和 testcase 的名字，来指定运行示例。
+
+
+* 常用断言
+** Equal assertions
+   所有相等断言函数都采用两个参数，按实际值和期望值的顺序。即 assert(actual,expect)。
+*** assertEquals
+    断言两个值相等。
+
+    对于表格，比较是一个深度的比较：
+    + 元素数量必须相同。
+    + 表必须包含相同的键
+    + 每个键必须包含相同的值。 还通过深度比较递归地比较这些值。
+
+    LuaUnit 提供了其他与表相关的断言，请参阅表断言。
+
+*** assertNotEquals(actual, expected)
+
+*** assertAlmostEquals(actual, expected, margin)
+    断言两个浮点数几乎相等。
+
+    比较浮点数时，严格相等不起作用。 计算机算术使得数学上产生 1.00000000 的操作在 lua 中可能产生 0.999999999999。 这就是为什么你需要一个几乎相等的比较，你指定误差范围。
+
+*** assertNotAlmostEquals
+
+** Value assertions
+
+*** assertTrue
+
+*** assertFalse
+
+*** assertNil(value)
+
+*** assertNotNil(value)
+
+*** assertIs(actual, expected)
+    断言两个变量是相同的。对于 string，numbers，boolean 和 nil，这给出了与 assertEquals（）相同的结果。对于其他类型，identity 表示两个变量引用同一个对象。
+
+*** assertNotIs(actual, expected)
+
+** String assertions
+
+*** assertStrContains(str, sub[, useRe])
+    默认情况下，在字符串中搜索子字符串。如果提供了 useRe 并且为 true，则将 sub 视为在字符串 str 内搜索的模式。
+
+*** assertStrIContains(str, sub)
+    忽略大小查找，与 assertStrcontains()不同，它不使用模式查找。
+
+*** assertNotStrContains(str, sub, useRe)
+
+*** assertNotStrIContains(str, sub)
+
+*** assertStrMatches(str, pattern[, start[, final]])
+    断言字符串匹配完整的模式。
+
+** Error assertions
+
+*** assertError(func, ...)
+    断言用参数调用函数 func 会产生错误。如果函数没有产生错误，则断言失败。
+
+*** assertErrorMsgEquals(expectedMsg, func, ...)
+
+*** assertErrorMsgContains(partialMsg, func, ...)
+
+*** assertErrorMsgMatches(expectedPattern, func, ...)
+
+** Type assertions
+
+*** assertIsNumber(value)
+
+*** assertIsString(value)
+
+*** assertIsTable(value)
+
+*** assertIsBoolean(value)
+
+*** assertIsNil(value)
+
+*** assertIsFunction(value)
+
+*** assertIsUserdata(value)
+
+*** assertIsCoroutine(value)
+
+** Table assertions
+
+*** assertItemsEquals(actual, expected)
+    断言两个表包含相同的项，而不管它们的键。 例如，如果要比较两个列表但项目的顺序不同，则此功能很实用。

@@ -1,0 +1,43 @@
+# -*- coding:utf-8-*-
+#+TITLE: Lua IDE
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* luarocks
+  使用 luarocks 进行包管理。
+
+  #+BEGIN_SRC sh
+apt install luarocks
+  #+END_SRC
+
+* [[https://github.com/immerrr/lua-mode][lua-mode]]
+  lua 编程的 major mode。详见[[file:lua-mode.org][lua-mode 实践]]
+
+* company-lua
+  company 的 lua 补全后端。详见[[file:company-lua.org][company-lua 实践]]
+
+* [[https://github.com/martin-eden/lua_code_formatter][lua_code_formatter]]
+  代码格式化工具。优点：
+  + 会删除空白行。
+
+  详见[[file:~/github/notebook/org/lua/lua-code-formatter.org][lua-code-formatter 实践]]
+
+* Formatter
+  代码格式化工具，优点：
+  + 可以直接将格式化的代码写回源文件。
+
+  详见[[file:~/github/notebook/org/lua/formatter.org][formatter 实践]]
+
+* lsp server
+
+** lua-lsp
+   目前还不是很完善。详见[[file:lua-lsp.org][lua-lsp 实践]] 。
+
+** EmmyLua-LanguageServe
+   详见[[file:~/github/notebook/org/lua/emmy-lua-ls-all.org][emmylua-languageserver 实践]]
+
+** [[https://github.com/sumneko/lua-language-server][lua-language-server]]
+   新服务，可以尝试一下。
+
+* 其他可用的 ide
+  [[http://lua-users.org/wiki/LuaIntegratedDevelopmentEnvironments][Lua Integrated Development Environments]]

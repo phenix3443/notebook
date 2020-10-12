@@ -1,0 +1,12 @@
+# -*- coding:utf-8-*-
+#+TITLE: godef
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/rogpeppe/godef][godef]] 用于查找定义。
+
+* 安装
+  #+BEGIN_SRC sh
+go get github.com/rogpeppe/godef
+  #+END_SRC

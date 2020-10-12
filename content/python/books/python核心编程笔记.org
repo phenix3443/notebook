@@ -1,0 +1,16 @@
+# -*- coding:utf-8 -*-
+#+title:Python 核心编程（第三版）读书笔记
+#+author:刘尚亮
+#+email:phenix3443@gmail.com
+
+* 正则表达式
+
+* 网络编程
+  + 套接字非阻塞模式
+  + 当一方关闭链接或向对方发送一个空字符串时，通常会关闭链接。
+  + SocketServer 模块。
+  + Twisted 框架。
+
+* 因特网客户端编程
+
+* 数据库编程

@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: 压缩命令
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* gzip
+** 压缩保留源文件
+   #+BEGIN_SRC sh
+gzip -c filename > filename.gz
+   #+END_SRC
+
+
+* gunzip
+** 解压缩保留源文件
+   #+BEGIN_SRC sh
+gunzip -c filename.gz > filename
+   #+END_SRC
+
+* tar
+
+* xz

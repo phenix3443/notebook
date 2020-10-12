@@ -1,0 +1,512 @@
+# -*- coding:utf-8-*-
+#+TITLE:GNU Global manual
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  GNU Global 是一个源代码标记系统，以相同的方式工作在不同的环境中，比如 Emacs editor, Vi editor, Less viewer, Bash shell, various web browsers 等等。可以用来定位指定的符号，比如函数（function）、宏（macros）、结构体（struct）、类（class），并轻松跳转。对于包含很多子目录，有很多 =#ifdef= 和 =main()= 函数的大型项目是很有用的。它类似 ctags 或者 etags，不同之处在于其独立于编辑器。
+
+  GNU GLOBAL 将包含子目录的源码树视为项目。在项目的任意地方都可以使用一个高性能的 tag 数据库。不需要指定数据库的位置，global 会自行定位。由于这个特性，可以在项目中内和项目间自由切换。
+
+  GNU GLOBAL 具有以下功能：
+  + 支持 C，C ++，Yacc，Java，PHP4 和 assembly。
+  + 以相同的方式工作在的环境中：
+    - Shell 命令行
+    - Bash shell
+    - Vi 编辑器（Nvi，Elvis，vim）
+    - Less viewer
+    - Emacs 编辑器（Emacs，Mule，Xemacs）
+    - 网页浏览器
+    - Doxygen 文档系统
+  + 快速查找指定符号（symbol）位置。
+  + 定位 symbol 定义和引用。
+  + 允许重复 tag。
+  + 查找匹配指定模式的路径。
+  + 默认分层搜索。
+  + 搜索工程源码和依赖的库源码。
+  + 为补全输入方法生成补全列表。
+  + 支持多种输出格式。
+  + 允许自定义用来标记的候选文件。
+  + 支持 POSIX 1003.2 正则表达式。
+  + 支持 idutils 作为外部的搜索引擎。
+  + tag 文件独立于机器架构。
+  + 支持增量更新标记文件。
+  + 通过解析器插件来支持新语言。
+  + 通过 gtags.conf 来进行定制。
+  + 为源码生成超文本文件。
+  + 格式紧凑，节省磁盘空间。
+  + 支持客户端/服务器环境（使用 Tramp）。
+  + 忽略二进制文件、点文件和指定文件。
+  + 包含兼容 cscope 的程序（gtags-cscope）。
+  + 包含 grep-like 命令（-g command）。
+  + 支持 grep-like 符号高亮。
+
+* Command line
+  可以通过命令行使用 tag 工具。和其他 tag 系统相比，这是 Global 的一大优点。
+** 准备工作
+   开始前，先去阅读 FAQ 文件。
+   #+BEGIN_SRC sh
+more /usr/local/share/gtags/FAQ
+   #+END_SRC
+
+   首先必须在源码树根目录执行 gtags，例如，如果想浏览 FreeBSD 中 vi 编辑器源码，请在源码目录中调用 gtags。
+   #+BEGIN_SRC sh
+cd /usr/src/usr.bin/vi
+gtags
+   #+END_SRC
+
+   gtags 遍历子目录，从源码文件中提取符号，在当前目录生成三个 tag 文件。
+
+   + GTAGS    定义数据库
+   + GRTAGS   引用数据库
+   + GPATH    路径名数据库
+
+   此后，当前目录中的所有文件和目录都会被当作一个项目。
+
+   应该为 tag 文件准备相当大的磁盘空间，例如，linux-2.6.32 源码需以下磁盘空间：
+
+   #+BEGIN_EXAMPLE
+source code(Linux-2.6.32)       390MB
+
+GPATH                             6MB
+GTAGS                            81MB
+GRTAGS                          202MB
+-------------------------------------
+total of tag files              289MB
+   #+END_EXAMPLE
+
+** 基本使用
+*** 查找定义
+    #+BEGIN_EXAMPLE
+$global func1
+DIR1/fileB.c            # func1() is defined in fileB.c
+    #+END_EXAMPLE
+
+*** 查找引用
+    使用 =-r= 查找引用：
+    #+BEGIN_EXAMPLE
+$global -r func2
+../DIR1/fileA.c         # func2() is referred from fileA.c
+    #+END_EXAMPLE
+
+*** 使用 POSIX 正则表达式
+    #+BEGIN_EXAMPLE
+$global 'func[1-3]'
+DIR1/fileB.c            # func1, func2 and func3 are matched
+DIR2/fileC.c
+    #+END_EXAMPLE
+
+*** 查看详细内容
+    =-x= 选项显示详细信息。它类似于 ctags 的 =-x= 选项
+
+    #+BEGIN_EXAMPLE
+$global func2
+DIR2/fileC.c
+$global -x func2
+func2              2 DIR2/fileC.c       func2(){ i++; }
+func2              4 DIR2/fileC.c       func2(){ i--; }
+    #+END_EXAMPLE
+
+*** 显示绝对路径
+    #+BEGIN_EXAMPLE
+$global -a func1
+/home/user/ROOT/DIR1/fileB.c
+    #+END_EXAMPLE
+
+*** 查找符号
+    =-s= 命令用于查找未在 GTAGS 中定义的符号。
+    #+BEGIN_EXAMPLE
+$ global -xs X
+X                  1 DIR2/fileC.c #ifdef X
+    #+END_EXAMPLE
+
+*** 查找指定模式的行
+    =-g= 命令定位具有指定模式的行。
+    #+BEGIN_EXAMPLE
+$ global -xg '#ifdef'
+#ifdef             1 DIR2/fileC.c #ifdef X
+
+    #+END_EXAMPLE
+
+    它类似于 egrep，但对于源代码读取来说更方便，因为它允许通过项目搜索，并且仅在源文件中搜索。
+    此外，可以使用各种选项：
+    + =-O=
+      仅在文本文件中搜索。
+    + =-o=
+      搜索源文件和文本文件。
+    + =-l=
+      仅在当前目录下搜索。
+
+    -e，-G 和 - i 选项也可用。 用法与 egrep 几乎相同。
+
+    甚至可以使用 ~--result=grep~ 选项将 global 的输出格式更改为 grep 样式。 当然，这些选项甚至可以被其他命令使用。
+
+*** 查找执行模式的路径
+    =-P= 命令定位包含指定模式的路径名。
+    #+BEGIN_EXAMPLE
+$ global -P fileB
+DIR1/fileB.c
+$ global -P '1/'
+DIR1/fileA.c
+DIR1/fileB.c
+$ global -P '\.c$'
+DIR1/fileA.c
+DIR1/fileB.c
+DIR2/fileC.c
+    #+END_EXAMPLE
+
+*** 在指定文件中查找符号
+    =-f= 命令在打印存在指定 tags 的文件列表。
+    #+BEGIN_EXAMPLE
+$ global -f DIR2/fileC.c
+func2              2 DIR2/fileC.c   func2(){ i++; }
+func2              4 DIR2/fileC.c   func2(){ i--; }
+func3              6 DIR2/fileC.c   func3(){
+    #+END_EXAMPLE
+
+*** 限制搜索范围
+    =-l= 选项限制仅在当前目录下的检索。
+    #+BEGIN_EXAMPLE
+$cd DIR1
+$ global -xl func[1-3]
+func1        1 fileB.c      func1(){...}
+    #+END_EXAMPLE
+
+** 高级使用
+   + 指定待标记的候选文件：
+	 #+BEGIN_SRC sh
+find . -type f -print >/tmp/list     # make a file set
+vi /tmp/list                         # customize the file set
+gtags -f /tmp/list
+	 #+END_SRC
+
+   + 如果源文件在只读设备上，比如 CDROM，则无法在源码树的根目录生成 tag 文件。这种情况下，可通过 GTAGSROOT 环境变量在其他位置生成 tag 文件。
+	 #+BEGIN_SRC sh
+mkdir /var/dbpath
+cd /cdrom/src                 # the root of source tree
+gtags /var/dbpath             # make tag files in /var/dbpath
+export GTAGSROOT=`pwd`
+export GTAGSDBPATH=/var/dbpath
+global func
+	 #+END_SRC
+
+	 还有另外一种方法。因为 global 还会在 =/usr/obj+<current directory>= 查找 tag 文件，可以如下设置：
+
+	 #+BEGIN_SRC sh
+cd /cdrom/src                 # the root of source tree
+mkdir -p /usr/obj/cdrom/src
+gtags /usr/obj/cdrom/src      # make tag files in /usr/obj/cdrom/src
+global func
+	 #+END_SRC
+
+	 选项 =-O, --objdir= 选项会自动执行以上操作。
+
+	 通过设置环境变量 =MAKEOBJDIRPREFIX= 更改 obj 目录路径。
+
+   + 如果查找的符号不在源码树中，可以通过环境变量 =GTAGSLIBPATH= 指定库目录。
+
+	 应该在 =GTAGSLIBPATH= 的每个目录都执行 gtags，如果 GTAGS 没有找到，global 会忽略该目录。
+
+	 #+BEGIN_EXAMPLE
+$ pwd
+/develop/src/mh                 # this is a source project
+$ gtags
+$ ls G*TAGS
+GRTAGS  GTAGS
+$ global mhl
+uip/mhlsbr.c                    # mhl() is found
+$ global strlen                 # strlen() is not found
+$ (cd /usr/src/lib; gtags)      # library source
+$ (cd /usr/src/sys; gtags)      # kernel source
+$ export GTAGSLIBPATH=/usr/src/lib:/usr/src/sys
+$ global strlen
+../../../usr/src/lib/libc/string/strlen.c  # found in library
+$ global access
+../../../usr/src/sys/kern/vfs_syscalls.c   # found in kernel
+	 #+END_EXAMPLE
+
+	 或者可采用更直接的方式。下面的例子中，认为系统库和内核是我们项目的一部分。
+
+	 #+BEGIN_EXAMPLE
+$ ln -s /usr/src/lib .
+$ ln -s /usr/src/sys .
+$ gtags
+$ global strlen
+lib/libc/string/strlen.c
+$ global access
+sys/kern/vfs_syscalls.c
+	 #+END_EXAMPLE
+
+   + 如果忘记符号名称，可使用 =-c(complete)= 命令。
+
+	 #+BEGIN_EXAMPLE
+$ global -c kmem                # maybe k..k.. kmem..
+kmem_alloc
+kmem_alloc_pageable
+kmem_alloc_wait
+kmem_free
+kmem_free_wakeup
+kmem_init
+kmem_malloc
+kmem_suballoc                   # This is what I need!
+$ global kmem_suballoc
+../vm/vm_kern.c
+	 #+END_EXAMPLE
+
+   + shell 中 =-c= 命令和 complete 命令一起使用。In Bash:
+	 #+BEGIN_EXAMPLE
+$ funcs()
+> {
+>         local cur
+>         cur=${COMP_WORDS[COMP_CWORD]}
+>         COMPREPLY=(`global -c $cur`)
+> }
+$ complete -F funcs global
+$ global kmem_<TAB><TAB>
+kmem_alloc           kmem_alloc_wait      kmem_init
+kmem_alloc_nofault   kmem_free            kmem_malloc
+kmem_alloc_pageable  kmem_free_wakeup     kmem_suballoc
+$ global kmem_s<TAB>
+$ global kmem_suballoc
+../vm/vm_kern.c
+	 #+END_EXAMPLE
+
+	 如果喜欢输入补全，试试 globash。它可在没有任何准备的情况下使用。
+
+   + 可以编辑包含指定 tag 的所有文件。例如：
+
+	 #+BEGIN_EXAMPLE
+   $ vi `global func1`     # edit fileB.c
+	 #+END_EXAMPLE
+
+   + 如果想按序浏览很多文件，需如下操作：
+	 #+BEGIN_EXAMPLE
+$ global -xr fork | awk '{printf "view +%s %s\n",$2,$3}'
+view +650 ../dev/aic7xxx/aic7xxx_asm.c
+view +250 ibcs2/ibcs2_misc.c
+view +401 linux/linux_misc.c
+view +310 ../kern/init_main.c
+view +318 ../kern/init_main.c
+view +336 ../kern/init_main.c
+view +351 ../kern/init_main.c
+$ !! | sh            # from now on, go to next tag with 'ZZ'.
+	 #+END_EXAMPLE
+
+* Various applications
+** 针对 Bash 的 Global 功能
+** Less 使用 GLOBAL
+** Nvi-1.81.5 使用 GLOBAL
+** Elvis 使用 GLOBAL
+** Vim 使用 GLOBAL
+** 使用 GLOBAL 扩展 Emacs
+   Emacs 可以使用 GLOBAL 替代 etags 作为 tag 系统。
+
+*** 特性
+	+ 编辑器中可以使用 GLOBAL 的大部分功能。
+	+ 更智能地识别当前 token 和它的类型。
+	+ 输入 tag 名字时进行补全。
+	+ 支持鼠标。
+
+*** 准备
+	首先，完成 global 的准备工作。
+
+	其次，在 emacs 中使用 global，需要加载 =gtags.el= 并执行 =gtags-mode= 函数。
+
+    将自动加载函数写入 =$HOME/.emacs= ，启动 Emacs 并执行 =gtags-mode= 函数。如果将 =gtags.el= 没在标准目录中，则需要将其添加到 =load-path= 。
+
+	#+BEGIN_EXAMPLE
+$HOME/.emacs
++------------------------------------------------------p
+|(setq load-path (cons "/home/owner/global" load-path))
+|(autoload 'gtags-mode "gtags" "" t)
+
+$ emacs
+
+|
+|J_:-----Mule: *scratch*       (Lisp Interaction)--L16--All----
+|M-x gtags-mode[RET]
++------------------------------------------------------
+	#+END_EXAMPLE
+
+    如果想在进入 =c-mode= 时进入 =gtags-mode=，将以下代码附加到你的 =$HOME/.emacs= 中。
+	#+BEGIN_SRC elisp
+(setq c-mode-hook
+	  '(lambda ()
+		 (gtags-mode 1)
+		 ))
+	#+END_SRC
+
+	关于键映射，请参阅 =gtags.el= 的注释。
+
+*** 使用
+	+ 跳转 func1, 请调用 =gtags-find-tag= ，可以在 =mini-buffer= 中看到提示。然后输入 tag 名称。
+	  #+BEGIN_EXAMPLE
+    Find tag: func1			<- 'Find tag: ' is a prompt
+	  #+END_EXAMPLE
+	+ 跳转到 func1 的引用, 调用 =gtags-find-rtag= 。
+	  #+BEGIN_EXAMPLE
+    Find tag (reference): func1
+	  #+END_EXAMPLE
+	+ 补全 tag 名称。
+	  #+BEGIN_EXAMPLE
+Find tag: fuTAB
+
+Find tag: func1                     <- 'nc1' is appended by emacs
+	  #+END_EXAMPLE
+	+ 如果找到了许多 tag，Emacs 会进入如下的 =GTAGS SELECT MODE= ：
+	  #+BEGIN_EXAMPLE
++-------------------------------------------------------------
+|main             347 i386/isa/ultra14f.c main()
+|main             128 kern/init_main.c   main(framep)
+|main             104 netiso/clnp_debug.c main()
+|main             164 netiso/xebec/main.c main(argc, argv)
+|
+|
+|
+|
+|
+|J_:--%*-Mule: *scratch*       (Gtags Select)--L1--All----
+|[GTAGS SELECT MODE] 4 lines
++-------------------------------------------------------------
+	  #+END_EXAMPLE
+      通过任何 Emacs 命令选择一个 tag 行并按下 RET，然后可以转到 tag。当想要转到下一个或上一个 tag 时，请使用 =gtags-pop-stack= 返回上述模式并重新选择。
+
+      可通过设置 =gtags-path-style= 变量来设置此模式下自定义路径样式：
+
+	  + root
+
+		相对于项目的根目录（默认）。
+
+	  + relative
+
+		相对于当前目录。
+
+	  + absolute
+
+		绝对路径。
+
+        有两种方法设置该变量：
+        + 可以使用 Emacs 的 customize 命令动态更改。可在 Programming/Tools/Gtags 组中找到该条目。
+        + 当 Emacs 使用如下所示的.emacs 文件加载时更改：
+	      #+BEGIN_SRC elisp
+(setq gtags-mode-hook
+	  '(lambda ()
+		 (setq gtags-path-style 'relative)))
+		#+END_SRC
+
+	+ gtags-find-tag-from-here 可用。
+
+	  如果当前 token 是定义，它就等同于查找 tag 引用，否则是查找 tag 定义。
+
+	+ 要找到未在 GTAGS 中定义的符号，请尝试 gtags-find-symbol。
+      #+BEGIN_EXAMPLE
+Find symbol: lbolt          <- 'Find symbol:' is a prompt
+      #+END_EXAMPLE
+
+	+ gtags-find-with-grep 查找字符串。
+      #+BEGIN_EXAMPLE
+Find pattern: Copyright
+      #+END_EXAMPLE
+
+	+ 可使用 POSIX 正则表达式。
+      #+BEGIN_EXAMPLE
+Find tag: ^put_             <- locate tags starting with 'put_'
+      #+END_EXAMPLE
+
+	+ 可使用鼠标命令。
+
+	  如使用 X version Emacs, 进行如下尝试:
+
+	  将鼠标光标移至符号名称并单击中键，可以根据上下文转到其定义或引用。在 =GTAGS SELECT MODE= 中，将鼠标光标移动到行上，并点击中键。
+
+	  点击鼠标右键返回之前位置。
+
+** Gtags-cscope
+** 超文本生成器
+** Doxygen 使用 GLOBAL
+* Command References
+** global - 打印给定符号未知
+** gtags - 为 global 创建 tag 文件
+** htags - 从源文件生成超文本
+** htags-server - 为 htags 启动专用 Web/CGI server
+** gozilla - 强制浏览器显示源文件的指定部分
+** gtags-cscope - 交互式地检查一个 C 程序
+** globash - 使用 GNU bash 的 GLOBAL 特殊 shell
+** gtags.conf - GNU GLOBAL 的配置数据
+    gtags.conf 用来配置 global(1), gozilla(1), gtags(1) and htags(1). 这些工具按以下顺序查找配置，并从第一个存在并可读的文件中读取。
+    1. =--gtagsconf file= （命令行参数）
+    2. =$GTAGSCONF= （环境变量）
+    3. =[project root]/gtags.conf=
+    4. =[project root]/[objdir]/gtags.conf=
+    5. =$HOME/.globalrc=
+    6. =/etc/gtags.conf=
+    7. =[sysconfdir]/gtags.conf=
+
+    [sysconfdir] 默认是 =/usr/local/etc= ; 可通过配置文件中的 =--sysconfdir= 更改. [objdir] 默认是 obj ; 可通过 =GTAGSOBJDIR= 或 =MAKEOBJDIR= 更改。
+
+    除了稍后描述的一些扩展外，语法与 termcap（5）类似。文件包含一个或多个记录。使用标签选择记录。默认标签是'default'。如果设置了 GTAGSLABEL，则使用它的值。请注意'default'的含义与 termcap（5）不同。
+
+    以'#'开始的行被忽略。记录由一个或多个由':'分隔的字段组成，并以换行符结束。第一个字段必须有标签名称。其余的字段是变量定义。这些变量有三种类型：
+    + 布尔值：这种类型没有值; 变量的存在意味着 true 否则为 false。
+    + 数值：此类型在'#'后面是数字。
+    + 字符串：此类型在'='后有字符串值。
+
+    大多数变量都与字符串类型有关。
+
+    如果数据包含':'或换行符，则需要用'\'引用。一个空的域是允许的，但它没有意义。
+
+    如果有多个定义，则采用前一个。例外情况下，skip，langmap 和 gtags_parser 的所有值分别选用并链接在一起。
+
+*** 变量替代
+    可用类似于 sh（1）的替换变量。 可以使用'$'前缀引用任何字符串变量。 例如，以下 b 的值为'XYZ'。
+    #+BEGIN_SRC sh
+:a=Y:b=X${a}Z:
+    #+END_SRC
+
+*** 包含其他记录
+    Tc 是一个特殊的变量; 它读入另一条记录中的定义。 它与 termcap（5）的 tc 类似。 语法如下：
+    #+BEGIN_SRC
+tc=label[@file]
+    #+END_SRC
+
+    如果仅给出标签，tc 读取同文件中的标签指定的记录。 如果还给出 =@file= ，则从指定文件中读取标签指定的记录。 文件应该是绝对路径，不应该包含变量。 与 termcap（5）不同，可以随时随地使用 tc。
+
+*** 配置项
+    关于命令对应的变量，请参阅对应的手册。
+
+    可以将以下环境变量用作字符串变量。 如果设置了这些变量，那么在命令执行前会设置同名的环境变量。
+    + GREP_COLOR
+    + GREP_COLORS
+    + GTAGSBLANKENCODE
+    + GTAGSCACHE
+    + GTAGSFORCECPP
+    + GTAGSGLOBAL
+    + GTAGSGTAGS
+    + GTAGSLIBPATH
+    + GTAGSLOGGING
+    + GTAGSTHROUGH
+    + GTAGS_OPTIONS
+    + HTAGS_OPTIONS
+    + MAKEOBJDIR
+    + MAKEOBJDIRPREFIX
+    + TMPDIR
+
+    以下变量也可用作字符串变量。 默认情况下，它们都有由 configure 脚本给出的目录路径。
+    + bindir
+    + datadir
+    + libdir
+    + localstatedir
+    + sysconfdir
+
+*** 环境变量
+    以下环境变量影响命令的执行：
+
+    + GTAGSCONF
+
+      如果设置了该变量，使用该值对应的配置文件。
+
+    + GTAGSLABEL
+
+      如果设置了该变量，则使用配置文件中该值对应的 label。默认是 default。
+
+* Footnotes

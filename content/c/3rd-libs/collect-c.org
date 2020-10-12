@@ -1,0 +1,4 @@
+# -*- coding:utf-8-*-
+#+TITLE: collect-c
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com

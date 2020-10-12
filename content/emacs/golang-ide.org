@@ -1,0 +1,11 @@
+#+title: Golang IDE
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+* package
+
+** go-mode
+
+** company-go
+
+** gotest

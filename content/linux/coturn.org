@@ -1,0 +1,87 @@
+# -*- coding:utf-8-*-
+#+TITLE: NAT、STUN、TURN、COTURN、ICE
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* NAT
+  NAT（Network Address Translation，网络地址转换） 是一种网络地址翻译技术，主要是将内部的私有 IP 地址（private IP）转换成可以在公网使用的公网 IP（public IP）。
+
+
+  优点：
+  + 解决公网 IP 地址不够的问题。
+  + 屏蔽内网拓扑细节，提高内部网络的安全性。
+
+  缺点：
+  + NAT 设备会对数据包进行编辑修改，降低了数据发送效率。
+  + 有些协议不能通过 NAT 。
+
+** NAT 模型
+   + 静态 NAT：私网 IP 和公网 IP 一一对应。
+   + NATP：端口多路复用技术。对外只有一个公网 IP，通过端口来区别不同私有 IP 主机的数据。我们通常说的 NAT 也是这种。
+     + 完全锥型（Full Cone NAT，后面简称 FC）
+       + 特点：IP 和（外部访问）端口都不受限。
+       + 规则：将内部主机的套接字 A（IP_IN_A:PORT_IN_A）的监听、请求，映射到公网 IP 某个套接字 B（IP_OUT_B:PORT_OUT_B）。任意外部套接字与 NAT 公网套接字 B 的访问都将转发到内部主机的套接字 A 上。
+     + 受限锥型
+       + 特点：IP 受限，（外部访问）端口不受限。
+       + 规则：只有内部主机对外部 IP 发起过连接，然后外部主机才能和内部主机进行通信，但是外部主机的端口不做限制。
+     + 端口受限锥形
+       + 特点：IP 和端口都受限。
+       + 规则：只有内部主机对外部 IP 发起过连接，而且外部主机端口必须是之前连接时使用的端口，外部主机才能和内部主机进行通信，。
+     + 对称型 NAT
+       + 特点：对每个外部主机或端口的会话都会映射为不同的端口
+       + 规则：
+         + 只有有来自同一内部 IP:PORT、且针对同一目标 IP:PORT 的请求才被 NAT 转换至同一个公网（外部）IP:PORT。否则的话，NAT 将为之分配一个新的外部（公网）IP:PORT。(注意，这一条是对内部主机的限制)
+         + 只有曾经收到过内部主机请求的外部主机才能向内部主机发送数据包。内部主机用同一 IP 与同一端口与外部多 IP 通信。
+
+   所以要是位于 NAT 内部的主机之间进行通讯，在穿透的时候必需考虑面对的是何种路由类型。
+
+** NAT 穿透方案
+   + ALG 应用层网关识别技术
+   + 探针技术 STUN 和 TURN
+   + 中间件技术：UPNP
+   + 中继代理技术
+   + 特定协议的自穿越技术
+   + SBC 会话边界控制
+   + ICE 交互式连接建立
+
+* STUN
+  STUN (Simple Traversal of UDP Through NATs) 是一种网络协议，它允许位于 NAT（或多重 NAT）后的客户端找出自己的公网地址，查出自己位于哪种类型的 NAT 之后以及 NAT 为某一个本地端口所绑定的 Internet 端端口。这些信息被用来在两个同时处于 NAT 路由器之后的主机之间建立 UDP 通信。该协议由 RFC 5389 定义。
+
+  STUN 由三部分组成：
+  + STUN 客户端；
+  + STUN 服务器端；
+  + NAT 路由器。
+
+  STUN 服务端部署在一台有着两个公网 IP 的服务器上，大概的结构参考下图。STUN 客户端通过向服务器端发送不同的消息类型，根据服务器端不同的响应来做出相应的判断，一旦客户端得知了 Internet 端的 UDP 端口，通信就可以开始了。
+
+  [[https://user-gold-cdn.xitu.io/2017/9/25/396acc21f1825c34bf7982cdfe3afa50?imageView2/0/w/1280/h/960/format/webp/ignore-error/1][stun]]
+
+
+* TURN
+  TURN (Traversal Using Relays around NAT:Relay Extensions to Session Traversal Utilities for NAT) 则是 STURN 的增强版，在无法使用 STURN 进行穿透时，通过中继的方式实现 P2P 互通。
+
+  简单的说，TURN 与 STUN 的共同点都是通过修改应用层中的私网地址达到 NAT 穿透的效果，异同点是 TURN 是通过两方通讯的“中间人”方式实现穿透。
+
+* 实现
+** COTURN
+   TURN 和 STUN Server 的免费开源实现。
+
+** ICE
+   与 STUN 和 TURN 相比， ICE 并非是解决 NAT 穿透问题的协议，而是一个框架，在这个框架中，可以整合其他现存的 NAT 穿透协议，如 STUN、 TURN、 RSIP 等。
+
+   区别于其他的 NAT 穿透解决方案， ICE 是一种探索和更新式的解决方案，通过搜集自身和对端尽可能多的网络信息（各种网络地址），尝试在这些地址间建立数据通道，并在这一过程中不断更新先前收集到的信息，从而找出和选择能够进行 NAT 穿透的数据通道。
+
+   ICE 的过程主要分为 5 步：
+
+   1, 收集候选传输地址
+   2, 在信令通道中交换候选选项
+   3, 执行连接检查
+   4, 选择选定的对并启动媒体
+   5, 心跳检测
+
+
+
+* FOOTNOTE
+
+  + https://juejin.im/entry/59c8d3695188256c4b726181
+  + http://www.52im.net/thread-50-1-1.html

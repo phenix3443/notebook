@@ -1,0 +1,52 @@
+# -*- coding:utf-8 -*-
+#+title:跟我一起写 makefile笔记
+#+author:phenix3443
+#+email:phenix3443+github@gmail.com
+
+
+* 概述
+** 疑问：
+   + 程序编译过程中不同的阶段是什么？
+   + 库文件的用途是什么？其内容和组织方式是什么？
+
+* makefile 介绍
+
+* 书写规则
+  + 核心规则：
+    #+BEGIN_SRC makefile
+targets: prerequisites
+    commands
+    #+END_SRC
+
+    依赖（prerequisites） 中如果有一个以上的文件比 目标（target） 文件要新的话，命令（command）部分就会被执行。
+
+  + 隐式规则如非必要不要写出来，减少中间文件的生成。
+  + 多目标规则中的静态模式可以根据模式匹配让规则变得更灵活。
+  + 使用自动生成依赖性解决依赖问题。
+
+** 疑问：
+   + sed 如何处理自动依赖
+
+* 书写命令
+  + 总控 makefile 中的显示声明的变量会传递到下级的 makefile 中，但不会覆盖下层 makefile 所定义的变量。
+  + 嵌套执行 makefile，子模块中可能从上层 export 的变量应该使用'？='定义。
+
+* 使用变量
+** 疑问
+   + 变量赋值等号两边可以有空格么？
+
+* 使用条件判断
+
+* 使用函数
+
+* make 的运行
+
+* 隐含规则
+  + 一般不要修改隐含规则，而是修改编译选项变量或链接选项变量。
+* 使用 make 更新函数库文件
+
+* Footnotes
+
+[fn:4] [[https://www.gnu.org/software/make/manual/make.html][GNU make manual]]
+
+[fn:3] [[https://github.com/seisman/how-to-write-makefile][跟我一起写 Makefile (PDF 重制版)]]

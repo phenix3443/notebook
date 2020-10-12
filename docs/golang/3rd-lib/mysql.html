@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-10-12 Mon 19:40 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>mysql</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="刘尚亮" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="./script/org-info.js">
+
+<script type="text/javascript" src="https://orgmode.org/org-info.js">
+/**
+ *
+ * @source: https://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in https://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2019 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in https://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "4");
+org_html_manager.set("LINK_HOME", "https://phenix3443.github.io/");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href=""> UP </a>
+ |
+ <a accesskey="H" href="https://phenix3443.github.io/"> HOME </a>
+</div><div id="content">
+<h1 class="title">mysql</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org742e1e5">1. 概述</a></li>
+<li><a href="#orgc9dc35f">2. 导入</a></li>
+<li><a href="#org4328e0e">3. 连接数据库</a></li>
+<li><a href="#orge1ae6ab">4. 增删改</a></li>
+<li><a href="#orgd24979d">5. 查询</a>
+<ul>
+<li><a href="#org31cb421">5.1. 单行</a></li>
+<li><a href="#org51a39c3">5.2. 多行</a></li>
+</ul>
+</li>
+<li><a href="#org2271ce8">6. 事务</a></li>
+<li><a href="#org6e0c064">7. Null 处理</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org742e1e5" class="outline-2">
+<h2 id="org742e1e5"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://github.com/go-sql-driver/mysql">mysql</a> : golang 中的数据库主要是用到了 database/sql 包，但是这个包指示提供了 sql 的操作接口，具体的 sql 驱动还需要额外的包提供，比如 github.com/go-sql-driver/mysql。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc9dc35f" class="outline-2">
+<h2 id="orgc9dc35f"><span class="section-number-2">2</span> 导入</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #00ffff; font-weight: bold;">import</span> (
+    <span style="color: #00ff00;">"database/sql"</span>
+    _ <span style="color: #00ff00;">"github.com/go-sql-driver/mysql"</span>
+)
+</pre>
+</div>
+<p>
+分别导入 sql 操作接口和 mysql 驱动。
+</p>
+</div>
+</div>
+<div id="outline-container-org4328e0e" class="outline-2">
+<h2 id="org4328e0e"><span class="section-number-2">3</span> 连接数据库</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #ffff00;">dsn</span> := <span style="color: #00ff00;">"root:toor@tcp(127.0.0.1:3306)/touch_manager"</span>
+<span style="color: #ffff00;">db</span>, <span style="color: #ffff00;">err</span> := sql.<span style="color: #0000ff; font-weight: bold;">Open</span>(<span style="color: #00ff00;">"mysql"</span>, dsn)
+<span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+    fmt.<span style="color: #0000ff; font-weight: bold;">Println</span>(err.<span style="color: #0000ff; font-weight: bold;">Error</span>())
+}
+
+<span style="color: #00ffff; font-weight: bold;">if</span> <span style="color: #ffff00;">ok</span> := db.<span style="color: #0000ff; font-weight: bold;">Ping</span>(); ok == <span style="color: #ff00ff;">nil</span> {
+    <span style="color: #0000ff; font-weight: bold;">println</span>(<span style="color: #00ff00;">"db still alive"</span>)
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #00ffff; font-weight: bold;">func</span> <span style="color: #0000ff; font-weight: bold;">Open</span>(<span style="color: #ffff00;">driverName</span>, <span style="color: #ffff00;">dataSourceName</span> <span style="color: #00ff00;">string</span>) (*<span style="color: #00ff00;">DB</span>, <span style="color: #00ff00;">error</span>)
+</pre>
+</div>
+
+<p>
+DB 对象代表了和数据数据库的连接池。sql 包会自动创建和释放链接。   open 接口仅验证参数是否正确，并不会创建和数据库的链接。为了确认可以进行链接，需要调用 Ping 命令。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1ae6ab" class="outline-2">
+<h2 id="orge1ae6ab"><span class="section-number-2">4</span> 增删改</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #ffff00;">res</span>, <span style="color: #ffff00;">err</span> := db.<span style="color: #0000ff; font-weight: bold;">Exec</span>(<span style="color: #00ff00;">"replace into touch_rule values (?,?);"</span>, 1, <span style="color: #00ff00;">"test"</span>)
+<span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+    log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+}
+<span style="color: #ffff00;">id</span>, <span style="color: #ffff00;">_</span> := res.<span style="color: #0000ff; font-weight: bold;">LastInsertId</span>()
+<span style="color: #ffff00;">count</span>, <span style="color: #ffff00;">_</span> := res.<span style="color: #0000ff; font-weight: bold;">RowsAffected</span>()
+</pre>
+</div>
+<p>
+(*DB).Exec 处理不需要任何返回的查询，例如 INSERT, UPDATE, DELETE。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd24979d" class="outline-2">
+<h2 id="orgd24979d"><span class="section-number-2">5</span> 查询</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org31cb421" class="outline-3">
+<h3 id="org31cb421"><span class="section-number-3">5.1</span> 单行</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #00ffff; font-weight: bold;">var</span> <span style="color: #ffff00;">content</span> <span style="color: #00ff00;">string</span>
+<span style="color: #ffff00;">err</span> := db.<span style="color: #0000ff; font-weight: bold;">QueryRow</span>(<span style="color: #00ff00;">"select content from touch_rule where rule_id = ?"</span>, 1).<span style="color: #0000ff; font-weight: bold;">Scan</span>(&amp;content)
+<span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+    log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org51a39c3" class="outline-3">
+<h3 id="org51a39c3"><span class="section-number-3">5.2</span> 多行</h3>
+<div class="outline-text-3" id="text-5-2">
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #ffff00;">rows</span>, <span style="color: #ffff00;">err</span> := db.<span style="color: #0000ff; font-weight: bold;">Query</span>(<span style="color: #00ff00;">"select * from touch_rule;"</span>)
+<span style="color: #00ffff; font-weight: bold;">defer</span> rows.<span style="color: #0000ff; font-weight: bold;">Close</span>()
+
+<span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+    log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+}
+
+<span style="color: #00ffff; font-weight: bold;">for</span> rows.<span style="color: #0000ff; font-weight: bold;">Next</span>() {
+    <span style="color: #00ffff; font-weight: bold;">var</span> <span style="color: #ffff00;">id</span> <span style="color: #00ff00;">uint32</span>
+    <span style="color: #00ffff; font-weight: bold;">var</span> <span style="color: #ffff00;">content</span> <span style="color: #00ff00;">string</span>
+    err = rows.<span style="color: #0000ff; font-weight: bold;">Scan</span>(&amp;id, &amp;content)
+    <span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+        log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+    }
+    fmt.<span style="color: #0000ff; font-weight: bold;">Println</span>(id, content)
+}
+
+<span style="color: #00ffff; font-weight: bold;">if</span> err = rows.<span style="color: #0000ff; font-weight: bold;">Err</span>(); err != <span style="color: #ff00ff;">nil</span> {
+    log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+}
+</pre>
+</div>
+<p>
+有几点需要注意：
+</p>
+<ul class="org-ul">
+<li>检查遍历是否有 error</li>
+<li>defer rows.Close()非常重要。结果集 (rows) 未关闭前，底层的连接处于繁忙状态。当遍历读到最后一条记录时，会发生一个内部 EOF 错误，自动调用 rows.Close()，但是如果提前退出循环，rows 不会关闭，连接不会回到连接池中，连接也不会关闭。所以手动关闭非常重要。rows.Close()可以多次调用，是无害操作。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2271ce8" class="outline-2">
+<h2 id="org2271ce8"><span class="section-number-2">6</span> 事务</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+<pre class="src src-go">
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6e0c064" class="outline-2">
+<h2 id="org6e0c064"><span class="section-number-2">7</span> Null 处理</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+自定义了数据类型，比如，NullBool 表示该字段是 bool 类型，但是有可能设置为 null。简单说就是设计数据库的时候不要出现 null，处理起来非常费力。Null 的 type 很有限，例如没有 sql.NullUint64; null 值没有默认零值。
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #00ffff; font-weight: bold;">var</span> <span style="color: #ffff00;">content</span> <span style="color: #00ff00;">sql.NullString</span>
+<span style="color: #ffff00;">err</span> := db.<span style="color: #0000ff; font-weight: bold;">QueryRow</span>(<span style="color: #00ff00;">"select content from touch_rule where rule_id = ?"</span>, 2).<span style="color: #0000ff; font-weight: bold;">Scan</span>(&amp;content)
+<span style="color: #00ffff; font-weight: bold;">if</span> err != <span style="color: #ff00ff;">nil</span> {
+    log.<span style="color: #0000ff; font-weight: bold;">Fatal</span>(err)
+}
+<span style="color: #00ffff; font-weight: bold;">if</span> content.Valid {
+    fmt.<span style="color: #0000ff; font-weight: bold;">Println</span>(content.String)
+} <span style="color: #00ffff; font-weight: bold;">else</span> {
+    fmt.<span style="color: #0000ff; font-weight: bold;">Println</span>(<span style="color: #00ff00;">"null"</span>)
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 刘尚亮</p>
+<p class="email">Email: <a href="mailto:phenix3443@gmail.com">phenix3443@gmail.com</a></p>
+<p class="date">Created: 2020-10-12 Mon 19:40</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

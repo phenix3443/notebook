@@ -1,0 +1,934 @@
+# -*- coding:utf-8-*-
+#+TITLE: LDoc manual
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/stevedonovan/LDoc][Ldoc]] 是一个软件文档工具，可以从源代码注释（文档注释）中自动生成 API 文档。它主要针对 Lua 并记录 Lua API，但它也可以用文档注释来解析 C，用于记录用 C 实现的 Lua 模块。
+
+  除不再需要某些解决方法，例如，不再使用 module() 定义 Lua 模块，因为在 Lua 5.2 中已经弃用了，它主要与 LuaDoc 兼容。
+
+  此外，输出与 LuaDoc 非常相似，因为 HTML 模板直接基于 LuaDoc。还可在项目中自定义模板和样式表。LDoc 自带三个主题; =pale= 对应空白， =one= 对应单列输出， =fixed= 对应左侧的固定导航栏。
+
+  可以选择使用 Markdown 来处理文档，这意味着在文档注释中不需要丑陋的 HTML。尽管 C/C++ 扩展模块中函数名称不能从代码本身推断出来，但可以用类似的方式记录 。
+
+  LDoc 可通过传统的函数注释、任何 Markdown 格式的文档以及指定的源码示例提供集成文档。示例和文件中 Lua 源码都将被美化。
+
+  虽然有相当多的命令行选项，但首选是以 Lua 格式编写 =config.ld= 配置文件。按照惯例，如果通过 =ldoc .= 调用 LDoc，它会先读取这个文件。通过这种方式，用户可以使用这个简单的命令就可轻松构建文档。
+
+* 注释约定（Commenting Conventions）
+  LDoc 使用 Javadoc 和 LuaDoc 建立的约定记录模块，函数，表和类型。
+
+** 文档注释（doc document）
+   只解析文档注释，文档注释用至少 3 个连字符，或者包含至少 3 个连字符的空注释行开头：
+   #+BEGIN_SRC lua
+--- summary.
+-- Description; this can extend over
+-- several lines
+
+-----------------
+-- This will also do.
+   #+END_SRC
+
+   或者使用 Lua 块注释:
+   #+BEGIN_SRC lua
+--[[--
+ Summary. A description
+ ...;
+]]
+   #+END_SRC
+
+   任何模块或脚本都必须以文档注释开头；忽略其他文件将并产生警告。唯一例外的是 module 语句开始的模块。
+
+   如果编码标准包含版权声明，那么 =-B= 标志或 =boilerplate=true= 将使 LDoc 忽略每个模块的第一个注释。
+
+   常见的注释模式如 =-- (text) --= 不在此列，因为它们通常用于面向程序员的文档。
+
+** 标记（Tags）
+   所有文档注释都以摘要语句 （summary）开头，以句号或问号（注意是英文格式）结尾。随后是可选的描述。通常，摘要语句将出现在模块内容中。
+
+   在这个描述性文本之后，通常会有一些用 =@= 引入的标记。这些标记遵循 Javadoc 建立的约定，并广泛用于其他语言的工具。
+
+   #+BEGIN_SRC lua
+--- Some doc comment
+-- @tag1 parameters for first tag
+-- @tag2 parameters for the second tag
+   #+END_SRC
+
+   标记的顺序并不重要，但应保持一致。
+
+   LDoc 识别的所有标记如下：
+
+   + @module：包含 function 和 table 的 Lua 模块，可在 section 内部。
+   + @classmod：类似 =@module= ，但是描述类。
+   + @submodule：包含您希望放入指定主模块（master module）的定义的文件。
+   + @script：Lua 程序。
+   + @author（multiple），copyright，@license，@release：仅用于像 =@module= 这样的项目级标记。
+   + @function，@lfunction：模块内的函数。
+   + @param：函数的形参（多个）。
+   + @return：函数返回值（多个）。
+   + @raise：此函数抛出未处理的错误。
+   + @local：显式将函数标记为未导出（除非 =--all= ）
+   + @see：参考其他文档条目。
+   + @usage：函数使用示例。（与 =@module= 共用是有不同含义）。
+   + @table：Lua table。
+   + @field：table 命名成员。
+   + @section： 开始一个命名 section，用于将函数或表分组在一起。
+   + @type：描述类的 section。
+   + @within：将函数或表放入隐式 section。
+   + @fixme，@todo 和 @warning 是批注，是出现在函数内的文档注释。
+
+** 模块
+   模块首要的应该是名称和描述。以下是 Lua 5.2 中常用的模块编写方式，顶部带有引入了名称 =@module= 标记：
+   #+BEGIN_SRC lua
+--- a test module
+-- @module test
+
+local test = {}
+
+function test.my_module_function_1()
+    ...
+end
+...
+return test
+   #+END_SRC
+
+   这将设置名为“test”的模块，其描述为“a test module”。
+
+** 函数
+   接下来要描述的是模块中的函数。以下是记录函数的简单示例：
+   #+BEGIN_SRC lua
+--- foo explodes text.
+-- It is a specialized splitting operation on a string.
+-- @param text the string
+-- @return a table of substrings
+function foo (text)
+....
+end
+   #+END_SRC
+
+   还可以显式标记函数名称，这在记录由 C 代码导出的 Lua api 时特别有用：
+   #+BEGIN_SRC c
+/// A C function which is exported to Lua with another name,
+// because the ways of C can be mysterious!
+// @function our_nice_function
+int _some_function_for_lua(lua_State* l) {
+    ....
+}
+   #+END_SRC
+   标记基本上添加了所有无法自动从源代码获取的细节。
+
+*** 函数参数和返回值
+    =param= 标记带有参数名称，后跟用空格分隔的参数描述。而 =return= 标记后跟返回值的描述：
+
+    #+BEGIN_SRC lua
+-- @param name_of_parameter the description of this parameter as verbose text
+-- @return the description of the return value
+
+    #+END_SRC
+
+    如果要为参数或返回值指定类型，还有 =tparam= 和 =treturn= ：
+    #+BEGIN_SRC lua
+-- @tparam string text this parameter is named 'text' and has the fixed type 'string'
+-- @treturn {string,...} a table of substrings
+    #+END_SRC
+
+    可能有多个 =param= 标记，它们分别对应函数的所有形参。对于 Lua，还可以有多个 =return= 标记。
+    #+BEGIN_SRC lua
+--- solve a quadratic equation.
+-- @param a first coeff
+-- @param b second coeff
+-- @param c third coeff
+-- @return first root, or nil
+-- @return second root, or imaginary root error
+function solve (a,b,c)
+    local disc = b^2 - 4*a*c
+    if disc < 0 then
+        return nil,"imaginary roots"
+    else
+       disc = math.sqrt(disc)
+       return (-b + disc)/2*a,
+              (-b - disc)/2*a
+    end
+end
+
+...
+    #+END_SRC
+
+** 表和常量
+   模块还可以导出表和其他值。记录表的经典方法如下所示：
+   #+BEGIN_SRC lua
+--- a useful table of constants
+-- @field alpha first correction
+-- @field beta second correction
+-- @field gamma fudge factor
+-- @table constants
+   #+END_SRC
+   这里的条目类型由 =table= 标记显式声明；LDoc 还尝试从代码中提取表文档：
+   #+BEGIN_SRC lua
+--- a useful table of constants
+M.constants = {
+    alpha = 0.23, -- first correction
+    beta = 0.443, -- second correction
+    gamma = 0.01  -- fudge factor
+}
+   #+END_SRC
+
+   此处遵循的规则是 ~NAME = <table-constructor>~ 。 如果 LDoc 无法计算出代码中的名称和类型，则会发出警告，同时指出文件和位置。目前仅支持单级表，并且字段必须是有效标识符。
+
+   另一种模块级类型的 =field= 如下所示：
+   #+BEGIN_SRC lua
+--- module version.
+M._VERSION = '0.5'
+   #+END_SRC
+   也就是说，模块可以记录导出的函数，本地函数，表和字段。
+
+** 显式指定函数或字段
+
+   当代码分析导致错误类型时，可明确指出来：
+
+   #+BEGIN_SRC lua
+--- module contents with explicitly documented field _CONTENTS.
+-- @field _CONTENTS
+M._CONTENTS = {constants=true,one=true,...}
+
+--- an explicitly named function.
+-- @function my_function
+function my_function()
+    ...
+end
+   #+END_SRC
+   这在 C 中特别有用，其中正在记录的函数声明与最终 Lua api 不同。
+
+** 重复标记
+   像 =param= 和 =return= 这样的标记可以多次指定，而像 =function= 这样的类型标记只能在注释中出现一次。
+
+   基本规则是单个文档注释只能记录一个实体。
+
+** 模块别名
+   在声明模块内容时，通常使用其本地名称。在这种情况下， =alias= 标记可告诉 LDoc 这些函数确实属于模块：
+   #+BEGIN_SRC lua
+--- another test.
+-- @module test2
+-- @alias M
+
+local M = {}
+
+-- first test.
+function M.one()
+..
+end
+
+return M
+   #+END_SRC
+   LDoc 会自动将代码中的 =M= 和 =_M= 识别为别名，但 =alias= 允许使用任何标识符。
+
+   LDoc 尝试通过检查 doc 注释后面的代码来推断函数名称和形式参数名称。它还识别定义函数的变参：
+
+   #+BEGIN_SRC lua
+--- second test.
+M.two = function(...) ... end
+   #+END_SRC
+
+** 局部函数
+   除导出函数外，模块通常包含本地函数。默认情况下，LDoc 不在文档中包含这些，但可以使用 =--all= 标志，或者在 =config.ld= 中使用 ~all = true~ 启用包含。它们可以像全局函数一样记录：
+   #+BEGIN_SRC lua
+--- it's clear that boo is local from context.
+local function boo(...) .. end
+
+local foo
+
+--- we need to give a hint here for foo
+-- @local here
+function foo(...) .. end
+   #+END_SRC
+
+** 声明标记另一种方法
+   从 1.3 开始，LDoc 允许使用冒号代替@。
+   #+BEGIN_SRC
+--- a simple function.
+-- string name person's name
+-- int: age age of person
+-- !person: person object
+-- treturn: ?string
+-- function check(name,age)
+   #+END_SRC
+
+   但是，必须使用 =--colon= 标志或在 =config.ld= 中设置 ~colon=true~ 。 在这种风格中，如果以'！'或'？'为前缀，可以直接使用类型（对于 type-or-nil）
+
+** 要处理的文件
+   默认情况下，LDoc 将处理指定目录中以'.lua'或'.luadoc'结尾的任何文件; 也可以处理单个文件。“项目” 通常由一个或多个包中的许多模块组成。生成的 index.html 将指向每个模块生成的文档。
+
+   如果项目只有一个模块或脚本，则生成的 index.html 直接包含该模块的文档，因为指向一个模块的索引是多余的。
+
+   LDoc 具有两级层次结构：在项目下面有模块，脚本，类（包含代码）和示例以及 “主题”（包含文档）。 然后，它们包含函数，表，section 等条目。
+
+   如果要记录脚本，请使用 @script 而不是 @module。新的 1.4 中导出单个类的模块使用 @classmod。
+
+* See 引用
+  =@see= 用于引用文档的其他部分， =@usage= 可以提供使用示例；可以有多个这样的标记：
+  #+BEGIN_SRC lua
+---------
+-- split a string in two.
+-- @param s the string
+-- @param delim the delimiter (default space)
+-- @return first part
+-- @return second part
+-- @usage local hello,world = split2("hello world")
+-- @see split
+funtion split2(s,delim) .. end
+  #+END_SRC
+
+  这里假设'split'是在同一模块中定义的函数。如果要链接到另一个模块中的函数，则必须限定引用。
+
+  对方法的引用使用冒号： =myclass:method=; 例如，将如何引用 @type 部分的成员。
+
+  tests/complex 中的示例说明如何解释 @see 引用：
+  #+BEGIN_EXAMPLE
+  complex.util.parse
+  complex.convert.basic
+  complex.util
+  complex.display
+  complex
+  #+END_EXAMPLE
+
+  当然可以使用模块或函数的全名，但可以省略顶级命名空间，例如 可以直接引用模块 util 和函数 display.display_that。在模块内部可以直接使用函数名称，例如在 display 中可以 display_this。
+
+  适用于函数的内容也适用于任何模块级项目，如 table。可定义新的模块级项目，它们将根据这些规则工作。
+
+  如果在项目中找不到引用，LDoc 将检查它是否是对 Lua 标准函数或表的引用，并链接到在线 Lua 手册。所以像'table.concat'这样的引用是合理处理的。
+
+  可以使用 =@{ref}= 语法内联引用。 这可能出现在文本的任何地方，并且比 @see 更灵活。 特别是，当该类型具有特定结构时，它提供了一种记录参数类型或返回值的方法：
+  #+BEGIN_SRC sh
+------
+-- extract standard variables.
+-- @param s the string
+-- @return @{stdvars}
+function extract_std(s) ... end
+
+------
+-- standard variables.
+-- Use @{extract_std} to parse a string containing variables,
+-- and @{pack_std} to make such a string.
+-- @field length
+-- @field duration
+-- @field viscosity
+-- @table stdvars
+
+  #+END_SRC
+  =@{ref}= 对于从代码示例和自述文本引用 API 非常有用。
+
+  通过扩展语法 =@{ref|text}= 更改链接文本。
+
+  也可以在反引号中加入引用，比如 =\`stdvars \`= 。 这通常用于 Markdown 以表示代码，因此在编写文档时自然会出现这种情况。 区别在于反引号表达式不一定是引用，之后将以代码样式出现; 使用 @引用，将收到无法识别的符号的警告，结果将呈现为 “???”。
+
+  它由配置变量 backtick_references 或 backtick 格式控制; 如果在项目中使用 Markdown，则默认值为 true，但可以在 config.ld 中明确指定。
+
+  转义这些引用以便它们不会被扩展，比如 =@{\ref}= 。
+
+** Custom @see References
+   定义如何处理项目外部的引用很有用。例如，在 luaposix 项目中，我们希望引用对应 C 函数的 man 说明：
+   #+BEGIN_SRC lua
+------------
+-- raise a signal on this process.
+-- @see raise(3)
+-- @int nsig
+-- @return integer error cod
+function raise (nsig)
+end
+   #+END_SRC
+   这些参考引用始终具有此特定形式，任务是将它们转换为 Linux 联机帮助页的在线引用。所以在 config.ld 中有：
+
+   #+BEGIN_SRC lua
+local upat = "http://www.kernel.org/doc/man-pages/online/pages/man%s/%s.%s.html"
+
+custom_see_handler('^([%w_]+)%((%d)%)$',function(name,section)
+    local url = upat:format(section,name,section)
+    local name = name .. '(' ..section..')'
+    return name, url
+end)
+   #+END_SRC
+
+   =^([％w _] +)％((％d)％)$= 匹配模式并提取名称及其 section。然后建立适当的 URL 就很简单了。该函数应返回链接文本和链接源，并在 LDoc 尝试解析项目引用之前检查模式。 所以最好让它们尽可能完全匹配。
+
+* 模块标记
+  LDoc 要求有模块文档注释。如果代码样式中的许可证模块看起来像文档注释，那么在配置中设置 ~boilerplate = true~ 跳过它们。
+
+  此注释不必具有显式的 =@module= 标记，LDoc 继续识别 =module()= 的使用。
+
+  有三种类型的 “模块”（例如，项目级）：可使用 =require()= 加载的 module，表明是程序的 script 和 classmod（它是在单个模块中实现的类）。
+
+  有些标记仅在模块注释中有用：author,copyright,license 和 release。它们位于 HTML 的 Info 小节中。
+
+  =@usage= 标记在模块中使用时有不同的含义; 文本按代码字体格式呈现。由于编码完全是为了避免重复以及因重复出现的不同步问题，因此 =@usage= 标记可以在位于模块中后部，出现在长字符串之前。例如，LDoc 的主脚本是 ldoc.lua，会看到 =@usage= 标记出现在第 36 行，help 字符串之前。
+
+  =@export= 是另一个通常是 “分离” 的模块标记。它用于支持在模块最后明确导出函数。在该示例中，question and answer 都是 local，因此对模块是私有的，但是已经明确地导出了 answer。 （如果在此文件上使用 =-a= 标志调用 LDoc，将看到未导出函数的文档。）
+
+  =@set= 是一个功能强大的标记，它为仅用于此模块的变量设置值。在模块注释中 ~@set no_summary = true~ 将在扩展模板时暂时禁用生成摘要。通常，影响模板扩展的配置变量可以这种方式修改。例如，如果希望对特定模块的内容进行排序，那么 ~@set sort = true~ 将仅为该模块执行此操作。
+
+* sections
+  LDoc 支持显式 section。 默认情况下，隐式 section 对应于模块中预先存在的类型：'Functions'，'Tables'和'Fields'（还有另一个默认部分'Local Functions'，只有在使用 =--all= 调用 LDoc 时才会出现。）但是可以添加新的部分; 第一种机制是定义新类型（比如'宏'）。 然后创建一个新的部分（'宏'）来包含这些类型。
+
+  还有一种方法可以使用 @section 标记声明 ad-hoc section。 当模块有许多需要放入逻辑部分的函数时，就会出现这种情况。
+
+  #+BEGIN_SRC lua
+--- File functions.
+-- Useful utilities for opening foobar format files.
+-- @section file
+
+--- open a file
+...
+
+--- read a file
+...
+
+--- Encoding operations.
+-- Encoding foobar output in different ways.
+-- @section encoding
+
+...
+  #+END_SRC
+  section 文档注释与普通文档注释具有相同的结构; 摘要用作新的部分标题，描述将在该部分的函数详细信息的开头输出; 该名称未使用，但必须是唯一的。
+
+  section 显式在左侧的 “Contents” 下。有关其外观的示例，请参阅 [[http://stevedonovan.github.com/winapi/api.html][winapi 文档]]。
+
+  可以说模块编写者不应该编写这么长的模块，但是文档工具的工作不是限制程序员！
+
+  一种特殊类型的部分是 =type= ：它用于记录类。type section 中的函数（或字段）被认为是该类的方法。
+
+  #+BEGIN_SRC lua
+--- A File class.
+-- @type File
+
+....
+--- get the modification time.
+-- @return standard time since epoch
+function File:mtime()
+...
+end
+  #+END_SRC
+  （在理想的世界中，我们会使用'class'而不是'type'这个词，但这会与 LuaDoc 类标记冲突。）
+
+  section 继续，直到找到下一 section， =@section end= 或文件结尾。
+
+  可以使用 @within 将项目放入隐式部分。这允将相邻函数放在不同的部分中，这样就不必以特定方式 排序代码。
+
+  使用 1.4，还有另一种用于记录类的选项，它是顶级类型 =classmod= x。它适用于在模块中实现的较大类，以及优点是可以将方法放入 section 中。
+
+  有时，模块可能在逻辑上跨越多个文件，这很容易发生在大型文件中。将有一个名为“foo”的主模块和其他需要在该模块上添加功能的文件。如果这些文件具有 =@submodule=  标记，则其内容将放在主模块文档中。但是，当前的限制是必须在子模块之前处理主模块。
+
+  有关其在实践中的工作原理，请参阅 tests/submodule 示例。
+
+* 与 LuaDoc 的区别
+  LDoc 只产生“module”文档，因此“file”的概念是多余的。
+
+  一个额外的便利是命名实体更容易：
+  #+BEGIN_SRC lua
+------------
+-- a simple module.
+-- (LuaDoc)
+-- @class module
+-- @name simple
+
+  #+END_SRC
+  变为
+  #+BEGIN_SRC lua
+------------
+-- a simple module.
+-- (LDoc)
+-- @module simple
+
+  #+END_SRC
+  这是因为类型名称（如'function'，'module'，'table'等）可以用作标记。LDoc 还提供了一种使用配置文件添加新类型（例如 “macro”）的方法，该配置文件可以与源一起提供。 如果厌倦了反复键入'param'，那么你可以为它定义一个别名，比如'p'。 这也可以在配置文件中指定。
+
+  LDoc 也可以使用 C/C++ 文件，因为扩展编写器显然具有与 Lua 模块编写器相同的文档需求。
+
+  LDoc 允许使用 tparam 或 treturn 将 type 附加到参数或返回值，并为文档管理器提供选项使用 Markdown 来解析注释内容。还可包含美化的代码示例，以及将使用 Markdown 渲染并包含经过修饰的代码块的自述文件。
+
+* 添加新 tag
+  LDoc 试图忠实于 LuaDoc，但提供了一些扩展。可以定义标记别名，并声明新类型。
+  #+BEGIN_SRC lua
+--- zero function. Two new ldoc features here; item types
+-- can be used directly as tags, and aliases for tags
+-- can be defined in config.ld.
+-- @function zero_fun
+-- @p k1 first
+-- @p k2 second
+  #+END_SRC
+
+  这里定义了'param'的别名。如果在源码中找到文件 config.ld，则它将作为 Lua 数据加载。例如，以下上述模块的配置提供标题并定义'param'的别名：
+  #+BEGIN_SRC lua
+title = "testmod docs"
+project = "testmod"
+alias("p","param")
+  #+END_SRC
+  可以定义额外的标记类型：
+  #+BEGIN_SRC lua
+new_type("macro","Macros")
+  #+END_SRC
+  然后用作任何其他类型：
+  #+BEGIN_SRC lua
+-----
+-- A useful macro. This is an example of a custom type.
+-- @macro first_macro
+-- @see second_function
+  #+END_SRC
+
+  这也将创建一个名为“macro”的新模块部分。 如果新类型有参数或字段，请指定名称：
+
+  #+BEGIN_SRC lua
+new_type("macro","Macros",false,"param")
+  #+END_SRC
+
+  （第三个参数表示这不是项目级别标记）。可以这样使用：
+  #+BEGIN_SRC lua
+-----
+-- A macro with arguments.
+-- @macro second_macro
+-- @param x the argument
+  #+END_SRC
+
+  参数将显式在“param”小节下。
+
+* 从代码中推断更多
+  函数的限定名称将从 doc 注释后面的任何 function 关键字推断出来。然而，LDoc 分析更进一步。
+
+  代替：
+
+  #+BEGIN_SRC lua
+--- first table.
+-- @table one
+-- @field A alpha
+-- @field B beta
+M.one = {
+    A = 1,
+    B = 2;
+}
+  #+END_SRC
+
+  可写作：
+  #+BEGIN_SRC lua
+--- first table
+-- @table one
+M.one = {
+    A = 1, -- alpha
+    B = 2; -- beta
+}
+  #+END_SRC
+
+  同样，函数参数注释可以直接使用：
+
+  #+BEGIN_SRC lua
+------------
+-- third function. Can also provide parameter comments inline,
+-- provided they follow this pattern.
+function mod1.third_function(
+    alpha, -- correction A
+    beta, -- correction B
+    gamma -- factor C
+    )
+    ...
+end
+  #+END_SRC
+  与往常一样，如果不合适，显式标记可以覆盖此行为。
+
+* 用 C 编写的扩展模块
+  LDoc 可以处理 C/C++文件：
+  #+BEGIN_SRC c
+/***
+Create a table with given array and hash slots.
+@function createtable
+@param narr initial array slots, default 0
+@param nrec initial hash slots, default 0
+@return the new table
+*/
+static int l_createtable (lua_State *L) {
+....
+  #+END_SRC
+  =/**= 和 =///= 都被识别为开始注释块。此外，标记将以完全相同的方式处理。有必要住处这是一个具有给定名称的函数，因为这不能从代码中可靠地推断出来。这样的文件需要一个与 lua 完全相同的模块注释。
+
+  可以使用 =config.ld= 中的 =add_language_extension('lc','c')= 之类的调用将未知扩展名与语言相关联。 （目前语言只能是'c'或'lua'。）
+
+  对 C 扩展特别有用的 LDoc 特性是模块合并。如果多个文件都标记为 =@module lib= ，则会生成单个模块库，其中包含来自单独文件的所有文档。为此，请使用 ~merge = true~ 。
+
+  有关完整示例，请参阅 [[https://stevedonovan.github.io/ldoc/examples/mylib.c.html#][mylib.c]].
+
+* 支持 Moonscript
+  1.4 引入了 [[http://moonscript.org/][Moonscript]] 的基本支持。Moonscript 模块约定与 Lua 相同，但显式类构造除外。[[https://stevedonovan.github.io/ldoc/examples/list.moon.html#][list.moon]] 显示了 =@classmod= 如何声明导出类的模块，类的元方法和方法隐式放入单独的部分。
+
+* 基本使用
+  例如，要处理'lua'目录中的所有文件：
+  #+BEGIN_SRC sh
+$ ldoc lua
+output written to doc/
+  #+END_SRC
+
+  此后，doc 目录将包含 index.html，它指向 modules 子目录中的各个模块。 =--dir= 标志可以指定生成输出的位置，并确保该目录存在。输出结构类似 LuaDoc：有一个 index.html，各个模块位于 modules 子目录中。这适用于所有项目级类型，因此还会有 scripts, examples and topics 目录。
+
+  如果模块使用 =module(...)= 定义，则必须推导出模块名称。如果 ldoc 是从包的根目录运行的，那么这个推论不需要任何帮助。例如，包是 foo 那么 =ldoc foo= 将按预期工作。如果实际上在 foo 目录中那么 =ldoc -b ..= 将正确推断出模块名称。一个例子是为 LuaDoc 本身生成文档：
+  #+BEGIN_SRC sh
+$ ldoc -b .. /path/to/luadoc
+  #+END_SRC
+
+  如果没有 =-b= 将包的基础目录设置为当前目录的父级，则 =luadoc.config= 之类的隐式模块将错误地放在全局命名空间中。
+
+  对于不使用 =module()= 的新式模块，建议模块注释包含显式的 =@module PACKAGE.NAME= 。如果没有，那么 ldoc 仍将尝试推断模块名称，但可能需要如上所述 =--package/-b= 帮助。
+
+  一个特例就是 =ldoc .= 。然后目录中必须有一个 config.ld 文件，它可以指定文件：
+  #+BEGIN_SRC lua
+file = "mymod.lua"
+title = "mymod documentation"
+description = "mymod does some simple but useful things"
+  #+END_SRC
+  file 当然可以指向目录，就像 =--file= 选项一样。通过允许在配置中明确指定所有内容，此模式使用户可以轻松地构建文档。
+
+  在 =config.ld= 中，file 可以是 Lua 表，包含文件名或目录; 如果它有一个 =exclude= 字段，那么它将用于从列表中排除文件，例如 ={'examples'，exclude = {'examples/slow.lua'}}= 。
+
+  可以使用 -c 标志指定配置文件。配置文件并非必须包含 file 字段，但在这种情况下，LDoc 确实需要命令行上显式指明文件。如果希望将某些默认值应用于所有文档，则此选项非常有用。
+
+* Markdown 支持
+  config.ld 中可以使用 ~format='markdown'~ ，并用于处理摘要和描述; 也可以使用 =-f= 标志。这需要 markdown 处理器。LDoc 知道如何使用：
+  + markdown.lua 是 Niklas Frykholm 编写的的纯 Lua 处理器。为方便起见，LDoc 附带了 markdown.lua 的副本。
+  + lua-discount，更快的替代方案（ =luarocks install lua-discount= ）。lua-discount 使用 C discount Markdown 处理器，它具有比纯 Lua 版本更多的功能，例如 PHP-Extra 样式表。
+  + lunamark，另一种纯净的 Lua 处理器，比 markdown 更快，并具有额外的功能（ =luarocks install lunamark= ）。
+
+  可以通过
+  #+BEGIN_SRC lua
+format ='markdown|discount|lunamark|plain|backticks'
+  #+END_SRC
+
+  使用喜欢的处理器，LDoc 将尝试使用它。如果它找不到它，它将寻找其他一个 markdown 处理器; LDoc 自带 markdown.lua，虽然它对于较大的文件来说很慢。
+  （译注：但是使用过程中发现这些多个配置并不生效）
+
+  即使默认为 “plain”，也会发生一些最小的处理，特别是空行被视为换行符。如果使用“backticks”格式化程序，那么它相当于在 =config.ld= 中使用 ~process_backticks = true~ ，反引号将扩展为文档链接，如 =@{ref}= ，否则转换为 =<code> ref </code>= 。
+
+  此格式（markdown）适用于所有项目，包括任何自述文件等。可能想要这个'叙述'文档的 Markdown，而不是代码注释的 markdown。 ~plain = true~  将关闭代码格式化。
+
+* 处理单个模块
+  =--output= 可用于为输出文件指定不同的名称。这对于指定单个模块文件的特殊情况很有用。这里的索引是多余的，因此生成的单个 HTML 文件包含模块文档。
+  #+BEGIN_EXAMPLE
+$ ldoc mylib.lua --> results in doc/index.html
+$ ldoc --output mylib mylib.lua --> results in doc/mylib.html
+$ ldoc --output mylib --dir html mylib.lua --> results in html/mylib.html
+  #+END_EXAMPLE
+
+  LDoc 使用的默认 section 是 “Funcitons”，“Table” 和“Field”，对应于内置类型 “function”，“table” 和“field”。 如果 =config.ld= 包含类似 =new_type("macro","Macros")= 的内容，则会添加一个新的 “Macros” section，其中包含 “macro” 类型的条目，“macro”被注册为新的有效标记名称。然后，默认模板按照定义的顺序显式其相应 section 标题下的项目。
+
+* 获得有关模块的帮助
+  有一个选项可以简单地转储解析模块的结果。考虑 C 示例 =tests/example/mylib.c=
+
+  #+BEGIN_EXAMPLE
+$ ldoc --dump mylib.c
+----
+module: mylib   A sample C extension.
+Demonstrates using ldoc's C/C++ support. Can either use /// or /*** */ etc.
+
+function        createtable(narr, nrec)
+Create a table with given array and hash slots.
+narr     initial array slots, default 0
+nrec     initial hash slots, default 0
+
+function        solve(a, b, c)
+Solve a quadratic equation.
+a        coefficient of x^2
+b        coefficient of x
+c        constant
+return  {"first root","second root"}
+  #+END_EXAMPLE
+
+  这对于快速检查问题很有用;  在这里我们看到 =createable= 没有 =return= 标记。
+
+  LDoc 将数据转储的这一理念更进一步。如果与 =-m= 标志一起使用，它将查找已安装的 Lua 模块并解析它。如果它已经用 LuaDoc 风格标记，那么将得到一个方便的内容摘要：
+
+  #+BEGIN_EXAMPLE
+$ ldoc -m pl.pretty
+----
+module: pl.pretty       Pretty-printing Lua tables.
+* read(s) - read a string representation of a Lua table.
+* write(tbl, space, not_clever) - Create a string representation of a Lua table.
+
+* dump(t, ...) - Dump a Lua table out to a file or stdout.
+  #+END_EXAMPLE
+
+  可以指定完全限定的函数以获取更多信息：
+
+  #+BEGIN_EXAMPLE
+$ ldoc -m pl.pretty.write
+
+function        write(tbl, space, not_clever)
+create a string representation of a Lua table.
+tbl      {table} Table to serialize to a string.
+space    {string} (optional) The indent to use.
+               Defaults to two spaces.
+not_clever       {bool} (optional) Use for plain output, e.g {['key']=1}.
+               Defaults to false.
+  #+END_EXAMPLE
+
+  LDoc 知道基本的 Lua 库，因此它可以用作方便的控制台手册：
+  #+BEGIN_EXAMPLE
+$> ldoc -m assert
+
+function        assert(v, message)
+Issues an error when the value of its argument `v` is false (i.e.,
+ nil or false); otherwise, returns all its arguments.
+`message` is an error
+ message; when absent, it defaults to "assertion failed!"
+v
+message
+  #+END_EXAMPLE
+
+  感谢 Mitchell 的 [[http://foicica.com/textadept/][Textadept]] 项目，LDoc 为所有标准表提供了一组 =.luadoc= 文件，以及 [[http://keplerproject.github.com/luafilesystem/][LuaFileSystem]] 和 [[http://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html][LPeg]]。
+
+* LDoc 生成的页面的剖析
+
+* 自定义页面
+
+* 示例
+
+* readme 文件
+  像所有优秀的 Github 项目一样，Winapi 有一个 readme.md：
+  #+BEGIN_SRC lua
+readme = "readme.md"
+  #+END_SRC
+
+  这属于全局'Topic'部分; 本文档的 “Contents” 是从 readme 的第二级（##）标题生成的。
+
+  readme 始终使用当前的 Markdown 处理器进行处理，但也可能包含 =@{ref}= 引用跳转到文档和示例文件。如果可能，反引号中的任何符号都将作为引用扩展。与 doc 注释一样，指向标准 Lua 函数的链接（如 =@{os.execute}= ）同样生效。除非第一个缩进行是' =@plain='，否则任何代码部分都将以 Lua 的形式打印出来。 （请参阅本 readme 的源码，了解它是如何使用的。）
+
+  readme 的另一个名称是 topics，它更具描述性。从 LDoc 1.2 开始，readme/topics 可以是文档列表。它们充当文档的顶级目录。目前，如果想按特定顺序使用它们，请使用类似 =01-introduction.md= 等名称，这些名称可以适当排序。
+
+  文档的第一行可能是 Markdown 的 =＃title= 。如果是这样，则 LDoc 将下一级别视为副标题，通常是第二级 ##。但是如果标题已经是第二级，那么将使用第三级标题 ###，依此类推。这意味着第一个标题必须是相对于后面标题的顶级标题，并且必须从第一行开始。
+
+  像 =@{string.upper}=  这样的引用是明确的，将参考在线 Lua 手册。在像 Penlight 这样的项目中，必须写出完全限定的名称，例如 =@{pl.utils.printf}= ，这很麻烦。第一个简化是使用 package 字段来解析未知引用，在本例中为'pl'。（之前我们讨论了在模块作者希望保持模糊的情况下，如何使用包来告诉 LDoc 基础包在哪里，但它在这里做了双重任务。）进一步的简化来自文档中的 =@lookup= 指令，它必须从它自己的第一列开始。例如，如果在谈论 =pl.utils= ，那么可以说 =@lookup utils= ，然后像 =@{printf}= 这样的引用将正确解析。
+
+  如果查看本文档的源代码，将看到 =@lookup doc.md= ，它允许使用 =@{Readme_files|this}= 直接引用 this 的部分。
+
+  请记住，默认情况下是要解决反引号中的引用; 与 =@references= 不同，如果找不到引用，则不是错误。
+
+  文档的部分（第二级标题）也是参考。您正在阅读的这个特定部分可以通过 =@{doc.md.Readme_files}= 引用-规则是任何非字母字符都用下划线替换。
+
+  任何缩进块都假设是 Lua，除非它们的第一行是 =@plain= 。1.4 版的采用 github markdown 风格的代码块，从三个反引号开始，后面跟一个语言。代码一直持续到找到另外三个反引号：对于 C/C++，语言可以是 c，cpp 或 cxx，其他任何东西都是 Lua。
+
+* 标记修饰符
+  任何标签可能有标签修饰符。 例如， ~@param[type=number]~ ，这会将修饰符 type 和值 number 与此特定参数标记相关联。 这个案例常见的是引入了一个简写，即 =@tparam<type><parmname> <comment>=;  以同样的方式可定义 =@treturn= 。
+
+  这对于希望以结构化方式提供 API 的参数和返回值类型的大型项目非常有用，以后可以轻松提取。
+
+  这些类型可以组合，因此 “ =?string|number= ” 表示 “字符串或数字”; “ =?string= ” 是 “ =?|nil|string= ” 的缩写。 但是，对于最后一种情况，通常应使用下面讨论的 opt 修饰符。
+
+  可在 config.ld 中创建使用的新标记有一个很有用的功能：
+  #+BEGIN_EXAMPLE
+tparam_alias('string','string')
+  #+END_EXAMPLE
+
+  也就是说， =@string= 现在与“ =@tparam string= ”具有相同的含义;这也适用于可选类型语法“ =?|T1|T2= ”
+
+  从 1.3 开始，预定义了以下标准类型别名：
+  + string
+  + number
+  + int
+  + bool Lua ‘boolean’ type
+  + func ‘function’ (using ‘function’ would conflict with the type)
+  + tab ‘table’
+  + thread
+
+  当使用'colon-lua'（colon.lua）时，可以通过在类型前加上'！'来直接使用它们。 “?”也很自然。
+
+  <type>的确切形式未定义，但这里有一个建议的方案：
+
+  + number — a plain type
+  + Bonzo — 已知类型;将生成参考链接
+  + {string,number} — 从类型表达式构建的两个值的'list'元组
+  + {A=string,N=number} — 一个'结构'，同上（但创建一个命名表并引用它通常更好）
+  + {Bonzo,...} — an array of Bonzo objects
+  + {[string]=Bonzo,...} — a map of Bonzo objects with string keys
+  + Array(Bonzo) — (assuming that Array is a container type)
+
+  配置文件中的 alisa 会被扩展，以便可以将别名标记定义为标记和一组修饰符。所以 tparam 定义为：
+  #+BEGIN_EXAMPLE
+alias('tparam',{'param',modifiers={type="$1"}})
+  #+END_EXAMPLE
+
+  作为扩展，可以在表定义中使用 =@param= 标记。这使得可以使用类型别名（如 =@string= ）来描述字段，因为它们将扩展为“param”。
+
+  LDoc 理解的另一个修饰符是 opt。例如，
+
+  #+BEGIN_EXAMPLE
+---- testing [opt]
+-- @param one
+-- @param[opt] two
+-- @param three
+-- @param[opt] four
+function fun (one,two,three,four)
+end
+----> displayed as: fun (one [, two], three [, four])
+  #+END_EXAMPLE
+
+  更典型的 Lua API 会有一系列可选参数，如下所示：
+
+  #+BEGIN_EXAMPLE
+---- a chain of options
+-- @param one
+-- @param[opt] two
+-- @param[optchain] three
+-- @param[optchain] four
+function fun (one,two,three,four)
+end
+----> displayed as: fun (one [, two [, three [, four]]])
+  #+END_EXAMPLE
+
+  输入有点单调乏味，因此规则是将一系列'opt'修饰符解释为'opt'，'optchain'....。 如果想要显式，那么在 config.ld 中执行 ~convert_opt = true~ 。
+
+  如果为 opt 提供了值，则 LDoc 可以将此值作为此可选参数的默认值。
+
+  此修饰符也可以与类型化的参数别名一起使用。
+
+  #+BEGIN_EXAMPLE
+--- a function with typed args.
+-- If the Lua function has varargs, then
+-- you may document an indefinite number of extra arguments!
+-- @string name person's name
+-- @int age
+-- @string[opt='gregorian'] calender optional calendar
+-- @int[opt=0] offset optional offset
+-- @treturn string
+function one (name,age,...)
+end
+----> displayed as: one (name, age [, calender='gregorian' [, offset=0]])
+
+  #+END_EXAMPLE
+
+  (See [[https://stevedonovan.github.io/ldoc/examples/four.lua.html#][four.lua]], rendered [[https://stevedonovan.github.io/ldoc/examples/four.lua.html#][here]])
+
+  1.4 中的实验性特征允许定义不同的 “返回组”。 可能有多个 =@return= 标记，并且其含义是明确定义的，因为 Lua 函数可能返回多个值。 但是，作为动态语言，如果成功则可以返回单个值，如果存在错误，则返回两个值（nil，错误消息）。 这实际上是返回 “正常” 错误（如'找不到文件'）而不是参数错误（例如'文件必须是字符串'）的惯例，这些错误通常被引发为错误。
+
+  返回组允许记录器通过指定数字修饰符来指定函数的各种可能返回值。 具有相同数字修饰符的所有返回标记属于一个组：
+
+  #+BEGIN_EXAMPLE
+-----
+-- function with return groups.
+-- @return[1] result
+-- @return[2] nil
+-- @return[2] error message
+function mul1() ... end
+  #+END_EXAMPLE
+
+  这是 [[https://stevedonovan.github.io/ldoc/examples/multiple.lua.html#][multiple.lua]] 中的第一个函数，[[https://stevedonovan.github.io/ldoc/examples/multiple.lua.html#][输出]]显示了如何显示返回组，组之间的或关系。
+
+  这是相当笨拙的，因此有一个快捷方式，=@error= 标签可以获得相同的结果，并提供有用的类型信息。
+
+  目前，type，opt 和 <digit> 修饰符是 LDoc 在生成 HTML 输出时已知和使用的唯一修饰符。 但是，允许使用任何其他修饰符，这些修饰符可用于自己的模板或通过自己的工具提取。
+
+* config.ld 中允许的字段
+  与相应命令行参数的含义相同的字段：
+  + file：包含源码的文件或目录。在 config.ld 中，这也可以是文件和目录的 table。
+  + project：项目的项目名称，在左上角用作标题。
+  + title: 标题页标题，默认为'Reference'。
+  + package：显式包名; 也用于解析文档中的引用。
+  + all：在所有文档中显式 local 函数。
+  + format：标记处理器，可以是 “plain”（默认），“markdown” 或 “discount”
+  + output：输出名称（默认为'index'）
+  + dir：输出文件目录（默认为'doc'）
+  + colon：使用冒号样式，而不是 @标记样式
+  + boilerplate：忽略所有源文件中的第一条注释（例如许可证注释）
+  + ext：输出的扩展名（默认为'html'）
+  + one：使用单列布局
+  + style，template：这些一起指定样式和模板的目录。在 config.ld 中，它们也可能是 true，意味着使用与配置文件相同的目录。
+  + merge 允许将来自不同文件的文档合并到没有显式 @submodule 标记的模块中
+
+  只能出现在配置文件中的字段：
+  + description：项目标题下使用的简短项目描述
+  + full_description：当真的需要更长的项目描述时
+  + examples：目录或文件：可以是表
+  + readme or topics：自述文件（使用 Markdown 处理）
+  + pretty：代码美化'lua'（默认）或'lxsh'
+  + prettify_files：也会对源进行美化并与之建立链接; 如果它的值是 “show”，那么也索引源文件。
+  + charset：如果要覆盖默认的 UTF-8（文件中是 @charset）
+  + sort：按字母顺序排列所有项目
+  + no_return_or_parms： 不显式输出中的参数或返回值
+  + no_lua_ref： 停止尝试创建对标准 Lua 库的引用
+  + backtick_references：是否将解决反引号中的引用。使用 Markdown 时默认情况下会发生。当 explicit 会将反引号中的非引用扩展为 <code> 元素
+  + plaint：如果设置了 format 但不希望处理代码注释，该值设置为 true
+  + wrap：如果要允许长名称包含在摘要中，该值设置为 true
+  + manual_url 指向 Lua 手册的替代或本地位置，例如 “文件：/// d:/dev/lua/projects/lua-5.1.4/doc/manual.html”
+  + no_summary：禁止内容摘要
+  + custom_tags：定义了一些新标记，这些标记将在功能描述之后显式。格式为 ~{<name>，[title = <name>，} {hidden = false，} {format = nil}}~ 。例如， ~custom_tags = {'remark'，title ='Remarks'}~  将为包含此标记的任何函数的文档添加一个备注部分。format 可以是一个函数， 如果不存在，将使用默认格式化程序，例如，markdown
+  + custom_see_handler 用于过滤 see-references 的函数。
+  + custom_display_name_handler 用于格式化项目名称的函数。参数是项和用于格式化项名称的函数。例如，要在标记有特定标记的函数旁边显示图标或标记：
+    #+BEGIN_SRC lua
+-- define a @callback tag:
+custom_tags = { { 'callback', hidden = true } }
+
+-- show a label beside functions tagged with @callback.
+custom_display_name_handler = function(item, default_handler)
+  if item.type == 'function' and item.tags.callback then
+    return item.name .. ' [callback]'
+  end
+  return default_handler(item)
+end
+    #+END_SRC
+  + not_luadoc， 如果文档破坏了 LuaDoc 兼容性，该值设置为 true
+  + no_space_before_args：如果您不希望函数名称与其参数之间有空格，则设置为 true。
+  + template_escape：覆盖模板中用于 Lua 代码的常用'＃'。例如，如果输出格式为 Markdown，则需要更改此值。
+
+  可用函数包括：
+  + alias(a,tag)：为 tags 标记提供别名 a，例如 p 为 param 的 short
+  + add_language_extension(ext,lang)：这里 lang 可以是'c'或'lua'，ext 是一个被识别为此语言的扩展名。
+  + add_section
+  + new_type(tag,header,project_level)用于添加新标记，这些标记放在各自的节头中。它们可能是 “项目级别”。
+  + tparam_alias(name,type)：例如可能希望 Object 成为新的标记别名，这意味着 @tparam Object。
+  + custom_see_handler(pattern,handler):如果引用与 pattern 匹配，则提取的值将传递给 handler。期望返回链接文本和合适的 URI。（此匹配将在默认处理之前发生）
+
+* 注释和搜索标记
+  批注是用于跟踪内部开发状态的特殊标记。已知的注释是'todo'，'fixme'和'warning'。它们可能出现在常规 function/table 的文档注释中，也可能出现在代码中的任何位置。
+  #+BEGIN_SRC lua
+--- Testing annotations
+-- @module annot1
+...
+--- first function.
+-- @todo check if this works!
+function annot1.first ()
+    if boo then
+
+    end
+    --- @fixme what about else?
+end
+  #+END_SRC
+  虽然模板当前不会将其呈现为 HTML，但可以通过 =--tags= 命令提取它们，该命令参数是以逗号分隔的列表。
+  #+BEGIN_EXAMPLE
+  D:\dev\lua\LDoc\tests> ldoc --tags todo,fixme annot1.lua
+  d:\dev\lua\ldoc\tests\annot1.lua:14: first: todo check if this works!
+  d:\dev\lua\ldoc\tests\annot1.lua:19: first-fixme1: fixme what about else?
+  #+END_EXAMPLE
+
+* 生成 HTML
+  与 LuaDoc 一样，LDoc 使用模板生成输出 HTML，在本例中为 =ldoc/html/ldoc_ltp.lua= 。 这是由 Rici Lake 最初设计的强大但简单的预处理器扩展的，现在是 [[http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor][Lake]] 的一部分，它现在是 Penlight 的一部分。 有两个规则-任何以'＃'开头的行都是 Lua 代码，也可以嵌入'$(…)'。
+
+  #+BEGIN_EXAMPLE
+<h2>Contents</h2>
+<ul>
+# for kind,items in module.kinds() do
+<li><a href="#$(no_spaces(kind))">$(kind)</a></li>
+# end
+</ul>
+  #+END_EXAMPLE
+
+  然后使用 ldoc.css 设置样式。目前模板和样式表基于 LuaDoc，因此结果大致相当; 主要变化是模板更通用。默认位置（由'！'表示）是 ldoc_ltp.lua 的目录。
+
+  注意到内置模板和样式表以 =.lua= 结尾; 这只是为了让 LDoc 更容易找到它们。如果要自定义模板和样式表中的一个或两个，它们将具有其通常的扩展名。
+
+  可以通过指定可与项目一起部署的备用样式表或模板来自定义生成文档的方式。参数是 =--style= 和 =--template= ，它们给出 ldoc.css 和 ldoc.ltp 的目录。如果 config.ld 包含这些变量，则它们的解释会略有不同; 如果它们是 true，那么它意味着'使用与 config.ld 相同的目录'; 否则它们必须是相对于 ldoc 调用的有效目录。
+
+  完全自定义文档的一个例子是 =tests/example/style= ：这就是所谓'minimal Markdown style'的东西，它没有尝试标记内容（强调参数名称除外）。如果写得好的话，单独的叙述就足够了。
+
+  自 1.4 以来，LDoc 中还有其他三种样式表; 第一个是 ldoc_one.css，使用 ~one=true~ ，第二个是 ldoc_pale.css。这是一个较轻的主题，可以从默认的较重颜色一些缓解。可以将此样式与 ~style ="!pale"~ 或 =-s!pale= 一起使用。请参阅 [[http://stevedonovan.github.io/lake/modules/lakelibs.html][Lake]] 文档作为其使用示例。对于 1.4.3，还有 ~style='!fixed'~ ，其中左侧导航面板是固定的，不会与文档的其余部分一起滚动; 可能会发现这有助于在复杂的模块和文档中导航。
+
+  当然，没有理由说 LDoc 必须始终生成 HTML。 =--ext= 定义要使用的输出扩展名; 这也可以在配置文件中设置。因此，可以编写一个将 LDoc 输出转换为 LaTex 的模板。处理和表示的分离使得 LDoc 可以实现这种新的应用。
+
+  从 1.4 开始，LDoc 对生成 Markdown 输出的支持有限，尽管目前仅针对单个文件。为此使用 =--ext md= 。 'ldoc/html/ldoc_md_ltp.lua'定义了 Markdown 的模板，但可以使用上面的模板覆盖它。它是最小结构的另一个例子，提供了一个比相当精细的默认 HTML 模板更好地了解这些模板的地方。
+
+* 内部数据表示
+
+* Footnotes
+
+[fn:1] [[https://stevedonovan.github.io/ldoc/manual/doc.md.html][ldoc manual]]

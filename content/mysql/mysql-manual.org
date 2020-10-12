@@ -1,0 +1,129 @@
+# -*- coding:utf-8 -*-
+#+TITLE:MYSQL Reference Manual
+#+author: 刘尚亮
+#+email：phenix3443@gmail.com
+#+STARTUP: overview
+
+* 简介
+  基于[[https://dev.mysql.com/doc/refman/5.7/en/][MySQL 5.7 Reference Manual]]以及日常使用整理的最佳实践。排列按照手册章节进行排列。
+
+* Preface and Legal Notices
+* General Information
+* Installing and Upgrading MySQL
+* Using MySQL as a Document Store
+* Tutorial
+* MySQL Programs
+** Overview of MySQL Programs
+** Using MySQL Programs
+*** Invoking MySQL Programs
+*** Connecting to the MySQL Server
+*** Specifying Program Options
+*** Using Options on the Command Line
+*** Program Option Modifiers
+*** Using Option Files
+*** Command-Line Options that Affect Option-File Handling
+*** Using Options to Set Program Variables
+*** Option Defaults, Options Expecting Values, and the = Sign
+*** Setting Environment Variables
+** MySQL Server and Server-Startup Programs
+** MySQL Installation-Related Programs
+** MySQL Client Programs
+*** mysql — The MySQL Command-Line Tool
+**** mysql Options
+**** mysql Commands
+**** mysql Logging
+**** mysql Server-Side Help
+**** Executing SQL Statements from a Text File
+**** mysql Tips
+*** mysqladmin — Client for Administering a MySQL Server
+*** mysqlcheck — A Table Maintenance Program
+*** mysqldump — A Database Backup Program
+*** mysqlimport — A Data Import Program
+*** mysqlpump — A Database Backup Program
+*** mysqlshow — Display Database, Table, and Column Information
+*** mysqlslap — Load Emulation Client
+** MySQL Administrative and Utility Programs
+** MySQL Program Development Utilities
+** Miscellaneous Programs
+* MySQL Server Administration
+** The MySQL Server
+*** Server Option and Variable Reference
+*** Server Configuration Defaults
+*** Server Command Options
+*** Server System Variables
+*** Using System Variables
+*** Server Status Variables
+*** Server SQL Modes
+*** Server Plugins
+*** IPv6 Support
+*** Server-Side Help
+*** Server Response to Signals
+*** The Server Shutdown Process
+** The MySQL Data Directory
+** The mysql System Database
+** MySQL Server Logs
+** Running Multiple MySQL Instances on One Machine
+** Tracing mysqld Using DTrace
+* Security
+* Backup and Recovery
+* Optimization
+* Language Structure
+* Globalization
+* Data Types
+* Functions and Operators
+** 13.5 String Functions
+*** 13.5.2 Regular Expressions
+
+* SQL Statement Syntax
+* The InnoDB Storage Engine
+* Alternative Storage Engines
+* High Availability and Scalability
+* Replication
+* MySQL Cluster NDB 7.5
+* Partitioning
+* Stored Programs and Views
+* INFORMATION_SCHEMA Tables
+* MySQL Performance Schema
+* MySQL sys Schema
+* Connectors and APIs
+* Extending MySQL
+* MySQL Enterprise Edition
+* MySQL Workbench
+* MySQL 5.7 Frequently Asked Questions
+* Errors, Error Codes, and Common Problems
+** Sources of Error Information
+** Types of Error Values
+** Server Error Codes and Messages
+** Client Error Codes and Messages
+** Problems and Common Errors
+*** How to Determine What Is Causing a Problem
+*** Common Errors When Using MySQL Programs
+*** Administration-Related Issues
+*** Query-Related Issues
+**** Case Sensitivity in String Searches
+**** Problems Using DATE Columns
+**** Problems with NULL Values
+**** Problems with Column Aliases
+**** Rollback Failure for Nontransactional Tables
+**** Deleting Rows from Related Tables
+**** Solving Problems with No Matching Rows
+**** Problems with Floating-Point Values
+*** Optimizer-Related Issues
+*** Table Definition-Related Issues
+*** Known Issues in MySQL
+* Restrictions and Limits
+* MySQL Glossary
+* General Index
+* Function Index
+* Command Index
+* Function Index
+* INFORMATION_SCHEMA Index
+* Join Types Index
+* Operator Index
+* Option Index
+* Privileges Index
+* Modes Index
+* Statement/Syntax Index
+* Status Variable Index
+* System Variable Index
+* Transaction Isolation Level Index

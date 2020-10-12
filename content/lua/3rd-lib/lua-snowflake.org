@@ -1,0 +1,39 @@
+# -*- coding:utf-8-*-
+#+TITLE: lua-snowflake
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/stuartcarnie/lua-snowflake][lua-snowflake]] 是 [[http://www.machengyu.net/tech/2019/12/04/snowflake.html][雪花算法(Snowflake)]] 的 lua 实现。雪花算法是一种支持有序分布式 ID 生成的算法。
+
+* 安装
+  #+BEGIN_SRC sh
+luarocks install --local snowflake
+  #+END_SRC
+
+* 使用
+  #+BEGIN_SRC lua
+local sf = require("snowflake")
+sf.init(0x01, 0x01)
+local uuid = sf.next_id()
+  #+END_SRC
+
+  uuid 将是一个以字符串形式表示的 64 位数字，其结构如下：
+
+  #+begin_example
+6  6         5         4         3         2         1
+3210987654321098765432109876543210987654321098765432109876543210
+
+tttttttttttttttttttttttttttttttttttttttttdddddnnnnnsssssssssssss
+  #+end_example
+
+  此处：
+  + s 是一个 12 位整数，当在同一毫秒内多次调用 next_id()时，它会递增
+  + n 是一个 5 位整数，代表给定数据中心内的节点
+  + d 是一个 5 位整数，代表唯一的数据中心或服务器组
+  + t 是一个 42 位整数，表示当前时间戳(以毫秒为单位) 自 1413817200000 或 2014-10-20T15：00：00.000Z 以来经过的毫秒数
+
+
+  =sf.init(datacenter_id，node_id)= 用于初始化雪花并为 ddddd 和 nnnnn 设置值，如下所示：
+  + datacenter_id 是整数 n，其中 0≤n≤0x1f，并指定 id 的 ddddd 部分
+  + node_id 是整数 n，其中 0≤n≤0x1f，并指定 id 的 nnnnn 部分

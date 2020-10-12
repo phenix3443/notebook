@@ -1,0 +1,38 @@
+# -*- coding:utf-8-*-
+#+TITLE: nc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+* 概述
+  使用 nc 可以方便的建立 tcp、udp 连接，利用这个特性可以做很多事情：建立监听端口，传输文件，端口扫描，代理等。
+
+  常用的参数：
+  #+BEGIN_EXAMPLE
+-l 指定监听模式。
+  #+END_EXAMPLE
+
+* 示例
+
+** 建立服务器
+   监听本地 1234 端口，接受到的消息可以原样打印出来。可以用来做 mock 服务器。
+
+   #+BEGIN_SRC sh
+nc -l 1234
+   #+END_SRC
+
+** 传输文件
+   原理：一端建立监听服务，将接收到的数据写入文件：
+   #+BEGIN_SRC sh
+nc -l 1234 > file.txt
+   #+END_SRC
+
+   另一端连接监听端口，发送数据:
+   #+BEGIN_SRC sh
+nc 127.0.0.1 1234 --send-only < file.txt
+   #+END_SRC
+   =--send-only= 选项会在文件拷贝完后立即关闭连接。 如果不加该选项， 我们需要手工按下 ctrl+c 来关闭连接。
+
+** 扫描端口
+   =-z= 选项可以用来扫描端口：
+   #+BEGIN_SRC sh
+nc -vz 127.0.0.1 1234
+   #+END_SRC

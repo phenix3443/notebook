@@ -1,0 +1,8 @@
+
+# -*- coding:utf-8-*-
+#+TITLE: log
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://golang.org/pkg/log/][log]]

@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: ivy
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+*
+  [[https://github.com/abo-abo/swiper][Ivy]] 是一个 Emacs 的通用补全机制。虽然它与其他补全方案（如 icomplete-mode）的运行方式类似，但 Ivy 的目标是更高效，更小，更简单，使用更顺畅，但可高度自定义。
+
+  ivy-mode 确保任何使用 completing-read-function 的 Emacs 命令都使用 ivy 补全。
+
+  Counsel 更进一步，提供常规 Emacs 命令的版本，这些命令是为了充分利用 ivy 而定制的。例如，counsel-find-file 有一些额外的键绑定。按 DEL 将移动到父目录。
+
+  Swiper 是 isearch 的替代品，它使用 ivy 来显示所有匹配的概述。
+* 安装
+
+* 配置
+  参见 [[https://oremacs.com/swiper/][ivy manual]]
+
+* 使用
+  启用 counsel-mode 重新映射具有 counsel 替换功能的内置 Emacs 功能：

@@ -1,0 +1,467 @@
+# -*- coding:utf-8-*-
+#+TITLE:projectile
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+详见 [[https://projectile.readthedocs.io/en/latest/][Projectile Manual]]
+
+* 概述
+  [[https://github.com/bbatsov/projectile][Projectile]] 是 Emacs 的项目交互库。它的目标是在项目级别上提供一系列优秀的功能，而不会引入外部依赖。例如，有一个用纯 Emacs Lisp 编写的查找项目文件功能，而不使用 GNU find（但出于性能考虑，也存在由外部命令支持的索引机制）。
+
+  Projectile 以实用为目的：虽然考虑便携性，但是如果一些可用的外部工具可以大大加快某些任务，那么 Projectile 将利用它们。
+
+  该库提供简单的项目管理和导航。项目的概念非常简单：只是一个包含特殊文件的文件夹。目前包含 git，mercurial，darcs 和 bazaar repo的文件夹被视为项目。lein，maven，sbt，scons，rebar 和 bundler 项目也是如此。如果要将文件夹手动标记为项目，只需在其中创建一个空的 =.projectile= 文件。Projectile 的一些特点：
+  + 跳转到项目中的文件(c-p-f)。
+  + 跳转到项目中当前 point 处所指示的文件(c-p-g)。
+  + 跳转到项目中的目录(c-p-d)。
+  + 跳转到目录中的文件。
+  + 跳转到项目有关的 buffer(c-p-b)。
+  + 跳转到项目的测试(c-p-T)。
+  + 在同名但不同扩展名的文件间跳转（例如.h 和.cpp）(c-p-a)。
+  + 跳转到项目中最近浏览的文件(c-p-e)。
+  + 在工作的项目间切换。
+  + 关闭项目有关的 buffer(c-p-k)。
+  + 在项目范围内替换(c-p-r)。
+  + 在项目所有 buffer 中查找出现(c-p-o)。
+  + 在项目中查找(c-p-s-g)。
+  + 重新生成你项目的 etags 或 gtags。
+  + 在 dired 中访问项目(c-p-D)。
+  + 在项目上执行 make。
+  + 在项目的根目录执行命令(c-p-!)。
+  + 检查脏的存储库。
+  + 创建项目设置文件(dir-local-file)(c-p-E)
+
+* 安装
+
+** Prerequisites
+
+** Installation via package.el
+
+** Installation via use-package
+   如果要安装在主分支中找到的 Projectile 版本，请在 Emacs 初始化文件（.emacs 或 init.el）中声明以下内容：
+   #+BEGIN_SRC elisp
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+   #+END_SRC
+   但是，如果您想要更加保守并且只使用 Projectile 的稳定版本，需要声明以下内容：
+   #+BEGIN_SRC elisp
+(use-package projectile
+  :ensure t
+  :pin melpa-stable
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+   #+END_SRC
+
+** Installation via el-get
+
+** Installation on Debian and Ubuntu
+
+** Emacs Prelude
+   Projectile 与 Emacs Prelude 捆绑在一起。如果是 Prelude 用户，Projectile 已经正确配置。
+
+* Usage
+
+** Basic Usage
+
+** Interactive Commands
+
+* Projects
+
+** Supported Project Types
+   Projectile 的主要目标之一是在不需要任何配置的情况下操作各种项目类型。为实现这一点，它包含许多项目检测逻辑和项目类型特定的逻辑。
+
+** Version Control Systems
+    Projectile 可讲大多数版本控制的仓库识别为一个项目。Projectile 支持：
+    + Git
+    + Mercurial
+    + Bazaar
+    + Subversion
+    + CVS
+    + Fossil
+    + Darcs
+
+** File markers
+   Projectile 将许多文件识别为表示项目的 root。通常这些文件是各种构建工具的配置文件。支持以下内容：
+
+   | File	         | Project Type                                       |
+   |------------------+----------------------------------------------------|
+   | rebar.config     | 	Rebar project file                             |
+   | project.clj      | 	Leiningen project file                         |
+   | build.boot	   | Boot-clj project file                              |
+   | deps.edn	     | Clojure CLI project file                           |
+   | SConstruct	   | Scons project file                                 |
+   | pom.xml	      | Maven project file                                 |
+   | build.sbt	    | SBT project file                                   |
+   | gradlew	      | Gradle wrapper script                              |
+   | build.gradle     | 	Gradle project file                            |
+   | .ensime	      | Ensime configuration file                          |
+   | Gemfile	      | Bundler file                                       |
+   | requirements.txt | 	Pip file                                       |
+   | setup.py	     | Setuptools file                                    |
+   | tox.ini	      | Tox file                                           |
+   | composer.json    | 	Composer project file                          |
+   | Cargo.toml	   | Cargo project file                                 |
+   | mix.exs	      | Elixir mix project file                            |
+   | stack.yaml	   | Haskell's stack tool based project                 |
+   | info.rkt	     | Racket package description file                    |
+   | DESCRIPTION      | 	R package description file                     |
+   | TAGS             | 	etags/ctags are usually in the root of project |
+   | GTAGS	        | GNU Global tags                                    |
+   | configure.in     | 	autoconf old style                             |
+   | configure.ac     | 	autoconf new style                             |
+   | cscope.out	   | cscope                                             |
+   | Makefile	     | Make                                               |
+
+   Projectile 自己的 =.projectile= 既可以作为项目标记，也可以作为配置文件。将在本节后面详细讨论。
+
+** Adding Custom Project Types
+
+   如果没有正确识别正在处理的项目，或者想定制项目类型，则可以在 Emacs 初始化代码中添加以下内容：
+   #+BEGIN_SRC elisp
+(projectile-register-project-type 'npm '("package.json")
+                  :compile "npm install"
+                  :test "npm test"
+                  :run "npm start"
+                  :test-suffix ".spec")
+
+   #+END_SRC
+
+   | Option           | 	Documentation                                                                               |
+   |------------------+-------------------------------------------------------------------------------------------------|
+   | :compilation-dir | 	A path, relative to the project root, from where to run the tests and compilation commands. |
+   | :compile	     | A command to compile the project.                                                               |
+   | :configure	   | A command to configure the project. %s will be substituted with the project root.               |
+   | :run	         | A command to run the project.                                                                   |
+   | :src-dir	     | A path, relative to the project root, where the source code lives.                              |
+   | :test	        | A command to test the project.                                                                  |
+   | :test-dir        | 	A path, relative to the project root, where the test code lives.                            |
+   | :test-prefix     | 	A prefix to generate test files names.                                                      |
+   | :test-suffix     | 	A suffix to generate test files names.                                                      |
+
+** Returning Projectile Commands from a function
+   如果要动态定义编译命令，可以在项目类型定义中传递函数的符号引用：
+   #+BEGIN_SRC elisp
+(defun my/compile-command ()
+  "Returns a String representing the compile command to run for the given context"
+  (cond
+   ((and (eq major-mode 'java-mode)
+         (not (string-match-p (regexp-quote "\\.*/test/\\.*") (buffer-file-name (current-buffer)))))
+    "./gradlew build")
+   ((eq major-mode 'web-mode)
+    "./gradlew compile-templates")
+   ))
+
+(defun my/test-command ()
+  "Returns a String representing the test command to run for the given context"
+  (cond
+   ((eq major-mode 'js-mode) "grunt test") ;; Test the JS of the project
+   ((eq major-mode 'java-mode) "./gradlew test") ;; Test the Java code of the project
+   ((eq major-mode 'my-mode) "special-command.sh") ;; Even Special conditions/test-sets can be covered
+   ))
+
+(projectile-register-project-type 'has-command-at-point '("file.txt")
+                                  :compile 'my/compile-command
+                                  :test 'my/test-command)
+   #+END_SRC
+
+   如果现在导航到 =./tests/= 目录下具有 =*.java= 扩展名的文件，并点击 =C-c c p= ，将看到 =./gradlew build= 作为建议。 如果要导航到 HTML 文件，编译命令将切换到 =./gradlew compile-templates= 。
+
+   可同样设置的还有：
+   + =:configure=
+   + =:compile=
+   + =:compilation-dir=
+   + =:run=
+
+   请注意，函数必须返回一个字符串才能正常工作。
+
+** Customizing project root files
+   可以设置 =projectile-project-root-files, projectile-project-root-files-top-down-recurring, projectile-project-root-files-bottom-up and projectile-project-root-files-functions= 的值来定制如何识别项目的 root。
+
+** Ignoring files
+   注意：使用 alien 方法索引项目时，忽略.projectile 的内容。
+
+   如果想 Projectile 在索引项目时忽略某些文件，可以在 =.projectile= 文件中添加要忽略的路径，其中所有相对于根目录的路径都以 =/= 开头。忽略的项目都应该以 =-= 符号开头。 或者，没有任何前缀也意味着忽略后面的目录或文件模式。 以下是典型 Rails 应用程序的示例：
+   #+BEGIN_EXAMPLE
+-/log
+-/tmp
+-/vendor
+-/public/uploads
+   #+END_EXAMPLE
+
+   这将忽略仅在项目根目录下的文件夹。Projectile 还支持相对路径名忽略：
+   #+BEGIN_EXAMPLE
+-tmp
+-*.rb
+-*.yml
+-models
+   #+END_EXAMPLE
+
+   也可以忽略除某些子目录之外的所有内容。 这在选择要保留的目录比选择要忽略的目录更容易时很有用，尽管您可以同时执行这两个操作。 选择要保留的目录，这意味着其他所有内容都将被忽略。
+   #+BEGIN_EXAMPLE
++/src/foo
++/tests/foo
+   #+END_EXAMPLE
+   注意：此时只能包含子目录，而不能包含文件模式。
+
+   如果目录同时被指定为保留和忽略，则首先应用要保留，从而限制考虑的文件。然后将要忽略的路径和模式应用于该集合。
+
+   最后，可以覆盖被忽略的文件。当 VCS 忽略的某些文件应被视为项目的一部分时，这尤其有用：
+   #+BEGIN_EXAMPLE
+!/src/foo
+!*.yml
+   #+END_EXAMPLE
+
+** File-local project root definitions
+   如果要用指定文件覆盖 projectile 项目的 root，可以设置文件局部变量 projectile-project-root。 如果一个项目中的文件与另一个项目相关（例如，一个 git 仓库中的 Org 文件与其他项目相对应），这将非常有用。
+
+** Storing project settings
+   即使相同的语言项目也有可能各不相同：编码样式、自动完成源等。如果需要根据所选项目设置一些变量，可以使用名为 [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html][Per-directory Local]] 的 Emacs 标准功能。要使用它，您必须在项目目录中创建名为 =.dir-locals.el=  的文件（由常量 =dir-locals-file= 指定）。 此文件包含内容与以下类似：
+
+   #+BEGIN_SRC elisp
+((nil . ((secret-ftp-password . "secret")
+         (compile-command . "make target-x")
+         (eval . (progn
+                   (defun my-project-specific-function ()
+                     ;; ...
+                     )))))
+ (c-mode . ((c-file-style . "BSD"))))
+   #+END_SRC
+
+   使用键 nil 引用的顶级 alist 成员适用于整个项目。 名为 eval 的键将会求值。在上面的示例中，它用于创建函数。 它也可以用于将这样的函数添加到键映射中。
+
+   还可以使用 =s-p E（M-x projectile-edit-dir-locals RET）= 快速访问或创建 =dir-locals-file= 。
+
+   以下是如何在 Projectile 中使用此功能的几个示例。
+
+*** Configuring Projectile's Behavior
+    Projectile 有许多变量（通过 defcustom），允许用户自定义其行为。目录变量可用来基于每个项目设置这些自定义。
+
+    可以通过以下方式为项目启用缓存：
+
+    #+BEGIN_SRC elisp
+((nil . ((projectile-enable-caching . t))))
+    #+END_SRC
+
+    如果某个项目有一个希望 Projectile 忽略的文件，可以通过以下方式自定义 Projectile：
+    #+BEGIN_SRC elisp
+((nil . ((projectile-globally-ignored-files . ("MyBinaryFile")))))
+    #+END_SRC
+
+    如果想包装 Projectile 用于列出存储库中文件的 git 命令，可以这样做
+    #+BEGIN_SRC elisp
+((nil . ((projectile-git-command . "/path/to/other/git ls-files -zco --exclude-standard"))))
+    #+END_SRC
+
+    如果要使用不同于 Projectile 命名项目的名称，可以使用以下内容对其进行自定义：
+    #+BEGIN_SRC elisp
+((nil . ((projectile-project-name . "your-project-name-here"))))
+    #+END_SRC
+
+*** Configure a Project's Compilation, Test and Run commands
+    通过 =.dir-locals.el= 自定义命令：
+    + for compilation - projectile-project-compilation-cmd
+    + for testing - projectile-project-test-cmd
+    + for running - projectile-project-run-cmd
+
+    当这些变量的默认值为 nil 时，Projectile 将运行当前项目类型的默认命令。可以通过将它们设置为运行外部命令的字符串或 Emacs Lisp 函数来覆盖此行为：
+    #+BEGIN_SRC elisp
+(setq projectile-test-cmd #'custom-test-function)
+    #+END_SRC
+
+* Configuration
+  Projectile 非常易于配置。几乎可以调整或扩展其行为的每个方面。
+
+  在本节中，将介绍一些可能需要微调的常用配置，以使 Projectile 更好地适应工作流程。
+
+** Project indexing method
+   Projectile 有三种操作模式 - 一种是可移植的，使用 Emacs Lisp 实现（因此它是 Emacs 原生，被称为 native 索引方法），另外两种（hybrid 和 alien）依赖于外部命令，如 find，git 等 获取项目中的文件列表。
+
+   alien 索引方法优化了 hybrid 索引方法的速度。 这意味着 Projectile 不会对外部命令返回的文件进行任何处理，将获得最大的性能。这种行为适用于大多数人，因为他们通常会在他们的 VCS 配置中放弃忽略（例如.gitignore），并且不会关心 Projectile 可能提供的任何其他 ignores/unignores/sorting。
+
+   默认情况下，alien 方法用于除 Windows 之外的所有操作系统。Projectile 2.0 之前 hybrid 曾经是默认设置。
+
+   要在所有操作系统中强制使用 native 索引：
+   #+BEGIN_SRC elisp
+(setq projectile-indexing-method 'native)
+   #+END_SRC
+
+   强制在所有操作系统中使用 hybrid 索引：
+   #+BEGIN_SRC elisp
+(setq projectile-indexing-method 'hybrid)
+   #+END_SRC
+
+   强制在所有操作系统中使用 alien 索引：
+   #+BEGIN_SRC elisp
+(setq projectile-indexing-method 'alien)
+   #+END_SRC
+
+    Windows 中这可以显著加速 Projectile（特别是在大型项目中）。 这种方法的缺点是它在 Windows 系统上得不到很好的支持，因为它需要在那里设置一些 Unix 实用程序。 如果出现问题，可以使用 native 索引模式。
+
+** Alien indexing
+   alien 索引以一种非常简单的方式工作 - 它只是执行一个返回项目中文件列表的命令。 对于版本控制的项目，默认情况下，Projectile 将使用 VCS 本身来获取文件列表。例如，Projectile 用于 Git 项目的命令：
+   #+BEGIN_SRC sh
+git ls-files -zco --exclude-standard
+   #+END_SRC
+
+   对于支持的 VCS，都有一个匹配的 Projectile 命令调用它（例如 projectile-git-command，projectile-hg-command 等）。
+
+   警告：如果决定调整这些命令，请记住命令应该总是返回相对于项目根目录的文件列表，结果文件列表应该是 0 分隔（而不是换行符分隔）。
+
+   对于非版本控制的项目，Projectile 将调用 projectile-generic-command 中的命令。默认情况下是：
+   #+BEGIN_SRC sh
+find . -type f -print0
+   #+END_SRC
+
+   安装 [[https://github.com/sharkdp/fd][fd]] 并用其替代 =git ls-files= （fd 理解 =.gitignore= ）和 =find= 是个好主意。
+
+** Caching
+
+*** Project files
+    由于索引一个大项目并不是很快（特别使用 Emacs Lisp），Projectile 支持缓存项目的文件。默认情况下，启用 native 索引就会启用缓存。
+
+    使用以下代码段无条件启用缓存：
+    #+BEGIN_SRC elisp
+(setq projectile-enable-caching t)
+    #+END_SRC
+
+    此时，可以尝试使用诸如 =s-p f (M-x projectile-find-file RET)= 之类的 Projectile 命令。
+
+    在提示跳转到文件之前，运行 =C-u s-p f= 将使缓存无效。
+
+    按 =s-p z= 会将当前访问的文件添加到当前项目的缓存中。 通常，在 Emacs 外部创建的文件将在第一次打开时自动添加到缓存中。
+
+    项目缓存是持久的，将在 Emacs 重新启动期间保留。
+
+    可以使用 =M-x projectile-purge-file-from-cache= 从缓存中清除单个文件, =M-x projectile-purge-dir-from-cache= 的从缓存中清除整个目录。
+
+*** File exists cache
+    Projectile 执行许多文件存在性检查，以识别项目根目录。通常情况下这很好，但在某些情况下，文件系统速度比平常慢得多，这可能导致在打开文件和浏览目录时 Emacs “冻结” 很长一段时间。
+
+    最常见的情形是使用 =TRAMP/ssh= 连接远程系统。默认情况下，缓存所有远程文件的存在性检查。
+
+    不缓存远程文件存在性检查：
+
+    #+BEGIN_SRC elisp
+(setq projectile-file-exists-remote-cache-expire nil)
+    #+END_SRC
+
+    设置远程文件存在检查缓存 10 分钟后过期：
+    #+BEGIN_SRC elisp
+(setq projectile-file-exists-remote-cache-expire (* 10 60))
+    #+END_SRC
+
+    还可以为本地文件系统启用缓存，但通常没必要：
+    #+BEGIN_SRC elisp
+(setq projectile-file-exists-local-cache-expire (* 5 60))
+    #+END_SRC
+
+** Using Projectile everywhere
+   如果希望在每个目录中都使用 Projectile（即使没有项目文件）：
+   #+BEGIN_SRC elisp
+   (setq projectile-require-project-root nil)
+   #+END_SRC
+
+** Switching projects
+   当运行 projectile-switch-project（s-p p）时，Projectile 会调用 projectile-switch-project-action 中指定的命令（默认情况下它是 projectile-find-file）。
+
+   使用前缀参数（C-u s-p p）调用命令将触发 Projectile Commander，可以快速访问可能要在项目上调用的大多数常用命令。
+
+   根据您的个人工作流程和习惯，可能需要改变 =projectile-switch-project-action= 的值：
+
+*** projectile-find-file
+
+    默认值。使用此设置，一旦通过 Projectile 的补全系统选择了项目（见下文），将在补全系统中继续选择要访问的文件。projectile-find-file 能够检索项目根目录下的所有子项目中的文件，例如 Git 子模块。目前仅支持 Git。将来会增加对其他 VCS 的支持。
+
+*** projectile-find-file-in-known-projects
+    与 projectile-find-file 类似，但列出了所有已知项目中的所有文件。由于文件总数可能很大，启用缓存有助于后续使用。
+
+*** projectile-find-file-dwim
+    如果 point 在文件路径上，Projectile 首先尝试在项目中搜索该文件：
+    + 如果它只找到一个文件，它会立即切换到该文件。即使文件名不完整，但当前项目中只有一个文件与 point 处的文件名匹配也会生效。例如，如果只有一个名为 =projectile/projectile.el= 的文件，但当前文件名是 =projectile/proj= （不完整），则 projectile-find-file 仍会立即切换到 =projectile/projectile.el= ，因为这是唯一匹配的文件名。
+
+    + 如果找到文件列表，则会显示列表以供选择。当文件名在项目中出现多个文件名时，或者 point 上的文件名是项目中两个以上文件的前缀时，将显示文件列表。例如，如果在 =projectile/= 之类的文件路径上执行 projectile-find-file，它会列出该目录的内容。如果它在诸如 =projectile/a= 的部分文件名上执行，则会显示该目录中具有字符 =a= 的文件列表。
+
+    + 如果找不到任何内容，则显示项目中所有文件的列表以供选择。
+
+*** projectile-dired
+    #+BEGIN_SRC elisp
+(setq projectile-switch-project-action＃'projectile-dired)
+    #+END_SRC
+
+    使用此设置，选择项目后，项目的顶级目录将立即在 dired 缓冲区中打开。
+
+*** projectile-find-dir
+    #+BEGIN_SRC elisp
+(setq projectile-switch-project-action＃'projectile-find-dir)
+    #+END_SRC
+    使用此设置，选择项目后，将保留在 Projectile 的补全系统中以选择项目的子目录，然后在 dired 缓冲区中打开该子目录。如果使用此设置，可能还需要设置以下代码允许选择顶级目录：
+
+    #+BEGIN_SRC elisp
+(setq projectile-find-dir-includes-top-level t)
+    #+END_SRC
+
+** Completion Options
+
+*** Ido
+    Projectile 默认使用 ido 作为其补全系统。ido 非常受欢迎，内置于 Emacs 中。
+
+    如果要使用 ido 补全，强烈建议安装可选的 flx-ido 软件包，它为 ido 内置的 flex 匹配提供了更强大的替代方案。
+
+*** Ivy (recommended)
+    另外一个补全选项是[[https://github.com/abo-abo/swiper][ivy]]：
+    #+BEGIN_SRC elisp
+(setq projectile-completion-system 'ivy)
+    #+END_SRC
+
+*** Basic (Emacs's default)
+    如果你不喜欢 ido 和常春藤你可以使用常规补全：
+    #+BEGIN_SRC elisp
+(setq projectile-completion-system 'default)
+    #+END_SRC
+
+*** Custom Completion Function
+    还可以将 projectile-completion-system 设置为函数：
+    #+BEGIN_SRC elisp
+(setq projectile-completion-system #'my-custom-completion-fn)
+(setq projectile-completion-system
+      (lambda (prompt choices)
+        ;; ...
+        ))
+    #+END_SRC
+    自定义完成功能的一个[[https://gist.github.com/rejeep/5933343][示例]]，它仅显示文件名（不包括路径），如果选择的文件不唯一，则会显示另一个名称相对于项目根目录的补全。
+
+*** Regenerate tags
+    为了能够通过 projectile-tags-command 重新生成项目的标签，应该安装 [[http://ctags.sourceforge.net/][Exuberant Ctags]] 并将其添加到 PATH，而不是与 Emacs 发行版一起提供的普通 ctags。
+
+    注意：Exuberant Ctags 已经停止开发，使用 [[https://github.com/universal-ctags/ctags][Universal-ctags]] 替代。
+
+** Idle Timer
+   每当 Emacs 在该项目中空闲 projectile-idle-timer-seconds 配置时间（默认为 30 秒），可以运行配置 projectile-idle-timer-hook。要启用此功能，请运行：
+
+   #+BEGIN_SRC elisp
+(add-hook 'projectile-idle-timer-hook #'my-projectile-idle-timer-function)
+   #+END_SRC
+
+** Mode line indicator
+   默认情况下，Projectile 的 minor mode 指示器以 “Projectile [ProjectName：ProjectType]” 的形式出现。可以通过几个自定义变量进行配置：
+   + =projectile-mode-line-prefix= （默认为 “Projectile”）控制 mode-line 的静态部分。
+   + =projectile-dynamic-mode-line= （默认为 t）控制是否显示 mode-line 的项目名称和类型部分。
+   + =projectile-mode-line-function= （默认为 projectile-default-mode-line）控制要生成 mode-line 的实际调用的函数。如果想显示不同的信息，应该提供一个自定义函数来替换默认值，例如：
+     #+BEGIN_SRC elisp
+(setq projectile-mode-line-function '(lambda () (format " Proj[%s]" (projectile-project-name))))
+     #+END_SRC
+
+   注意：编辑远程文件时（通过 TRAMP），项目名称和类型不会出现，因为重新计算项目名称是一个相当慢的操作，并且会减慢打开文件的速度。它们也不会出现在非文件缓冲区中，因为它们是通过 find-file-hook 更新的。
+
+* Extensions
+  有许多软件包构建在 Projectile 提供的基本功能之上：
+  + [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]] provides Ivy integration
+  + [[https://github.com/bbatsov/helm-projectile][helm-projectile]] provides Helm integration
+  + [[https://github.com/bbatsov/persp-projectile][persp-projectile]] provides perspective.el integration
+  + [[https://github.com/asok/projectile-rails][projectile-rails]] provides extra functionality for Ruby on Rails projects

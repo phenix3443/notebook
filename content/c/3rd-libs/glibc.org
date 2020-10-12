@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: glibc
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* 安装
+
+* 使用
+
+** stdio.h
+** stdlib.h
+** inttypes.h
+** ctype.h
+** stddef.h
+   头文件定义了各种变量类型和宏
+** string.h
+** time.h
+** math.h

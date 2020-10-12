@@ -1,0 +1,53 @@
+# -*- coding:utf-8-*-
+#+TITLE: python 包管理工具
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+
+* pip
+
+* virtualenv
+
+* pipenv
+  pipenv 是一个旨在为项目创建 package 管理环境。
+
+  它会自动为项目创建和管理 virtualenv，并在安装/卸载软件包时在 Pipfile 文件中 添加/删除中的软件包。它还生成一个非常重要的 Pipfile.lock，用于生成确定性构建。
+
+** 背景
+   如果要为项目建立虚拟环境，需要先后调用 virtualenv 和 pip 命令，并通过 requests.txt 来管理虚拟环境中的包。
+
+** 有点
+   pipenv 主要解决的问题是：
+   + 不再需要单独使用 pip 和 virtualenv。
+   + 管理 requirements.txt 文件可能会有[[https://www.kennethreitz.org/essays/a-better-pip-workflow][问题]]， 因此 Pipenv 使用 Pipfile 和 Pipfile.lock，这对于基本用例来说更胜一筹。
+   + 使用散列保证安全。
+   + 通过依赖图深入了解依赖关系（例如 =$pipenv graph= ）。
+   + 通过加载 =.env= 文件简化开发工作流程。
+
+** pipfile
+   通过 pipifle 自动查找项目的根目录，并将依赖关系记录在此文件中。
+
+** lock 文件
+   用来管理 pipfile 中安装包的版本。
+
+** 安装
+   #+BEGIN_SRC sh
+pip3 install pipenv
+   #+END_SRC
+
+** 使用
+   初始化
+   #+BEGIN_SRC sh
+pipenv --three
+   #+END_SRC
+
+   安装依赖
+   #+BEGIN_SRC sh
+pipenv install requests
+   #+END_SRC
+
+   进入虚拟环境
+   #+BEGIN_SRC
+pipenv shell
+   #+END_SRC

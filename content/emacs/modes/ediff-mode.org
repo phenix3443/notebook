@@ -1,0 +1,4 @@
+# -*- coding:utf-8-*-
+#+TITLE: ediff-mode
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com

@@ -1,0 +1,59 @@
+# -*- coding:utf-8-*-
+#+TITLE: scrapy 指南
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  文中代码如无特殊说明都来自[[https://doc.scrapy.org/en/latest/][Scrapy 1.5 documentation]]，
+
+* 第一部分 基础
+
+** overview
+   scrapy 基本介绍：背景、优缺点、安装方式。
+
+** command-tools
+   了解常用命令行工具。
+
+** simple spider
+   编写一个简单的爬虫。
+
+** simple project
+   编写一个简单的项目。
+
+** settings
+
+** logging
+   了解爬虫的日志系统。
+
+** exception
+   了解异常处理。
+
+* 第二部分 进阶
+
+** architecture
+   了解节本架构。
+
+** requests
+
+** responses
+
+** selectors
+
+** items
+
+** pipeline
+
+* 第三部分 高阶
+
+** 抓取动态页面
+
+** 部署
+
+** 去重
+
+** 断点续爬
+
+** 分布式爬虫
+
+** 反爬虫
+介绍常见的反爬虫手段及应对方法。

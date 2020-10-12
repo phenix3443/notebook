@@ -1,0 +1,139 @@
+# -*- coding:utf-8-*-
+#+TITLE: Openresty实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://openresty.org/cn/][Openresty]] 是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。
+
+* 安装
+  使用 openresty 的时候，将 openresty 连同项目所需要的 lua 代码放在一个完整的目录。
+
+  #+BEGIN_SRC sh
+./configure --prefix=/opt/openresty --with-luajit
+make && make install
+  #+END_SRC
+
+  安装好的目录结构如下：
+  #+BEGIN_EXAMPLE
+.
+├── bin
+│   ├── md2pod.pl
+│   ├── nginx-xml2pod
+│   ├── openresty -> /usr/local/sandai/team_speed_server_v2/nginx/sbin/nginx
+│   ├── opm //包管理工具
+│   ├── resty //resty-cli工具
+│   ├── restydoc
+│   └── restydoc-index
+├── COPYRIGHT
+├── luajit
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   └── share
+├── lualib
+│   ├── cjson.so
+│   ├── librestysignal.so
+│   ├── ngx
+│   ├── rds
+│   ├── redis
+│   ├── resty
+│   └── tablepool.lua
+├── nginx
+│   ├── client_body_temp
+│   ├── conf
+│   ├── fastcgi_temp
+│   ├── html
+│   ├── logs
+│   ├── proxy_temp
+│   ├── sbin
+│   ├── scgi_temp
+│   └── uwsgi_temp
+├── pod // 默认安装的组件
+│   ├── array-var-nginx-module-0.05
+│   ├── drizzle-nginx-module-0.1.11
+│   ├── echo-nginx-module-0.61
+│   ├── encrypted-session-nginx-module-0.08
+│   ├── form-input-nginx-module-0.12
+│   ├── headers-more-nginx-module-0.33
+│   ├── iconv-nginx-module-0.14
+│   ├── lua-5.1.5
+│   ├── lua-cjson-2.1.0.7
+│   ├── luajit-2.1
+│   ├── luajit-2.1-20190507
+│   ├── lua-rds-parser-0.06
+│   ├── lua-redis-parser-0.13
+│   ├── lua-resty-core-0.1.17
+│   ├── lua-resty-dns-0.21
+│   ├── lua-resty-limit-traffic-0.06
+│   ├── lua-resty-lock-0.08
+│   ├── lua-resty-lrucache-0.09
+│   ├── lua-resty-memcached-0.14
+│   ├── lua-resty-mysql-0.21
+│   ├── lua-resty-redis-0.27
+│   ├── lua-resty-shell-0.02
+│   ├── lua-resty-signal-0.02
+│   ├── lua-resty-string-0.11
+│   ├── lua-resty-upload-0.10
+│   ├── lua-resty-upstream-healthcheck-0.06
+│   ├── lua-resty-websocket-0.07
+│   ├── lua-tablepool-0.01
+│   ├── memc-nginx-module-0.19
+│   ├── nginx
+│   ├── ngx_coolkit-0.2
+│   ├── ngx_devel_kit-0.3.1rc1
+│   ├── ngx_lua-0.10.15
+│   ├── ngx_lua_upstream-0.07
+│   ├── ngx_postgres-1.0
+│   ├── ngx_stream_lua-0.0.7
+│   ├── opm-0.0.5
+│   ├── rds-csv-nginx-module-0.09
+│   ├── rds-json-nginx-module-0.15
+│   ├── redis2-nginx-module-0.15
+│   ├── redis-nginx-module-0.3.7
+│   ├── resty-cli-0.24
+│   ├── set-misc-nginx-module-0.32
+│   ├── srcache-nginx-module-0.31
+│   └── xss-nginx-module-0.06
+├── resty.index
+└── site
+    ├── lualib
+    ├── manifest
+    └── pod
+  #+END_EXAMPLE
+
+* 使用说明
+  具体 API 参见 [[https://github.com/openresty/lua-nginx-module][lua-nginx-module]]
+
+* 优秀的库
+  [[https://github.com/bungle/awesome-resty][awesome-resty]]
+
+* resty-cli
+  openresty 自带的 resty 可以用来直接调用 lua_nginx_module 中的 api，免去了需要启动 openresty 服务器烦恼，具体使用参见 [[file:resty-cli.org][resty-cli]]
+
+* luarocks
+  使用 luarocks 管理使用过程中的 lua package，具体使用参见 [[file:~/gitlab/notebook/lua/tools/luarocks.org][luarocks实践]]
+
+* LuaUnit
+  使用 luaunit 来编写代码的单元测试，具体使用参见 [[file:~/gitlab/notebook/lua/tools/luaunit.org][luaunit实践]]
+
+* luacov
+  luacov 做代码覆盖率统计。具体使用参见 [[file:~/gitlab/notebook/lua/tools/luacov.org][luacov实践]]
+
+  参考文献：[fn:1] [fn:2]
+
+* 性能测试
+  openresty 提供基于 Systemtap 的各种工具，用于在生产和开发环境中分析实时 OpenResty 应用程序。
+
+  最有用的工具是；
+  + C-land on-CPU Flame Graph tool: https://github.com/openresty/nginx-systemtap-toolkit#sample-bt
+  + C-land off-CPU Flame Graph tool: https://github.com/openresty/nginx-systemtap-toolkit#sample-bt-off-cpu
+  + Lua-land on-CPU Flame Graph tool: https://github.com/openresty/stapxx#lj-lua-stacks
+
+  建议从最新版本的源代码构建 Systemtap，有关详细信息，请参阅 [[https://openresty.org/en/build-systemtap.html][BuildSystemtap]]。
+
+* Footnotes
+
+[fn:2] https://moonbingbing.gitbooks.io/openresty-best-practices/content/test/coverage.html
+
+[fn:1] [[https://github.com/openresty/lua-nginx-module/issues/701][Is it possible to run a code coverage test with luacov in openresty?]]

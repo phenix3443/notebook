@@ -1,0 +1,10 @@
+# -*- coding:utf-8-*-
+#+TITLE: graphviz 实践
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+#+OPTIONS: author:nil date:nil creator:nil timestamp:nil validate:nil num:nil
+* 概述
+  [[http://graphviz.org/][graphviz]]
+
+* 安装

@@ -1,0 +1,250 @@
+# -*- coding:utf-8 -*-
+#+title:《Pro Git》笔记
+#+author: 刘尚亮
+#+email: phenix3443@gmail.com
+
+
+这篇文章主要根据《[[https://git-scm.com/book/zh/v2][Pro Git 2nd]]》中文版来记录 GIT 的实践过程。
+
+* 起步
+  1. git 记录的是快照而不是文件差异，为什么这么做？（这样对于分支管理有益处）这样 git 文件夹会不会很大？
+  2. git 使用哈希值来引用文件。
+
+* Git 基础
+  1. git init 与 git init --bare 的区别？
+  2. 了解 git status -s 命令所有标记。
+  3. git diff 本身只显示尚未暂存的改动。使用 git diff --staged 查看已经暂存的改动。
+  4. git commit -v -a -m 选项。
+  5. git rm --cached 只是将文件从仓库删除，不删除磁盘文件。
+  6. git log
+	 + -p 按补丁形式显示每个更新之间的差异
+	 + -<n> 显示最近 n 次提交。
+	 + --stat 选项显示每次被修改的文件。
+	 + --pretty 修改显示日志打印的格式。
+	 + --graph 显示分支、合并历史。
+	 + --since --after --before --until 按照时间过滤。
+	 + --S 添加或者移除摸个关键字的提交。
+	 + -- <path> 指定某路径、文件的提交历史。
+	 + --author 指定作者。
+  7. git commit --amend 会用第二次提交的结果替代第一次。
+  8. git reset HEAD <file> 来取消暂存。
+  9. git checkout -- <file> 来取消文件所做的修改。
+  10. git remote show, add, rm, rename
+  11. git tag
+	  + git push origin <tagname>
+	  + git checkout -b <branch> <tagname>
+
+* Git 分支
+  1. git 三种对象：blob 对象（保存文件快照），树对象（记录目录结构和 blob 对象索引），提交对象（包含树对象指针和所有提交信息）。
+  2. git branch -d <branch> 删除分支。-D 删除还没有合并的分支。
+  3. git branch -v 查看每个分支的最后一次提交。
+  4. git brach --no-merged 查看还没有合并的分支。
+  5. 本地 master 跟踪远程分支 origin/master
+  6. git push <local-branch> <remote/branch> 将本地分支推送到远程分支。
+  7. git checkout <local-branch> <remote/branch> 将远程分支拉取到本地分支。
+  8. git push <rep> --delete <branch> 删除远程分支。
+  9. 变基的目的是为了确保在向远程分支推送时能保持提交历史的整洁。
+  10. git rebase --onto
+  11. 变基的原则：只对尚未推送或分享给别人的本地修改执行变基操作清理历史，从不对已推送至别处的提交执行变基操作，
+
+* 服务器上的 git
+
+* 分布式 Git
+
+* GitHub
+
+* Git 工具
+  1. git stash 暂存
+  2. git clean 清理所有未跟踪的文件和目录。经常使用-n 先了解一下会删除哪些。
+  3. git log -L 打印某个函数的历史。
+
+*** 删除
+	+ 删除 .gitsubmodule 中对应 submodule 的条目
+	+ 删除 .git/config 中对应 submodule 的条目
+	+ 执行 git rm --cached {submodule_path}。注意，路径不要加后面的 “/”。例如：你的 submodule 保存在 supports/libs/websocket/ 目录。执行命令为：git rm --cached supports/libs/websocket
+
+*** 更新
+	+ 更新 .gitsubmodule 中对应 submodule 的条目 URL
+	+ 更新 .git/config 中对应 submodule 的条目的 URL
+	+ 执行 git submodule sync
+
+* 自定义 Git
+* Git 与其他系统
+** 迁移到 Git
+   这小节主要描述在公司如何代码库从 SVN 迁移到 Git，并保留原有的 commit log 信息，以及迁移过程中要注意的事情。迁移步骤：[fn:1]
+*** 准备环境
+	需要安装对应的软件：
+	#+BEGIN_SRC sh
+sudo aptitude install -y git Subversion git-svn
+	#+END_SRC
+*** 规范 Subversion[fn:3]
+	确认项目的 Subversion 地址：https://scms.example.com/svn/projects/west/
+
+	后面统一用 $PROJECT 表示项目的 Subversion 地址。
+
+	规范项目在 Subversion 的目录结构包含 trunk、branches、tags
+	+ branches 和 tags 目录下的分支和标签保持平级，例如：
+	  + tags/v1.0.0 可以。
+	  + tags/1.x/v1.0.0 多了层目录就不可以。
+	+ 如果不是平级，以 tags 为例，先执行 svn mv 操作
+
+	  + 方式 1 - 远程 svn mv
+		#+BEGIN_SRC sh
+ svn mv $PROJECT/tags/1.x/v1.0.0 $PROJECT/tags/v1.0.0
+		#+END_SRC
+
+	  + 方式 2 - 本地 svn mv
+		#+BEGIN_SRC sh
+ svn co $PROJECT west_subversion
+ cd west_subversion
+ svn mv tags/1.x/v1.0.0 tags/v1.0.0
+		#+END_SRC
+
+	最后规范后的目录示例如下：
+	#+BEGIN_EXAMPLE
+west
+├── trunk
+│   ├── docs
+│   ├── west
+│   ├── setup.py
+│   └── README.rst
+├── branches
+│   ├── hotfix_add_user_error
+│   ├── hotfix_issuse_9527
+│   ├── feature_unittest4app
+│   └── feature_multi_add_user
+└── tags
+    ├── v1.0.0
+    ├── v1.0.1
+    ├── v2.0.0
+    └── v2.1.0
+	#+END_EXAMPLE
+*** 生成提交者 ID 和邮箱
+	在 Subversion 中，每一个人提交时都需要在系统中有一个用户，它会被记录在提交信息内。 如果想要将 Subversion 用户映射到一个更好的 Git 作者数据中，需要一个 Subversion 用户到 Git 用户的映射。 创建一个 users.txt 的文件包含像下面这种格式的映射：
+	#+BEGIN_EXAMPLE
+   user1 = First Last Name <email@address.com>
+	#+END_EXAMPLE
+
+	为了获得 SVN 使用的作者名字列表，可以运行：
+	#+BEGIN_SRC sh
+   svn log --xml | grep author | sort -u |  perl -pe 's/.*>(.*?)<.*/$1 = /' > user.txt
+	#+END_SRC
+
+	这会将日志输出为 XML 格式，然后保留作者信息行、去除重复、去除 XML 标记。 （很显然这只会在安装了 grep、sort 与 perl 的机器上运行。） 然后，将输出重定向到你的 users.txt 文件中，这样就可以在每一个记录后面加入对应的 Git 用户数据。
+	我们项目中 实际执行完以后，发现文档中每行格式是这样的：
+	#+BEGIN_EXAMPLE
+   user1 =
+	#+END_EXAMPLE
+
+	猜测可能 svn 中没有保留对应的邮箱地址，需要我们来补全，而且，作为第一个迁出项目的人，最好把邮箱地址都换成自己的，这样在后面向 git 提交的时候不会遇到下面的权限问题：
+	#+BEGIN_EXAMPLE
+remote: ERROR: In commit 34f414c0ae5dcb8619c7cb568181f9dfa3ccf840
+remote: ERROR: committer email address xxx@mail.com
+remote: ERROR: does not match your user account.
+remote: ERROR:
+remote: ERROR: The following addresses are currently registered:
+remote: ERROR: xxxx@mail.com
+remote: ERROR:
+remote: ERROR: To register an email address, please visit:
+remote: ERROR: http://10.10.164.250:8080/#/settings/contact
+	#+END_EXAMPLE
+
+
+	你可以将此文件提供给 git svn 来帮助它更加精确地映射作者数据。 也可以通过传递 ~--no-metadata~ 给 clone 与 init 命令，告诉 git svn 不要包括 Subversion 通常会导入的元数据。
+	迁出项目代码（git-svn)
+	#+BEGIN_SRC sh
+   git svn clone --authors-file=users.txt --no-metadata --stdlayout http://10.10.16.252/code_svn/xl_vip/vip_lixian/trunk/downloader/ris/  des-dir
+	#+END_SRC
+	+ ~--authors-file~ 是得到的 git log 提交记录映射好提交者的信息
+	+ ~--no-metadata~ 是得到的 git log 不带上对应的 Subversion 信息了，更干净
+	+ ~--stdlayout~ 是先前准备的按规范目录风格来迁出代码
+	  这样就得到一个已经导入了分支与标签的有效的 Git 仓库。如果出现用户名没有找到，需要更新 user.txt 文件，然后
+	  #+BEGIN_SRC sh
+cd des-dir
+git svn fetch
+	  #+END_SRC
+
+	  如果项目比较大，可能需要重复上面的命令好几次，知道所有的 svn commit 全被抓取下来。
+	  完成后，svn 的所有 trunk 会被当做新的 git branch，可以通过  ~git branch -r~ 进行查看。
+
+	  svn tags 也会当做 branch 导入。
+*** 转化成 Git 仓库格式
+	应当做一些导入后的清理工作。 第一步，你应当清理 git svn 设置的奇怪的引用。 首先移动标签，这样它们就是标签而不是奇怪的远程引用，然后你会移动剩余的分支这样它们就是本地的了。
+	为了将标签变为合适的 Git 标签，运行
+	#+BEGIN_SRC sh
+	  cp -Rf .git/refs/remotes/tags/* .git/refs/tags/
+	  rm -Rf .git/refs/remotes/tags/
+	#+END_SRC
+
+
+	这会使原来在 remotes/origin/tags/ 里的远程分支引用变成真正的（轻量）标签。
+
+	接下来，将 refs/remotes 下剩余的引用移动为本地分支：
+	#+BEGIN_SRC sh
+	  cp -Rf .git/refs/remotes/* .git/refs/heads/
+	  rm -Rf .git/refs/remotes/
+	#+END_SRC
+
+	现在所有的旧分支都是真正的 Git 分支，并且所有的旧标签都是真正的 Git 标签。下一步是一个将你的服务器添加为远程仓库。
+*** 添加远程仓库
+	#+BEGIN_SRC sh
+git remote add gerrit gerrit:xl_lixian_ris.git
+	#+END_SRC
+*** 传所有分支与标签[fn:2]
+	#+BEGIN_SRC sh
+git push gerrit --all
+git push gerrit --tags
+	#+END_SRC
+	现在通过以上漂亮、干净地导入操作，所有分支与标签都应该在新 Git 服务器上。
+
+* Git 内部原理
+
+* Tips
+** [[http://www.ifeegoo.com/git-code-management-dot-gitignore-file-has-no-effect-solution.html][Git 代码管理中 .gitignore 文件无效的解决方法]]
+** 使用 bcompare 作为 diff、merge 工具[fn:7]
+   [[http://www.scootersoftware.com/index.php][Beyond Compare]] 官网上的版本目前是 4.+ 版本, 下载直接安装即可。
+
+   检查 git 的版本, 根据版本的不同选不同的方法进行设置, 本文是基于 Git 2.3+ 版本操作, 2.3 以下的版本可以参考 Beyond Compare 官网上的其他版本控制配置方法。[fn:6]
+
+*** Diff
+
+	切换到终端:
+
+	#+BEGIN_SRC sh
+git config --global diff.tool bc3
+	#+END_SRC
+
+	当需要比较修改的时候, 在终端中直接输入 git difftool file.ext 就可以唤起 Beyond Compare。
+
+*** Merge
+
+	切换到终端:
+
+	#+BEGIN_SRC sh
+git config --global merge.tool bc3
+git config --global mergetool.bc3 trustExitCode true
+	#+END_SRC
+
+	当代码发生冲突的时候, 在终端中使用 git mergetool <conflict file> 即可唤起 Beyond Compare, 可谓是十分强大.
+
+*** 中文路径乱码
+	#+BEGIN_SRC sh
+git config --global core.quotepath false
+	#+END_SRC
+
+
+* Footnotes
+
+[fn:7] [[http://www.jianshu.com/p/a080c8649015][OSX Git 结合 Beyond Compare 使用]]
+
+[fn:6] [[http://www.scootersoftware.com/support.php?zz=kb_vcs][Using Beyond Compare with Version Control Systems]]
+
+[fn:5] [[http://www.scootersoftware.com/support.php?zz=kb_vcs#gitwindows][Using Beyond Compare with Version Control Systems]]
+
+[fn:4] [[http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html][读懂 diff]]
+
+[fn:3] [[http://www.lovelucy.info/codebase-from-svn-to-git-migration-keep-commit-history.html][将代码库从 SVN 迁移至 Git 并保留所有 commit 记录]]
+
+[fn:2] [[http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html][SVN 迁移到 Git 的过程（+ 一些技巧）]]
+
+[fn:1] [[https://pm.readthedocs.org/zh_CN/latest/vcs/git/subversion2git.html][项目如何从 Subversion 迁移到 Git]]

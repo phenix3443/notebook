@@ -1,0 +1,78 @@
+# -*- coding:utf-8 -*-
+#+TITLE: 使用 GDB 调试程序
+
+* 调试单进程
+  #+BEGIN_SRC c++ :tangle gdb-practices/single-process.cc
+#include <iostream>
+
+int div(int a, int b) {
+	return a/b;
+}
+
+int main(int argc, char *argv[])
+{
+    for (int i=0; i<10; ++i) {
+		std::cout << div(10+i, 10-i) << std::endl;
+	}
+    return 0;
+}
+
+  #+END_SRC
+
+* 调试多进程
+  #+BEGIN_SRC c++
+
+  #+END_SRC
+* 调试多线程死锁
+  #+BEGIN_SRC c++ :tangle gdb-practices/dead-lock.cc
+#include <iostream>
+#include <pthread.h>
+
+struct Arg {
+	double a;
+	double b;
+};
+
+void* div(void *arg) {
+	double a = ((Arg*)arg)->a;
+	double b = ((Arg*)arg)->b;
+	double *rval = new double;
+	,*rval = a / b;
+	return (void*)rval;
+}
+
+int main(int argc, char *argv[])
+{
+    pthread_t tid;
+	Arg param = {1,2};
+	if (!pthread_create(&tid, NULL, div,&param)) {
+		std::cout << "create thread errorr" << std::endl;
+		return 1;
+	}
+	double *ret = NULL;
+	pthread_join(tid, (void**)&ret);
+	std::cout << "return val is : " << *ret << std::endl;
+	delete ret;
+
+    return 0;
+}
+  #+END_SRC
+* 调试 core dump 文件
+  #+BEGIN_SRC c++ :tangle gdb-practices/coredump.cc
+      #include <cstdio>
+
+      void dump_code(){
+          char* p = (char*)0;
+          *p = 'a';
+      }
+
+      int main(int argc, char *argv[])
+      {
+          dump_code();
+          return 0;
+      }
+  #+END_SRC
+
+  #+BEGIN_SRC sh
+      g++ -g -S -O0 -m32 gdb_test.cc -o-|c++filt >gdb_test.format.s
+  #+END_SRC

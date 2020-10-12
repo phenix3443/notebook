@@ -1,0 +1,68 @@
+# -*- coding:utf-8-*-
+#+TITLE: sshuttle
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  sshuttle 本质上是通过 ssh 转发 tcp 请求，好处在于：
+  + 不需要在远程服务端安装 shadowsocks，或者其他复杂的 vpn 软件，只需要远端支持 ssh 和 python 即可。
+  + 不需要在服务端有 root 权限。
+
+  详细信息参考 [[https://sshuttle.readthedocs.io/en/stable/][文档]] 。
+
+* 安装
+  #+BEGIN_SRC sh
+pip3 install sshuttle
+  #+END_SRC
+
+* 使用
+  #+BEGIN_EXAMPLE
+sshuttle [options] [-r [username@]sshserver[:port]] <subnets …>
+  #+END_EXAMPLE
+
+  要转发本地所有流量：
+  #+BEGIN_SRC sh
+sshuttle -r username@sshserver 0.0.0.0/0
+  #+END_SRC
+
+  或者简写为
+  #+BEGIN_SRC sh
+sshuttle -r username@sshserver 0/0
+  #+END_SRC
+
+  现在，本地计算机可以访问远程网络。如果 “客户端” 计算机是路由器，则本地网络上的每个人都可以建立与远程网络的连接。
+
+  不需要在远程服务器上安装 sshuttle; 远程服务器只需要 python 可用。sshuttle 将自动上传源码到远端，并在其上运行。
+
+  这将在本地计算机上为所有与 =0.0.0.0/0= 匹配的 IP 地址创建透明代理服务器。（如果需要，可以使用更具体的 IP 地址; 使用任意数量的 IP 地址或子网来更改代理的地址。使用 =0.0.0.0/0= 代理所有流量。）
+
+  发起到其中一个代理 IP 地址的任何 TCP 会话都将被 sshuttle 捕获，并通过 ssh 会话发送到 sshuttle 的远程副本，然后 sshuttle 会在该端重新生成连接，并通过 ssh 来回传输数据。
+
+* 配置
+  可以在配置文件指定命令行的所有选项。
+
+  要使用在 =/etc/ssshuttle.conf= 中定义的选项运行 sshuttle，只需在命令行传递参数： =@/etc/ssshuttle.conf= 。
+
+  当使用配置文件中定义的选项运行 sshuttle 时，除了文件中定义的选项之外，仍然可以通过命令行传递选项。 如果在文件和命令行中都定义了给定选项，则命令行中的值将优先。
+
+  从文件读取的参数必须是每行一个，如下所示：
+  #+BEGIN_EXAMPLE
+value
+--option1
+value1
+--option2
+value2
+  #+END_EXAMPLE
+
+* 工作原理
+  sshuttle 不完全是 VPN，而不完全是端口转发。
+
+  它就像一个 VPN，因为它可以转发整个网络，而不仅仅是指定的端口。方便的是，它允许使用每个主机的“真实”IP 地址，而不是伪造 localhost 上的端口号。
+
+  另一方面，它的工作方式更像是 ssh 端口转发而不是 VPN。通常，VPN 每次转发一个数据包，而不关心单独的连接; 即它对于传输是“无状态的”。sshuttle 则相反，它跟踪每个连接。
+
+  可以将 sshuttle 与以前的 Slirp 程序进行比较，Slirp 是用户空间的 TCP/IP 实现。它在客户端操作逐个数据包，在服务器端重新组装数据包。这在 “真实的串行端口” 时代还可以，因为串口具有可预测的延迟和缓冲。
+
+  但无法安全地通过 TCP 会话（如 ssh）转发 TCP 数据包，因为 TCP 的性能基本上取决于数据包丢失; 它必须经历数据包丢失才能知道何时减速！与此同时，外部 TCP 会话（在本例中为 ssh）是一种可靠的传输，这意味着通过隧道转发的内容永远不会丢失数据包。当然，ssh 会话本身会丢失数据包，但是 TCP 会修复它，因而 ssh 永远不会感知差异，进而内部 TCP 会话也不会感知到，这样带来更好的性能。
+
+  sshuttle 在本地组装 TCP 流，在 ssh 会话中有状态地复用它，并在另一端将其拆解回 TCP 数据流。所以它不是 TCP-over-TCP，而是 data-over-TCP，而这是安全的。

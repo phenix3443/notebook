@@ -1,0 +1,165 @@
+# -*- coding:utf-8-*-
+#+TITLE: tcpdump
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  #+BEGIN_EXAMPLE
+tcpdump [ -AbdDefhHIJKlLnNOpqStuUvxX# ] [ -B buffer_size ]
+        [ -c count ]
+        [ -C file_size ] [ -G rotate_seconds ] [ -F file ]
+        [ -i interface ] [ -j tstamp_type ] [ -m module ] [ -M secret ]
+        [ --number ] [ -Q in|out|inout ]
+        [ -r file ] [ -V file ] [ -s snaplen ] [ -T type ] [ -w file ]
+        [ -W filecount ]
+        [ -E spi@ipaddr algo:secret,...  ]
+        [ -y datalinktype ] [ -z postrotate-command ] [ -Z user ]
+        [ --time-stamp-precision=tstamp_precision ]
+        [ --immediate-mode ] [ --version ]
+        [ expression ]
+
+  #+END_EXAMPLE
+
+  Tcpdump 打印网络接口上与布尔表达式匹配的数据包内容; 内容之前是一个时间戳，默认情况下打印自午夜以来的小时，分钟，秒。运行时使用 =-w= 标志会将数据包数据保存到文件中，以供以后分析的；使用 =-r= 标志从保存的数据包文件中而不是网络接口中读取。使用 =-V= 标志会读取已保存的数据包文件列表。在所有情况下，只有匹配表达式（expression）的数据包才会被 tcpdump 处理。
+
+  如果不使用 =-c= 标志运行，Tcpdump 将继续查看数据包直到它被 SIGINT 信号（例如，通过键入中断字符，通常是 =control-C= 生成）或 SIGTERM 信号（通常使用 kill 命令）; 如果使用 =-c= 标志运行，它将捕获数据包，直到它被 SIGINT 或 SIGTERM 信号中断或已经处理了指定数量的数据包。
+
+  当 tcpdump 完成捕获数据包时，它将报告以下计数：
+  + 捕获的数据包
+
+    这是 tcpdump 接收和处理的数据包数。
+
+  + “过滤器接收” 的数据包
+
+    含义取决于运行 tcpdump 的操作系统，可能与操作系统配置的方式有关：如果在命令行上指定了过滤器，在某些操作系统，无论数据包是否与过滤器表达式匹配，或即使它们匹配 filter 表达式，也不论 tcpdump 是否已经读取并处理它们都会计数；在某些操作系统上它只计算与过滤器表达式匹配的数据包，无论 tcpdump 是否已经读取并处理它们；而某些操作系统上它只计算匹配过滤器表达式并由 tcpdump 处理的数据包;
+
+  + “内核删除” 的数据包
+
+    这是由于缺少缓冲区空间而被丢弃的数据包数量，由运行 tcpdump 的操作系统中的数据包捕获机制决定是否向应用程序报告该信息，如果不报告，该值位 0。
+
+* Options
+  下面介绍一些有用的选项：
+  + =-A=
+
+    以 ASCII 格式打印每个数据包（不包括链路层头部）。方便捕获网页。
+
+  + =-c count=
+
+    收到 count 个数据包后退出。
+
+  + =-D=
+  + =--list-interfaces=
+
+    打印 tcpdump 可捕获的系统可用网络接口列表。对于每个网络接口，将打印数字和接口名称，可能后跟接口的文本描述。 可以将接口名称或编号提供给 =-i= 标志以指定要在该接口捕获。
+
+    #+BEGIN_SRC sh :exports both
+tcpdump -D
+    #+END_SRC
+
+  + =-e=
+
+    打印链路层头部。例如，这可以用于打印诸如以太网和 IEEE 802.11 之类的协议的 MAC 层地址。
+
+  + =-F file=
+
+    使用 file 作为过滤器表达式的输入。命令行上给出的附加表达式将被忽略。
+
+  + =-i interface=
+
+    监听网络接口。 如果未指定，tcpdump 将在系统接口列表中搜索编号最小的已配置接口（不包括环回），这可能会变成例如 “eth0”。
+
+    在 2.2 更高版本内核的 Linux 系统上，可以使用 “any” 的接口参数来捕获来自所有接口的数据包。 请注意，混杂模式下不能在捕获“any” 设备。
+
+    如果支持 =-D= 标志，该标志打印的接口号可用作接口参数，则如果系统上没有任何接口将该接口号作为名称的话。
+
+  + =-n=
+
+    不要将地址转为名字(例如主机地址（host addr）, 端口号等)
+
+  + =-#=
+
+    在行的开头打印一个可选的包号。
+
+  + =-r file=
+
+    从文件读取数据包（使用 =-w= 选项或其他编写 pcap 或 pcap-ng 文件的工具创建）。 如果文件是 “-”，则使用标准输入。
+
+  + -v
+
+    解析和打印时，产生（略多）详细输出。
+
+    例如，打印 IP 包中的生存时间，标识，总长度和选项。 还可以启用其他数据包完整性检查，例如验证 IP 和 ICMP 标头校验和。
+
+    使用 - w 选项写入文件时，每隔 10 秒报告一次捕获的数据包数。
+
+  + =-w file=
+
+    将原始数据包写入文件而不是解析并打印出来。 稍后可以使用 =-r= 选项打印它们。 如果 file 是 “-”，则使用标准输出。
+
+    如果写入文件或管道，则此输出将被缓冲，因此从文件或管道读取的程序在收到后可能无法在任意时间内看到数据包。使用 =-U= 标志可以在收到数据包后立即写入。
+
+  + =-s snaplen=
+
+    捕获每个数据包 snaplen 字节数据而不是默认的 262144 字节。 数据由于快照而被截断，这些快照在输出中用 ``[| proto]''表示，其中 proto 是发生截断的协议级别的名称。
+
+    请注意，使用较大的快照会增加处理数据包所需的时间，并且有效地减少数据包缓冲量。 这可能会导致数据包丢失。 应该将 snaplen 限制为捕获您感兴趣的协议信息的最小数字。将 snaplen 设置为 0 会将其设置为默认值 262144，以便向后兼容最新版本的 tcpdump。
+
+* expression
+  过滤器表达式由一个或多个 primitives 组成。primitives 通常由一个或多个限定符之后的 id（名称或数字）组成。
+
+  有三种不同的限定符：
+  + type
+
+    type 限定符表示 id 名称或数字引用的是什么类型的东西。可能的类型是 host，net，port 和 portrange。例如，`host foo'，`net 128.3'，`port 20'，`portrange 6000-6008'。如果没有类型限定符，则假定为 host。
+
+  + dir
+
+    dir 限定符指定到 id 为特定传输方向。可能的方向是 src，dst，src 或 dst，src 和 dst，ra，ta，addr1，addr2，addr3 和 addr4。例如，`src foo'，`Dst net 128.3'，`src 或 dst port ftp-data'。如果没有 dir 限定符，则假定为 src 或 dst。ra，ta，addr1，addr2，addr3 和 addr4 限定符仅对 IEEE 802.11 无线 LAN 链路层有效。
+
+  + proto
+
+    proto 限定符匹配特定协议。 可能的原型是：ether，fddi，tr，wlan，ip，ip6，arp，rarp，decnet，tcp 和 udp。 例如，`ether src foo'，`arp net 128.3'，`tcp port 21'，`udp portrange 7000-7009'，`wlan addr2 0：2：3：4：5：6'。
+
+    如果没有 proto 限定符，则假定所有与 type 相关的协议。 例如，`src foo'表示 `（ip 或 arp 或 rarp）src foo'（除了后者不是合法语法），`net bar'表示 `（ip 或 arp 或 rarp）net bar'和 `port 53'表示 `（tcp 或 udp）端口 53'。
+
+  除了上述之外，还有一些不遵循模式的特殊 “原语” 关键字：gateway，broadcast，less，greater 和 arithmetic 表达式。
+
+  通过使用 and，or，not 组合原语来构建更复杂的过滤器表达式。例如， =host foo and not port ftp and  not  port ftp-data= 。 要减少键入，可以省略相同的限定符列表。 例如， =tcp dst port ftp or ftp-data or domain= 与 =tcp dst port ftp or tcp dst port ftp-data or tcp dst port domain= 完全相同。
+
+* expr relop expr
+  如果关系成立则为真，其中 relop 是 >，<，> =，<=，=，！= 其中之一，并且 expr 是由整数常量（以标准 C 语法表示），正常的二元运算符 =+ ， - ，*，/，％，＆，|，^，<<，>>= ，长度运算符和特殊数据包数据访问器组成的算术表达式。请注意，所有比较都是无符号的，因此，例如，0x80000000 和 0xffffffff> 0。
+
+  目前，％和 ^ 运算符仅支持在具有 3.7 及更高版本内核的 Linux 上的内核中进行过滤; 在所有其他系统上，如果使用这些运算符，则将在用户模式下进行过滤，这将增加捕获数据包的开销，并可能导致丢弃更多数据包。
+
+  要访问数据包内的数据，请使用以下语法：
+  #+BEGIN_EXAMPLE
+proto [ expr : size ]
+  #+END_EXAMPLE
+  Proto 是 ether，fddi，tr，wlan，ppp，slip，link，ip，arp，rarp，tcp，udp，icmp，ip6 或 radio 之一，表示索引操作的协议层。 （ether，fddi，wlan，tr，ppp，slip 和 link 都是指链路层。radio 是指添加到某些 802.11 捕获中的 “radio header”。）请注意，tcp，udp 和其他上层协议类型仅适用到 IPv4，而不是 IPv6（这将在未来修复）。相对于指示的协议层的字节偏移由 expr 给出。size 是可选的，表示感兴趣的字段中的字节数; 它可以是一个，两个或四个，默认为一个。
+
+  由关键字 len 表示的 length 运算符给出了数据包的长度。
+
+  例如，"ether[0]＆1！= 0" 捕获所有多播流量。表达式 “ip[0]＆0xf！= 5” 捕获带有选项的所有 IPv4 数据包。表达式 “ip[6:2]＆0x1fff = 0” 仅捕获未分段的 IPv4 数据报和碎片化的 IPv4 数据报的零碎片。此检查隐式应用于 tcp 和 udp 索引操作。例如，tcp[0] 始终表示 TCP 标头的第一个字节，并且从不表示插入片段的第一个字节。
+
+  一些偏移和字段值可以表示为名称而不是数值。可以使用以下协议头字段偏移：icmptype（ICMP 类型字段），icmpcode（ICMP 代码字段）和 tcpflags（TCP 标志字段）。
+
+  可以使用以下 ICMP 类型字段值：icmp-echoreply，icmp-unreach，icmp-sourcequench，icmp-redirect，icmp-echo，icmp-routeradvert，icmp-routersolicit，icmp-timxceed，icmp-paramprob，icmp-tstamp，icmp -tstampreply，icmp-ireq，icmp-ireqreply，icmp-maskreq，icmp-maskreply。
+
+  可以使用以下 TCP 标志字段值：tcp-fin，tcp-syn，tcp-rst，tcp-push，tcp-ack，tcp-urg。
+
+* 实践
+
+  + 选择涉及非本地主机的每个 TCP 会话的开始和结束数据包（SYN 和 FIN 数据包）
+    #+BEGIN_EXAMPLE
+tcp[tcpflags] & (tcp-syn|tcp-fin) != 0 and not src and dst net localnet
+    #+END_EXAMPLE
+
+  + 选择进出端口 80 的所有 IPv4 HTTP 数据包，即仅打印包含数据的数据包，而不打印例如 SYN 和 FIN 数据包和仅 ACK 数据包。
+    #+BEGIN_EXAMPLE
+tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)
+    #+END_EXAMPLE
+
+  + 选择通过网关 snup 发送的长度超过 576 字节的 IP 数据包
+   #+BEGIN_EXAMPLE
+gateway snup and ip[2:2] > 576
+   #+END_EXAMPLE

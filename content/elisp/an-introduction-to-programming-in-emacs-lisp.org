@@ -1,0 +1,9 @@
+# -*- coding:utf-8-*-
+#+TITLE: 《Emacs Lisp入门》笔记
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* List Processing
+  list是elisp基本的数据结构。list由word，number，其他list构成。
+
+  列表前的单引号是quote函数的语法糖。

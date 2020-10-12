@@ -1,0 +1,20 @@
+# -*- coding:utf-8-*-
+#+TITLE: wine
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+#+STARTUP: overview
+
+* 概述
+
+* 安装
+
+* 使用[fn:1]
+  #+BEGIN_SRC
+wget -nc https://dl.winehq.org/wine-builds/winehq.key
+sudo apt-key add winehq.key
+sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
+  #+END_SRC
+
+* Footnotes
+
+[fn:1] https://wiki.winehq.org/Ubuntu_zhcn

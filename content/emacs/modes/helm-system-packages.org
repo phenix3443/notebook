@@ -1,0 +1,26 @@
+# -*- coding:utf-8-*-
+#+TITLE: helm-system-packages
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[https://github.com/emacs-helm/helm-system-packages][Helm System Packages]] 是一个基于Emacs的接口，用于操作系统和远程系统的包管理器。
+
+  启动helm-system-packages以列出所有可用的包（已安装的包以及在各自的面中显示的依赖项）。模糊搜索，标记并执行任何选择的包所需的操作：
+  + 安装。
+  + 卸载。
+  + 显示包裹详细信息（在 org 模式中！）或在当前 point 处插入详细信息。
+  + 查找包所拥有的文件。
+  + 通过网络执行以上所有操作！
+
+  Helm System Packages为以下包管理器提供统一的界面：
+  + brew（macOS）
+  + DNF
+  + dpkg（apt＆friends）
+  + guix
+  + pacman
+  + portage (emerge & friends)
+  + xbps
+
+* 使用
+  只需要执行 =helm-system-packages= ，输入要查找的包的名字，然后使用 =C-i= 可以显示后续可以执行的动作。

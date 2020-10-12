@@ -1,0 +1,71 @@
+# -*- coding:utf-8-*-
+#+TITLE: zssh
+#+AUTHOR: liushangliang
+#+EMAIL: phenix3443+github@gmail.com
+
+* 概述
+  [[http://zssh.sourceforge.net/][zssh]] （Zmodem SSH）是一个程序，用于在使用 ssh 时以交互方式将文件传输到远程计算机。它旨在方便的替代 scp 传输文件，而无需打开另一个会话并重新验证自己。
+
+  zssh 是 ssh 的交互式包装器，用于切换远程 shell 和文件传输之间的 ssh 连接。这是通过在用户和本地 ssh 进程之间使用另一个 tty/pty 对来实现：在 ssh 连接上插入用户的 tty（远程 shell 模式）或另一个进程（文件传输模式）。
+
+  ztelnet 的行为类似于 zssh，除了使用 telnet 而不是 ssh。它相当于'zssh -s"telnet -8 -E"'。
+
+  rz 和 sz 命令通过 zmodem 协议传输文件。
+
+* 安装
+  #+BEGIN_SRC sh
+sudo apt install zssh
+  #+END_SRC
+
+* 使用
+  zssh 表现为通常的 ssh 会话，当按下转义序列（当前为 ^ @），这将启用文件传输模式。然后出现一个新提示，并且可以在本地执行命令以启动文件传输（以及其他内容）。它大致表现类似本地 shell，包括行版本，历史记录和完成（感谢 libreadline），globbing 和转义字符（“'和 \”）。
+
+  以下内置函数由 zssh 本身处理：
+  | 命令            | 含义                                                                             |
+  |                 | <80>                                                                             |
+  |-----------------+----------------------------------------------------------------------------------|
+  | cd [dir]        | change current directory                                                         |
+  | disconnect      | disconnect and exit.                                                             |
+  | escape [^X]     | Change escape key to ^X.Without argument, print current escape key               |
+  | exit            | exit file transfer mode. ^D may also be used for this purpose.                   |
+  | quit            |                                                                                  |
+  |-----------------+----------------------------------------------------------------------------------|
+  | help            | print help and tips                                                              |
+  | ?               |                                                                                  |
+  |-----------------+----------------------------------------------------------------------------------|
+  | hook prg [args] | Hook program 'prg' on the the pty. Its standard input and output will go through the ssh channel. typing 'sz'/'rz' is in fact equivalent to 'hook sz'/'hook rz'.A weird imagination is most useful to gain full advantage of this feature. |
+  |-----------------+----------------------------------------------------------------------------------|
+  | repeat          | repeats  cmd  forever  (^C to interrupt). Useful for example if you use a remote script  invoking "sz"  and  you don't want to be typing"rz" each time... Remember however that several files can be transferred by a single sz/rz pair so this is not usually necessary to use repeat. |
+  |-----------------+----------------------------------------------------------------------------------|
+  | rz              | Receive files from the remote machine.  runs  rz and  plugs  the  process  on the ssh connection. running sz on the REMOTE machine is required : |
+  |                 | + run `sz <remote_file> ...' from the  remote machine shell                      |
+  |                 | + press  the  escape  sequence  (^@) to enter file transfer mode                 |
+  |                 | + run the `rz' builtin                                                           |
+  |-----------------+----------------------------------------------------------------------------------|
+  | suspend         | suspend zssh (back to the local machine shell)                                   |
+  | sz <file> ...   | Send  files  to  the remote machine. runs sz and plugs the process on the ssh connection. There is  no  need  to  manually  run rz on the remote side. |
+  | version         | print version information                                                        |
+  |                 |                                                                                  |
+
+  rz，sz，hook 和 exit 在完成后返回 shell 模式。
+
+* 提示
+
+ + 如果启动了文件传输但从未完成
+
+   如果看到如下显示，但是传输一直没有完成：
+   #+BEGIN_EXAMPLE
+Bytes Sent:  38144/4610624   BPS:3424     ETA 22:15
+or
+Bytes Sent:      0/    513   BPS:0        ETA 00:00  Retry 0: Got ZCAN
+
+
+   #+END_EXAMPLE
+   有可能其中一个系统的 pty/tty 不是 8-bit clean（Linux 是，NetBSD 不是）。
+
+   使用 rz 的 =-e= 选项（转义）应该可以解决这个问题。
+
+ + 传输可以用 =^C= 中断。
+ + 如果你卡在 =rz/sz= 中（例如刚刚运行了 rz，但是又决定不传输任何东西），就打了十几个 =^X= 来阻止它。
+ + 使用 =sz -y <files>= 覆盖另一侧的文件。
+ + man sz！
