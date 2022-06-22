@@ -1,9 +1,0 @@
-# -*- coding:utf-8-*-
-#+TITLE: mysql
-#+AUTHOR: liushangliang
-#+EMAIL: phenix3443+github@gmail.com
-
-* 使用
-  #+BEGIN_SRC sh
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
-  #+END_SRC
