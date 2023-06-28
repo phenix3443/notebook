@@ -1,9 +1,0 @@
-# -*- coding:utf-8; -*-
-#+title:ssdb使用总结
-#+author: 刘尚亮
-#+email: phenix3443@gmail.com
-#+startup:overview
-
-* 概述
-* 使用
-* books

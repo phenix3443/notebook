@@ -1,7 +1,0 @@
-# -*- coding:utf-8-*-
-#+TITLE: vscode-icons
-#+AUTHOR: liushangliang
-#+EMAIL: phenix3443+github@gmail.com
-
-* 概述
-  [[https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons][vscode-icons]] 给 vscode 的目录树中的文件添加彩色图标。

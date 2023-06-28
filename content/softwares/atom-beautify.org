@@ -1,7 +1,0 @@
-# -*- coding:utf-8-*-
-#+TITLE: atom-beaautify
-#+AUTHOR: liushangliang
-#+EMAIL: phenix3443+github@gmail.com
-
-* 概述
-  [[https://atom.io/packages/atom-beautify#beautifiers][atom-beautify]] 是一款代码格式化工具。

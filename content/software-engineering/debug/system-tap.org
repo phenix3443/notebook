@@ -1,6 +1,0 @@
-# -*- coding:utf-8-*-
-#+TITLE: SystemTap
-#+AUTHOR: liushangliang
-#+EMAIL: phenix3443+github@gmail.com
-#+STARTUP: overview
-* 概述
